@@ -8239,10 +8239,15 @@ class EosDesigns(EosDesignsRootModel):
             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
             If the
             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+            Hostnames
+            configured here cannot also be configured under `evpn_route_servers` on the same node.
+            If a remote
+            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+            peering.
 
 
-            Subclass
-            of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+            (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -8291,10 +8296,15 @@ class EosDesigns(EosDesignsRootModel):
                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                            If the
                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                           Hostnames
+                           configured here cannot also be configured under `evpn_route_servers` on the same node.
+                           If a remote
+                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                           peering.
 
 
-                           Subclass
-                           of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                           (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -9445,9 +9455,12 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_interface": {"type": str},
                 "peer_ip": {"type": str},
+                "peer_ipv6": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv6_acl_in": {"type": str},
+                "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
                 "qos_profile": {"type": str},
                 "wan_carrier": {"type": str},
@@ -9543,6 +9556,11 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
+            peer_ipv6: str | None
+            """
+            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+            "peer_ipv6" token.
+            """
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -9565,6 +9583,24 @@ class EosDesigns(EosDesignsRootModel):
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            ipv6_acl_in: str | None
+            """
+            Name of the IPv6 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+            first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+            Token "interface_ip"
+            is also accepted but deprecated and will be removed in AVD 7.0.0.
+            """
+            ipv6_acl_out: str | None
+            """
+            Name of the IPv6 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+            entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+            Token "interface_ip" is also
+            accepted but deprecated and will be removed in AVD 7.0.0.
             """
             static_routes: StaticRoutes
             """
@@ -9641,9 +9677,12 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_interface: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
+                    peer_ipv6: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -9714,6 +9753,9 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
+                        peer_ipv6:
+                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                           "peer_ipv6" token.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -9731,6 +9773,20 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_in:
+                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                           first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                           Token "interface_ip"
+                           is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        ipv6_acl_out:
+                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                           entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                           Token "interface_ip" is also
+                           accepted but deprecated and will be removed in AVD 7.0.0.
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -10137,9 +10193,12 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_port_channel": {"type": str},
                 "peer_ip": {"type": str},
+                "peer_ipv6": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv6_acl_in": {"type": str},
+                "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
                 "qos_profile": {"type": str},
                 "wan_carrier": {"type": str},
@@ -10232,6 +10291,11 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
+            peer_ipv6: str | None
+            """
+            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+            "peer_ipv6" token.
+            """
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -10254,6 +10318,24 @@ class EosDesigns(EosDesignsRootModel):
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            ipv6_acl_in: str | None
+            """
+            Name of the IPv6 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+            first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+            Token "interface_ip"
+            is also accepted but deprecated and will be removed in AVD 7.0.0.
+            """
+            ipv6_acl_out: str | None
+            """
+            Name of the IPv6 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+            entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+            Token "interface_ip" is also
+            accepted but deprecated and will be removed in AVD 7.0.0.
             """
             static_routes: StaticRoutes
             """
@@ -10315,9 +10397,12 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_port_channel: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
+                    peer_ipv6: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -10385,6 +10470,9 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
+                        peer_ipv6:
+                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                           "peer_ipv6" token.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -10402,6 +10490,20 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_in:
+                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                           first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                           Token "interface_ip"
+                           is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        ipv6_acl_out:
+                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                           entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                           Token "interface_ip" is also
+                           accepted but deprecated and will be removed in AVD 7.0.0.
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -10650,7 +10752,13 @@ class EosDesigns(EosDesignsRootModel):
             Overrides global `digital_twin.fabric.act_os_version` flag.
             """
             mgmt_ip: str | None
-            """Desired management interface IPv4 address."""
+            """
+            Desired management interface IPv4 address for the Digital Twin.
+            In ACT Digital Twin mode, this
+            address is used in the ACT topology.
+            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+            address is also used for the generated OOB management interface.
+            """
             act_internet_access: bool | None
             """
             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -10681,7 +10789,12 @@ class EosDesigns(EosDesignsRootModel):
                         act_os_version:
                            Desired ACT Digital Twin OS version.
                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                        mgmt_ip: Desired management interface IPv4 address.
+                        mgmt_ip:
+                           Desired management interface IPv4 address for the Digital Twin.
+                           In ACT Digital Twin mode, this
+                           address is used in the ACT topology.
+                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                           address is also used for the generated OOB management interface.
                         act_internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
@@ -11250,6 +11363,9 @@ class EosDesigns(EosDesignsRootModel):
         evpn_route_servers: EvpnRouteServers
         """
         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+        Hostnames configured here cannot also
+        be configured under `evpn_gateway.remote_peers` on the same node.
+
 
         Subclass of AvdList with `str`
         items.
@@ -12210,6 +12326,9 @@ class EosDesigns(EosDesignsRootModel):
                        Default is set in node_type definition from node_type_keys.
                     evpn_route_servers:
                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                       Hostnames configured here cannot also
+                       be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                        Subclass of AvdList with `str`
                        items.
@@ -13548,10 +13667,15 @@ class EosDesigns(EosDesignsRootModel):
             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
             If the
             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+            Hostnames
+            configured here cannot also be configured under `evpn_route_servers` on the same node.
+            If a remote
+            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+            peering.
 
 
-            Subclass
-            of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+            (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -13600,10 +13724,15 @@ class EosDesigns(EosDesignsRootModel):
                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                            If the
                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                           Hostnames
+                           configured here cannot also be configured under `evpn_route_servers` on the same node.
+                           If a remote
+                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                           peering.
 
 
-                           Subclass
-                           of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                           (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -14754,9 +14883,12 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_interface": {"type": str},
                 "peer_ip": {"type": str},
+                "peer_ipv6": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv6_acl_in": {"type": str},
+                "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
                 "qos_profile": {"type": str},
                 "wan_carrier": {"type": str},
@@ -14852,6 +14984,11 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
+            peer_ipv6: str | None
+            """
+            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+            "peer_ipv6" token.
+            """
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -14874,6 +15011,24 @@ class EosDesigns(EosDesignsRootModel):
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            ipv6_acl_in: str | None
+            """
+            Name of the IPv6 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+            first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+            Token "interface_ip"
+            is also accepted but deprecated and will be removed in AVD 7.0.0.
+            """
+            ipv6_acl_out: str | None
+            """
+            Name of the IPv6 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+            entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+            Token "interface_ip" is also
+            accepted but deprecated and will be removed in AVD 7.0.0.
             """
             static_routes: StaticRoutes
             """
@@ -14950,9 +15105,12 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_interface: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
+                    peer_ipv6: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -15023,6 +15181,9 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
+                        peer_ipv6:
+                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                           "peer_ipv6" token.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -15040,6 +15201,20 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_in:
+                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                           first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                           Token "interface_ip"
+                           is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        ipv6_acl_out:
+                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                           entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                           Token "interface_ip" is also
+                           accepted but deprecated and will be removed in AVD 7.0.0.
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -15446,9 +15621,12 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_port_channel": {"type": str},
                 "peer_ip": {"type": str},
+                "peer_ipv6": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv6_acl_in": {"type": str},
+                "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
                 "qos_profile": {"type": str},
                 "wan_carrier": {"type": str},
@@ -15541,6 +15719,11 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
+            peer_ipv6: str | None
+            """
+            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+            "peer_ipv6" token.
+            """
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -15563,6 +15746,24 @@ class EosDesigns(EosDesignsRootModel):
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            ipv6_acl_in: str | None
+            """
+            Name of the IPv6 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+            first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+            Token "interface_ip"
+            is also accepted but deprecated and will be removed in AVD 7.0.0.
+            """
+            ipv6_acl_out: str | None
+            """
+            Name of the IPv6 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+            entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+            Token "interface_ip" is also
+            accepted but deprecated and will be removed in AVD 7.0.0.
             """
             static_routes: StaticRoutes
             """
@@ -15624,9 +15825,12 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_port_channel: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
+                    peer_ipv6: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -15694,6 +15898,9 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
+                        peer_ipv6:
+                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                           "peer_ipv6" token.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -15711,6 +15918,20 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_in:
+                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                           first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                           Token "interface_ip"
+                           is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        ipv6_acl_out:
+                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                           entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                           Token "interface_ip" is also
+                           accepted but deprecated and will be removed in AVD 7.0.0.
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -15959,7 +16180,13 @@ class EosDesigns(EosDesignsRootModel):
             Overrides global `digital_twin.fabric.act_os_version` flag.
             """
             mgmt_ip: str | None
-            """Desired management interface IPv4 address."""
+            """
+            Desired management interface IPv4 address for the Digital Twin.
+            In ACT Digital Twin mode, this
+            address is used in the ACT topology.
+            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+            address is also used for the generated OOB management interface.
+            """
             act_internet_access: bool | None
             """
             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -15990,7 +16217,12 @@ class EosDesigns(EosDesignsRootModel):
                         act_os_version:
                            Desired ACT Digital Twin OS version.
                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                        mgmt_ip: Desired management interface IPv4 address.
+                        mgmt_ip:
+                           Desired management interface IPv4 address for the Digital Twin.
+                           In ACT Digital Twin mode, this
+                           address is used in the ACT topology.
+                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                           address is also used for the generated OOB management interface.
                         act_internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
@@ -16570,6 +16802,9 @@ class EosDesigns(EosDesignsRootModel):
         evpn_route_servers: EvpnRouteServers
         """
         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+        Hostnames configured here cannot also
+        be configured under `evpn_gateway.remote_peers` on the same node.
+
 
         Subclass of AvdList with `str`
         items.
@@ -17539,6 +17774,9 @@ class EosDesigns(EosDesignsRootModel):
                        Default is set in node_type definition from node_type_keys.
                     evpn_route_servers:
                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                       Hostnames configured here cannot also
+                       be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                        Subclass of AvdList with `str`
                        items.
@@ -22894,18 +23132,24 @@ class EosDesigns(EosDesignsRootModel):
             }
             source: str | None
             """
-            This field supports substitution of the field "interface_ip" for SVIs.
-            Alternatively it can be set
-            with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
-            "<ipv6>" without a mask means host.
+            This field supports substitution of the fields "interface_ipv6" and "peer_ipv6".
+            Token
+            "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
+            Alternatively it
+            can be set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means
+            host.
             Required except for remarks.
             """
             destination: str | None
             """
-            This field supports substitution of the field "interface_ip" for SVIs.
-            Alternatively it can be set
-            with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
-            "<ipv6>" without a mask means host.
+            This field supports substitution of the fields "interface_ipv6" and "peer_ipv6".
+            Token
+            "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
+            Alternatively it
+            can be set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means
+            host.
             Required except for remarks.
             """
             protocol: str | None
@@ -22998,16 +23242,22 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         source:
-                           This field supports substitution of the field "interface_ip" for SVIs.
-                           Alternatively it can be set
-                           with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
-                           "<ipv6>" without a mask means host.
+                           This field supports substitution of the fields "interface_ipv6" and "peer_ipv6".
+                           Token
+                           "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
+                           Alternatively it
+                           can be set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+                           "<ipv6>" without a mask means
+                           host.
                            Required except for remarks.
                         destination:
-                           This field supports substitution of the field "interface_ip" for SVIs.
-                           Alternatively it can be set
-                           with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
-                           "<ipv6>" without a mask means host.
+                           This field supports substitution of the fields "interface_ipv6" and "peer_ipv6".
+                           Token
+                           "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
+                           Alternatively it
+                           can be set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+                           "<ipv6>" without a mask means
+                           host.
                            Required except for remarks.
                         protocol:
                            "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
@@ -25731,9 +25981,12 @@ class EosDesigns(EosDesignsRootModel):
             "peer": {"type": str},
             "peer_interface": {"type": str},
             "peer_ip": {"type": str},
+            "peer_ipv6": {"type": str},
             "bgp": {"type": Bgp},
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
+            "ipv6_acl_in": {"type": str},
+            "ipv6_acl_out": {"type": str},
             "static_routes": {"type": StaticRoutes},
             "qos_profile": {"type": str},
             "wan_carrier": {"type": str},
@@ -25832,6 +26085,11 @@ class EosDesigns(EosDesignsRootModel):
         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
         and `ip` is an IP address.
         """
+        peer_ipv6: str | None
+        """
+        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+        "peer_ipv6" token.
+        """
         bgp: Bgp
         """
         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -25854,6 +26112,24 @@ class EosDesigns(EosDesignsRootModel):
         Name of the IPv4 Access-list to be assigned in the egress direction.
         The access-list must be defined
         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+        """
+        ipv6_acl_in: str | None
+        """
+        Name of the IPv6 access-list to be assigned in the ingress direction.
+        The access-list must be
+        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+        Token "interface_ip"
+        is also accepted but deprecated and will be removed in AVD 7.0.0.
+        """
+        ipv6_acl_out: str | None
+        """
+        Name of the IPv6 Access-list to be assigned in the egress direction.
+        The access-list must be defined
+        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+        Token "interface_ip" is also
+        accepted but deprecated and will be removed in AVD 7.0.0.
         """
         static_routes: StaticRoutes
         """
@@ -25930,9 +26206,12 @@ class EosDesigns(EosDesignsRootModel):
                 peer: str | None | UndefinedType = Undefined,
                 peer_interface: str | None | UndefinedType = Undefined,
                 peer_ip: str | None | UndefinedType = Undefined,
+                peer_ipv6: str | None | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                ipv6_acl_out: str | None | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
                 qos_profile: str | None | UndefinedType = Undefined,
                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -26005,6 +26284,9 @@ class EosDesigns(EosDesignsRootModel):
                     peer_ip:
                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                        and `ip` is an IP address.
+                    peer_ipv6:
+                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                       "peer_ipv6" token.
                     bgp:
                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                        IPv6 BGP
@@ -26022,6 +26304,20 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the IPv4 Access-list to be assigned in the egress direction.
                        The access-list must be defined
                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                    ipv6_acl_in:
+                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                       The access-list must be
+                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                       Token "interface_ip"
+                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                    ipv6_acl_out:
+                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                       The access-list must be defined
+                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                       Token "interface_ip" is also
+                       accepted but deprecated and will be removed in AVD 7.0.0.
                     static_routes:
                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -34413,17 +34709,21 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Name of the IPv6 access-list to be assigned in the ingress direction.
                 The access-list must be
-                defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                The "interface_ip"
-                substitution field is resolved from the IPv6 address set on the interface for this node.
+                defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                resolved from the
+                IPv6 address set on the interface for this node.
+                Deprecated token "interface_ip" is also accepted as
+                an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                 """
                 ipv6_acl_out: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the egress direction.
                 The access-list must be defined
-                under `ipv6_acls` and supports substitution of the field "interface_ip".
-                The "interface_ip"
-                substitution field is resolved from the IPv6 address set on the interface for this node.
+                under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                resolved from the IPv6
+                address set on the interface for this node.
+                Deprecated token "interface_ip" is also accepted as an
+                alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                 """
                 ospf: Ospf
                 """
@@ -34554,15 +34854,19 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
-                               defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                               The "interface_ip"
-                               substitution field is resolved from the IPv6 address set on the interface for this node.
+                               defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                               resolved from the
+                               IPv6 address set on the interface for this node.
+                               Deprecated token "interface_ip" is also accepted as
+                               an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                             ipv6_acl_out:
                                Name of the IPv6 access-list to be assigned in the egress direction.
                                The access-list must be defined
-                               under `ipv6_acls` and supports substitution of the field "interface_ip".
-                               The "interface_ip"
-                               substitution field is resolved from the IPv6 address set on the interface for this node.
+                               under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                               resolved from the IPv6
+                               address set on the interface for this node.
+                               Deprecated token "interface_ip" is also accepted as an
+                               alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                             ospf:
                                OSPF interface configuration.
 
@@ -35181,17 +35485,21 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Name of the IPv6 access-list to be assigned in the ingress direction.
                 The access-list must be
-                defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                The "interface_ip"
-                substitution field is resolved from the first IPv6 address set on the interface.
+                defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                resolved from the
+                first IPv6 address set on the interface.
+                Token "interface_ip" is also accepted but deprecated and
+                will be removed in AVD 7.0.0.
                 """
                 ipv6_acl_out: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the egress direction.
                 The access-list must be defined
-                under `ipv6_acls` and supports substitution of the field "interface_ip".
-                The "interface_ip"
-                substitution field is resolved from the first IPv6 address set on the interface.
+                under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                resolved from the first
+                IPv6 address set on the interface.
+                Token "interface_ip" is also accepted but deprecated and will be
+                removed in AVD 7.0.0.
                 """
                 static_routes: StaticRoutes
                 """
@@ -35300,15 +35608,19 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
-                               defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                               The "interface_ip"
-                               substitution field is resolved from the first IPv6 address set on the interface.
+                               defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                               resolved from the
+                               first IPv6 address set on the interface.
+                               Token "interface_ip" is also accepted but deprecated and
+                               will be removed in AVD 7.0.0.
                             ipv6_acl_out:
                                Name of the IPv6 access-list to be assigned in the egress direction.
                                The access-list must be defined
-                               under `ipv6_acls` and supports substitution of the field "interface_ip".
-                               The "interface_ip"
-                               substitution field is resolved from the first IPv6 address set on the interface.
+                               under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                               resolved from the first
+                               IPv6 address set on the interface.
+                               Token "interface_ip" is also accepted but deprecated and will be
+                               removed in AVD 7.0.0.
                             static_routes:
                                Static routes to be configured on the device where this Port-channel interface is configured.
                                Subclass of AvdList with `StaticRoutesItem` items.
@@ -35691,6 +36003,7 @@ class EosDesigns(EosDesignsRootModel):
                     "weight": {"type": int},
                     "bfd": {"type": bool},
                     "bfd_timers": {"type": EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers},
+                    "route_reflector_client": {"type": bool},
                     "shutdown": {"type": bool},
                 }
                 ip_address: str
@@ -35780,6 +36093,8 @@ class EosDesigns(EosDesignsRootModel):
                 bfd: bool | None
                 bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers
                 """Override default BFD timers. BFD must be enabled with `bfd: true`."""
+                route_reflector_client: bool | None
+                """Configure the peer as a route-reflector-client."""
                 shutdown: bool | None
 
                 if TYPE_CHECKING:
@@ -35812,6 +36127,7 @@ class EosDesigns(EosDesignsRootModel):
                         weight: int | None | UndefinedType = Undefined,
                         bfd: bool | None | UndefinedType = Undefined,
                         bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers | UndefinedType = Undefined,
+                        route_reflector_client: bool | None | UndefinedType = Undefined,
                         shutdown: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -35880,6 +36196,7 @@ class EosDesigns(EosDesignsRootModel):
                             weight: weight
                             bfd: bfd
                             bfd_timers: Override default BFD timers. BFD must be enabled with `bfd: true`.
+                            route_reflector_client: Configure the peer as a route-reflector-client.
                             shutdown: shutdown
 
                         """
@@ -53760,10 +54077,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -53812,10 +54134,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -54977,9 +55304,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -55075,6 +55405,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -55097,6 +55432,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -55173,9 +55526,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -55246,6 +55602,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -55263,6 +55622,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -55669,9 +56042,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -55764,6 +56140,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -55786,6 +56167,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -55847,9 +56246,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -55917,6 +56319,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -55934,6 +56339,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -56182,7 +56601,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -56213,7 +56638,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -56757,6 +57187,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -57700,6 +58133,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -59046,10 +59482,15 @@ class EosDesigns(EosDesignsRootModel):
                             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                             If the
                             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                            Hostnames
+                            configured here cannot also be configured under `evpn_route_servers` on the same node.
+                            If a remote
+                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                            peering.
 
 
-                            Subclass
-                            of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                            (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -59098,10 +59539,15 @@ class EosDesigns(EosDesignsRootModel):
                                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                            If the
                                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                           Hostnames
+                                           configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                           If a remote
+                                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                           peering.
 
 
-                                           Subclass
-                                           of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                           (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -60274,9 +60720,12 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "peer_ip": {"type": str},
+                                "peer_ipv6": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv6_acl_in": {"type": str},
+                                "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
                                 "qos_profile": {"type": str},
                                 "wan_carrier": {"type": str},
@@ -60372,6 +60821,11 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
+                            peer_ipv6: str | None
+                            """
+                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                            "peer_ipv6" token.
+                            """
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -60394,6 +60848,24 @@ class EosDesigns(EosDesignsRootModel):
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
+                            ipv6_acl_in: str | None
+                            """
+                            Name of the IPv6 access-list to be assigned in the ingress direction.
+                            The access-list must be
+                            defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                            first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                            Token "interface_ip"
+                            is also accepted but deprecated and will be removed in AVD 7.0.0.
+                            """
+                            ipv6_acl_out: str | None
+                            """
+                            Name of the IPv6 Access-list to be assigned in the egress direction.
+                            The access-list must be defined
+                            under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                            entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                            Token "interface_ip" is also
+                            accepted but deprecated and will be removed in AVD 7.0.0.
                             """
                             static_routes: StaticRoutes
                             """
@@ -60470,9 +60942,12 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
+                                    peer_ipv6: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     qos_profile: str | None | UndefinedType = Undefined,
                                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -60543,6 +61018,9 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
+                                        peer_ipv6:
+                                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                           "peer_ipv6" token.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -60560,6 +61038,20 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_in:
+                                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                                           The access-list must be
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                           first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                           Token "interface_ip"
+                                           is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                        ipv6_acl_out:
+                                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                                           The access-list must be defined
+                                           under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                           entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                           Token "interface_ip" is also
+                                           accepted but deprecated and will be removed in AVD 7.0.0.
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -60972,9 +61464,12 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_port_channel": {"type": str},
                                 "peer_ip": {"type": str},
+                                "peer_ipv6": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv6_acl_in": {"type": str},
+                                "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
                                 "qos_profile": {"type": str},
                                 "wan_carrier": {"type": str},
@@ -61067,6 +61562,11 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
+                            peer_ipv6: str | None
+                            """
+                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                            "peer_ipv6" token.
+                            """
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -61089,6 +61589,24 @@ class EosDesigns(EosDesignsRootModel):
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
+                            ipv6_acl_in: str | None
+                            """
+                            Name of the IPv6 access-list to be assigned in the ingress direction.
+                            The access-list must be
+                            defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                            first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                            Token "interface_ip"
+                            is also accepted but deprecated and will be removed in AVD 7.0.0.
+                            """
+                            ipv6_acl_out: str | None
+                            """
+                            Name of the IPv6 Access-list to be assigned in the egress direction.
+                            The access-list must be defined
+                            under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                            entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                            Token "interface_ip" is also
+                            accepted but deprecated and will be removed in AVD 7.0.0.
                             """
                             static_routes: StaticRoutes
                             """
@@ -61150,9 +61668,12 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_port_channel: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
+                                    peer_ipv6: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     qos_profile: str | None | UndefinedType = Undefined,
                                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -61220,6 +61741,9 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
+                                        peer_ipv6:
+                                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                           "peer_ipv6" token.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -61237,6 +61761,20 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_in:
+                                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                                           The access-list must be
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                           first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                           Token "interface_ip"
+                                           is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                        ipv6_acl_out:
+                                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                                           The access-list must be defined
+                                           under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                           entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                           Token "interface_ip" is also
+                                           accepted but deprecated and will be removed in AVD 7.0.0.
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -61485,7 +62023,13 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides global `digital_twin.fabric.act_os_version` flag.
                             """
                             mgmt_ip: str | None
-                            """Desired management interface IPv4 address."""
+                            """
+                            Desired management interface IPv4 address for the Digital Twin.
+                            In ACT Digital Twin mode, this
+                            address is used in the ACT topology.
+                            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                            address is also used for the generated OOB management interface.
+                            """
                             act_internet_access: bool | None
                             """
                             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -61516,7 +62060,12 @@ class EosDesigns(EosDesignsRootModel):
                                         act_os_version:
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                                        mgmt_ip: Desired management interface IPv4 address.
+                                        mgmt_ip:
+                                           Desired management interface IPv4 address for the Digital Twin.
+                                           In ACT Digital Twin mode, this
+                                           address is used in the ACT topology.
+                                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                           address is also used for the generated OOB management interface.
                                         act_internet_access:
                                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                            This option
@@ -62072,6 +62621,9 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_route_servers: EvpnRouteServers
                         """
                         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                        Hostnames configured here cannot also
+                        be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                         Subclass of AvdList with `str`
                         items.
@@ -63024,6 +63576,9 @@ class EosDesigns(EosDesignsRootModel):
                                        Default is set in node_type definition from node_type_keys.
                                     evpn_route_servers:
                                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                       Hostnames configured here cannot also
+                                       be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                        Subclass of AvdList with `str`
                                        items.
@@ -64295,10 +64850,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -64347,10 +64907,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -65512,9 +66077,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -65610,6 +66178,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -65632,6 +66205,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -65708,9 +66299,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -65781,6 +66375,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -65798,6 +66395,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -66204,9 +66815,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -66299,6 +66913,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -66321,6 +66940,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -66382,9 +67019,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -66452,6 +67092,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -66469,6 +67112,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -66717,7 +67374,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -66748,7 +67411,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -67307,6 +67975,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -68261,6 +68932,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -69607,10 +70281,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -69659,10 +70338,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -70824,9 +71508,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -70922,6 +71609,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -70944,6 +71636,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -71020,9 +71730,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -71093,6 +71806,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -71110,6 +71826,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -71516,9 +72246,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -71611,6 +72344,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -71633,6 +72371,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -71694,9 +72450,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -71764,6 +72523,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -71781,6 +72543,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -72029,7 +72805,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -72060,7 +72842,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -72616,6 +73403,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -73568,6 +74358,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -83796,17 +84589,21 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                        The "interface_ip"
-                        substitution field is resolved from the IPv6 address set on the interface for this node.
+                        defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the
+                        IPv6 address set on the interface for this node.
+                        Deprecated token "interface_ip" is also accepted as
+                        an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports substitution of the field "interface_ip".
-                        The "interface_ip"
-                        substitution field is resolved from the IPv6 address set on the interface for this node.
+                        under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the IPv6
+                        address set on the interface for this node.
+                        Deprecated token "interface_ip" is also accepted as an
+                        alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                         """
                         ospf: Ospf
                         """
@@ -83937,15 +84734,19 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                                       The "interface_ip"
-                                       substitution field is resolved from the IPv6 address set on the interface for this node.
+                                       defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                       resolved from the
+                                       IPv6 address set on the interface for this node.
+                                       Deprecated token "interface_ip" is also accepted as
+                                       an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                                     ipv6_acl_out:
                                        Name of the IPv6 access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports substitution of the field "interface_ip".
-                                       The "interface_ip"
-                                       substitution field is resolved from the IPv6 address set on the interface for this node.
+                                       under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                       resolved from the IPv6
+                                       address set on the interface for this node.
+                                       Deprecated token "interface_ip" is also accepted as an
+                                       alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                                     ospf:
                                        OSPF interface configuration.
 
@@ -84564,17 +85365,21 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                        The "interface_ip"
-                        substitution field is resolved from the first IPv6 address set on the interface.
+                        defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the
+                        first IPv6 address set on the interface.
+                        Token "interface_ip" is also accepted but deprecated and
+                        will be removed in AVD 7.0.0.
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports substitution of the field "interface_ip".
-                        The "interface_ip"
-                        substitution field is resolved from the first IPv6 address set on the interface.
+                        under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the first
+                        IPv6 address set on the interface.
+                        Token "interface_ip" is also accepted but deprecated and will be
+                        removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -84683,15 +85488,19 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                                       The "interface_ip"
-                                       substitution field is resolved from the first IPv6 address set on the interface.
+                                       defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                       resolved from the
+                                       first IPv6 address set on the interface.
+                                       Token "interface_ip" is also accepted but deprecated and
+                                       will be removed in AVD 7.0.0.
                                     ipv6_acl_out:
                                        Name of the IPv6 access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports substitution of the field "interface_ip".
-                                       The "interface_ip"
-                                       substitution field is resolved from the first IPv6 address set on the interface.
+                                       under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                       resolved from the first
+                                       IPv6 address set on the interface.
+                                       Token "interface_ip" is also accepted but deprecated and will be
+                                       removed in AVD 7.0.0.
                                     static_routes:
                                        Static routes to be configured on the device where this Port-channel interface is configured.
                                        Subclass of AvdList with `StaticRoutesItem` items.
@@ -85074,6 +85883,7 @@ class EosDesigns(EosDesignsRootModel):
                             "weight": {"type": int},
                             "bfd": {"type": bool},
                             "bfd_timers": {"type": EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers},
+                            "route_reflector_client": {"type": bool},
                             "shutdown": {"type": bool},
                         }
                         ip_address: str
@@ -85163,6 +85973,8 @@ class EosDesigns(EosDesignsRootModel):
                         bfd: bool | None
                         bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers
                         """Override default BFD timers. BFD must be enabled with `bfd: true`."""
+                        route_reflector_client: bool | None
+                        """Configure the peer as a route-reflector-client."""
                         shutdown: bool | None
 
                         if TYPE_CHECKING:
@@ -85195,6 +86007,7 @@ class EosDesigns(EosDesignsRootModel):
                                 weight: int | None | UndefinedType = Undefined,
                                 bfd: bool | None | UndefinedType = Undefined,
                                 bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers | UndefinedType = Undefined,
+                                route_reflector_client: bool | None | UndefinedType = Undefined,
                                 shutdown: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -85263,6 +86076,7 @@ class EosDesigns(EosDesignsRootModel):
                                     weight: weight
                                     bfd: bfd
                                     bfd_timers: Override default BFD timers. BFD must be enabled with `bfd: true`.
+                                    route_reflector_client: Configure the peer as a route-reflector-client.
                                     shutdown: shutdown
 
                                 """
@@ -89302,10 +90116,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -89354,10 +90173,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -90519,9 +91343,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -90617,6 +91444,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -90639,6 +91471,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -90715,9 +91565,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -90788,6 +91641,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -90805,6 +91661,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -91211,9 +92081,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -91306,6 +92179,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -91328,6 +92206,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -91389,9 +92285,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -91459,6 +92358,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -91476,6 +92378,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -91724,7 +92640,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -91755,7 +92677,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -92299,6 +93226,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -93242,6 +94172,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -94588,10 +95521,15 @@ class EosDesigns(EosDesignsRootModel):
                             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                             If the
                             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                            Hostnames
+                            configured here cannot also be configured under `evpn_route_servers` on the same node.
+                            If a remote
+                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                            peering.
 
 
-                            Subclass
-                            of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                            (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -94640,10 +95578,15 @@ class EosDesigns(EosDesignsRootModel):
                                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                            If the
                                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                           Hostnames
+                                           configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                           If a remote
+                                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                           peering.
 
 
-                                           Subclass
-                                           of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                           (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -95816,9 +96759,12 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "peer_ip": {"type": str},
+                                "peer_ipv6": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv6_acl_in": {"type": str},
+                                "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
                                 "qos_profile": {"type": str},
                                 "wan_carrier": {"type": str},
@@ -95914,6 +96860,11 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
+                            peer_ipv6: str | None
+                            """
+                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                            "peer_ipv6" token.
+                            """
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -95936,6 +96887,24 @@ class EosDesigns(EosDesignsRootModel):
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
+                            ipv6_acl_in: str | None
+                            """
+                            Name of the IPv6 access-list to be assigned in the ingress direction.
+                            The access-list must be
+                            defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                            first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                            Token "interface_ip"
+                            is also accepted but deprecated and will be removed in AVD 7.0.0.
+                            """
+                            ipv6_acl_out: str | None
+                            """
+                            Name of the IPv6 Access-list to be assigned in the egress direction.
+                            The access-list must be defined
+                            under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                            entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                            Token "interface_ip" is also
+                            accepted but deprecated and will be removed in AVD 7.0.0.
                             """
                             static_routes: StaticRoutes
                             """
@@ -96012,9 +96981,12 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
+                                    peer_ipv6: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     qos_profile: str | None | UndefinedType = Undefined,
                                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -96085,6 +97057,9 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
+                                        peer_ipv6:
+                                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                           "peer_ipv6" token.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -96102,6 +97077,20 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_in:
+                                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                                           The access-list must be
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                           first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                           Token "interface_ip"
+                                           is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                        ipv6_acl_out:
+                                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                                           The access-list must be defined
+                                           under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                           entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                           Token "interface_ip" is also
+                                           accepted but deprecated and will be removed in AVD 7.0.0.
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -96514,9 +97503,12 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_port_channel": {"type": str},
                                 "peer_ip": {"type": str},
+                                "peer_ipv6": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv6_acl_in": {"type": str},
+                                "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
                                 "qos_profile": {"type": str},
                                 "wan_carrier": {"type": str},
@@ -96609,6 +97601,11 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
+                            peer_ipv6: str | None
+                            """
+                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                            "peer_ipv6" token.
+                            """
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -96631,6 +97628,24 @@ class EosDesigns(EosDesignsRootModel):
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
+                            ipv6_acl_in: str | None
+                            """
+                            Name of the IPv6 access-list to be assigned in the ingress direction.
+                            The access-list must be
+                            defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                            first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                            Token "interface_ip"
+                            is also accepted but deprecated and will be removed in AVD 7.0.0.
+                            """
+                            ipv6_acl_out: str | None
+                            """
+                            Name of the IPv6 Access-list to be assigned in the egress direction.
+                            The access-list must be defined
+                            under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                            entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                            Token "interface_ip" is also
+                            accepted but deprecated and will be removed in AVD 7.0.0.
                             """
                             static_routes: StaticRoutes
                             """
@@ -96692,9 +97707,12 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_port_channel: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
+                                    peer_ipv6: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     qos_profile: str | None | UndefinedType = Undefined,
                                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -96762,6 +97780,9 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
+                                        peer_ipv6:
+                                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                           "peer_ipv6" token.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -96779,6 +97800,20 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_in:
+                                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                                           The access-list must be
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                           first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                           Token "interface_ip"
+                                           is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                        ipv6_acl_out:
+                                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                                           The access-list must be defined
+                                           under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                           entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                           Token "interface_ip" is also
+                                           accepted but deprecated and will be removed in AVD 7.0.0.
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -97027,7 +98062,13 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides global `digital_twin.fabric.act_os_version` flag.
                             """
                             mgmt_ip: str | None
-                            """Desired management interface IPv4 address."""
+                            """
+                            Desired management interface IPv4 address for the Digital Twin.
+                            In ACT Digital Twin mode, this
+                            address is used in the ACT topology.
+                            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                            address is also used for the generated OOB management interface.
+                            """
                             act_internet_access: bool | None
                             """
                             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -97058,7 +98099,12 @@ class EosDesigns(EosDesignsRootModel):
                                         act_os_version:
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                                        mgmt_ip: Desired management interface IPv4 address.
+                                        mgmt_ip:
+                                           Desired management interface IPv4 address for the Digital Twin.
+                                           In ACT Digital Twin mode, this
+                                           address is used in the ACT topology.
+                                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                           address is also used for the generated OOB management interface.
                                         act_internet_access:
                                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                            This option
@@ -97614,6 +98660,9 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_route_servers: EvpnRouteServers
                         """
                         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                        Hostnames configured here cannot also
+                        be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                         Subclass of AvdList with `str`
                         items.
@@ -98566,6 +99615,9 @@ class EosDesigns(EosDesignsRootModel):
                                        Default is set in node_type definition from node_type_keys.
                                     evpn_route_servers:
                                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                       Hostnames configured here cannot also
+                                       be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                        Subclass of AvdList with `str`
                                        items.
@@ -99837,10 +100889,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -99889,10 +100946,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -101054,9 +102116,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -101152,6 +102217,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -101174,6 +102244,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -101250,9 +102338,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -101323,6 +102414,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -101340,6 +102434,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -101746,9 +102854,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -101841,6 +102952,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -101863,6 +102979,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -101924,9 +103058,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -101994,6 +103131,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -102011,6 +103151,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -102259,7 +103413,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -102290,7 +103450,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -102849,6 +104014,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -103803,6 +104971,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -105149,10 +106320,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -105201,10 +106377,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -106366,9 +107547,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -106464,6 +107648,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -106486,6 +107675,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -106562,9 +107769,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -106635,6 +107845,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -106652,6 +107865,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -107058,9 +108285,12 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -107153,6 +108383,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -107175,6 +108410,24 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                        first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                        entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip" is also
+                        accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -107236,9 +108489,12 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -107306,6 +108562,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -107323,6 +108582,20 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the
+                                       first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first
+                                       entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip" is also
+                                       accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -107571,7 +108844,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -107602,7 +108881,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -108158,6 +109442,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -109110,6 +110397,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -111860,22 +113150,40 @@ class EosDesigns(EosDesignsRootModel):
     """
     IPv6 extended access-lists supporting substitution on certain fields.
     These access-lists can be
-    referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be
-    configured on devices where they are in use.
+    referenced using `ipv6_acl_in` / `ipv6_acl_out` under network services `svis`, or under node type
+    `l3_interfaces` and `l3_port_channels`,
+    and will only be configured on devices where they are in
+    use.
 
-    The substitution is useful when assigning the same
-    access-list on multiple interfaces where certain fields require unique values.
-    When using
-    substitution, the interface name will be appended to the ACL name.
+    The substitution is useful when assigning the same access-list on multiple interfaces where
+    certain fields require unique values.
+    When using substitution, the interface name will be appended
+    to the ACL name.
 
-    The "interface_ip" substitution
-    field is resolved from `ipv6_address` set on the SVI.
-    If `ipv6_address` is not set, the first entry
-    of `ipv6_address_virtuals` is used as a fallback.
-    If neither is set, the substitution will fail with
-    an error.
+    The "interface_ipv6" substitution field is resolved per interface type:
+    - For
+    SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used
+    as a fallback.
+    - For L3 interfaces and L3 port-channels: resolved from the first entry of
+    `ipv6_addresses`.
+    If the required field is not set, the substitution will fail with an error.
 
-    Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+    The
+    "peer_ipv6" substitution field is resolved per interface type:
+    - For SVIs: not supported.
+    Substitution will fail with an error if used.
+    - For network services L3 interfaces and L3 port-
+    channels: not supported. Substitution will fail with an error if used.
+    - For node type L3 interfaces
+    and L3 port-channels: resolved from `peer_ipv6`.
+    If `peer_ipv6` is not set on the interface, the
+    substitution will fail with an error.
+
+    Note: The "interface_ip" token is deprecated and will be
+    removed in AVD 7.0.0. Use "interface_ipv6" instead.
+
+    Subclass of AvdIndexedList with `Ipv6AclsItem`
+    items. Primary key is `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
@@ -113973,22 +115281,40 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
-                   referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be
-                   configured on devices where they are in use.
+                   referenced using `ipv6_acl_in` / `ipv6_acl_out` under network services `svis`, or under node type
+                   `l3_interfaces` and `l3_port_channels`,
+                   and will only be configured on devices where they are in
+                   use.
 
-                   The substitution is useful when assigning the same
-                   access-list on multiple interfaces where certain fields require unique values.
-                   When using
-                   substitution, the interface name will be appended to the ACL name.
+                   The substitution is useful when assigning the same access-list on multiple interfaces where
+                   certain fields require unique values.
+                   When using substitution, the interface name will be appended
+                   to the ACL name.
 
-                   The "interface_ip" substitution
-                   field is resolved from `ipv6_address` set on the SVI.
-                   If `ipv6_address` is not set, the first entry
-                   of `ipv6_address_virtuals` is used as a fallback.
-                   If neither is set, the substitution will fail with
-                   an error.
+                   The "interface_ipv6" substitution field is resolved per interface type:
+                   - For
+                   SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used
+                   as a fallback.
+                   - For L3 interfaces and L3 port-channels: resolved from the first entry of
+                   `ipv6_addresses`.
+                   If the required field is not set, the substitution will fail with an error.
 
-                   Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+                   The
+                   "peer_ipv6" substitution field is resolved per interface type:
+                   - For SVIs: not supported.
+                   Substitution will fail with an error if used.
+                   - For network services L3 interfaces and L3 port-
+                   channels: not supported. Substitution will fail with an error if used.
+                   - For node type L3 interfaces
+                   and L3 port-channels: resolved from `peer_ipv6`.
+                   If `peer_ipv6` is not set on the interface, the
+                   substitution will fail with an error.
+
+                   Note: The "interface_ip" token is deprecated and will be
+                   removed in AVD 7.0.0. Use "interface_ipv6" instead.
+
+                   Subclass of AvdIndexedList with `Ipv6AclsItem`
+                   items. Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.

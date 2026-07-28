@@ -5,14 +5,16 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
     from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 
 from .compile_searchpath import compile_searchpath
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
     from pyavd._utils import AVDTemplar
 else:
     try:

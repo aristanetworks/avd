@@ -48,7 +48,7 @@ class MgmtMixin(Protocol):
         )
 
         # Adjust OOB management interface for ACT Digital Twin "veos" and "cloudeos" node types
-        if self.digital_twin and self.inputs.digital_twin.environment == "act" and self.platform_settings.digital_twin.act_node_type in ["veos", "cloudeos"]:
+        if self.is_act_digital_twin and self.platform_settings.digital_twin.act_node_type in ["veos", "cloudeos"]:
             act_mgmt_interface = "Management1"
             if mgmt_interface != act_mgmt_interface:
                 LOGGER.info(
@@ -74,6 +74,18 @@ class MgmtMixin(Protocol):
         return self.inputs.mgmt_interface_vrf
 
     @cached_property
+    def oob_mgmt_ip(self: SharedUtilsProtocol) -> str | None:
+        """
+        Management IPv4 address used for the generated OOB management interface.
+
+        In ACT Digital Twin mode, `digital_twin.mgmt_ip` takes precedence over the regular node `mgmt_ip`.
+        """
+        if self.is_act_digital_twin and self.node_config.mgmt_ip is not None:
+            return default(self.node_config.digital_twin.mgmt_ip, self.node_config.mgmt_ip)
+
+        return self.node_config.mgmt_ip
+
+    @cached_property
     def mgmt_vrf_routing(self: SharedUtilsProtocol) -> bool:
         if self.inputs.mgmt_interface_settings._get_defined_attr("vrf_routing"):
             return self.inputs.mgmt_interface_settings.vrf_routing
@@ -96,7 +108,7 @@ class MgmtMixin(Protocol):
         """
         default_mgmt_method = self.inputs.default_mgmt_method
         if default_mgmt_method == "oob":
-            if self.node_config.mgmt_ip is None and self.node_config.ipv6_mgmt_ip is None:
+            if self.oob_mgmt_ip is None and self.node_config.ipv6_mgmt_ip is None:
                 msg = "'default_mgmt_method: oob' requires either 'mgmt_ip' or 'ipv6_mgmt_ip' to be set."
                 raise AristaAvdInvalidInputsError(msg)
 
