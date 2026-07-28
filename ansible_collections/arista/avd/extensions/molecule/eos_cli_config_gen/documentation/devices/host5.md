@@ -97,8 +97,8 @@ ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
 ```eos
 !
 ipv6 unicast-routing
-ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 ipv6 hardware fib optimize prefixes profile internet
+ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 ```
 
 ### Router BGP

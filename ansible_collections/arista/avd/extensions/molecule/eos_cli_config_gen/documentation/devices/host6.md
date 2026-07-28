@@ -179,6 +179,13 @@ ip routing ipv6 interfaces vrf TENANT_B
 | TENANT_B | false |
 | TENANT_C | true |
 
+#### IPv6 Routing Device Configuration
+
+```eos
+!
+ipv6 unicast-routing vrf TENANT_C
+```
+
 ### Router BGP
 
 ASN Notation: asplain
