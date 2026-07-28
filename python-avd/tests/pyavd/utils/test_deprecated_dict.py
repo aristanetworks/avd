@@ -14,5 +14,5 @@ def test_get_emits_deprecation_once_and_returns_value() -> None:
     assert deprecated_dict.get("interface") == "Ethernet1"
     assert deprecated_dict.get("missing", "fallback") == "fallback"
 
-    with pytest.warns(DeprecationWarning, msg="deprecated"):
-        deprecated_dict.get("interface")
+    with pytest.warns(DeprecationWarning, match="deprecated"):
+        interface =deprecated_dict.get("interface")
