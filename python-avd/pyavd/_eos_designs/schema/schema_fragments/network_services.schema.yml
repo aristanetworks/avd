@@ -675,7 +675,7 @@ keys:
                   Router OSPF configuration.
                   This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be
                   created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless
-                  explicitly turned off with "redistribute_ospf: false".
+                  explicitly turned off with "redistribute_ospf: false" or "redistribute_ospf_settings.enabled: false".
                 keys:
                   enabled:
                     type: bool
@@ -783,7 +783,35 @@ keys:
                   table: network-services-vrfs-ospf-settings
                 type: bool
                 default: true
-                description: Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                description: |-
+                  Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                  Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.
+              redistribute_ospf_settings:
+                documentation_options:
+                  table: network-services-vrfs-ospf-settings
+                type: dict
+                description: |-
+                  Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.
+                  When `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`.
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                    description: Enable or disable redistribution of OSPF routes into BGP.
+                  route_map:
+                    type: str
+                    description: Route-map name to apply to redistributed OSPF routes.
+                  match:
+                    type: str
+                    valid_values:
+                      - internal
+                      - external
+                      - nssa-external
+                    description: |-
+                      Redistribute only OSPF routes of the specified type.
+                      - "internal": Redistribute OSPF internal routes.
+                      - "external": Redistribute OSPF external routes.
+                      - "nssa-external": Redistribute OSPF NSSA external routes.
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
