@@ -56,8 +56,8 @@ class EosDesignsFactsProtocol(Protocol):
             def __init__(
                 self,
                 *,
-                ipv4_pool: str | None | UndefinedType = Undefined,
-                ipv6_pool: str | None | UndefinedType = Undefined,
+                ipv4_pool: str | UndefinedType | None = Undefined,
+                ipv6_pool: str | UndefinedType | None = Undefined,
                 downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -104,7 +104,7 @@ class EosDesignsFactsProtocol(Protocol):
         if TYPE_CHECKING:
 
             def __init__(
-                self, *, key: str | UndefinedType = Undefined, type: str | None | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined
+                self, *, key: str | UndefinedType = Undefined, type: str | UndefinedType | None = Undefined, description: str | UndefinedType | None = Undefined
             ) -> None:
                 """
                 ConnectedEndpointsKeysItem.
@@ -135,7 +135,7 @@ class EosDesignsFactsProtocol(Protocol):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, profile: str | UndefinedType = Undefined, parent_profile: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, profile: str | UndefinedType = Undefined, parent_profile: str | UndefinedType | None = Undefined) -> None:
                 """
                 PortProfileNamesItem.
 
@@ -212,8 +212,8 @@ class EosDesignsFactsProtocol(Protocol):
                     port_channel_id: int | UndefinedType = Undefined,
                     mlag_ip: str | UndefinedType = Undefined,
                     mlag_l3_enabled: bool | UndefinedType = Undefined,
-                    mlag_l3_vlan: int | None | UndefinedType = Undefined,
-                    mlag_l3_ip: str | None | UndefinedType = Undefined,
+                    mlag_l3_vlan: int | UndefinedType | None = Undefined,
+                    mlag_l3_ip: str | UndefinedType | None = Undefined,
                     underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -310,12 +310,12 @@ class EosDesignsFactsProtocol(Protocol):
                     mlag_ip: str | UndefinedType = Undefined,
                     port_channel_id: int | UndefinedType = Undefined,
                     mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                    mgmt_ip: str | None | UndefinedType = Undefined,
-                    mlag_l3_ip: str | None | UndefinedType = Undefined,
-                    bgp_as: str | None | UndefinedType = Undefined,
+                    mgmt_ip: str | UndefinedType | None = Undefined,
+                    mlag_l3_ip: str | UndefinedType | None = Undefined,
+                    bgp_as: str | UndefinedType | None = Undefined,
                     inband_ztp: bool | UndefinedType = Undefined,
-                    inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
-                    inband_ztp_vlan: int | None | UndefinedType = Undefined,
+                    inband_ztp_lacp_fallback_delay: int | UndefinedType | None = Undefined,
+                    inband_ztp_vlan: int | UndefinedType | None = Undefined,
                     underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -387,7 +387,7 @@ class EosDesignsFactsProtocol(Protocol):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, peering_address: str | None | UndefinedType = Undefined, evpn_mpls: bool | UndefinedType = Undefined) -> None:
+            def __init__(self, *, peering_address: str | UndefinedType | None = Undefined, evpn_mpls: bool | UndefinedType = Undefined) -> None:
                 """
                 Overlay.
 
@@ -697,13 +697,13 @@ class EosDesignsFactsProtocol(Protocol):
                     peer_interface: str | UndefinedType = Undefined,
                     vrf: str | UndefinedType = Undefined,
                     encapsulation_dot1q_vlan: int | UndefinedType = Undefined,
-                    ipv6_enable: bool | None | UndefinedType = Undefined,
-                    prefix_length: int | None | UndefinedType = Undefined,
-                    ipv6_prefix_length: int | None | UndefinedType = Undefined,
-                    ip_address: str | None | UndefinedType = Undefined,
-                    ipv6_address: str | None | UndefinedType = Undefined,
-                    peer_ip_address: str | None | UndefinedType = Undefined,
-                    peer_ipv6_address: str | None | UndefinedType = Undefined,
+                    ipv6_enable: bool | UndefinedType | None = Undefined,
+                    prefix_length: int | UndefinedType | None = Undefined,
+                    ipv6_prefix_length: int | UndefinedType | None = Undefined,
+                    ip_address: str | UndefinedType | None = Undefined,
+                    ipv6_address: str | UndefinedType | None = Undefined,
+                    peer_ip_address: str | UndefinedType | None = Undefined,
+                    peer_ipv6_address: str | UndefinedType | None = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -851,39 +851,39 @@ class EosDesignsFactsProtocol(Protocol):
                 peer_interface: str | UndefinedType = Undefined,
                 peer_type: str | UndefinedType = Undefined,
                 peer_is_deployed: bool | UndefinedType = Undefined,
-                peer_bgp_as: str | None | UndefinedType = Undefined,
+                peer_bgp_as: str | UndefinedType | None = Undefined,
                 type: Type | UndefinedType = Undefined,
-                speed: Speed | None | UndefinedType = Undefined,
-                bfd: bool | None | UndefinedType = Undefined,
-                peer_speed: PeerSpeed | None | UndefinedType = Undefined,
+                speed: Speed | UndefinedType | None = Undefined,
+                bfd: bool | UndefinedType | None = Undefined,
+                peer_speed: PeerSpeed | UndefinedType | None = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 mac_security: MacSecurity | UndefinedType = Undefined,
-                underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
-                underlay_multicast_static: bool | None | UndefinedType = Undefined,
-                ipv6_enable: bool | None | UndefinedType = Undefined,
-                prefix_length: int | None | UndefinedType = Undefined,
-                ip_address: str | None | UndefinedType = Undefined,
-                peer_ip_address: str | None | UndefinedType = Undefined,
+                underlay_multicast_pim_sm: bool | UndefinedType | None = Undefined,
+                underlay_multicast_static: bool | UndefinedType | None = Undefined,
+                ipv6_enable: bool | UndefinedType | None = Undefined,
+                prefix_length: int | UndefinedType | None = Undefined,
+                ip_address: str | UndefinedType | None = Undefined,
+                peer_ip_address: str | UndefinedType | None = Undefined,
                 link_tracking_groups: LinkTrackingGroups | UndefinedType = Undefined,
-                peer_node_group: str | None | UndefinedType = Undefined,
-                node_group: str | None | UndefinedType = Undefined,
-                mlag: bool | None | UndefinedType = Undefined,
-                peer_mlag: bool | None | UndefinedType = Undefined,
-                channel_group_id: int | None | UndefinedType = Undefined,
-                peer_channel_group_id: int | None | UndefinedType = Undefined,
+                peer_node_group: str | UndefinedType | None = Undefined,
+                node_group: str | UndefinedType | None = Undefined,
+                mlag: bool | UndefinedType | None = Undefined,
+                peer_mlag: bool | UndefinedType | None = Undefined,
+                channel_group_id: int | UndefinedType | None = Undefined,
+                peer_channel_group_id: int | UndefinedType | None = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 peer_trunk_groups: PeerTrunkGroups | UndefinedType = Undefined,
-                vlans: str | None | UndefinedType = Undefined,
-                native_vlan: int | None | UndefinedType = Undefined,
-                short_esi: str | None | UndefinedType = Undefined,
-                peer_short_esi: str | None | UndefinedType = Undefined,
-                spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
-                peer_spanning_tree_portfast: PeerSpanningTreePortfast | None | UndefinedType = Undefined,
-                sflow_enabled: bool | None | UndefinedType = Undefined,
+                vlans: str | UndefinedType | None = Undefined,
+                native_vlan: int | UndefinedType | None = Undefined,
+                short_esi: str | UndefinedType | None = Undefined,
+                peer_short_esi: str | UndefinedType | None = Undefined,
+                spanning_tree_portfast: SpanningTreePortfast | UndefinedType | None = Undefined,
+                peer_spanning_tree_portfast: PeerSpanningTreePortfast | UndefinedType | None = Undefined,
+                sflow_enabled: bool | UndefinedType | None = Undefined,
                 flow_tracking: EosDesigns.FabricFlowTracking.Uplinks | UndefinedType = Undefined,
-                inband_ztp_vlan: int | None | UndefinedType = Undefined,
-                inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
-                dhcp_server: bool | None | UndefinedType = Undefined,
+                inband_ztp_vlan: int | UndefinedType | None = Undefined,
+                inband_ztp_lacp_fallback_delay: int | UndefinedType | None = Undefined,
+                dhcp_server: bool | UndefinedType | None = Undefined,
                 ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -994,9 +994,9 @@ class EosDesignsFactsProtocol(Protocol):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    public_ip: str | None | UndefinedType = Undefined,
+                    public_ip: str | UndefinedType | None = Undefined,
                     connected_to_pathfinder: bool | UndefinedType = Undefined,
-                    wan_circuit_id: str | None | UndefinedType = Undefined,
+                    wan_circuit_id: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     InterfacesItem.
@@ -1060,7 +1060,7 @@ class EosDesignsFactsProtocol(Protocol):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, remote: str | None | UndefinedType = Undefined, local: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, remote: str | UndefinedType | None = Undefined, local: str | UndefinedType | None = Undefined) -> None:
                     """
                     ImportPathGroupsItem.
 
@@ -1099,7 +1099,7 @@ class EosDesignsFactsProtocol(Protocol):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, interval: str | None | UndefinedType = Undefined, failure_threshold: int | UndefinedType = Undefined) -> None:
+                def __init__(self, *, interval: str | UndefinedType | None = Undefined, failure_threshold: int | UndefinedType = Undefined) -> None:
                     """
                     DpsKeepalive.
 
@@ -1189,7 +1189,7 @@ class EosDesignsFactsProtocol(Protocol):
                 name: str | UndefinedType = Undefined,
                 interfaces: Interfaces | UndefinedType = Undefined,
                 id: int | UndefinedType = Undefined,
-                description: str | None | UndefinedType = Undefined,
+                description: str | UndefinedType | None = Undefined,
                 ipsec: Ipsec | UndefinedType = Undefined,
                 import_path_groups: ImportPathGroups | UndefinedType = Undefined,
                 default_preference: str | UndefinedType = Undefined,
@@ -1489,55 +1489,55 @@ class EosDesignsFactsProtocol(Protocol):
         def __init__(
             self,
             *,
-            id: int | None | UndefinedType = Undefined,
+            id: int | UndefinedType | None = Undefined,
             type: str | UndefinedType = Undefined,
-            platform: str | None | UndefinedType = Undefined,
+            platform: str | UndefinedType | None = Undefined,
             is_deployed: bool | UndefinedType = Undefined,
-            serial_number: str | None | UndefinedType = Undefined,
-            mgmt_interface: str | None | UndefinedType = Undefined,
-            mgmt_ip: str | None | UndefinedType = Undefined,
+            serial_number: str | UndefinedType | None = Undefined,
+            mgmt_interface: str | UndefinedType | None = Undefined,
+            mgmt_ip: str | UndefinedType | None = Undefined,
             mpls_lsr: bool | UndefinedType = Undefined,
-            evpn_multicast: bool | None | UndefinedType = Undefined,
-            loopback_ipv4_pool: str | None | UndefinedType = Undefined,
-            loopback_ipv6_pool: str | None | UndefinedType = Undefined,
-            uplink_ipv4_pool: str | None | UndefinedType = Undefined,
-            uplink_ipv6_pool: str | None | UndefinedType = Undefined,
+            evpn_multicast: bool | UndefinedType | None = Undefined,
+            loopback_ipv4_pool: str | UndefinedType | None = Undefined,
+            loopback_ipv6_pool: str | UndefinedType | None = Undefined,
+            uplink_ipv4_pool: str | UndefinedType | None = Undefined,
+            uplink_ipv6_pool: str | UndefinedType | None = Undefined,
             downlink_pools: DownlinkPools | UndefinedType = Undefined,
-            bgp_as: str | None | UndefinedType = Undefined,
+            bgp_as: str | UndefinedType | None = Undefined,
             underlay_routing_protocol: str | UndefinedType = Undefined,
-            vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
-            inband_mgmt_subnet: str | None | UndefinedType = Undefined,
-            inband_mgmt_ipv6_subnet: str | None | UndefinedType = Undefined,
-            inband_mgmt_vlan: int | None | UndefinedType = Undefined,
+            vtep_loopback_ipv4_pool: str | UndefinedType | None = Undefined,
+            inband_mgmt_subnet: str | UndefinedType | None = Undefined,
+            inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+            inband_mgmt_vlan: int | UndefinedType | None = Undefined,
             inband_ztp: bool | UndefinedType = Undefined,
-            inband_ztp_vlan: int | None | UndefinedType = Undefined,
-            inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
-            dc_name: str | None | UndefinedType = Undefined,
-            group: str | None | UndefinedType = Undefined,
-            router_id: str | None | UndefinedType = Undefined,
-            inband_mgmt_ip: str | None | UndefinedType = Undefined,
-            inband_mgmt_interface: str | None | UndefinedType = Undefined,
+            inband_ztp_vlan: int | UndefinedType | None = Undefined,
+            inband_ztp_lacp_fallback_delay: int | UndefinedType | None = Undefined,
+            dc_name: str | UndefinedType | None = Undefined,
+            group: str | UndefinedType | None = Undefined,
+            router_id: str | UndefinedType | None = Undefined,
+            inband_mgmt_ip: str | UndefinedType | None = Undefined,
+            inband_mgmt_interface: str | UndefinedType | None = Undefined,
             pod: str | UndefinedType = Undefined,
             connected_endpoints_keys: ConnectedEndpointsKeys | UndefinedType = Undefined,
             port_profile_names: PortProfileNames | UndefinedType = Undefined,
             mlag: Mlag | UndefinedType = Undefined,
-            mlag_peer: str | None | UndefinedType = Undefined,
-            mlag_primary: bool | None | UndefinedType = Undefined,
-            mlag_peer_id: int | None | UndefinedType = Undefined,
-            evpn_role: str | None | UndefinedType = Undefined,
-            mpls_overlay_role: str | None | UndefinedType = Undefined,
+            mlag_peer: str | UndefinedType | None = Undefined,
+            mlag_primary: bool | UndefinedType | None = Undefined,
+            mlag_peer_id: int | UndefinedType | None = Undefined,
+            evpn_role: str | UndefinedType | None = Undefined,
+            mpls_overlay_role: str | UndefinedType | None = Undefined,
             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
             overlay: Overlay | UndefinedType = Undefined,
-            vtep_ip: str | None | UndefinedType = Undefined,
-            vtep_ipv6: str | None | UndefinedType = Undefined,
+            vtep_ip: str | UndefinedType | None = Undefined,
+            vtep_ipv6: str | UndefinedType | None = Undefined,
             max_parallel_uplinks: int | UndefinedType = Undefined,
             max_uplink_switches: int | UndefinedType = Undefined,
             uplinks: Uplinks | UndefinedType = Undefined,
             uplink_peers: UplinkPeers | UndefinedType = Undefined,
             uplink_switch_vrfs: UplinkSwitchVrfs | UndefinedType = Undefined,
             vlans: str | UndefinedType = Undefined,
-            endpoint_vlans: str | None | UndefinedType = Undefined,
+            endpoint_vlans: str | UndefinedType | None = Undefined,
             local_endpoint_trunk_groups: LocalEndpointTrunkGroups | UndefinedType = Undefined,
             endpoint_trunk_groups: EndpointTrunkGroups | UndefinedType = Undefined,
             wan_path_groups: WanPathGroups | UndefinedType = Undefined,
