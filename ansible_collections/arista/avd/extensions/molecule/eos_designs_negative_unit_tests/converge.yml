@@ -55,22 +55,13 @@
     - name: Run failure scenario Test
       ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
-- name: Converge Negative tests for 'eos_designs_facts' - FABRIC_EVPN_GATEWAY_REMOTE_PEERS_WITHOUT_EVPN
-  hosts: evpn-gateway-remote-peer-without-evpn
+- name: Converge Negative tests for 'eos_designs_structured_config' - FABRIC_EVPN_GATEWAY_REMOTE_PEERS_WITHOUT_EVPN
+  hosts: evpn-gateway-remote-peer-target
   gather_facts: false
   connection: local
   tasks:
     - name: Run failure scenario Test
-      block:
-        - name: Trigger Error
-          ansible.builtin.import_role:
-            name: arista.avd.eos_designs
-      rescue:
-        - name: Assert eos_designs failed with the expected error message
-          ansible.builtin.assert:
-            that:
-              - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-cv-topology-levels
   hosts: missing-cv-topology-levels
