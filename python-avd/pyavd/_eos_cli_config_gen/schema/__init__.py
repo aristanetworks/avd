@@ -6589,6 +6589,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "always_render_ip_routing_separator": {"type": bool, "default": False},
+            "render_combined_separator_for_ipv6_hardware_and_unicast_routing": {"type": bool, "default": False},
             "new_ip_radius_cli_order": {"type": bool, "default": False},
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
@@ -6602,6 +6603,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Always render a '!' before the '(no) ip routing' command section.
         Without
         this the '!' is missing when only configuring routing for VRFs.
+
+        Default value: `False`
+        """
+        render_combined_separator_for_ipv6_hardware_and_unicast_routing: bool
+        """
+        Available from AVD 6.4.0.
+        Render a single '!' separator for the combined IPv6 routing block when any
+        of these are rendered:
+        - 'ipv6 unicast-routing'
+        - 'ipv6 unicast-routing vrf <vrf_name>'
+        - 'ipv6
+        hardware fib optimize prefixes profile <profile_name>'
+        Also render the '!' separator before the VRF
+        IPv6 unicast-routing section even when 'ipv6 unicast-routing' and 'ipv6 hardware fib optimize
+        prefixes' are not present globally, as long as at least one VRF is configured for IPv6 routing.
+        When
+        'false', separators are handled by each individual section.
 
         Default value: `False`
         """
@@ -6674,6 +6692,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 always_render_ip_routing_separator: bool | UndefinedType = Undefined,
+                render_combined_separator_for_ipv6_hardware_and_unicast_routing: bool | UndefinedType = Undefined,
                 new_ip_radius_cli_order: bool | UndefinedType = Undefined,
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
@@ -6693,6 +6712,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Always render a '!' before the '(no) ip routing' command section.
                        Without
                        this the '!' is missing when only configuring routing for VRFs.
+                    render_combined_separator_for_ipv6_hardware_and_unicast_routing:
+                       Available from AVD 6.4.0.
+                       Render a single '!' separator for the combined IPv6 routing block when any
+                       of these are rendered:
+                       - 'ipv6 unicast-routing'
+                       - 'ipv6 unicast-routing vrf <vrf_name>'
+                       - 'ipv6
+                       hardware fib optimize prefixes profile <profile_name>'
+                       Also render the '!' separator before the VRF
+                       IPv6 unicast-routing section even when 'ipv6 unicast-routing' and 'ipv6 hardware fib optimize
+                       prefixes' are not present globally, as long as at least one VRF is configured for IPv6 routing.
+                       When
+                       'false', separators are handled by each individual section.
                     new_ip_radius_cli_order:
                        Available from AVD 6.1.0.
                        When `true`, renders the new EOS CLI order using `ip_radius`, sorted by
@@ -32847,9 +32879,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             source_address: str | None
             """
-            Source IPv4 address.
-            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
-            if both are set.
+            Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
             """
             maxpoll: int | None
             """Value of maxpoll between 3 - 17 (Logarithmic)."""
@@ -32889,9 +32920,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Source interface.
                            Mutually exclusive with 'source_address'. Takes precedence if both are set.
                         source_address:
-                           Source IPv4 address.
-                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
-                           if both are set.
+                           Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         preferred: preferred
@@ -67697,6 +67727,209 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class Schedule(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Config(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"max_concurrent_jobs": {"type": int}, "prepend_hostname_logfile": {"type": bool}}
+            max_concurrent_jobs: int | None
+            """Maximum number of concurrent scheduled jobs."""
+            prepend_hostname_logfile: bool | None
+            """Prepend hostname to the log file name."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, max_concurrent_jobs: int | None | UndefinedType = Undefined, prepend_hostname_logfile: bool | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    Config.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        max_concurrent_jobs: Maximum number of concurrent scheduled jobs.
+                        prepend_hostname_logfile: Prepend hostname to the log file name.
+
+                    """
+
+        class JobsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class At(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"time": {"type": str}, "date": {"type": str}, "once": {"type": bool}}
+                time: str
+                """Start time in HH:MM:SS format."""
+                date: str
+                """Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd."""
+                once: bool | None
+                """
+                Run the command a single time at the given time/date.
+                Mutually exclusive with `interval`. `once`
+                takes precedence if both are set.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, time: str | UndefinedType = Undefined, date: str | UndefinedType = Undefined, once: bool | None | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        At.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            time: Start time in HH:MM:SS format.
+                            date: Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd.
+                            once:
+                               Run the command a single time at the given time/date.
+                               Mutually exclusive with `interval`. `once`
+                               takes precedence if both are set.
+
+                        """
+
+            Compression: TypeAlias = Literal["gzip", "bzip2", "xz"]
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "interval": {"type": int},
+                "at": {"type": At},
+                "timeout": {"type": int},
+                "max_log_files": {"type": int},
+                "logging_verbose": {"type": bool},
+                "loglocation": {"type": str},
+                "max_total_size": {"type": str},
+                "compression": {"type": str},
+                "command": {"type": str},
+            }
+            name: str
+            """Schedule job name."""
+            interval: int | None
+            """
+            Interval in minutes. Used as the standalone interval when `at` is not set,
+            or as the recurring
+            interval when combined with `at` and `at.once` is not True.
+            """
+            at: At
+            """
+            Schedule job at a specific time on a specific date.
+
+            Subclass of AvdModel.
+            """
+            timeout: int | None
+            """Job timeout in minutes for CLI command execution. Must be less than the job interval."""
+            max_log_files: int
+            """Maximum number of log files to retain."""
+            logging_verbose: bool | None
+            """Enable verbose logging."""
+            loglocation: str | None
+            """Log file location path (e.g. flash:/schedule/logs)."""
+            max_total_size: str | None
+            """
+            Maximum total size of log files (e.g. 110m, 1g).
+            Supported suffixes: b (bytes, default), k
+            (kilobytes), m (megabytes), g (gigabytes).
+            """
+            compression: Compression | None
+            """Compression algorithm for log files."""
+            command: str
+            """EOS CLI command to execute."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
+                    at: At | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
+                    max_log_files: int | UndefinedType = Undefined,
+                    logging_verbose: bool | None | UndefinedType = Undefined,
+                    loglocation: str | None | UndefinedType = Undefined,
+                    max_total_size: str | None | UndefinedType = Undefined,
+                    compression: Compression | None | UndefinedType = Undefined,
+                    command: str | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    JobsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Schedule job name.
+                        interval:
+                           Interval in minutes. Used as the standalone interval when `at` is not set,
+                           or as the recurring
+                           interval when combined with `at` and `at.once` is not True.
+                        at:
+                           Schedule job at a specific time on a specific date.
+
+                           Subclass of AvdModel.
+                        timeout: Job timeout in minutes for CLI command execution. Must be less than the job interval.
+                        max_log_files: Maximum number of log files to retain.
+                        logging_verbose: Enable verbose logging.
+                        loglocation: Log file location path (e.g. flash:/schedule/logs).
+                        max_total_size:
+                           Maximum total size of log files (e.g. 110m, 1g).
+                           Supported suffixes: b (bytes, default), k
+                           (kilobytes), m (megabytes), g (gigabytes).
+                        compression: Compression algorithm for log files.
+                        command: EOS CLI command to execute.
+
+                    """
+
+        class Jobs(AvdIndexedList[str, JobsItem]):
+            """Subclass of AvdIndexedList with `JobsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Jobs._item_type = JobsItem
+
+        _fields: ClassVar[dict] = {"config": {"type": Config}, "jobs": {"type": Jobs}}
+        config: Config
+        """
+        Global schedule configuration.
+
+        Subclass of AvdModel.
+        """
+        jobs: Jobs
+        """
+        List of schedule jobs.
+
+        Subclass of AvdIndexedList with `JobsItem` items. Primary key is `name`
+        (`str`).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, config: Config | UndefinedType = Undefined, jobs: Jobs | UndefinedType = Undefined) -> None:
+                """
+                Schedule.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    config:
+                       Global schedule configuration.
+
+                       Subclass of AvdModel.
+                    jobs:
+                       List of schedule jobs.
+
+                       Subclass of AvdIndexedList with `JobsItem` items. Primary key is `name`
+                       (`str`).
+
+                """
+
     class ServiceRoutingConfigurationBgp(AvdModel):
         """Subclass of AvdModel."""
 
@@ -76402,6 +76635,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "router_segment_security": {"type": RouterSegmentSecurity},
         "router_service_insertion": {"type": RouterServiceInsertion},
         "router_traffic_engineering": {"type": RouterTrafficEngineering},
+        "schedule": {"type": Schedule},
         "service_routing_configuration_bgp": {"type": ServiceRoutingConfigurationBgp},
         "service_routing_protocols_model": {"type": str},
         "service_unsupported_transceiver": {"type": ServiceUnsupportedTransceiver},
@@ -77001,6 +77235,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     router_traffic_engineering: RouterTrafficEngineering
     """Subclass of AvdModel."""
+    schedule: Schedule
+    """
+    Configuration of EOS scheduled jobs.
+
+    Subclass of AvdModel.
+    """
     service_routing_configuration_bgp: ServiceRoutingConfigurationBgp
     """Subclass of AvdModel."""
     service_routing_protocols_model: ServiceRoutingProtocolsModel | None
@@ -77263,6 +77503,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_segment_security: RouterSegmentSecurity | UndefinedType = Undefined,
             router_service_insertion: RouterServiceInsertion | UndefinedType = Undefined,
             router_traffic_engineering: RouterTrafficEngineering | UndefinedType = Undefined,
+            schedule: Schedule | UndefinedType = Undefined,
             service_routing_configuration_bgp: ServiceRoutingConfigurationBgp | UndefinedType = Undefined,
             service_routing_protocols_model: ServiceRoutingProtocolsModel | None | UndefinedType = Undefined,
             service_unsupported_transceiver: ServiceUnsupportedTransceiver | UndefinedType = Undefined,
@@ -77652,6 +77893,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 router_traffic_engineering: Subclass of AvdModel.
+                schedule:
+                   Configuration of EOS scheduled jobs.
+
+                   Subclass of AvdModel.
                 service_routing_configuration_bgp: Subclass of AvdModel.
                 service_routing_protocols_model: service_routing_protocols_model
                 service_unsupported_transceiver: Subclass of AvdModel.

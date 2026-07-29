@@ -294,7 +294,7 @@ class UtilsMixin(Protocol):
 
         match vrf_input:
             case "use_mgmt_interface_vrf":
-                has_mgmt_ip = (self.node_config.mgmt_ip is not None) or (self.node_config.ipv6_mgmt_ip is not None)
+                has_mgmt_ip = (self.oob_mgmt_ip is not None) or (self.node_config.ipv6_mgmt_ip is not None)
                 if not has_mgmt_ip:
                     msg = f"'{context}' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
                     raise AristaAvdInvalidInputsError(msg)

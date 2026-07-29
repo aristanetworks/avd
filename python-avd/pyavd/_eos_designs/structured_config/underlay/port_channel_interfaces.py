@@ -168,15 +168,7 @@ class PortChannelInterfacesMixin(Protocol):
             self.structured_config.ipv6_unicast_routing = True
             interface.ipv6_addresses.extend(l3_port_channel.ipv6_addresses)
 
-        if l3_port_channel.ipv4_acl_in:
-            acl = self._get_acl_for_l3_generic_interface(l3_port_channel.ipv4_acl_in, l3_port_channel)
-            interface.access_group_in = acl.name
-            self._set_ipv4_acl(acl)
-
-        if l3_port_channel.ipv4_acl_out:
-            acl = self._get_acl_for_l3_generic_interface(l3_port_channel.ipv4_acl_out, l3_port_channel)
-            interface.access_group_out = acl.name
-            self._set_ipv4_acl(acl)
+        self.set_acls(l3_port_channel, interface)
 
         if l3_port_channel.structured_config:
             self.custom_structured_configs.nested.port_channel_interfaces.obtain(l3_port_channel.name)._deepmerge(
