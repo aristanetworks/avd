@@ -40,7 +40,6 @@ def _run_full_happy_path(module: ActionModule, task_args: dict) -> dict:
         patch.object(ActionModule, "load_facts", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.get_structured_config", create=True, return_value=_structured_config_stub()),
         patch(f"{MODULE_PATH}.write_file", return_value=True),
-        patch(f"{MODULE_PATH}.AvdSchema"),
         patch(f"{MODULE_PATH}.templater", return_value="extra: value\n"),
         patch(f"{MODULE_PATH}.merge"),
     ):
@@ -107,6 +106,34 @@ def test_run_emits_no_warnings_baseline(action_module: Callable[..., ActionModul
 
     formatted = [f"{w.category.__name__}: {w.message} ({w.filename}:{w.lineno})" for w in recorded]
     assert formatted == [], f"Unexpected warnings emitted by run(): {formatted}"
+
+
+def test_run_merges_custom_template_output_with_eos_config_schema_name(action_module: Callable[..., ActionModule]) -> None:
+    """Custom-template output is merged using the EOS Config schema name."""
+    module = action_module(
+        ActionModule,
+        {
+            "tmp_dir": MOCK_TMP_DIR,
+            "eos_designs_custom_templates": [{"template": "custom.j2"}],
+        },
+        ansible_name="arista.avd.eos_designs_structured_config",
+    )
+    merge_mock = MagicMock()
+
+    with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch(f"{MODULE_PATH}.get_templar", return_value=MagicMock()),
+        patch.object(ActionModule, "load_validated_inputs", return_value=(MagicMock(), {})),
+        patch.object(ActionModule, "load_facts", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.get_structured_config", create=True, return_value=_structured_config_stub()),
+        patch(f"{MODULE_PATH}.templater", return_value="extra: value\n"),
+        patch(f"{MODULE_PATH}.strip_null_from_data", side_effect=lambda d: d),
+        patch(f"{MODULE_PATH}.merge", merge_mock),
+    ):
+        module.run(task_vars={"inventory_hostname": MOCK_HOSTNAME})
+
+    merge_mock.assert_called_once_with({"hostname": MOCK_HOSTNAME}, {"extra": "value"}, list_merge="append_rp", schema_name="eos_config")
 
 
 # ---------------------------------------------------------------------------
@@ -198,7 +225,6 @@ def test_run_wraps_custom_template_merge_exception(action_module: Callable[..., 
         patch.object(ActionModule, "load_validated_inputs", return_value=(MagicMock(), {})),
         patch.object(ActionModule, "load_facts", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.get_structured_config", create=True, return_value=_structured_config_stub()),
-        patch(f"{MODULE_PATH}.AvdSchema"),
         patch(f"{MODULE_PATH}.templater", return_value="key: value\n"),
         patch(f"{MODULE_PATH}.strip_null_from_data", side_effect=lambda d: d),
         patch(f"{MODULE_PATH}.merge", side_effect=original_error),
