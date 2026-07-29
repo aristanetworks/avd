@@ -45,7 +45,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                             """
                             MethodsItem.
 
@@ -106,7 +106,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                             """
                             MethodsItem.
 
@@ -191,7 +191,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                             """
                             MethodsItem.
 
@@ -282,9 +282,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            multicast: bool | UndefinedType | None = Undefined,
+                            multicast: bool | None | UndefinedType = Undefined,
                             method: Method | UndefinedType = Undefined,
-                            group: str | UndefinedType | None = Undefined,
+                            group: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MethodsItem.
@@ -371,7 +371,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                             """
                             MethodsItem.
 
@@ -404,7 +404,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        commands: str | UndefinedType | None = Undefined,
+                        commands: str | None | UndefinedType = Undefined,
                         type: Type | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
@@ -446,7 +446,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                             """
                             MethodsItem.
 
@@ -479,7 +479,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        commands: str | UndefinedType | None = Undefined,
+                        commands: str | None | UndefinedType = Undefined,
                         type: Type | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
@@ -596,9 +596,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    default: str | UndefinedType | None = Undefined,
-                    command_api: str | UndefinedType | None = Undefined,
-                    console: str | UndefinedType | None = Undefined,
+                    default: str | None | UndefinedType = Undefined,
+                    command_api: str | None | UndefinedType = Undefined,
+                    console: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Login.
@@ -647,7 +647,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, default: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, default: str | None | UndefinedType = Undefined) -> None:
                     """
                     Enable.
 
@@ -680,7 +680,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, default: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, default: str | None | UndefinedType = Undefined) -> None:
                     """
                     Dot1x.
 
@@ -708,7 +708,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, allow_nopassword: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, allow_nopassword: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Local.
 
@@ -735,7 +735,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         failure: int | UndefinedType = Undefined,
                         duration: int | UndefinedType = Undefined,
-                        window: int | UndefinedType | None = Undefined,
+                        window: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Lockout.
@@ -768,8 +768,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    on_failure_log: bool | UndefinedType | None = Undefined,
-                    on_success_log: bool | UndefinedType | None = Undefined,
+                    on_failure_log: bool | None | UndefinedType = Undefined,
+                    on_success_log: bool | None | UndefinedType = Undefined,
                     local: Local | UndefinedType = Undefined,
                     lockout: Lockout | UndefinedType = Undefined,
                 ) -> None:
@@ -832,7 +832,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, local_default_role: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, local_default_role: str | None | UndefinedType = Undefined) -> None:
                     """
                     Policy.
 
@@ -861,7 +861,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, default: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, default: str | None | UndefinedType = Undefined) -> None:
                     """
                     Exec.
 
@@ -966,7 +966,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, all_default: str | UndefinedType | None = Undefined, privilege: Privilege | UndefinedType = Undefined) -> None:
+                def __init__(self, *, all_default: str | None | UndefinedType = Undefined, privilege: Privilege | UndefinedType = Undefined) -> None:
                     """
                     Commands.
 
@@ -1011,8 +1011,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 policy: Policy | UndefinedType = Undefined,
                 exec: Exec | UndefinedType = Undefined,
-                config_commands: bool | UndefinedType | None = Undefined,
-                serial_console: bool | UndefinedType | None = Undefined,
+                config_commands: bool | None | UndefinedType = Undefined,
+                serial_console: bool | None | UndefinedType = Undefined,
                 dynamic: Dynamic | UndefinedType = Undefined,
                 commands: Commands | UndefinedType = Undefined,
             ) -> None:
@@ -1043,7 +1043,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, sha512_password: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, sha512_password: str | None | UndefinedType = Undefined) -> None:
                     """
                     Secret.
 
@@ -1063,7 +1063,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, secret: Secret | UndefinedType = Undefined) -> None:
+            def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, secret: Secret | UndefinedType = Undefined) -> None:
                 """
                 AaaRoot.
 
@@ -1098,7 +1098,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, port: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
                         """
                         Tls.
 
@@ -1129,7 +1129,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, server: str | UndefinedType = Undefined, vrf: str | UndefinedType | None = Undefined, tls: Tls | UndefinedType = Undefined
+                    self, *, server: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined, tls: Tls | UndefinedType = Undefined
                 ) -> None:
                     """
                     ServersItem.
@@ -1255,8 +1255,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                counters_per_entry: bool | UndefinedType | None = Undefined,
-                permit_response_traffic: PermitResponseTraffic | UndefinedType | None = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
+                permit_response_traffic: PermitResponseTraffic | None | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -1345,9 +1345,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    expiration_mac_disabled: bool | UndefinedType | None = Undefined,
-                    ipv4_enforcement_disabled: bool | UndefinedType | None = Undefined,
-                    ipv6_enforcement_disabled: bool | UndefinedType | None = Undefined,
+                    expiration_mac_disabled: bool | None | UndefinedType = Undefined,
+                    ipv4_enforcement_disabled: bool | None | UndefinedType = Undefined,
+                    ipv6_enforcement_disabled: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     LockedAddress.
@@ -1395,9 +1395,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
                 dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
-                disabled: bool | UndefinedType | None = Undefined,
+                disabled: bool | None | UndefinedType = Undefined,
                 leases: Leases | UndefinedType = Undefined,
-                local_interface: str | UndefinedType | None = Undefined,
+                local_interface: str | None | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -1480,9 +1480,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 environment_variables: EnvironmentVariables | UndefinedType = Undefined,
-                shutdown: bool | UndefinedType | None = Undefined,
-                shutdown_supervisor_active: bool | UndefinedType | None = Undefined,
-                shutdown_supervisor_standby: bool | UndefinedType | None = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
+                shutdown_supervisor_active: bool | None | UndefinedType = Undefined,
+                shutdown_supervisor_standby: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 AgentsItem.
@@ -1531,7 +1531,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, service: Service | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, service: Service | None | UndefinedType = Undefined) -> None:
                         """
                         ApplicationsItem.
 
@@ -1815,15 +1815,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        src_prefix_set_name: str | UndefinedType | None = Undefined,
-                        dest_prefix_set_name: str | UndefinedType | None = Undefined,
+                        src_prefix_set_name: str | None | UndefinedType = Undefined,
+                        dest_prefix_set_name: str | None | UndefinedType = Undefined,
                         dscp_ranges: DscpRanges | UndefinedType = Undefined,
                         protocols: Protocols | UndefinedType = Undefined,
                         protocol_ranges: ProtocolRanges | UndefinedType = Undefined,
-                        udp_src_port_set_name: str | UndefinedType | None = Undefined,
-                        tcp_src_port_set_name: str | UndefinedType | None = Undefined,
-                        udp_dest_port_set_name: str | UndefinedType | None = Undefined,
-                        tcp_dest_port_set_name: str | UndefinedType | None = Undefined,
+                        udp_src_port_set_name: str | None | UndefinedType = Undefined,
+                        tcp_src_port_set_name: str | None | UndefinedType = Undefined,
+                        udp_dest_port_set_name: str | None | UndefinedType = Undefined,
+                        tcp_dest_port_set_name: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4ApplicationsItem.
@@ -1982,10 +1982,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: str | UndefinedType = Undefined,
                         protocols: Protocols | UndefinedType = Undefined,
                         protocol_ranges: ProtocolRanges | UndefinedType = Undefined,
-                        udp_src_port_set_name: str | UndefinedType | None = Undefined,
-                        tcp_src_port_set_name: str | UndefinedType | None = Undefined,
-                        udp_dest_port_set_name: str | UndefinedType | None = Undefined,
-                        tcp_dest_port_set_name: str | UndefinedType | None = Undefined,
+                        udp_src_port_set_name: str | None | UndefinedType = Undefined,
+                        tcp_src_port_set_name: str | None | UndefinedType = Undefined,
+                        udp_dest_port_set_name: str | None | UndefinedType = Undefined,
+                        tcp_dest_port_set_name: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         L4ApplicationsItem.
@@ -2111,7 +2111,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, service: Service | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, service: Service | None | UndefinedType = Undefined) -> None:
                         """
                         ApplicationsItem.
 
@@ -2159,7 +2159,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, service: Service | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, service: Service | None | UndefinedType = Undefined) -> None:
                         """
                         CategoriesItem.
 
@@ -2323,7 +2323,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, refresh_delay: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, refresh_delay: int | None | UndefinedType = Undefined) -> None:
                     """
                     Persistent.
 
@@ -2345,7 +2345,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, timeout_default: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, timeout_default: int | None | UndefinedType = Undefined) -> None:
                     """
                     Aging.
 
@@ -2374,7 +2374,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     ipv4_address: str | UndefinedType = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
                     mac_address: str | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -2510,7 +2510,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, regex_mode: RegexMode | UndefinedType | None = Undefined, access_lists: AccessLists | UndefinedType = Undefined) -> None:
+            def __init__(self, *, regex_mode: RegexMode | None | UndefinedType = Undefined, access_lists: AccessLists | UndefinedType = Undefined) -> None:
                 """
                 AsPath.
 
@@ -2536,7 +2536,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, login: str | UndefinedType | None = Undefined, motd: str | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, login: str | None | UndefinedType = Undefined, motd: str | None | UndefinedType = Undefined) -> None:
                 """
                 Banners.
 
@@ -2582,7 +2582,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
                 neighbors: Neighbors | UndefinedType = Undefined,
                 bgp_maintenance_profiles: BgpMaintenanceProfiles | UndefinedType = Undefined,
             ) -> None:
@@ -2622,7 +2622,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, hash_algorithm: HashAlgorithm | UndefinedType = Undefined, key: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, hash_algorithm: HashAlgorithm | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
                     """
                     Secret.
 
@@ -2689,8 +2689,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            remote_end_point: str | UndefinedType | None = Undefined,
-                            interface: str | UndefinedType | None = Undefined,
+                            remote_end_point: str | None | UndefinedType = Undefined,
+                            interface: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             EndPointsItem.
@@ -2729,7 +2729,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, id: int | UndefinedType = Undefined, mac_address: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, id: int | UndefinedType = Undefined, mac_address: str | None | UndefinedType = Undefined) -> None:
                             """
                             RemoteEndPointsItem.
 
@@ -2786,11 +2786,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         id: int | UndefinedType = Undefined,
-                        direction: Direction | UndefinedType | None = Undefined,
+                        direction: Direction | None | UndefinedType = Undefined,
                         end_points: EndPoints | UndefinedType = Undefined,
-                        profile: str | UndefinedType | None = Undefined,
+                        profile: str | None | UndefinedType = Undefined,
                         remote_end_points: RemoteEndPoints | UndefinedType = Undefined,
-                        vlan: int | UndefinedType | None = Undefined,
+                        vlan: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AssociationsItem.
@@ -2851,7 +2851,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     level: int | UndefinedType = Undefined,
                     associations: Associations | UndefinedType = Undefined,
-                    intermediate_point: bool | UndefinedType | None = Undefined,
+                    intermediate_point: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DomainsItem.
@@ -2889,7 +2889,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, inband: bool | UndefinedType | None = Undefined, synthetic: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, inband: bool | None | UndefinedType = Undefined, synthetic: bool | None | UndefinedType = Undefined) -> None:
                     """
                     MeasurementLoss.
 
@@ -2922,9 +2922,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        client_domain_level: int | UndefinedType | None = Undefined,
-                        tx_interval: TxInterval | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        client_domain_level: int | None | UndefinedType = Undefined,
+                        tx_interval: TxInterval | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AlarmIndication.
@@ -2983,9 +2983,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        qos_cos: int | UndefinedType | None = Undefined,
-                        tx_interval: TxInterval | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        qos_cos: int | None | UndefinedType = Undefined,
+                        tx_interval: TxInterval | None | UndefinedType = Undefined,
                         alarm_defects: AlarmDefects | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -3035,9 +3035,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            single_ended: bool | UndefinedType | None = Undefined,
-                            qos_cos: int | UndefinedType | None = Undefined,
-                            tx_interval: str | UndefinedType | None = Undefined,
+                            single_ended: bool | None | UndefinedType = Undefined,
+                            qos_cos: int | None | UndefinedType = Undefined,
+                            tx_interval: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Delay.
@@ -3074,7 +3074,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, interval: str | UndefinedType = Undefined, period_frames: int | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, interval: str | UndefinedType = Undefined, period_frames: int | None | UndefinedType = Undefined) -> None:
                                     """
                                     TxInterval.
 
@@ -3102,8 +3102,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                single_ended: bool | UndefinedType | None = Undefined,
-                                qos_cos: str | UndefinedType | None = Undefined,
+                                single_ended: bool | None | UndefinedType = Undefined,
+                                qos_cos: str | None | UndefinedType = Undefined,
                                 tx_interval: TxInterval | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -3142,9 +3142,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            single_ended: bool | UndefinedType | None = Undefined,
-                            qos_cos: int | UndefinedType | None = Undefined,
-                            tx_interval: str | UndefinedType | None = Undefined,
+                            single_ended: bool | None | UndefinedType = Undefined,
+                            qos_cos: int | None | UndefinedType = Undefined,
+                            tx_interval: str | None | UndefinedType = Undefined,
                             synthetic: Synthetic | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -3258,7 +3258,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                continuity_check_loc_state_action_disable_interface_routing: bool | UndefinedType | None = Undefined,
+                continuity_check_loc_state_action_disable_interface_routing: bool | None | UndefinedType = Undefined,
                 domains: Domains | UndefinedType = Undefined,
                 measurement_loss: MeasurementLoss | UndefinedType = Undefined,
                 profiles: Profiles | UndefinedType = Undefined,
@@ -3298,7 +3298,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, access_group: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, access_group: str | None | UndefinedType = Undefined) -> None:
                         """
                         Ip.
 
@@ -3350,7 +3350,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, access_group: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, access_group: str | None | UndefinedType = Undefined) -> None:
                         """
                         Ip.
 
@@ -3371,7 +3371,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, access_group: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, access_group: str | None | UndefinedType = Undefined) -> None:
                         """
                         Ipv6.
 
@@ -3430,12 +3430,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    vlan: str | UndefinedType | None = Undefined,
-                    cos: str | UndefinedType | None = Undefined,
+                    vlan: str | None | UndefinedType = Undefined,
+                    cos: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
-                    dscp: str | UndefinedType | None = Undefined,
-                    ecn: Ecn | UndefinedType | None = Undefined,
+                    dscp: str | None | UndefinedType = Undefined,
+                    ecn: Ecn | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     QosItem.
@@ -3517,7 +3517,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, timezone: str | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, timezone: str | None | UndefinedType = Undefined) -> None:
                 """
                 Clock.
 
@@ -3561,7 +3561,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, password: str | UndefinedType | None = Undefined, password_type: PasswordType | UndefinedType = Undefined
+                            self, *, password: str | None | UndefinedType = Undefined, password_type: PasswordType | UndefinedType = Undefined
                         ) -> None:
                             """
                             Redis.
@@ -3582,7 +3582,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, redis: Redis | UndefinedType = Undefined, shutdown: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, redis: Redis | UndefinedType = Undefined, shutdown: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Mcs.
 
@@ -3606,7 +3606,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, shutdown: bool | UndefinedType | None = Undefined, vtep_mac_learning: VtepMacLearning | UndefinedType | None = Undefined
+                        self, *, shutdown: bool | None | UndefinedType = Undefined, vtep_mac_learning: VtepMacLearning | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Vxlan.
@@ -3632,7 +3632,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, role: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, role: str | None | UndefinedType = Undefined) -> None:
                             """
                             Authentication.
 
@@ -3655,7 +3655,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, force: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, force: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                             """
                             NameResolution.
 
@@ -3677,7 +3677,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, vlan: Vlan | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, vlan: Vlan | None | UndefinedType = Undefined) -> None:
                             """
                             NetworkTypeDriver.
 
@@ -3702,7 +3702,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, auth_url: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, auth_url: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Keystone.
 
@@ -3740,10 +3740,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             name: str | UndefinedType = Undefined,
-                            username: str | UndefinedType | None = Undefined,
-                            password: str | UndefinedType | None = Undefined,
+                            username: str | None | UndefinedType = Undefined,
+                            password: str | None | UndefinedType = Undefined,
                             password_type: PasswordType | UndefinedType = Undefined,
-                            tenant: str | UndefinedType | None = Undefined,
+                            tenant: str | None | UndefinedType = Undefined,
                             keystone: Keystone | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -3799,13 +3799,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         authentication: Authentication | UndefinedType = Undefined,
-                        grace_period: int | UndefinedType | None = Undefined,
-                        ip_access_group_name: str | UndefinedType | None = Undefined,
-                        ipv6_access_group_name: str | UndefinedType | None = Undefined,
+                        grace_period: int | None | UndefinedType = Undefined,
+                        ip_access_group_name: str | None | UndefinedType = Undefined,
+                        ipv6_access_group_name: str | None | UndefinedType = Undefined,
                         name_resolution: NameResolution | UndefinedType = Undefined,
                         network_type_driver: NetworkTypeDriver | UndefinedType = Undefined,
                         regions: Regions | UndefinedType = Undefined,
-                        shutdown: bool | UndefinedType | None = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Openstack.
@@ -3877,7 +3877,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                shutdown: bool | UndefinedType | None = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
                 peer_hosts: PeerHosts | UndefinedType = Undefined,
                 services: Services | UndefinedType = Undefined,
             ) -> None:
@@ -3950,12 +3950,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        method: Method | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
-                        token_file: str | UndefinedType | None = Undefined,
-                        cert_file: str | UndefinedType | None = Undefined,
-                        ca_file: str | UndefinedType | None = Undefined,
-                        key_file: str | UndefinedType | None = Undefined,
+                        method: Method | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                        token_file: str | None | UndefinedType = Undefined,
+                        cert_file: str | None | UndefinedType = Undefined,
+                        ca_file: str | None | UndefinedType = Undefined,
+                        key_file: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Cvauth.
@@ -4039,11 +4039,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     cvaddrs: Cvaddrs | UndefinedType = Undefined,
                     cvauth: Cvauth | UndefinedType = Undefined,
-                    cvobscurekeyfile: bool | UndefinedType | None = Undefined,
-                    cvproxy: str | UndefinedType | None = Undefined,
-                    cvsourceip: str | UndefinedType | None = Undefined,
-                    cvsourceintf: str | UndefinedType | None = Undefined,
-                    cvvrf: str | UndefinedType | None = Undefined,
+                    cvobscurekeyfile: bool | None | UndefinedType = Undefined,
+                    cvproxy: str | None | UndefinedType = Undefined,
+                    cvsourceip: str | None | UndefinedType = Undefined,
+                    cvsourceintf: str | None | UndefinedType = Undefined,
+                    cvvrf: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ClustersItem.
@@ -4129,12 +4129,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    method: Method | UndefinedType | None = Undefined,
-                    key: str | UndefinedType | None = Undefined,
-                    token_file: str | UndefinedType | None = Undefined,
-                    cert_file: str | UndefinedType | None = Undefined,
-                    ca_file: str | UndefinedType | None = Undefined,
-                    key_file: str | UndefinedType | None = Undefined,
+                    method: Method | None | UndefinedType = Undefined,
+                    key: str | None | UndefinedType = Undefined,
+                    token_file: str | None | UndefinedType = Undefined,
+                    cert_file: str | None | UndefinedType = Undefined,
+                    ca_file: str | None | UndefinedType = Undefined,
+                    key_file: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Cvauth.
@@ -4321,27 +4321,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cvaddrs: Cvaddrs | UndefinedType = Undefined,
                 clusters: Clusters | UndefinedType = Undefined,
                 cvauth: Cvauth | UndefinedType = Undefined,
-                cvobscurekeyfile: bool | UndefinedType | None = Undefined,
-                cvproxy: str | UndefinedType | None = Undefined,
-                cvsourceip: str | UndefinedType | None = Undefined,
-                cvsourceintf: str | UndefinedType | None = Undefined,
-                cvvrf: str | UndefinedType | None = Undefined,
-                cvgnmi: bool | UndefinedType | None = Undefined,
-                disable_aaa: bool | UndefinedType | None = Undefined,
-                grpcaddr: str | UndefinedType | None = Undefined,
-                grpcreadonly: bool | UndefinedType | None = Undefined,
-                ingestexclude: str | UndefinedType | None = Undefined,
-                smashexcludes: str | UndefinedType | None = Undefined,
-                taillogs: str | UndefinedType | None = Undefined,
-                ecodhcpaddr: str | UndefinedType | None = Undefined,
-                ipfix: bool | UndefinedType | None = Undefined,
-                ipfixaddr: str | UndefinedType | None = Undefined,
-                sflow: bool | UndefinedType | None = Undefined,
-                sflowaddr: str | UndefinedType | None = Undefined,
-                cvconfig: bool | UndefinedType | None = Undefined,
-                cv_loss_timeout: int | UndefinedType | None = Undefined,
+                cvobscurekeyfile: bool | None | UndefinedType = Undefined,
+                cvproxy: str | None | UndefinedType = Undefined,
+                cvsourceip: str | None | UndefinedType = Undefined,
+                cvsourceintf: str | None | UndefinedType = Undefined,
+                cvvrf: str | None | UndefinedType = Undefined,
+                cvgnmi: bool | None | UndefinedType = Undefined,
+                disable_aaa: bool | None | UndefinedType = Undefined,
+                grpcaddr: str | None | UndefinedType = Undefined,
+                grpcreadonly: bool | None | UndefinedType = Undefined,
+                ingestexclude: str | None | UndefinedType = Undefined,
+                smashexcludes: str | None | UndefinedType = Undefined,
+                taillogs: str | None | UndefinedType = Undefined,
+                ecodhcpaddr: str | None | UndefinedType = Undefined,
+                ipfix: bool | None | UndefinedType = Undefined,
+                ipfixaddr: str | None | UndefinedType = Undefined,
+                sflow: bool | None | UndefinedType = Undefined,
+                sflowaddr: str | None | UndefinedType = Undefined,
+                cvconfig: bool | None | UndefinedType = Undefined,
+                cv_loss_timeout: int | None | UndefinedType = Undefined,
                 cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
-                flowdns: bool | UndefinedType | None = Undefined,
+                flowdns: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4531,8 +4531,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 servers: Servers | UndefinedType = Undefined,
-                tunnel_requests_disabled: bool | UndefinedType | None = Undefined,
-                mlag_peerlink_requests_disabled: bool | UndefinedType | None = Undefined,
+                tunnel_requests_disabled: bool | None | UndefinedType = Undefined,
+                mlag_peerlink_requests_disabled: bool | None | UndefinedType = Undefined,
                 client_requests: ClientRequests | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -4649,9 +4649,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    file_ipv4: str | UndefinedType | None = Undefined,
-                    file_ipv6: str | UndefinedType | None = Undefined,
-                    option_66_ipv4: str | UndefinedType | None = Undefined,
+                    file_ipv4: str | None | UndefinedType = Undefined,
+                    file_ipv6: str | None | UndefinedType = Undefined,
+                    option_66_ipv4: str | None | UndefinedType = Undefined,
                     option_150_ipv4: Option150Ipv4 | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -4721,8 +4721,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         code: int | UndefinedType = Undefined,
-                        string: str | UndefinedType | None = Undefined,
-                        ipv4_address: str | UndefinedType | None = Undefined,
+                        string: str | None | UndefinedType = Undefined,
+                        ipv4_address: str | None | UndefinedType = Undefined,
                         array_ipv4_address: ArrayIpv4Address | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -4808,8 +4808,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         mac_address: str | UndefinedType = Undefined,
-                        ipv4_address: str | UndefinedType | None = Undefined,
-                        hostname: str | UndefinedType | None = Undefined,
+                        ipv4_address: str | None | UndefinedType = Undefined,
+                        hostname: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ReservationsItem.
@@ -4856,8 +4856,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        file: str | UndefinedType | None = Undefined,
-                        option_66: str | UndefinedType | None = Undefined,
+                        file: str | None | UndefinedType = Undefined,
+                        option_66: str | None | UndefinedType = Undefined,
                         option_150: Option150 | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -4970,10 +4970,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     subnet: str | UndefinedType = Undefined,
-                    default_gateway: str | UndefinedType | None = Undefined,
+                    default_gateway: str | None | UndefinedType = Undefined,
                     reservations: Reservations | UndefinedType = Undefined,
                     tftp_server: TftpServer | UndefinedType = Undefined,
-                    name: str | UndefinedType | None = Undefined,
+                    name: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
@@ -5026,8 +5026,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         mac_address: str | UndefinedType = Undefined,
-                        ipv6_address: str | UndefinedType | None = Undefined,
-                        hostname: str | UndefinedType | None = Undefined,
+                        ipv6_address: str | None | UndefinedType = Undefined,
+                        hostname: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ReservationsItem.
@@ -5058,7 +5058,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, file: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, file: str | None | UndefinedType = Undefined) -> None:
                         """
                         TftpServer.
 
@@ -5164,7 +5164,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     subnet: str | UndefinedType = Undefined,
                     reservations: Reservations | UndefinedType = Undefined,
                     tftp_server: TftpServer | UndefinedType = Undefined,
-                    name: str | UndefinedType | None = Undefined,
+                    name: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
@@ -5250,18 +5250,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 vrf: str | UndefinedType = Undefined,
-                disabled: bool | UndefinedType | None = Undefined,
+                disabled: bool | None | UndefinedType = Undefined,
                 lease_time_ipv4: LeaseTimeIpv4 | UndefinedType = Undefined,
                 lease_time_ipv6: LeaseTimeIpv6 | UndefinedType = Undefined,
-                dns_domain_name_ipv4: str | UndefinedType | None = Undefined,
-                dns_domain_name_ipv6: str | UndefinedType | None = Undefined,
+                dns_domain_name_ipv4: str | None | UndefinedType = Undefined,
+                dns_domain_name_ipv6: str | None | UndefinedType = Undefined,
                 dns_servers_ipv4: DnsServersIpv4 | UndefinedType = Undefined,
                 dns_servers_ipv6: DnsServersIpv6 | UndefinedType = Undefined,
                 tftp_server: TftpServer | UndefinedType = Undefined,
                 ipv4_vendor_options: Ipv4VendorOptions | UndefinedType = Undefined,
                 ipv4_subnets: Ipv4Subnets | UndefinedType = Undefined,
                 ipv6_subnets: Ipv6Subnets | UndefinedType = Undefined,
-                eos_cli: str | UndefinedType | None = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DhcpServersItem.
@@ -5316,7 +5316,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, delay: int | UndefinedType | None = Undefined, hold_period: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, delay: int | None | UndefinedType = Undefined, hold_period: int | None | UndefinedType = Undefined) -> None:
                     """
                     MacBasedAuthentication.
 
@@ -5370,7 +5370,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | None | UndefinedType = Undefined) -> None:
                             """
                             SystemName.
 
@@ -5392,7 +5392,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | None | UndefinedType = Undefined) -> None:
                             """
                             SystemDescription.
 
@@ -5454,7 +5454,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Hostname.
 
@@ -5476,7 +5476,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | None | UndefinedType = Undefined) -> None:
                             """
                             ParameterRequestList.
 
@@ -5498,7 +5498,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | None | UndefinedType = Undefined) -> None:
                             """
                             VendorClassId.
 
@@ -5582,9 +5582,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        delimiter_period: bool | UndefinedType | None = Undefined,
-                        ipv4_ipv6_required: bool | UndefinedType | None = Undefined,
-                        multiple: bool | UndefinedType | None = Undefined,
+                        delimiter_period: bool | None | UndefinedType = Undefined,
+                        ipv4_ipv6_required: bool | None | UndefinedType = Undefined,
+                        multiple: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         FilterId.
@@ -5621,8 +5621,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    service_type: bool | UndefinedType | None = Undefined,
-                    framed_mtu: int | UndefinedType | None = Undefined,
+                    service_type: bool | None | UndefinedType = Undefined,
+                    framed_mtu: int | None | UndefinedType = Undefined,
                     lldp: Lldp | UndefinedType = Undefined,
                     dhcp: Dhcp | UndefinedType = Undefined,
                     filter_id: FilterId | UndefinedType = Undefined,
@@ -5718,11 +5718,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            apply_alternate: bool | UndefinedType | None = Undefined,
-                            traffic_allow_vlan: int | UndefinedType | None = Undefined,
-                            apply_cached_results: bool | UndefinedType | None = Undefined,
+                            apply_alternate: bool | None | UndefinedType = Undefined,
+                            traffic_allow_vlan: int | None | UndefinedType = Undefined,
+                            apply_cached_results: bool | None | UndefinedType = Undefined,
                             cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                            traffic_allow: bool | UndefinedType | None = Undefined,
+                            traffic_allow: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Action.
@@ -5808,10 +5808,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            apply_cached_results: bool | UndefinedType | None = Undefined,
+                            apply_cached_results: bool | None | UndefinedType = Undefined,
                             cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                            apply_alternate: bool | UndefinedType | None = Undefined,
-                            traffic_allow: bool | UndefinedType | None = Undefined,
+                            apply_alternate: bool | None | UndefinedType = Undefined,
+                            traffic_allow: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             PhoneAction.
@@ -5857,10 +5857,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        eap_response: EapResponse | UndefinedType | None = Undefined,
+                        eap_response: EapResponse | None | UndefinedType = Undefined,
                         action: Action | UndefinedType = Undefined,
                         phone_action: PhoneAction | UndefinedType = Undefined,
-                        recovery_action_reauthenticate: bool | UndefinedType | None = Undefined,
+                        recovery_action_reauthenticate: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Unresponsive.
@@ -5895,7 +5895,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, unresponsive: Unresponsive | UndefinedType = Undefined, accounting_update_interval: int | UndefinedType | None = Undefined
+                    self, *, unresponsive: Unresponsive | UndefinedType = Undefined, accounting_update_interval: int | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     Aaa.
@@ -5941,10 +5941,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
-                    url: str | UndefinedType | None = Undefined,
-                    ssl_profile: str | UndefinedType | None = Undefined,
-                    start_limit_infinite: bool | UndefinedType | None = Undefined,
-                    access_list_ipv4: str | UndefinedType | None = Undefined,
+                    url: str | None | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
+                    start_limit_infinite: bool | None | UndefinedType = Undefined,
+                    access_list_ipv4: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     CaptivePortal.
@@ -6002,11 +6002,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        eap_method: EapMethod | UndefinedType | None = Undefined,
-                        identity: str | UndefinedType | None = Undefined,
+                        eap_method: EapMethod | None | UndefinedType = Undefined,
+                        identity: str | None | UndefinedType = Undefined,
                         passphrase_type: PassphraseType | UndefinedType = Undefined,
-                        passphrase: str | UndefinedType | None = Undefined,
-                        ssl_profile: str | UndefinedType | None = Undefined,
+                        passphrase: str | None | UndefinedType = Undefined,
+                        ssl_profile: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ProfilesItem.
@@ -6054,8 +6054,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     profiles: Profiles | UndefinedType = Undefined,
-                    logging: bool | UndefinedType | None = Undefined,
-                    disconnect_cached_results_timeout: int | UndefinedType | None = Undefined,
+                    logging: bool | None | UndefinedType = Undefined,
+                    disconnect_cached_results_timeout: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Supplicant.
@@ -6118,8 +6118,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    vlan_change_logoff_disabled: bool | UndefinedType | None = Undefined,
-                    unresponsive_action_traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                    vlan_change_logoff_disabled: bool | None | UndefinedType = Undefined,
+                    unresponsive_action_traffic_allow_vlan: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Eapol.
@@ -6195,11 +6195,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                system_auth_control: bool | UndefinedType | None = Undefined,
-                protocol_lldp_bypass: bool | UndefinedType | None = Undefined,
-                protocol_bpdu_bypass: bool | UndefinedType | None = Undefined,
-                dynamic_authorization: bool | UndefinedType | None = Undefined,
-                statistics_packets_dropped: bool | UndefinedType | None = Undefined,
+                system_auth_control: bool | None | UndefinedType = Undefined,
+                protocol_lldp_bypass: bool | None | UndefinedType = Undefined,
+                protocol_bpdu_bypass: bool | None | UndefinedType = Undefined,
+                dynamic_authorization: bool | None | UndefinedType = Undefined,
+                statistics_packets_dropped: bool | None | UndefinedType = Undefined,
                 mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
                 radius_av_pair_username_format: RadiusAvPairUsernameFormat | UndefinedType = Undefined,
                 radius_av_pair: RadiusAvPair | UndefinedType = Undefined,
@@ -6260,7 +6260,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, sampled: str | UndefinedType | None = Undefined, hardware: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, sampled: str | None | UndefinedType = Undefined, hardware: str | None | UndefinedType = Undefined) -> None:
                     """
                     FlowTracker.
 
@@ -6290,9 +6290,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    ipv4: int | UndefinedType | None = Undefined,
-                    ipv6: int | UndefinedType | None = Undefined,
-                    direction: Direction | UndefinedType | None = Undefined,
+                    ipv4: int | None | UndefinedType = Undefined,
+                    ipv6: int | None | UndefinedType = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TcpMssCeiling.
@@ -6341,14 +6341,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: Name | UndefinedType = Undefined,
-                description: str | UndefinedType | None = Undefined,
-                shutdown: bool | UndefinedType | None = Undefined,
-                mtu: int | UndefinedType | None = Undefined,
-                ip_address: str | UndefinedType | None = Undefined,
-                ipv6_address_auto_config: bool | UndefinedType | None = Undefined,
+                description: str | None | UndefinedType = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
+                mtu: int | None | UndefinedType = Undefined,
+                ip_address: str | None | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
-                eos_cli: str | UndefinedType | None = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DpsInterfacesItem.
@@ -6390,7 +6390,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ipv4: str | UndefinedType | None = Undefined, ipv6: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, ipv4: str | None | UndefinedType = Undefined, ipv6: str | None | UndefinedType = Undefined) -> None:
                     """
                     PrefixList.
 
@@ -6417,7 +6417,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                match_map: str | UndefinedType | None = Undefined,
+                match_map: str | None | UndefinedType = Undefined,
                 prefix_list: PrefixList | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -6460,9 +6460,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                disabled: bool | UndefinedType | None = Undefined,
-                hash_algorithm: HashAlgorithm | UndefinedType | None = Undefined,
-                key: str | UndefinedType | None = Undefined,
+                disabled: bool | None | UndefinedType = Undefined,
+                hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
+                key: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 EnablePassword.
@@ -6489,7 +6489,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, minimum: int | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, minimum: int | None | UndefinedType = Undefined) -> None:
                 """
                 EnvironmentFanSpeed.
 
@@ -6837,27 +6837,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    acl: bool | UndefinedType | None = Undefined,
-                    arp_inspection: bool | UndefinedType | None = Undefined,
-                    dot1x: bool | UndefinedType | None = Undefined,
-                    dot1x_coa: bool | UndefinedType | None = Undefined,
-                    dot1x_phone_classification: bool | UndefinedType | None = Undefined,
-                    dot1x_session_replace: bool | UndefinedType | None = Undefined,
-                    error_correction_encoding: bool | UndefinedType | None = Undefined,
-                    fabric_capacity_low: bool | UndefinedType | None = Undefined,
-                    hardware_speed_group: bool | UndefinedType | None = Undefined,
-                    interface_speed: bool | UndefinedType | None = Undefined,
-                    internal_error: bool | UndefinedType | None = Undefined,
-                    link_change: bool | UndefinedType | None = Undefined,
-                    port_breakout: bool | UndefinedType | None = Undefined,
-                    storm_control: bool | UndefinedType | None = Undefined,
-                    switchcard_unreachable: bool | UndefinedType | None = Undefined,
-                    tapagg: bool | UndefinedType | None = Undefined,
-                    tpid: bool | UndefinedType | None = Undefined,
-                    transceiver_adapter: bool | UndefinedType | None = Undefined,
-                    xcvr_misconfigured: bool | UndefinedType | None = Undefined,
-                    xcvr_overheat: bool | UndefinedType | None = Undefined,
-                    xcvr_power_unsupported: bool | UndefinedType | None = Undefined,
+                    acl: bool | None | UndefinedType = Undefined,
+                    arp_inspection: bool | None | UndefinedType = Undefined,
+                    dot1x: bool | None | UndefinedType = Undefined,
+                    dot1x_coa: bool | None | UndefinedType = Undefined,
+                    dot1x_phone_classification: bool | None | UndefinedType = Undefined,
+                    dot1x_session_replace: bool | None | UndefinedType = Undefined,
+                    error_correction_encoding: bool | None | UndefinedType = Undefined,
+                    fabric_capacity_low: bool | None | UndefinedType = Undefined,
+                    hardware_speed_group: bool | None | UndefinedType = Undefined,
+                    interface_speed: bool | None | UndefinedType = Undefined,
+                    internal_error: bool | None | UndefinedType = Undefined,
+                    link_change: bool | None | UndefinedType = Undefined,
+                    port_breakout: bool | None | UndefinedType = Undefined,
+                    storm_control: bool | None | UndefinedType = Undefined,
+                    switchcard_unreachable: bool | None | UndefinedType = Undefined,
+                    tapagg: bool | None | UndefinedType = Undefined,
+                    tpid: bool | None | UndefinedType = Undefined,
+                    transceiver_adapter: bool | None | UndefinedType = Undefined,
+                    xcvr_misconfigured: bool | None | UndefinedType = Undefined,
+                    xcvr_overheat: bool | None | UndefinedType = Undefined,
+                    xcvr_power_unsupported: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DetectCause.
@@ -6940,7 +6940,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: Name | UndefinedType = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: Name | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         CausesItem.
 
@@ -6971,7 +6971,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, causes: Causes | UndefinedType = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, causes: Causes | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                     """
                     Recovery.
 
@@ -6998,7 +6998,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Acl.
 
@@ -7022,7 +7022,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         ArpInspection.
 
@@ -7046,7 +7046,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Bpduguard.
 
@@ -7070,7 +7070,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1x.
 
@@ -7094,7 +7094,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1xCoa.
 
@@ -7118,7 +7118,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1xPhoneClassification.
 
@@ -7142,7 +7142,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1xSessionReplace.
 
@@ -7166,7 +7166,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         ErrorCorrectionEncoding.
 
@@ -7190,7 +7190,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         FabricCapacityLow.
 
@@ -7214,7 +7214,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         HardwareSpeedGroup.
 
@@ -7238,7 +7238,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         HitlessReloadDown.
 
@@ -7262,7 +7262,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         InterfaceSpeed.
 
@@ -7286,7 +7286,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         InternalError.
 
@@ -7310,7 +7310,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         LacpRateLimit.
 
@@ -7334,7 +7334,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         LinkFlap.
 
@@ -7358,7 +7358,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         NoInternalVlan.
 
@@ -7382,7 +7382,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         PortBreakout.
 
@@ -7406,7 +7406,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Portchannelguard.
 
@@ -7430,7 +7430,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Portsec.
 
@@ -7454,7 +7454,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         SpeedMisconfigured.
 
@@ -7478,7 +7478,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         StormControl.
 
@@ -7502,7 +7502,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         StuckQueue.
 
@@ -7526,7 +7526,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         SwitchcardUnreachable.
 
@@ -7550,7 +7550,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         TapPortInit.
 
@@ -7574,7 +7574,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Tapagg.
 
@@ -7598,7 +7598,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Tpid.
 
@@ -7622,7 +7622,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         TransceiverAdapter.
 
@@ -7646,7 +7646,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         UplinkFailureDetection.
 
@@ -7670,7 +7670,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         XcvrMisconfigured.
 
@@ -7694,7 +7694,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         XcvrOverheat.
 
@@ -7718,7 +7718,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         XcvrPowerUnsupported.
 
@@ -7742,7 +7742,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         XcvrUnsupported.
 
@@ -8197,7 +8197,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 detect_cause: DetectCause | UndefinedType = Undefined,
                 recovery: Recovery | UndefinedType = Undefined,
                 recovery_cause: RecoveryCause | UndefinedType = Undefined,
-                recovery_interval: int | UndefinedType | None = Undefined,
+                recovery_interval: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Errdisable.
@@ -8324,7 +8324,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, encapsulation_dot1q_vlan: int | UndefinedType | None = Undefined, forwarding_profile: str | UndefinedType | None = Undefined
+                    self, *, encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined, forwarding_profile: str | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     L2Protocol.
@@ -8354,7 +8354,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4: bool | UndefinedType | None = Undefined, ipv6: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
                         """
                         AddressFamily.
 
@@ -8404,10 +8404,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    ipv4: bool | UndefinedType | None = Undefined,
-                    ipv6: bool | UndefinedType | None = Undefined,
+                    ipv4: bool | None | UndefinedType = Undefined,
+                    ipv6: bool | None | UndefinedType = Undefined,
                     address_family: AddressFamily | UndefinedType = Undefined,
-                    ipv4_enforcement_disabled: bool | UndefinedType | None = Undefined,
+                    ipv4_enforcement_disabled: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressLocking.
@@ -8446,7 +8446,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, received: Received | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, received: Received | None | UndefinedType = Undefined) -> None:
                     """
                     Flowcontrol.
 
@@ -8469,7 +8469,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, sampled: str | UndefinedType | None = Undefined, hardware: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, sampled: str | None | UndefinedType = Undefined, hardware: str | None | UndefinedType = Undefined) -> None:
                     """
                     FlowTracker.
 
@@ -8497,8 +8497,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
-                    fire_code: bool | UndefinedType | None = Undefined,
-                    reed_solomon: bool | UndefinedType | None = Undefined,
+                    fire_code: bool | None | UndefinedType = Undefined,
+                    reed_solomon: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ErrorCorrectionEncoding.
@@ -8612,12 +8612,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        algorithm: Algorithm | UndefinedType | None = Undefined,
-                        preference_value: int | UndefinedType | None = Undefined,
-                        dont_preempt: bool | UndefinedType | None = Undefined,
-                        hold_time: int | UndefinedType | None = Undefined,
-                        subsequent_hold_time: int | UndefinedType | None = Undefined,
-                        candidate_reachability_required: bool | UndefinedType | None = Undefined,
+                        algorithm: Algorithm | None | UndefinedType = Undefined,
+                        preference_value: int | None | UndefinedType = Undefined,
+                        dont_preempt: bool | None | UndefinedType = Undefined,
+                        hold_time: int | None | UndefinedType = Undefined,
+                        subsequent_hold_time: int | None | UndefinedType = Undefined,
+                        candidate_reachability_required: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         DesignatedForwarderElection.
@@ -8645,7 +8645,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, shared_index: int | UndefinedType | None = Undefined, tunnel_flood_filter_time: int | UndefinedType | None = Undefined
+                        self, *, shared_index: int | None | UndefinedType = Undefined, tunnel_flood_filter_time: int | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Mpls.
@@ -8681,11 +8681,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    identifier: str | UndefinedType | None = Undefined,
-                    redundancy: Redundancy | UndefinedType | None = Undefined,
+                    identifier: str | None | UndefinedType = Undefined,
+                    redundancy: Redundancy | None | UndefinedType = Undefined,
                     designated_forwarder_election: DesignatedForwarderElection | UndefinedType = Undefined,
                     mpls: Mpls | UndefinedType = Undefined,
-                    route_target: str | UndefinedType | None = Undefined,
+                    route_target: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EvpnEthernetSegment.
@@ -8713,7 +8713,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, vlan: int | UndefinedType = Undefined, inner_vlan: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, vlan: int | UndefinedType = Undefined, inner_vlan: int | None | UndefinedType = Undefined) -> None:
                     """
                     EncapsulationDot1q.
 
@@ -8756,10 +8756,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         encapsulation: Encapsulation | UndefinedType = Undefined,
-                        vlan: int | UndefinedType | None = Undefined,
-                        outer_vlan: int | UndefinedType | None = Undefined,
-                        inner_vlan: int | UndefinedType | None = Undefined,
-                        inner_encapsulation: InnerEncapsulation | UndefinedType | None = Undefined,
+                        vlan: int | None | UndefinedType = Undefined,
+                        outer_vlan: int | None | UndefinedType = Undefined,
+                        inner_vlan: int | None | UndefinedType = Undefined,
+                        inner_encapsulation: InnerEncapsulation | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Client.
@@ -8808,10 +8808,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         encapsulation: Encapsulation | UndefinedType = Undefined,
-                        vlan: int | UndefinedType | None = Undefined,
-                        outer_vlan: int | UndefinedType | None = Undefined,
-                        inner_vlan: int | UndefinedType | None = Undefined,
-                        inner_encapsulation: InnerEncapsulation | UndefinedType | None = Undefined,
+                        vlan: int | None | UndefinedType = Undefined,
+                        outer_vlan: int | None | UndefinedType = Undefined,
+                        inner_vlan: int | None | UndefinedType = Undefined,
+                        inner_encapsulation: InnerEncapsulation | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Network.
@@ -8884,8 +8884,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     ip_helper: str | UndefinedType = Undefined,
-                    source_interface: str | UndefinedType | None = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
+                    source_interface: str | None | UndefinedType = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     IpHelpersItem.
@@ -8928,9 +8928,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             access_list: str | UndefinedType = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
                             pool_name: str | UndefinedType = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DynamicItem.
@@ -8998,16 +8998,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            access_list: str | UndefinedType | None = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
-                            direction: Direction | UndefinedType | None = Undefined,
-                            group: int | UndefinedType | None = Undefined,
-                            original_ip: str | UndefinedType | None = Undefined,
-                            original_port: int | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
-                            protocol: Protocol | UndefinedType | None = Undefined,
+                            access_list: str | None | UndefinedType = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
+                            group: int | None | UndefinedType = Undefined,
+                            original_ip: str | None | UndefinedType = Undefined,
+                            original_port: int | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
-                            translated_port: int | UndefinedType | None = Undefined,
+                            translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             StaticItem.
@@ -9090,10 +9090,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             access_list: str | UndefinedType = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
                             nat_type: NatType | UndefinedType = Undefined,
-                            pool_name: str | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
+                            pool_name: str | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DynamicItem.
@@ -9165,16 +9165,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            access_list: str | UndefinedType | None = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
-                            direction: Direction | UndefinedType | None = Undefined,
-                            group: int | UndefinedType | None = Undefined,
-                            original_ip: str | UndefinedType | None = Undefined,
-                            original_port: int | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
-                            protocol: Protocol | UndefinedType | None = Undefined,
+                            access_list: str | None | UndefinedType = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
+                            group: int | None | UndefinedType = Undefined,
+                            original_ip: str | None | UndefinedType = Undefined,
+                            original_port: int | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
-                            translated_port: int | UndefinedType | None = Undefined,
+                            translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             StaticItem.
@@ -9239,7 +9239,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    service_profile: str | UndefinedType | None = Undefined,
+                    service_profile: str | None | UndefinedType = Undefined,
                     destination: Destination | UndefinedType = Undefined,
                     source: Source | UndefinedType = Undefined,
                 ) -> None:
@@ -9283,9 +9283,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     ipv6_prefix: str | UndefinedType = Undefined,
-                    valid_lifetime: str | UndefinedType | None = Undefined,
-                    preferred_lifetime: str | UndefinedType | None = Undefined,
-                    no_autoconfig_flag: bool | UndefinedType | None = Undefined,
+                    valid_lifetime: str | None | UndefinedType = Undefined,
+                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                    no_autoconfig_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6NdPrefixesItem.
@@ -9327,9 +9327,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dynamic_capacity: int | UndefinedType | None = Undefined,
-                        expire: int | UndefinedType | None = Undefined,
-                        refresh_always: bool | UndefinedType | None = Undefined,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Cache.
@@ -9359,7 +9359,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, default_route: bool | UndefinedType | None = Undefined, route_preference: bool | UndefinedType | None = Undefined
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             RxAccept.
@@ -9388,7 +9388,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
                             """
                             DnsServersItem.
 
@@ -9431,10 +9431,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        disabled: bool | UndefinedType | None = Undefined,
+                        disabled: bool | None | UndefinedType = Undefined,
                         rx_accept: RxAccept | UndefinedType = Undefined,
                         dns_servers: DnsServers | UndefinedType = Undefined,
-                        dns_servers_lifetime: int | UndefinedType | None = Undefined,
+                        dns_servers_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ra.
@@ -9473,9 +9473,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ipv6_prefix: str | UndefinedType = Undefined,
-                        valid_lifetime: str | UndefinedType | None = Undefined,
-                        preferred_lifetime: str | UndefinedType | None = Undefined,
-                        no_autoconfig_flag: bool | UndefinedType | None = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PrefixesItem.
@@ -9536,9 +9536,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
-                    managed_config_flag: bool | UndefinedType | None = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
-                    other_config_flag: bool | UndefinedType | None = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -9597,10 +9597,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     address: str | UndefinedType = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
-                    local_interface: str | UndefinedType | None = Undefined,
-                    source_address: str | UndefinedType | None = Undefined,
-                    link_address: str | UndefinedType | None = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    local_interface: str | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
+                    link_address: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6DhcpRelayDestinationsItem.
@@ -9642,7 +9642,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, boundary: str | UndefinedType | None = Undefined, out: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, boundary: str | None | UndefinedType = Undefined, out: bool | None | UndefinedType = Undefined) -> None:
                             """
                             BoundariesItem.
 
@@ -9667,7 +9667,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, boundaries: Boundaries | UndefinedType = Undefined, static: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, boundaries: Boundaries | UndefinedType = Undefined, static: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Ipv4.
 
@@ -9692,7 +9692,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, boundary: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, boundary: str | None | UndefinedType = Undefined) -> None:
                             """
                             BoundariesItem.
 
@@ -9716,7 +9716,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, boundaries: Boundaries | UndefinedType = Undefined, static: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, boundaries: Boundaries | UndefinedType = Undefined, static: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Ipv6.
 
@@ -9776,8 +9776,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    hash_algorithm: HashAlgorithm | UndefinedType | None = Undefined,
-                    key: str | UndefinedType | None = Undefined,
+                    hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
+                    key: str | None | UndefinedType = Undefined,
                     key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -9818,7 +9818,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, count: str | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, count: str | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                             """
                             Hello.
 
@@ -9857,12 +9857,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        border_router: bool | UndefinedType | None = Undefined,
-                        dr_priority: int | UndefinedType | None = Undefined,
-                        sparse_mode: bool | UndefinedType | None = Undefined,
-                        bfd: bool | UndefinedType | None = Undefined,
-                        bidirectional: bool | UndefinedType | None = Undefined,
-                        neighbor_filter: str | UndefinedType | None = Undefined,
+                        border_router: bool | None | UndefinedType = Undefined,
+                        dr_priority: int | None | UndefinedType = Undefined,
+                        sparse_mode: bool | None | UndefinedType = Undefined,
+                        bfd: bool | None | UndefinedType = Undefined,
+                        bidirectional: bool | None | UndefinedType = Undefined,
+                        neighbor_filter: str | None | UndefinedType = Undefined,
                         hello: Hello | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -9908,7 +9908,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, profile: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
                     """
                     MacSecurity.
 
@@ -9934,9 +9934,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    ipv4: int | UndefinedType | None = Undefined,
-                    ipv6: int | UndefinedType | None = Undefined,
-                    direction: Direction | UndefinedType | None = Undefined,
+                    ipv4: int | None | UndefinedType = Undefined,
+                    ipv6: int | None | UndefinedType = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TcpMssCeiling.
@@ -9961,7 +9961,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, id: int | UndefinedType | None = Undefined, mode: Mode | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, id: int | None | UndefinedType = Undefined, mode: Mode | None | UndefinedType = Undefined) -> None:
                     """
                     ChannelGroup.
 
@@ -10015,7 +10015,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -10121,13 +10121,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Both.
@@ -10188,7 +10188,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -10294,13 +10294,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Level1.
@@ -10361,7 +10361,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -10467,13 +10467,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Level2.
@@ -10558,7 +10558,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, action: Action | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, action: Action | None | UndefinedType = Undefined) -> None:
                         """
                         Reboot.
 
@@ -10585,7 +10585,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, action: Action | UndefinedType | None = Undefined, power_off_delay: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, action: Action | None | UndefinedType = Undefined, power_off_delay: int | None | UndefinedType = Undefined) -> None:
                         """
                         LinkDown.
 
@@ -10610,7 +10610,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, action: Action | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, action: Action | None | UndefinedType = Undefined) -> None:
                         """
                         Shutdown.
 
@@ -10638,9 +10638,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        field_class: int | UndefinedType | None = Undefined,
-                        watts: str | UndefinedType | None = Undefined,
-                        fixed: bool | UndefinedType | None = Undefined,
+                        field_class: int | None | UndefinedType = Undefined,
+                        watts: str | None | UndefinedType = Undefined,
+                        fixed: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Limit.
@@ -10716,13 +10716,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     disabled: bool | UndefinedType = Undefined,
-                    priority: Priority | UndefinedType | None = Undefined,
+                    priority: Priority | None | UndefinedType = Undefined,
                     reboot: Reboot | UndefinedType = Undefined,
                     link_down: LinkDown | UndefinedType = Undefined,
                     shutdown: Shutdown | UndefinedType = Undefined,
                     limit: Limit | UndefinedType = Undefined,
-                    negotiation_lldp: bool | UndefinedType | None = Undefined,
-                    legacy_detect: bool | UndefinedType | None = Undefined,
+                    negotiation_lldp: bool | None | UndefinedType = Undefined,
+                    legacy_detect: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Poe.
@@ -10772,7 +10772,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interval: int | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined, timeout: int | None | UndefinedType = Undefined) -> None:
                         """
                         Announce.
 
@@ -10799,7 +10799,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, destination_mac_address: DestinationMacAddress | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, destination_mac_address: DestinationMacAddress | None | UndefinedType = Undefined) -> None:
                             """
                             G82751.
 
@@ -10837,7 +10837,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, domain_number: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, domain_number: int | None | UndefinedType = Undefined) -> None:
                         """
                         Region.
 
@@ -10857,7 +10857,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         SyncMessage.
 
@@ -10904,16 +10904,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enable: bool | UndefinedType | None = Undefined,
+                    enable: bool | None | UndefinedType = Undefined,
                     announce: Announce | UndefinedType = Undefined,
-                    delay_req: int | UndefinedType | None = Undefined,
-                    delay_mechanism: DelayMechanism | UndefinedType | None = Undefined,
+                    delay_req: int | None | UndefinedType = Undefined,
+                    delay_mechanism: DelayMechanism | None | UndefinedType = Undefined,
                     profile: Profile | UndefinedType = Undefined,
                     region: Region | UndefinedType = Undefined,
                     sync_message: SyncMessage | UndefinedType = Undefined,
-                    role: Role | UndefinedType | None = Undefined,
-                    vlan: str | UndefinedType | None = Undefined,
-                    transport: Transport | UndefinedType | None = Undefined,
+                    role: Role | None | UndefinedType = Undefined,
+                    vlan: str | None | UndefinedType = Undefined,
+                    transport: Transport | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ptp.
@@ -10954,7 +10954,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | UndefinedType | None = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         All.
 
@@ -10983,7 +10983,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | UndefinedType | None = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Broadcast.
 
@@ -11012,7 +11012,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | UndefinedType | None = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Multicast.
 
@@ -11041,7 +11041,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | UndefinedType | None = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         UnknownUnicast.
 
@@ -11116,10 +11116,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        link_status: bool | UndefinedType | None = Undefined,
-                        congestion_drops: bool | UndefinedType | None = Undefined,
-                        spanning_tree: bool | UndefinedType | None = Undefined,
-                        storm_control_discards: bool | UndefinedType | None = Undefined,
+                        link_status: bool | None | UndefinedType = Undefined,
+                        congestion_drops: bool | None | UndefinedType = Undefined,
+                        spanning_tree: bool | None | UndefinedType = Undefined,
+                        storm_control_discards: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Event.
@@ -11167,9 +11167,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    transmit: bool | UndefinedType | None = Undefined,
-                    receive: bool | UndefinedType | None = Undefined,
-                    ztp_vlan: int | UndefinedType | None = Undefined,
+                    transmit: bool | None | UndefinedType = Undefined,
+                    receive: bool | None | UndefinedType = Undefined,
+                    ztp_vlan: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Lldp.
@@ -11200,7 +11200,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, supplicant_profile: str | None | UndefinedType = Undefined) -> None:
                         """
                         Pae.
 
@@ -11223,7 +11223,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, action: Action | UndefinedType | None = Undefined, allow_vlan: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, action: Action | None | UndefinedType = Undefined, allow_vlan: int | None | UndefinedType = Undefined) -> None:
                         """
                         AuthenticationFailure.
 
@@ -11247,7 +11247,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                        self, *, mode: Mode | None | UndefinedType = Undefined, multi_host_authenticated: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         HostMode.
@@ -11274,9 +11274,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        always: bool | UndefinedType | None = Undefined,
-                        host_mode_common: bool | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        always: bool | None | UndefinedType = Undefined,
+                        host_mode_common: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         MacBasedAuthentication.
@@ -11313,11 +11313,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        idle_host: int | UndefinedType | None = Undefined,
-                        quiet_period: int | UndefinedType | None = Undefined,
-                        reauth_period: str | UndefinedType | None = Undefined,
-                        reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
-                        tx_period: int | UndefinedType | None = Undefined,
+                        idle_host: int | None | UndefinedType = Undefined,
+                        quiet_period: int | None | UndefinedType = Undefined,
+                        reauth_period: str | None | UndefinedType = Undefined,
+                        reauth_timeout_ignore: bool | None | UndefinedType = Undefined,
+                        tx_period: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Timeout.
@@ -11346,8 +11346,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
-                        native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                        access_vlan_membership_egress: bool | None | UndefinedType = Undefined,
+                        native_vlan_membership_egress: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Unauthorized.
@@ -11373,7 +11373,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, timeout: int | None | UndefinedType = Undefined) -> None:
                             """
                             AuthenticationFailureFallbackMba.
 
@@ -11396,7 +11396,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        disabled: bool | UndefinedType | None = Undefined,
+                        disabled: bool | None | UndefinedType = Undefined,
                         authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -11490,12 +11490,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                apply_alternate: bool | UndefinedType | None = Undefined,
-                                traffic_allow_vlan: int | UndefinedType | None = Undefined,
-                                apply_cached_results: bool | UndefinedType | None = Undefined,
+                                traffic_allow_access_list: str | None | UndefinedType = Undefined,
+                                apply_alternate: bool | None | UndefinedType = Undefined,
+                                traffic_allow_vlan: int | None | UndefinedType = Undefined,
+                                apply_cached_results: bool | None | UndefinedType = Undefined,
                                 cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                                traffic_allow: bool | UndefinedType | None = Undefined,
+                                traffic_allow: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Action.
@@ -11582,10 +11582,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                apply_cached_results: bool | UndefinedType | None = Undefined,
+                                apply_cached_results: bool | None | UndefinedType = Undefined,
                                 cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                                apply_alternate: bool | UndefinedType | None = Undefined,
-                                traffic_allow: bool | UndefinedType | None = Undefined,
+                                apply_alternate: bool | None | UndefinedType = Undefined,
+                                traffic_allow: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 PhoneAction.
@@ -11625,7 +11625,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            eap_response: EapResponse | UndefinedType | None = Undefined,
+                            eap_response: EapResponse | None | UndefinedType = Undefined,
                             action: Action | UndefinedType = Undefined,
                             phone_action: PhoneAction | UndefinedType = Undefined,
                         ) -> None:
@@ -11716,16 +11716,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    port_control: PortControl | UndefinedType | None = Undefined,
-                    port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
-                    reauthentication: bool | UndefinedType | None = Undefined,
+                    port_control: PortControl | None | UndefinedType = Undefined,
+                    port_control_force_authorized_phone: bool | None | UndefinedType = Undefined,
+                    reauthentication: bool | None | UndefinedType = Undefined,
                     pae: Pae | UndefinedType = Undefined,
                     authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
                     host_mode: HostMode | UndefinedType = Undefined,
                     mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
-                    mac_based_access_list: bool | UndefinedType | None = Undefined,
+                    mac_based_access_list: bool | None | UndefinedType = Undefined,
                     timeout: Timeout | UndefinedType = Undefined,
-                    reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                    reauthorization_request_limit: int | None | UndefinedType = Undefined,
                     unauthorized: Unauthorized | UndefinedType = Undefined,
                     eapol: Eapol | UndefinedType = Undefined,
                     aaa: Aaa | UndefinedType = Undefined,
@@ -11770,7 +11770,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, rate: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, rate: str | None | UndefinedType = Undefined) -> None:
                     """
                     Shape.
 
@@ -11805,9 +11805,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    trust: Trust | UndefinedType | None = Undefined,
-                    dscp: int | UndefinedType | None = Undefined,
-                    cos: int | UndefinedType | None = Undefined,
+                    trust: Trust | None | UndefinedType = Undefined,
+                    dscp: int | None | UndefinedType = Undefined,
+                    cos: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Qos.
@@ -11841,9 +11841,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    count: int | UndefinedType | None = Undefined,
-                    interval: int | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    count: int | None | UndefinedType = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SpanningTreeBpduguardRateLimit.
@@ -11874,7 +11874,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, priority: int | UndefinedType = Undefined, no_drop: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, priority: int | UndefinedType = Undefined, no_drop: bool | None | UndefinedType = Undefined) -> None:
                         """
                         PrioritiesItem.
 
@@ -11901,7 +11901,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, priorities: Priorities | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, priorities: Priorities | UndefinedType = Undefined) -> None:
                     """
                     PriorityFlowControl.
 
@@ -11930,10 +11930,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    echo: bool | UndefinedType | None = Undefined,
-                    interval: int | UndefinedType | None = Undefined,
-                    min_rx: int | UndefinedType | None = Undefined,
-                    multiplier: int | UndefinedType | None = Undefined,
+                    echo: bool | None | UndefinedType = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
+                    min_rx: int | None | UndefinedType = Undefined,
+                    multiplier: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Bfd.
@@ -11961,7 +11961,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, input: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, input: str | None | UndefinedType = Undefined) -> None:
                         """
                         Pbr.
 
@@ -12027,7 +12027,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interface: bool | UndefinedType | None = Undefined, igp_sync: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interface: bool | None | UndefinedType = Undefined, igp_sync: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Ldp.
 
@@ -12047,7 +12047,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ip: bool | UndefinedType | None = Undefined, ldp: Ldp | UndefinedType = Undefined) -> None:
+                def __init__(self, *, ip: bool | None | UndefinedType = Undefined, ldp: Ldp | UndefinedType = Undefined) -> None:
                     """
                     Mpls.
 
@@ -12070,7 +12070,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, mode: Mode | UndefinedType | None = Undefined, multiplier: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined) -> None:
                     """
                     LacpTimer.
 
@@ -12097,7 +12097,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, override: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, override: str | None | UndefinedType = Undefined) -> None:
                         """
                         Media.
 
@@ -12128,7 +12128,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         override: int | UndefinedType = Undefined,
                         first_lane: int | UndefinedType = Undefined,
-                        last_lane: int | UndefinedType | None = Undefined,
+                        last_lane: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ApplicationOverrideLanesItem.
@@ -12157,7 +12157,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ignore: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ignore: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Power.
 
@@ -12180,7 +12180,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, signal_power: str | UndefinedType | None = Undefined, disabled: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, signal_power: str | None | UndefinedType = Undefined, disabled: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Transmitter.
 
@@ -12231,10 +12231,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    frequency: str | UndefinedType | None = Undefined,
-                    frequency_unit: FrequencyUnit | UndefinedType | None = Undefined,
+                    frequency: str | None | UndefinedType = Undefined,
+                    frequency_unit: FrequencyUnit | None | UndefinedType = Undefined,
                     media: Media | UndefinedType = Undefined,
-                    application_override: ApplicationOverride | UndefinedType | None = Undefined,
+                    application_override: ApplicationOverride | None | UndefinedType = Undefined,
                     application_override_lanes: ApplicationOverrideLanes | UndefinedType = Undefined,
                     power: Power | UndefinedType = Undefined,
                     transmitter: Transmitter | UndefinedType = Undefined,
@@ -12274,7 +12274,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, input: str | UndefinedType | None = Undefined, output: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, input: str | None | UndefinedType = Undefined, output: str | None | UndefinedType = Undefined) -> None:
                     """
                     TrafficPolicy.
 
@@ -12296,7 +12296,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, session_tracker: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, session_tracker: str | None | UndefinedType = Undefined) -> None:
                     """
                     Bgp.
 
@@ -12477,11 +12477,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                     groups: Groups | UndefinedType = Undefined,
-                    report_interval: int | UndefinedType | None = Undefined,
+                    report_interval: int | None | UndefinedType = Undefined,
                     access_lists: AccessLists | UndefinedType = Undefined,
-                    version: int | UndefinedType | None = Undefined,
+                    version: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     IpIgmpHostProxy.
@@ -12547,13 +12547,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    peer: str | UndefinedType | None = Undefined,
-                    peer_interface: str | UndefinedType | None = Undefined,
-                    peer_type: str | UndefinedType | None = Undefined,
-                    peer_key: str | UndefinedType | None = Undefined,
-                    port_profile: str | UndefinedType | None = Undefined,
-                    validate_state: bool | UndefinedType | None = Undefined,
-                    validate_lldp: bool | UndefinedType | None = Undefined,
+                    peer: str | None | UndefinedType = Undefined,
+                    peer_interface: str | None | UndefinedType = Undefined,
+                    peer_type: str | None | UndefinedType = Undefined,
+                    peer_key: str | None | UndefinedType = Undefined,
+                    port_profile: str | None | UndefinedType = Undefined,
+                    validate_state: bool | None | UndefinedType = Undefined,
+                    validate_lldp: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Metadata.
@@ -12595,7 +12595,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enable: bool | UndefinedType | None = Undefined, unmodified_enable: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enable: bool | None | UndefinedType = Undefined, unmodified_enable: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Egress.
 
@@ -12615,7 +12615,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enable: bool | UndefinedType | None = Undefined, egress: Egress | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enable: bool | None | UndefinedType = Undefined, egress: Egress | UndefinedType = Undefined) -> None:
                     """
                     Sflow.
 
@@ -12641,7 +12641,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enable: bool | UndefinedType | None = Undefined, priority: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, enable: bool | None | UndefinedType = Undefined, priority: str | None | UndefinedType = Undefined) -> None:
                     """
                     SyncE.
 
@@ -12695,8 +12695,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 units: Units | UndefinedType = Undefined,
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
-                                max_probability: int | UndefinedType | None = Undefined,
-                                weight: int | UndefinedType | None = Undefined,
+                                max_probability: int | None | UndefinedType = Undefined,
+                                weight: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Threshold.
@@ -12721,7 +12721,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, count: bool | UndefinedType | None = Undefined, threshold: Threshold | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, count: bool | None | UndefinedType = Undefined, threshold: Threshold | UndefinedType = Undefined) -> None:
                             """
                             Ecn.
 
@@ -12827,7 +12827,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
                                 max_probability: int | UndefinedType = Undefined,
-                                weight: int | UndefinedType | None = Undefined,
+                                weight: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Threshold.
@@ -12852,7 +12852,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, count: bool | UndefinedType | None = Undefined, threshold: Threshold | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, count: bool | None | UndefinedType = Undefined, threshold: Threshold | UndefinedType = Undefined) -> None:
                             """
                             Ecn.
 
@@ -12904,7 +12904,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    scheduler_profile_responsive: bool | UndefinedType | None = Undefined,
+                    scheduler_profile_responsive: bool | None | UndefinedType = Undefined,
                     random_detect: RandomDetect | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -12939,7 +12939,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Advertisement.
 
@@ -12965,7 +12965,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, minimum: int | UndefinedType | None = Undefined, reload: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, minimum: int | None | UndefinedType = Undefined, reload: int | None | UndefinedType = Undefined) -> None:
                             """
                             Delay.
 
@@ -13010,7 +13010,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, reload: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, reload: int | None | UndefinedType = Undefined) -> None:
                             """
                             Delay.
 
@@ -13056,8 +13056,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        decrement: int | UndefinedType | None = Undefined,
-                        shutdown: bool | UndefinedType | None = Undefined,
+                        decrement: int | None | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         TrackedObjectItem.
@@ -13106,7 +13106,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         address: str | UndefinedType = Undefined,
                         secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
-                        version: Version | UndefinedType | None = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4.
@@ -13177,7 +13177,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         mode: Mode | UndefinedType = Undefined,
                         key: str | UndefinedType = Undefined,
-                        key_type: KeyType | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerAuthentication.
@@ -13228,7 +13228,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    priority_level: int | UndefinedType | None = Undefined,
+                    priority_level: int | None | UndefinedType = Undefined,
                     advertisement: Advertisement | UndefinedType = Undefined,
                     preempt: Preempt | UndefinedType = Undefined,
                     timers: Timers | UndefinedType = Undefined,
@@ -13299,10 +13299,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        allowed_vlan: str | UndefinedType | None = Undefined,
-                        native_vlan: int | UndefinedType | None = Undefined,
-                        native_vlan_tag: bool | UndefinedType | None = Undefined,
-                        private_vlan_secondary: bool | UndefinedType | None = Undefined,
+                        allowed_vlan: str | None | UndefinedType = Undefined,
+                        native_vlan: int | None | UndefinedType = Undefined,
+                        native_vlan_tag: bool | None | UndefinedType = Undefined,
+                        private_vlan_secondary: bool | None | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -13330,7 +13330,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, vlan: int | UndefinedType | None = Undefined, trunk: Trunk | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, vlan: int | None | UndefinedType = Undefined, trunk: Trunk | None | UndefinedType = Undefined) -> None:
                         """
                         Phone.
 
@@ -13355,7 +13355,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ethertype: int | UndefinedType | None = Undefined, vlan_tag: VlanTag | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ethertype: int | None | UndefinedType = Undefined, vlan_tag: VlanTag | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1q.
 
@@ -13399,8 +13399,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             field_from: str | UndefinedType = Undefined,
                             to: int | UndefinedType = Undefined,
-                            dot1q_tunnel: bool | UndefinedType | None = Undefined,
-                            inner_vlan_from: int | UndefinedType | None = Undefined,
+                            dot1q_tunnel: bool | None | UndefinedType = Undefined,
+                            inner_vlan_from: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DirectionInItem.
@@ -13451,9 +13451,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             field_from: str | UndefinedType = Undefined,
-                            to: int | UndefinedType | None = Undefined,
-                            dot1q_tunnel_to: str | UndefinedType | None = Undefined,
-                            inner_vlan_to: int | UndefinedType | None = Undefined,
+                            to: int | None | UndefinedType = Undefined,
+                            dot1q_tunnel_to: str | None | UndefinedType = Undefined,
+                            inner_vlan_to: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DirectionOutItem.
@@ -13510,9 +13510,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             field_from: str | UndefinedType = Undefined,
                             to: int | UndefinedType = Undefined,
-                            dot1q_tunnel: bool | UndefinedType | None = Undefined,
-                            inner_vlan_from: int | UndefinedType | None = Undefined,
-                            network: bool | UndefinedType | None = Undefined,
+                            dot1q_tunnel: bool | None | UndefinedType = Undefined,
+                            inner_vlan_from: int | None | UndefinedType = Undefined,
+                            network: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DirectionBothItem.
@@ -13572,8 +13572,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        in_required: bool | UndefinedType | None = Undefined,
-                        out_required: bool | UndefinedType | None = Undefined,
+                        in_required: bool | None | UndefinedType = Undefined,
+                        out_required: bool | None | UndefinedType = Undefined,
                         direction_in: DirectionIn | UndefinedType = Undefined,
                         direction_out: DirectionOut | UndefinedType = Undefined,
                         direction_both: DirectionBoth | UndefinedType = Undefined,
@@ -13613,7 +13613,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interface: str | UndefinedType | None = Undefined, prefer_vlan: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interface: str | None | UndefinedType = Undefined, prefer_vlan: str | None | UndefinedType = Undefined) -> None:
                         """
                         BackupLink.
 
@@ -13656,11 +13656,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dest_macaddr: str | UndefinedType | None = Undefined,
-                        initial_mac_move_delay: int | UndefinedType | None = Undefined,
-                        mac_move_burst: int | UndefinedType | None = Undefined,
-                        mac_move_burst_interval: int | UndefinedType | None = Undefined,
-                        preemption_delay: int | UndefinedType | None = Undefined,
+                        dest_macaddr: str | None | UndefinedType = Undefined,
+                        initial_mac_move_delay: int | None | UndefinedType = Undefined,
+                        mac_move_burst: int | None | UndefinedType = Undefined,
+                        mac_move_burst_interval: int | None | UndefinedType = Undefined,
+                        preemption_delay: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Backup.
@@ -13694,7 +13694,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, limit: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, limit: int | None | UndefinedType = Undefined) -> None:
                             """
                             MacAddressMaximum.
 
@@ -13719,7 +13719,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, mode: Mode | UndefinedType | None = Undefined, protect_log: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, protect_log: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Violation.
 
@@ -13803,10 +13803,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
                         mac_address_maximum: MacAddressMaximum | UndefinedType = Undefined,
                         violation: Violation | UndefinedType = Undefined,
-                        vlan_default_mac_address_maximum: int | UndefinedType | None = Undefined,
+                        vlan_default_mac_address_maximum: int | None | UndefinedType = Undefined,
                         vlans: Vlans | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -13915,7 +13915,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, id: int | UndefinedType | None = Undefined, inner_vlan: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, id: int | None | UndefinedType = Undefined, inner_vlan: int | None | UndefinedType = Undefined) -> None:
                             """
                             Identity.
 
@@ -13938,7 +13938,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, size: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined) -> None:
                             """
                             Truncation.
 
@@ -13962,7 +13962,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, source: str | UndefinedType | None = Undefined, destination: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, source: str | None | UndefinedType = Undefined, destination: str | None | UndefinedType = Undefined) -> None:
                             """
                             MacAddress.
 
@@ -14017,9 +14017,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     protocol: str | UndefinedType = Undefined,
-                                    strip: bool | UndefinedType | None = Undefined,
-                                    feature_header_length: int | UndefinedType | None = Undefined,
-                                    re_encapsulation_ethernet_header: bool | UndefinedType | None = Undefined,
+                                    strip: bool | None | UndefinedType = Undefined,
+                                    feature_header_length: int | None | UndefinedType = Undefined,
+                                    re_encapsulation_ethernet_header: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     ProtocolsItem.
@@ -14090,9 +14090,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                         self,
                                         *,
                                         protocol: str | UndefinedType = Undefined,
-                                        strip: bool | UndefinedType | None = Undefined,
-                                        feature_header_length: int | UndefinedType | None = Undefined,
-                                        re_encapsulation_ethernet_header: bool | UndefinedType | None = Undefined,
+                                        strip: bool | None | UndefinedType = Undefined,
+                                        feature_header_length: int | None | UndefinedType = Undefined,
+                                        re_encapsulation_ethernet_header: bool | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         ProtocolsItem.
@@ -14148,8 +14148,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     destination: str | UndefinedType = Undefined,
-                                    source: str | UndefinedType | None = Undefined,
-                                    strip: bool | UndefinedType | None = Undefined,
+                                    source: str | None | UndefinedType = Undefined,
+                                    strip: bool | None | UndefinedType = Undefined,
                                     protocols: Protocols | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -14200,7 +14200,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                strip: bool | UndefinedType | None = Undefined,
+                                strip: bool | None | UndefinedType = Undefined,
                                 protocols: Protocols | UndefinedType = Undefined,
                                 destinations: Destinations | UndefinedType = Undefined,
                             ) -> None:
@@ -14240,7 +14240,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, vxlan_strip: bool | UndefinedType | None = Undefined, gre: Gre | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, vxlan_strip: bool | None | UndefinedType = Undefined, gre: Gre | UndefinedType = Undefined) -> None:
                             """
                             Encapsulation.
 
@@ -14293,11 +14293,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        allowed_vlan: str | UndefinedType | None = Undefined,
+                        allowed_vlan: str | None | UndefinedType = Undefined,
                         default: Default | UndefinedType = Undefined,
                         identity: Identity | UndefinedType = Undefined,
-                        mpls_pop_all: bool | UndefinedType | None = Undefined,
-                        native_vlan: int | UndefinedType | None = Undefined,
+                        mpls_pop_all: bool | None | UndefinedType = Undefined,
+                        native_vlan: int | None | UndefinedType = Undefined,
                         truncation: Truncation | UndefinedType = Undefined,
                         mac_address: MacAddress | UndefinedType = Undefined,
                         encapsulation: Encapsulation | UndefinedType = Undefined,
@@ -14338,7 +14338,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, dot1br_strip: bool | UndefinedType | None = Undefined, vn_tag_strip: bool | UndefinedType | None = Undefined
+                            self, *, dot1br_strip: bool | None | UndefinedType = Undefined, vn_tag_strip: bool | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             Encapsulation.
@@ -14368,9 +14368,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            tag: Tag | UndefinedType | None = Undefined,
-                            dot1q_dzgre_source: Dot1qDzgreSource | UndefinedType | None = Undefined,
-                            qinq_dzgre_source: QinqDzgreSource | UndefinedType | None = Undefined,
+                            tag: Tag | None | UndefinedType = Undefined,
+                            dot1q_dzgre_source: Dot1qDzgreSource | None | UndefinedType = Undefined,
+                            qinq_dzgre_source: QinqDzgreSource | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Identity.
@@ -14423,12 +14423,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mpls_pop_all: bool | UndefinedType | None = Undefined,
+                        mpls_pop_all: bool | None | UndefinedType = Undefined,
                         encapsulation: Encapsulation | UndefinedType = Undefined,
-                        allowed_vlan: str | UndefinedType | None = Undefined,
+                        allowed_vlan: str | None | UndefinedType = Undefined,
                         identity: Identity | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
-                        dot1q_remove_outer_vlan_tag: str | UndefinedType | None = Undefined,
+                        dot1q_remove_outer_vlan_tag: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Tool.
@@ -14527,16 +14527,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    mode: Mode | UndefinedType | None = Undefined,
-                    access_vlan: int | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    mode: Mode | None | UndefinedType = Undefined,
+                    access_vlan: int | None | UndefinedType = Undefined,
                     trunk: Trunk | UndefinedType = Undefined,
                     phone: Phone | UndefinedType = Undefined,
-                    pvlan_mapping: str | UndefinedType | None = Undefined,
+                    pvlan_mapping: str | None | UndefinedType = Undefined,
                     dot1q: Dot1q | UndefinedType = Undefined,
-                    source_interface: SourceInterface | UndefinedType | None = Undefined,
+                    source_interface: SourceInterface | None | UndefinedType = Undefined,
                     vlan_translations: VlanTranslations | UndefinedType = Undefined,
-                    vlan_forwarding_accept_all: bool | UndefinedType | None = Undefined,
+                    vlan_forwarding_accept_all: bool | None | UndefinedType = Undefined,
                     backup_link: BackupLink | UndefinedType = Undefined,
                     backup: Backup | UndefinedType = Undefined,
                     port_security: PortSecurity | UndefinedType = Undefined,
@@ -14753,10 +14753,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                     administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
                     srlgs: Srlgs | UndefinedType = Undefined,
-                    metric: int | UndefinedType | None = Undefined,
+                    metric: int | None | UndefinedType = Undefined,
                     bandwidth: Bandwidth | UndefinedType = Undefined,
                     min_delay_static: MinDelayStatic | UndefinedType = Undefined,
                     min_delay_dynamic: MinDelayDynamic | UndefinedType = Undefined,
@@ -15157,22 +15157,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                comment: str | UndefinedType | None = Undefined,
-                description: str | UndefinedType | None = Undefined,
-                shutdown: bool | UndefinedType | None = Undefined,
-                load_interval: int | UndefinedType | None = Undefined,
-                speed: Speed | UndefinedType | None = Undefined,
-                mtu: int | UndefinedType | None = Undefined,
-                l2_mtu: int | UndefinedType | None = Undefined,
-                l2_mru: int | UndefinedType | None = Undefined,
-                loop_protection: bool | UndefinedType | None = Undefined,
-                arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
+                comment: str | None | UndefinedType = Undefined,
+                description: str | None | UndefinedType = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
+                load_interval: int | None | UndefinedType = Undefined,
+                speed: Speed | None | UndefinedType = Undefined,
+                mtu: int | None | UndefinedType = Undefined,
+                l2_mtu: int | None | UndefinedType = Undefined,
+                l2_mru: int | None | UndefinedType = Undefined,
+                loop_protection: bool | None | UndefinedType = Undefined,
+                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 l2_protocol: L2Protocol | UndefinedType = Undefined,
-                mac_timestamp: MacTimestamp | UndefinedType | None = Undefined,
-                snmp_trap_link_change: bool | UndefinedType | None = Undefined,
+                mac_timestamp: MacTimestamp | None | UndefinedType = Undefined,
+                snmp_trap_link_change: bool | None | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 flowcontrol: Flowcontrol | UndefinedType = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 error_correction_encoding: ErrorCorrectionEncoding | UndefinedType = Undefined,
                 link_tracking_groups: LinkTrackingGroups | UndefinedType = Undefined,
@@ -15180,78 +15180,78 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
                 encapsulation_dot1q: EncapsulationDot1q | UndefinedType = Undefined,
                 encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
-                vlan_id: int | UndefinedType | None = Undefined,
-                ip_address: str | UndefinedType | None = Undefined,
+                vlan_id: int | None | UndefinedType = Undefined,
+                ip_address: str | None | UndefinedType = Undefined,
                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
-                ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | UndefinedType | None = Undefined,
-                dhcp_client_accept_default_route: bool | UndefinedType | None = Undefined,
-                dhcp_server_ipv4: bool | UndefinedType | None = Undefined,
-                dhcp_server_ipv6: bool | UndefinedType | None = Undefined,
+                ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | None | UndefinedType = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
+                dhcp_server_ipv4: bool | None | UndefinedType = Undefined,
+                dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 ip_nat: IpNat | UndefinedType = Undefined,
-                ipv6_enable: bool | UndefinedType | None = Undefined,
-                ipv6_address: str | UndefinedType | None = Undefined,
+                ipv6_enable: bool | None | UndefinedType = Undefined,
+                ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
-                ipv6_address_auto_config: bool | UndefinedType | None = Undefined,
-                ipv6_address_link_local: str | UndefinedType | None = Undefined,
-                ipv6_nd_ra_disabled: bool | UndefinedType | None = Undefined,
-                ipv6_nd_managed_config_flag: bool | UndefinedType | None = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
+                ipv6_address_link_local: str | None | UndefinedType = Undefined,
+                ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
+                ipv6_nd_managed_config_flag: bool | None | UndefinedType = Undefined,
                 ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
                 ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 ipv6_dhcp_relay_destinations: Ipv6DhcpRelayDestinations | UndefinedType = Undefined,
-                access_group_in: str | UndefinedType | None = Undefined,
-                access_group_out: str | UndefinedType | None = Undefined,
-                ipv6_access_group_in: str | UndefinedType | None = Undefined,
-                ipv6_access_group_out: str | UndefinedType | None = Undefined,
-                mac_access_group_in: str | UndefinedType | None = Undefined,
-                mac_access_group_out: str | UndefinedType | None = Undefined,
+                access_group_in: str | None | UndefinedType = Undefined,
+                access_group_out: str | None | UndefinedType = Undefined,
+                ipv6_access_group_in: str | None | UndefinedType = Undefined,
+                ipv6_access_group_out: str | None | UndefinedType = Undefined,
+                mac_access_group_in: str | None | UndefinedType = Undefined,
+                mac_access_group_out: str | None | UndefinedType = Undefined,
                 multicast: Multicast | UndefinedType = Undefined,
-                ospf_network_point_to_point: bool | UndefinedType | None = Undefined,
-                ospf_area: str | UndefinedType | None = Undefined,
-                ospf_cost: int | UndefinedType | None = Undefined,
-                ospf_authentication: OspfAuthentication | UndefinedType | None = Undefined,
-                ospf_authentication_key: str | UndefinedType | None = Undefined,
+                ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
+                ospf_area: str | None | UndefinedType = Undefined,
+                ospf_cost: int | None | UndefinedType = Undefined,
+                ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
+                ospf_authentication_key: str | None | UndefinedType = Undefined,
                 ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 pim: Pim | UndefinedType = Undefined,
                 mac_security: MacSecurity | UndefinedType = Undefined,
-                ntp_serve: bool | UndefinedType | None = Undefined,
+                ntp_serve: bool | None | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 channel_group: ChannelGroup | UndefinedType = Undefined,
-                isis_enable: str | UndefinedType | None = Undefined,
-                isis_bfd: bool | UndefinedType | None = Undefined,
-                isis_passive: bool | UndefinedType | None = Undefined,
-                isis_metric: int | UndefinedType | None = Undefined,
-                isis_network_point_to_point: bool | UndefinedType | None = Undefined,
-                isis_circuit_type: IsisCircuitType | UndefinedType | None = Undefined,
-                isis_hello_padding: bool | UndefinedType | None = Undefined,
+                isis_enable: str | None | UndefinedType = Undefined,
+                isis_bfd: bool | None | UndefinedType = Undefined,
+                isis_passive: bool | None | UndefinedType = Undefined,
+                isis_metric: int | None | UndefinedType = Undefined,
+                isis_network_point_to_point: bool | None | UndefinedType = Undefined,
+                isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
+                isis_hello_padding: bool | None | UndefinedType = Undefined,
                 isis_authentication: IsisAuthentication | UndefinedType = Undefined,
                 poe: Poe | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
-                profile: str | UndefinedType | None = Undefined,
+                profile: str | None | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
                 logging: Logging | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
                 dot1x: Dot1x | UndefinedType = Undefined,
-                service_profile: str | UndefinedType | None = Undefined,
+                service_profile: str | None | UndefinedType = Undefined,
                 shape: Shape | UndefinedType = Undefined,
                 qos: Qos | UndefinedType = Undefined,
-                spanning_tree_bpdufilter: SpanningTreeBpdufilter | UndefinedType | None = Undefined,
-                spanning_tree_bpduguard: SpanningTreeBpduguard | UndefinedType | None = Undefined,
+                spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
                 spanning_tree_bpduguard_rate_limit: SpanningTreeBpduguardRateLimit | UndefinedType = Undefined,
-                spanning_tree_guard: SpanningTreeGuard | UndefinedType | None = Undefined,
-                spanning_tree_portfast: SpanningTreePortfast | UndefinedType | None = Undefined,
-                spanning_tree_link_type: SpanningTreeLinkType | UndefinedType | None = Undefined,
-                vmtracer: bool | UndefinedType | None = Undefined,
+                spanning_tree_guard: SpanningTreeGuard | None | UndefinedType = Undefined,
+                spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
+                vmtracer: bool | None | UndefinedType = Undefined,
                 priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
-                cpu_traffic_policy_fallback_vrf: str | UndefinedType | None = Undefined,
+                cpu_traffic_policy_fallback_vrf: str | None | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
                 lacp_timer: LacpTimer | UndefinedType = Undefined,
-                lacp_port_priority: int | UndefinedType | None = Undefined,
+                lacp_port_priority: int | None | UndefinedType = Undefined,
                 transceiver: Transceiver | UndefinedType = Undefined,
-                ip_proxy_arp: bool | UndefinedType | None = Undefined,
+                ip_proxy_arp: bool | None | UndefinedType = Undefined,
                 traffic_policy: TrafficPolicy | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 ip_igmp_host_proxy: IpIgmpHostProxy | UndefinedType = Undefined,
@@ -15264,7 +15264,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 switchport: Switchport | UndefinedType = Undefined,
                 traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
                 monitor_link_flap_profiles: MonitorLinkFlapProfiles | UndefinedType = Undefined,
-                eos_cli: str | UndefinedType | None = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 EthernetInterfacesItem.
@@ -15447,9 +15447,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    bash_command: str | UndefinedType | None = Undefined,
-                    log: bool | UndefinedType | None = Undefined,
-                    increment_device_health_metric: str | UndefinedType | None = Undefined,
+                    bash_command: str | None | UndefinedType = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    increment_device_health_metric: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Actions.
@@ -15489,9 +15489,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    condition: str | UndefinedType | None = Undefined,
-                    granularity_per_source: bool | UndefinedType | None = Undefined,
-                    poll_interval: int | UndefinedType | None = Undefined,
+                    condition: str | None | UndefinedType = Undefined,
+                    granularity_per_source: bool | None | UndefinedType = Undefined,
+                    poll_interval: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TriggerOnCounters.
@@ -15523,7 +15523,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, poll_interval: int | UndefinedType | None = Undefined, regex: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, poll_interval: int | None | UndefinedType = Undefined, regex: str | None | UndefinedType = Undefined) -> None:
                     """
                     TriggerOnLogging.
 
@@ -15560,9 +15560,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     interface: str | UndefinedType = Undefined,
-                    ip: bool | UndefinedType | None = Undefined,
-                    ipv6: bool | UndefinedType | None = Undefined,
-                    operstatus: bool | UndefinedType | None = Undefined,
+                    ip: bool | None | UndefinedType = Undefined,
+                    ipv6: bool | None | UndefinedType = Undefined,
+                    operstatus: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TriggerOnIntf.
@@ -15621,12 +15621,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     operation: Operation | UndefinedType = Undefined,
-                    bgp_peer: str | UndefinedType | None = Undefined,
+                    bgp_peer: str | None | UndefinedType = Undefined,
                     action: Action | UndefinedType = Undefined,
-                    stage: Stage | UndefinedType | None = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
-                    interface: str | UndefinedType | None = Undefined,
-                    unit: str | UndefinedType | None = Undefined,
+                    stage: Stage | None | UndefinedType = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    interface: str | None | UndefinedType = Undefined,
+                    unit: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TriggerOnMaintenance.
@@ -15702,8 +15702,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 actions: Actions | UndefinedType = Undefined,
-                delay: int | UndefinedType | None = Undefined,
-                trigger: Trigger | UndefinedType | None = Undefined,
+                delay: int | None | UndefinedType = Undefined,
+                trigger: Trigger | None | UndefinedType = Undefined,
                 trigger_on_counters: TriggerOnCounters | UndefinedType = Undefined,
                 trigger_on_logging: TriggerOnLogging | UndefinedType = Undefined,
                 trigger_on_intf: TriggerOnIntf | UndefinedType = Undefined,
@@ -15754,7 +15754,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
                 """
                 EventMonitor.
 
@@ -15781,7 +15781,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4_ipv6: bool | UndefinedType | None = Undefined, mpls: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ipv4_ipv6: bool | None | UndefinedType = Undefined, mpls: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Encapsulation.
 
@@ -15810,9 +15810,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        ipv4: bool | UndefinedType | None = Undefined,
-                        ipv6: bool | UndefinedType | None = Undefined,
-                        threshold_minimum: int | UndefinedType | None = Undefined,
+                        ipv4: bool | None | UndefinedType = Undefined,
+                        ipv6: bool | None | UndefinedType = Undefined,
+                        threshold_minimum: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         HardwareOffload.
@@ -15846,9 +15846,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            mpls: bool | UndefinedType | None = Undefined,
-                            on_inactive_timeout: int | UndefinedType | None = Undefined,
-                            on_interval: int | UndefinedType | None = Undefined,
+                            mpls: bool | None | UndefinedType = Undefined,
+                            on_inactive_timeout: int | None | UndefinedType = Undefined,
+                            on_interval: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             RecordExport.
@@ -15881,7 +15881,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, host: str | UndefinedType = Undefined, port: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, host: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
                                 """
                                 CollectorsItem.
 
@@ -15912,7 +15912,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, ipfix_version: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, ipfix_version: int | None | UndefinedType = Undefined) -> None:
                                 """
                                 Format.
 
@@ -15950,8 +15950,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name: str | UndefinedType = Undefined,
                             collectors: Collectors | UndefinedType = Undefined,
                             format: Format | UndefinedType = Undefined,
-                            local_interface: str | UndefinedType | None = Undefined,
-                            template_interval: int | UndefinedType | None = Undefined,
+                            local_interface: str | None | UndefinedType = Undefined,
+                            template_interval: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             ExportersItem.
@@ -15996,7 +15996,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        table_size: int | UndefinedType | None = Undefined,
+                        table_size: int | None | UndefinedType = Undefined,
                         record_export: RecordExport | UndefinedType = Undefined,
                         exporters: Exporters | UndefinedType = Undefined,
                     ) -> None:
@@ -16043,10 +16043,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     encapsulation: Encapsulation | UndefinedType = Undefined,
-                    sample: int | UndefinedType | None = Undefined,
+                    sample: int | None | UndefinedType = Undefined,
                     hardware_offload: HardwareOffload | UndefinedType = Undefined,
                     trackers: Trackers | UndefinedType = Undefined,
-                    shutdown: bool | UndefinedType | None = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Sampled.
@@ -16075,7 +16075,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, format_ipfix_standard_timestamps_counters: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, format_ipfix_standard_timestamps_counters: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Record.
 
@@ -16102,7 +16102,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, on_inactive_timeout: int | UndefinedType | None = Undefined, on_interval: int | UndefinedType | None = Undefined
+                            self, *, on_inactive_timeout: int | None | UndefinedType = Undefined, on_interval: int | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             RecordExport.
@@ -16134,7 +16134,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, host: str | UndefinedType = Undefined, port: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, host: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
                                 """
                                 CollectorsItem.
 
@@ -16165,7 +16165,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, ipfix_version: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, ipfix_version: int | None | UndefinedType = Undefined) -> None:
                                 """
                                 Format.
 
@@ -16203,8 +16203,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name: str | UndefinedType = Undefined,
                             collectors: Collectors | UndefinedType = Undefined,
                             format: Format | UndefinedType = Undefined,
-                            local_interface: str | UndefinedType | None = Undefined,
-                            template_interval: int | UndefinedType | None = Undefined,
+                            local_interface: str | None | UndefinedType = Undefined,
+                            template_interval: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             ExportersItem.
@@ -16279,7 +16279,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     record: Record | UndefinedType = Undefined,
                     trackers: Trackers | UndefinedType = Undefined,
-                    shutdown: bool | UndefinedType | None = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Hardware.
@@ -16310,7 +16310,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4_ipv6: bool | UndefinedType | None = Undefined, mpls: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ipv4_ipv6: bool | None | UndefinedType = Undefined, mpls: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Encapsulation.
 
@@ -16340,7 +16340,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, on_inactive_timeout: int | UndefinedType | None = Undefined, on_interval: int | UndefinedType | None = Undefined
+                            self, *, on_inactive_timeout: int | None | UndefinedType = Undefined, on_interval: int | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             RecordExport.
@@ -16372,7 +16372,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, host: str | UndefinedType = Undefined, port: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, host: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
                                 """
                                 CollectorsItem.
 
@@ -16423,10 +16423,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             name: str | UndefinedType = Undefined,
                             collectors: Collectors | UndefinedType = Undefined,
-                            format: Format | UndefinedType | None = Undefined,
-                            local_interface: str | UndefinedType | None = Undefined,
-                            template_interval: int | UndefinedType | None = Undefined,
-                            dscp: int | UndefinedType | None = Undefined,
+                            format: Format | None | UndefinedType = Undefined,
+                            local_interface: str | None | UndefinedType = Undefined,
+                            template_interval: int | None | UndefinedType = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             ExportersItem.
@@ -16508,9 +16508,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     encapsulation: Encapsulation | UndefinedType = Undefined,
-                    sample_limit: int | UndefinedType | None = Undefined,
+                    sample_limit: int | None | UndefinedType = Undefined,
                     trackers: Trackers | UndefinedType = Undefined,
-                    shutdown: bool | UndefinedType | None = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     MirrorOnDrop.
@@ -16571,7 +16571,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, mechanism: Mechanism | UndefinedType | None = Undefined, update_default_result_permit: bool | UndefinedType | None = Undefined
+                    self, *, mechanism: Mechanism | None | UndefinedType = Undefined, update_default_result_permit: bool | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     AccessList.
@@ -16595,7 +16595,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, speed_group: str | UndefinedType = Undefined, serdes: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, speed_group: str | UndefinedType = Undefined, serdes: str | None | UndefinedType = Undefined) -> None:
                     """
                     SpeedGroupsItem.
 
@@ -16625,7 +16625,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, port_group: str | UndefinedType = Undefined, select: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, port_group: str | UndefinedType = Undefined, select: str | None | UndefinedType = Undefined) -> None:
                     """
                     PortGroupsItem.
 
@@ -16767,13 +16767,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: Name | UndefinedType = Undefined,
-                    direction: Direction | UndefinedType | None = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
-                    address_type: AddressType | UndefinedType | None = Undefined,
-                    layer3: bool | UndefinedType | None = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
-                    prefix: str | UndefinedType | None = Undefined,
-                    units_packets: bool | UndefinedType | None = Undefined,
+                    address_type: AddressType | None | UndefinedType = Undefined,
+                    layer3: bool | None | UndefinedType = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    prefix: str | None | UndefinedType = Undefined,
+                    units_packets: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeaturesItem.
@@ -16944,7 +16944,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, shutdown: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, shutdown: bool | None | UndefinedType = Undefined) -> None:
                     """
                     Ethernet.
 
@@ -16963,7 +16963,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, ethernet: Ethernet | UndefinedType = Undefined, mtu: int | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, ethernet: Ethernet | UndefinedType = Undefined, mtu: int | None | UndefinedType = Undefined) -> None:
                 """
                 InterfaceDefaults.
 
@@ -17207,14 +17207,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    sequence: int | UndefinedType | None = Undefined,
-                    remark: str | UndefinedType | None = Undefined,
-                    action: Action | UndefinedType | None = Undefined,
-                    protocol: str | UndefinedType | None = Undefined,
-                    source: str | UndefinedType | None = Undefined,
-                    destination: str | UndefinedType | None = Undefined,
-                    fragments: bool | UndefinedType | None = Undefined,
-                    ttl: int | UndefinedType | None = Undefined,
+                    sequence: int | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    protocol: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    fragments: bool | None | UndefinedType = Undefined,
+                    ttl: int | None | UndefinedType = Undefined,
                     ttl_match: TtlMatch | UndefinedType = Undefined,
                     vlan_inner: bool | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
@@ -17222,16 +17222,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
-                    log: bool | UndefinedType | None = Undefined,
-                    icmp_type: str | UndefinedType | None = Undefined,
-                    icmp_code: str | UndefinedType | None = Undefined,
-                    nexthop_group: str | UndefinedType | None = Undefined,
-                    tracked: bool | UndefinedType | None = Undefined,
-                    dscp: str | UndefinedType | None = Undefined,
-                    vlan_number: int | UndefinedType | None = Undefined,
-                    vlan_mask: str | UndefinedType | None = Undefined,
-                    inner_vlan_number: int | UndefinedType | None = Undefined,
-                    inner_vlan_mask: str | UndefinedType | None = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    icmp_type: str | None | UndefinedType = Undefined,
+                    icmp_code: str | None | UndefinedType = Undefined,
+                    nexthop_group: str | None | UndefinedType = Undefined,
+                    tracked: bool | None | UndefinedType = Undefined,
+                    dscp: str | None | UndefinedType = Undefined,
+                    vlan_number: int | None | UndefinedType = Undefined,
+                    vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -17317,9 +17317,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                counters_per_entry: bool | UndefinedType | None = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
                 entries: Entries | UndefinedType = Undefined,
-                permit_response_traffic: PermitResponseTraffic | UndefinedType | None = Undefined,
+                permit_response_traffic: PermitResponseTraffic | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 IpAccessListsItem.
@@ -17390,7 +17390,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     action: Action | UndefinedType = Undefined,
                     communities: Communities | UndefinedType = Undefined,
-                    regexp: str | UndefinedType | None = Undefined,
+                    regexp: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -17478,9 +17478,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                always_on: bool | UndefinedType | None = Undefined,
-                all_subnets: bool | UndefinedType | None = Undefined,
-                information_option: bool | UndefinedType | None = Undefined,
+                always_on: bool | None | UndefinedType = Undefined,
+                all_subnets: bool | None | UndefinedType = Undefined,
+                information_option: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 IpDhcpRelay.
@@ -17520,9 +17520,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    circuit_id_type: str | UndefinedType | None = Undefined,
-                    circuit_id_format: CircuitIdFormat | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    circuit_id_type: str | None | UndefinedType = Undefined,
+                    circuit_id_format: CircuitIdFormat | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     InformationOption.
@@ -17563,10 +17563,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType | None = Undefined,
-                bridging: bool | UndefinedType | None = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
+                bridging: bool | None | UndefinedType = Undefined,
                 information_option: InformationOption | UndefinedType = Undefined,
-                vlan: str | UndefinedType | None = Undefined,
+                vlan: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 IpDhcpSnooping.
@@ -17598,7 +17598,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                     """
                     SourceInterfacesItem.
 
@@ -17809,7 +17809,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, source_interface: str | UndefinedType | None = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
                 IpFtpClient.
 
@@ -17844,7 +17844,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, profile: Profile | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, profile: Profile | None | UndefinedType = Undefined) -> None:
                             """
                             Prefixes.
 
@@ -17901,7 +17901,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, flow_set_size: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, flow_set_size: int | None | UndefinedType = Undefined) -> None:
                             """
                             Dynamic.
 
@@ -18065,7 +18065,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, source_interface: str | UndefinedType | None = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
                 IpHttpClient.
 
@@ -18115,15 +18115,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    address: str | UndefinedType | None = Undefined,
-                    query_interval: int | UndefinedType | None = Undefined,
-                    max_response_time: int | UndefinedType | None = Undefined,
-                    last_member_query_interval: int | UndefinedType | None = Undefined,
-                    last_member_query_count: int | UndefinedType | None = Undefined,
-                    startup_query_interval: int | UndefinedType | None = Undefined,
-                    startup_query_count: int | UndefinedType | None = Undefined,
-                    version: int | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    address: str | None | UndefinedType = Undefined,
+                    query_interval: int | None | UndefinedType = Undefined,
+                    max_response_time: int | None | UndefinedType = Undefined,
+                    last_member_query_interval: int | None | UndefinedType = Undefined,
+                    last_member_query_count: int | None | UndefinedType = Undefined,
+                    startup_query_interval: int | None | UndefinedType = Undefined,
+                    startup_query_count: int | None | UndefinedType = Undefined,
+                    version: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Querier.
@@ -18177,15 +18177,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        address: str | UndefinedType | None = Undefined,
-                        query_interval: int | UndefinedType | None = Undefined,
-                        max_response_time: int | UndefinedType | None = Undefined,
-                        last_member_query_interval: int | UndefinedType | None = Undefined,
-                        last_member_query_count: int | UndefinedType | None = Undefined,
-                        startup_query_interval: int | UndefinedType | None = Undefined,
-                        startup_query_count: int | UndefinedType | None = Undefined,
-                        version: int | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        address: str | None | UndefinedType = Undefined,
+                        query_interval: int | None | UndefinedType = Undefined,
+                        max_response_time: int | None | UndefinedType = Undefined,
+                        last_member_query_interval: int | None | UndefinedType = Undefined,
+                        last_member_query_count: int | None | UndefinedType = Undefined,
+                        startup_query_interval: int | None | UndefinedType = Undefined,
+                        startup_query_count: int | None | UndefinedType = Undefined,
+                        version: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Querier.
@@ -18230,11 +18230,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    enabled: bool | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                     querier: Querier | UndefinedType = Undefined,
-                    max_groups: int | UndefinedType | None = Undefined,
-                    fast_leave: bool | UndefinedType | None = Undefined,
-                    proxy: bool | UndefinedType | None = Undefined,
+                    max_groups: int | None | UndefinedType = Undefined,
+                    fast_leave: bool | None | UndefinedType = Undefined,
+                    proxy: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VlansItem.
@@ -18292,12 +18292,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 globally_enabled: bool | UndefinedType = Undefined,
-                robustness_variable: int | UndefinedType | None = Undefined,
-                restart_query_interval: int | UndefinedType | None = Undefined,
-                interface_restart_query: int | UndefinedType | None = Undefined,
-                fast_leave: bool | UndefinedType | None = Undefined,
+                robustness_variable: int | None | UndefinedType = Undefined,
+                restart_query_interval: int | None | UndefinedType = Undefined,
+                interface_restart_query: int | None | UndefinedType = Undefined,
+                fast_leave: bool | None | UndefinedType = Undefined,
                 querier: Querier | UndefinedType = Undefined,
-                proxy: bool | UndefinedType | None = Undefined,
+                proxy: bool | None | UndefinedType = Undefined,
                 vlans: Vlans | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -18358,7 +18358,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     action: Action | UndefinedType = Undefined,
                     large_communities: LargeCommunities | UndefinedType = Undefined,
-                    regexp: str | UndefinedType | None = Undefined,
+                    regexp: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -18443,7 +18443,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, priority: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined) -> None:
                         """
                         ServersItem.
 
@@ -18531,7 +18531,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, priority: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined) -> None:
                         """
                         NameServersItem.
 
@@ -18593,7 +18593,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, ip_address: str | UndefinedType = Undefined, vrf: str | UndefinedType = Undefined, priority: int | UndefinedType | None = Undefined
+                    self, *, ip_address: str | UndefinedType = Undefined, vrf: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     NameServersItem.
@@ -18646,7 +18646,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 name_servers: NameServers | UndefinedType = Undefined,
-                dns_domain: str | UndefinedType | None = Undefined,
+                dns_domain: str | None | UndefinedType = Undefined,
                 ip_domain_lists: IpDomainLists | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -18698,9 +18698,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             access_list: str | UndefinedType = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
                             pool_name: str | UndefinedType = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DynamicItem.
@@ -18768,16 +18768,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            access_list: str | UndefinedType | None = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
-                            direction: Direction | UndefinedType | None = Undefined,
-                            group: int | UndefinedType | None = Undefined,
-                            original_ip: str | UndefinedType | None = Undefined,
-                            original_port: int | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
-                            protocol: Protocol | UndefinedType | None = Undefined,
+                            access_list: str | None | UndefinedType = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
+                            group: int | None | UndefinedType = Undefined,
+                            original_ip: str | None | UndefinedType = Undefined,
+                            original_port: int | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
-                            translated_port: int | UndefinedType | None = Undefined,
+                            translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             StaticItem.
@@ -18860,10 +18860,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             access_list: str | UndefinedType = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
                             nat_type: NatType | UndefinedType = Undefined,
-                            pool_name: str | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
+                            pool_name: str | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DynamicItem.
@@ -18935,16 +18935,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            access_list: str | UndefinedType | None = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
-                            direction: Direction | UndefinedType | None = Undefined,
-                            group: int | UndefinedType | None = Undefined,
-                            original_ip: str | UndefinedType | None = Undefined,
-                            original_port: int | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
-                            protocol: Protocol | UndefinedType | None = Undefined,
+                            access_list: str | None | UndefinedType = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
+                            group: int | None | UndefinedType = Undefined,
+                            original_ip: str | None | UndefinedType = Undefined,
+                            original_port: int | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
-                            translated_port: int | UndefinedType | None = Undefined,
+                            translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             StaticItem.
@@ -19011,7 +19011,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
                     destination: Destination | UndefinedType = Undefined,
                     source: Source | UndefinedType = Undefined,
                 ) -> None:
@@ -19069,10 +19069,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        first_ip: str | UndefinedType | None = Undefined,
-                        last_ip: str | UndefinedType | None = Undefined,
-                        first_port: int | UndefinedType | None = Undefined,
-                        last_port: int | UndefinedType | None = Undefined,
+                        first_ip: str | None | UndefinedType = Undefined,
+                        last_ip: str | None | UndefinedType = Undefined,
+                        first_port: int | None | UndefinedType = Undefined,
+                        last_port: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         RangesItem.
@@ -19124,9 +19124,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     type: Type | UndefinedType = Undefined,
-                    prefix_length: int | UndefinedType | None = Undefined,
+                    prefix_length: int | None | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
-                    utilization_log_threshold: int | UndefinedType | None = Undefined,
+                    utilization_log_threshold: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     PoolsItem.
@@ -19167,9 +19167,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        first_port: int | UndefinedType | None = Undefined,
-                        last_port: int | UndefinedType | None = Undefined,
-                        split_disabled: bool | UndefinedType | None = Undefined,
+                        first_port: int | None | UndefinedType = Undefined,
+                        last_port: int | None | UndefinedType = Undefined,
+                        split_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PortRange.
@@ -19208,12 +19208,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    description: str | UndefinedType | None = Undefined,
-                    expiry_interval: int | UndefinedType | None = Undefined,
-                    local_interface: str | UndefinedType | None = Undefined,
-                    peer_address: str | UndefinedType | None = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    expiry_interval: int | None | UndefinedType = Undefined,
+                    local_interface: str | None | UndefinedType = Undefined,
+                    peer_address: str | None | UndefinedType = Undefined,
                     port_range: PortRange | UndefinedType = Undefined,
-                    shutdown: bool | UndefinedType | None = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Synchronization.
@@ -19243,7 +19243,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, any: bool | UndefinedType | None = Undefined, hash_field_source_ip: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, any: bool | None | UndefinedType = Undefined, hash_field_source_ip: bool | None | UndefinedType = Undefined) -> None:
                         """
                         AddressSelection.
 
@@ -19267,7 +19267,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, percentage: int | UndefinedType | None = Undefined, host_percentage: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, percentage: int | None | UndefinedType = Undefined, host_percentage: int | None | UndefinedType = Undefined) -> None:
                         """
                         LowMark.
 
@@ -19324,8 +19324,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        limit: int | UndefinedType | None = Undefined,
-                        host_limit: int | UndefinedType | None = Undefined,
+                        limit: int | None | UndefinedType = Undefined,
+                        host_limit: int | None | UndefinedType = Undefined,
                         ip_limits: IpLimits | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -19395,7 +19395,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     address_selection: AddressSelection | UndefinedType = Undefined,
-                    counters: bool | UndefinedType | None = Undefined,
+                    counters: bool | None | UndefinedType = Undefined,
                     low_mark: LowMark | UndefinedType = Undefined,
                     max_entries: MaxEntries | UndefinedType = Undefined,
                     timeouts: Timeouts | UndefinedType = Undefined,
@@ -19438,7 +19438,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                kernel_buffer_size: int | UndefinedType | None = Undefined,
+                kernel_buffer_size: int | None | UndefinedType = Undefined,
                 profiles: Profiles | UndefinedType = Undefined,
                 pools: Pools | UndefinedType = Undefined,
                 synchronization: Synchronization | UndefinedType = Undefined,
@@ -19504,7 +19504,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, source_interface: str | UndefinedType | None = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
                 IpRadius.
 
@@ -19532,7 +19532,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                 """
                 IpRadiusSourceInterfacesItem.
 
@@ -19598,12 +19598,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    local_id: str | UndefinedType | None = Undefined,
-                    local_id_fqdn: str | UndefinedType | None = Undefined,
-                    ike_lifetime: int | UndefinedType | None = Undefined,
-                    encryption: Encryption | UndefinedType | None = Undefined,
-                    dh_group: DhGroup | UndefinedType | None = Undefined,
-                    integrity: Integrity | UndefinedType | None = Undefined,
+                    local_id: str | None | UndefinedType = Undefined,
+                    local_id_fqdn: str | None | UndefinedType = Undefined,
+                    ike_lifetime: int | None | UndefinedType = Undefined,
+                    encryption: Encryption | None | UndefinedType = Undefined,
+                    dh_group: DhGroup | None | UndefinedType = Undefined,
+                    integrity: Integrity | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     IkePoliciesItem.
@@ -19659,7 +19659,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, value: int | UndefinedType | None = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, value: int | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         SaLifetime.
 
@@ -19691,7 +19691,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, integrity: Integrity | UndefinedType | None = Undefined, encryption: Encryption | UndefinedType | None = Undefined
+                        self, *, integrity: Integrity | None | UndefinedType = Undefined, encryption: Encryption | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Esp.
@@ -19723,7 +19723,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     sa_lifetime: SaLifetime | UndefinedType = Undefined,
                     esp: Esp | UndefinedType = Undefined,
-                    pfs_dh_group: PfsDhGroup | UndefinedType | None = Undefined,
+                    pfs_dh_group: PfsDhGroup | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SaPoliciesItem.
@@ -19836,13 +19836,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    ike_policy: str | UndefinedType | None = Undefined,
-                    sa_policy: str | UndefinedType | None = Undefined,
-                    connection: Connection | UndefinedType | None = Undefined,
-                    shared_key: str | UndefinedType | None = Undefined,
+                    ike_policy: str | None | UndefinedType = Undefined,
+                    sa_policy: str | None | UndefinedType = Undefined,
+                    connection: Connection | None | UndefinedType = Undefined,
+                    shared_key: str | None | UndefinedType = Undefined,
                     dpd: Dpd | UndefinedType = Undefined,
-                    mode: Mode | UndefinedType | None = Undefined,
-                    flow_parallelization_encapsulation_udp: bool | UndefinedType | None = Undefined,
+                    mode: Mode | None | UndefinedType = Undefined,
+                    flow_parallelization_encapsulation_udp: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ProfilesItem.
@@ -19884,7 +19884,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, profile: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
                     """
                     KeyController.
 
@@ -19947,7 +19947,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 profiles: Profiles | UndefinedType = Undefined,
                 key_controller: KeyController | UndefinedType = Undefined,
                 hardware_encryption_disabled: bool | UndefinedType = Undefined,
-                connection_tx_interface_match_source_ip: bool | UndefinedType | None = Undefined,
+                connection_tx_interface_match_source_ip: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 IpSecurity.
@@ -20024,7 +20024,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, source_interface: str | UndefinedType | None = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
                 IpSshClient.
 
@@ -20086,7 +20086,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, source_interface: str | UndefinedType | None = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
                 IpTacacs.
 
@@ -20113,7 +20113,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                 """
                 IpTacacsSourceInterfacesItem.
 
@@ -20176,7 +20176,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, source_interface: str | UndefinedType | None = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
                 IpTelnetClient.
 
@@ -20238,7 +20238,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, source_interface: str | UndefinedType | None = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
                 IpTftpClient.
 
@@ -20377,30 +20377,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    protocol: str | UndefinedType | None = Undefined,
-                    source: str | UndefinedType | None = Undefined,
-                    destination: str | UndefinedType | None = Undefined,
-                    hop_limit: int | UndefinedType | None = Undefined,
+                    protocol: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    hop_limit: int | None | UndefinedType = Undefined,
                     hop_limit_match: HopLimitMatch | UndefinedType = Undefined,
-                    dscp_mask: str | UndefinedType | None = Undefined,
-                    sequence: int | UndefinedType | None = Undefined,
-                    remark: str | UndefinedType | None = Undefined,
-                    action: Action | UndefinedType | None = Undefined,
+                    dscp_mask: str | None | UndefinedType = Undefined,
+                    sequence: int | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
-                    log: bool | UndefinedType | None = Undefined,
-                    icmp_type: str | UndefinedType | None = Undefined,
-                    icmp_code: str | UndefinedType | None = Undefined,
-                    nexthop_group: str | UndefinedType | None = Undefined,
-                    tracked: bool | UndefinedType | None = Undefined,
-                    dscp: str | UndefinedType | None = Undefined,
-                    vlan_number: int | UndefinedType | None = Undefined,
-                    vlan_mask: str | UndefinedType | None = Undefined,
-                    inner_vlan_number: int | UndefinedType | None = Undefined,
-                    inner_vlan_mask: str | UndefinedType | None = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    icmp_type: str | None | UndefinedType = Undefined,
+                    icmp_code: str | None | UndefinedType = Undefined,
+                    nexthop_group: str | None | UndefinedType = Undefined,
+                    tracked: bool | None | UndefinedType = Undefined,
+                    dscp: str | None | UndefinedType = Undefined,
+                    vlan_number: int | None | UndefinedType = Undefined,
+                    vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -20513,7 +20513,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                counters_per_entry: bool | UndefinedType | None = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
                 entries: Entries | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
@@ -20563,7 +20563,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, link_layer_address: bool | UndefinedType | None = Undefined, remote_id_format: RemoteIdFormat | UndefinedType | None = Undefined
+                    self, *, link_layer_address: bool | None | UndefinedType = Undefined, remote_id_format: RemoteIdFormat | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     Option.
@@ -20599,8 +20599,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                always_on: bool | UndefinedType | None = Undefined,
-                all_subnets: bool | UndefinedType | None = Undefined,
+                always_on: bool | None | UndefinedType = Undefined,
+                all_subnets: bool | None | UndefinedType = Undefined,
                 option: Option | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -20637,7 +20637,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, profile: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
                             """
                             Prefixes.
 
@@ -20724,7 +20724,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     ipv6_address: str | UndefinedType = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
                     interface: str | UndefinedType = Undefined,
                     mac_address: str | UndefinedType = Undefined,
                 ) -> None:
@@ -20762,7 +20762,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, refresh_delay: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, refresh_delay: int | None | UndefinedType = Undefined) -> None:
                     """
                     Persistent.
 
@@ -20897,8 +20897,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Bgp.
@@ -20928,8 +20928,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Connected.
@@ -20967,9 +20967,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: IsisLevel | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Isis.
@@ -21003,8 +21003,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchExternal.
@@ -21028,7 +21028,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 MatchInternal.
 
@@ -21050,7 +21050,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 MatchNssaExternal.
 
@@ -21097,11 +21097,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             match_external: MatchExternal | UndefinedType = Undefined,
                             match_internal: MatchInternal | UndefinedType = Undefined,
                             match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospfv3.
@@ -21142,8 +21142,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Static.
@@ -21167,7 +21167,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Dhcp.
 
@@ -21257,10 +21257,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
-                    router_id: str | UndefinedType | None = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    router_id: str | None | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
-                    auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ProcessIdsItem.
@@ -21357,7 +21357,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                counters_per_entry: bool | UndefinedType | None = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -21413,15 +21413,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                vrf: str | UndefinedType | None = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
                 prefix: str | UndefinedType = Undefined,
-                interface: str | UndefinedType | None = Undefined,
-                next_hop: str | UndefinedType | None = Undefined,
-                track_bfd: bool | UndefinedType | None = Undefined,
-                distance: int | UndefinedType | None = Undefined,
-                tag: int | UndefinedType | None = Undefined,
-                name: str | UndefinedType | None = Undefined,
-                metric: int | UndefinedType | None = Undefined,
+                interface: str | None | UndefinedType = Undefined,
+                next_hop: str | None | UndefinedType = Undefined,
+                track_bfd: bool | None | UndefinedType = Undefined,
+                distance: int | None | UndefinedType = Undefined,
+                tag: int | None | UndefinedType = Undefined,
+                name: str | None | UndefinedType = Undefined,
+                metric: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Ipv6StaticRoutesItem.
@@ -21456,7 +21456,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, software_forwarding_ecmp: bool | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, software_forwarding_ecmp: bool | None | UndefinedType = Undefined) -> None:
                 """
                 Kernel.
 
@@ -21495,9 +21495,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: Name | UndefinedType = Undefined,
-                        forward: bool | UndefinedType | None = Undefined,
-                        tagged_forward: bool | UndefinedType | None = Undefined,
-                        untagged_forward: bool | UndefinedType | None = Undefined,
+                        forward: bool | None | UndefinedType = Undefined,
+                        tagged_forward: bool | None | UndefinedType = Undefined,
+                        untagged_forward: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ProtocolsItem.
@@ -21622,7 +21622,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, default: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, default: bool | None | UndefinedType = Undefined) -> None:
                     """
                     RateLimit.
 
@@ -21657,7 +21657,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 port_id: PortId | UndefinedType = Undefined,
                 rate_limit: RateLimit | UndefinedType = Undefined,
-                system_priority: int | UndefinedType | None = Undefined,
+                system_priority: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Lacp.
@@ -21692,8 +21692,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                links_minimum: int | UndefinedType | None = Undefined,
-                recovery_delay: int | UndefinedType | None = Undefined,
+                links_minimum: int | None | UndefinedType = Undefined,
+                recovery_delay: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 LinkTrackingGroupsItem.
@@ -21740,7 +21740,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: Name | UndefinedType = Undefined, transmit: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: Name | UndefinedType = Undefined, transmit: bool | None | UndefinedType = Undefined) -> None:
                     """
                     TlvsItem.
 
@@ -21785,14 +21785,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                timer: int | UndefinedType | None = Undefined,
-                timer_reinitialization: int | UndefinedType | None = Undefined,
-                holdtime: int | UndefinedType | None = Undefined,
-                management_address: str | UndefinedType | None = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
-                receive_packet_tagged_drop: bool | UndefinedType | None = Undefined,
+                timer: int | None | UndefinedType = Undefined,
+                timer_reinitialization: int | None | UndefinedType = Undefined,
+                holdtime: int | None | UndefinedType = Undefined,
+                management_address: str | None | UndefinedType = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
+                receive_packet_tagged_drop: bool | None | UndefinedType = Undefined,
                 tlvs: Tlvs | UndefinedType = Undefined,
-                run: bool | UndefinedType | None = Undefined,
+                run: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Lldp.
@@ -21922,7 +21922,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 dst_port: int | UndefinedType = Undefined,
-                                payload_bytes: str | UndefinedType | None = Undefined,
+                                payload_bytes: str | None | UndefinedType = Undefined,
                                 match: Match | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -22046,7 +22046,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, monitor: bool | UndefinedType | None = Undefined, source_learning_aging_timeout: int | UndefinedType | None = Undefined
+                        self, *, monitor: bool | None | UndefinedType = Undefined, source_learning_aging_timeout: int | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Flow.
@@ -22077,7 +22077,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, dscp: int | UndefinedType | None = Undefined, traffic_class: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, dscp: int | None | UndefinedType = Undefined, traffic_class: int | None | UndefinedType = Undefined) -> None:
                                 """
                                 ExhaustionAction.
 
@@ -22107,8 +22107,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            limit: int | UndefinedType | None = Undefined,
-                            warning: int | UndefinedType | None = Undefined,
+                            limit: int | None | UndefinedType = Undefined,
+                            warning: int | None | UndefinedType = Undefined,
                             exhaustion_action: ExhaustionAction | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -22148,8 +22148,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         group: str | UndefinedType = Undefined,
-                        balance_factor: int | UndefinedType | None = Undefined,
-                        interface: str | UndefinedType | None = Undefined,
+                        balance_factor: int | None | UndefinedType = Undefined,
+                        interface: str | None | UndefinedType = Undefined,
                         flow: Flow | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -22212,10 +22212,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    destination_grouping: DestinationGrouping | UndefinedType | None = Undefined,
-                    prefix_length: int | UndefinedType | None = Undefined,
-                    forwarding_type: ForwardingType | UndefinedType | None = Undefined,
-                    load_balance_method_flow_round_robin: bool | UndefinedType | None = Undefined,
+                    destination_grouping: DestinationGrouping | None | UndefinedType = Undefined,
+                    prefix_length: int | None | UndefinedType = Undefined,
+                    forwarding_type: ForwardingType | None | UndefinedType = Undefined,
+                    load_balance_method_flow_round_robin: bool | None | UndefinedType = Undefined,
                     flow: Flow | UndefinedType = Undefined,
                     port_groups: PortGroups | UndefinedType = Undefined,
                 ) -> None:
@@ -22279,7 +22279,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, default: int | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, default: int | None | UndefinedType = Undefined) -> None:
                 """
                 LoadInterval.
 
@@ -22340,14 +22340,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                disabled: bool | UndefinedType | None = Undefined,
-                privilege: int | UndefinedType | None = Undefined,
-                role: str | UndefinedType | None = Undefined,
-                sha512_password: str | UndefinedType | None = Undefined,
-                no_password: bool | UndefinedType | None = Undefined,
-                ssh_key: str | UndefinedType | None = Undefined,
-                secondary_ssh_key: str | UndefinedType | None = Undefined,
-                shell: Shell | UndefinedType | None = Undefined,
+                disabled: bool | None | UndefinedType = Undefined,
+                privilege: int | None | UndefinedType = Undefined,
+                role: str | None | UndefinedType = Undefined,
+                sha512_password: str | None | UndefinedType = Undefined,
+                no_password: bool | None | UndefinedType = Undefined,
+                ssh_key: str | None | UndefinedType = Undefined,
+                secondary_ssh_key: str | None | UndefinedType = Undefined,
+                shell: Shell | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 LocalUsersItem.
@@ -22400,7 +22400,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, size: int | UndefinedType | None = Undefined, level: Level | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, size: int | None | UndefinedType = Undefined, level: Level | None | UndefinedType = Undefined) -> None:
                     """
                     Buffered.
 
@@ -22467,10 +22467,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    timestamp: Timestamp | UndefinedType | None = Undefined,
-                    hostname: Hostname | UndefinedType | None = Undefined,
-                    sequence_numbers: bool | UndefinedType | None = Undefined,
-                    rfc5424: bool | UndefinedType | None = Undefined,
+                    timestamp: Timestamp | None | UndefinedType = Undefined,
+                    hostname: Hostname | None | UndefinedType = Undefined,
+                    sequence_numbers: bool | None | UndefinedType = Undefined,
+                    rfc5424: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Format.
@@ -22549,7 +22549,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: str | UndefinedType = Undefined,
                         protocol: Protocol | UndefinedType = Undefined,
                         ports: Ports | UndefinedType = Undefined,
-                        ssl_profile: str | UndefinedType | None = Undefined,
+                        ssl_profile: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         HostsItem.
@@ -22594,8 +22594,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    source_interface: str | UndefinedType | None = Undefined,
-                    local_interface: str | UndefinedType | None = Undefined,
+                    source_interface: str | None | UndefinedType = Undefined,
+                    local_interface: str | None | UndefinedType = Undefined,
                     hosts: Hosts | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -22715,7 +22715,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, field_global: bool | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, field_global: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                             """
                             Discards.
 
@@ -22762,8 +22762,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    congestion_drops_interval: int | UndefinedType | None = Undefined,
-                    global_link_status: bool | UndefinedType | None = Undefined,
+                    congestion_drops_interval: int | None | UndefinedType = Undefined,
+                    global_link_status: bool | None | UndefinedType = Undefined,
                     storm_control: StormControl | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -22901,16 +22901,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                console: Console | UndefinedType | None = Undefined,
-                monitor: Monitor | UndefinedType | None = Undefined,
+                console: Console | None | UndefinedType = Undefined,
+                monitor: Monitor | None | UndefinedType = Undefined,
                 buffered: Buffered | UndefinedType = Undefined,
-                repeat_messages: bool | UndefinedType | None = Undefined,
-                trap: Trap | UndefinedType | None = Undefined,
+                repeat_messages: bool | None | UndefinedType = Undefined,
+                trap: Trap | None | UndefinedType = Undefined,
                 synchronous: Synchronous | UndefinedType = Undefined,
                 format: Format | UndefinedType = Undefined,
-                facility: Facility | UndefinedType | None = Undefined,
-                source_interface: str | UndefinedType | None = Undefined,
-                local_interface: str | UndefinedType | None = Undefined,
+                facility: Facility | None | UndefinedType = Undefined,
+                source_interface: str | None | UndefinedType = Undefined,
+                local_interface: str | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 policy: Policy | UndefinedType = Undefined,
                 event: Event | UndefinedType = Undefined,
@@ -22973,7 +22973,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interface: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interface: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Ldp.
 
@@ -23012,7 +23012,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ipv4_index: int | UndefinedType | None = Undefined, ipv6_index: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, ipv4_index: int | None | UndefinedType = Undefined, ipv6_index: int | None | UndefinedType = Undefined) -> None:
                     """
                     NodeSegment.
 
@@ -23093,26 +23093,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                description: str | UndefinedType | None = Undefined,
-                shutdown: bool | UndefinedType | None = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
-                ip_address: str | UndefinedType | None = Undefined,
+                description: str | None | UndefinedType = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
+                ip_address: str | None | UndefinedType = Undefined,
                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
-                ipv6_enable: bool | UndefinedType | None = Undefined,
-                ipv6_address: str | UndefinedType | None = Undefined,
+                ipv6_enable: bool | None | UndefinedType = Undefined,
+                ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
-                ipv6_address_auto_config: bool | UndefinedType | None = Undefined,
-                ip_proxy_arp: bool | UndefinedType | None = Undefined,
-                ospf_area: str | UndefinedType | None = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
+                ip_proxy_arp: bool | None | UndefinedType = Undefined,
+                ospf_area: str | None | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
-                isis_enable: str | UndefinedType | None = Undefined,
-                isis_bfd: bool | UndefinedType | None = Undefined,
-                isis_passive: bool | UndefinedType | None = Undefined,
-                isis_metric: int | UndefinedType | None = Undefined,
-                isis_network_point_to_point: bool | UndefinedType | None = Undefined,
+                isis_enable: str | None | UndefinedType = Undefined,
+                isis_bfd: bool | None | UndefinedType = Undefined,
+                isis_passive: bool | None | UndefinedType = Undefined,
+                isis_metric: int | None | UndefinedType = Undefined,
+                isis_network_point_to_point: bool | None | UndefinedType = Undefined,
                 node_segment: NodeSegment | UndefinedType = Undefined,
-                hardware_forwarding_id: bool | UndefinedType | None = Undefined,
-                eos_cli: str | UndefinedType | None = Undefined,
+                hardware_forwarding_id: bool | None | UndefinedType = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 LoopbackInterfacesItem.
@@ -23167,7 +23167,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, sequence: int | UndefinedType | None = Undefined, action: str | UndefinedType = Undefined) -> None:
+                def __init__(self, *, sequence: int | None | UndefinedType = Undefined, action: str | UndefinedType = Undefined) -> None:
                     """
                     EntriesItem.
 
@@ -23198,7 +23198,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                counters_per_entry: bool | UndefinedType | None = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
                 entries: Entries | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -23236,7 +23236,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, window: int | UndefinedType | None = Undefined, moves: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, window: int | None | UndefinedType = Undefined, moves: int | None | UndefinedType = Undefined) -> None:
                         """
                         Detection.
 
@@ -23256,7 +23256,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, logging: bool | UndefinedType | None = Undefined, detection: Detection | UndefinedType = Undefined) -> None:
+                def __init__(self, *, logging: bool | None | UndefinedType = Undefined, detection: Detection | UndefinedType = Undefined) -> None:
                     """
                     NotificationHostFlap.
 
@@ -23313,9 +23313,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     mac_address: str | UndefinedType = Undefined,
                     vlan: int | UndefinedType = Undefined,
-                    drop: bool | UndefinedType | None = Undefined,
-                    interface: str | UndefinedType | None = Undefined,
-                    eligibility_forwarding: bool | UndefinedType | None = Undefined,
+                    drop: bool | None | UndefinedType = Undefined,
+                    interface: str | None | UndefinedType = Undefined,
+                    eligibility_forwarding: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     StaticEntriesItem.
@@ -23373,7 +23373,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                aging_time: int | UndefinedType | None = Undefined,
+                aging_time: int | None | UndefinedType = Undefined,
                 notification_host_flap: NotificationHostFlap | UndefinedType = Undefined,
                 static_entries: StaticEntries | UndefinedType = Undefined,
             ) -> None:
@@ -23440,7 +23440,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         id: str | UndefinedType = Undefined,
                         encrypted_key: str | UndefinedType = Undefined,
-                        fallback: bool | UndefinedType | None = Undefined,
+                        fallback: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ConnectionKeysItem.
@@ -23474,7 +23474,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, rekey_period: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, rekey_period: int | None | UndefinedType = Undefined) -> None:
                             """
                             Session.
 
@@ -23493,7 +23493,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, key_server_priority: int | UndefinedType | None = Undefined, session: Session | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, key_server_priority: int | None | UndefinedType = Undefined, session: Session | UndefinedType = Undefined) -> None:
                         """
                         Mka.
 
@@ -23586,7 +23586,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, action: Action | UndefinedType = Undefined, allow_active_sak: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, action: Action | UndefinedType = Undefined, allow_active_sak: bool | None | UndefinedType = Undefined) -> None:
                         """
                         TrafficUnprotected.
 
@@ -23610,7 +23610,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, window: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, window: int | None | UndefinedType = Undefined) -> None:
                         """
                         ReplayProtection.
 
@@ -23654,10 +23654,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    cipher: Cipher | UndefinedType | None = Undefined,
+                    cipher: Cipher | None | UndefinedType = Undefined,
                     connection_keys: ConnectionKeys | UndefinedType = Undefined,
                     mka: Mka | UndefinedType = Undefined,
-                    sci: bool | UndefinedType | None = Undefined,
+                    sci: bool | None | UndefinedType = Undefined,
                     l2_protocols: L2Protocols | UndefinedType = Undefined,
                     traffic_unprotected: TrafficUnprotected | UndefinedType = Undefined,
                     replay_protection: ReplayProtection | UndefinedType = Undefined,
@@ -23700,7 +23700,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 license: License | UndefinedType = Undefined,
-                fips_restrictions: bool | UndefinedType | None = Undefined,
+                fips_restrictions: bool | None | UndefinedType = Undefined,
                 profiles: Profiles | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -23733,7 +23733,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, load_interval: int | UndefinedType | None = Undefined, threshold: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, load_interval: int | None | UndefinedType = Undefined, threshold: int | None | UndefinedType = Undefined) -> None:
                         """
                         RateMonitoring.
 
@@ -23755,7 +23755,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, max_delay: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, max_delay: int | None | UndefinedType = Undefined) -> None:
                         """
                         Shutdown.
 
@@ -23822,9 +23822,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        route_map_inout: str | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
+                        route_map_inout: str | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Initiator.
@@ -23879,7 +23879,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, duration: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, duration: int | None | UndefinedType = Undefined) -> None:
                         """
                         OnBoot.
 
@@ -23973,8 +23973,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    quiesce: bool | UndefinedType | None = Undefined,
-                    profile: str | UndefinedType | None = Undefined,
+                    quiesce: bool | None | UndefinedType = Undefined,
+                    profile: str | None | UndefinedType = Undefined,
                     groups: Groups | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -24027,9 +24027,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                default_interface_profile: str | UndefinedType | None = Undefined,
-                default_bgp_profile: str | UndefinedType | None = Undefined,
-                default_unit_profile: str | UndefinedType | None = Undefined,
+                default_interface_profile: str | None | UndefinedType = Undefined,
+                default_bgp_profile: str | None | UndefinedType = Undefined,
+                default_unit_profile: str | None | UndefinedType = Undefined,
                 interface_profiles: InterfaceProfiles | UndefinedType = Undefined,
                 bgp_profiles: BgpProfiles | UndefinedType = Undefined,
                 unit_profiles: UnitProfiles | UndefinedType = Undefined,
@@ -24063,7 +24063,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, policy: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, policy: str | None | UndefinedType = Undefined) -> None:
                     """
                     Password.
 
@@ -24149,12 +24149,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        ssl_profile: str | UndefinedType | None = Undefined,
-                        vrf: str | UndefinedType | None = Undefined,
-                        notification_timestamp: NotificationTimestamp | UndefinedType | None = Undefined,
-                        ip_access_group: str | UndefinedType | None = Undefined,
-                        port: int | UndefinedType | None = Undefined,
-                        authorization_requests: bool | UndefinedType | None = Undefined,
+                        ssl_profile: str | None | UndefinedType = Undefined,
+                        vrf: str | None | UndefinedType = Undefined,
+                        notification_timestamp: NotificationTimestamp | None | UndefinedType = Undefined,
+                        ip_access_group: str | None | UndefinedType = Undefined,
+                        port: int | None | UndefinedType = Undefined,
+                        authorization_requests: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         GrpcItem.
@@ -24266,7 +24266,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, use_serial_number: bool | UndefinedType | None = Undefined, target_ids: TargetIds | UndefinedType = Undefined
+                            self, *, use_serial_number: bool | None | UndefinedType = Undefined, target_ids: TargetIds | UndefinedType = Undefined
                         ) -> None:
                             """
                             Target.
@@ -24317,10 +24317,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        shutdown: bool | UndefinedType | None = Undefined,
-                        tunnel_ssl_profile: str | UndefinedType | None = Undefined,
-                        gnmi_ssl_profile: str | UndefinedType | None = Undefined,
-                        vrf: str | UndefinedType | None = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
+                        tunnel_ssl_profile: str | None | UndefinedType = Undefined,
+                        gnmi_ssl_profile: str | None | UndefinedType = Undefined,
+                        vrf: str | None | UndefinedType = Undefined,
                         destination: Destination | UndefinedType = Undefined,
                         local_interface: LocalInterface | UndefinedType = Undefined,
                         target: Target | UndefinedType = Undefined,
@@ -24412,8 +24412,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    access_group: str | UndefinedType | None = Undefined,
-                    ipv6_access_group: str | UndefinedType | None = Undefined,
+                    access_group: str | None | UndefinedType = Undefined,
+                    ipv6_access_group: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EnableVrfsItem.
@@ -24491,12 +24491,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enable_http: bool | UndefinedType | None = Undefined,
-                enable_https: bool | UndefinedType | None = Undefined,
-                enable_unix: bool | UndefinedType | None = Undefined,
-                https_ssl_profile: str | UndefinedType | None = Undefined,
-                default_services: bool | UndefinedType | None = Undefined,
-                session_timeout: int | UndefinedType | None = Undefined,
+                enable_http: bool | None | UndefinedType = Undefined,
+                enable_https: bool | None | UndefinedType = Undefined,
+                enable_unix: bool | None | UndefinedType = Undefined,
+                https_ssl_profile: str | None | UndefinedType = Undefined,
+                default_services: bool | None | UndefinedType = Undefined,
+                session_timeout: int | None | UndefinedType = Undefined,
                 enable_vrfs: EnableVrfs | UndefinedType = Undefined,
                 protocol_https_certificate: ProtocolHttpsCertificate | UndefinedType = Undefined,
             ) -> None:
@@ -24572,7 +24572,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, path: str | UndefinedType = Undefined, disabled: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, path: str | UndefinedType = Undefined, disabled: bool | None | UndefinedType = Undefined) -> None:
                             """
                             PathsItem.
 
@@ -24630,7 +24630,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interfaces: bool | UndefinedType | None = Undefined, mka: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interfaces: bool | None | UndefinedType = Undefined, mka: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Macsec.
 
@@ -24716,7 +24716,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, idle_timeout: int | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, idle_timeout: int | None | UndefinedType = Undefined) -> None:
                 """
                 ManagementConsole.
 
@@ -24750,10 +24750,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                shutdown: bool | UndefinedType | None = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
                 server_hosts: ServerHosts | UndefinedType = Undefined,
-                source_interface: str | UndefinedType | None = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
+                source_interface: str | None | UndefinedType = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 ManagementCvx.
@@ -24781,7 +24781,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, hash: Hash | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, hash: Hash | None | UndefinedType = Undefined) -> None:
                     """
                     Secret.
 
@@ -24923,9 +24923,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dynamic_capacity: int | UndefinedType | None = Undefined,
-                        expire: int | UndefinedType | None = Undefined,
-                        refresh_always: bool | UndefinedType | None = Undefined,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Cache.
@@ -24955,7 +24955,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, default_route: bool | UndefinedType | None = Undefined, route_preference: bool | UndefinedType | None = Undefined
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             RxAccept.
@@ -24984,7 +24984,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
                             """
                             DnsServersItem.
 
@@ -25027,10 +25027,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        disabled: bool | UndefinedType | None = Undefined,
+                        disabled: bool | None | UndefinedType = Undefined,
                         rx_accept: RxAccept | UndefinedType = Undefined,
                         dns_servers: DnsServers | UndefinedType = Undefined,
-                        dns_servers_lifetime: int | UndefinedType | None = Undefined,
+                        dns_servers_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ra.
@@ -25069,9 +25069,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ipv6_prefix: str | UndefinedType = Undefined,
-                        valid_lifetime: str | UndefinedType | None = Undefined,
-                        preferred_lifetime: str | UndefinedType | None = Undefined,
-                        no_autoconfig_flag: bool | UndefinedType | None = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PrefixesItem.
@@ -25132,9 +25132,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
-                    managed_config_flag: bool | UndefinedType | None = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
-                    other_config_flag: bool | UndefinedType | None = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -25177,9 +25177,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    transmit: bool | UndefinedType | None = Undefined,
-                    receive: bool | UndefinedType | None = Undefined,
-                    ztp_vlan: int | UndefinedType | None = Undefined,
+                    transmit: bool | None | UndefinedType = Undefined,
+                    receive: bool | None | UndefinedType = Undefined,
+                    ztp_vlan: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Lldp.
@@ -25216,8 +25216,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             ipv6_address: str | UndefinedType = Undefined,
-                            interval: int | UndefinedType | None = Undefined,
-                            multiplier: int | UndefinedType | None = Undefined,
+                            interval: int | None | UndefinedType = Undefined,
+                            multiplier: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Neighbor.
@@ -25250,7 +25250,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, link_state: bool | UndefinedType | None = Undefined, neighbor: Neighbor | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, link_state: bool | None | UndefinedType = Undefined, neighbor: Neighbor | UndefinedType = Undefined) -> None:
                         """
                         Monitor.
 
@@ -25387,7 +25387,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    fallback_delay: str | UndefinedType | None = Undefined,
+                    fallback_delay: str | None | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
                     supervisor_1: Supervisor1 | UndefinedType = Undefined,
                     supervisor_2: Supervisor2 | UndefinedType = Undefined,
@@ -25497,25 +25497,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                description: str | UndefinedType | None = Undefined,
-                shutdown: bool | UndefinedType | None = Undefined,
-                speed: Speed | UndefinedType | None = Undefined,
-                mtu: int | UndefinedType | None = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
-                ip_address: str | UndefinedType | None = Undefined,
-                ipv6_enable: bool | UndefinedType | None = Undefined,
-                ipv6_address: str | UndefinedType | None = Undefined,
+                description: str | None | UndefinedType = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
+                speed: Speed | None | UndefinedType = Undefined,
+                mtu: int | None | UndefinedType = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
+                ip_address: str | None | UndefinedType = Undefined,
+                ipv6_enable: bool | None | UndefinedType = Undefined,
+                ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
-                ipv6_address_auto_config: bool | UndefinedType | None = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 type: Type | UndefinedType = Undefined,
-                gateway: str | UndefinedType | None = Undefined,
-                ipv6_gateway: str | UndefinedType | None = Undefined,
-                mac_address: str | UndefinedType | None = Undefined,
-                dhcp_client_accept_default_route: bool | UndefinedType | None = Undefined,
+                gateway: str | None | UndefinedType = Undefined,
+                ipv6_gateway: str | None | UndefinedType = Undefined,
+                mac_address: str | None | UndefinedType = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
                 redundancy: Redundancy | UndefinedType = Undefined,
-                eos_cli: str | UndefinedType | None = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 ManagementInterfacesItem.
@@ -25594,7 +25594,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         username: str | UndefinedType = Undefined,
                         password: str | UndefinedType = Undefined,
-                        password_type: PasswordType | UndefinedType | None = Undefined,
+                        password_type: PasswordType | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Search.
@@ -25645,11 +25645,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    base_dn: str | UndefinedType | None = Undefined,
-                    rdn_attribute_user: str | UndefinedType | None = Undefined,
-                    ssl_profile: str | UndefinedType | None = Undefined,
-                    authorization_group_policy: str | UndefinedType | None = Undefined,
-                    timeout: int | UndefinedType | None = Undefined,
+                    base_dn: str | None | UndefinedType = Undefined,
+                    rdn_attribute_user: str | None | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
+                    authorization_group_policy: str | None | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
                     search: Search | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -25700,7 +25700,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         username: str | UndefinedType = Undefined,
                         password: str | UndefinedType = Undefined,
-                        password_type: PasswordType | UndefinedType | None = Undefined,
+                        password_type: PasswordType | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Search.
@@ -25760,13 +25760,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     host: str | UndefinedType = Undefined,
-                    port: int | UndefinedType | None = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
-                    base_dn: str | UndefinedType | None = Undefined,
-                    rdn_attribute_user: str | UndefinedType | None = Undefined,
-                    ssl_profile: str | UndefinedType | None = Undefined,
-                    authorization_group_policy: str | UndefinedType | None = Undefined,
-                    timeout: int | UndefinedType | None = Undefined,
+                    port: int | None | UndefinedType = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    base_dn: str | None | UndefinedType = Undefined,
+                    rdn_attribute_user: str | None | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
+                    authorization_group_policy: str | None | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
                     search: Search | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -25837,7 +25837,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, name: str | UndefinedType = Undefined, role: str | UndefinedType = Undefined, privilege: int | UndefinedType | None = Undefined
+                        self, *, name: str | UndefinedType = Undefined, role: str | UndefinedType = Undefined, privilege: int | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         GroupsItem.
@@ -26026,14 +26026,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                common_name: str | UndefinedType | None = Undefined,
-                                country: str | UndefinedType | None = Undefined,
-                                email: str | UndefinedType | None = Undefined,
-                                locality: str | UndefinedType | None = Undefined,
-                                organization: str | UndefinedType | None = Undefined,
-                                organization_unit: str | UndefinedType | None = Undefined,
-                                serial_number: str | UndefinedType | None = Undefined,
-                                state: str | UndefinedType | None = Undefined,
+                                common_name: str | None | UndefinedType = Undefined,
+                                country: str | None | UndefinedType = Undefined,
+                                email: str | None | UndefinedType = Undefined,
+                                locality: str | None | UndefinedType = Undefined,
+                                organization: str | None | UndefinedType = Undefined,
+                                organization_unit: str | None | UndefinedType = Undefined,
+                                serial_number: str | None | UndefinedType = Undefined,
+                                state: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DistinguishedName.
@@ -26183,10 +26183,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        digest: Digest | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
-                        protocol_instance_name: str | UndefinedType | None = Undefined,
-                        renewal: int | UndefinedType | None = Undefined,
+                        digest: Digest | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                        protocol_instance_name: str | None | UndefinedType = Undefined,
+                        renewal: int | None | UndefinedType = Undefined,
                         parameters: Parameters | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -26237,9 +26237,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            count: int | UndefinedType | None = Undefined,
-                            interval: int | UndefinedType | None = Undefined,
-                            exponential_backoff: bool | UndefinedType | None = Undefined,
+                            count: int | None | UndefinedType = Undefined,
+                            interval: int | None | UndefinedType = Undefined,
+                            exponential_backoff: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             ConnectionRetry.
@@ -26299,10 +26299,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                token: str | UndefinedType | None = Undefined,
+                                token: str | None | UndefinedType = Undefined,
                                 token_type: TokenType | UndefinedType = Undefined,
-                                username: str | UndefinedType | None = Undefined,
-                                secret: str | UndefinedType | None = Undefined,
+                                username: str | None | UndefinedType = Undefined,
+                                secret: str | None | UndefinedType = Undefined,
                                 secret_type: SecretType | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -26370,10 +26370,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                token: str | UndefinedType | None = Undefined,
+                                token: str | None | UndefinedType = Undefined,
                                 token_type: TokenType | UndefinedType = Undefined,
-                                username: str | UndefinedType | None = Undefined,
-                                secret: str | UndefinedType | None = Undefined,
+                                username: str | None | UndefinedType = Undefined,
+                                secret: str | None | UndefinedType = Undefined,
                                 secret_type: SecretType | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -26465,9 +26465,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            ssl_profile: str | UndefinedType | None = Undefined,
-                            url: str | UndefinedType | None = Undefined,
-                            vrf: str | UndefinedType | None = Undefined,
+                            ssl_profile: str | None | UndefinedType = Undefined,
+                            url: str | None | UndefinedType = Undefined,
+                            vrf: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Server.
@@ -26512,7 +26512,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         protocol: Protocol | UndefinedType = Undefined,
-                        disabled: bool | UndefinedType | None = Undefined,
+                        disabled: bool | None | UndefinedType = Undefined,
                         connection_retry: ConnectionRetry | UndefinedType = Undefined,
                         credentials: Credentials | UndefinedType = Undefined,
                         server: Server | UndefinedType = Undefined,
@@ -26602,10 +26602,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    hardware: bool | UndefinedType | None = Undefined,
-                    haveged: bool | UndefinedType | None = Undefined,
-                    cpu_jitter: bool | UndefinedType | None = Undefined,
-                    hardware_exclusive: bool | UndefinedType | None = Undefined,
+                    hardware: bool | None | UndefinedType = Undefined,
+                    haveged: bool | None | UndefinedType = Undefined,
+                    cpu_jitter: bool | None | UndefinedType = Undefined,
+                    hardware_exclusive: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntropySources.
@@ -26630,7 +26630,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, ssl_profile: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, ssl_profile: str | None | UndefinedType = Undefined) -> None:
                     """
                     SignatureVerification.
 
@@ -26670,11 +26670,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            digits: int | UndefinedType | None = Undefined,
-                            length: int | UndefinedType | None = Undefined,
-                            lower: int | UndefinedType | None = Undefined,
-                            special: int | UndefinedType | None = Undefined,
-                            upper: int | UndefinedType | None = Undefined,
+                            digits: int | None | UndefinedType = Undefined,
+                            length: int | None | UndefinedType = Undefined,
+                            lower: int | None | UndefinedType = Undefined,
+                            special: int | None | UndefinedType = Undefined,
+                            upper: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Minimum.
@@ -26700,7 +26700,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, repetitive: int | UndefinedType | None = Undefined, sequential: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, repetitive: int | None | UndefinedType = Undefined, sequential: int | None | UndefinedType = Undefined) -> None:
                             """
                             Maximum.
 
@@ -26766,9 +26766,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    minimum_length: int | UndefinedType | None = Undefined,
-                    encryption_key_common: bool | UndefinedType | None = Undefined,
-                    encryption_reversible: str | UndefinedType | None = Undefined,
+                    minimum_length: int | None | UndefinedType = Undefined,
+                    encryption_key_common: bool | None | UndefinedType = Undefined,
+                    encryption_reversible: str | None | UndefinedType = Undefined,
                     policies: Policies | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -26806,7 +26806,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, v1_0: str | UndefinedType | None = Undefined, v1_3: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, v1_0: str | None | UndefinedType = Undefined, v1_3: str | None | UndefinedType = Undefined) -> None:
                         """
                         Ciphers.
 
@@ -26843,7 +26843,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, basic_constraint_ca: bool | UndefinedType | None = Undefined, hostname_fqdn: bool | UndefinedType | None = Undefined
+                            self, *, basic_constraint_ca: bool | None | UndefinedType = Undefined, hostname_fqdn: bool | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             Requirement.
@@ -26887,8 +26887,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         certificates: Certificates | UndefinedType = Undefined,
                         requirement: Requirement | UndefinedType = Undefined,
-                        policy_expiry_date_ignore: bool | UndefinedType | None = Undefined,
-                        system: bool | UndefinedType | None = Undefined,
+                        policy_expiry_date_ignore: bool | None | UndefinedType = Undefined,
+                        system: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         TrustCertificate.
@@ -26930,7 +26930,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, basic_constraint_ca: bool | UndefinedType | None = Undefined, include_root_ca: bool | UndefinedType | None = Undefined
+                            self, *, basic_constraint_ca: bool | None | UndefinedType = Undefined, include_root_ca: bool | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             Requirement.
@@ -26999,9 +26999,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        file: str | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
-                        auto_certificate: str | UndefinedType | None = Undefined,
+                        file: str | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                        auto_certificate: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Certificate.
@@ -27081,9 +27081,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    fips_restrictions: bool | UndefinedType | None = Undefined,
-                    tls_versions: str | UndefinedType | None = Undefined,
-                    cipher_list: str | UndefinedType | None = Undefined,
+                    fips_restrictions: bool | None | UndefinedType = Undefined,
+                    tls_versions: str | None | UndefinedType = Undefined,
+                    cipher_list: str | None | UndefinedType = Undefined,
                     ciphers: Ciphers | UndefinedType = Undefined,
                     trust_certificate: TrustCertificate | UndefinedType = Undefined,
                     chain_certificate: ChainCertificate | UndefinedType = Undefined,
@@ -27172,9 +27172,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            infinite: bool | UndefinedType | None = Undefined,
-                            start_date_time: str | UndefinedType | None = Undefined,
-                            end_date_time: str | UndefinedType | None = Undefined,
+                            infinite: bool | None | UndefinedType = Undefined,
+                            start_date_time: str | None | UndefinedType = Undefined,
+                            end_date_time: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             ReceiveLifetime.
@@ -27230,9 +27230,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            infinite: bool | UndefinedType | None = Undefined,
-                            start_date_time: str | UndefinedType | None = Undefined,
-                            end_date_time: str | UndefinedType | None = Undefined,
+                            infinite: bool | None | UndefinedType = Undefined,
+                            start_date_time: str | None | UndefinedType = Undefined,
+                            end_date_time: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             TransmitLifetime.
@@ -27288,7 +27288,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         secret_type: SecretType | UndefinedType = Undefined,
                         receive_lifetime: ReceiveLifetime | UndefinedType = Undefined,
                         transmit_lifetime: TransmitLifetime | UndefinedType = Undefined,
-                        local_time: bool | UndefinedType | None = Undefined,
+                        local_time: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         SecretsItem.
@@ -27429,7 +27429,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, empty_passwords: EmptyPasswords | UndefinedType | None = Undefined, protocols: Protocols | UndefinedType = Undefined
+                    self, *, empty_passwords: EmptyPasswords | None | UndefinedType = Undefined, protocols: Protocols | UndefinedType = Undefined
                 ) -> None:
                     """
                     Authentication.
@@ -27487,8 +27487,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     server: Server | UndefinedType = Undefined,
-                    server_cert: str | UndefinedType | None = Undefined,
-                    client_strict_checking: bool | UndefinedType | None = Undefined,
+                    server_cert: str | None | UndefinedType = Undefined,
+                    client_strict_checking: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Hostkey.
@@ -27517,7 +27517,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, limit: int | UndefinedType | None = Undefined, per_host: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, limit: int | None | UndefinedType = Undefined, per_host: int | None | UndefinedType = Undefined) -> None:
                     """
                     Connection.
 
@@ -27562,9 +27562,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    enable: bool | UndefinedType | None = Undefined,
-                    ip_access_group_in: str | UndefinedType | None = Undefined,
-                    ipv6_access_group_in: str | UndefinedType | None = Undefined,
+                    enable: bool | None | UndefinedType = Undefined,
+                    ip_access_group_in: str | None | UndefinedType = Undefined,
+                    ipv6_access_group_in: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrfsItem.
@@ -27607,7 +27607,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, count_max: int | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, count_max: int | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                     """
                     ClientAlive.
 
@@ -27685,18 +27685,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 authentication: Authentication | UndefinedType = Undefined,
-                ip_access_group_in: str | UndefinedType | None = Undefined,
-                ipv6_access_group_in: str | UndefinedType | None = Undefined,
-                idle_timeout: int | UndefinedType | None = Undefined,
+                ip_access_group_in: str | None | UndefinedType = Undefined,
+                ipv6_access_group_in: str | None | UndefinedType = Undefined,
+                idle_timeout: int | None | UndefinedType = Undefined,
                 cipher: Cipher | UndefinedType = Undefined,
                 key_exchange: KeyExchange | UndefinedType = Undefined,
                 mac: Mac | UndefinedType = Undefined,
-                fips_restrictions: bool | UndefinedType | None = Undefined,
+                fips_restrictions: bool | None | UndefinedType = Undefined,
                 hostkey: Hostkey | UndefinedType = Undefined,
-                enable: bool | UndefinedType | None = Undefined,
+                enable: bool | None | UndefinedType = Undefined,
                 connection: Connection | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
-                log_level: str | UndefinedType | None = Undefined,
+                log_level: str | None | UndefinedType = Undefined,
                 client_alive: ClientAlive | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -27754,7 +27754,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, command: str | UndefinedType | None = Undefined, type: Type | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, command: str | None | UndefinedType = Undefined, type: Type | UndefinedType = Undefined) -> None:
                         """
                         ExcludeCommandsItem.
 
@@ -27781,7 +27781,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, command: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, command: str | None | UndefinedType = Undefined) -> None:
                         """
                         IncludeCommandsItem.
 
@@ -28046,8 +28046,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    name: str | UndefinedType | None = Undefined,
-                    shutdown: bool | UndefinedType | None = Undefined,
+                    name: str | None | UndefinedType = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                     server_hosts: ServerHosts | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -28070,7 +28070,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, shutdown: bool | UndefinedType | None = Undefined, cvx_secondary: CvxSecondary | UndefinedType = Undefined) -> None:
+            def __init__(self, *, shutdown: bool | None | UndefinedType = Undefined, cvx_secondary: CvxSecondary | UndefinedType = Undefined) -> None:
                 """
                 McsClient.
 
@@ -28146,11 +28146,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
-                    min_power_supplies: int | UndefinedType | None = Undefined,
-                    min_fans: int | UndefinedType | None = Undefined,
-                    min_supervisors: int | UndefinedType | None = Undefined,
-                    min_line_cards: int | UndefinedType | None = Undefined,
-                    min_fabric_cards: int | UndefinedType | None = Undefined,
+                    min_power_supplies: int | None | UndefinedType = Undefined,
+                    min_fans: int | None | UndefinedType = Undefined,
+                    min_supervisors: int | None | UndefinedType = Undefined,
+                    min_line_cards: int | None | UndefinedType = Undefined,
+                    min_fabric_cards: int | None | UndefinedType = Undefined,
                     transceiver_manufacturers: TransceiverManufacturers | UndefinedType = Undefined,
                     ignore_no_transceivers: bool | UndefinedType = Undefined,
                 ) -> None:
@@ -28333,11 +28333,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        name: str | UndefinedType | None = Undefined,
-                        carrier: str | UndefinedType | None = Undefined,
-                        circuit_id: str | UndefinedType | None = Undefined,
-                        pathgroup: str | UndefinedType | None = Undefined,
-                        public_ip: str | UndefinedType | None = Undefined,
+                        name: str | None | UndefinedType = Undefined,
+                        carrier: str | None | UndefinedType = Undefined,
+                        circuit_id: str | None | UndefinedType = Undefined,
+                        pathgroup: str | None | UndefinedType = Undefined,
+                        public_ip: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         InterfacesItem.
@@ -28370,7 +28370,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, name: str | None | UndefinedType = Undefined) -> None:
                             """
                             CarriersItem.
 
@@ -28395,7 +28395,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, name: str | None | UndefinedType = Undefined) -> None:
                             """
                             ImportedCarriersItem.
 
@@ -28463,7 +28463,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, address: str | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     Location.
 
@@ -28486,8 +28486,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                id: int | UndefinedType | None = Undefined,
-                                name: str | UndefinedType | None = Undefined,
+                                id: int | None | UndefinedType = Undefined,
+                                name: str | None | UndefinedType = Undefined,
                                 location: Location | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -28519,8 +28519,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            id: int | UndefinedType | None = Undefined,
-                            name: str | UndefinedType | None = Undefined,
+                            id: int | None | UndefinedType = Undefined,
+                            name: str | None | UndefinedType = Undefined,
                             sites: Sites | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -28552,8 +28552,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        id: int | UndefinedType | None = Undefined,
-                        name: str | UndefinedType | None = Undefined,
+                        id: int | None | UndefinedType = Undefined,
+                        name: str | None | UndefinedType = Undefined,
                         zones: Zones | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -28594,10 +28594,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                jitter: int | UndefinedType | None = Undefined,
-                                latency: int | UndefinedType | None = Undefined,
-                                lossrate: str | UndefinedType | None = Undefined,
-                                hop_count: str | UndefinedType | None = Undefined,
+                                jitter: int | None | UndefinedType = Undefined,
+                                latency: int | None | UndefinedType = Undefined,
+                                lossrate: str | None | UndefinedType = Undefined,
+                                hop_count: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Constraints.
@@ -28622,7 +28622,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, name: str | UndefinedType | None = Undefined, preference: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, name: str | None | UndefinedType = Undefined, preference: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 PathgroupsItem.
 
@@ -28669,9 +28669,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             constraints: Constraints | UndefinedType = Undefined,
-                            description: str | UndefinedType | None = Undefined,
-                            id: int | UndefinedType | None = Undefined,
-                            name: str | UndefinedType | None = Undefined,
+                            description: str | None | UndefinedType = Undefined,
+                            id: int | None | UndefinedType = Undefined,
+                            name: str | None | UndefinedType = Undefined,
                             pathgroups: Pathgroups | UndefinedType = Undefined,
                             application_profiles: ApplicationProfiles | UndefinedType = Undefined,
                         ) -> None:
@@ -28707,8 +28707,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        name: str | UndefinedType | None = Undefined,
-                        vni: int | UndefinedType | None = Undefined,
+                        name: str | None | UndefinedType = Undefined,
+                        vni: int | None | UndefinedType = Undefined,
                         avts: Avts | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -28889,8 +28889,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         type: str | UndefinedType = Undefined,
                         city: str | UndefinedType = Undefined,
                         country: str | UndefinedType = Undefined,
-                        upload_bandwidth: int | UndefinedType | None = Undefined,
-                        download_bandwidth: int | UndefinedType | None = Undefined,
+                        upload_bandwidth: int | None | UndefinedType = Undefined,
+                        download_bandwidth: int | None | UndefinedType = Undefined,
                         firewall: bool | UndefinedType = Undefined,
                         ips_control: bool | UndefinedType = Undefined,
                         acceptable_use_policy: bool | UndefinedType = Undefined,
@@ -28944,7 +28944,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, name: str | UndefinedType | None = Undefined, services: Services | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, name: str | None | UndefinedType = Undefined, services: Services | UndefinedType = Undefined) -> None:
                                 """
                                 BuiltinApplicationsItem.
 
@@ -28970,7 +28970,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, name: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, name: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 UserDefinedApplicationsItem.
 
@@ -29002,7 +29002,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, category: str | UndefinedType | None = Undefined, services: Services | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, category: str | None | UndefinedType = Undefined, services: Services | UndefinedType = Undefined) -> None:
                                 """
                                 CategoriesItem.
 
@@ -29047,7 +29047,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            name: str | UndefinedType | None = Undefined,
+                            name: str | None | UndefinedType = Undefined,
                             builtin_applications: BuiltinApplications | UndefinedType = Undefined,
                             user_defined_applications: UserDefinedApplications | UndefinedType = Undefined,
                             categories: Categories | UndefinedType = Undefined,
@@ -29095,8 +29095,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                name: str | UndefinedType | None = Undefined,
-                                category: str | UndefinedType | None = Undefined,
+                                name: str | None | UndefinedType = Undefined,
+                                category: str | None | UndefinedType = Undefined,
                                 services: Services | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -29126,7 +29126,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, name: str | UndefinedType | None = Undefined, category: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, name: str | None | UndefinedType = Undefined, category: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 UserDefinedApplicationsItem.
 
@@ -29237,13 +29237,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    role: str | UndefinedType | None = Undefined,
-                    region: str | UndefinedType | None = Undefined,
-                    zone: str | UndefinedType | None = Undefined,
-                    site: str | UndefinedType | None = Undefined,
-                    vtep_ip: str | UndefinedType | None = Undefined,
-                    ssl_profile: str | UndefinedType | None = Undefined,
-                    address: str | UndefinedType | None = Undefined,
+                    role: str | None | UndefinedType = Undefined,
+                    region: str | None | UndefinedType = Undefined,
+                    zone: str | None | UndefinedType = Undefined,
+                    site: str | None | UndefinedType = Undefined,
+                    vtep_ip: str | None | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
+                    address: str | None | UndefinedType = Undefined,
                     pathfinders: Pathfinders | UndefinedType = Undefined,
                     interfaces: Interfaces | UndefinedType = Undefined,
                     pathgroups: Pathgroups | UndefinedType = Undefined,
@@ -29322,13 +29322,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    environment: Environment | UndefinedType | None = Undefined,
-                    node_type: str | UndefinedType | None = Undefined,
-                    ip_addr: str | UndefinedType | None = Undefined,
-                    version: str | UndefinedType | None = Undefined,
-                    username: str | UndefinedType | None = Undefined,
-                    password: str | UndefinedType | None = Undefined,
-                    internet_access: bool | UndefinedType | None = Undefined,
+                    environment: Environment | None | UndefinedType = Undefined,
+                    node_type: str | None | UndefinedType = Undefined,
+                    ip_addr: str | None | UndefinedType = Undefined,
+                    version: str | None | UndefinedType = Undefined,
+                    username: str | None | UndefinedType = Undefined,
+                    password: str | None | UndefinedType = Undefined,
+                    internet_access: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -29506,21 +29506,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                is_deployed: bool | UndefinedType | None = Undefined,
-                platform: str | UndefinedType | None = Undefined,
-                system_mac_address: str | UndefinedType | None = Undefined,
-                rack: str | UndefinedType | None = Undefined,
-                pod_name: str | UndefinedType | None = Undefined,
-                dc_name: str | UndefinedType | None = Undefined,
-                fabric_name: str | UndefinedType | None = Undefined,
-                serial_number: str | UndefinedType | None = Undefined,
+                is_deployed: bool | None | UndefinedType = Undefined,
+                platform: str | None | UndefinedType = Undefined,
+                system_mac_address: str | None | UndefinedType = Undefined,
+                rack: str | None | UndefinedType = Undefined,
+                pod_name: str | None | UndefinedType = Undefined,
+                dc_name: str | None | UndefinedType = Undefined,
+                fabric_name: str | None | UndefinedType = Undefined,
+                serial_number: str | None | UndefinedType = Undefined,
                 validate_hardware: ValidateHardware | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
-                cv_use_static_config_manifest: bool | UndefinedType | None = Undefined,
+                cv_use_static_config_manifest: bool | None | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
-                validate_no_errors_period: int | UndefinedType | None = Undefined,
-                exclude_as_extra_fabric_validation_target: bool | UndefinedType | None = Undefined,
+                validate_no_errors_period: int | None | UndefinedType = Undefined,
+                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                 interfaces: Interfaces | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -29601,7 +29601,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, peer_ip: str | UndefinedType | None = Undefined, vrf: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, peer_ip: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                     """
                     PeerAddressHeartbeat.
 
@@ -29654,17 +29654,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                domain_id: str | UndefinedType | None = Undefined,
-                heartbeat_interval: int | UndefinedType | None = Undefined,
-                local_interface: str | UndefinedType | None = Undefined,
-                peer_address: str | UndefinedType | None = Undefined,
+                domain_id: str | None | UndefinedType = Undefined,
+                heartbeat_interval: int | None | UndefinedType = Undefined,
+                local_interface: str | None | UndefinedType = Undefined,
+                peer_address: str | None | UndefinedType = Undefined,
                 peer_address_heartbeat: PeerAddressHeartbeat | UndefinedType = Undefined,
-                dual_primary_detection_delay: int | UndefinedType | None = Undefined,
-                dual_primary_recovery_delay_mlag: int | UndefinedType | None = Undefined,
-                dual_primary_recovery_delay_non_mlag: int | UndefinedType | None = Undefined,
-                peer_link: str | UndefinedType | None = Undefined,
-                reload_delay_mlag: str | UndefinedType | None = Undefined,
-                reload_delay_non_mlag: str | UndefinedType | None = Undefined,
+                dual_primary_detection_delay: int | None | UndefinedType = Undefined,
+                dual_primary_recovery_delay_mlag: int | None | UndefinedType = Undefined,
+                dual_primary_recovery_delay_non_mlag: int | None | UndefinedType = Undefined,
+                peer_link: str | None | UndefinedType = Undefined,
+                reload_delay_mlag: str | None | UndefinedType = Undefined,
+                reload_delay_non_mlag: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 MlagConfiguration.
@@ -29777,13 +29777,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    description: str | UndefinedType | None = Undefined,
-                    single_line_description: str | UndefinedType | None = Undefined,
-                    ip: str | UndefinedType | None = Undefined,
-                    icmp_echo_size: int | UndefinedType | None = Undefined,
-                    local_interfaces: str | UndefinedType | None = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
+                    ip: str | None | UndefinedType = Undefined,
+                    icmp_echo_size: int | None | UndefinedType = Undefined,
+                    local_interfaces: str | None | UndefinedType = Undefined,
                     address_only: bool | UndefinedType = Undefined,
-                    url: str | UndefinedType | None = Undefined,
+                    url: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     HostsItem.
@@ -29834,7 +29834,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | None | UndefinedType = Undefined) -> None:
                         """
                         InterfaceSetsItem.
 
@@ -29904,13 +29904,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        description: str | UndefinedType | None = Undefined,
-                        single_line_description: str | UndefinedType | None = Undefined,
-                        ip: str | UndefinedType | None = Undefined,
-                        icmp_echo_size: int | UndefinedType | None = Undefined,
-                        local_interfaces: str | UndefinedType | None = Undefined,
+                        description: str | None | UndefinedType = Undefined,
+                        single_line_description: str | None | UndefinedType = Undefined,
+                        ip: str | None | UndefinedType = Undefined,
+                        icmp_echo_size: int | None | UndefinedType = Undefined,
+                        local_interfaces: str | None | UndefinedType = Undefined,
                         address_only: bool | UndefinedType = Undefined,
-                        url: str | UndefinedType | None = Undefined,
+                        url: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         HostsItem.
@@ -29995,10 +29995,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    description: str | UndefinedType | None = Undefined,
-                    single_line_description: str | UndefinedType | None = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
                     interface_sets: InterfaceSets | UndefinedType = Undefined,
-                    local_interfaces: str | UndefinedType | None = Undefined,
+                    local_interfaces: str | None | UndefinedType = Undefined,
                     address_only: bool | UndefinedType = Undefined,
                     hosts: Hosts | UndefinedType = Undefined,
                 ) -> None:
@@ -30075,13 +30075,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                shutdown: bool | UndefinedType | None = Undefined,
-                interval: int | UndefinedType | None = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
+                interval: int | None | UndefinedType = Undefined,
                 interface_sets: InterfaceSets | UndefinedType = Undefined,
-                local_interfaces: str | UndefinedType | None = Undefined,
+                local_interfaces: str | None | UndefinedType = Undefined,
                 address_only: bool | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
-                name_server_group: str | UndefinedType | None = Undefined,
+                name_server_group: str | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -30129,9 +30129,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    dom: bool | UndefinedType | None = Undefined,
-                    communication: bool | UndefinedType | None = Undefined,
-                    enabled: bool | UndefinedType | None = Undefined,
+                    dom: bool | None | UndefinedType = Undefined,
+                    communication: bool | None | UndefinedType = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     LoggingTransceiver.
@@ -30165,8 +30165,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType | None = Undefined,
-                logging_mac_fault: bool | UndefinedType | None = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
+                logging_mac_fault: bool | None | UndefinedType = Undefined,
                 logging_transceiver: LoggingTransceiver | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -30230,9 +30230,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        maximum: int | UndefinedType | None = Undefined,
-                        reuse: int | UndefinedType | None = Undefined,
-                        suppression: int | UndefinedType | None = Undefined,
+                        maximum: int | None | UndefinedType = Undefined,
+                        reuse: int | None | UndefinedType = Undefined,
+                        suppression: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PenaltyThreshold.
@@ -30279,8 +30279,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     penalty_decay: PenaltyDecay | UndefinedType = Undefined,
-                    mac_fault_local_penalty: int | UndefinedType | None = Undefined,
-                    mac_fault_remote_penalty: int | UndefinedType | None = Undefined,
+                    mac_fault_local_penalty: int | None | UndefinedType = Undefined,
+                    mac_fault_remote_penalty: int | None | UndefinedType = Undefined,
                     penalty_threshold: PenaltyThreshold | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -30342,8 +30342,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     max_flaps: int | UndefinedType = Undefined,
                     time: int | UndefinedType = Undefined,
-                    violations: int | UndefinedType | None = Undefined,
-                    intervals: int | UndefinedType | None = Undefined,
+                    violations: int | None | UndefinedType = Undefined,
+                    intervals: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     MaxFlapProfilesItem.
@@ -30459,11 +30459,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType | None = Undefined,
-                disabled_time: int | UndefinedType | None = Undefined,
-                protect_vlan: str | UndefinedType | None = Undefined,
-                rate_limit: int | UndefinedType | None = Undefined,
-                transmit_interval: int | UndefinedType | None = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
+                disabled_time: int | None | UndefinedType = Undefined,
+                protect_vlan: str | None | UndefinedType = Undefined,
+                rate_limit: int | None | UndefinedType = Undefined,
+                transmit_interval: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 MonitorLoopProtection.
@@ -30551,9 +30551,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    interval: int | UndefinedType | None = Undefined,
-                    threshold_failure: int | UndefinedType | None = Undefined,
-                    method: Method | UndefinedType | None = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
+                    threshold_failure: int | None | UndefinedType = Undefined,
+                    method: Method | None | UndefinedType = Undefined,
                     access_request: AccessRequest | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -30585,7 +30585,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, service_dot1x: bool | UndefinedType | None = Undefined, probe: Probe | UndefinedType = Undefined) -> None:
+            def __init__(self, *, service_dot1x: bool | None | UndefinedType = Undefined, probe: Probe | UndefinedType = Undefined) -> None:
                 """
                 MonitorServerRadius.
 
@@ -30611,7 +30611,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, payload: Payload | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, payload: Payload | None | UndefinedType = Undefined) -> None:
                 """
                 MonitorSessionDefaultEncapsulationGre.
 
@@ -30646,9 +30646,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        type: Type | UndefinedType | None = Undefined,
-                        name: str | UndefinedType | None = Undefined,
-                        priority: int | UndefinedType | None = Undefined,
+                        type: Type | None | UndefinedType = Undefined,
+                        name: str | None | UndefinedType = Undefined,
+                        priority: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AccessGroup.
@@ -30676,7 +30676,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    direction: Direction | UndefinedType | None = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                     access_group: AccessGroup | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -30715,7 +30715,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
                     """
                     AccessGroup.
 
@@ -30738,7 +30738,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, size: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined) -> None:
                     """
                     Truncate.
 
@@ -30802,12 +30802,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str | UndefinedType = Undefined,
                 sources: Sources | UndefinedType = Undefined,
                 destinations: Destinations | UndefinedType = Undefined,
-                encapsulation_gre_metadata_tx: bool | UndefinedType | None = Undefined,
-                header_remove_size: int | UndefinedType | None = Undefined,
+                encapsulation_gre_metadata_tx: bool | None | UndefinedType = Undefined,
+                header_remove_size: int | None | UndefinedType = Undefined,
                 access_group: AccessGroup | UndefinedType = Undefined,
-                rate_limit_per_ingress_chip: str | UndefinedType | None = Undefined,
-                rate_limit_per_egress_chip: str | UndefinedType | None = Undefined,
-                sample: int | UndefinedType | None = Undefined,
+                rate_limit_per_ingress_chip: str | None | UndefinedType = Undefined,
+                rate_limit_per_egress_chip: str | None | UndefinedType = Undefined,
+                sample: int | None | UndefinedType = Undefined,
                 truncate: Truncate | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -30881,11 +30881,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    database: str | UndefinedType | None = Undefined,
-                    data_retention_policy: str | UndefinedType | None = Undefined,
-                    url: str | UndefinedType | None = Undefined,
-                    username: str | UndefinedType | None = Undefined,
-                    password: str | UndefinedType | None = Undefined,
+                    database: str | None | UndefinedType = Undefined,
+                    data_retention_policy: str | None | UndefinedType = Undefined,
+                    url: str | None | UndefinedType = Undefined,
+                    username: str | None | UndefinedType = Undefined,
+                    password: str | None | UndefinedType = Undefined,
                     password_type: PasswordType | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -30928,8 +30928,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    connection_limit: int | UndefinedType | None = Undefined,
-                    url: str | UndefinedType | None = Undefined,
+                    connection_limit: int | None | UndefinedType = Undefined,
+                    url: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SourceSocketsItem.
@@ -31014,9 +31014,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                vrf: str | UndefinedType | None = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
                 destinations: Destinations | UndefinedType = Undefined,
-                source_group_standard_disabled: bool | UndefinedType | None = Undefined,
+                source_group_standard_disabled: bool | None | UndefinedType = Undefined,
                 source_sockets: SourceSockets | UndefinedType = Undefined,
                 tags: Tags | UndefinedType = Undefined,
             ) -> None:
@@ -31066,9 +31066,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        source: str | UndefinedType | None = Undefined,
-                        destination: str | UndefinedType | None = Undefined,
-                        version: Version | UndefinedType | None = Undefined,
+                        source: str | None | UndefinedType = Undefined,
+                        destination: str | None | UndefinedType = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Collection.
@@ -31099,7 +31099,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, value: int | UndefinedType | None = Undefined, mask: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, value: int | None | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
                             """
                             TcpUdpChecksum.
 
@@ -31124,7 +31124,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, rate: Rate | UndefinedType | None = Undefined, tcp_udp_checksum: TcpUdpChecksum | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, rate: Rate | None | UndefinedType = Undefined, tcp_udp_checksum: TcpUdpChecksum | UndefinedType = Undefined) -> None:
                         """
                         Sample.
 
@@ -31185,7 +31185,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, header_word_zero_bit: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, header_word_zero_bit: int | None | UndefinedType = Undefined) -> None:
                     """
                     MarkerVxlan.
 
@@ -31208,7 +31208,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, ingress_sample_policy: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, ingress_sample_policy: str | None | UndefinedType = Undefined) -> None:
                     """
                     ProfilesItem.
 
@@ -31353,8 +31353,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         type: Type | UndefinedType = Undefined,
-                        destination_prefix: str | UndefinedType | None = Undefined,
-                        source_prefix: str | UndefinedType | None = Undefined,
+                        destination_prefix: str | None | UndefinedType = Undefined,
+                        source_prefix: str | None | UndefinedType = Undefined,
                         protocols: Protocols | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -31481,7 +31481,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, listen_port: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, listen_port: int | None | UndefinedType = Undefined) -> None:
                         """
                         ReflectorDefaults.
 
@@ -31503,7 +31503,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, destination_port: int | UndefinedType | None = Undefined, source_port: int | UndefinedType | None = Undefined
+                        self, *, destination_port: int | None | UndefinedType = Undefined, source_port: int | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         SenderDefaults.
@@ -31569,8 +31569,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        measurement_interval: int | UndefinedType | None = Undefined,
-                        measurement_samples: int | UndefinedType | None = Undefined,
+                        measurement_interval: int | None | UndefinedType = Undefined,
+                        measurement_samples: int | None | UndefinedType = Undefined,
                         significance: Significance | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -31669,10 +31669,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    interface_disabled_default: bool | UndefinedType | None = Undefined,
-                    router_id: str | UndefinedType | None = Undefined,
-                    shutdown: bool | UndefinedType | None = Undefined,
-                    transport_address_interface: str | UndefinedType | None = Undefined,
+                    interface_disabled_default: bool | None | UndefinedType = Undefined,
+                    router_id: str | None | UndefinedType = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
+                    transport_address_interface: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ldp.
@@ -31702,8 +31702,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    fragmentation_needed_tunneling: bool | UndefinedType | None = Undefined,
-                    ttl_exceeded_tunneling: bool | UndefinedType | None = Undefined,
+                    fragmentation_needed_tunneling: bool | None | UndefinedType = Undefined,
+                    ttl_exceeded_tunneling: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Icmp.
@@ -31737,7 +31737,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interval: int | UndefinedType | None = Undefined, method: Method | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined, method: Method | None | UndefinedType = Undefined) -> None:
                         """
                         Refresh.
 
@@ -31780,7 +31780,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             index: int | UndefinedType = Undefined,
                             password_type: PasswordType | UndefinedType = Undefined,
-                            password: str | UndefinedType | None = Undefined,
+                            password: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             PasswordIndexesItem.
@@ -31824,9 +31824,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         password_indexes: PasswordIndexes | UndefinedType = Undefined,
-                        active_index: int | UndefinedType | None = Undefined,
-                        sequence_number_window: int | UndefinedType | None = Undefined,
-                        type: Type | UndefinedType | None = Undefined,
+                        active_index: int | None | UndefinedType = Undefined,
+                        sequence_number_window: int | None | UndefinedType = Undefined,
+                        type: Type | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Authentication.
@@ -31857,7 +31857,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, index: int | UndefinedType | None = Undefined, type: Type | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, index: int | None | UndefinedType = Undefined, type: Type | None | UndefinedType = Undefined) -> None:
                             """
                             Authentication.
 
@@ -31887,8 +31887,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        ip_address: str | UndefinedType | None = Undefined,
-                        ipv6_address: str | UndefinedType | None = Undefined,
+                        ip_address: str | None | UndefinedType = Undefined,
+                        ipv6_address: str | None | UndefinedType = Undefined,
                         authentication: Authentication | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -31943,9 +31943,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Mode | UndefinedType | None = Undefined,
-                        reversion: Reversion | UndefinedType | None = Undefined,
-                        bypass_tunnel_optimization_interval: int | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
+                        reversion: Reversion | None | UndefinedType = Undefined,
+                        bypass_tunnel_optimization_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         FastReroute.
@@ -31981,7 +31981,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, strict: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, strict: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Srlg.
 
@@ -32007,7 +32007,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, preemption: Preemption | UndefinedType | None = Undefined, timer: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, preemption: Preemption | None | UndefinedType = Undefined, timer: int | None | UndefinedType = Undefined) -> None:
                         """
                         PreemptionMethod.
 
@@ -32038,9 +32038,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            timer_recovery: int | UndefinedType | None = Undefined,
-                            timer_restart: int | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            timer_recovery: int | None | UndefinedType = Undefined,
+                            timer_restart: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             RoleHelper.
@@ -32070,9 +32070,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            timer_recovery: int | UndefinedType | None = Undefined,
-                            timer_restart: int | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            timer_recovery: int | None | UndefinedType = Undefined,
+                            timer_restart: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             RoleSpeaker.
@@ -32119,7 +32119,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interval: int | UndefinedType | None = Undefined, multiplier: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined) -> None:
                         """
                         Hello.
 
@@ -32145,7 +32145,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, timer_recovery: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, timer_recovery: int | None | UndefinedType = Undefined) -> None:
                         """
                         HitlessRestart.
 
@@ -32168,7 +32168,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
                         """
                         P2mp.
 
@@ -32248,18 +32248,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     refresh: Refresh | UndefinedType = Undefined,
                     authentication: Authentication | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
-                    ip_access_group: str | UndefinedType | None = Undefined,
-                    ipv6_access_group: str | UndefinedType | None = Undefined,
+                    ip_access_group: str | None | UndefinedType = Undefined,
+                    ipv6_access_group: str | None | UndefinedType = Undefined,
                     fast_reroute: FastReroute | UndefinedType = Undefined,
                     srlg: Srlg | UndefinedType = Undefined,
-                    label_local_termination: LabelLocalTermination | UndefinedType | None = Undefined,
+                    label_local_termination: LabelLocalTermination | None | UndefinedType = Undefined,
                     preemption_method: PreemptionMethod | UndefinedType = Undefined,
-                    mtu_signaling: bool | UndefinedType | None = Undefined,
+                    mtu_signaling: bool | None | UndefinedType = Undefined,
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
                     hello: Hello | UndefinedType = Undefined,
                     hitless_restart: HitlessRestart | UndefinedType = Undefined,
                     p2mp: P2mp | UndefinedType = Undefined,
-                    shutdown: bool | UndefinedType | None = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Rsvp.
@@ -32758,7 +32758,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                ip: bool | UndefinedType | None = Undefined,
+                ip: bool | None | UndefinedType = Undefined,
                 ldp: Ldp | UndefinedType = Undefined,
                 icmp: Icmp | UndefinedType = Undefined,
                 rsvp: Rsvp | UndefinedType = Undefined,
@@ -32807,7 +32807,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType | None = Undefined, vrf: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                     """
                     LocalInterface.
 
@@ -32863,15 +32863,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    burst: bool | UndefinedType | None = Undefined,
-                    iburst: bool | UndefinedType | None = Undefined,
-                    key: int | UndefinedType | None = Undefined,
-                    local_interface: str | UndefinedType | None = Undefined,
-                    source_address: str | UndefinedType | None = Undefined,
-                    maxpoll: int | UndefinedType | None = Undefined,
-                    minpoll: int | UndefinedType | None = Undefined,
-                    preferred: bool | UndefinedType | None = Undefined,
-                    version: int | UndefinedType | None = Undefined,
+                    burst: bool | None | UndefinedType = Undefined,
+                    iburst: bool | None | UndefinedType = Undefined,
+                    key: int | None | UndefinedType = Undefined,
+                    local_interface: str | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
+                    maxpoll: int | None | UndefinedType = Undefined,
+                    minpoll: int | None | UndefinedType = Undefined,
+                    preferred: bool | None | UndefinedType = Undefined,
+                    version: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ServersItem.
@@ -32925,7 +32925,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                     key: str | UndefinedType = Undefined,
-                    key_type: KeyType | UndefinedType | None = Undefined,
+                    key_type: KeyType | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AuthenticationKeysItem.
@@ -32971,9 +32971,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        serve_all: bool | UndefinedType | None = Undefined,
-                        access_group: str | UndefinedType | None = Undefined,
-                        ipv6_access_group: str | UndefinedType | None = Undefined,
+                        serve_all: bool | None | UndefinedType = Undefined,
+                        access_group: str | None | UndefinedType = Undefined,
+                        ipv6_access_group: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         VrfsItem.
@@ -33010,9 +33010,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    serve_all: bool | UndefinedType | None = Undefined,
-                    access_group: str | UndefinedType | None = Undefined,
-                    ipv6_access_group: str | UndefinedType | None = Undefined,
+                    serve_all: bool | None | UndefinedType = Undefined,
+                    access_group: str | None | UndefinedType = Undefined,
+                    ipv6_access_group: str | None | UndefinedType = Undefined,
                     vrfs: Vrfs | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -33068,11 +33068,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 local_interface: LocalInterface | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
-                authenticate: bool | UndefinedType | None = Undefined,
-                authenticate_servers_only: bool | UndefinedType | None = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
+                authenticate: bool | None | UndefinedType = Undefined,
+                authenticate_servers_only: bool | None | UndefinedType = Undefined,
                 authentication_keys: AuthenticationKeys | UndefinedType = Undefined,
-                trusted_keys: str | UndefinedType | None = Undefined,
+                trusted_keys: str | None | UndefinedType = Undefined,
                 serve: Serve | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -33115,7 +33115,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, bgp_vpws_remote_failure_errdisable: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, bgp_vpws_remote_failure_errdisable: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Patch.
 
@@ -33279,7 +33279,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    enabled: bool | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                     connectors: Connectors | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -33407,7 +33407,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, routing_mac_address_per_vlan: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, routing_mac_address_per_vlan: bool | None | UndefinedType = Undefined) -> None:
                         """
                         L3.
 
@@ -33437,7 +33437,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, unit: Unit | UndefinedType | None = Undefined, limit: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, unit: Unit | None | UndefinedType = Undefined, limit: int | None | UndefinedType = Undefined) -> None:
                             """
                             HeadroomPool.
 
@@ -33479,7 +33479,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 if TYPE_CHECKING:
 
                                     def __init__(
-                                        self, *, unit: Unit | UndefinedType | None = Undefined, memory: int | UndefinedType | None = Undefined
+                                        self, *, unit: Unit | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined
                                     ) -> None:
                                         """
                                         Reserved.
@@ -33508,7 +33508,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     id: int | UndefinedType = Undefined,
-                                    threshold: Threshold | UndefinedType | None = Undefined,
+                                    threshold: Threshold | None | UndefinedType = Undefined,
                                     reserved: Reserved | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -33548,7 +33548,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, unit: Unit | UndefinedType | None = Undefined, memory: int | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, unit: Unit | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined) -> None:
                                     """
                                     Reserved.
 
@@ -33578,7 +33578,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, unit: Unit | UndefinedType | None = Undefined, memory: int | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, unit: Unit | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined) -> None:
                                     """
                                     Headroom.
 
@@ -33617,10 +33617,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 priority_groups: PriorityGroups | UndefinedType = Undefined,
-                                threshold: Threshold | UndefinedType | None = Undefined,
+                                threshold: Threshold | None | UndefinedType = Undefined,
                                 reserved: Reserved | UndefinedType = Undefined,
                                 headroom: Headroom | UndefinedType = Undefined,
-                                resume: int | UndefinedType | None = Undefined,
+                                resume: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ingress.
@@ -33698,9 +33698,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 id: int | UndefinedType = Undefined,
-                                unit: Unit | UndefinedType | None = Undefined,
-                                reserved: int | UndefinedType | None = Undefined,
-                                threshold: Threshold | UndefinedType | None = Undefined,
+                                unit: Unit | None | UndefinedType = Undefined,
+                                reserved: int | None | UndefinedType = Undefined,
+                                threshold: Threshold | None | UndefinedType = Undefined,
                                 drop: Drop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -33788,9 +33788,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 id: int | UndefinedType = Undefined,
-                                unit: Unit | UndefinedType | None = Undefined,
-                                reserved: int | UndefinedType | None = Undefined,
-                                threshold: Threshold | UndefinedType | None = Undefined,
+                                unit: Unit | None | UndefinedType = Undefined,
+                                reserved: int | None | UndefinedType = Undefined,
+                                threshold: Threshold | None | UndefinedType = Undefined,
                                 drop: Drop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -33893,7 +33893,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        active_profile: str | UndefinedType | None = Undefined,
+                        active_profile: str | None | UndefinedType = Undefined,
                         headroom_pool: HeadroomPool | UndefinedType = Undefined,
                         queue_profiles: QueueProfiles | UndefinedType = Undefined,
                     ) -> None:
@@ -33927,7 +33927,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    forwarding_table_partition: str | UndefinedType | None = Undefined,
+                    forwarding_table_partition: str | None | UndefinedType = Undefined,
                     l3: L3 | UndefinedType = Undefined,
                     mmu: Mmu | UndefinedType = Undefined,
                 ) -> None:
@@ -33961,7 +33961,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, traffic_class: int | UndefinedType | None = Undefined, to_network_qos: int | UndefinedType | None = Undefined
+                        self, *, traffic_class: int | None | UndefinedType = Undefined, to_network_qos: int | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         QosMapsItem.
@@ -33989,7 +33989,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, hardware_only: bool | UndefinedType | None = Undefined, mode: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, hardware_only: bool | None | UndefinedType = Undefined, mode: str | None | UndefinedType = Undefined) -> None:
                         """
                         Lag.
 
@@ -34011,7 +34011,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, default: Default | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, default: Default | None | UndefinedType = Undefined) -> None:
                         """
                         MulticastReplication.
 
@@ -34048,9 +34048,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     qos_maps: QosMaps | UndefinedType = Undefined,
                     lag: Lag | UndefinedType = Undefined,
-                    forwarding_mode: str | UndefinedType | None = Undefined,
+                    forwarding_mode: str | None | UndefinedType = Undefined,
                     multicast_replication: MulticastReplication | UndefinedType = Undefined,
-                    mdb_profile: MdbProfile | UndefinedType | None = Undefined,
+                    mdb_profile: MdbProfile | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Sand.
@@ -34102,9 +34102,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    count: int | UndefinedType | None = Undefined,
-                                    worker: str | UndefinedType | None = Undefined,
-                                    mode: Mode | UndefinedType | None = Undefined,
+                                    count: int | None | UndefinedType = Undefined,
+                                    worker: str | None | UndefinedType = Undefined,
+                                    mode: Mode | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     RxQueue.
@@ -34213,7 +34213,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, profiles: Profiles | UndefinedType = Undefined, interface_profile: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, profiles: Profiles | UndefinedType = Undefined, interface_profile: str | None | UndefinedType = Undefined) -> None:
                         """
                         Interface.
 
@@ -34247,7 +34247,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, data_plane_cpu_allocation_max: int | UndefinedType | None = Undefined, interface: Interface | UndefinedType = Undefined
+                    self, *, data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined, interface: Interface | UndefinedType = Undefined
                 ) -> None:
                     """
                     Sfe.
@@ -34277,7 +34277,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, profile: Profile | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, profile: Profile | None | UndefinedType = Undefined) -> None:
                         """
                         BufferingEgress.
 
@@ -34298,7 +34298,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, credit_rates_unified: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, credit_rates_unified: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Voq.
 
@@ -34392,7 +34392,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, action: Action | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, action: Action | None | UndefinedType = Undefined) -> None:
                     """
                     Reboot.
 
@@ -34414,7 +34414,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, action: Action | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, action: Action | None | UndefinedType = Undefined) -> None:
                     """
                     InterfaceShutdown.
 
@@ -34484,7 +34484,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, ip_address: str | UndefinedType | None = Undefined, recursive: bool | UndefinedType | None = Undefined
+                                self, *, ip_address: str | None | UndefinedType = Undefined, recursive: bool | None | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 Nexthop.
@@ -34537,8 +34537,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        index: int | UndefinedType | None = Undefined,
-                        drop: bool | UndefinedType | None = Undefined,
+                        index: int | None | UndefinedType = Undefined,
+                        drop: bool | None | UndefinedType = Undefined,
                         set: Set | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -34615,10 +34615,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            cos: int | UndefinedType | None = Undefined,
-                            dscp: str | UndefinedType | None = Undefined,
-                            traffic_class: int | UndefinedType | None = Undefined,
-                            drop_precedence: int | UndefinedType | None = Undefined,
+                            cos: int | None | UndefinedType = Undefined,
+                            dscp: str | None | UndefinedType = Undefined,
+                            traffic_class: int | None | UndefinedType = Undefined,
+                            drop_precedence: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Set.
@@ -34652,7 +34652,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, type: Type | UndefinedType | None = Undefined, dscp_value: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, type: Type | None | UndefinedType = Undefined, dscp_value: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Action.
 
@@ -34708,14 +34708,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            rate: int | UndefinedType | None = Undefined,
+                            rate: int | None | UndefinedType = Undefined,
                             rate_unit: RateUnit | UndefinedType = Undefined,
-                            rate_burst_size: int | UndefinedType | None = Undefined,
+                            rate_burst_size: int | None | UndefinedType = Undefined,
                             rate_burst_size_unit: RateBurstSizeUnit | UndefinedType = Undefined,
                             action: Action | UndefinedType = Undefined,
-                            higher_rate: int | UndefinedType | None = Undefined,
+                            higher_rate: int | None | UndefinedType = Undefined,
                             higher_rate_unit: HigherRateUnit | UndefinedType = Undefined,
-                            higher_rate_burst_size: int | UndefinedType | None = Undefined,
+                            higher_rate_burst_size: int | None | UndefinedType = Undefined,
                             higher_rate_burst_size_unit: HigherRateBurstSizeUnit | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -34824,9 +34824,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        shape: int | UndefinedType | None = Undefined,
-                        bandwidth: int | UndefinedType | None = Undefined,
-                        rate_unit: RateUnit | UndefinedType | None = Undefined,
+                        shape: int | None | UndefinedType = Undefined,
+                        bandwidth: int | None | UndefinedType = Undefined,
+                        rate_unit: RateUnit | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ClassesItem.
@@ -34953,10 +34953,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     eth_type: EthType | UndefinedType = Undefined,
-                    ip_protocol: str | UndefinedType | None = Undefined,
+                    ip_protocol: str | None | UndefinedType = Undefined,
                     header: Header | UndefinedType = Undefined,
                     offset: int | UndefinedType = Undefined,
-                    mask: str | UndefinedType | None = Undefined,
+                    mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     LoadBalanceTridentUdfItem.
@@ -34997,7 +34997,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 load_balance_trident_udf: LoadBalanceTridentUdf | UndefinedType = Undefined,
-                load_balance_sand_profile: str | UndefinedType | None = Undefined,
+                load_balance_sand_profile: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 PortChannel.
@@ -35031,7 +35031,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, link_status: bool | UndefinedType | None = Undefined, storm_control_discards: bool | UndefinedType | None = Undefined
+                        self, *, link_status: bool | None | UndefinedType = Undefined, storm_control_discards: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Event.
@@ -35077,7 +35077,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4: bool | UndefinedType | None = Undefined, ipv6: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
                         """
                         AddressFamily.
 
@@ -35128,7 +35128,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, vlan: int | UndefinedType = Undefined, inner_vlan: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, vlan: int | UndefinedType = Undefined, inner_vlan: int | None | UndefinedType = Undefined) -> None:
                     """
                     EncapsulationDot1q.
 
@@ -35171,10 +35171,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         encapsulation: Encapsulation | UndefinedType = Undefined,
-                        vlan: int | UndefinedType | None = Undefined,
-                        outer_vlan: int | UndefinedType | None = Undefined,
-                        inner_vlan: int | UndefinedType | None = Undefined,
-                        inner_encapsulation: InnerEncapsulation | UndefinedType | None = Undefined,
+                        vlan: int | None | UndefinedType = Undefined,
+                        outer_vlan: int | None | UndefinedType = Undefined,
+                        inner_vlan: int | None | UndefinedType = Undefined,
+                        inner_encapsulation: InnerEncapsulation | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Client.
@@ -35223,10 +35223,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         encapsulation: Encapsulation | UndefinedType = Undefined,
-                        vlan: int | UndefinedType | None = Undefined,
-                        outer_vlan: int | UndefinedType | None = Undefined,
-                        inner_vlan: int | UndefinedType | None = Undefined,
-                        inner_encapsulation: InnerEncapsulation | UndefinedType | None = Undefined,
+                        vlan: int | None | UndefinedType = Undefined,
+                        outer_vlan: int | None | UndefinedType = Undefined,
+                        inner_vlan: int | None | UndefinedType = Undefined,
+                        inner_encapsulation: InnerEncapsulation | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Network.
@@ -35356,7 +35356,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, encapsulation_dot1q_vlan: int | UndefinedType | None = Undefined, forwarding_profile: str | UndefinedType | None = Undefined
+                    self, *, encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined, forwarding_profile: str | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     L2Protocol.
@@ -35388,9 +35388,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    trust: Trust | UndefinedType | None = Undefined,
-                    dscp: int | UndefinedType | None = Undefined,
-                    cos: int | UndefinedType | None = Undefined,
+                    trust: Trust | None | UndefinedType = Undefined,
+                    dscp: int | None | UndefinedType = Undefined,
+                    cos: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Qos.
@@ -35417,7 +35417,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, rfc_7130: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, rfc_7130: bool | None | UndefinedType = Undefined) -> None:
                         """
                         PerLink.
 
@@ -35457,11 +35457,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    echo: bool | UndefinedType | None = Undefined,
-                    interval: int | UndefinedType | None = Undefined,
-                    min_rx: int | UndefinedType | None = Undefined,
-                    multiplier: int | UndefinedType | None = Undefined,
-                    neighbor: str | UndefinedType | None = Undefined,
+                    echo: bool | None | UndefinedType = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
+                    min_rx: int | None | UndefinedType = Undefined,
+                    multiplier: int | None | UndefinedType = Undefined,
+                    neighbor: str | None | UndefinedType = Undefined,
                     per_link: PerLink | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -35494,7 +35494,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, input: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, input: str | None | UndefinedType = Undefined) -> None:
                         """
                         Pbr.
 
@@ -35560,7 +35560,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interface: bool | UndefinedType | None = Undefined, igp_sync: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interface: bool | None | UndefinedType = Undefined, igp_sync: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Ldp.
 
@@ -35580,7 +35580,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ip: bool | UndefinedType | None = Undefined, ldp: Ldp | UndefinedType = Undefined) -> None:
+                def __init__(self, *, ip: bool | None | UndefinedType = Undefined, ldp: Ldp | UndefinedType = Undefined) -> None:
                     """
                     Mpls.
 
@@ -35610,7 +35610,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, rate: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, rate: str | None | UndefinedType = Undefined) -> None:
                     """
                     Shape.
 
@@ -35648,7 +35648,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | UndefinedType | None = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         All.
 
@@ -35677,7 +35677,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | UndefinedType | None = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Broadcast.
 
@@ -35706,7 +35706,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | UndefinedType | None = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Multicast.
 
@@ -35735,7 +35735,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | UndefinedType | None = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         UnknownUnicast.
 
@@ -35828,7 +35828,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -35934,13 +35934,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Both.
@@ -36001,7 +36001,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -36107,13 +36107,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Level1.
@@ -36174,7 +36174,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -36280,13 +36280,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Level2.
@@ -36367,7 +36367,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, input: str | UndefinedType | None = Undefined, output: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, input: str | None | UndefinedType = Undefined, output: str | None | UndefinedType = Undefined) -> None:
                     """
                     TrafficPolicy.
 
@@ -36415,12 +36415,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        algorithm: Algorithm | UndefinedType | None = Undefined,
-                        preference_value: int | UndefinedType | None = Undefined,
+                        algorithm: Algorithm | None | UndefinedType = Undefined,
+                        preference_value: int | None | UndefinedType = Undefined,
                         dont_preempt: bool | UndefinedType = Undefined,
-                        hold_time: int | UndefinedType | None = Undefined,
-                        subsequent_hold_time: int | UndefinedType | None = Undefined,
-                        candidate_reachability_required: bool | UndefinedType | None = Undefined,
+                        hold_time: int | None | UndefinedType = Undefined,
+                        subsequent_hold_time: int | None | UndefinedType = Undefined,
+                        candidate_reachability_required: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         DesignatedForwarderElection.
@@ -36448,7 +36448,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, shared_index: int | UndefinedType | None = Undefined, tunnel_flood_filter_time: int | UndefinedType | None = Undefined
+                        self, *, shared_index: int | None | UndefinedType = Undefined, tunnel_flood_filter_time: int | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Mpls.
@@ -36484,11 +36484,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    identifier: str | UndefinedType | None = Undefined,
-                    redundancy: Redundancy | UndefinedType | None = Undefined,
+                    identifier: str | None | UndefinedType = Undefined,
+                    redundancy: Redundancy | None | UndefinedType = Undefined,
                     designated_forwarder_election: DesignatedForwarderElection | UndefinedType = Undefined,
                     mpls: Mpls | UndefinedType = Undefined,
-                    route_target: str | UndefinedType | None = Undefined,
+                    route_target: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EvpnEthernetSegment.
@@ -36523,7 +36523,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interval: int | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined, timeout: int | None | UndefinedType = Undefined) -> None:
                         """
                         Announce.
 
@@ -36550,7 +36550,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, destination_mac_address: DestinationMacAddress | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, destination_mac_address: DestinationMacAddress | None | UndefinedType = Undefined) -> None:
                             """
                             G82751.
 
@@ -36588,7 +36588,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, domain_number: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, domain_number: int | None | UndefinedType = Undefined) -> None:
                         """
                         Region.
 
@@ -36608,7 +36608,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         SyncMessage.
 
@@ -36665,17 +36665,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enable: bool | UndefinedType | None = Undefined,
+                    enable: bool | None | UndefinedType = Undefined,
                     announce: Announce | UndefinedType = Undefined,
-                    delay_req: int | UndefinedType | None = Undefined,
-                    delay_mechanism: DelayMechanism | UndefinedType | None = Undefined,
+                    delay_req: int | None | UndefinedType = Undefined,
+                    delay_mechanism: DelayMechanism | None | UndefinedType = Undefined,
                     profile: Profile | UndefinedType = Undefined,
                     region: Region | UndefinedType = Undefined,
                     sync_message: SyncMessage | UndefinedType = Undefined,
-                    role: Role | UndefinedType | None = Undefined,
-                    vlan: str | UndefinedType | None = Undefined,
-                    transport: Transport | UndefinedType | None = Undefined,
-                    mpass: bool | UndefinedType | None = Undefined,
+                    role: Role | None | UndefinedType = Undefined,
+                    vlan: str | None | UndefinedType = Undefined,
+                    transport: Transport | None | UndefinedType = Undefined,
+                    mpass: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ptp.
@@ -36732,9 +36732,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             access_list: str | UndefinedType = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
                             pool_name: str | UndefinedType = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DynamicItem.
@@ -36802,16 +36802,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            access_list: str | UndefinedType | None = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
-                            direction: Direction | UndefinedType | None = Undefined,
-                            group: int | UndefinedType | None = Undefined,
-                            original_ip: str | UndefinedType | None = Undefined,
-                            original_port: int | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
-                            protocol: Protocol | UndefinedType | None = Undefined,
+                            access_list: str | None | UndefinedType = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
+                            group: int | None | UndefinedType = Undefined,
+                            original_ip: str | None | UndefinedType = Undefined,
+                            original_port: int | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
-                            translated_port: int | UndefinedType | None = Undefined,
+                            translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             StaticItem.
@@ -36894,10 +36894,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             access_list: str | UndefinedType = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
                             nat_type: NatType | UndefinedType = Undefined,
-                            pool_name: str | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
+                            pool_name: str | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DynamicItem.
@@ -36969,16 +36969,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            access_list: str | UndefinedType | None = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
-                            direction: Direction | UndefinedType | None = Undefined,
-                            group: int | UndefinedType | None = Undefined,
-                            original_ip: str | UndefinedType | None = Undefined,
-                            original_port: int | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
-                            protocol: Protocol | UndefinedType | None = Undefined,
+                            access_list: str | None | UndefinedType = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
+                            group: int | None | UndefinedType = Undefined,
+                            original_ip: str | None | UndefinedType = Undefined,
+                            original_port: int | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
-                            translated_port: int | UndefinedType | None = Undefined,
+                            translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             StaticItem.
@@ -37043,7 +37043,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    service_profile: str | UndefinedType | None = Undefined,
+                    service_profile: str | None | UndefinedType = Undefined,
                     destination: Destination | UndefinedType = Undefined,
                     source: Source | UndefinedType = Undefined,
                 ) -> None:
@@ -37087,9 +37087,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     ipv6_prefix: str | UndefinedType = Undefined,
-                    valid_lifetime: str | UndefinedType | None = Undefined,
-                    preferred_lifetime: str | UndefinedType | None = Undefined,
-                    no_autoconfig_flag: bool | UndefinedType | None = Undefined,
+                    valid_lifetime: str | None | UndefinedType = Undefined,
+                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                    no_autoconfig_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6NdPrefixesItem.
@@ -37131,9 +37131,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dynamic_capacity: int | UndefinedType | None = Undefined,
-                        expire: int | UndefinedType | None = Undefined,
-                        refresh_always: bool | UndefinedType | None = Undefined,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Cache.
@@ -37163,7 +37163,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, default_route: bool | UndefinedType | None = Undefined, route_preference: bool | UndefinedType | None = Undefined
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             RxAccept.
@@ -37192,7 +37192,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
                             """
                             DnsServersItem.
 
@@ -37235,10 +37235,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        disabled: bool | UndefinedType | None = Undefined,
+                        disabled: bool | None | UndefinedType = Undefined,
                         rx_accept: RxAccept | UndefinedType = Undefined,
                         dns_servers: DnsServers | UndefinedType = Undefined,
-                        dns_servers_lifetime: int | UndefinedType | None = Undefined,
+                        dns_servers_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ra.
@@ -37277,9 +37277,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ipv6_prefix: str | UndefinedType = Undefined,
-                        valid_lifetime: str | UndefinedType | None = Undefined,
-                        preferred_lifetime: str | UndefinedType | None = Undefined,
-                        no_autoconfig_flag: bool | UndefinedType | None = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PrefixesItem.
@@ -37340,9 +37340,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
-                    managed_config_flag: bool | UndefinedType | None = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
-                    other_config_flag: bool | UndefinedType | None = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -37386,7 +37386,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, count: str | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, count: str | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                             """
                             Hello.
 
@@ -37425,12 +37425,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        border_router: bool | UndefinedType | None = Undefined,
-                        dr_priority: int | UndefinedType | None = Undefined,
-                        sparse_mode: bool | UndefinedType | None = Undefined,
-                        bfd: bool | UndefinedType | None = Undefined,
-                        bidirectional: bool | UndefinedType | None = Undefined,
-                        neighbor_filter: str | UndefinedType | None = Undefined,
+                        border_router: bool | None | UndefinedType = Undefined,
+                        dr_priority: int | None | UndefinedType = Undefined,
+                        sparse_mode: bool | None | UndefinedType = Undefined,
+                        bfd: bool | None | UndefinedType = Undefined,
+                        bidirectional: bool | None | UndefinedType = Undefined,
+                        neighbor_filter: str | None | UndefinedType = Undefined,
                         hello: Hello | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -37494,8 +37494,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    hash_algorithm: HashAlgorithm | UndefinedType | None = Undefined,
-                    key: str | UndefinedType | None = Undefined,
+                    hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
+                    key: str | None | UndefinedType = Undefined,
                     key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -37530,7 +37530,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, sampled: str | UndefinedType | None = Undefined, hardware: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, sampled: str | None | UndefinedType = Undefined, hardware: str | None | UndefinedType = Undefined) -> None:
                     """
                     FlowTracker.
 
@@ -37552,7 +37552,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, session_tracker: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, session_tracker: str | None | UndefinedType = Undefined) -> None:
                     """
                     Bgp.
 
@@ -37733,11 +37733,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                     groups: Groups | UndefinedType = Undefined,
-                    report_interval: int | UndefinedType | None = Undefined,
+                    report_interval: int | None | UndefinedType = Undefined,
                     access_lists: AccessLists | UndefinedType = Undefined,
-                    version: int | UndefinedType | None = Undefined,
+                    version: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     IpIgmpHostProxy.
@@ -37800,12 +37800,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    peer: str | UndefinedType | None = Undefined,
-                    peer_interface: str | UndefinedType | None = Undefined,
-                    peer_type: str | UndefinedType | None = Undefined,
-                    peer_key: str | UndefinedType | None = Undefined,
-                    validate_state: bool | UndefinedType | None = Undefined,
-                    validate_lldp: bool | UndefinedType | None = Undefined,
+                    peer: str | None | UndefinedType = Undefined,
+                    peer_interface: str | None | UndefinedType = Undefined,
+                    peer_type: str | None | UndefinedType = Undefined,
+                    peer_key: str | None | UndefinedType = Undefined,
+                    validate_state: bool | None | UndefinedType = Undefined,
+                    validate_lldp: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Metadata.
@@ -37846,7 +37846,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enable: bool | UndefinedType | None = Undefined, unmodified_enable: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enable: bool | None | UndefinedType = Undefined, unmodified_enable: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Egress.
 
@@ -37866,7 +37866,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enable: bool | UndefinedType | None = Undefined, egress: Egress | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enable: bool | None | UndefinedType = Undefined, egress: Egress | UndefinedType = Undefined) -> None:
                     """
                     Sflow.
 
@@ -37891,7 +37891,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Advertisement.
 
@@ -37917,7 +37917,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, minimum: int | UndefinedType | None = Undefined, reload: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, minimum: int | None | UndefinedType = Undefined, reload: int | None | UndefinedType = Undefined) -> None:
                             """
                             Delay.
 
@@ -37962,7 +37962,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, reload: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, reload: int | None | UndefinedType = Undefined) -> None:
                             """
                             Delay.
 
@@ -38008,8 +38008,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        decrement: int | UndefinedType | None = Undefined,
-                        shutdown: bool | UndefinedType | None = Undefined,
+                        decrement: int | None | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         TrackedObjectItem.
@@ -38058,7 +38058,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         address: str | UndefinedType = Undefined,
                         secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
-                        version: Version | UndefinedType | None = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4.
@@ -38129,7 +38129,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         mode: Mode | UndefinedType = Undefined,
                         key: str | UndefinedType = Undefined,
-                        key_type: KeyType | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerAuthentication.
@@ -38180,7 +38180,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    priority_level: int | UndefinedType | None = Undefined,
+                    priority_level: int | None | UndefinedType = Undefined,
                     advertisement: Advertisement | UndefinedType = Undefined,
                     preempt: Preempt | UndefinedType = Undefined,
                     timers: Timers | UndefinedType = Undefined,
@@ -38251,10 +38251,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        allowed_vlan: str | UndefinedType | None = Undefined,
-                        native_vlan: int | UndefinedType | None = Undefined,
-                        native_vlan_tag: bool | UndefinedType | None = Undefined,
-                        private_vlan_secondary: bool | UndefinedType | None = Undefined,
+                        allowed_vlan: str | None | UndefinedType = Undefined,
+                        native_vlan: int | None | UndefinedType = Undefined,
+                        native_vlan_tag: bool | None | UndefinedType = Undefined,
+                        private_vlan_secondary: bool | None | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -38282,7 +38282,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, vlan: int | UndefinedType | None = Undefined, trunk: Trunk | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, vlan: int | None | UndefinedType = Undefined, trunk: Trunk | None | UndefinedType = Undefined) -> None:
                         """
                         Phone.
 
@@ -38306,7 +38306,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ethertype: int | UndefinedType | None = Undefined, vlan_tag: VlanTag | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ethertype: int | None | UndefinedType = Undefined, vlan_tag: VlanTag | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1q.
 
@@ -38348,10 +38348,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            field_from: str | UndefinedType | None = Undefined,
-                            to: int | UndefinedType | None = Undefined,
-                            dot1q_tunnel: bool | UndefinedType | None = Undefined,
-                            inner_vlan_from: int | UndefinedType | None = Undefined,
+                            field_from: str | None | UndefinedType = Undefined,
+                            to: int | None | UndefinedType = Undefined,
+                            dot1q_tunnel: bool | None | UndefinedType = Undefined,
+                            inner_vlan_from: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DirectionInItem.
@@ -38402,9 +38402,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             field_from: str | UndefinedType = Undefined,
-                            to: int | UndefinedType | None = Undefined,
-                            dot1q_tunnel_to: str | UndefinedType | None = Undefined,
-                            inner_vlan_to: int | UndefinedType | None = Undefined,
+                            to: int | None | UndefinedType = Undefined,
+                            dot1q_tunnel_to: str | None | UndefinedType = Undefined,
+                            inner_vlan_to: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DirectionOutItem.
@@ -38461,9 +38461,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             field_from: str | UndefinedType = Undefined,
                             to: int | UndefinedType = Undefined,
-                            dot1q_tunnel: bool | UndefinedType | None = Undefined,
-                            inner_vlan_from: int | UndefinedType | None = Undefined,
-                            network: bool | UndefinedType | None = Undefined,
+                            dot1q_tunnel: bool | None | UndefinedType = Undefined,
+                            inner_vlan_from: int | None | UndefinedType = Undefined,
+                            network: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DirectionBothItem.
@@ -38523,8 +38523,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        in_required: bool | UndefinedType | None = Undefined,
-                        out_required: bool | UndefinedType | None = Undefined,
+                        in_required: bool | None | UndefinedType = Undefined,
+                        out_required: bool | None | UndefinedType = Undefined,
                         direction_in: DirectionIn | UndefinedType = Undefined,
                         direction_out: DirectionOut | UndefinedType = Undefined,
                         direction_both: DirectionBoth | UndefinedType = Undefined,
@@ -38564,7 +38564,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interface: str | UndefinedType = Undefined, prefer_vlan: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interface: str | UndefinedType = Undefined, prefer_vlan: str | None | UndefinedType = Undefined) -> None:
                         """
                         BackupLink.
 
@@ -38607,11 +38607,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dest_macaddr: str | UndefinedType | None = Undefined,
-                        initial_mac_move_delay: int | UndefinedType | None = Undefined,
-                        mac_move_burst: int | UndefinedType | None = Undefined,
-                        mac_move_burst_interval: int | UndefinedType | None = Undefined,
-                        preemption_delay: int | UndefinedType | None = Undefined,
+                        dest_macaddr: str | None | UndefinedType = Undefined,
+                        initial_mac_move_delay: int | None | UndefinedType = Undefined,
+                        mac_move_burst: int | None | UndefinedType = Undefined,
+                        mac_move_burst_interval: int | None | UndefinedType = Undefined,
+                        preemption_delay: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Backup.
@@ -38645,7 +38645,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, limit: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, limit: int | None | UndefinedType = Undefined) -> None:
                             """
                             MacAddressMaximum.
 
@@ -38670,7 +38670,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, mode: Mode | UndefinedType | None = Undefined, protect_log: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, protect_log: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Violation.
 
@@ -38754,10 +38754,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
                         mac_address_maximum: MacAddressMaximum | UndefinedType = Undefined,
                         violation: Violation | UndefinedType = Undefined,
-                        vlan_default_mac_address_maximum: int | UndefinedType | None = Undefined,
+                        vlan_default_mac_address_maximum: int | None | UndefinedType = Undefined,
                         vlans: Vlans | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -38866,7 +38866,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, id: int | UndefinedType | None = Undefined, inner_vlan: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, id: int | None | UndefinedType = Undefined, inner_vlan: int | None | UndefinedType = Undefined) -> None:
                             """
                             Identity.
 
@@ -38889,7 +38889,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, size: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined) -> None:
                             """
                             Truncation.
 
@@ -38913,7 +38913,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, source: str | UndefinedType | None = Undefined, destination: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, source: str | None | UndefinedType = Undefined, destination: str | None | UndefinedType = Undefined) -> None:
                             """
                             MacAddress.
 
@@ -38968,9 +38968,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     protocol: str | UndefinedType = Undefined,
-                                    strip: bool | UndefinedType | None = Undefined,
-                                    feature_header_length: int | UndefinedType | None = Undefined,
-                                    re_encapsulation_ethernet_header: bool | UndefinedType | None = Undefined,
+                                    strip: bool | None | UndefinedType = Undefined,
+                                    feature_header_length: int | None | UndefinedType = Undefined,
+                                    re_encapsulation_ethernet_header: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     ProtocolsItem.
@@ -39041,9 +39041,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                         self,
                                         *,
                                         protocol: str | UndefinedType = Undefined,
-                                        strip: bool | UndefinedType | None = Undefined,
-                                        feature_header_length: int | UndefinedType | None = Undefined,
-                                        re_encapsulation_ethernet_header: bool | UndefinedType | None = Undefined,
+                                        strip: bool | None | UndefinedType = Undefined,
+                                        feature_header_length: int | None | UndefinedType = Undefined,
+                                        re_encapsulation_ethernet_header: bool | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         ProtocolsItem.
@@ -39099,8 +39099,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     destination: str | UndefinedType = Undefined,
-                                    source: str | UndefinedType | None = Undefined,
-                                    strip: bool | UndefinedType | None = Undefined,
+                                    source: str | None | UndefinedType = Undefined,
+                                    strip: bool | None | UndefinedType = Undefined,
                                     protocols: Protocols | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -39151,7 +39151,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                strip: bool | UndefinedType | None = Undefined,
+                                strip: bool | None | UndefinedType = Undefined,
                                 protocols: Protocols | UndefinedType = Undefined,
                                 destinations: Destinations | UndefinedType = Undefined,
                             ) -> None:
@@ -39191,7 +39191,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, vxlan_strip: bool | UndefinedType | None = Undefined, gre: Gre | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, vxlan_strip: bool | None | UndefinedType = Undefined, gre: Gre | UndefinedType = Undefined) -> None:
                             """
                             Encapsulation.
 
@@ -39244,11 +39244,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        allowed_vlan: str | UndefinedType | None = Undefined,
+                        allowed_vlan: str | None | UndefinedType = Undefined,
                         default: Default | UndefinedType = Undefined,
                         identity: Identity | UndefinedType = Undefined,
-                        mpls_pop_all: bool | UndefinedType | None = Undefined,
-                        native_vlan: int | UndefinedType | None = Undefined,
+                        mpls_pop_all: bool | None | UndefinedType = Undefined,
+                        native_vlan: int | None | UndefinedType = Undefined,
                         truncation: Truncation | UndefinedType = Undefined,
                         mac_address: MacAddress | UndefinedType = Undefined,
                         encapsulation: Encapsulation | UndefinedType = Undefined,
@@ -39289,7 +39289,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, dot1br_strip: bool | UndefinedType | None = Undefined, vn_tag_strip: bool | UndefinedType | None = Undefined
+                            self, *, dot1br_strip: bool | None | UndefinedType = Undefined, vn_tag_strip: bool | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             Encapsulation.
@@ -39319,9 +39319,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            tag: Tag | UndefinedType | None = Undefined,
-                            dot1q_dzgre_source: Dot1qDzgreSource | UndefinedType | None = Undefined,
-                            qinq_dzgre_source: QinqDzgreSource | UndefinedType | None = Undefined,
+                            tag: Tag | None | UndefinedType = Undefined,
+                            dot1q_dzgre_source: Dot1qDzgreSource | None | UndefinedType = Undefined,
+                            qinq_dzgre_source: QinqDzgreSource | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Identity.
@@ -39374,12 +39374,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mpls_pop_all: bool | UndefinedType | None = Undefined,
+                        mpls_pop_all: bool | None | UndefinedType = Undefined,
                         encapsulation: Encapsulation | UndefinedType = Undefined,
-                        allowed_vlan: str | UndefinedType | None = Undefined,
+                        allowed_vlan: str | None | UndefinedType = Undefined,
                         identity: Identity | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
-                        dot1q_remove_outer_vlan_tag: str | UndefinedType | None = Undefined,
+                        dot1q_remove_outer_vlan_tag: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Tool.
@@ -39478,16 +39478,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    mode: Mode | UndefinedType | None = Undefined,
-                    access_vlan: int | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    mode: Mode | None | UndefinedType = Undefined,
+                    access_vlan: int | None | UndefinedType = Undefined,
                     trunk: Trunk | UndefinedType = Undefined,
                     phone: Phone | UndefinedType = Undefined,
-                    pvlan_mapping: str | UndefinedType | None = Undefined,
+                    pvlan_mapping: str | None | UndefinedType = Undefined,
                     dot1q: Dot1q | UndefinedType = Undefined,
-                    source_interface: SourceInterface | UndefinedType | None = Undefined,
+                    source_interface: SourceInterface | None | UndefinedType = Undefined,
                     vlan_translations: VlanTranslations | UndefinedType = Undefined,
-                    vlan_forwarding_accept_all: bool | UndefinedType | None = Undefined,
+                    vlan_forwarding_accept_all: bool | None | UndefinedType = Undefined,
                     backup_link: BackupLink | UndefinedType = Undefined,
                     backup: Backup | UndefinedType = Undefined,
                     port_security: PortSecurity | UndefinedType = Undefined,
@@ -39706,10 +39706,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                     administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
                     srlgs: Srlgs | UndefinedType = Undefined,
-                    metric: int | UndefinedType | None = Undefined,
+                    metric: int | None | UndefinedType = Undefined,
                     bandwidth: Bandwidth | UndefinedType = Undefined,
                     min_delay_static: MinDelayStatic | UndefinedType = Undefined,
                     min_delay_dynamic: MinDelayDynamic | UndefinedType = Undefined,
@@ -40029,85 +40029,85 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                comment: str | UndefinedType | None = Undefined,
-                description: str | UndefinedType | None = Undefined,
-                profile: str | UndefinedType | None = Undefined,
+                comment: str | None | UndefinedType = Undefined,
+                description: str | None | UndefinedType = Undefined,
+                profile: str | None | UndefinedType = Undefined,
                 logging: Logging | UndefinedType = Undefined,
-                shutdown: bool | UndefinedType | None = Undefined,
-                l2_mtu: int | UndefinedType | None = Undefined,
-                l2_mru: int | UndefinedType | None = Undefined,
-                loop_protection: bool | UndefinedType | None = Undefined,
-                arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
-                snmp_trap_link_change: bool | UndefinedType | None = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
+                l2_mtu: int | None | UndefinedType = Undefined,
+                l2_mru: int | None | UndefinedType = Undefined,
+                loop_protection: bool | None | UndefinedType = Undefined,
+                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
+                snmp_trap_link_change: bool | None | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 encapsulation_dot1q: EncapsulationDot1q | UndefinedType = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
                 encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
-                vlan_id: int | UndefinedType | None = Undefined,
+                vlan_id: int | None | UndefinedType = Undefined,
                 link_tracking_groups: LinkTrackingGroups | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
                 l2_protocol: L2Protocol | UndefinedType = Undefined,
-                mtu: int | UndefinedType | None = Undefined,
-                mlag: int | UndefinedType | None = Undefined,
-                lacp_fallback_timeout: int | UndefinedType | None = Undefined,
-                min_links: int | UndefinedType | None = Undefined,
-                lacp_fallback_mode: LacpFallbackMode | UndefinedType | None = Undefined,
+                mtu: int | None | UndefinedType = Undefined,
+                mlag: int | None | UndefinedType = Undefined,
+                lacp_fallback_timeout: int | None | UndefinedType = Undefined,
+                min_links: int | None | UndefinedType = Undefined,
+                lacp_fallback_mode: LacpFallbackMode | None | UndefinedType = Undefined,
                 qos: Qos | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
-                cpu_traffic_policy_fallback_vrf: str | UndefinedType | None = Undefined,
+                cpu_traffic_policy_fallback_vrf: str | None | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
-                ntp_serve: bool | UndefinedType | None = Undefined,
+                ntp_serve: bool | None | UndefinedType = Undefined,
                 shape: Shape | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
-                ip_proxy_arp: bool | UndefinedType | None = Undefined,
-                isis_enable: str | UndefinedType | None = Undefined,
-                isis_bfd: bool | UndefinedType | None = Undefined,
-                isis_passive: bool | UndefinedType | None = Undefined,
-                isis_metric: int | UndefinedType | None = Undefined,
-                isis_network_point_to_point: bool | UndefinedType | None = Undefined,
-                isis_circuit_type: IsisCircuitType | UndefinedType | None = Undefined,
-                isis_hello_padding: bool | UndefinedType | None = Undefined,
+                ip_proxy_arp: bool | None | UndefinedType = Undefined,
+                isis_enable: str | None | UndefinedType = Undefined,
+                isis_bfd: bool | None | UndefinedType = Undefined,
+                isis_passive: bool | None | UndefinedType = Undefined,
+                isis_metric: int | None | UndefinedType = Undefined,
+                isis_network_point_to_point: bool | None | UndefinedType = Undefined,
+                isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
+                isis_hello_padding: bool | None | UndefinedType = Undefined,
                 isis_authentication: IsisAuthentication | UndefinedType = Undefined,
                 traffic_policy: TrafficPolicy | UndefinedType = Undefined,
                 evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
-                lacp_id: str | UndefinedType | None = Undefined,
-                spanning_tree_bpdufilter: SpanningTreeBpdufilter | UndefinedType | None = Undefined,
-                spanning_tree_bpduguard: SpanningTreeBpduguard | UndefinedType | None = Undefined,
-                spanning_tree_guard: SpanningTreeGuard | UndefinedType | None = Undefined,
-                spanning_tree_portfast: SpanningTreePortfast | UndefinedType | None = Undefined,
-                spanning_tree_link_type: SpanningTreeLinkType | UndefinedType | None = Undefined,
-                vmtracer: bool | UndefinedType | None = Undefined,
+                lacp_id: str | None | UndefinedType = Undefined,
+                spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
+                spanning_tree_guard: SpanningTreeGuard | None | UndefinedType = Undefined,
+                spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
+                vmtracer: bool | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
-                ip_address: str | UndefinedType | None = Undefined,
+                ip_address: str | None | UndefinedType = Undefined,
                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
-                dhcp_client_accept_default_route: bool | UndefinedType | None = Undefined,
-                dhcp_server_ipv4: bool | UndefinedType | None = Undefined,
-                dhcp_server_ipv6: bool | UndefinedType | None = Undefined,
-                ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | UndefinedType | None = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
+                dhcp_server_ipv4: bool | None | UndefinedType = Undefined,
+                dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
+                ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | None | UndefinedType = Undefined,
                 ip_nat: IpNat | UndefinedType = Undefined,
-                ipv6_enable: bool | UndefinedType | None = Undefined,
-                ipv6_address: str | UndefinedType | None = Undefined,
+                ipv6_enable: bool | None | UndefinedType = Undefined,
+                ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
-                ipv6_address_auto_config: bool | UndefinedType | None = Undefined,
-                ipv6_address_link_local: str | UndefinedType | None = Undefined,
-                ipv6_nd_ra_disabled: bool | UndefinedType | None = Undefined,
-                ipv6_nd_managed_config_flag: bool | UndefinedType | None = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
+                ipv6_address_link_local: str | None | UndefinedType = Undefined,
+                ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
+                ipv6_nd_managed_config_flag: bool | None | UndefinedType = Undefined,
                 ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
                 ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
-                access_group_in: str | UndefinedType | None = Undefined,
-                access_group_out: str | UndefinedType | None = Undefined,
-                ipv6_access_group_in: str | UndefinedType | None = Undefined,
-                ipv6_access_group_out: str | UndefinedType | None = Undefined,
-                mac_access_group_in: str | UndefinedType | None = Undefined,
-                mac_access_group_out: str | UndefinedType | None = Undefined,
+                access_group_in: str | None | UndefinedType = Undefined,
+                access_group_out: str | None | UndefinedType = Undefined,
+                ipv6_access_group_in: str | None | UndefinedType = Undefined,
+                ipv6_access_group_out: str | None | UndefinedType = Undefined,
+                mac_access_group_in: str | None | UndefinedType = Undefined,
+                mac_access_group_out: str | None | UndefinedType = Undefined,
                 pim: Pim | UndefinedType = Undefined,
-                service_profile: str | UndefinedType | None = Undefined,
-                ospf_network_point_to_point: bool | UndefinedType | None = Undefined,
-                ospf_area: str | UndefinedType | None = Undefined,
-                ospf_cost: int | UndefinedType | None = Undefined,
-                ospf_authentication: OspfAuthentication | UndefinedType | None = Undefined,
-                ospf_authentication_key: str | UndefinedType | None = Undefined,
+                service_profile: str | None | UndefinedType = Undefined,
+                ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
+                ospf_area: str | None | UndefinedType = Undefined,
+                ospf_cost: int | None | UndefinedType = Undefined,
+                ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
+                ospf_authentication_key: str | None | UndefinedType = Undefined,
                 ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
@@ -40118,7 +40118,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
                 traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
-                eos_cli: str | UndefinedType | None = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 PortChannelInterfacesItem.
@@ -40360,11 +40360,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    action: Action | UndefinedType | None = Undefined,
-                    timeout: str | UndefinedType | None = Undefined,
-                    polling_interval: str | UndefinedType | None = Undefined,
-                    recovery_time: str | UndefinedType | None = Undefined,
-                    override_action_drop: bool | UndefinedType | None = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    timeout: str | None | UndefinedType = Undefined,
+                    polling_interval: str | None | UndefinedType = Undefined,
+                    recovery_time: str | None | UndefinedType = Undefined,
+                    override_action_drop: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Watchdog.
@@ -40403,7 +40403,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, all_off: bool | UndefinedType | None = Undefined, watchdog: Watchdog | UndefinedType = Undefined) -> None:
+            def __init__(self, *, all_off: bool | None | UndefinedType = Undefined, watchdog: Watchdog | UndefinedType = Undefined) -> None:
                 """
                 PriorityFlowControl.
 
@@ -40431,7 +40431,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ip: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, ip: str | None | UndefinedType = Undefined) -> None:
                     """
                     Source.
 
@@ -40454,7 +40454,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, dscp: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, dscp: int | None | UndefinedType = Undefined) -> None:
                         """
                         General.
 
@@ -40474,7 +40474,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, dscp: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, dscp: int | None | UndefinedType = Undefined) -> None:
                         """
                         Event.
 
@@ -40523,7 +40523,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, offset_from_master: int | UndefinedType | None = Undefined, mean_path_delay: int | UndefinedType | None = Undefined
+                            self, *, offset_from_master: int | None | UndefinedType = Undefined, mean_path_delay: int | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             Drop.
@@ -40548,8 +40548,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        offset_from_master: int | UndefinedType | None = Undefined,
-                        mean_path_delay: int | UndefinedType | None = Undefined,
+                        offset_from_master: int | None | UndefinedType = Undefined,
+                        mean_path_delay: int | None | UndefinedType = Undefined,
                         drop: Drop | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -40581,9 +40581,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            announce: int | UndefinedType | None = Undefined,
-                            follow_up: int | UndefinedType | None = Undefined,
-                            sync: int | UndefinedType | None = Undefined,
+                            announce: int | None | UndefinedType = Undefined,
+                            follow_up: int | None | UndefinedType = Undefined,
+                            sync: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Intervals.
@@ -40619,11 +40619,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            announce: int | UndefinedType | None = Undefined,
-                            delay_resp: int | UndefinedType | None = Undefined,
-                            follow_up: int | UndefinedType | None = Undefined,
-                            sync: int | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            announce: int | None | UndefinedType = Undefined,
+                            delay_resp: int | None | UndefinedType = Undefined,
+                            follow_up: int | None | UndefinedType = Undefined,
+                            sync: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             SequenceIds.
@@ -40712,7 +40712,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, source_clock_hardware: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, source_clock_hardware: bool | None | UndefinedType = Undefined) -> None:
                     """
                     FreeRunning.
 
@@ -40782,21 +40782,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                mode: Mode | UndefinedType | None = Undefined,
-                profile: Profile | UndefinedType | None = Undefined,
-                mode_one_step: bool | UndefinedType | None = Undefined,
-                forward_unicast: bool | UndefinedType | None = Undefined,
-                clock_identity: str | UndefinedType | None = Undefined,
+                mode: Mode | None | UndefinedType = Undefined,
+                profile: Profile | None | UndefinedType = Undefined,
+                mode_one_step: bool | None | UndefinedType = Undefined,
+                forward_unicast: bool | None | UndefinedType = Undefined,
+                clock_identity: str | None | UndefinedType = Undefined,
                 source: Source | UndefinedType = Undefined,
-                priority1: int | UndefinedType | None = Undefined,
-                priority2: int | UndefinedType | None = Undefined,
-                ttl: int | UndefinedType | None = Undefined,
-                domain: int | UndefinedType | None = Undefined,
-                hold_ptp_time: int | UndefinedType | None = Undefined,
+                priority1: int | None | UndefinedType = Undefined,
+                priority2: int | None | UndefinedType = Undefined,
+                ttl: int | None | UndefinedType = Undefined,
+                domain: int | None | UndefinedType = Undefined,
+                hold_ptp_time: int | None | UndefinedType = Undefined,
                 message_type: MessageType | UndefinedType = Undefined,
                 monitor: Monitor | UndefinedType = Undefined,
                 free_running: FreeRunning | UndefinedType = Undefined,
-                forward_v1: bool | UndefinedType | None = Undefined,
+                forward_v1: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Ptp.
@@ -40910,7 +40910,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, chip_based: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, chip_based: bool | None | UndefinedType = Undefined) -> None:
                             """
                             AllowNonEct.
 
@@ -41030,7 +41030,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, id: int | UndefinedType = Undefined, scheduler_profile_responsive: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, id: int | UndefinedType = Undefined, scheduler_profile_responsive: bool | None | UndefinedType = Undefined) -> None:
                         """
                         QueuesItem.
 
@@ -41058,7 +41058,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, shape_rate_percent_adaptive: bool | UndefinedType | None = Undefined, queues: Queues | UndefinedType = Undefined) -> None:
+                def __init__(self, *, shape_rate_percent_adaptive: bool | None | UndefinedType = Undefined, queues: Queues | UndefinedType = Undefined) -> None:
                     """
                     TxQueue.
 
@@ -41094,7 +41094,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 map: Map | UndefinedType = Undefined,
-                rewrite_dscp: bool | UndefinedType | None = Undefined,
+                rewrite_dscp: bool | None | UndefinedType = Undefined,
                 random_detect: RandomDetect | UndefinedType = Undefined,
                 tx_queue: TxQueue | UndefinedType = Undefined,
             ) -> None:
@@ -41135,7 +41135,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, rate: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, rate: str | None | UndefinedType = Undefined) -> None:
                     """
                     Shape.
 
@@ -41161,7 +41161,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, qos_input: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, qos_input: str | None | UndefinedType = Undefined) -> None:
                         """
                         Type.
 
@@ -41208,7 +41208,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, rate: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, rate: str | None | UndefinedType = Undefined) -> None:
                         """
                         Shape.
 
@@ -41258,8 +41258,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 units: Units | UndefinedType = Undefined,
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
-                                max_probability: int | UndefinedType | None = Undefined,
-                                weight: int | UndefinedType | None = Undefined,
+                                max_probability: int | None | UndefinedType = Undefined,
+                                weight: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Threshold.
@@ -41284,7 +41284,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, count: bool | UndefinedType | None = Undefined, threshold: Threshold | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, count: bool | None | UndefinedType = Undefined, threshold: Threshold | UndefinedType = Undefined) -> None:
                             """
                             Ecn.
 
@@ -41331,11 +41331,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 units: Units | UndefinedType = Undefined,
-                                drop_precedence: int | UndefinedType | None = Undefined,
+                                drop_precedence: int | None | UndefinedType = Undefined,
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
                                 drop_probability: int | UndefinedType = Undefined,
-                                weight: int | UndefinedType | None = Undefined,
+                                weight: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Threshold.
@@ -41433,11 +41433,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    bandwidth_percent: int | UndefinedType | None = Undefined,
-                    bandwidth_guaranteed_percent: int | UndefinedType | None = Undefined,
-                    priority: Priority | UndefinedType | None = Undefined,
+                    bandwidth_percent: int | None | UndefinedType = Undefined,
+                    bandwidth_guaranteed_percent: int | None | UndefinedType = Undefined,
+                    priority: Priority | None | UndefinedType = Undefined,
                     shape: Shape | UndefinedType = Undefined,
-                    comment: str | UndefinedType | None = Undefined,
+                    comment: str | None | UndefinedType = Undefined,
                     random_detect: RandomDetect | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -41481,7 +41481,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, rate: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, rate: str | None | UndefinedType = Undefined) -> None:
                         """
                         Shape.
 
@@ -41531,8 +41531,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 units: Units | UndefinedType = Undefined,
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
-                                max_probability: int | UndefinedType | None = Undefined,
-                                weight: int | UndefinedType | None = Undefined,
+                                max_probability: int | None | UndefinedType = Undefined,
+                                weight: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Threshold.
@@ -41557,7 +41557,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, count: bool | UndefinedType | None = Undefined, threshold: Threshold | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, count: bool | None | UndefinedType = Undefined, threshold: Threshold | UndefinedType = Undefined) -> None:
                             """
                             Ecn.
 
@@ -41604,11 +41604,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 units: Units | UndefinedType = Undefined,
-                                drop_precedence: int | UndefinedType | None = Undefined,
+                                drop_precedence: int | None | UndefinedType = Undefined,
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
                                 drop_probability: int | UndefinedType = Undefined,
-                                weight: int | UndefinedType | None = Undefined,
+                                weight: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Threshold.
@@ -41706,11 +41706,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    bandwidth_percent: int | UndefinedType | None = Undefined,
-                    bandwidth_guaranteed_percent: int | UndefinedType | None = Undefined,
-                    priority: Priority | UndefinedType | None = Undefined,
+                    bandwidth_percent: int | None | UndefinedType = Undefined,
+                    bandwidth_guaranteed_percent: int | None | UndefinedType = Undefined,
+                    priority: Priority | None | UndefinedType = Undefined,
                     shape: Shape | UndefinedType = Undefined,
-                    comment: str | UndefinedType | None = Undefined,
+                    comment: str | None | UndefinedType = Undefined,
                     random_detect: RandomDetect | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -41754,7 +41754,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, rate: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, rate: str | None | UndefinedType = Undefined) -> None:
                         """
                         Shape.
 
@@ -41792,11 +41792,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    bandwidth_percent: int | UndefinedType | None = Undefined,
-                    bandwidth_guaranteed_percent: int | UndefinedType | None = Undefined,
-                    priority: Priority | UndefinedType | None = Undefined,
+                    bandwidth_percent: int | None | UndefinedType = Undefined,
+                    bandwidth_guaranteed_percent: int | None | UndefinedType = Undefined,
+                    priority: Priority | None | UndefinedType = Undefined,
                     shape: Shape | UndefinedType = Undefined,
-                    comment: str | UndefinedType | None = Undefined,
+                    comment: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     McTxQueuesItem.
@@ -41878,7 +41878,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             timeout: str | UndefinedType = Undefined,
                             polling_interval: str | UndefinedType = Undefined,
                             recovery_time: str | UndefinedType = Undefined,
-                            forced: bool | UndefinedType | None = Undefined,
+                            forced: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Timer.
@@ -41936,7 +41936,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        action: Action | UndefinedType | None = Undefined,
+                        action: Action | None | UndefinedType = Undefined,
                         timer: Timer | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -42014,7 +42014,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                     watchdog: Watchdog | UndefinedType = Undefined,
                     priorities: Priorities | UndefinedType = Undefined,
                 ) -> None:
@@ -42081,9 +42081,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                trust: Trust | UndefinedType | None = Undefined,
-                cos: int | UndefinedType | None = Undefined,
-                dscp: int | UndefinedType | None = Undefined,
+                trust: Trust | None | UndefinedType = Undefined,
+                cos: int | None | UndefinedType = Undefined,
+                dscp: int | None | UndefinedType = Undefined,
                 shape: Shape | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
                 tx_queues: TxQueues | UndefinedType = Undefined,
@@ -42139,7 +42139,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, high: int | UndefinedType = Undefined, low: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, high: int | UndefinedType = Undefined, low: int | None | UndefinedType = Undefined) -> None:
                     """
                     DefaultThresholds.
 
@@ -42166,7 +42166,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, high: int | UndefinedType = Undefined, low: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, high: int | UndefinedType = Undefined, low: int | None | UndefinedType = Undefined) -> None:
                         """
                         Thresholds.
 
@@ -42242,10 +42242,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             source: str | UndefinedType = Undefined,
                             destination: str | UndefinedType = Undefined,
-                            dscp: int | UndefinedType | None = Undefined,
-                            ttl: int | UndefinedType | None = Undefined,
-                            protocol: str | UndefinedType | None = Undefined,
-                            vrf: str | UndefinedType | None = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
+                            ttl: int | None | UndefinedType = Undefined,
+                            protocol: str | None | UndefinedType = Undefined,
+                            vrf: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             TunnelModeGre.
@@ -42282,7 +42282,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        cpu: bool | UndefinedType | None = Undefined,
+                        cpu: bool | None | UndefinedType = Undefined,
                         ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
                         tunnel_mode_gre: TunnelModeGre | UndefinedType = Undefined,
                     ) -> None:
@@ -42310,7 +42310,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, destination: Destination | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, destination: Destination | UndefinedType = Undefined) -> None:
                     """
                     Mirror.
 
@@ -42360,10 +42360,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 enabled: bool | UndefinedType = Undefined,
                 default_thresholds: DefaultThresholds | UndefinedType = Undefined,
-                log: int | UndefinedType | None = Undefined,
-                notifying: bool | UndefinedType | None = Undefined,
+                log: int | None | UndefinedType = Undefined,
+                notifying: bool | None | UndefinedType = Undefined,
                 cpu: Cpu | UndefinedType = Undefined,
-                tx_latency: bool | UndefinedType | None = Undefined,
+                tx_latency: bool | None | UndefinedType = Undefined,
                 mirror: Mirror | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -42409,11 +42409,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enable: bool | UndefinedType | None = Undefined,
-                ip_access_group: str | UndefinedType | None = Undefined,
-                ipv6_access_group: str | UndefinedType | None = Undefined,
-                max_connections: int | UndefinedType | None = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
+                enable: bool | None | UndefinedType = Undefined,
+                ip_access_group: str | None | UndefinedType = Undefined,
+                ipv6_access_group: str | None | UndefinedType = Undefined,
+                max_connections: int | None | UndefinedType = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 QueueMonitorStreaming.
@@ -42458,7 +42458,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, key: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
                             """
                             Ipv4ClientsItem.
 
@@ -42494,7 +42494,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, key: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
                             """
                             Ipv6ClientsItem.
 
@@ -42530,7 +42530,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType = Undefined, key: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, name: str | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
                             """
                             HostClientsItem.
 
@@ -42656,9 +42656,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                client_key: str | UndefinedType | None = Undefined,
-                client_session_idle_timeout: int | UndefinedType | None = Undefined,
-                dynamic_authorization: bool | UndefinedType | None = Undefined,
+                client_key: str | None | UndefinedType = Undefined,
+                client_session_idle_timeout: int | None | UndefinedType = Undefined,
+                dynamic_authorization: bool | None | UndefinedType = Undefined,
                 client_groups: ClientGroups | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -42690,7 +42690,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, hostname: bool | UndefinedType | None = Undefined, format: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, hostname: bool | None | UndefinedType = Undefined, format: str | None | UndefinedType = Undefined) -> None:
                     """
                     Attribute32IncludeInAccessReq.
 
@@ -42714,7 +42714,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, port: int | UndefinedType | None = Undefined, tls_ssl_profile: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, port: int | None | UndefinedType = Undefined, tls_ssl_profile: str | None | UndefinedType = Undefined) -> None:
                     """
                     DynamicAuthorization.
 
@@ -42746,9 +42746,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        ssl_profile: str | UndefinedType | None = Undefined,
-                        port: int | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        ssl_profile: str | None | UndefinedType = Undefined,
+                        port: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Tls.
@@ -42800,9 +42800,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     host: str | UndefinedType = Undefined,
                     tls: Tls | UndefinedType = Undefined,
-                    timeout: int | UndefinedType | None = Undefined,
-                    retransmit: int | UndefinedType | None = Undefined,
-                    key: str | UndefinedType | None = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
+                    retransmit: int | None | UndefinedType = Undefined,
+                    key: str | None | UndefinedType = Undefined,
                     key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -42855,9 +42855,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            ssl_profile: str | UndefinedType | None = Undefined,
-                            port: int | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            ssl_profile: str | None | UndefinedType = Undefined,
+                            port: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Tls.
@@ -42909,9 +42909,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         host: str | UndefinedType = Undefined,
                         tls: Tls | UndefinedType = Undefined,
-                        timeout: int | UndefinedType | None = Undefined,
-                        retransmit: int | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        timeout: int | None | UndefinedType = Undefined,
+                        retransmit: int | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_type: KeyType | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -43008,11 +43008,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 attribute_32_include_in_access_req: Attribute32IncludeInAccessReq | UndefinedType = Undefined,
-                deadtime: int | UndefinedType | None = Undefined,
+                deadtime: int | None | UndefinedType = Undefined,
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
-                tls_ssl_profile: str | UndefinedType | None = Undefined,
+                tls_ssl_profile: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 RadiusServer.
@@ -43042,7 +43042,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, protocol: str | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, protocol: str | None | UndefinedType = Undefined) -> None:
                 """
                 Redundancy.
 
@@ -43077,7 +43077,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     sequence: int | UndefinedType = Undefined,
                     action: Action | UndefinedType = Undefined,
-                    mode: str | UndefinedType | None = Undefined,
+                    mode: str | None | UndefinedType = Undefined,
                     command: str | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -43156,7 +43156,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, sequence_number: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, sequence_number: int | None | UndefinedType = Undefined) -> None:
                         """
                         Continue.
 
@@ -43208,10 +43208,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     sequence: int | UndefinedType = Undefined,
                     type: Type | UndefinedType = Undefined,
-                    description: str | UndefinedType | None = Undefined,
+                    description: str | None | UndefinedType = Undefined,
                     match: Match | UndefinedType = Undefined,
                     set: Set | UndefinedType = Undefined,
-                    sub_route_map: str | UndefinedType | None = Undefined,
+                    sub_route_map: str | None | UndefinedType = Undefined,
                     field_continue: Continue | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -43388,10 +43388,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            jitter: int | UndefinedType | None = Undefined,
-                            latency: int | UndefinedType | None = Undefined,
-                            load: str | UndefinedType | None = Undefined,
-                            loss_rate: str | UndefinedType | None = Undefined,
+                            jitter: int | None | UndefinedType = Undefined,
+                            latency: int | None | UndefinedType = Undefined,
+                            load: str | None | UndefinedType = Undefined,
+                            loss_rate: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Threshold.
@@ -43419,7 +43419,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, threshold: Threshold | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, threshold: Threshold | UndefinedType = Undefined) -> None:
                         """
                         OutlierElimination.
 
@@ -43467,8 +43467,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    load_balance_policy: str | UndefinedType | None = Undefined,
-                    internet_exit_policy: str | UndefinedType | None = Undefined,
+                    load_balance_policy: str | None | UndefinedType = Undefined,
+                    internet_exit_policy: str | None | UndefinedType = Undefined,
                     metric_order: MetricOrder | UndefinedType = Undefined,
                     outlier_elimination: OutlierElimination | UndefinedType = Undefined,
                 ) -> None:
@@ -43526,10 +43526,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        application_profile: str | UndefinedType | None = Undefined,
-                        avt_profile: str | UndefinedType | None = Undefined,
-                        dscp: int | UndefinedType | None = Undefined,
-                        traffic_class: int | UndefinedType | None = Undefined,
+                        application_profile: str | None | UndefinedType = Undefined,
+                        avt_profile: str | None | UndefinedType = Undefined,
+                        dscp: int | None | UndefinedType = Undefined,
+                        traffic_class: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         MatchesItem.
@@ -43631,7 +43631,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    policy: str | UndefinedType | None = Undefined,
+                    policy: str | None | UndefinedType = Undefined,
                     profiles: Profiles | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -43711,8 +43711,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                topology_role: TopologyRole | UndefinedType | None = Undefined,
-                gateway_vxlan: bool | UndefinedType | None = Undefined,
+                topology_role: TopologyRole | None | UndefinedType = Undefined,
+                gateway_vxlan: bool | None | UndefinedType = Undefined,
                 region: Region | UndefinedType = Undefined,
                 zone: Zone | UndefinedType = Undefined,
                 site: Site | UndefinedType = Undefined,
@@ -43772,9 +43772,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    interval: int | UndefinedType | None = Undefined,
-                    min_rx: int | UndefinedType | None = Undefined,
-                    multiplier: int | UndefinedType | None = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
+                    min_rx: int | None | UndefinedType = Undefined,
+                    multiplier: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Multihop.
@@ -43804,7 +43804,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, ipv4: bool | UndefinedType | None = Undefined, ipv6: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Protocols.
 
@@ -43825,7 +43825,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType | None = Undefined, protocols: Protocols | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined, protocols: Protocols | UndefinedType = Undefined) -> None:
                         """
                         LocalInterface.
 
@@ -43849,7 +43849,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, min_rx: int | UndefinedType | None = Undefined, local_discriminator: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, min_rx: int | None | UndefinedType = Undefined, local_discriminator: str | None | UndefinedType = Undefined) -> None:
                         """
                         Reflector.
 
@@ -43885,9 +43885,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     local_interface: LocalInterface | UndefinedType = Undefined,
-                    initiator_interval: int | UndefinedType | None = Undefined,
-                    initiator_multiplier: int | UndefinedType | None = Undefined,
-                    initiator_measurement_round_trip: bool | UndefinedType | None = Undefined,
+                    initiator_interval: int | None | UndefinedType = Undefined,
+                    initiator_multiplier: int | None | UndefinedType = Undefined,
+                    initiator_measurement_round_trip: bool | None | UndefinedType = Undefined,
                     reflector: Reflector | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -43942,15 +43942,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                interval: int | UndefinedType | None = Undefined,
-                local_address: str | UndefinedType | None = Undefined,
-                min_rx: int | UndefinedType | None = Undefined,
-                multiplier: int | UndefinedType | None = Undefined,
+                interval: int | None | UndefinedType = Undefined,
+                local_address: str | None | UndefinedType = Undefined,
+                min_rx: int | None | UndefinedType = Undefined,
+                multiplier: int | None | UndefinedType = Undefined,
                 multihop: Multihop | UndefinedType = Undefined,
-                session_snapshot_interval: int | UndefinedType | None = Undefined,
-                session_snapshot_interval_dangerous: bool | UndefinedType | None = Undefined,
+                session_snapshot_interval: int | None | UndefinedType = Undefined,
+                session_snapshot_interval_dangerous: bool | None | UndefinedType = Undefined,
                 sbfd: Sbfd | UndefinedType = Undefined,
-                slow_timer: int | UndefinedType | None = Undefined,
+                slow_timer: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 RouterBfd.
@@ -44012,10 +44012,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    keepalive_time: int | UndefinedType | None = Undefined,
-                    hold_time: int | UndefinedType | None = Undefined,
-                    min_hold_time: int | UndefinedType | None = Undefined,
-                    send_failure_hold_time: int | UndefinedType | None = Undefined,
+                    keepalive_time: int | None | UndefinedType = Undefined,
+                    hold_time: int | None | UndefinedType = Undefined,
+                    min_hold_time: int | None | UndefinedType = Undefined,
+                    send_failure_hold_time: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Timers.
@@ -44083,9 +44083,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    restart_time: int | UndefinedType | None = Undefined,
-                    stalepath_time: int | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    restart_time: int | None | UndefinedType = Undefined,
+                    stalepath_time: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     GracefulRestart.
@@ -44123,9 +44123,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    restart_time: int | UndefinedType | None = Undefined,
-                    long_lived: bool | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    restart_time: int | None | UndefinedType = Undefined,
+                    long_lived: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     GracefulRestartHelper.
@@ -44155,7 +44155,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, paths: int | UndefinedType = Undefined, ecmp: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, paths: int | UndefinedType = Undefined, ecmp: int | None | UndefinedType = Undefined) -> None:
                     """
                     MaximumPaths.
 
@@ -44292,7 +44292,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, wait_for_convergence: bool | UndefinedType | None = Undefined, wait_install: bool | UndefinedType | None = Undefined
+                    self, *, wait_for_convergence: bool | None | UndefinedType = Undefined, wait_install: bool | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     Updates.
@@ -44332,7 +44332,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, ipv4_unicast: bool | UndefinedType | None = Undefined, ipv4_unicast_transport_ipv6: bool | UndefinedType | None = Undefined
+                        self, *, ipv4_unicast: bool | None | UndefinedType = Undefined, ipv4_unicast_transport_ipv6: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Default.
@@ -44355,7 +44355,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, always: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, always: bool | None | UndefinedType = Undefined) -> None:
                         """
                         RouteReflectorPreserveAttributes.
 
@@ -44376,7 +44376,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, d_path: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, d_path: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Bestpath.
 
@@ -44417,9 +44417,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        receive: bool | UndefinedType | None = Undefined,
-                        send: Send | UndefinedType | None = Undefined,
-                        send_limit: int | UndefinedType | None = Undefined,
+                        receive: bool | None | UndefinedType = Undefined,
+                        send: Send | None | UndefinedType = Undefined,
+                        send_limit: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AdditionalPaths.
@@ -44461,7 +44461,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Ip.
 
@@ -44485,7 +44485,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Tunnel.
 
@@ -44574,7 +44574,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     route_reflector_preserve_attributes: RouteReflectorPreserveAttributes | UndefinedType = Undefined,
                     bestpath: Bestpath | UndefinedType = Undefined,
                     additional_paths: AdditionalPaths | UndefinedType = Undefined,
-                    redistribute_internal: bool | UndefinedType | None = Undefined,
+                    redistribute_internal: bool | None | UndefinedType = Undefined,
                     labeled_unicast: LabeledUnicast | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -44629,11 +44629,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    prefix: str | UndefinedType | None = Undefined,
-                    peer_id_include_router_id: bool | UndefinedType | None = Undefined,
-                    peer_group: str | UndefinedType | None = Undefined,
-                    peer_filter: str | UndefinedType | None = Undefined,
-                    remote_as: str | UndefinedType | None = Undefined,
+                    prefix: str | None | UndefinedType = Undefined,
+                    peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                    peer_group: str | None | UndefinedType = Undefined,
+                    peer_filter: str | None | UndefinedType = Undefined,
+                    remote_as: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ListenRangesItem.
@@ -44674,7 +44674,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, send_community: SendCommunity | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, send_community: SendCommunity | None | UndefinedType = Undefined) -> None:
                     """
                     NeighborDefault.
 
@@ -44698,7 +44698,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, type: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -44722,7 +44722,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, remote_as_replace_out: bool | UndefinedType | None = Undefined, prepend_own_disabled: bool | UndefinedType | None = Undefined
+                        self, *, remote_as_replace_out: bool | None | UndefinedType = Undefined, prepend_own_disabled: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         AsPath.
@@ -44749,9 +44749,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        all: bool | UndefinedType | None = Undefined,
-                        replace_as: bool | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        all: bool | None | UndefinedType = Undefined,
+                        replace_as: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         RemovePrivateAs.
@@ -44775,7 +44775,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, replace_as: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, replace_as: bool | None | UndefinedType = Undefined) -> None:
                         """
                         RemovePrivateAsIngress.
 
@@ -44832,9 +44832,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        always: bool | UndefinedType | None = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        always: bool | None | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         DefaultOriginate.
@@ -44877,9 +44877,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             action: Action | UndefinedType = Undefined,
-                            include_community_list: bool | UndefinedType | None = Undefined,
-                            include_prefix_list: bool | UndefinedType | None = Undefined,
-                            include_sub_route_map: bool | UndefinedType | None = Undefined,
+                            include_community_list: bool | None | UndefinedType = Undefined,
+                            include_prefix_list: bool | None | UndefinedType = Undefined,
+                            include_sub_route_map: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DirectionIn.
@@ -44920,9 +44920,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             action: Action | UndefinedType = Undefined,
-                            include_community_list: bool | UndefinedType | None = Undefined,
-                            include_prefix_list: bool | UndefinedType | None = Undefined,
-                            include_sub_route_map: bool | UndefinedType | None = Undefined,
+                            include_community_list: bool | None | UndefinedType = Undefined,
+                            include_prefix_list: bool | None | UndefinedType = Undefined,
+                            include_sub_route_map: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DirectionOut.
@@ -44985,7 +44985,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, default: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, default: str | None | UndefinedType = Undefined) -> None:
                         """
                         LinkBandwidth.
 
@@ -45008,7 +45008,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, times: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, times: int | None | UndefinedType = Undefined) -> None:
                         """
                         AllowasIn.
 
@@ -45030,7 +45030,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, all: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, all: bool | None | UndefinedType = Undefined) -> None:
                         """
                         RibInPrePolicyRetain.
 
@@ -45214,43 +45214,43 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     metadata: Metadata | UndefinedType = Undefined,
-                    remote_as: str | UndefinedType | None = Undefined,
-                    local_as: str | UndefinedType | None = Undefined,
-                    description: str | UndefinedType | None = Undefined,
-                    shutdown: bool | UndefinedType | None = Undefined,
+                    remote_as: str | None | UndefinedType = Undefined,
+                    local_as: str | None | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                     as_path: AsPath | UndefinedType = Undefined,
                     remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                     remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
-                    next_hop_unchanged: bool | UndefinedType | None = Undefined,
-                    update_source: str | UndefinedType | None = Undefined,
-                    route_reflector_client: bool | UndefinedType | None = Undefined,
-                    bfd: bool | UndefinedType | None = Undefined,
+                    next_hop_unchanged: bool | None | UndefinedType = Undefined,
+                    update_source: str | None | UndefinedType = Undefined,
+                    route_reflector_client: bool | None | UndefinedType = Undefined,
+                    bfd: bool | None | UndefinedType = Undefined,
                     bfd_timers: BfdTimers | UndefinedType = Undefined,
-                    ebgp_multihop: int | UndefinedType | None = Undefined,
-                    next_hop_peer: bool | UndefinedType | None = Undefined,
-                    next_hop_self: bool | UndefinedType | None = Undefined,
-                    password: str | UndefinedType | None = Undefined,
+                    ebgp_multihop: int | None | UndefinedType = Undefined,
+                    next_hop_peer: bool | None | UndefinedType = Undefined,
+                    next_hop_self: bool | None | UndefinedType = Undefined,
+                    password: str | None | UndefinedType = Undefined,
                     password_type: PasswordType | UndefinedType = Undefined,
-                    passive: bool | UndefinedType | None = Undefined,
+                    passive: bool | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
-                    enforce_first_as: bool | UndefinedType | None = Undefined,
-                    send_community: str | UndefinedType | None = Undefined,
-                    maximum_routes: int | UndefinedType | None = Undefined,
-                    maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
-                    maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                    enforce_first_as: bool | None | UndefinedType = Undefined,
+                    send_community: str | None | UndefinedType = Undefined,
+                    maximum_routes: int | None | UndefinedType = Undefined,
+                    maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
+                    maximum_routes_warning_only: bool | None | UndefinedType = Undefined,
                     missing_policy: MissingPolicy | UndefinedType = Undefined,
                     link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                     allowas_in: AllowasIn | UndefinedType = Undefined,
-                    weight: int | UndefinedType | None = Undefined,
-                    timers: str | UndefinedType | None = Undefined,
+                    weight: int | None | UndefinedType = Undefined,
+                    timers: str | None | UndefinedType = Undefined,
                     rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
-                    route_map_in: str | UndefinedType | None = Undefined,
-                    route_map_out: str | UndefinedType | None = Undefined,
-                    peer_tag_in: str | UndefinedType | None = Undefined,
-                    peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                    session_tracker: str | UndefinedType | None = Undefined,
+                    route_map_in: str | None | UndefinedType = Undefined,
+                    route_map_out: str | None | UndefinedType = Undefined,
+                    peer_tag_in: str | None | UndefinedType = Undefined,
+                    peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                    session_tracker: str | None | UndefinedType = Undefined,
                     shared_secret: SharedSecret | UndefinedType = Undefined,
-                    ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                    ttl_maximum_hops: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     PeerGroupsItem.
@@ -45346,7 +45346,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, remote_as_replace_out: bool | UndefinedType | None = Undefined, prepend_own_disabled: bool | UndefinedType | None = Undefined
+                        self, *, remote_as_replace_out: bool | None | UndefinedType = Undefined, prepend_own_disabled: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         AsPath.
@@ -45375,7 +45375,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, peer: str | UndefinedType | None = Undefined, validate_state: bool | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, peer: str | None | UndefinedType = Undefined, validate_state: bool | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -45431,9 +45431,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        always: bool | UndefinedType | None = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        always: bool | None | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         DefaultOriginate.
@@ -45476,9 +45476,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             action: Action | UndefinedType = Undefined,
-                            include_community_list: bool | UndefinedType | None = Undefined,
-                            include_prefix_list: bool | UndefinedType | None = Undefined,
-                            include_sub_route_map: bool | UndefinedType | None = Undefined,
+                            include_community_list: bool | None | UndefinedType = Undefined,
+                            include_prefix_list: bool | None | UndefinedType = Undefined,
+                            include_sub_route_map: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DirectionIn.
@@ -45519,9 +45519,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             action: Action | UndefinedType = Undefined,
-                            include_community_list: bool | UndefinedType | None = Undefined,
-                            include_prefix_list: bool | UndefinedType | None = Undefined,
-                            include_sub_route_map: bool | UndefinedType | None = Undefined,
+                            include_community_list: bool | None | UndefinedType = Undefined,
+                            include_prefix_list: bool | None | UndefinedType = Undefined,
+                            include_sub_route_map: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DirectionOut.
@@ -45584,7 +45584,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, times: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, times: int | None | UndefinedType = Undefined) -> None:
                         """
                         AllowasIn.
 
@@ -45607,7 +45607,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, default: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, default: str | None | UndefinedType = Undefined) -> None:
                         """
                         LinkBandwidth.
 
@@ -45629,7 +45629,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, all: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, all: bool | None | UndefinedType = Undefined) -> None:
                         """
                         RibInPrePolicyRetain.
 
@@ -45655,9 +45655,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        all: bool | UndefinedType | None = Undefined,
-                        replace_as: bool | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        all: bool | None | UndefinedType = Undefined,
+                        replace_as: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         RemovePrivateAs.
@@ -45681,7 +45681,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, replace_as: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, replace_as: bool | None | UndefinedType = Undefined) -> None:
                         """
                         RemovePrivateAsIngress.
 
@@ -45863,44 +45863,44 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     ip_address: str | UndefinedType = Undefined,
-                    peer_group: str | UndefinedType | None = Undefined,
-                    remote_as: str | UndefinedType | None = Undefined,
-                    local_as: str | UndefinedType | None = Undefined,
+                    peer_group: str | None | UndefinedType = Undefined,
+                    remote_as: str | None | UndefinedType = Undefined,
+                    local_as: str | None | UndefinedType = Undefined,
                     as_path: AsPath | UndefinedType = Undefined,
                     metadata: Metadata | UndefinedType = Undefined,
-                    description: str | UndefinedType | None = Undefined,
-                    route_reflector_client: bool | UndefinedType | None = Undefined,
-                    password: str | UndefinedType | None = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    route_reflector_client: bool | None | UndefinedType = Undefined,
+                    password: str | None | UndefinedType = Undefined,
                     password_type: PasswordType | UndefinedType = Undefined,
-                    passive: bool | UndefinedType | None = Undefined,
-                    shutdown: bool | UndefinedType | None = Undefined,
-                    update_source: str | UndefinedType | None = Undefined,
-                    bfd: bool | UndefinedType | None = Undefined,
+                    passive: bool | None | UndefinedType = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
+                    update_source: str | None | UndefinedType = Undefined,
+                    bfd: bool | None | UndefinedType = Undefined,
                     bfd_timers: BfdTimers | UndefinedType = Undefined,
-                    weight: int | UndefinedType | None = Undefined,
-                    timers: str | UndefinedType | None = Undefined,
-                    route_map_in: str | UndefinedType | None = Undefined,
-                    route_map_out: str | UndefinedType | None = Undefined,
-                    peer_tag_in: str | UndefinedType | None = Undefined,
-                    peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                    weight: int | None | UndefinedType = Undefined,
+                    timers: str | None | UndefinedType = Undefined,
+                    route_map_in: str | None | UndefinedType = Undefined,
+                    route_map_out: str | None | UndefinedType = Undefined,
+                    peer_tag_in: str | None | UndefinedType = Undefined,
+                    peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
-                    enforce_first_as: bool | UndefinedType | None = Undefined,
-                    send_community: str | UndefinedType | None = Undefined,
-                    maximum_routes: int | UndefinedType | None = Undefined,
-                    maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
-                    maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                    enforce_first_as: bool | None | UndefinedType = Undefined,
+                    send_community: str | None | UndefinedType = Undefined,
+                    maximum_routes: int | None | UndefinedType = Undefined,
+                    maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
+                    maximum_routes_warning_only: bool | None | UndefinedType = Undefined,
                     missing_policy: MissingPolicy | UndefinedType = Undefined,
                     allowas_in: AllowasIn | UndefinedType = Undefined,
-                    ebgp_multihop: int | UndefinedType | None = Undefined,
-                    next_hop_peer: bool | UndefinedType | None = Undefined,
-                    next_hop_self: bool | UndefinedType | None = Undefined,
+                    ebgp_multihop: int | None | UndefinedType = Undefined,
+                    next_hop_peer: bool | None | UndefinedType = Undefined,
+                    next_hop_self: bool | None | UndefinedType = Undefined,
                     link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                     rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
                     remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                     remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
-                    session_tracker: str | UndefinedType | None = Undefined,
+                    session_tracker: str | None | UndefinedType = Undefined,
                     shared_secret: SharedSecret | UndefinedType = Undefined,
-                    ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                    ttl_maximum_hops: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     NeighborsItem.
@@ -45999,7 +45999,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, peer: str | UndefinedType | None = Undefined, validate_state: bool | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, peer: str | None | UndefinedType = Undefined, validate_state: bool | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -46043,11 +46043,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    remote_as: str | UndefinedType | None = Undefined,
+                    remote_as: str | None | UndefinedType = Undefined,
                     metadata: Metadata | UndefinedType = Undefined,
                     peer_group: str | UndefinedType = Undefined,
-                    description: str | UndefinedType | None = Undefined,
-                    peer_filter: str | UndefinedType | None = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    peer_filter: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     NeighborInterfacesItem.
@@ -46088,7 +46088,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, rcf: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, rcf: str | None | UndefinedType = Undefined) -> None:
                         """
                         Attribute.
 
@@ -46127,11 +46127,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     prefix: str | UndefinedType = Undefined,
-                    advertise_only: bool | UndefinedType | None = Undefined,
-                    as_set: bool | UndefinedType | None = Undefined,
-                    summary_only: bool | UndefinedType | None = Undefined,
-                    attribute_map: str | UndefinedType | None = Undefined,
-                    match_map: str | UndefinedType | None = Undefined,
+                    advertise_only: bool | None | UndefinedType = Undefined,
+                    as_set: bool | None | UndefinedType = Undefined,
+                    summary_only: bool | None | UndefinedType = Undefined,
+                    attribute_map: str | None | UndefinedType = Undefined,
+                    match_map: str | None | UndefinedType = Undefined,
                     attribute: Attribute | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -46170,7 +46170,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                         """
                         AttachedHost.
 
@@ -46192,7 +46192,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                         """
                         Bgp.
 
@@ -46227,9 +46227,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
-                        rcf: str | UndefinedType | None = Undefined,
-                        include_leaked: bool | UndefinedType | None = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                        include_leaked: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Connected.
@@ -46269,8 +46269,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
-                        rcf: str | UndefinedType | None = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Dynamic.
@@ -46320,10 +46320,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        isis_level: IsisLevel | UndefinedType | None = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
-                        rcf: str | UndefinedType | None = Undefined,
-                        include_leaked: bool | UndefinedType | None = Undefined,
+                        isis_level: IsisLevel | None | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                        include_leaked: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Isis.
@@ -46362,8 +46362,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MatchExternal.
@@ -46393,8 +46393,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MatchInternal.
@@ -46432,9 +46432,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            nssa_type: NssaType | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            nssa_type: NssaType | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MatchNssaExternal.
@@ -46487,12 +46487,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
                         match_external: MatchExternal | UndefinedType = Undefined,
                         match_internal: MatchInternal | UndefinedType = Undefined,
                         match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
-                        include_leaked: bool | UndefinedType | None = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        include_leaked: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ospf.
@@ -46537,8 +46537,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MatchExternal.
@@ -46568,8 +46568,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MatchInternal.
@@ -46607,9 +46607,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            nssa_type: NssaType | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            nssa_type: NssaType | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MatchNssaExternal.
@@ -46662,12 +46662,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
                         match_external: MatchExternal | UndefinedType = Undefined,
                         match_internal: MatchInternal | UndefinedType = Undefined,
                         match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
-                        include_leaked: bool | UndefinedType | None = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        include_leaked: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ospfv3.
@@ -46703,7 +46703,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                         """
                         Rip.
 
@@ -46738,9 +46738,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
-                        rcf: str | UndefinedType | None = Undefined,
-                        include_leaked: bool | UndefinedType | None = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                        include_leaked: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Static.
@@ -46775,7 +46775,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | None | UndefinedType = Undefined) -> None:
                         """
                         User.
 
@@ -46885,7 +46885,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, tenants: Tenants | UndefinedType = Undefined, description: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, tenants: Tenants | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -46913,7 +46913,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, domain: Domain | UndefinedType | None = Undefined, rd: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, rd: str | None | UndefinedType = Undefined) -> None:
                         """
                         RdEvpnDomain.
 
@@ -46954,7 +46954,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, domain: Domain | UndefinedType | None = Undefined, route_target: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ImportEvpnDomainsItem.
 
@@ -46982,7 +46982,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, domain: Domain | UndefinedType | None = Undefined, route_target: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ExportEvpnDomainsItem.
 
@@ -47010,7 +47010,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, domain: Domain | UndefinedType | None = Undefined, route_target: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ImportExportEvpnDomainsItem.
 
@@ -47129,13 +47129,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     metadata: Metadata | UndefinedType = Undefined,
-                    rd: str | UndefinedType | None = Undefined,
+                    rd: str | None | UndefinedType = Undefined,
                     rd_evpn_domain: RdEvpnDomain | UndefinedType = Undefined,
                     route_targets: RouteTargets | UndefinedType = Undefined,
                     redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                     no_redistribute_routes: NoRedistributeRoutes | UndefinedType = Undefined,
-                    vlan: str | UndefinedType | None = Undefined,
-                    eos_cli: str | UndefinedType | None = Undefined,
+                    vlan: str | None | UndefinedType = Undefined,
+                    eos_cli: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VlanAwareBundlesItem.
@@ -47210,7 +47210,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, domain: Domain | UndefinedType | None = Undefined, rd: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, rd: str | None | UndefinedType = Undefined) -> None:
                         """
                         RdEvpnDomain.
 
@@ -47251,7 +47251,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, domain: Domain | UndefinedType | None = Undefined, route_target: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ImportEvpnDomainsItem.
 
@@ -47279,7 +47279,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, domain: Domain | UndefinedType | None = Undefined, route_target: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ExportEvpnDomainsItem.
 
@@ -47307,7 +47307,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, domain: Domain | UndefinedType | None = Undefined, route_target: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ImportExportEvpnDomainsItem.
 
@@ -47422,12 +47422,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     id: int | UndefinedType = Undefined,
                     metadata: Metadata | UndefinedType = Undefined,
-                    rd: str | UndefinedType | None = Undefined,
+                    rd: str | None | UndefinedType = Undefined,
                     rd_evpn_domain: RdEvpnDomain | UndefinedType = Undefined,
                     route_targets: RouteTargets | UndefinedType = Undefined,
                     redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                     no_redistribute_routes: NoRedistributeRoutes | UndefinedType = Undefined,
-                    eos_cli: str | UndefinedType | None = Undefined,
+                    eos_cli: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VlansItem.
@@ -47468,7 +47468,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, import_export: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, import_export: str | None | UndefinedType = Undefined) -> None:
                         """
                         RouteTargets.
 
@@ -47497,8 +47497,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        id_local: int | UndefinedType | None = Undefined,
-                        id_remote: int | UndefinedType | None = Undefined,
+                        id_local: int | None | UndefinedType = Undefined,
+                        id_remote: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PseudowiresItem.
@@ -47547,11 +47547,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    rd: str | UndefinedType | None = Undefined,
+                    rd: str | None | UndefinedType = Undefined,
                     route_targets: RouteTargets | UndefinedType = Undefined,
-                    mpls_control_word: bool | UndefinedType | None = Undefined,
-                    label_flow: bool | UndefinedType | None = Undefined,
-                    mtu: int | UndefinedType | None = Undefined,
+                    mpls_control_word: bool | None | UndefinedType = Undefined,
+                    label_flow: bool | None | UndefinedType = Undefined,
+                    mtu: int | None | UndefinedType = Undefined,
                     pseudowires: Pseudowires | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -47595,7 +47595,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enable: bool | UndefinedType | None = Undefined, inter_domain: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enable: bool | None | UndefinedType = Undefined, inter_domain: bool | None | UndefinedType = Undefined) -> None:
                             """
                             NextHopSelfReceivedEvpnRoutes.
 
@@ -47625,8 +47625,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        encapsulation: Encapsulation | UndefinedType | None = Undefined,
-                        next_hop_self_source_interface: str | UndefinedType | None = Undefined,
+                        encapsulation: Encapsulation | None | UndefinedType = Undefined,
+                        next_hop_self_source_interface: str | None | UndefinedType = Undefined,
                         next_hop_self_received_evpn_routes: NextHopSelfReceivedEvpnRoutes | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -47654,7 +47654,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, rib_type: RibType | UndefinedType = Undefined, rib_name: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, rib_type: RibType | UndefinedType = Undefined, rib_name: str | None | UndefinedType = Undefined) -> None:
                         """
                         NextHopMplsResolutionRibsItem.
 
@@ -47692,9 +47692,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DefaultRoute.
@@ -47740,9 +47740,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -47817,17 +47817,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
-                        encapsulation: Encapsulation | UndefinedType | None = Undefined,
-                        next_hop_self_source_interface: str | UndefinedType | None = Undefined,
+                        encapsulation: Encapsulation | None | UndefinedType = Undefined,
+                        next_hop_self_source_interface: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -47882,9 +47882,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DefaultRoute.
@@ -47932,9 +47932,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -48011,17 +48011,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
-                        domain_remote: bool | UndefinedType | None = Undefined,
-                        encapsulation: Encapsulation | UndefinedType | None = Undefined,
-                        next_hop_self_source_interface: str | UndefinedType | None = Undefined,
+                        domain_remote: bool | None | UndefinedType = Undefined,
+                        encapsulation: Encapsulation | None | UndefinedType = Undefined,
+                        next_hop_self_source_interface: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -48075,10 +48075,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        window: int | UndefinedType | None = Undefined,
-                        threshold: int | UndefinedType | None = Undefined,
-                        expiry_timeout: int | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        window: int | None | UndefinedType = Undefined,
+                        threshold: int | None | UndefinedType = Undefined,
+                        expiry_timeout: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         EvpnHostflapDetection.
@@ -48102,7 +48102,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, resolution_disabled: bool | None | UndefinedType = Undefined) -> None:
                         """
                         NextHop.
 
@@ -48134,10 +48134,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        import_match_failure_action: ImportMatchFailureAction | UndefinedType | None = Undefined,
-                        import_ethernet_segment_ip_mass_withdraw: bool | UndefinedType | None = Undefined,
-                        import_overlay_index_gateway: bool | UndefinedType | None = Undefined,
-                        export_ethernet_segment_ip_mass_withdraw: bool | UndefinedType | None = Undefined,
+                        import_match_failure_action: ImportMatchFailureAction | None | UndefinedType = Undefined,
+                        import_ethernet_segment_ip_mass_withdraw: bool | None | UndefinedType = Undefined,
+                        import_overlay_index_gateway: bool | None | UndefinedType = Undefined,
+                        export_ethernet_segment_ip_mass_withdraw: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Route.
@@ -48185,9 +48185,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -48240,7 +48240,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, timeout: int | None | UndefinedType = Undefined) -> None:
                         """
                         Layer2FecInPlaceUpdate.
 
@@ -48270,8 +48270,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         domain: Domain | UndefinedType = Undefined,
-                        identifier: str | UndefinedType | None = Undefined,
-                        route_target_import: str | UndefinedType | None = Undefined,
+                        identifier: str | None | UndefinedType = Undefined,
+                        route_target_import: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         EvpnEthernetSegmentItem.
@@ -48346,8 +48346,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    domain_identifier: str | UndefinedType | None = Undefined,
-                    domain_identifier_remote: str | UndefinedType | None = Undefined,
+                    domain_identifier: str | None | UndefinedType = Undefined,
+                    domain_identifier_remote: str | None | UndefinedType = Undefined,
                     neighbor_default: NeighborDefault | UndefinedType = Undefined,
                     next_hop_mpls_resolution_ribs: NextHopMplsResolutionRibs | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
@@ -48355,7 +48355,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     evpn_hostflap_detection: EvpnHostflapDetection | UndefinedType = Undefined,
                     next_hop: NextHop | UndefinedType = Undefined,
                     route: Route | UndefinedType = Undefined,
-                    next_hop_unchanged: bool | UndefinedType | None = Undefined,
+                    next_hop_unchanged: bool | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     layer_2_fec_in_place_update: Layer2FecInPlaceUpdate | UndefinedType = Undefined,
                     evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
@@ -48406,7 +48406,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, only: bool | UndefinedType | None = Undefined, encoding_origin_as_omit: str | UndefinedType | None = Undefined
+                            self, *, only: bool | None | UndefinedType = Undefined, encoding_origin_as_omit: str | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             DefaultRouteTarget.
@@ -48433,7 +48433,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
                         default_route_target: DefaultRouteTarget | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -48498,8 +48498,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         prefix: str | UndefinedType = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
-                        rcf: str | UndefinedType | None = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NetworksItem.
@@ -48566,11 +48566,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            install: bool | UndefinedType | None = Undefined,
-                            install_ecmp_primary: bool | UndefinedType | None = Undefined,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            install: bool | None | UndefinedType = Undefined,
+                            install_ecmp_primary: bool | None | UndefinedType = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -48606,7 +48606,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, additional_paths: AdditionalPaths | UndefinedType = Undefined, redistribute_internal: bool | UndefinedType | None = Undefined
+                        self, *, additional_paths: AdditionalPaths | UndefinedType = Undefined, redistribute_internal: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Bgp.
@@ -48633,7 +48633,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, always: bool | UndefinedType | None = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, always: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             DefaultOriginate.
 
@@ -48677,10 +48677,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            prefix_list: str | UndefinedType | None = Undefined,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            prefix_list: str | None | UndefinedType = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -48718,7 +48718,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, originate: bool | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, originate: bool | None | UndefinedType = Undefined) -> None:
                                 """
                                 AddressFamilyIpv6.
 
@@ -48802,16 +48802,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
-                        prefix_list_in: str | UndefinedType | None = Undefined,
-                        prefix_list_out: str | UndefinedType | None = Undefined,
+                        prefix_list_in: str | None | UndefinedType = Undefined,
+                        prefix_list_out: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         next_hop: NextHop | UndefinedType = Undefined,
                     ) -> None:
@@ -48861,7 +48861,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, always: bool | UndefinedType | None = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, always: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             DefaultOriginate.
 
@@ -48905,10 +48905,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            prefix_list: str | UndefinedType | None = Undefined,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            prefix_list: str | None | UndefinedType = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -48947,7 +48947,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, originate: bool | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, originate: bool | None | UndefinedType = Undefined) -> None:
                                 """
                                 AddressFamilyIpv6.
 
@@ -49030,15 +49030,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
-                        prefix_list_in: str | UndefinedType | None = Undefined,
-                        prefix_list_out: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
+                        prefix_list_in: str | None | UndefinedType = Undefined,
+                        prefix_list_out: str | None | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         next_hop: NextHop | UndefinedType = Undefined,
@@ -49089,7 +49089,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             AttachedHost.
 
@@ -49111,7 +49111,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Bgp.
 
@@ -49146,9 +49146,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Connected.
@@ -49188,8 +49188,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Dynamic.
@@ -49239,10 +49239,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: IsisLevel | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Isis.
@@ -49281,8 +49281,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchExternal.
@@ -49312,8 +49312,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchInternal.
@@ -49351,9 +49351,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: NssaType | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchNssaExternal.
@@ -49406,12 +49406,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             match_external: MatchExternal | UndefinedType = Undefined,
                             match_internal: MatchInternal | UndefinedType = Undefined,
                             match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospf.
@@ -49456,8 +49456,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchExternal.
@@ -49487,8 +49487,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchInternal.
@@ -49526,9 +49526,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: NssaType | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchNssaExternal.
@@ -49581,12 +49581,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             match_external: MatchExternal | UndefinedType = Undefined,
                             match_internal: MatchInternal | UndefinedType = Undefined,
                             match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospfv3.
@@ -49622,7 +49622,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Rip.
 
@@ -49657,9 +49657,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Static.
@@ -49694,7 +49694,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | None | UndefinedType = Undefined) -> None:
                             """
                             User.
 
@@ -49847,9 +49847,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        confederation: bool | UndefinedType | None = Undefined,
-                        ebgp: bool | UndefinedType | None = Undefined,
-                        ibgp: bool | UndefinedType | None = Undefined,
+                        confederation: bool | None | UndefinedType = Undefined,
+                        ebgp: bool | None | UndefinedType = Undefined,
+                        ibgp: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AigpSession.
@@ -49896,9 +49896,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -49951,9 +49951,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 action: Action | UndefinedType = Undefined,
-                                include_community_list: bool | UndefinedType | None = Undefined,
-                                include_prefix_list: bool | UndefinedType | None = Undefined,
-                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                                include_community_list: bool | None | UndefinedType = Undefined,
+                                include_prefix_list: bool | None | UndefinedType = Undefined,
+                                include_sub_route_map: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DirectionIn.
@@ -49994,9 +49994,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 action: Action | UndefinedType = Undefined,
-                                include_community_list: bool | UndefinedType | None = Undefined,
-                                include_prefix_list: bool | UndefinedType | None = Undefined,
-                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                                include_community_list: bool | None | UndefinedType = Undefined,
+                                include_prefix_list: bool | None | UndefinedType = Undefined,
+                                include_sub_route_map: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DirectionOut.
@@ -50071,7 +50071,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         missing_policy: MissingPolicy | UndefinedType = Undefined,
-                        next_hop_unchanged: bool | UndefinedType | None = Undefined,
+                        next_hop_unchanged: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Bgp.
@@ -50099,7 +50099,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, next_hop_self: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, next_hop_self: bool | None | UndefinedType = Undefined) -> None:
                         """
                         NeighborDefault.
 
@@ -50143,9 +50143,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -50178,7 +50178,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, stale_route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, stale_route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             GracefulRestartHelper.
 
@@ -50218,9 +50218,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 action: Action | UndefinedType = Undefined,
-                                include_community_list: bool | UndefinedType | None = Undefined,
-                                include_prefix_list: bool | UndefinedType | None = Undefined,
-                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                                include_community_list: bool | None | UndefinedType = Undefined,
+                                include_prefix_list: bool | None | UndefinedType = Undefined,
+                                include_sub_route_map: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DirectionIn.
@@ -50261,9 +50261,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 action: Action | UndefinedType = Undefined,
-                                include_community_list: bool | UndefinedType | None = Undefined,
-                                include_prefix_list: bool | UndefinedType | None = Undefined,
-                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                                include_community_list: bool | None | UndefinedType = Undefined,
+                                include_prefix_list: bool | None | UndefinedType = Undefined,
+                                include_sub_route_map: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DirectionOut.
@@ -50393,25 +50393,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
-                        aigp_session: bool | UndefinedType | None = Undefined,
-                        graceful_restart: bool | UndefinedType | None = Undefined,
+                        aigp_session: bool | None | UndefinedType = Undefined,
+                        graceful_restart: bool | None | UndefinedType = Undefined,
                         graceful_restart_helper: GracefulRestartHelper | UndefinedType = Undefined,
-                        maximum_advertised_routes: int | UndefinedType | None = Undefined,
-                        maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
+                        maximum_advertised_routes: int | None | UndefinedType = Undefined,
+                        maximum_advertised_routes_warning_limit: str | None | UndefinedType = Undefined,
                         missing_policy: MissingPolicy | UndefinedType = Undefined,
-                        multi_path: bool | UndefinedType | None = Undefined,
-                        next_hop_self: bool | UndefinedType | None = Undefined,
-                        next_hop_self_source_interface: str | UndefinedType | None = Undefined,
-                        next_hop_self_v4_mapped_v6_source_interface: str | UndefinedType | None = Undefined,
-                        next_hop_unchanged: bool | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                        multi_path: bool | None | UndefinedType = Undefined,
+                        next_hop_self: bool | None | UndefinedType = Undefined,
+                        next_hop_self_source_interface: str | None | UndefinedType = Undefined,
+                        next_hop_self_v4_mapped_v6_source_interface: str | None | UndefinedType = Undefined,
+                        next_hop_unchanged: bool | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -50492,9 +50492,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -50527,7 +50527,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, stale_route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, stale_route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             GracefulRestartHelper.
 
@@ -50567,9 +50567,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 action: Action | UndefinedType = Undefined,
-                                include_community_list: bool | UndefinedType | None = Undefined,
-                                include_prefix_list: bool | UndefinedType | None = Undefined,
-                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                                include_community_list: bool | None | UndefinedType = Undefined,
+                                include_prefix_list: bool | None | UndefinedType = Undefined,
+                                include_sub_route_map: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DirectionIn.
@@ -50610,9 +50610,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 action: Action | UndefinedType = Undefined,
-                                include_community_list: bool | UndefinedType | None = Undefined,
-                                include_prefix_list: bool | UndefinedType | None = Undefined,
-                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                                include_community_list: bool | None | UndefinedType = Undefined,
+                                include_prefix_list: bool | None | UndefinedType = Undefined,
+                                include_sub_route_map: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DirectionOut.
@@ -50741,25 +50741,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
-                        aigp_session: bool | UndefinedType | None = Undefined,
-                        graceful_restart: bool | UndefinedType | None = Undefined,
+                        aigp_session: bool | None | UndefinedType = Undefined,
+                        graceful_restart: bool | None | UndefinedType = Undefined,
                         graceful_restart_helper: GracefulRestartHelper | UndefinedType = Undefined,
-                        maximum_advertised_routes: int | UndefinedType | None = Undefined,
-                        maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
+                        maximum_advertised_routes: int | None | UndefinedType = Undefined,
+                        maximum_advertised_routes_warning_limit: str | None | UndefinedType = Undefined,
                         missing_policy: MissingPolicy | UndefinedType = Undefined,
-                        multi_path: bool | UndefinedType | None = Undefined,
-                        next_hop_self: bool | UndefinedType | None = Undefined,
-                        next_hop_self_source_interface: str | UndefinedType | None = Undefined,
-                        next_hop_self_v4_mapped_v6_source_interface: str | UndefinedType | None = Undefined,
-                        next_hop_unchanged: bool | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                        multi_path: bool | None | UndefinedType = Undefined,
+                        next_hop_self: bool | None | UndefinedType = Undefined,
+                        next_hop_self_source_interface: str | None | UndefinedType = Undefined,
+                        next_hop_self_v4_mapped_v6_source_interface: str | None | UndefinedType = Undefined,
+                        next_hop_unchanged: bool | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -50829,8 +50829,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         prefix: str | UndefinedType = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
-                        rcf: str | UndefinedType | None = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NetworksItem.
@@ -50865,7 +50865,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, ip_address: str | UndefinedType = Undefined, lfib_backup_ip_forwarding: bool | UndefinedType | None = Undefined
+                        self, *, ip_address: str | UndefinedType = Undefined, lfib_backup_ip_forwarding: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         NextHopsItem.
@@ -50898,7 +50898,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, rib_type: RibType | UndefinedType = Undefined, rib_name: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, rib_type: RibType | UndefinedType = Undefined, rib_name: str | None | UndefinedType = Undefined) -> None:
                         """
                         NextHopResolutionRibsItem.
 
@@ -50930,7 +50930,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, protocol: Protocol | UndefinedType = Undefined, rcf: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, protocol: Protocol | UndefinedType = Undefined, rcf: str | None | UndefinedType = Undefined) -> None:
                         """
                         TunnelSourceProtocolsItem.
 
@@ -51010,9 +51010,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     aigp_session: AigpSession | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
-                    graceful_restart: bool | UndefinedType | None = Undefined,
-                    label_local_termination: LabelLocalTermination | UndefinedType | None = Undefined,
-                    lfib_entry_installation_skipped: bool | UndefinedType | None = Undefined,
+                    graceful_restart: bool | None | UndefinedType = Undefined,
+                    label_local_termination: LabelLocalTermination | None | UndefinedType = Undefined,
+                    lfib_entry_installation_skipped: bool | None | UndefinedType = Undefined,
                     neighbor_default: NeighborDefault | UndefinedType = Undefined,
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
@@ -51020,7 +51020,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     next_hops: NextHops | UndefinedType = Undefined,
                     next_hop_resolution_ribs: NextHopResolutionRibs | UndefinedType = Undefined,
                     tunnel_source_protocols: TunnelSourceProtocols | UndefinedType = Undefined,
-                    update_wait_for_convergence: bool | UndefinedType | None = Undefined,
+                    update_wait_for_convergence: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv4LabeledUnicast.
@@ -51065,7 +51065,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, receive: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, receive: bool | None | UndefinedType = Undefined) -> None:
                             """
                             AdditionalPaths.
 
@@ -51106,7 +51106,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, receive: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, receive: bool | None | UndefinedType = Undefined) -> None:
                             """
                             AdditionalPaths.
 
@@ -51147,11 +51147,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -51189,7 +51189,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, receive: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, receive: bool | None | UndefinedType = Undefined) -> None:
                             """
                             AdditionalPaths.
 
@@ -51229,11 +51229,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -51272,7 +51272,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             AttachedHost.
 
@@ -51294,7 +51294,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Connected.
 
@@ -51338,10 +51338,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: IsisLevel | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Isis.
@@ -51374,7 +51374,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 MatchExternal.
 
@@ -51396,7 +51396,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 MatchInternal.
 
@@ -51425,8 +51425,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: NssaType | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchNssaExternal.
@@ -51475,11 +51475,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             match_external: MatchExternal | UndefinedType = Undefined,
                             match_internal: MatchInternal | UndefinedType = Undefined,
                             match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospf.
@@ -51517,7 +51517,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 MatchExternal.
 
@@ -51539,7 +51539,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 MatchInternal.
 
@@ -51568,8 +51568,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: NssaType | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchNssaExternal.
@@ -51618,11 +51618,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             match_external: MatchExternal | UndefinedType = Undefined,
                             match_internal: MatchInternal | UndefinedType = Undefined,
                             match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospfv3.
@@ -51657,7 +51657,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Static.
 
@@ -51796,11 +51796,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -51854,11 +51854,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -51928,8 +51928,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         prefix: str | UndefinedType = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
-                        rcf: str | UndefinedType | None = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NetworksItem.
@@ -51996,11 +51996,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            install: bool | UndefinedType | None = Undefined,
-                            install_ecmp_primary: bool | UndefinedType | None = Undefined,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            install: bool | None | UndefinedType = Undefined,
+                            install_ecmp_primary: bool | None | UndefinedType = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -52036,7 +52036,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, redistribute_internal: bool | UndefinedType | None = Undefined, additional_paths: AdditionalPaths | UndefinedType = Undefined
+                        self, *, redistribute_internal: bool | None | UndefinedType = Undefined, additional_paths: AdditionalPaths | UndefinedType = Undefined
                     ) -> None:
                         """
                         Bgp.
@@ -52084,10 +52084,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            prefix_list: str | UndefinedType | None = Undefined,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            prefix_list: str | None | UndefinedType = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -52128,9 +52128,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            always: bool | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            always: bool | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DefaultOriginate.
@@ -52195,15 +52195,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
-                        prefix_list_in: str | UndefinedType | None = Undefined,
-                        prefix_list_out: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
+                        prefix_list_in: str | None | UndefinedType = Undefined,
+                        prefix_list_out: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
                     ) -> None:
@@ -52258,9 +52258,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            always: bool | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            always: bool | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DefaultOriginate.
@@ -52306,10 +52306,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            prefix_list: str | UndefinedType | None = Undefined,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            prefix_list: str | None | UndefinedType = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -52384,15 +52384,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
-                        prefix_list_in: str | UndefinedType | None = Undefined,
-                        prefix_list_out: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
+                        prefix_list_in: str | None | UndefinedType = Undefined,
+                        prefix_list_out: str | None | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
@@ -52441,7 +52441,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             AttachedHost.
 
@@ -52463,7 +52463,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Bgp.
 
@@ -52498,9 +52498,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Connected.
@@ -52529,7 +52529,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Dhcp.
 
@@ -52562,8 +52562,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Dynamic.
@@ -52613,10 +52613,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: IsisLevel | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Isis.
@@ -52655,8 +52655,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchExternal.
@@ -52686,8 +52686,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchInternal.
@@ -52725,9 +52725,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: NssaType | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchNssaExternal.
@@ -52780,12 +52780,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             match_external: MatchExternal | UndefinedType = Undefined,
                             match_internal: MatchInternal | UndefinedType = Undefined,
                             match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospfv3.
@@ -52834,9 +52834,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Static.
@@ -52871,7 +52871,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | None | UndefinedType = Undefined) -> None:
                             """
                             User.
 
@@ -53023,8 +53023,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                            direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -53046,7 +53046,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, receive: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, receive: bool | None | UndefinedType = Undefined) -> None:
                             """
                             AdditionalPaths.
 
@@ -53092,7 +53092,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, receive: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, receive: bool | None | UndefinedType = Undefined) -> None:
                             """
                             AdditionalPaths.
 
@@ -53132,11 +53132,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -53174,7 +53174,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, receive: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, receive: bool | None | UndefinedType = Undefined) -> None:
                             """
                             AdditionalPaths.
 
@@ -53199,7 +53199,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -53232,7 +53232,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                         """
                         NetworksItem.
 
@@ -53264,7 +53264,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Connected.
 
@@ -53308,10 +53308,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: IsisLevel | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Isis.
@@ -53344,7 +53344,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 MatchExternal.
 
@@ -53366,7 +53366,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 MatchInternal.
 
@@ -53395,8 +53395,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: NssaType | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchNssaExternal.
@@ -53445,11 +53445,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             match_external: MatchExternal | UndefinedType = Undefined,
                             match_internal: MatchInternal | UndefinedType = Undefined,
                             match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospf.
@@ -53487,7 +53487,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 MatchExternal.
 
@@ -53509,7 +53509,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 MatchInternal.
 
@@ -53538,8 +53538,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: NssaType | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchNssaExternal.
@@ -53588,11 +53588,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             match_external: MatchExternal | UndefinedType = Undefined,
                             match_internal: MatchInternal | UndefinedType = Undefined,
                             match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospfv3.
@@ -53627,7 +53627,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Static.
 
@@ -53766,11 +53766,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -53824,11 +53824,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -53894,8 +53894,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                            direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -53944,8 +53944,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                            direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -53972,7 +53972,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
                         missing_policy: MissingPolicy | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -54012,8 +54012,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                            direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -54039,7 +54039,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
                         missing_policy: MissingPolicy | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -54078,9 +54078,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            producer: bool | UndefinedType | None = Undefined,
-                            consumer: bool | UndefinedType | None = Undefined,
-                            propagator: bool | UndefinedType | None = Undefined,
+                            producer: bool | None | UndefinedType = Undefined,
+                            consumer: bool | None | UndefinedType = Undefined,
+                            propagator: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Roles.
@@ -54172,8 +54172,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                            direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -54214,7 +54214,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, activate: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, activate: bool | None | UndefinedType = Undefined) -> None:
                         """
                         NeighborsItem.
 
@@ -54244,7 +54244,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, activate: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, activate: bool | None | UndefinedType = Undefined) -> None:
                         """
                         PeerGroupsItem.
 
@@ -54314,8 +54314,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                            direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -54356,7 +54356,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, activate: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, activate: bool | None | UndefinedType = Undefined) -> None:
                         """
                         NeighborsItem.
 
@@ -54386,7 +54386,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, activate: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, activate: bool | None | UndefinedType = Undefined) -> None:
                         """
                         PeerGroupsItem.
 
@@ -54471,9 +54471,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -54548,9 +54548,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -54587,7 +54587,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -54642,9 +54642,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -54682,7 +54682,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -54758,9 +54758,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DefaultRoute.
@@ -54818,13 +54818,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -54866,7 +54866,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, import_match_failure_action: ImportMatchFailureAction | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, import_match_failure_action: ImportMatchFailureAction | None | UndefinedType = Undefined) -> None:
                         """
                         Route.
 
@@ -54898,9 +54898,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DefaultRoute.
@@ -54957,13 +54957,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -55004,7 +55004,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, source_interface: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, source_interface: str | None | UndefinedType = Undefined) -> None:
                         """
                         NeighborDefaultEncapsulationMplsNextHopSelf.
 
@@ -55024,7 +55024,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, resolution_disabled: bool | None | UndefinedType = Undefined) -> None:
                         """
                         NextHop.
 
@@ -55061,7 +55061,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    domain_identifier: str | UndefinedType | None = Undefined,
+                    domain_identifier: str | None | UndefinedType = Undefined,
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     route: Route | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
@@ -55107,9 +55107,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DefaultRoute.
@@ -55167,13 +55167,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -55215,7 +55215,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, import_match_failure_action: ImportMatchFailureAction | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, import_match_failure_action: ImportMatchFailureAction | None | UndefinedType = Undefined) -> None:
                         """
                         Route.
 
@@ -55247,9 +55247,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DefaultRoute.
@@ -55306,13 +55306,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        activate: bool | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                        rcf_in: str | UndefinedType | None = Undefined,
-                        rcf_out: str | UndefinedType | None = Undefined,
+                        activate: bool | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                        rcf_in: str | None | UndefinedType = Undefined,
+                        rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -55353,7 +55353,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, source_interface: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, source_interface: str | None | UndefinedType = Undefined) -> None:
                         """
                         NeighborDefaultEncapsulationMplsNextHopSelf.
 
@@ -55387,7 +55387,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    domain_identifier: str | UndefinedType | None = Undefined,
+                    domain_identifier: str | None | UndefinedType = Undefined,
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     route: Route | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
@@ -55453,11 +55453,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            install: bool | UndefinedType | None = Undefined,
-                            install_ecmp_primary: bool | UndefinedType | None = Undefined,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            install: bool | None | UndefinedType = Undefined,
+                            install_ecmp_primary: bool | None | UndefinedType = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -55493,7 +55493,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, redistribute_internal: bool | UndefinedType | None = Undefined, additional_paths: AdditionalPaths | UndefinedType = Undefined
+                        self, *, redistribute_internal: bool | None | UndefinedType = Undefined, additional_paths: AdditionalPaths | UndefinedType = Undefined
                     ) -> None:
                         """
                         Bgp.
@@ -55543,7 +55543,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, transit: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, transit: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Ipv4.
 
@@ -55592,7 +55592,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, algorithm: Algorithm | UndefinedType = Undefined, preference_value: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, algorithm: Algorithm | UndefinedType = Undefined, preference_value: int | None | UndefinedType = Undefined) -> None:
                         """
                         EvpnMulticastGatewayDrElection.
 
@@ -55631,9 +55631,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         address_family: AddressFamily | UndefinedType = Undefined,
-                        always: bool | UndefinedType | None = Undefined,
-                        route_map: str | UndefinedType | None = Undefined,
-                        rcf: str | UndefinedType | None = Undefined,
+                        always: bool | None | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         DefaultRouteExportsItem.
@@ -55706,9 +55706,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             address_family: str | UndefinedType = Undefined,
                             route_targets: RouteTargets | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            vpn_route_filter_rcf: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            vpn_route_filter_rcf: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             ImportItem.
@@ -55782,9 +55782,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             address_family: str | UndefinedType = Undefined,
                             route_targets: RouteTargets | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            vrf_route_filter_rcf: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            vrf_route_filter_rcf: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             ExportItem.
@@ -55957,8 +55957,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        restart_time: int | UndefinedType | None = Undefined,
-                        stalepath_time: int | UndefinedType | None = Undefined,
+                        restart_time: int | None | UndefinedType = Undefined,
+                        stalepath_time: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         GracefulRestart.
@@ -55983,7 +55983,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                         """
                         NetworksItem.
 
@@ -56012,7 +56012,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, paths: int | UndefinedType = Undefined, ecmp: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, paths: int | UndefinedType = Undefined, ecmp: int | None | UndefinedType = Undefined) -> None:
                         """
                         MaximumPaths.
 
@@ -56045,7 +56045,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, wait_for_convergence: bool | UndefinedType | None = Undefined, wait_install: bool | UndefinedType | None = Undefined
+                        self, *, wait_for_convergence: bool | None | UndefinedType = Undefined, wait_install: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Updates.
@@ -56101,11 +56101,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        prefix: str | UndefinedType | None = Undefined,
-                        peer_id_include_router_id: bool | UndefinedType | None = Undefined,
-                        peer_group: str | UndefinedType | None = Undefined,
-                        peer_filter: str | UndefinedType | None = Undefined,
-                        remote_as: str | UndefinedType | None = Undefined,
+                        prefix: str | None | UndefinedType = Undefined,
+                        peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                        peer_group: str | None | UndefinedType = Undefined,
+                        peer_filter: str | None | UndefinedType = Undefined,
+                        remote_as: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ListenRangesItem.
@@ -56153,9 +56153,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            all: bool | UndefinedType | None = Undefined,
-                            replace_as: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            all: bool | None | UndefinedType = Undefined,
+                            replace_as: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             RemovePrivateAs.
@@ -56179,7 +56179,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, replace_as: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, replace_as: bool | None | UndefinedType = Undefined) -> None:
                             """
                             RemovePrivateAsIngress.
 
@@ -56206,8 +56206,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            remote_as_replace_out: bool | UndefinedType | None = Undefined,
-                            prepend_own_disabled: bool | UndefinedType | None = Undefined,
+                            remote_as_replace_out: bool | None | UndefinedType = Undefined,
+                            prepend_own_disabled: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AsPath.
@@ -56262,7 +56262,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, all: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, all: bool | None | UndefinedType = Undefined) -> None:
                             """
                             RibInPrePolicyRetain.
 
@@ -56285,7 +56285,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, times: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, times: int | None | UndefinedType = Undefined) -> None:
                             """
                             AllowasIn.
 
@@ -56311,9 +56311,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
-                            always: bool | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            always: bool | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DefaultOriginate.
@@ -56357,9 +56357,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            receive: bool | UndefinedType | None = Undefined,
-                            send: Send | UndefinedType | None = Undefined,
-                            send_limit: int | UndefinedType | None = Undefined,
+                            receive: bool | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
+                            send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             AdditionalPaths.
@@ -56537,38 +56537,38 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        peer_group: str | UndefinedType | None = Undefined,
-                        remote_as: str | UndefinedType | None = Undefined,
-                        password: str | UndefinedType | None = Undefined,
+                        peer_group: str | None | UndefinedType = Undefined,
+                        remote_as: str | None | UndefinedType = Undefined,
+                        password: str | None | UndefinedType = Undefined,
                         password_type: PasswordType | UndefinedType = Undefined,
-                        passive: bool | UndefinedType | None = Undefined,
+                        passive: bool | None | UndefinedType = Undefined,
                         remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                         remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
-                        weight: int | UndefinedType | None = Undefined,
-                        local_as: str | UndefinedType | None = Undefined,
+                        weight: int | None | UndefinedType = Undefined,
+                        local_as: str | None | UndefinedType = Undefined,
                         as_path: AsPath | UndefinedType = Undefined,
-                        description: str | UndefinedType | None = Undefined,
-                        route_reflector_client: bool | UndefinedType | None = Undefined,
-                        ebgp_multihop: int | UndefinedType | None = Undefined,
-                        next_hop_peer: bool | UndefinedType | None = Undefined,
-                        next_hop_self: bool | UndefinedType | None = Undefined,
-                        shutdown: bool | UndefinedType | None = Undefined,
-                        bfd: bool | UndefinedType | None = Undefined,
+                        description: str | None | UndefinedType = Undefined,
+                        route_reflector_client: bool | None | UndefinedType = Undefined,
+                        ebgp_multihop: int | None | UndefinedType = Undefined,
+                        next_hop_peer: bool | None | UndefinedType = Undefined,
+                        next_hop_self: bool | None | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
+                        bfd: bool | None | UndefinedType = Undefined,
                         bfd_timers: BfdTimers | UndefinedType = Undefined,
-                        timers: str | UndefinedType | None = Undefined,
+                        timers: str | None | UndefinedType = Undefined,
                         rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
-                        send_community: str | UndefinedType | None = Undefined,
-                        maximum_routes: int | UndefinedType | None = Undefined,
-                        maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
-                        maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                        send_community: str | None | UndefinedType = Undefined,
+                        maximum_routes: int | None | UndefinedType = Undefined,
+                        maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
+                        maximum_routes_warning_only: bool | None | UndefinedType = Undefined,
                         allowas_in: AllowasIn | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
-                        enforce_first_as: bool | UndefinedType | None = Undefined,
-                        update_source: str | UndefinedType | None = Undefined,
-                        route_map_in: str | UndefinedType | None = Undefined,
-                        route_map_out: str | UndefinedType | None = Undefined,
-                        peer_tag_in: str | UndefinedType | None = Undefined,
-                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                        enforce_first_as: bool | None | UndefinedType = Undefined,
+                        update_source: str | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         metadata: Metadata | UndefinedType = Undefined,
                     ) -> None:
@@ -56703,10 +56703,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        remote_as: str | UndefinedType | None = Undefined,
-                        peer_group: str | UndefinedType | None = Undefined,
-                        peer_filter: str | UndefinedType | None = Undefined,
-                        description: str | UndefinedType | None = Undefined,
+                        remote_as: str | None | UndefinedType = Undefined,
+                        peer_group: str | None | UndefinedType = Undefined,
+                        peer_filter: str | None | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
                         metadata: Metadata | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -56748,7 +56748,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             AttachedHost.
 
@@ -56770,7 +56770,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Bgp.
 
@@ -56805,9 +56805,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Connected.
@@ -56847,8 +56847,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Dynamic.
@@ -56898,10 +56898,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: IsisLevel | UndefinedType | None = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Isis.
@@ -56940,8 +56940,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchExternal.
@@ -56971,8 +56971,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchInternal.
@@ -57010,9 +57010,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: NssaType | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchNssaExternal.
@@ -57065,12 +57065,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             match_external: MatchExternal | UndefinedType = Undefined,
                             match_internal: MatchInternal | UndefinedType = Undefined,
                             match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospf.
@@ -57115,8 +57115,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchExternal.
@@ -57146,8 +57146,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchInternal.
@@ -57185,9 +57185,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: NssaType | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchNssaExternal.
@@ -57240,12 +57240,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType | None = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             match_external: MatchExternal | UndefinedType = Undefined,
                             match_internal: MatchInternal | UndefinedType = Undefined,
                             match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospfv3.
@@ -57281,7 +57281,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             Rip.
 
@@ -57316,9 +57316,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Static.
@@ -57353,7 +57353,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | None | UndefinedType = Undefined) -> None:
                             """
                             User.
 
@@ -57451,7 +57451,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, rcf: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, rcf: str | None | UndefinedType = Undefined) -> None:
                             """
                             Attribute.
 
@@ -57488,11 +57488,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         prefix: str | UndefinedType = Undefined,
-                        advertise_only: bool | UndefinedType | None = Undefined,
-                        as_set: bool | UndefinedType | None = Undefined,
-                        summary_only: bool | UndefinedType | None = Undefined,
-                        attribute_map: str | UndefinedType | None = Undefined,
-                        match_map: str | UndefinedType | None = Undefined,
+                        advertise_only: bool | None | UndefinedType = Undefined,
+                        as_set: bool | None | UndefinedType = Undefined,
+                        summary_only: bool | None | UndefinedType = Undefined,
+                        attribute_map: str | None | UndefinedType = Undefined,
+                        match_map: str | None | UndefinedType = Undefined,
                         attribute: Attribute | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -57539,8 +57539,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                                direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -57593,11 +57593,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                install: bool | UndefinedType | None = Undefined,
-                                install_ecmp_primary: bool | UndefinedType | None = Undefined,
-                                receive: bool | UndefinedType | None = Undefined,
-                                send: Send | UndefinedType | None = Undefined,
-                                send_limit: int | UndefinedType | None = Undefined,
+                                install: bool | None | UndefinedType = Undefined,
+                                install_ecmp_primary: bool | None | UndefinedType = Undefined,
+                                receive: bool | None | UndefinedType = Undefined,
+                                send: Send | None | UndefinedType = Undefined,
+                                send_limit: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 AdditionalPaths.
@@ -57643,7 +57643,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             missing_policy: MissingPolicy | UndefinedType = Undefined,
                             additional_paths: AdditionalPaths | UndefinedType = Undefined,
-                            redistribute_internal: bool | UndefinedType | None = Undefined,
+                            redistribute_internal: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Bgp.
@@ -57673,7 +57673,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, originate: bool | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, originate: bool | None | UndefinedType = Undefined) -> None:
                                     """
                                     AddressFamilyIpv6.
 
@@ -57733,9 +57733,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                receive: bool | UndefinedType | None = Undefined,
-                                send: Send | UndefinedType | None = Undefined,
-                                send_limit: int | UndefinedType | None = Undefined,
+                                receive: bool | None | UndefinedType = Undefined,
+                                send: Send | None | UndefinedType = Undefined,
+                                send_limit: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 AdditionalPaths.
@@ -57809,15 +57809,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             ip_address: str | UndefinedType = Undefined,
-                            activate: bool | UndefinedType | None = Undefined,
-                            route_map_in: str | UndefinedType | None = Undefined,
-                            route_map_out: str | UndefinedType | None = Undefined,
-                            peer_tag_in: str | UndefinedType | None = Undefined,
-                            peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                            rcf_in: str | UndefinedType | None = Undefined,
-                            rcf_out: str | UndefinedType | None = Undefined,
-                            prefix_list_in: str | UndefinedType | None = Undefined,
-                            prefix_list_out: str | UndefinedType | None = Undefined,
+                            activate: bool | None | UndefinedType = Undefined,
+                            route_map_in: str | None | UndefinedType = Undefined,
+                            route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                            rcf_in: str | None | UndefinedType = Undefined,
+                            rcf_out: str | None | UndefinedType = Undefined,
+                            prefix_list_in: str | None | UndefinedType = Undefined,
+                            prefix_list_out: str | None | UndefinedType = Undefined,
                             next_hop: NextHop | UndefinedType = Undefined,
                             additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         ) -> None:
@@ -57874,8 +57874,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             prefix: str | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NetworksItem.
@@ -57912,7 +57912,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 AttachedHost.
 
@@ -57934,7 +57934,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Bgp.
 
@@ -57974,9 +57974,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                rcf: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                rcf: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Connected.
@@ -58016,8 +58016,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                rcf: str | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                rcf: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Dynamic.
@@ -58067,10 +58067,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                isis_level: IsisLevel | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                rcf: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                isis_level: IsisLevel | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                rcf: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Isis.
@@ -58109,8 +58109,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchExternal.
@@ -58140,8 +58140,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchInternal.
@@ -58179,9 +58179,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: NssaType | UndefinedType | None = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchNssaExternal.
@@ -58234,12 +58234,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | UndefinedType | None = Undefined,
+                                enabled: bool | None | UndefinedType = Undefined,
                                 match_external: MatchExternal | UndefinedType = Undefined,
                                 match_internal: MatchInternal | UndefinedType = Undefined,
                                 match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospf.
@@ -58284,8 +58284,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchExternal.
@@ -58315,8 +58315,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchInternal.
@@ -58354,9 +58354,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: NssaType | UndefinedType | None = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchNssaExternal.
@@ -58409,12 +58409,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | UndefinedType | None = Undefined,
+                                enabled: bool | None | UndefinedType = Undefined,
                                 match_external: MatchExternal | UndefinedType = Undefined,
                                 match_internal: MatchInternal | UndefinedType = Undefined,
                                 match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospfv3.
@@ -58450,7 +58450,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Rip.
 
@@ -58490,9 +58490,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                rcf: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                rcf: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Static.
@@ -58527,7 +58527,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 User.
 
@@ -58679,8 +58679,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                                direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -58733,11 +58733,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                install: bool | UndefinedType | None = Undefined,
-                                install_ecmp_primary: bool | UndefinedType | None = Undefined,
-                                receive: bool | UndefinedType | None = Undefined,
-                                send: Send | UndefinedType | None = Undefined,
-                                send_limit: int | UndefinedType | None = Undefined,
+                                install: bool | None | UndefinedType = Undefined,
+                                install_ecmp_primary: bool | None | UndefinedType = Undefined,
+                                receive: bool | None | UndefinedType = Undefined,
+                                send: Send | None | UndefinedType = Undefined,
+                                send_limit: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 AdditionalPaths.
@@ -58783,7 +58783,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             missing_policy: MissingPolicy | UndefinedType = Undefined,
                             additional_paths: AdditionalPaths | UndefinedType = Undefined,
-                            redistribute_internal: bool | UndefinedType | None = Undefined,
+                            redistribute_internal: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Bgp.
@@ -58830,9 +58830,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                receive: bool | UndefinedType | None = Undefined,
-                                send: Send | UndefinedType | None = Undefined,
-                                send_limit: int | UndefinedType | None = Undefined,
+                                receive: bool | None | UndefinedType = Undefined,
+                                send: Send | None | UndefinedType = Undefined,
+                                send_limit: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 AdditionalPaths.
@@ -58903,15 +58903,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             ip_address: str | UndefinedType = Undefined,
-                            activate: bool | UndefinedType | None = Undefined,
-                            route_map_in: str | UndefinedType | None = Undefined,
-                            route_map_out: str | UndefinedType | None = Undefined,
-                            peer_tag_in: str | UndefinedType | None = Undefined,
-                            peer_tag_out_discard: str | UndefinedType | None = Undefined,
-                            rcf_in: str | UndefinedType | None = Undefined,
-                            rcf_out: str | UndefinedType | None = Undefined,
-                            prefix_list_in: str | UndefinedType | None = Undefined,
-                            prefix_list_out: str | UndefinedType | None = Undefined,
+                            activate: bool | None | UndefinedType = Undefined,
+                            route_map_in: str | None | UndefinedType = Undefined,
+                            route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
+                            rcf_in: str | None | UndefinedType = Undefined,
+                            rcf_out: str | None | UndefinedType = Undefined,
+                            prefix_list_in: str | None | UndefinedType = Undefined,
+                            prefix_list_out: str | None | UndefinedType = Undefined,
                             additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -58966,8 +58966,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             prefix: str | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            rcf: str | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NetworksItem.
@@ -59004,7 +59004,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 AttachedHost.
 
@@ -59026,7 +59026,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Bgp.
 
@@ -59066,9 +59066,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                rcf: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                rcf: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Connected.
@@ -59097,7 +59097,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Dhcp.
 
@@ -59130,8 +59130,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                rcf: str | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                rcf: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Dynamic.
@@ -59181,10 +59181,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                isis_level: IsisLevel | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                rcf: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                isis_level: IsisLevel | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                rcf: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Isis.
@@ -59223,8 +59223,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchExternal.
@@ -59254,8 +59254,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchInternal.
@@ -59293,9 +59293,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: NssaType | UndefinedType | None = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchNssaExternal.
@@ -59348,12 +59348,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | UndefinedType | None = Undefined,
+                                enabled: bool | None | UndefinedType = Undefined,
                                 match_external: MatchExternal | UndefinedType = Undefined,
                                 match_internal: MatchInternal | UndefinedType = Undefined,
                                 match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospfv3.
@@ -59407,9 +59407,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                rcf: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                rcf: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Static.
@@ -59444,7 +59444,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, rcf: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 User.
 
@@ -59591,8 +59591,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                                direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -59614,7 +59614,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, receive: bool | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, receive: bool | None | UndefinedType = Undefined) -> None:
                                 """
                                 AdditionalPaths.
 
@@ -59660,7 +59660,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, receive: bool | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, receive: bool | None | UndefinedType = Undefined) -> None:
                                 """
                                 AdditionalPaths.
 
@@ -59700,11 +59700,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             ip_address: str | UndefinedType = Undefined,
-                            activate: bool | UndefinedType | None = Undefined,
-                            route_map_in: str | UndefinedType | None = Undefined,
-                            route_map_out: str | UndefinedType | None = Undefined,
-                            peer_tag_in: str | UndefinedType | None = Undefined,
-                            peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                            activate: bool | None | UndefinedType = Undefined,
+                            route_map_in: str | None | UndefinedType = Undefined,
+                            route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -59741,7 +59741,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             NetworksItem.
 
@@ -59773,7 +59773,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 AttachedHost.
 
@@ -59795,7 +59795,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Connected.
 
@@ -59839,10 +59839,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                isis_level: IsisLevel | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                rcf: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                isis_level: IsisLevel | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                rcf: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Isis.
@@ -59875,7 +59875,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     MatchExternal.
 
@@ -59897,7 +59897,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     MatchInternal.
 
@@ -59926,8 +59926,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: NssaType | UndefinedType | None = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchNssaExternal.
@@ -59976,11 +59976,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | UndefinedType | None = Undefined,
+                                enabled: bool | None | UndefinedType = Undefined,
                                 match_external: MatchExternal | UndefinedType = Undefined,
                                 match_internal: MatchInternal | UndefinedType = Undefined,
                                 match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospf.
@@ -60024,8 +60024,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchExternal.
@@ -60055,8 +60055,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchInternal.
@@ -60094,9 +60094,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: NssaType | UndefinedType | None = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchNssaExternal.
@@ -60149,12 +60149,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | UndefinedType | None = Undefined,
+                                enabled: bool | None | UndefinedType = Undefined,
                                 match_external: MatchExternal | UndefinedType = Undefined,
                                 match_internal: MatchInternal | UndefinedType = Undefined,
                                 match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospfv3.
@@ -60190,7 +60190,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Static.
 
@@ -60318,8 +60318,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                                direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -60341,7 +60341,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, receive: bool | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, receive: bool | None | UndefinedType = Undefined) -> None:
                                 """
                                 AdditionalPaths.
 
@@ -60387,7 +60387,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, receive: bool | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, receive: bool | None | UndefinedType = Undefined) -> None:
                                 """
                                 AdditionalPaths.
 
@@ -60427,11 +60427,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             ip_address: str | UndefinedType = Undefined,
-                            activate: bool | UndefinedType | None = Undefined,
-                            route_map_in: str | UndefinedType | None = Undefined,
-                            route_map_out: str | UndefinedType | None = Undefined,
-                            peer_tag_in: str | UndefinedType | None = Undefined,
-                            peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                            activate: bool | None | UndefinedType = Undefined,
+                            route_map_in: str | None | UndefinedType = Undefined,
+                            route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -60468,7 +60468,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             NetworksItem.
 
@@ -60500,7 +60500,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Connected.
 
@@ -60544,10 +60544,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                isis_level: IsisLevel | UndefinedType | None = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                rcf: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
+                                isis_level: IsisLevel | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                                rcf: str | None | UndefinedType = Undefined,
+                                include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Isis.
@@ -60580,7 +60580,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     MatchExternal.
 
@@ -60602,7 +60602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     MatchInternal.
 
@@ -60631,8 +60631,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: NssaType | UndefinedType | None = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchNssaExternal.
@@ -60681,11 +60681,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | UndefinedType | None = Undefined,
+                                enabled: bool | None | UndefinedType = Undefined,
                                 match_external: MatchExternal | UndefinedType = Undefined,
                                 match_internal: MatchInternal | UndefinedType = Undefined,
                                 match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospf.
@@ -60723,7 +60723,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     MatchExternal.
 
@@ -60745,7 +60745,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     MatchInternal.
 
@@ -60774,8 +60774,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: NssaType | UndefinedType | None = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     MatchNssaExternal.
@@ -60824,11 +60824,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | UndefinedType | None = Undefined,
+                                enabled: bool | None | UndefinedType = Undefined,
                                 match_external: MatchExternal | UndefinedType = Undefined,
                                 match_internal: MatchInternal | UndefinedType = Undefined,
                                 match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospfv3.
@@ -60863,7 +60863,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Static.
 
@@ -60986,8 +60986,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                                direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -61028,7 +61028,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, ip_address: str | UndefinedType = Undefined, activate: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, ip_address: str | UndefinedType = Undefined, activate: bool | None | UndefinedType = Undefined) -> None:
                             """
                             NeighborsItem.
 
@@ -61089,8 +61089,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: DirectionInAction | UndefinedType | None = Undefined,
-                                direction_out_action: DirectionOutAction | UndefinedType | None = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -61131,7 +61131,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, ip_address: str | UndefinedType = Undefined, activate: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, ip_address: str | UndefinedType = Undefined, activate: bool | None | UndefinedType = Undefined) -> None:
                             """
                             NeighborsItem.
 
@@ -61290,17 +61290,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
-                    rd: str | UndefinedType | None = Undefined,
+                    rd: str | None | UndefinedType = Undefined,
                     rd_evpn_domain: RdEvpnDomain | UndefinedType = Undefined,
-                    evpn_multicast: bool | UndefinedType | None = Undefined,
+                    evpn_multicast: bool | None | UndefinedType = Undefined,
                     evpn_multicast_address_family: EvpnMulticastAddressFamily | UndefinedType = Undefined,
                     evpn_multicast_gateway_dr_election: EvpnMulticastGatewayDrElection | UndefinedType = Undefined,
                     default_route_exports: DefaultRouteExports | UndefinedType = Undefined,
                     route_targets: RouteTargets | UndefinedType = Undefined,
-                    router_id: str | UndefinedType | None = Undefined,
-                    timers: str | UndefinedType | None = Undefined,
+                    router_id: str | None | UndefinedType = Undefined,
+                    timers: str | None | UndefinedType = Undefined,
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
-                    no_graceful_restart: bool | UndefinedType | None = Undefined,
+                    no_graceful_restart: bool | None | UndefinedType = Undefined,
                     networks: Networks | UndefinedType = Undefined,
                     maximum_paths: MaximumPaths | UndefinedType = Undefined,
                     updates: Updates | UndefinedType = Undefined,
@@ -61315,7 +61315,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     address_family_ipv6_multicast: AddressFamilyIpv6Multicast | UndefinedType = Undefined,
                     address_family_flow_spec_ipv4: AddressFamilyFlowSpecIpv4 | UndefinedType = Undefined,
                     address_family_flow_spec_ipv6: AddressFamilyFlowSpecIpv6 | UndefinedType = Undefined,
-                    eos_cli: str | UndefinedType | None = Undefined,
+                    eos_cli: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrfsItem.
@@ -61392,7 +61392,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, recovery_delay: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, recovery_delay: int | None | UndefinedType = Undefined) -> None:
                     """
                     SessionTrackersItem.
 
@@ -61567,9 +61567,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                field_as: str | UndefinedType | None = Undefined,
-                as_notation: AsNotation | UndefinedType | None = Undefined,
-                router_id: str | UndefinedType | None = Undefined,
+                field_as: str | None | UndefinedType = Undefined,
+                as_notation: AsNotation | None | UndefinedType = Undefined,
+                router_id: str | None | UndefinedType = Undefined,
                 timers: Timers | UndefinedType = Undefined,
                 distance: Distance | UndefinedType = Undefined,
                 graceful_restart: GracefulRestart | UndefinedType = Undefined,
@@ -61577,7 +61577,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 maximum_paths: MaximumPaths | UndefinedType = Undefined,
                 route_distinguisher: RouteDistinguisher | UndefinedType = Undefined,
                 updates: Updates | UndefinedType = Undefined,
-                bgp_cluster_id: str | UndefinedType | None = Undefined,
+                bgp_cluster_id: str | None | UndefinedType = Undefined,
                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 listen_ranges: ListenRanges | UndefinedType = Undefined,
@@ -61607,7 +61607,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 address_family_vpn_ipv6: AddressFamilyVpnIpv6 | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 session_trackers: SessionTrackers | UndefinedType = Undefined,
-                eos_cli: str | UndefinedType | None = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 RouterBgp.
@@ -61691,7 +61691,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ipv4: str | UndefinedType | None = Undefined, ipv6: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, ipv4: str | None | UndefinedType = Undefined, ipv6: str | None | UndefinedType = Undefined) -> None:
                     """
                     RouterId.
 
@@ -61728,8 +61728,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         source_vrf: str | UndefinedType = Undefined,
-                        subscribe_policy: str | UndefinedType | None = Undefined,
-                        subscribe_rcf: str | UndefinedType | None = Undefined,
+                        subscribe_policy: str | None | UndefinedType = Undefined,
+                        subscribe_rcf: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         LeakRoutesItem.
@@ -61765,7 +61765,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, name: str | None | UndefinedType = Undefined) -> None:
                             """
                             DynamicPrefixListsItem.
 
@@ -61827,7 +61827,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     leak_routes: LeakRoutes | UndefinedType = Undefined,
                     routes: Routes | UndefinedType = Undefined,
-                    software_forwarding_hardware_offload_mtu: int | UndefinedType | None = Undefined,
+                    software_forwarding_hardware_offload_mtu: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrfsItem.
@@ -61953,7 +61953,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 router_id: RouterId | UndefinedType = Undefined,
                 nexthop_fast_failover: bool | UndefinedType = Undefined,
-                software_forwarding_hardware_offload_mtu: int | UndefinedType | None = Undefined,
+                software_forwarding_hardware_offload_mtu: int | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 control_functions: ControlFunctions | UndefinedType = Undefined,
             ) -> None:
@@ -62005,7 +62005,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, name: str | UndefinedType = Undefined, host_proxy_match_mroute: HostProxyMatchMroute | UndefinedType | None = Undefined
+                    self, *, name: str | UndefinedType = Undefined, host_proxy_match_mroute: HostProxyMatchMroute | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     VrfsItem.
@@ -62053,8 +62053,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                host_proxy_match_mroute: HostProxyMatchMroute | UndefinedType | None = Undefined,
-                ssm_aware: bool | UndefinedType | None = Undefined,
+                host_proxy_match_mroute: HostProxyMatchMroute | None | UndefinedType = Undefined,
+                ssm_aware: bool | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -62204,7 +62204,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    fib_default: bool | UndefinedType | None = Undefined,
+                    fib_default: bool | None | UndefinedType = Undefined,
                     local_connections: LocalConnections | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -62297,7 +62297,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, protected_prefixes: bool | UndefinedType | None = Undefined, delay: int | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, protected_prefixes: bool | None | UndefinedType = Undefined, delay: int | UndefinedType = Undefined) -> None:
                         """
                         LocalConvergence.
 
@@ -62330,8 +62330,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             interval: int | UndefinedType = Undefined,
-                            initial_wait_time: int | UndefinedType | None = Undefined,
-                            wait_time: int | UndefinedType | None = Undefined,
+                            initial_wait_time: int | None | UndefinedType = Undefined,
+                            wait_time: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Generation.
@@ -62367,9 +62367,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         generation: Generation | UndefinedType = Undefined,
-                        out_delay: int | UndefinedType | None = Undefined,
-                        refresh_interval: int | UndefinedType | None = Undefined,
-                        min_remaining_lifetime: int | UndefinedType | None = Undefined,
+                        out_delay: int | None | UndefinedType = Undefined,
+                        refresh_interval: int | None | UndefinedType = Undefined,
+                        min_remaining_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Lsp.
@@ -62399,7 +62399,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, interval: int | UndefinedType | None = Undefined, p2p_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, interval: int | None | UndefinedType = Undefined, p2p_disabled: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Generation.
 
@@ -62490,7 +62490,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, timeout: int | None | UndefinedType = Undefined) -> None:
                             """
                             WaitForBgp.
 
@@ -62511,7 +62511,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, delay: int | UndefinedType | None = Undefined, wait_for_bgp: WaitForBgp | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, delay: int | None | UndefinedType = Undefined, wait_for_bgp: WaitForBgp | UndefinedType = Undefined) -> None:
                         """
                         OnStartup.
 
@@ -62583,7 +62583,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -62689,13 +62689,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Both.
@@ -62756,7 +62756,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -62862,13 +62862,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Level1.
@@ -62929,7 +62929,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -63035,13 +63035,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Level2.
@@ -63119,7 +63119,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, passive_only: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, passive_only: bool | None | UndefinedType = Undefined) -> None:
                     """
                     Advertise.
 
@@ -63155,9 +63155,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     source_protocol: SourceProtocol | UndefinedType = Undefined,
-                    route_map: str | UndefinedType | None = Undefined,
-                    include_leaked: bool | UndefinedType | None = Undefined,
-                    ospf_route_type: OspfRouteType | UndefinedType | None = Undefined,
+                    route_map: str | None | UndefinedType = Undefined,
+                    include_leaked: bool | None | UndefinedType = Undefined,
+                    ospf_route_type: OspfRouteType | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     RedistributeRoutesItem.
@@ -63196,7 +63196,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enable: bool | UndefinedType | None = Undefined, strict: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enable: bool | None | UndefinedType = Undefined, strict: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Srlg.
 
@@ -63224,8 +63224,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Mode | UndefinedType | None = Undefined,
-                        level: Level | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
+                        level: Level | None | UndefinedType = Undefined,
                         srlg: Srlg | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -63254,7 +63254,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, rcf: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, rcf: str | None | UndefinedType = Undefined) -> None:
                         """
                         TunnelSourceLabeledUnicast.
 
@@ -63289,8 +63289,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
-                    maximum_paths: int | UndefinedType | None = Undefined,
-                    bfd_all_interfaces: bool | UndefinedType | None = Undefined,
+                    maximum_paths: int | None | UndefinedType = Undefined,
+                    bfd_all_interfaces: bool | None | UndefinedType = Undefined,
                     fast_reroute_ti_lfa: FastRerouteTiLfa | UndefinedType = Undefined,
                     tunnel_source_labeled_unicast: TunnelSourceLabeledUnicast | UndefinedType = Undefined,
                 ) -> None:
@@ -63327,7 +63327,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enable: bool | UndefinedType | None = Undefined, strict: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enable: bool | None | UndefinedType = Undefined, strict: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Srlg.
 
@@ -63356,8 +63356,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Mode | UndefinedType | None = Undefined,
-                        level: Level | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
+                        level: Level | None | UndefinedType = Undefined,
                         srlg: Srlg | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -63402,9 +63402,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
-                    maximum_paths: int | UndefinedType | None = Undefined,
-                    bfd_all_interfaces: bool | UndefinedType | None = Undefined,
-                    multi_topology: bool | UndefinedType | None = Undefined,
+                    maximum_paths: int | None | UndefinedType = Undefined,
+                    bfd_all_interfaces: bool | None | UndefinedType = Undefined,
+                    multi_topology: bool | None | UndefinedType = Undefined,
                     fast_reroute_ti_lfa: FastRerouteTiLfa | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -63437,7 +63437,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, index: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined, index: int | None | UndefinedType = Undefined) -> None:
                         """
                         PrefixSegmentsItem.
 
@@ -63468,8 +63468,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    router_id: str | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    router_id: str | None | UndefinedType = Undefined,
                     prefix_segments: PrefixSegments | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -63514,10 +63514,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    interval: int | UndefinedType | None = Undefined,
-                    interval_unit: IntervalUnit | UndefinedType | None = Undefined,
-                    wait_interval: int | UndefinedType | None = Undefined,
-                    hold_interval: int | UndefinedType | None = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
+                    interval_unit: IntervalUnit | None | UndefinedType = Undefined,
+                    wait_interval: int | None | UndefinedType = Undefined,
+                    hold_interval: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SpfInterval.
@@ -63552,7 +63552,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, level_1_wait_time: int | UndefinedType | None = Undefined, level_2_wait_time: int | UndefinedType | None = Undefined
+                        self, *, level_1_wait_time: int | None | UndefinedType = Undefined, level_2_wait_time: int | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         T2.
@@ -63578,8 +63578,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    restart_hold_time: int | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    restart_hold_time: int | None | UndefinedType = Undefined,
                     t2: T2 | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -63655,12 +63655,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 instance: str | UndefinedType = Undefined,
-                net: str | UndefinedType | None = Undefined,
-                router_id: str | UndefinedType | None = Undefined,
-                is_hostname: str | UndefinedType | None = Undefined,
-                is_type: IsType | UndefinedType | None = Undefined,
-                log_adjacency_changes: bool | UndefinedType | None = Undefined,
-                mpls_ldp_sync_default: bool | UndefinedType | None = Undefined,
+                net: str | None | UndefinedType = Undefined,
+                router_id: str | None | UndefinedType = Undefined,
+                is_hostname: str | None | UndefinedType = Undefined,
+                is_type: IsType | None | UndefinedType = Undefined,
+                log_adjacency_changes: bool | None | UndefinedType = Undefined,
+                mpls_ldp_sync_default: bool | None | UndefinedType = Undefined,
                 timers: Timers | UndefinedType = Undefined,
                 set_overload_bit: SetOverloadBit | UndefinedType = Undefined,
                 authentication: Authentication | UndefinedType = Undefined,
@@ -63671,7 +63671,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 segment_routing_mpls: SegmentRoutingMpls | UndefinedType = Undefined,
                 spf_interval: SpfInterval | UndefinedType = Undefined,
                 graceful_restart: GracefulRestart | UndefinedType = Undefined,
-                eos_cli: str | UndefinedType | None = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 RouterIsis.
@@ -63713,7 +63713,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, prefix_list: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, prefix_list: str | None | UndefinedType = Undefined) -> None:
                     """
                     ArpProxy.
 
@@ -63737,7 +63737,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, prefix_list: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, prefix_list: str | None | UndefinedType = Undefined) -> None:
                     """
                     NdProxy.
 
@@ -63775,13 +63775,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                arp_learning_bridged: bool | UndefinedType | None = Undefined,
+                arp_learning_bridged: bool | None | UndefinedType = Undefined,
                 arp_proxy: ArpProxy | UndefinedType = Undefined,
-                arp_selective_install: bool | UndefinedType | None = Undefined,
-                nd_learning_bridged: bool | UndefinedType | None = Undefined,
+                arp_selective_install: bool | None | UndefinedType = Undefined,
+                nd_learning_bridged: bool | None | UndefinedType = Undefined,
                 nd_proxy: NdProxy | UndefinedType = Undefined,
-                nd_rs_flooding_disabled: bool | UndefinedType | None = Undefined,
-                virtual_router_nd_ra_flooding_disabled: bool | UndefinedType | None = Undefined,
+                nd_rs_flooding_disabled: bool | None | UndefinedType = Undefined,
+                virtual_router_nd_ra_flooding_disabled: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 RouterL2Vpn.
@@ -63847,7 +63847,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, prefix_list: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, prefix_list: str | None | UndefinedType = Undefined) -> None:
                         """
                         DefaultPeer.
 
@@ -63922,7 +63922,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, in_list: str | UndefinedType | None = Undefined, out_list: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, in_list: str | None | UndefinedType = Undefined, out_list: str | None | UndefinedType = Undefined) -> None:
                         """
                         SaFilter.
 
@@ -63970,10 +63970,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     ipv4_address: str | UndefinedType = Undefined,
                     default_peer: DefaultPeer | UndefinedType = Undefined,
-                    local_interface: str | UndefinedType | None = Undefined,
-                    description: str | UndefinedType | None = Undefined,
-                    disabled: bool | UndefinedType | None = Undefined,
-                    sa_limit: int | UndefinedType | None = Undefined,
+                    local_interface: str | None | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    disabled: bool | None | UndefinedType = Undefined,
+                    sa_limit: int | None | UndefinedType = Undefined,
                     mesh_groups: MeshGroups | UndefinedType = Undefined,
                     keepalive: Keepalive | UndefinedType = Undefined,
                     sa_filter: SaFilter | UndefinedType = Undefined,
@@ -64051,7 +64051,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, prefix_list: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, prefix_list: str | None | UndefinedType = Undefined) -> None:
                             """
                             DefaultPeer.
 
@@ -64126,7 +64126,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, in_list: str | UndefinedType | None = Undefined, out_list: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, in_list: str | None | UndefinedType = Undefined, out_list: str | None | UndefinedType = Undefined) -> None:
                             """
                             SaFilter.
 
@@ -64174,10 +64174,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         ipv4_address: str | UndefinedType = Undefined,
                         default_peer: DefaultPeer | UndefinedType = Undefined,
-                        local_interface: str | UndefinedType | None = Undefined,
-                        description: str | UndefinedType | None = Undefined,
-                        disabled: bool | UndefinedType | None = Undefined,
-                        sa_limit: int | UndefinedType | None = Undefined,
+                        local_interface: str | None | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
+                        disabled: bool | None | UndefinedType = Undefined,
+                        sa_limit: int | None | UndefinedType = Undefined,
                         mesh_groups: MeshGroups | UndefinedType = Undefined,
                         keepalive: Keepalive | UndefinedType = Undefined,
                         sa_filter: SaFilter | UndefinedType = Undefined,
@@ -64236,10 +64236,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    originator_id_local_interface: str | UndefinedType | None = Undefined,
-                    rejected_limit: int | UndefinedType | None = Undefined,
-                    forward_register_packets: bool | UndefinedType | None = Undefined,
-                    connection_retry_interval: int | UndefinedType | None = Undefined,
+                    originator_id_local_interface: str | None | UndefinedType = Undefined,
+                    rejected_limit: int | None | UndefinedType = Undefined,
+                    forward_register_packets: bool | None | UndefinedType = Undefined,
+                    connection_retry_interval: int | None | UndefinedType = Undefined,
                     group_limits: GroupLimits | UndefinedType = Undefined,
                     peers: Peers | UndefinedType = Undefined,
                 ) -> None:
@@ -64294,10 +64294,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                originator_id_local_interface: str | UndefinedType | None = Undefined,
-                rejected_limit: int | UndefinedType | None = Undefined,
-                forward_register_packets: bool | UndefinedType | None = Undefined,
-                connection_retry_interval: int | UndefinedType | None = Undefined,
+                originator_id_local_interface: str | None | UndefinedType = Undefined,
+                rejected_limit: int | None | UndefinedType = Undefined,
+                forward_register_packets: bool | None | UndefinedType = Undefined,
+                connection_retry_interval: int | None | UndefinedType = Undefined,
                 group_limits: GroupLimits | UndefinedType = Undefined,
                 peers: Peers | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
@@ -64334,7 +64334,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, rate_period_decay: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, rate_period_decay: int | None | UndefinedType = Undefined) -> None:
                         """
                         Counters.
 
@@ -64366,7 +64366,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, nexthop: str | UndefinedType = Undefined, distance: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, nexthop: str | UndefinedType = Undefined, distance: int | None | UndefinedType = Undefined) -> None:
                                 """
                                 DestinationsItem.
 
@@ -64451,11 +64451,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    activity_polling_interval: int | UndefinedType | None = Undefined,
+                    activity_polling_interval: int | None | UndefinedType = Undefined,
                     counters: Counters | UndefinedType = Undefined,
-                    routing: bool | UndefinedType | None = Undefined,
-                    multipath: Multipath | UndefinedType | None = Undefined,
-                    software_forwarding: SoftwareForwarding | UndefinedType | None = Undefined,
+                    routing: bool | None | UndefinedType = Undefined,
+                    multipath: Multipath | None | UndefinedType = Undefined,
+                    software_forwarding: SoftwareForwarding | None | UndefinedType = Undefined,
                     rpf: Rpf | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -64489,9 +64489,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    activity_polling_interval: int | UndefinedType | None = Undefined,
-                    routing: bool | UndefinedType | None = Undefined,
-                    software_forwarding: SoftwareForwarding | UndefinedType | None = Undefined,
+                    activity_polling_interval: int | None | UndefinedType = Undefined,
+                    routing: bool | None | UndefinedType = Undefined,
+                    software_forwarding: SoftwareForwarding | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6.
@@ -64517,7 +64517,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, routing: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, routing: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Ipv4.
 
@@ -64601,9 +64601,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        external: int | UndefinedType | None = Undefined,
-                        inter_area: int | UndefinedType | None = Undefined,
-                        intra_area: int | UndefinedType | None = Undefined,
+                        external: int | None | UndefinedType = Undefined,
+                        inter_area: int | None | UndefinedType = Undefined,
+                        intra_area: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Distance.
@@ -64627,7 +64627,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4_prefix: str | UndefinedType = Undefined, area: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ipv4_prefix: str | UndefinedType = Undefined, area: str | None | UndefinedType = Undefined) -> None:
                         """
                         NetworkPrefixesItem.
 
@@ -64660,7 +64660,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, route_map: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, route_map: str | None | UndefinedType = Undefined) -> None:
                         """
                         DistributeListIn.
 
@@ -64694,9 +64694,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                initial: int | UndefinedType | None = Undefined,
-                                min: int | UndefinedType | None = Undefined,
-                                max: int | UndefinedType | None = Undefined,
+                                initial: int | None | UndefinedType = Undefined,
+                                min: int | None | UndefinedType = Undefined,
+                                max: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 TxDelay.
@@ -64719,7 +64719,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, rx_min_interval: int | UndefinedType | None = Undefined, tx_delay: TxDelay | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, rx_min_interval: int | None | UndefinedType = Undefined, tx_delay: TxDelay | UndefinedType = Undefined) -> None:
                             """
                             Lsa.
 
@@ -64748,9 +64748,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            initial: int | UndefinedType | None = Undefined,
-                            min: int | UndefinedType | None = Undefined,
-                            max: int | UndefinedType | None = Undefined,
+                            initial: int | None | UndefinedType = Undefined,
+                            min: int | None | UndefinedType = Undefined,
+                            max: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             SpfDelay.
@@ -64802,9 +64802,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        always: bool | UndefinedType | None = Undefined,
-                        metric: int | UndefinedType | None = Undefined,
-                        metric_type: MetricType | UndefinedType | None = Undefined,
+                        always: bool | None | UndefinedType = Undefined,
+                        metric: int | None | UndefinedType = Undefined,
+                        metric_type: MetricType | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         DefaultInformationOriginate.
@@ -64835,9 +64835,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         prefix: str | UndefinedType = Undefined,
-                        tag: int | UndefinedType | None = Undefined,
-                        attribute_map: str | UndefinedType | None = Undefined,
-                        not_advertise: bool | UndefinedType | None = Undefined,
+                        tag: int | None | UndefinedType = Undefined,
+                        attribute_map: str | None | UndefinedType = Undefined,
+                        not_advertise: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         SummaryAddressesItem.
@@ -64878,8 +64878,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Static.
@@ -64909,8 +64909,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Connected.
@@ -64940,8 +64940,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Bgp.
@@ -65005,7 +65005,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, networks: Networks | UndefinedType = Undefined, prefix_list: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, networks: Networks | UndefinedType = Undefined, prefix_list: str | None | UndefinedType = Undefined) -> None:
                             """
                             Filter.
 
@@ -65033,7 +65033,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, metric: int | UndefinedType | None = Undefined, metric_type: MetricType | UndefinedType | None = Undefined
+                            self, *, metric: int | None | UndefinedType = Undefined, metric_type: MetricType | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             DefaultInformationOriginate.
@@ -65073,8 +65073,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         id: str | UndefinedType = Undefined,
                         filter: Filter | UndefinedType = Undefined,
                         type: Type | UndefinedType = Undefined,
-                        no_summary: bool | UndefinedType | None = Undefined,
-                        nssa_only: bool | UndefinedType | None = Undefined,
+                        no_summary: bool | None | UndefinedType = Undefined,
+                        nssa_only: bool | None | UndefinedType = Undefined,
                         default_information_originate: DefaultInformationOriginate | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -65114,7 +65114,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, override_metric: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, override_metric: int | None | UndefinedType = Undefined) -> None:
                                 """
                                 ExternalLsa.
 
@@ -65134,7 +65134,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, override_metric: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, override_metric: int | None | UndefinedType = Undefined) -> None:
                                 """
                                 SummaryLsa.
 
@@ -65169,8 +65169,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             external_lsa: ExternalLsa | UndefinedType = Undefined,
-                            include_stub: bool | UndefinedType | None = Undefined,
-                            on_startup: str | UndefinedType | None = Undefined,
+                            include_stub: bool | None | UndefinedType = Undefined,
+                            on_startup: str | None | UndefinedType = Undefined,
                             summary_lsa: SummaryLsa | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -65217,7 +65217,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, grace_period: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, grace_period: int | None | UndefinedType = Undefined) -> None:
                         """
                         GracefulRestart.
 
@@ -65293,9 +65293,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        shutdown: bool | UndefinedType | None = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
                         prefix_segments: PrefixSegments | UndefinedType = Undefined,
-                        adjacency_segment_allocation: AdjacencySegmentAllocation | UndefinedType | None = Undefined,
+                        adjacency_segment_allocation: AdjacencySegmentAllocation | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         SegmentRoutingMpls.
@@ -65397,30 +65397,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
-                    passive_interface_default: bool | UndefinedType | None = Undefined,
-                    router_id: str | UndefinedType | None = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    passive_interface_default: bool | None | UndefinedType = Undefined,
+                    router_id: str | None | UndefinedType = Undefined,
                     distance: Distance | UndefinedType = Undefined,
-                    log_adjacency_changes_detail: bool | UndefinedType | None = Undefined,
+                    log_adjacency_changes_detail: bool | None | UndefinedType = Undefined,
                     network_prefixes: NetworkPrefixes | UndefinedType = Undefined,
-                    bfd_enable: bool | UndefinedType | None = Undefined,
-                    bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
+                    bfd_enable: bool | None | UndefinedType = Undefined,
+                    bfd_adjacency_state_any: bool | None | UndefinedType = Undefined,
                     no_passive_interfaces: NoPassiveInterfaces | UndefinedType = Undefined,
                     distribute_list_in: DistributeListIn | UndefinedType = Undefined,
-                    max_lsa: int | UndefinedType | None = Undefined,
+                    max_lsa: int | None | UndefinedType = Undefined,
                     timers: Timers | UndefinedType = Undefined,
                     default_information_originate: DefaultInformationOriginate | UndefinedType = Undefined,
                     summary_addresses: SummaryAddresses | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
-                    auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
                     areas: Areas | UndefinedType = Undefined,
-                    maximum_paths: int | UndefinedType | None = Undefined,
+                    maximum_paths: int | None | UndefinedType = Undefined,
                     max_metric: MaxMetric | UndefinedType = Undefined,
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
-                    graceful_restart_helper: bool | UndefinedType | None = Undefined,
-                    mpls_ldp_sync_default: bool | UndefinedType | None = Undefined,
+                    graceful_restart_helper: bool | None | UndefinedType = Undefined,
+                    mpls_ldp_sync_default: bool | None | UndefinedType = Undefined,
                     segment_routing_mpls: SegmentRoutingMpls | UndefinedType = Undefined,
-                    eos_cli: str | UndefinedType | None = Undefined,
+                    eos_cli: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ProcessIdsItem.
@@ -65502,7 +65502,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, enabled: bool | UndefinedType | None = Undefined, fragmentation_needed_rate_limit: int | UndefinedType | None = Undefined
+                    self, *, enabled: bool | None | UndefinedType = Undefined, fragmentation_needed_rate_limit: int | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     MtuDiscoveryHosts.
@@ -65571,7 +65571,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        public_address: str | UndefinedType | None = Undefined,
+                        public_address: str | None | UndefinedType = Undefined,
                         stun: Stun | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -65643,7 +65643,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ip_address: str | UndefinedType = Undefined,
-                        public_address: str | UndefinedType | None = Undefined,
+                        public_address: str | None | UndefinedType = Undefined,
                         stun: Stun | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -65682,9 +65682,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        ip_local: bool | UndefinedType | None = Undefined,
-                        ipsec: bool | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        ip_local: bool | None | UndefinedType = Undefined,
+                        ipsec: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         DynamicPeers.
@@ -65725,7 +65725,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         router_ip: str | UndefinedType = Undefined,
-                        name: str | UndefinedType | None = Undefined,
+                        name: str | None | UndefinedType = Undefined,
                         ipv4_addresses: Ipv4Addresses | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -65772,8 +65772,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         auto: bool | UndefinedType = Undefined,
-                        interval: int | UndefinedType | None = Undefined,
-                        failure_threshold: int | UndefinedType | None = Undefined,
+                        interval: int | None | UndefinedType = Undefined,
+                        failure_threshold: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Keepalive.
@@ -65829,9 +65829,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    id: int | UndefinedType | None = Undefined,
-                    ipsec_profile: str | UndefinedType | None = Undefined,
-                    flow_assignment: FlowAssignment | UndefinedType | None = Undefined,
+                    id: int | None | UndefinedType = Undefined,
+                    ipsec_profile: str | None | UndefinedType = Undefined,
+                    flow_assignment: FlowAssignment | None | UndefinedType = Undefined,
                     local_interfaces: LocalInterfaces | UndefinedType = Undefined,
                     local_ips: LocalIps | UndefinedType = Undefined,
                     dynamic_peers: DynamicPeers | UndefinedType = Undefined,
@@ -65885,7 +65885,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, priority: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined) -> None:
                         """
                         PathGroupsItem.
 
@@ -65942,10 +65942,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    lowest_hop_count: bool | UndefinedType | None = Undefined,
-                    jitter: int | UndefinedType | None = Undefined,
-                    latency: int | UndefinedType | None = Undefined,
-                    loss_rate: str | UndefinedType | None = Undefined,
+                    lowest_hop_count: bool | None | UndefinedType = Undefined,
+                    jitter: int | None | UndefinedType = Undefined,
+                    latency: int | None | UndefinedType = Undefined,
+                    loss_rate: str | None | UndefinedType = Undefined,
                     path_groups: PathGroups | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -65989,7 +65989,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, load_balance: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, load_balance: str | None | UndefinedType = Undefined) -> None:
                         """
                         DefaultMatch.
 
@@ -66018,7 +66018,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         id: int | UndefinedType = Undefined,
                         application_profile: str | UndefinedType = Undefined,
-                        load_balance: str | UndefinedType | None = Undefined,
+                        load_balance: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         RulesItem.
@@ -66088,7 +66088,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, path_selection_policy: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, path_selection_policy: str | None | UndefinedType = Undefined) -> None:
                     """
                     VrfsItem.
 
@@ -66133,7 +66133,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ipv4: str | UndefinedType | None = Undefined, direction: Direction | UndefinedType = Undefined) -> None:
+                def __init__(self, *, ipv4: str | None | UndefinedType = Undefined, direction: Direction | UndefinedType = Undefined) -> None:
                     """
                     TcpMssCeiling.
 
@@ -66169,7 +66169,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, receive: int | UndefinedType | None = Undefined, transmit: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, receive: int | None | UndefinedType = Undefined, transmit: int | None | UndefinedType = Undefined) -> None:
                         """
                         MetricBandwidth.
 
@@ -66244,8 +66244,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                peer_dynamic_source: PeerDynamicSource | UndefinedType | None = Undefined,
-                mtu_discovery_interval: int | UndefinedType | None = Undefined,
+                peer_dynamic_source: PeerDynamicSource | None | UndefinedType = Undefined,
+                mtu_discovery_interval: int | None | UndefinedType = Undefined,
                 mtu_discovery_hosts: MtuDiscoveryHosts | UndefinedType = Undefined,
                 path_groups: PathGroups | UndefinedType = Undefined,
                 load_balance_policies: LoadBalancePolicies | UndefinedType = Undefined,
@@ -66318,9 +66318,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         address: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         access_lists: AccessLists | UndefinedType = Undefined,
-                        priority: int | UndefinedType | None = Undefined,
-                        hashmask: int | UndefinedType | None = Undefined,
-                        override: bool | UndefinedType | None = Undefined,
+                        priority: int | None | UndefinedType = Undefined,
+                        hashmask: int | None | UndefinedType = Undefined,
+                        override: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         RpAddressesItem.
@@ -66361,7 +66361,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, register_count: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, register_count: str | None | UndefinedType = Undefined) -> None:
                             """
                             OtherAnycastRpAddressesItem.
 
@@ -66451,11 +66451,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    bfd: bool | UndefinedType | None = Undefined,
-                    make_before_break: bool | UndefinedType | None = Undefined,
-                    message_hello_address_secondary_ipv6: bool | UndefinedType | None = Undefined,
-                    ssm_range: str | UndefinedType | None = Undefined,
-                    register_local_interface: str | UndefinedType | None = Undefined,
+                    bfd: bool | None | UndefinedType = Undefined,
+                    make_before_break: bool | None | UndefinedType = Undefined,
+                    message_hello_address_secondary_ipv6: bool | None | UndefinedType = Undefined,
+                    ssm_range: str | None | UndefinedType = Undefined,
+                    register_local_interface: str | None | UndefinedType = Undefined,
                     rp_addresses: RpAddresses | UndefinedType = Undefined,
                     anycast_rps: AnycastRps | UndefinedType = Undefined,
                 ) -> None:
@@ -66521,9 +66521,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             address: str | UndefinedType = Undefined,
                             groups: Groups | UndefinedType = Undefined,
                             access_lists: AccessLists | UndefinedType = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
-                            hashmask: int | UndefinedType | None = Undefined,
-                            override: bool | UndefinedType | None = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
+                            hashmask: int | None | UndefinedType = Undefined,
+                            override: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             RpAddressesItem.
@@ -66564,7 +66564,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, address: str | UndefinedType = Undefined, register_count: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, address: str | UndefinedType = Undefined, register_count: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 OtherAnycastRpAddressesItem.
 
@@ -66655,12 +66655,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        bfd: bool | UndefinedType | None = Undefined,
-                        make_before_break: bool | UndefinedType | None = Undefined,
-                        register_local_interface: str | UndefinedType | None = Undefined,
+                        bfd: bool | None | UndefinedType = Undefined,
+                        make_before_break: bool | None | UndefinedType = Undefined,
+                        register_local_interface: str | None | UndefinedType = Undefined,
                         rp_addresses: RpAddresses | UndefinedType = Undefined,
                         anycast_rps: AnycastRps | UndefinedType = Undefined,
-                        ssm_range: str | UndefinedType | None = Undefined,
+                        ssm_range: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4.
@@ -66755,8 +66755,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     vrf: str | UndefinedType = Undefined,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    metric_default: int | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    metric_default: int | None | UndefinedType = Undefined,
                     networks: Networks | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -66844,9 +66844,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         sequence: int | UndefinedType = Undefined,
                         application: str | UndefinedType = Undefined,
                         action: Action | UndefinedType = Undefined,
-                        log: bool | UndefinedType | None = Undefined,
+                        log: bool | None | UndefinedType = Undefined,
                         stateless: bool | UndefinedType = Undefined,
-                        next_hop: str | UndefinedType | None = Undefined,
+                        next_hop: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         SequenceNumbersItem.
@@ -66939,8 +66939,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 address_family: AddressFamily | UndefinedType = Undefined,
-                                covered_prefix_list: str | UndefinedType | None = Undefined,
-                                prefix: str | UndefinedType | None = Undefined,
+                                covered_prefix_list: str | None | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MatchListsItem.
@@ -67013,7 +67013,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, field_from: str | UndefinedType = Undefined, policy: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, field_from: str | UndefinedType = Undefined, policy: str | None | UndefinedType = Undefined) -> None:
                             """
                             PoliciesItem.
 
@@ -67066,7 +67066,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: str | UndefinedType = Undefined,
                         definition: Definition | UndefinedType = Undefined,
                         policies: Policies | UndefinedType = Undefined,
-                        fallback_policy: str | UndefinedType | None = Undefined,
+                        fallback_policy: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         SegmentsItem.
@@ -67145,7 +67145,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType | None = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
                 policies: Policies | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
             ) -> None:
@@ -67212,7 +67212,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, primary: str | UndefinedType | None = Undefined, secondary: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, primary: str | None | UndefinedType = Undefined, secondary: str | None | UndefinedType = Undefined) -> None:
                         """
                         TunnelInterface.
 
@@ -67263,7 +67263,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     ethernet_interface: EthernetInterface | UndefinedType = Undefined,
                     tunnel_interface: TunnelInterface | UndefinedType = Undefined,
-                    monitor_connectivity_host: str | UndefinedType | None = Undefined,
+                    monitor_connectivity_host: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ConnectionsItem.
@@ -67305,7 +67305,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, connections: Connections | UndefinedType = Undefined) -> None:
+            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, connections: Connections | UndefinedType = Undefined) -> None:
                 """
                 RouterServiceInsertion.
 
@@ -67330,7 +67330,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ipv4: str | UndefinedType | None = Undefined, ipv6: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, ipv4: str | None | UndefinedType = Undefined, ipv6: str | None | UndefinedType = Undefined) -> None:
                     """
                     RouterId.
 
@@ -67374,9 +67374,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    label_stack: str | UndefinedType | None = Undefined,
-                                    weight: int | UndefinedType | None = Undefined,
-                                    index: int | UndefinedType | None = Undefined,
+                                    label_stack: str | None | UndefinedType = Undefined,
+                                    weight: int | None | UndefinedType = Undefined,
+                                    index: int | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     SegmentListItem.
@@ -67409,8 +67409,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                preference: int | UndefinedType | None = Undefined,
-                                explicit_null: ExplicitNull | UndefinedType | None = Undefined,
+                                preference: int | None | UndefinedType = Undefined,
+                                explicit_null: ExplicitNull | None | UndefinedType = Undefined,
                                 segment_list: SegmentList | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -67454,10 +67454,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             value: int | UndefinedType = Undefined,
-                            binding_sid: int | UndefinedType | None = Undefined,
-                            description: str | UndefinedType | None = Undefined,
-                            name: str | UndefinedType | None = Undefined,
-                            sbfd_remote_discriminator: str | UndefinedType | None = Undefined,
+                            binding_sid: int | None | UndefinedType = Undefined,
+                            description: str | None | UndefinedType = Undefined,
+                            name: str | None | UndefinedType = Undefined,
+                            sbfd_remote_discriminator: str | None | UndefinedType = Undefined,
                             path_group: PathGroup | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -67491,7 +67491,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, address: str | UndefinedType | None = Undefined, colors: Colors | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, address: str | None | UndefinedType = Undefined, colors: Colors | UndefinedType = Undefined) -> None:
                         """
                         PolicyEndpointsItem.
 
@@ -67517,7 +67517,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, colored_tunnel_rib: bool | UndefinedType | None = Undefined, policy_endpoints: PolicyEndpoints | UndefinedType = Undefined
+                    self, *, colored_tunnel_rib: bool | None | UndefinedType = Undefined, policy_endpoints: PolicyEndpoints | UndefinedType = Undefined
                 ) -> None:
                     """
                     SegmentRouting.
@@ -67559,9 +67559,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        include_all: str | UndefinedType | None = Undefined,
-                        include_any: str | UndefinedType | None = Undefined,
-                        exclude: str | UndefinedType | None = Undefined,
+                        include_all: str | None | UndefinedType = Undefined,
+                        include_any: str | None | UndefinedType = Undefined,
+                        exclude: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AdministrativeGroup.
@@ -67619,10 +67619,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     number: int | UndefinedType = Undefined,
                     name: str | UndefinedType = Undefined,
                     administrative_group: AdministrativeGroup | UndefinedType = Undefined,
-                    metric: Metric | UndefinedType | None = Undefined,
-                    priority: int | UndefinedType | None = Undefined,
-                    color: int | UndefinedType | None = Undefined,
-                    srlg_exclude: str | UndefinedType | None = Undefined,
+                    metric: Metric | None | UndefinedType = Undefined,
+                    priority: int | None | UndefinedType = Undefined,
+                    color: int | None | UndefinedType = Undefined,
+                    srlg_exclude: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FlexAlgosItem.
@@ -67677,7 +67677,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 enabled: bool | UndefinedType = Undefined,
                 router_id: RouterId | UndefinedType = Undefined,
                 segment_routing: SegmentRouting | UndefinedType = Undefined,
-                twamp_light_sender_profile: str | UndefinedType | None = Undefined,
+                twamp_light_sender_profile: str | None | UndefinedType = Undefined,
                 flex_algos: FlexAlgos | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -67710,7 +67710,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, max_concurrent_jobs: int | UndefinedType | None = Undefined, prepend_hostname_logfile: bool | UndefinedType | None = Undefined
+                    self, *, max_concurrent_jobs: int | None | UndefinedType = Undefined, prepend_hostname_logfile: bool | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     Config.
@@ -67745,7 +67745,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, time: str | UndefinedType = Undefined, date: str | UndefinedType = Undefined, once: bool | UndefinedType | None = Undefined
+                        self, *, time: str | UndefinedType = Undefined, date: str | UndefinedType = Undefined, once: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         At.
@@ -67815,14 +67815,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    interval: int | UndefinedType | None = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
                     at: At | UndefinedType = Undefined,
-                    timeout: int | UndefinedType | None = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
                     max_log_files: int | UndefinedType = Undefined,
-                    logging_verbose: bool | UndefinedType | None = Undefined,
-                    loglocation: str | UndefinedType | None = Undefined,
-                    max_total_size: str | UndefinedType | None = Undefined,
-                    compression: Compression | UndefinedType | None = Undefined,
+                    logging_verbose: bool | None | UndefinedType = Undefined,
+                    loglocation: str | None | UndefinedType = Undefined,
+                    max_total_size: str | None | UndefinedType = Undefined,
+                    compression: Compression | None | UndefinedType = Undefined,
                     command: str | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -67906,7 +67906,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, no_equals_default: bool | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, no_equals_default: bool | None | UndefinedType = Undefined) -> None:
                 """
                 ServiceRoutingConfigurationBgp.
 
@@ -67929,7 +67929,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, license_name: str | UndefinedType | None = Undefined, license_key: str | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, license_name: str | None | UndefinedType = Undefined, license_key: str | None | UndefinedType = Undefined) -> None:
                 """
                 ServiceUnsupportedTransceiver.
 
@@ -67959,7 +67959,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, destination: str | UndefinedType = Undefined, port: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, destination: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
                         """
                         DestinationsItem.
 
@@ -68004,8 +68004,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     destinations: Destinations | UndefinedType = Undefined,
-                    source: str | UndefinedType | None = Undefined,
-                    source_interface: str | UndefinedType | None = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    source_interface: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrfsItem.
@@ -68042,7 +68042,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, destination: str | UndefinedType = Undefined, port: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, destination: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
                     """
                     DestinationsItem.
 
@@ -68104,7 +68104,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, default: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, default: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Disable.
 
@@ -68130,7 +68130,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enable_default: bool | UndefinedType = Undefined, unmodified: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, enable_default: bool | UndefinedType = Undefined, unmodified: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Egress.
 
@@ -68210,8 +68210,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
-                    sample: int | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    sample: int | None | UndefinedType = Undefined,
                     modules: Modules | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -68276,19 +68276,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                sample: int | UndefinedType | None = Undefined,
-                sample_truncate_size: int | UndefinedType | None = Undefined,
-                sample_input_subinterface: bool | UndefinedType | None = Undefined,
-                sample_output_subinterface: bool | UndefinedType | None = Undefined,
-                dangerous: bool | UndefinedType | None = Undefined,
-                polling_interval: int | UndefinedType | None = Undefined,
+                sample: int | None | UndefinedType = Undefined,
+                sample_truncate_size: int | None | UndefinedType = Undefined,
+                sample_input_subinterface: bool | None | UndefinedType = Undefined,
+                sample_output_subinterface: bool | None | UndefinedType = Undefined,
+                dangerous: bool | None | UndefinedType = Undefined,
+                polling_interval: int | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 destinations: Destinations | UndefinedType = Undefined,
-                source: str | UndefinedType | None = Undefined,
-                source_interface: str | UndefinedType | None = Undefined,
+                source: str | None | UndefinedType = Undefined,
+                source_interface: str | None | UndefinedType = Undefined,
                 extensions: Extensions | UndefinedType = Undefined,
                 interface: Interface | UndefinedType = Undefined,
-                run: bool | UndefinedType | None = Undefined,
+                run: bool | None | UndefinedType = Undefined,
                 hardware_acceleration: HardwareAcceleration | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -68339,9 +68339,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        id: str | UndefinedType | None = Undefined,
-                        address: str | UndefinedType | None = Undefined,
-                        udp_port: int | UndefinedType | None = Undefined,
+                        id: str | None | UndefinedType = Undefined,
+                        address: str | None | UndefinedType = Undefined,
+                        udp_port: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         RemotesItem.
@@ -68369,7 +68369,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, local: str | UndefinedType | None = Undefined, remotes: Remotes | UndefinedType = Undefined) -> None:
+                def __init__(self, *, local: str | None | UndefinedType = Undefined, remotes: Remotes | UndefinedType = Undefined) -> None:
                     """
                     EngineIds.
 
@@ -68396,7 +68396,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, oid: str | UndefinedType = Undefined, path: str | UndefinedType = Undefined, one_shot: bool | UndefinedType | None = Undefined
+                    self, *, oid: str | UndefinedType = Undefined, path: str | UndefinedType = Undefined, one_shot: bool | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     ExtensionsItem.
@@ -68432,7 +68432,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined) -> None:
                         """
                         AccessListIpv4.
 
@@ -68453,7 +68453,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined) -> None:
                         """
                         AccessListIpv6.
 
@@ -68487,10 +68487,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    access: Access | UndefinedType | None = Undefined,
+                    access: Access | None | UndefinedType = Undefined,
                     access_list_ipv4: AccessListIpv4 | UndefinedType = Undefined,
                     access_list_ipv6: AccessListIpv6 | UndefinedType = Undefined,
-                    view: str | UndefinedType | None = Undefined,
+                    view: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     CommunitiesItem.
@@ -68524,7 +68524,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType | None = Undefined, vrf: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                     """
                     Ipv4AclsItem.
 
@@ -68552,7 +68552,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType | None = Undefined, vrf: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                     """
                     Ipv6AclsItem.
 
@@ -68580,7 +68580,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                     """
                     LocalInterfacesItem.
 
@@ -68614,9 +68614,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    name: str | UndefinedType | None = Undefined,
-                    mib_family_name: str | UndefinedType | None = Undefined,
-                    included: bool | UndefinedType | None = Undefined,
+                    name: str | None | UndefinedType = Undefined,
+                    mib_family_name: str | None | UndefinedType = Undefined,
+                    included: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ViewsItem.
@@ -68665,12 +68665,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    name: str | UndefinedType | None = Undefined,
-                    version: Version | UndefinedType | None = Undefined,
-                    authentication: Authentication | UndefinedType | None = Undefined,
-                    read: str | UndefinedType | None = Undefined,
-                    write: str | UndefinedType | None = Undefined,
-                    notify: str | UndefinedType | None = Undefined,
+                    name: str | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
+                    authentication: Authentication | None | UndefinedType = Undefined,
+                    read: str | None | UndefinedType = Undefined,
+                    write: str | None | UndefinedType = Undefined,
+                    notify: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     GroupsItem.
@@ -68741,16 +68741,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    name: str | UndefinedType | None = Undefined,
-                    group: str | UndefinedType | None = Undefined,
-                    remote_address: str | UndefinedType | None = Undefined,
-                    udp_port: int | UndefinedType | None = Undefined,
-                    version: Version | UndefinedType | None = Undefined,
-                    localized: str | UndefinedType | None = Undefined,
-                    auth: str | UndefinedType | None = Undefined,
-                    auth_passphrase: str | UndefinedType | None = Undefined,
-                    priv: str | UndefinedType | None = Undefined,
-                    priv_passphrase: str | UndefinedType | None = Undefined,
+                    name: str | None | UndefinedType = Undefined,
+                    group: str | None | UndefinedType = Undefined,
+                    remote_address: str | None | UndefinedType = Undefined,
+                    udp_port: int | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
+                    localized: str | None | UndefinedType = Undefined,
+                    auth: str | None | UndefinedType = Undefined,
+                    auth_passphrase: str | None | UndefinedType = Undefined,
+                    priv: str | None | UndefinedType = Undefined,
+                    priv_passphrase: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     UsersItem.
@@ -68799,7 +68799,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, username: str | UndefinedType | None = Undefined, authentication_level: AuthenticationLevel | UndefinedType | None = Undefined
+                        self, *, username: str | None | UndefinedType = Undefined, authentication_level: AuthenticationLevel | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         UsersItem.
@@ -68839,10 +68839,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    host: str | UndefinedType | None = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
-                    version: Version | UndefinedType | None = Undefined,
-                    community: str | UndefinedType | None = Undefined,
+                    host: str | None | UndefinedType = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
+                    community: str | None | UndefinedType = Undefined,
                     users: Users | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -68884,7 +68884,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType | None = Undefined, enabled: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined, enabled: bool | None | UndefinedType = Undefined) -> None:
                         """
                         SnmpTrapsItem.
 
@@ -68914,7 +68914,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enable: bool | UndefinedType | None = Undefined, snmp_traps: SnmpTraps | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enable: bool | None | UndefinedType = Undefined, snmp_traps: SnmpTraps | UndefinedType = Undefined) -> None:
                     """
                     Traps.
 
@@ -68937,7 +68937,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, enable: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, enable: bool | None | UndefinedType = Undefined) -> None:
                     """
                     VrfsItem.
 
@@ -69012,8 +69012,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 engine_ids: EngineIds | UndefinedType = Undefined,
                 extensions: Extensions | UndefinedType = Undefined,
-                contact: str | UndefinedType | None = Undefined,
-                location: str | UndefinedType | None = Undefined,
+                contact: str | None | UndefinedType = Undefined,
+                location: str | None | UndefinedType = Undefined,
                 communities: Communities | UndefinedType = Undefined,
                 ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
                 ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
@@ -69024,7 +69024,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 hosts: Hosts | UndefinedType = Undefined,
                 traps: Traps | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
-                ifmib_ifspeed_shape_rate: bool | UndefinedType | None = Undefined,
+                ifmib_ifspeed_shape_rate: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 SnmpServer.
@@ -69064,7 +69064,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, bpdufilter_default: bool | UndefinedType | None = Undefined, bpduguard_default: bool | UndefinedType | None = Undefined
+                    self, *, bpdufilter_default: bool | None | UndefinedType = Undefined, bpduguard_default: bool | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     EdgePort.
@@ -69090,7 +69090,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, default: bool | UndefinedType | None = Undefined, count: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, default: bool | None | UndefinedType = Undefined, count: int | None | UndefinedType = Undefined) -> None:
                     """
                     BpduguardRateLimit.
 
@@ -69123,7 +69123,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, id: int | UndefinedType = Undefined, vlans: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, id: int | UndefinedType = Undefined, vlans: str | None | UndefinedType = Undefined) -> None:
                             """
                             InstancesItem.
 
@@ -69157,8 +69157,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        name: str | UndefinedType | None = Undefined,
-                        revision: int | UndefinedType | None = Undefined,
+                        name: str | None | UndefinedType = Undefined,
+                        revision: int | None | UndefinedType = Undefined,
                         instances: Instances | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -69181,7 +69181,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, pvst_border: bool | UndefinedType | None = Undefined, configuration: Configuration | UndefinedType = Undefined) -> None:
+                def __init__(self, *, pvst_border: bool | None | UndefinedType = Undefined, configuration: Configuration | UndefinedType = Undefined) -> None:
                     """
                     Mst.
 
@@ -69204,7 +69204,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, id: str | UndefinedType = Undefined, priority: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, id: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined) -> None:
                     """
                     MstInstancesItem.
 
@@ -69237,7 +69237,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, id: str | UndefinedType = Undefined, priority: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, id: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined) -> None:
                     """
                     RapidPvstInstancesItem.
 
@@ -69328,17 +69328,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                root_super: bool | UndefinedType | None = Undefined,
+                root_super: bool | None | UndefinedType = Undefined,
                 edge_port: EdgePort | UndefinedType = Undefined,
-                mode: Mode | UndefinedType | None = Undefined,
+                mode: Mode | None | UndefinedType = Undefined,
                 bpduguard_rate_limit: BpduguardRateLimit | UndefinedType = Undefined,
-                rstp_priority: int | UndefinedType | None = Undefined,
+                rstp_priority: int | None | UndefinedType = Undefined,
                 mst: Mst | UndefinedType = Undefined,
                 mst_instances: MstInstances | UndefinedType = Undefined,
-                no_spanning_tree_vlan: str | UndefinedType | None = Undefined,
+                no_spanning_tree_vlan: str | None | UndefinedType = Undefined,
                 rapid_pvst_instances: RapidPvstInstances | UndefinedType = Undefined,
                 port_id_allocation_port_channel_range: PortIdAllocationPortChannelRange | UndefinedType = Undefined,
-                loop_guard_default: bool | UndefinedType | None = Undefined,
+                loop_guard_default: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 SpanningTree.
@@ -69430,16 +69430,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    sequence: int | UndefinedType | None = Undefined,
-                    action: Action | UndefinedType | None = Undefined,
-                    remark: str | UndefinedType | None = Undefined,
-                    source: str | UndefinedType | None = Undefined,
-                    vlan: int | UndefinedType | None = Undefined,
-                    vlan_mask: str | UndefinedType | None = Undefined,
-                    inner_vlan: int | UndefinedType | None = Undefined,
-                    inner_vlan_mask: str | UndefinedType | None = Undefined,
-                    log: bool | UndefinedType | None = Undefined,
-                    mirror_session: str | UndefinedType | None = Undefined,
+                    sequence: int | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    vlan: int | None | UndefinedType = Undefined,
+                    vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    mirror_session: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -69538,7 +69538,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                counters_per_entry: bool | UndefinedType | None = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
                 entries: Entries | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
@@ -69597,15 +69597,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                vrf: str | UndefinedType | None = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
                 prefix: str | UndefinedType = Undefined,
-                interface: str | UndefinedType | None = Undefined,
-                next_hop: str | UndefinedType | None = Undefined,
-                track_bfd: bool | UndefinedType | None = Undefined,
-                distance: int | UndefinedType | None = Undefined,
-                tag: int | UndefinedType | None = Undefined,
-                name: str | UndefinedType | None = Undefined,
-                metric: int | UndefinedType | None = Undefined,
+                interface: str | None | UndefinedType = Undefined,
+                next_hop: str | None | UndefinedType = Undefined,
+                track_bfd: bool | None | UndefinedType = Undefined,
+                distance: int | None | UndefinedType = Undefined,
+                tag: int | None | UndefinedType = Undefined,
+                name: str | None | UndefinedType = Undefined,
+                metric: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 StaticRoutesItem.
@@ -69654,9 +69654,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        ip_address: str | UndefinedType | None = Undefined,
-                        ssl_profile: str | UndefinedType | None = Undefined,
-                        port: int | UndefinedType | None = Undefined,
+                        ip_address: str | None | UndefinedType = Undefined,
+                        ssl_profile: str | None | UndefinedType = Undefined,
+                        port: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServerProfilesItem.
@@ -69725,7 +69725,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, minutes: int | UndefinedType | None = Undefined, hours: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, minutes: int | None | UndefinedType = Undefined, hours: int | None | UndefinedType = Undefined) -> None:
                         """
                         SslConnectionLifetime.
 
@@ -69768,10 +69768,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     local_interfaces: LocalInterfaces | UndefinedType = Undefined,
-                    bindings_timeout: int | UndefinedType | None = Undefined,
-                    ssl_profile: str | UndefinedType | None = Undefined,
+                    bindings_timeout: int | None | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
                     ssl_connection_lifetime: SslConnectionLifetime | UndefinedType = Undefined,
-                    port: int | UndefinedType | None = Undefined,
+                    port: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Server.
@@ -69862,11 +69862,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    cos: int | UndefinedType | None = Undefined,
-                    trunk: Trunk | UndefinedType | None = Undefined,
-                    vlan: int | UndefinedType | None = Undefined,
-                    access_list_bypass: bool | UndefinedType | None = Undefined,
-                    qos_trust: QosTrust | UndefinedType | None = Undefined,
+                    cos: int | None | UndefinedType = Undefined,
+                    trunk: Trunk | None | UndefinedType = Undefined,
+                    vlan: int | None | UndefinedType = Undefined,
+                    access_list_bypass: bool | None | UndefinedType = Undefined,
+                    qos_trust: QosTrust | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Phone.
@@ -69892,7 +69892,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, mode: Mode | UndefinedType | None = Undefined, phone: Phone | UndefinedType = Undefined) -> None:
+            def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, phone: Phone | UndefinedType = Undefined) -> None:
                 """
                 SwitchportDefault.
 
@@ -69917,7 +69917,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, aging: bool | UndefinedType | None = Undefined, moveable: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, aging: bool | None | UndefinedType = Undefined, moveable: bool | None | UndefinedType = Undefined) -> None:
                     """
                     MacAddress.
 
@@ -69942,8 +69942,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 mac_address: MacAddress | UndefinedType = Undefined,
-                persistence_disabled: bool | UndefinedType | None = Undefined,
-                violation_protect_chip_based: bool | UndefinedType | None = Undefined,
+                persistence_disabled: bool | None | UndefinedType = Undefined,
+                violation_protect_chip_based: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 SwitchportPortSecurity.
@@ -69995,7 +69995,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4: int | UndefinedType | None = Undefined, ipv6: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ipv4: int | None | UndefinedType = Undefined, ipv6: int | None | UndefinedType = Undefined) -> None:
                         """
                         TcpMss.
 
@@ -70017,7 +70017,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, acl_name: str | UndefinedType = Undefined, vrf: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, acl_name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                         """
                         Ipv4AccessGroupsItem.
 
@@ -70044,7 +70044,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, acl_name: str | UndefinedType = Undefined, vrf: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, acl_name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                         """
                         Ipv6AccessGroupsItem.
 
@@ -70086,9 +70086,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     tcp_mss: TcpMss | UndefinedType = Undefined,
-                    ipv4_access_group_ingress_default: str | UndefinedType | None = Undefined,
+                    ipv4_access_group_ingress_default: str | None | UndefinedType = Undefined,
                     ipv4_access_groups: Ipv4AccessGroups | UndefinedType = Undefined,
-                    ipv6_access_group_ingress_default: str | UndefinedType | None = Undefined,
+                    ipv6_access_group_ingress_default: str | None | UndefinedType = Undefined,
                     ipv6_access_groups: Ipv6AccessGroups | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -70120,8 +70120,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    unsupported_speed_action: UnsupportedSpeedAction | UndefinedType | None = Undefined,
-                    unsupported_error_correction_action: UnsupportedErrorCorrectionAction | UndefinedType | None = Undefined,
+                    unsupported_speed_action: UnsupportedSpeedAction | None | UndefinedType = Undefined,
+                    unsupported_error_correction_action: UnsupportedErrorCorrectionAction | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     L1.
@@ -70187,12 +70187,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    host: str | UndefinedType | None = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
-                    key: str | UndefinedType | None = Undefined,
+                    host: str | None | UndefinedType = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    key: str | None | UndefinedType = Undefined,
                     key_type: KeyType | UndefinedType = Undefined,
-                    single_connection: bool | UndefinedType | None = Undefined,
-                    timeout: int | UndefinedType | None = Undefined,
+                    single_connection: bool | None | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     HostsItem.
@@ -70227,9 +70227,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                timeout: int | UndefinedType | None = Undefined,
+                timeout: int | None | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
-                policy_unknown_mandatory_attribute_ignore: bool | UndefinedType | None = Undefined,
+                policy_unknown_mandatory_attribute_ignore: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 TacacsServers.
@@ -70270,8 +70270,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | UndefinedType | None = Undefined,
-                        profile: str | UndefinedType | None = Undefined,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        profile: str | None | UndefinedType = Undefined,
                         no_errdisable: NoErrdisable | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -70322,7 +70322,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, format: Format | UndefinedType | None = Undefined, eth_type: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, format: Format | None | UndefinedType = Undefined, eth_type: int | None | UndefinedType = Undefined) -> None:
                             """
                             Header.
 
@@ -70342,7 +70342,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, replace_source_mac: bool | UndefinedType | None = Undefined, header: Header | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, replace_source_mac: bool | None | UndefinedType = Undefined, header: Header | UndefinedType = Undefined) -> None:
                         """
                         Timestamp.
 
@@ -70378,8 +70378,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     timestamp: Timestamp | UndefinedType = Undefined,
-                    fcs_append: bool | UndefinedType | None = Undefined,
-                    fcs_error: FcsError | UndefinedType | None = Undefined,
+                    fcs_append: bool | None | UndefinedType = Undefined,
+                    fcs_error: FcsError | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Mac.
@@ -70425,10 +70425,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 mode: Mode | UndefinedType = Undefined,
-                encapsulation_dot1br_strip: bool | UndefinedType | None = Undefined,
-                encapsulation_vn_tag_strip: bool | UndefinedType | None = Undefined,
-                protocol_lldp_trap: bool | UndefinedType | None = Undefined,
-                truncation_size: int | UndefinedType | None = Undefined,
+                encapsulation_dot1br_strip: bool | None | UndefinedType = Undefined,
+                encapsulation_vn_tag_strip: bool | None | UndefinedType = Undefined,
+                protocol_lldp_trap: bool | None | UndefinedType = Undefined,
+                truncation_size: int | None | UndefinedType = Undefined,
                 mac: Mac | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -70474,8 +70474,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    config: str | UndefinedType | None = Undefined,
-                    source: str | UndefinedType | None = Undefined,
+                    config: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ProfilesItem.
@@ -70510,7 +70510,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, system: str | UndefinedType | None = Undefined, profiles: Profiles | UndefinedType = Undefined) -> None:
+            def __init__(self, *, system: str | None | UndefinedType = Undefined, profiles: Profiles | UndefinedType = Undefined) -> None:
                 """
                 TcamProfile.
 
@@ -70532,7 +70532,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, length: int | UndefinedType | None = Undefined, width: int | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, length: int | None | UndefinedType = Undefined, width: int | None | UndefinedType = Undefined) -> None:
                 """
                 Terminal.
 
@@ -70602,7 +70602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, enforcement_management: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, enforcement_management: bool | None | UndefinedType = Undefined) -> None:
                         """
                         VrfAll.
 
@@ -70633,8 +70633,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     vrf_all: VrfAll | UndefinedType = Undefined,
-                    enforcement_ip_ttl_expired: bool | UndefinedType | None = Undefined,
-                    fragment_implicit_permit_disabled: bool | UndefinedType | None = Undefined,
+                    enforcement_ip_ttl_expired: bool | None | UndefinedType = Undefined,
+                    fragment_implicit_permit_disabled: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     CpuTrafficPolicy.
@@ -70669,7 +70669,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType = Undefined, enforcement_management: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, name: str | UndefinedType = Undefined, enforcement_management: bool | None | UndefinedType = Undefined) -> None:
                             """
                             TrafficPolicy.
 
@@ -70717,7 +70717,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     cpu: Cpu | UndefinedType = Undefined,
-                    traffic_policy_input_physical: str | UndefinedType | None = Undefined,
+                    traffic_policy_input_physical: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrfsItem.
@@ -70752,8 +70752,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    counter_per_interface: bool | UndefinedType | None = Undefined,
-                    counter_interface_poll_interval: int | UndefinedType | None = Undefined,
+                    counter_per_interface: bool | None | UndefinedType = Undefined,
+                    counter_interface_poll_interval: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Options.
@@ -70885,7 +70885,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, port_range: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, port_range: str | None | UndefinedType = Undefined) -> None:
                         """
                         PortsItem.
 
@@ -71035,7 +71035,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, offset: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, offset: str | None | UndefinedType = Undefined) -> None:
                             """
                             Fragment.
 
@@ -71098,13 +71098,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             protocol: str | UndefinedType = Undefined,
-                            src_port: str | UndefinedType | None = Undefined,
-                            dst_port: str | UndefinedType | None = Undefined,
-                            src_field: str | UndefinedType | None = Undefined,
-                            dst_field: str | UndefinedType | None = Undefined,
+                            src_port: str | None | UndefinedType = Undefined,
+                            dst_port: str | None | UndefinedType = Undefined,
+                            src_field: str | None | UndefinedType = Undefined,
+                            dst_field: str | None | UndefinedType = Undefined,
                             flags: Flags | UndefinedType = Undefined,
                             icmp_type: IcmpType | UndefinedType = Undefined,
-                            enforce_gtsm: bool | UndefinedType | None = Undefined,
+                            enforce_gtsm: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             ProtocolsItem.
@@ -71148,7 +71148,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, vxlan: Vxlan | UndefinedType | None = Undefined, multicast: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, vxlan: Vxlan | None | UndefinedType = Undefined, multicast: bool | None | UndefinedType = Undefined) -> None:
                             """
                             PacketType.
 
@@ -71241,11 +71241,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     *,
                                     ipv4_addresses: Ipv4Addresses | UndefinedType = Undefined,
                                     ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
-                                    vrf: str | UndefinedType | None = Undefined,
+                                    vrf: str | None | UndefinedType = Undefined,
                                     groups: Groups | UndefinedType = Undefined,
                                     recursive_ipv4_addresses: RecursiveIpv4Addresses | UndefinedType = Undefined,
                                     recursive_ipv6_addresses: RecursiveIpv6Addresses | UndefinedType = Undefined,
-                                    ttl: int | UndefinedType | None = Undefined,
+                                    ttl: int | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     NextHop.
@@ -71304,7 +71304,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 aggregation_groups: AggregationGroups | UndefinedType = Undefined,
-                                interface: str | UndefinedType | None = Undefined,
+                                interface: str | None | UndefinedType = Undefined,
                                 next_hop: NextHop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -71365,11 +71365,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            dscp: int | UndefinedType | None = Undefined,
-                            traffic_class: int | UndefinedType | None = Undefined,
-                            count: str | UndefinedType | None = Undefined,
-                            drop: bool | UndefinedType | None = Undefined,
-                            log: bool | UndefinedType | None = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
+                            traffic_class: int | None | UndefinedType = Undefined,
+                            count: str | None | UndefinedType = Undefined,
+                            drop: bool | None | UndefinedType = Undefined,
+                            log: bool | None | UndefinedType = Undefined,
                             redirect: Redirect | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -71437,7 +71437,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         type: Type | UndefinedType = Undefined,
                         source: Source | UndefinedType = Undefined,
                         destination: Destination | UndefinedType = Undefined,
-                        ttl: str | UndefinedType | None = Undefined,
+                        ttl: str | None | UndefinedType = Undefined,
                         fragment: Fragment | UndefinedType = Undefined,
                         protocols: Protocols | UndefinedType = Undefined,
                         packet_type: PacketType | UndefinedType = Undefined,
@@ -71507,11 +71507,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            dscp: int | UndefinedType | None = Undefined,
-                            traffic_class: int | UndefinedType | None = Undefined,
-                            count: str | UndefinedType | None = Undefined,
-                            drop: bool | UndefinedType | None = Undefined,
-                            log: bool | UndefinedType | None = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
+                            traffic_class: int | None | UndefinedType = Undefined,
+                            count: str | None | UndefinedType = Undefined,
+                            drop: bool | None | UndefinedType = Undefined,
+                            log: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ipv4.
@@ -71561,11 +71561,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            dscp: int | UndefinedType | None = Undefined,
-                            traffic_class: int | UndefinedType | None = Undefined,
-                            count: str | UndefinedType | None = Undefined,
-                            drop: bool | UndefinedType | None = Undefined,
-                            log: bool | UndefinedType | None = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
+                            traffic_class: int | None | UndefinedType = Undefined,
+                            count: str | None | UndefinedType = Undefined,
+                            drop: bool | None | UndefinedType = Undefined,
+                            log: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ipv6.
@@ -71720,7 +71720,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, dom_threshold_file: str | UndefinedType | None = Undefined) -> None:
+            def __init__(self, *, dom_threshold_file: str | None | UndefinedType = Undefined) -> None:
                 """
                 Transceiver.
 
@@ -71765,9 +71765,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dynamic_capacity: int | UndefinedType | None = Undefined,
-                        expire: int | UndefinedType | None = Undefined,
-                        refresh_always: bool | UndefinedType | None = Undefined,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Cache.
@@ -71797,7 +71797,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, default_route: bool | UndefinedType | None = Undefined, route_preference: bool | UndefinedType | None = Undefined
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             RxAccept.
@@ -71826,7 +71826,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
                             """
                             DnsServersItem.
 
@@ -71869,10 +71869,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        disabled: bool | UndefinedType | None = Undefined,
+                        disabled: bool | None | UndefinedType = Undefined,
                         rx_accept: RxAccept | UndefinedType = Undefined,
                         dns_servers: DnsServers | UndefinedType = Undefined,
-                        dns_servers_lifetime: int | UndefinedType | None = Undefined,
+                        dns_servers_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ra.
@@ -71911,9 +71911,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ipv6_prefix: str | UndefinedType = Undefined,
-                        valid_lifetime: str | UndefinedType | None = Undefined,
-                        preferred_lifetime: str | UndefinedType | None = Undefined,
-                        no_autoconfig_flag: bool | UndefinedType | None = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PrefixesItem.
@@ -71974,9 +71974,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
-                    managed_config_flag: bool | UndefinedType | None = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
-                    other_config_flag: bool | UndefinedType | None = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -72020,9 +72020,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    ipv4: int | UndefinedType | None = Undefined,
-                    ipv6: int | UndefinedType | None = Undefined,
-                    direction: Direction | UndefinedType | None = Undefined,
+                    ipv4: int | None | UndefinedType = Undefined,
+                    ipv6: int | None | UndefinedType = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TcpMssCeiling.
@@ -72145,30 +72145,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                description: str | UndefinedType | None = Undefined,
-                shutdown: bool | UndefinedType | None = Undefined,
-                mtu: int | UndefinedType | None = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
-                underlay_vrf: str | UndefinedType | None = Undefined,
-                ip_address: str | UndefinedType | None = Undefined,
-                ipv6_enable: bool | UndefinedType | None = Undefined,
-                ipv6_address: str | UndefinedType | None = Undefined,
+                description: str | None | UndefinedType = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
+                mtu: int | None | UndefinedType = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
+                underlay_vrf: str | None | UndefinedType = Undefined,
+                ip_address: str | None | UndefinedType = Undefined,
+                ipv6_enable: bool | None | UndefinedType = Undefined,
+                ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
-                ipv6_address_auto_config: bool | UndefinedType | None = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
-                access_group_in: str | UndefinedType | None = Undefined,
-                access_group_out: str | UndefinedType | None = Undefined,
-                ipv6_access_group_in: str | UndefinedType | None = Undefined,
-                ipv6_access_group_out: str | UndefinedType | None = Undefined,
+                access_group_in: str | None | UndefinedType = Undefined,
+                access_group_out: str | None | UndefinedType = Undefined,
+                ipv6_access_group_in: str | None | UndefinedType = Undefined,
+                ipv6_access_group_out: str | None | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
-                tunnel_mode: TunnelMode | UndefinedType | None = Undefined,
-                source_interface: str | UndefinedType | None = Undefined,
-                source: str | UndefinedType | None = Undefined,
-                destination: str | UndefinedType | None = Undefined,
-                path_mtu_discovery: bool | UndefinedType | None = Undefined,
-                ipsec_profile: str | UndefinedType | None = Undefined,
-                nat_profile: str | UndefinedType | None = Undefined,
-                eos_cli: str | UndefinedType | None = Undefined,
+                tunnel_mode: TunnelMode | None | UndefinedType = Undefined,
+                source_interface: str | None | UndefinedType = Undefined,
+                source: str | None | UndefinedType = Undefined,
+                destination: str | None | UndefinedType = Undefined,
+                path_mtu_discovery: bool | None | UndefinedType = Undefined,
+                ipsec_profile: str | None | UndefinedType = Undefined,
+                nat_profile: str | None | UndefinedType = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 TunnelInterfacesItem.
@@ -72249,8 +72249,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                ip_address: str | UndefinedType | None = Undefined,
-                ipv6_address: str | UndefinedType | None = Undefined,
+                ip_address: str | None | UndefinedType = Undefined,
+                ipv6_address: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 VirtualSourceNatVrfsItem.
@@ -72286,7 +72286,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, link_status: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, link_status: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Event.
 
@@ -72502,11 +72502,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType | None = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                     groups: Groups | UndefinedType = Undefined,
-                    report_interval: int | UndefinedType | None = Undefined,
+                    report_interval: int | None | UndefinedType = Undefined,
                     access_lists: AccessLists | UndefinedType = Undefined,
-                    version: int | UndefinedType | None = Undefined,
+                    version: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     IpIgmpHostProxy.
@@ -72544,8 +72544,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     ip_helper: str | UndefinedType = Undefined,
-                    source_interface: str | UndefinedType | None = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
+                    source_interface: str | None | UndefinedType = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     IpHelpersItem.
@@ -72588,9 +72588,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             access_list: str | UndefinedType = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
                             pool_name: str | UndefinedType = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DynamicItem.
@@ -72658,16 +72658,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            access_list: str | UndefinedType | None = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
-                            direction: Direction | UndefinedType | None = Undefined,
-                            group: int | UndefinedType | None = Undefined,
-                            original_ip: str | UndefinedType | None = Undefined,
-                            original_port: int | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
-                            protocol: Protocol | UndefinedType | None = Undefined,
+                            access_list: str | None | UndefinedType = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
+                            group: int | None | UndefinedType = Undefined,
+                            original_ip: str | None | UndefinedType = Undefined,
+                            original_port: int | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
-                            translated_port: int | UndefinedType | None = Undefined,
+                            translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             StaticItem.
@@ -72750,10 +72750,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             access_list: str | UndefinedType = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
                             nat_type: NatType | UndefinedType = Undefined,
-                            pool_name: str | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
+                            pool_name: str | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             DynamicItem.
@@ -72825,16 +72825,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            access_list: str | UndefinedType | None = Undefined,
-                            comment: str | UndefinedType | None = Undefined,
-                            direction: Direction | UndefinedType | None = Undefined,
-                            group: int | UndefinedType | None = Undefined,
-                            original_ip: str | UndefinedType | None = Undefined,
-                            original_port: int | UndefinedType | None = Undefined,
-                            priority: int | UndefinedType | None = Undefined,
-                            protocol: Protocol | UndefinedType | None = Undefined,
+                            access_list: str | None | UndefinedType = Undefined,
+                            comment: str | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
+                            group: int | None | UndefinedType = Undefined,
+                            original_ip: str | None | UndefinedType = Undefined,
+                            original_port: int | None | UndefinedType = Undefined,
+                            priority: int | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
-                            translated_port: int | UndefinedType | None = Undefined,
+                            translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             StaticItem.
@@ -72938,9 +72938,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    dynamic_capacity: int | UndefinedType | None = Undefined,
-                    expire: int | UndefinedType | None = Undefined,
-                    refresh_always: bool | UndefinedType | None = Undefined,
+                    dynamic_capacity: int | None | UndefinedType = Undefined,
+                    expire: int | None | UndefinedType = Undefined,
+                    refresh_always: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6NdCache.
@@ -72978,9 +72978,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     ipv6_prefix: str | UndefinedType = Undefined,
-                    valid_lifetime: str | UndefinedType | None = Undefined,
-                    preferred_lifetime: str | UndefinedType | None = Undefined,
-                    no_autoconfig_flag: bool | UndefinedType | None = Undefined,
+                    valid_lifetime: str | None | UndefinedType = Undefined,
+                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                    no_autoconfig_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6NdPrefixesItem.
@@ -73035,10 +73035,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     address: str | UndefinedType = Undefined,
-                    vrf: str | UndefinedType | None = Undefined,
-                    local_interface: str | UndefinedType | None = Undefined,
-                    source_address: str | UndefinedType | None = Undefined,
-                    link_address: str | UndefinedType | None = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    local_interface: str | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
+                    link_address: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6DhcpRelayDestinationsItem.
@@ -73088,9 +73088,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dynamic_capacity: int | UndefinedType | None = Undefined,
-                        expire: int | UndefinedType | None = Undefined,
-                        refresh_always: bool | UndefinedType | None = Undefined,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Cache.
@@ -73120,7 +73120,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, default_route: bool | UndefinedType | None = Undefined, route_preference: bool | UndefinedType | None = Undefined
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             RxAccept.
@@ -73149,7 +73149,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
                             """
                             DnsServersItem.
 
@@ -73192,10 +73192,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        disabled: bool | UndefinedType | None = Undefined,
+                        disabled: bool | None | UndefinedType = Undefined,
                         rx_accept: RxAccept | UndefinedType = Undefined,
                         dns_servers: DnsServers | UndefinedType = Undefined,
-                        dns_servers_lifetime: int | UndefinedType | None = Undefined,
+                        dns_servers_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ra.
@@ -73234,9 +73234,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         ipv6_prefix: str | UndefinedType = Undefined,
-                        valid_lifetime: str | UndefinedType | None = Undefined,
-                        preferred_lifetime: str | UndefinedType | None = Undefined,
-                        no_autoconfig_flag: bool | UndefinedType | None = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PrefixesItem.
@@ -73297,9 +73297,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
-                    managed_config_flag: bool | UndefinedType | None = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
-                    other_config_flag: bool | UndefinedType | None = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -73342,7 +73342,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, boundary: str | UndefinedType = Undefined, out: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, boundary: str | UndefinedType = Undefined, out: bool | None | UndefinedType = Undefined) -> None:
                             """
                             BoundariesItem.
 
@@ -73372,7 +73372,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, enabled: bool | UndefinedType = Undefined, administrative_distance: int | UndefinedType | None = Undefined
+                            self, *, enabled: bool | UndefinedType = Undefined, administrative_distance: int | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             SourceRouteExport.
@@ -73405,7 +73405,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         boundaries: Boundaries | UndefinedType = Undefined,
                         source_route_export: SourceRouteExport | UndefinedType = Undefined,
-                        static: bool | UndefinedType | None = Undefined,
+                        static: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4.
@@ -73465,7 +73465,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, enabled: bool | UndefinedType = Undefined, administrative_distance: int | UndefinedType | None = Undefined
+                            self, *, enabled: bool | UndefinedType = Undefined, administrative_distance: int | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             SourceRouteExport.
@@ -73498,7 +73498,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         boundaries: Boundaries | UndefinedType = Undefined,
                         source_route_export: SourceRouteExport | UndefinedType = Undefined,
-                        static: bool | UndefinedType | None = Undefined,
+                        static: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv6.
@@ -73572,7 +73572,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, process: Process | UndefinedType = Undefined, network_point_to_point: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, process: Process | UndefinedType = Undefined, network_point_to_point: bool | None | UndefinedType = Undefined) -> None:
                     """
                     Ipv6Ospf.
 
@@ -73611,8 +73611,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    hash_algorithm: HashAlgorithm | UndefinedType | None = Undefined,
-                    key: str | UndefinedType | None = Undefined,
+                    hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
+                    key: str | None | UndefinedType = Undefined,
                     key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -73653,7 +73653,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, count: str | UndefinedType | None = Undefined, interval: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, count: str | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                             """
                             Hello.
 
@@ -73694,13 +73694,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        border_router: bool | UndefinedType | None = Undefined,
-                        dr_priority: int | UndefinedType | None = Undefined,
-                        sparse_mode: bool | UndefinedType | None = Undefined,
-                        local_interface: str | UndefinedType | None = Undefined,
-                        bfd: bool | UndefinedType | None = Undefined,
-                        bidirectional: bool | UndefinedType | None = Undefined,
-                        neighbor_filter: str | UndefinedType | None = Undefined,
+                        border_router: bool | None | UndefinedType = Undefined,
+                        dr_priority: int | None | UndefinedType = Undefined,
+                        sparse_mode: bool | None | UndefinedType = Undefined,
+                        local_interface: str | None | UndefinedType = Undefined,
+                        bfd: bool | None | UndefinedType = Undefined,
+                        bidirectional: bool | None | UndefinedType = Undefined,
+                        neighbor_filter: str | None | UndefinedType = Undefined,
                         hello: Hello | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -73780,7 +73780,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -73886,13 +73886,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Both.
@@ -73953,7 +73953,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -74059,13 +74059,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Level1.
@@ -74126,7 +74126,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             algorithm: Algorithm | UndefinedType = Undefined,
                             key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
-                            rfc_5310: bool | UndefinedType | None = Undefined,
+                            rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             KeyIdsItem.
@@ -74232,13 +74232,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: KeyType | UndefinedType | None = Undefined,
-                        key: str | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Mode | UndefinedType | None = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
-                        rx_disabled: bool | UndefinedType | None = Undefined,
+                        rx_disabled: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Level2.
@@ -74320,7 +74320,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interval: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Advertisement.
 
@@ -74346,7 +74346,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, minimum: int | UndefinedType | None = Undefined, reload: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, minimum: int | None | UndefinedType = Undefined, reload: int | None | UndefinedType = Undefined) -> None:
                             """
                             Delay.
 
@@ -74391,7 +74391,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, reload: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, reload: int | None | UndefinedType = Undefined) -> None:
                             """
                             Delay.
 
@@ -74437,8 +74437,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        decrement: int | UndefinedType | None = Undefined,
-                        shutdown: bool | UndefinedType | None = Undefined,
+                        decrement: int | None | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         TrackedObjectItem.
@@ -74487,7 +74487,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         address: str | UndefinedType = Undefined,
                         secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
-                        version: Version | UndefinedType | None = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4.
@@ -74558,7 +74558,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         mode: Mode | UndefinedType = Undefined,
                         key: str | UndefinedType = Undefined,
-                        key_type: KeyType | UndefinedType | None = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerAuthentication.
@@ -74609,7 +74609,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    priority_level: int | UndefinedType | None = Undefined,
+                    priority_level: int | None | UndefinedType = Undefined,
                     advertisement: Advertisement | UndefinedType = Undefined,
                     preempt: Preempt | UndefinedType = Undefined,
                     timers: Timers | UndefinedType = Undefined,
@@ -74653,7 +74653,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, distance: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, distance: int | None | UndefinedType = Undefined) -> None:
                     """
                     IpAttachedHostRouteExport.
 
@@ -74682,8 +74682,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
-                    distance: int | UndefinedType | None = Undefined,
-                    prefix_length: int | UndefinedType | None = Undefined,
+                    distance: int | None | UndefinedType = Undefined,
+                    prefix_length: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6AttachedHostRouteExport.
@@ -74714,10 +74714,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    echo: bool | UndefinedType | None = Undefined,
-                    interval: int | UndefinedType | None = Undefined,
-                    min_rx: int | UndefinedType | None = Undefined,
-                    multiplier: int | UndefinedType | None = Undefined,
+                    echo: bool | None | UndefinedType = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
+                    min_rx: int | None | UndefinedType = Undefined,
+                    multiplier: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Bfd.
@@ -74745,7 +74745,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, input: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, input: str | None | UndefinedType = Undefined) -> None:
                         """
                         Pbr.
 
@@ -74792,9 +74792,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    ipv4: int | UndefinedType | None = Undefined,
-                    ipv6: int | UndefinedType | None = Undefined,
-                    direction: Direction | UndefinedType | None = Undefined,
+                    ipv4: int | None | UndefinedType = Undefined,
+                    ipv6: int | None | UndefinedType = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TcpMssCeiling.
@@ -74820,7 +74820,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, input: str | UndefinedType | None = Undefined, output: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, input: str | None | UndefinedType = Undefined, output: str | None | UndefinedType = Undefined) -> None:
                     """
                     TrafficPolicy.
 
@@ -74847,7 +74847,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, interface: bool | UndefinedType | None = Undefined, igp_sync: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, interface: bool | None | UndefinedType = Undefined, igp_sync: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Ldp.
 
@@ -74868,7 +74868,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ip: bool | UndefinedType | None = Undefined, ldp: Ldp | UndefinedType = Undefined) -> None:
+                def __init__(self, *, ip: bool | None | UndefinedType = Undefined, ldp: Ldp | UndefinedType = Undefined) -> None:
                     """
                     Mpls.
 
@@ -74914,7 +74914,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, tenants: Tenants | UndefinedType = Undefined, tags: Tags | UndefinedType = Undefined, type: str | UndefinedType | None = Undefined
+                    self, *, tenants: Tenants | UndefinedType = Undefined, tags: Tags | UndefinedType = Undefined, type: str | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     Metadata.
@@ -75205,71 +75205,71 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                description: str | UndefinedType | None = Undefined,
+                description: str | None | UndefinedType = Undefined,
                 logging: Logging | UndefinedType = Undefined,
-                shutdown: bool | UndefinedType | None = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
-                arp_aging_timeout: int | UndefinedType | None = Undefined,
-                arp_cache_dynamic_capacity: int | UndefinedType | None = Undefined,
-                arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
-                arp_monitor_mac_address: bool | UndefinedType | None = Undefined,
-                ip_proxy_arp: bool | UndefinedType | None = Undefined,
-                ip_directed_broadcast: bool | UndefinedType | None = Undefined,
-                ip_address: str | UndefinedType | None = Undefined,
-                dhcp_client_accept_default_route: bool | UndefinedType | None = Undefined,
+                shutdown: bool | None | UndefinedType = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
+                arp_aging_timeout: int | None | UndefinedType = Undefined,
+                arp_cache_dynamic_capacity: int | None | UndefinedType = Undefined,
+                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
+                arp_monitor_mac_address: bool | None | UndefinedType = Undefined,
+                ip_proxy_arp: bool | None | UndefinedType = Undefined,
+                ip_directed_broadcast: bool | None | UndefinedType = Undefined,
+                ip_address: str | None | UndefinedType = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
-                ip_address_virtual: str | UndefinedType | None = Undefined,
+                ip_address_virtual: str | None | UndefinedType = Undefined,
                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
-                ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | UndefinedType | None = Undefined,
-                ip_igmp: bool | UndefinedType | None = Undefined,
-                ip_igmp_version: int | UndefinedType | None = Undefined,
-                ip_igmp_querier_address_virtual: bool | UndefinedType | None = Undefined,
+                ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | None | UndefinedType = Undefined,
+                ip_igmp: bool | None | UndefinedType = Undefined,
+                ip_igmp_version: int | None | UndefinedType = Undefined,
+                ip_igmp_querier_address_virtual: bool | None | UndefinedType = Undefined,
                 ip_igmp_host_proxy: IpIgmpHostProxy | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
-                ip_dhcp_relay_all_subnets: bool | UndefinedType | None = Undefined,
+                ip_dhcp_relay_all_subnets: bool | None | UndefinedType = Undefined,
                 ip_nat: IpNat | UndefinedType = Undefined,
-                dhcp_server_ipv4: bool | UndefinedType | None = Undefined,
-                dhcp_server_ipv6: bool | UndefinedType | None = Undefined,
-                ipv6_enable: bool | UndefinedType | None = Undefined,
-                ipv6_address: str | UndefinedType | None = Undefined,
+                dhcp_server_ipv4: bool | None | UndefinedType = Undefined,
+                dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
+                ipv6_enable: bool | None | UndefinedType = Undefined,
+                ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
-                ipv6_address_auto_config: bool | UndefinedType | None = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
-                ipv6_address_link_local: str | UndefinedType | None = Undefined,
+                ipv6_address_link_local: str | None | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
-                ipv6_nd_ra_disabled: bool | UndefinedType | None = Undefined,
-                ipv6_nd_managed_config_flag: bool | UndefinedType | None = Undefined,
-                ipv6_nd_other_config_flag: bool | UndefinedType | None = Undefined,
+                ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
+                ipv6_nd_managed_config_flag: bool | None | UndefinedType = Undefined,
+                ipv6_nd_other_config_flag: bool | None | UndefinedType = Undefined,
                 ipv6_nd_cache: Ipv6NdCache | UndefinedType = Undefined,
                 ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
                 ipv6_dhcp_relay_destinations: Ipv6DhcpRelayDestinations | UndefinedType = Undefined,
-                ipv6_dhcp_relay_all_subnets: bool | UndefinedType | None = Undefined,
+                ipv6_dhcp_relay_all_subnets: bool | None | UndefinedType = Undefined,
                 ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
-                access_group_in: str | UndefinedType | None = Undefined,
-                access_group_out: str | UndefinedType | None = Undefined,
-                ipv6_access_group_in: str | UndefinedType | None = Undefined,
-                ipv6_access_group_out: str | UndefinedType | None = Undefined,
+                access_group_in: str | None | UndefinedType = Undefined,
+                access_group_out: str | None | UndefinedType = Undefined,
+                ipv6_access_group_in: str | None | UndefinedType = Undefined,
+                ipv6_access_group_out: str | None | UndefinedType = Undefined,
                 multicast: Multicast | UndefinedType = Undefined,
-                ospf_network_point_to_point: bool | UndefinedType | None = Undefined,
-                ospf_area: str | UndefinedType | None = Undefined,
+                ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
+                ospf_area: str | None | UndefinedType = Undefined,
                 ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
-                ospf_cost: int | UndefinedType | None = Undefined,
-                ospf_authentication: OspfAuthentication | UndefinedType | None = Undefined,
-                ospf_authentication_key: str | UndefinedType | None = Undefined,
+                ospf_cost: int | None | UndefinedType = Undefined,
+                ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
+                ospf_authentication_key: str | None | UndefinedType = Undefined,
                 ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 pim: Pim | UndefinedType = Undefined,
-                isis_enable: str | UndefinedType | None = Undefined,
-                isis_bfd: bool | UndefinedType | None = Undefined,
-                isis_passive: bool | UndefinedType | None = Undefined,
-                isis_metric: int | UndefinedType | None = Undefined,
-                isis_network_point_to_point: bool | UndefinedType | None = Undefined,
-                isis_circuit_type: IsisCircuitType | UndefinedType | None = Undefined,
-                isis_hello_padding: bool | UndefinedType | None = Undefined,
+                isis_enable: str | None | UndefinedType = Undefined,
+                isis_bfd: bool | None | UndefinedType = Undefined,
+                isis_passive: bool | None | UndefinedType = Undefined,
+                isis_metric: int | None | UndefinedType = Undefined,
+                isis_network_point_to_point: bool | None | UndefinedType = Undefined,
+                isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
+                isis_hello_padding: bool | None | UndefinedType = Undefined,
                 isis_authentication: IsisAuthentication | UndefinedType = Undefined,
-                mtu: int | UndefinedType | None = Undefined,
-                no_autostate: bool | UndefinedType | None = Undefined,
+                mtu: int | None | UndefinedType = Undefined,
+                no_autostate: bool | None | UndefinedType = Undefined,
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 ip_attached_host_route_export: IpAttachedHostRouteExport | UndefinedType = Undefined,
                 ipv6_attached_host_route_export: Ipv6AttachedHostRouteExport | UndefinedType = Undefined,
@@ -75278,10 +75278,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 traffic_policy: TrafficPolicy | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
-                ntp_serve: bool | UndefinedType | None = Undefined,
-                pvlan_mapping: str | UndefinedType | None = Undefined,
+                ntp_serve: bool | None | UndefinedType = Undefined,
+                pvlan_mapping: str | None | UndefinedType = Undefined,
                 metadata: Metadata | UndefinedType = Undefined,
-                eos_cli: str | UndefinedType | None = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 VlanInterfacesItem.
@@ -75482,7 +75482,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4: bool | UndefinedType | None = Undefined, ipv6: bool | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
                         """
                         AddressFamily.
 
@@ -75504,7 +75504,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, address_family: AddressFamily | UndefinedType = Undefined, ipv4_enforcement_disabled: bool | UndefinedType | None = Undefined
+                    self, *, address_family: AddressFamily | UndefinedType = Undefined, ipv4_enforcement_disabled: bool | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     AddressLocking.
@@ -75538,7 +75538,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, leaf_role: bool | UndefinedType | None = Undefined, remote_leaf_host_drop: bool | UndefinedType | None = Undefined
+                    self, *, leaf_role: bool | None | UndefinedType = Undefined, remote_leaf_host_drop: bool | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     ETree.
@@ -75565,7 +75565,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, type: Type | UndefinedType | None = Undefined, primary_vlan: int | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, type: Type | None | UndefinedType = Undefined, primary_vlan: int | None | UndefinedType = Undefined) -> None:
                     """
                     PrivateVlan.
 
@@ -75647,8 +75647,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 id: int | UndefinedType = Undefined,
-                name: str | UndefinedType | None = Undefined,
-                state: State | UndefinedType | None = Undefined,
+                name: str | None | UndefinedType = Undefined,
+                state: State | None | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 e_tree: ETree | UndefinedType = Undefined,
@@ -75713,12 +75713,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                url: str | UndefinedType | None = Undefined,
-                username: str | UndefinedType | None = Undefined,
-                password: str | UndefinedType | None = Undefined,
-                autovlan_disable: bool | UndefinedType | None = Undefined,
-                vrf: str | UndefinedType | None = Undefined,
-                source_interface: str | UndefinedType | None = Undefined,
+                url: str | None | UndefinedType = Undefined,
+                username: str | None | UndefinedType = Undefined,
+                password: str | None | UndefinedType = Undefined,
+                autovlan_disable: bool | None | UndefinedType = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
+                source_interface: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 VmtracerSessionsItem.
@@ -75819,11 +75819,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                description: str | UndefinedType | None = Undefined,
-                rd: str | UndefinedType | None = Undefined,
-                ip_routing: bool | UndefinedType | None = Undefined,
-                ipv6_routing: bool | UndefinedType | None = Undefined,
-                ip_routing_ipv6_interfaces: bool | UndefinedType | None = Undefined,
+                description: str | None | UndefinedType = Undefined,
+                rd: str | None | UndefinedType = Undefined,
+                ip_routing: bool | None | UndefinedType = Undefined,
+                ipv6_routing: bool | None | UndefinedType = Undefined,
+                ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
                 metadata: Metadata | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -75878,7 +75878,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, headend_replication: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, headend_replication: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Multicast.
 
@@ -75898,7 +75898,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
                             """
                             ControllerClient.
 
@@ -75921,7 +75921,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, ipv4: bool | UndefinedType | None = Undefined, ipv6: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Encapsulations.
 
@@ -75948,10 +75948,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            interval: int | UndefinedType | None = Undefined,
-                            min_rx: int | UndefinedType | None = Undefined,
-                            multiplier: int | UndefinedType | None = Undefined,
-                            prefix_list: str | UndefinedType | None = Undefined,
+                            interval: int | None | UndefinedType = Undefined,
+                            min_rx: int | None | UndefinedType = Undefined,
+                            multiplier: int | None | UndefinedType = Undefined,
+                            prefix_list: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             BfdVtepEvpn.
@@ -75979,7 +75979,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, rewrite_bridged_enabled: bool | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, rewrite_bridged_enabled: bool | None | UndefinedType = Undefined) -> None:
                                 """
                                 DscpEcn.
 
@@ -76009,9 +76009,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            dscp_propagation_encapsulation: bool | UndefinedType | None = Undefined,
-                            ecn_propagation: bool | UndefinedType | None = Undefined,
-                            map_dscp_to_traffic_class_decapsulation: bool | UndefinedType | None = Undefined,
+                            dscp_propagation_encapsulation: bool | None | UndefinedType = Undefined,
+                            ecn_propagation: bool | None | UndefinedType = Undefined,
+                            map_dscp_to_traffic_class_decapsulation: bool | None | UndefinedType = Undefined,
                             dscp_ecn: DscpEcn | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -76088,10 +76088,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            vni: int | UndefinedType | None = Undefined,
-                            multicast_group: str | UndefinedType | None = Undefined,
+                            vni: int | None | UndefinedType = Undefined,
+                            multicast_group: str | None | UndefinedType = Undefined,
                             flood_vteps: FloodVteps | UndefinedType = Undefined,
-                            flood_group: str | UndefinedType | None = Undefined,
+                            flood_group: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VlansItem.
@@ -76189,9 +76189,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             name: str | UndefinedType = Undefined,
-                            vni: int | UndefinedType | None = Undefined,
-                            multicast_group: str | UndefinedType | None = Undefined,
-                            multicast_group_encap_range: str | UndefinedType | None = Undefined,
+                            vni: int | None | UndefinedType = Undefined,
+                            multicast_group: str | None | UndefinedType = Undefined,
+                            multicast_group_encap_range: str | None | UndefinedType = Undefined,
                             multicast_groups: MulticastGroups | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -76312,22 +76312,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        source_interface: str | UndefinedType | None = Undefined,
-                        shutdown: bool | UndefinedType | None = Undefined,
+                        source_interface: str | None | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
                         multicast: Multicast | UndefinedType = Undefined,
                         controller_client: ControllerClient | UndefinedType = Undefined,
-                        mlag_source_interface: str | UndefinedType | None = Undefined,
-                        udp_port: int | UndefinedType | None = Undefined,
+                        mlag_source_interface: str | None | UndefinedType = Undefined,
+                        udp_port: int | None | UndefinedType = Undefined,
                         encapsulations: Encapsulations | UndefinedType = Undefined,
-                        vtep_to_vtep_bridging: bool | UndefinedType | None = Undefined,
-                        virtual_router_encapsulation_mac_address: str | UndefinedType | None = Undefined,
+                        vtep_to_vtep_bridging: bool | None | UndefinedType = Undefined,
+                        virtual_router_encapsulation_mac_address: str | None | UndefinedType = Undefined,
                         bfd_vtep_evpn: BfdVtepEvpn | UndefinedType = Undefined,
                         qos: Qos | UndefinedType = Undefined,
                         vlan_range: VlanRange | UndefinedType = Undefined,
                         vlans: Vlans | UndefinedType = Undefined,
                         vrfs: Vrfs | UndefinedType = Undefined,
                         flood_vteps: FloodVteps | UndefinedType = Undefined,
-                        flood_vtep_learned_data_plane: bool | UndefinedType | None = Undefined,
+                        flood_vtep_learned_data_plane: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Vxlan.
@@ -76390,9 +76390,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    description: str | UndefinedType | None = Undefined,
+                    description: str | None | UndefinedType = Undefined,
                     vxlan: Vxlan | UndefinedType = Undefined,
-                    eos_cli: str | UndefinedType | None = Undefined,
+                    eos_cli: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Vxlan1.
@@ -77304,19 +77304,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             access_lists: AccessLists | UndefinedType = Undefined,
             address_locking: AddressLocking | UndefinedType = Undefined,
             agents: Agents | UndefinedType = Undefined,
-            aliases: str | UndefinedType | None = Undefined,
+            aliases: str | None | UndefinedType = Undefined,
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
-            avd_vault_id: str | UndefinedType | None = Undefined,
+            avd_vault_id: str | None | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
             cfm: Cfm | UndefinedType = Undefined,
             class_maps: ClassMaps | UndefinedType = Undefined,
             clock: Clock | UndefinedType = Undefined,
-            config_comment: str | UndefinedType | None = Undefined,
+            config_comment: str | None | UndefinedType = Undefined,
             config_end: bool | UndefinedType = Undefined,
             custom_templates: CustomTemplates | UndefinedType = Undefined,
             cvx: Cvx | UndefinedType = Undefined,
@@ -77324,18 +77324,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             daemons: Daemons | UndefinedType = Undefined,
             dhcp_relay: DhcpRelay | UndefinedType = Undefined,
             dhcp_servers: DhcpServers | UndefinedType = Undefined,
-            dns_domain: str | UndefinedType | None = Undefined,
+            dns_domain: str | None | UndefinedType = Undefined,
             domain_list: DomainList | UndefinedType = Undefined,
             dot1x: Dot1x | UndefinedType = Undefined,
             dps_interfaces: DpsInterfaces | UndefinedType = Undefined,
             dynamic_prefix_lists: DynamicPrefixLists | UndefinedType = Undefined,
             enable_password: EnablePassword | UndefinedType = Undefined,
             environment_fan_speed: EnvironmentFanSpeed | UndefinedType = Undefined,
-            eos_cli: str | UndefinedType | None = Undefined,
+            eos_cli: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_configuration: EosCliConfigGenConfiguration | UndefinedType = Undefined,
             eos_cli_config_gen_documentation: EosCliConfigGenDocumentation | UndefinedType = Undefined,
             eos_cli_config_gen_keep_tmp_files: bool | UndefinedType = Undefined,
-            eos_cli_config_gen_tmp_dir: str | UndefinedType | None = Undefined,
+            eos_cli_config_gen_tmp_dir: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
             eos_config_future: EosConfigFuture | UndefinedType = Undefined,
             errdisable: Errdisable | UndefinedType = Undefined,
@@ -77345,12 +77345,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             flow_tracking: FlowTracking | UndefinedType = Undefined,
             hardware: Hardware | UndefinedType = Undefined,
             hardware_counters: HardwareCounters | UndefinedType = Undefined,
-            hostname: str | UndefinedType | None = Undefined,
+            hostname: str | None | UndefinedType = Undefined,
             interface_defaults: InterfaceDefaults | UndefinedType = Undefined,
             interface_groups: InterfaceGroups | UndefinedType = Undefined,
             interface_profiles: InterfaceProfiles | UndefinedType = Undefined,
             ip_access_lists: IpAccessLists | UndefinedType = Undefined,
-            ip_access_lists_max_entries: int | UndefinedType | None = Undefined,
+            ip_access_lists_max_entries: int | None | UndefinedType = Undefined,
             ip_community_lists: IpCommunityLists | UndefinedType = Undefined,
             ip_dhcp_relay: IpDhcpRelay | UndefinedType = Undefined,
             ip_dhcp_snooping: IpDhcpSnooping | UndefinedType = Undefined,
@@ -77361,36 +77361,36 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_hardware: IpHardware | UndefinedType = Undefined,
             ip_hosts: IpHosts | UndefinedType = Undefined,
             ip_http_client: IpHttpClient | UndefinedType = Undefined,
-            ip_icmp_redirect: bool | UndefinedType | None = Undefined,
+            ip_icmp_redirect: bool | None | UndefinedType = Undefined,
             ip_igmp_snooping: IpIgmpSnooping | UndefinedType = Undefined,
             ip_large_community_lists: IpLargeCommunityLists | UndefinedType = Undefined,
             ip_name_server: IpNameServer | UndefinedType = Undefined,
             ip_name_server_groups: IpNameServerGroups | UndefinedType = Undefined,
             ip_nat: IpNat | UndefinedType = Undefined,
-            ip_ospf_router_id_output_format_hostnames: bool | UndefinedType | None = Undefined,
+            ip_ospf_router_id_output_format_hostnames: bool | None | UndefinedType = Undefined,
             ip_radius: IpRadius | UndefinedType = Undefined,
             ip_radius_source_interfaces: IpRadiusSourceInterfaces | UndefinedType = Undefined,
-            ip_routing: bool | UndefinedType | None = Undefined,
-            ip_routing_ipv6_interfaces: bool | UndefinedType | None = Undefined,
+            ip_routing: bool | None | UndefinedType = Undefined,
+            ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
             ip_security: IpSecurity | UndefinedType = Undefined,
             ip_ssh_client: IpSshClient | UndefinedType = Undefined,
             ip_tacacs: IpTacacs | UndefinedType = Undefined,
             ip_tacacs_source_interfaces: IpTacacsSourceInterfaces | UndefinedType = Undefined,
             ip_telnet_client: IpTelnetClient | UndefinedType = Undefined,
             ip_tftp_client: IpTftpClient | UndefinedType = Undefined,
-            ip_virtual_router_mac_address: str | UndefinedType | None = Undefined,
-            ip_virtual_router_mac_address_advertisement_interval: int | UndefinedType | None = Undefined,
-            ip_virtual_router_mac_address_mlag_peer: bool | UndefinedType | None = Undefined,
+            ip_virtual_router_mac_address: str | None | UndefinedType = Undefined,
+            ip_virtual_router_mac_address_advertisement_interval: int | None | UndefinedType = Undefined,
+            ip_virtual_router_mac_address_mlag_peer: bool | None | UndefinedType = Undefined,
             ipv6_access_lists: Ipv6AccessLists | UndefinedType = Undefined,
             ipv6_dhcp_relay: Ipv6DhcpRelay | UndefinedType = Undefined,
             ipv6_hardware: Ipv6Hardware | UndefinedType = Undefined,
-            ipv6_icmp_redirect: bool | UndefinedType | None = Undefined,
+            ipv6_icmp_redirect: bool | None | UndefinedType = Undefined,
             ipv6_neighbor: Ipv6Neighbor | UndefinedType = Undefined,
             ipv6_prefix_lists: Ipv6PrefixLists | UndefinedType = Undefined,
             ipv6_router_ospf: Ipv6RouterOspf | UndefinedType = Undefined,
             ipv6_standard_access_lists: Ipv6StandardAccessLists | UndefinedType = Undefined,
             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
-            ipv6_unicast_routing: bool | UndefinedType | None = Undefined,
+            ipv6_unicast_routing: bool | None | UndefinedType = Undefined,
             kernel: Kernel | UndefinedType = Undefined,
             l2_protocol: L2Protocol | UndefinedType = Undefined,
             lacp: Lacp | UndefinedType = Undefined,
@@ -77442,7 +77442,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             port_channel_interfaces: PortChannelInterfaces | UndefinedType = Undefined,
             prefix_lists: PrefixLists | UndefinedType = Undefined,
             priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
-            prompt: str | UndefinedType | None = Undefined,
+            prompt: str | None | UndefinedType = Undefined,
             ptp: Ptp | UndefinedType = Undefined,
             qos: Qos | UndefinedType = Undefined,
             qos_profiles: QosProfiles | UndefinedType = Undefined,
@@ -77473,7 +77473,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_traffic_engineering: RouterTrafficEngineering | UndefinedType = Undefined,
             schedule: Schedule | UndefinedType = Undefined,
             service_routing_configuration_bgp: ServiceRoutingConfigurationBgp | UndefinedType = Undefined,
-            service_routing_protocols_model: ServiceRoutingProtocolsModel | UndefinedType | None = Undefined,
+            service_routing_protocols_model: ServiceRoutingProtocolsModel | None | UndefinedType = Undefined,
             service_unsupported_transceiver: ServiceUnsupportedTransceiver | UndefinedType = Undefined,
             sflow: Sflow | UndefinedType = Undefined,
             snmp_server: SnmpServer | UndefinedType = Undefined,
@@ -77482,9 +77482,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             static_routes: StaticRoutes | UndefinedType = Undefined,
             stun: Stun | UndefinedType = Undefined,
             switchport_default: SwitchportDefault | UndefinedType = Undefined,
-            switchport_ethernet_llc_validation: bool | UndefinedType | None = Undefined,
+            switchport_ethernet_llc_validation: bool | None | UndefinedType = Undefined,
             switchport_port_security: SwitchportPortSecurity | UndefinedType = Undefined,
-            switchport_vlan_tag_validation: bool | UndefinedType | None = Undefined,
+            switchport_vlan_tag_validation: bool | None | UndefinedType = Undefined,
             sync_e: SyncE | UndefinedType = Undefined,
             system: System | UndefinedType = Undefined,
             tacacs_servers: TacacsServers | UndefinedType = Undefined,
