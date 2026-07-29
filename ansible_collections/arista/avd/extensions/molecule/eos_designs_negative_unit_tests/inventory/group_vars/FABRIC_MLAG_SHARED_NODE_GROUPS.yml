@@ -33,7 +33,7 @@ l2leaf:
           mgmt_ip: 192.168.202.203/24
           mlag: true
           uplink_interfaces: [Ethernet51, Ethernet52]
-          uplink_switches: [mlag-shared-node-groups-2, mlag-shared-node-groups-4]
+          uplink_switches: [mlag-shared-node-groups-2, mlag-shared-node-groups-1]
           uplink_switch_interfaces: [Ethernet52, Ethernet51]
           uplink_type: l2-ethernet
           cv_tags_topology_type: member-leaf
