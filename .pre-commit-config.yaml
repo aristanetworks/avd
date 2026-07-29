@@ -60,8 +60,8 @@ repos:
     hooks:
       - id: insert-license
         name: Check and insert license on Python files.
-        exclude: ansible_collections/arista/avd/(plugins/module_utils|tests/unit(/module_utils|/modules|))/__init__.py
         files: .*\.pyi?$
+        exclude: ansible_collections/arista/avd/tests/unit(/module_utils|/modules|)/__init__.py
         args:
           - --license-filepath
           - development/license-short.txt
@@ -137,7 +137,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: 01a675ea018f2fb714478a5ffb83fcea8374bb06  # frozen: v0.15.21
+    rev: cb8c523fd4835aba42af70f4cad5568db4df0b6c  # frozen: v0.16.0
     hooks:
       # Run the linter.
       - id: ruff
@@ -176,6 +176,7 @@ repos:
         name: Check for Linting errors on Python files outside the Ansible collection.
         description: This hook runs pylint.
         types: [python]
+        exclude: ^ansible_collections/arista/avd/
       - id: pylint # Use pylintrc-ansible file for Ansible collection
         name: Check for Linting errors on Python files in the Ansible collection.
         description: This hook runs pylint.
@@ -202,14 +203,14 @@ repos:
         name: Check for Linting errors on Jinja2 files
 
   - repo: https://github.com/codespell-project/codespell
-    rev: 2ccb47ff45ad361a21071a7eedda4c37e6ae8c5a  # frozen: v2.4.2
+    rev: 57b21406f092110c18776e39b0bda50d37c945c8  # frozen: v2.4.3
     hooks:
       - id: codespell
         name: Check for common misspellings in text files.
         args: [--config, .codespellrc]
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: e3eebf65325ccc992422292cb7a4baee967cf815  # frozen: v1.26.1
+    rev: 067260dc5fe6ea86b7551bfd6f8b3ba4e6c93129  # frozen: v1.28.0
     hooks:
       - id: zizmor
         name: Check GitHub Actions with zizmor
@@ -294,7 +295,7 @@ repos:
         language: python
         files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
-        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.7.2']
+        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.16.0']
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
@@ -328,7 +329,7 @@ repos:
         additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: 534166213006ec869b773b7ed8c6ebeaad1165d0  # frozen: v0.23.0
+    rev: b82a6c8896e491b9cb377a99ff3412131920681b  # frozen: v0.23.2
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.markdownlint-cli2.yaml`.
