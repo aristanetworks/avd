@@ -74,11 +74,7 @@ class FieldSrc:
         type_hints = [type_hint for type_hint in type_hints if type_hint != "None"]
         if include_undefined:
             type_hints.append("UndefinedType")
-        if has_none or (
-            self.optional
-            and not self.default_value
-            and self.field_type in ("str", "int", "bool", "float")
-        ):
+        if has_none or (self.optional and not self.default_value and self.field_type in ("str", "int", "bool", "float")):
             type_hints.append("None")
 
         return " | ".join(type_hints)
