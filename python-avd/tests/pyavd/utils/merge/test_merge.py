@@ -18,9 +18,10 @@ with Path(script_dir, "acl_merged.yml").open(encoding="utf-8") as data_file:
 
 
 class TestMerge:
-    def test_merge_of_lists_with_primary_keys(self) -> None:
+    @pytest.mark.parametrize("schema_name", ["eos_config", "eos_cli_config_gen"])
+    def test_merge_of_lists_with_primary_keys(self, schema_name: str) -> None:
         merge_result = {}
-        merge(merge_result, acl1, acl2, schema_name="eos_config")
+        merge(merge_result, acl1, acl2, schema_name=schema_name)
         assert merge_result == acl_merged
 
     @pytest.mark.parametrize("schema_name", [None, "eos_config"])
@@ -33,3 +34,7 @@ class TestMerge:
         merge_result = {}
         merge(merge_result, acl1, acl2, list_merge="replace", schema_name=schema_name)
         assert merge_result == acl2
+
+    def test_unsupported_schema_name_raises(self) -> None:
+        with pytest.raises(ValueError, match="Unsupported schema name 'invalid_schema'"):
+            merge({}, acl1, acl2, schema_name="invalid_schema")
