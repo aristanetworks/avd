@@ -1,0 +1,100 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet50
+  description: MLAG_mlag-shared-node-groups-implicit-1_Ethernet50
+  shutdown: false
+  channel_group:
+    id: 50
+    mode: active
+  metadata:
+    peer: mlag-shared-node-groups-implicit-1
+    peer_interface: Ethernet50
+    peer_type: mlag_peer
+- name: Ethernet51
+  description: MLAG_mlag-shared-node-groups-implicit-1_Ethernet52
+  shutdown: false
+  channel_group:
+    id: 50
+    mode: active
+  metadata:
+    peer: mlag-shared-node-groups-implicit-1
+    peer_interface: Ethernet51
+    peer_type: mlag_peer
+- name: Ethernet52
+  description: L2_mlag-shared-node-groups-implicit-3_Ethernet51
+  shutdown: false
+  metadata:
+    peer: mlag-shared-node-groups-implicit-3
+    peer_interface: Ethernet51
+    peer_type: l2leaf
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+hostname: mlag-shared-node-groups-implicit-2
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.202.222/24
+  type: oob
+metadata:
+  is_deployed: true
+  platform: vEOS-LAB
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+mlag_configuration:
+  domain_id: MLAG_SHARED_NODE_GROUPS_IMPLICIT_FALLBACK
+  local_interface: Vlan4094
+  peer_address: 10.255.253.0
+  peer_link: Port-Channel50
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+port_channel_interfaces:
+- name: Port-Channel50
+  description: MLAG_mlag-shared-node-groups-implicit-1_Port-Channel50
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 8192
+  no_spanning_tree_vlan: '4094'
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 10.255.253.1/31
+  mtu: 9214
+  no_autostate: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false

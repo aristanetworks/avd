@@ -1,5 +1,5 @@
 ---
-# Test allowing exactly two MLAG peers in a shared node_group containing additional non-MLAG members.
+# Test fallback from node to l2leaf.defaults.mlag in shared node_groups.
 type: l2leaf
 
 avd_design_future:
@@ -11,37 +11,36 @@ l2leaf:
     uplink_interfaces: []
     uplink_switches: []
     mlag_interfaces: [Ethernet50, Ethernet51]
-    mlag_peer_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
     spanning_tree_mode: mstp
     spanning_tree_priority: 8192
+    mlag: true
   node_groups:
-    - group: MLAG_SHARED_NODE_GROUPS
-      mlag: true
+    - group: MLAG_SHARED_NODE_GROUPS_DEFAULTS_FALLBACK
       nodes:
-        - name: mlag-shared-node-groups-1
+        - name: mlag-shared-node-groups-defaults-1
           id: 1
-          mgmt_ip: 192.168.202.201/24
-          mlag: true
+          mgmt_ip: 192.168.202.211/24
           mlag_interfaces: [Ethernet50, Ethernet52]
-        - name: mlag-shared-node-groups-2
+        - name: mlag-shared-node-groups-defaults-2
           id: 2
-          mgmt_ip: 192.168.202.202/24
+          mgmt_ip: 192.168.202.212/24
           mlag_interfaces: [Ethernet50, Ethernet51]
-        - name: mlag-shared-node-groups-3
+        - name: mlag-shared-node-groups-defaults-3
           id: 3
-          mgmt_ip: 192.168.202.203/24
+          mgmt_ip: 192.168.202.213/24
           mlag: false
           uplink_interfaces: [Ethernet51, Ethernet52]
-          uplink_switches: [mlag-shared-node-groups-2, mlag-shared-node-groups-4]
+          uplink_switches: [mlag-shared-node-groups-defaults-2, mlag-shared-node-groups-defaults-4]
           uplink_switch_interfaces: [Ethernet52, Ethernet51]
           uplink_type: l2-ethernet
           cv_tags_topology_type: member-leaf
-        - name: mlag-shared-node-groups-4
+        - name: mlag-shared-node-groups-defaults-4
           id: 4
-          mgmt_ip: 192.168.202.204/24
+          mgmt_ip: 192.168.202.214/24
           mlag: false
           uplink_interfaces: [Ethernet51, Ethernet52]
-          uplink_switches: [mlag-shared-node-groups-3, mlag-shared-node-groups-1]
+          uplink_switches: [mlag-shared-node-groups-defaults-3, mlag-shared-node-groups-defaults-1]
           uplink_switch_interfaces: [Ethernet52, Ethernet51]
           uplink_type: l2-ethernet
           cv_tags_topology_type: member-leaf
