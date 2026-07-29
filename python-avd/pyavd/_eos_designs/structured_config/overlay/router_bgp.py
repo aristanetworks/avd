@@ -528,7 +528,13 @@ class RouterBgpMixin(Protocol):
             data.bgp_as,
             data.overlay_peering_interface,
         )
-        if self.inputs.shutdown_bgp_towards_undeployed_peers and not data.is_deployed:
+        # TODO: AVD 7.0.0: Always honor shutdown_bgp_towards_undeployed_peers here. This is guarded by the future knob for now to avoid
+        # changing existing EVPN Gateway remote peer behavior.
+        if (
+            self.inputs.avd_design_future.configure_reverse_evpn_gateway_remote_peers
+            and self.inputs.shutdown_bgp_towards_undeployed_peers
+            and not data.is_deployed
+        ):
             neighbor.shutdown = True
 
         return neighbor
