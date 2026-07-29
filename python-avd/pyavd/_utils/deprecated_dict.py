@@ -24,6 +24,6 @@ class DeprecatedDict(dict):
 
     def get(self, key: Any, default: Any = None) -> Any:
         if not self._done:
-            warnings.warn(self._message, DeprecationWarning, stacklevel=1)
+            warnings.warn(self._message, DeprecationWarning, stacklevel=2)
             self._done = True
         return super().get(key, default)

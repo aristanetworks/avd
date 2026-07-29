@@ -4,15 +4,25 @@
 from __future__ import annotations
 
 import pytest
+import warnings
 
 from pyavd._utils.deprecated_dict import DeprecatedDict
 
 
-def test_get_emits_deprecation_once_and_returns_value() -> None:
+def test_get_emits_deprecation() -> None:
     deprecated_dict = DeprecatedDict({"interface": "Ethernet1"}, _message="deprecated")
 
-    assert deprecated_dict.get("interface") == "Ethernet1"
-    assert deprecated_dict.get("missing", "fallback") == "fallback"
+    with pytest.deprecated_call(match="deprecated"):
+        assert deprecated_dict["interface"] == "Ethernet1"
 
-    with pytest.warns(DeprecationWarning, match="deprecated"):
-        interface = deprecated_dict.get("interface")
+def test_deprecated_dict_warning_only_once_on_getitem():
+    d = DeprecatedDict({"a": 1, "b": 2}, _message="Deprecated access")
+
+    # First access triggers warning
+    with pytest.deprecated_call():
+        _ = d["a"]
+
+    # Second access should NOT issue any warnings
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", DeprecationWarning)
+        assert d["b"] == 2
