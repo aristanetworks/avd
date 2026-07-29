@@ -17,28 +17,13 @@
 #   include_connected_endpoints: true  # Include connected-endpoints in the fabric doc
 #   topology_csv: false  # Generate fabric topology.csv
 #   p2p_links_csv. false  # Generate fabric p2p-links.csv
-#   toc: true  # Include TOC in the fabric documentation   
+#   toc: true  # Include TOC in the fabric documentation
 # }
 # dump_tracebacks = false  # Include full stack traces in the error files.
 # error_dir = "errors"  # Directory where errors will be dumped as files per fabric and device. Relative to directory with this config file.
 # output_dir = "intended"  # Directory where configs and structured_configs will be created. Relative to directory with this config file.
 # structured_config_suffix  = "yml"  # Suffix for structured config files. Accepts "yml", "yaml" or "json"
-inventory_file = "inventory/hosts.yml"
 
-[scenarios.main]
-
-[scenarios.main.fabrics.DIGITAL_TWIN_SINGLE_SWITCH_FABRIC]
-device_configs = false
-documentation.device_docs = false
-documentation.fabric_doc = false
-
-[scenarios.digital-twin]
-inventory_file = "inventory/hosts.yml"
-output_dir = "digital_twin/intended"
-docs_dir = "digital_twin/documentation"
-digital_twin = true
-
-[scenarios.digital-twin.fabrics.DIGITAL_TWIN_SINGLE_SWITCH_FABRIC]
-device_configs = false
-documentation.device_docs = false
-documentation.fabric_doc = false
+[documentation]
+p2p_links_csv = true
+topology_csv = true

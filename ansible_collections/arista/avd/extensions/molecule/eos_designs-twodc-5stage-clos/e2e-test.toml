@@ -24,21 +24,15 @@
 # output_dir = "intended"  # Directory where configs and structured_configs will be created. Relative to directory with this config file.
 # structured_config_suffix  = "yml"  # Suffix for structured config files. Accepts "yml", "yaml" or "json"
 inventory_file = "inventory/hosts.yml"
+custom_templates = true
+
+documentation.include_connected_endpoints = true
+documentation.topology_csv = true
+documentation.p2p_links_csv = true
 
 [scenarios.main]
 
-[scenarios.main.fabrics.DIGITAL_TWIN_SINGLE_SWITCH_FABRIC]
-device_configs = false
-documentation.device_docs = false
-documentation.fabric_doc = false
-
-[scenarios.digital-twin]
-inventory_file = "inventory/hosts.yml"
+[scenarios.digital_twin]
 output_dir = "digital_twin/intended"
 docs_dir = "digital_twin/documentation"
 digital_twin = true
-
-[scenarios.digital-twin.fabrics.DIGITAL_TWIN_SINGLE_SWITCH_FABRIC]
-device_configs = false
-documentation.device_docs = false
-documentation.fabric_doc = false

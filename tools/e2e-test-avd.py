@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import dataclasses
+import importlib
 import json
 import os
 import pathlib
@@ -138,11 +139,11 @@ class FabricConfigOverrides:
     clean: bool | None = None
     device_configs: bool | None = None
     digital_twin: bool | None = None
-    docs_dir: pathlib.Path | None = None
+    docs_dir: str | None = None
     documentation: DocumentationConfigOverrides = dataclasses.field(default_factory=DocumentationConfigOverrides)
     dump_tracebacks: bool | None = None
-    error_dir: pathlib.Path | None = None
-    output_dir: pathlib.Path | None = None
+    error_dir: str | None = None
+    output_dir: str | None = None
     structured_config_suffix: typing.Literal["yml", "yaml", "json"] | None = None
 
 
@@ -153,14 +154,15 @@ class ProjectConfig:
     project_dir: pathlib.Path
     clean: bool = True
     custom_templates: bool = False
+    custom_path: str | None = None
     device_configs: bool = True
     digital_twin: bool = False
-    docs_dir: pathlib.Path = dataclasses.field(default_factory=lambda: pathlib.Path("documentation"))
+    docs_dir: str = "documentation"
     documentation: DocumentationConfig = dataclasses.field(default_factory=ProjectDocumentationConfig)
     dump_tracebacks: bool = False
-    error_dir: pathlib.Path = dataclasses.field(default_factory=lambda: pathlib.Path("errors"))
+    error_dir: str = "errors"
     inventory_file: str = "inventory.yml"
-    output_dir: pathlib.Path = dataclasses.field(default_factory=lambda: pathlib.Path("intended"))
+    output_dir: str = "intended"
     structured_config_suffix: typing.Literal["yml", "yaml", "json"] = "yml"
 
     @cached_property
@@ -172,6 +174,7 @@ class ProjectConfig:
 class ScenarioConfig:
     scenario_name: str
     project: ProjectConfig
+    custom_path: str | None
     custom_templates: bool
     inventory_file: str
 
@@ -179,11 +182,11 @@ class ScenarioConfig:
     clean: bool
     device_configs: bool
     digital_twin: bool
-    docs_dir: pathlib.Path
+    docs_dir: str
     documentation: DocumentationConfig
     dump_tracebacks: bool
-    error_dir: pathlib.Path
-    output_dir: pathlib.Path
+    error_dir: str
+    output_dir: str
     structured_config_suffix: typing.Literal["yml", "yaml", "json"]
 
     @classmethod
@@ -197,6 +200,7 @@ class ScenarioConfig:
             scenario_name=scenario_name,
             project=project,
             custom_templates=default(overrides.custom_templates, project.custom_templates),
+            custom_path=default(overrides.custom_path, project.custom_path),
             inventory_file=default(overrides.inventory_file, project.inventory_file),
             clean=default(overrides.clean, project.clean),
             device_configs=default(overrides.device_configs, project.device_configs),
@@ -237,6 +241,12 @@ class ScenarioConfig:
     def full_error_dir(self) -> pathlib.Path:
         return self.full_project_dir.joinpath(self.error_dir).resolve()
 
+    @cached_property
+    def full_custom_path(self) -> pathlib.Path | None:
+        if self.custom_path is None:
+            return None
+        return self.full_project_dir.joinpath(self.custom_path).resolve()
+
     def get_cleanup_dirs(self) -> set[pathlib.Path]:
         """Return set of directories to clean up."""
         return {self.configs_dir, self.structured_configs_dir, self.full_docs_dir, self.full_error_dir}
@@ -246,6 +256,7 @@ class ScenarioConfig:
 class ScenarioConfigOverrides(FabricConfigOverrides):
     custom_templates: bool | None = None
     inventory_file: str | None = None
+    custom_path: str | None = None
 
 
 @dataclasses.dataclass(frozen=True)
@@ -257,11 +268,11 @@ class FabricConfig:
     # except clean which is local for the fabric level.
     device_configs: bool
     digital_twin: bool
-    docs_dir: pathlib.Path
+    docs_dir: str
     documentation: DocumentationConfig
     dump_tracebacks: bool
-    error_dir: pathlib.Path
-    output_dir: pathlib.Path
+    error_dir: str
+    output_dir: str
     structured_config_suffix: typing.Literal["yml", "yaml", "json"]
 
     clean: bool = False
@@ -366,12 +377,12 @@ class AnsibleInventory:  # pylint: disable=too-few-public-methods
 class AvdBuildContext:
     scenario: ScenarioConfig
     executor: Executor
-    """
-    ProcessPoolExecutor for CPU-intensive device builds.
-    """
+    """ProcessPoolExecutor for CPU-intensive device builds."""
     inventory: AnsibleInventory
     validation_max_workers: int | None
     """Max workers for ThreadPoolExecutor used in validation."""
+
+    _org_sys_path: list[str] | None = None
 
     def __init__(
         self,
@@ -388,21 +399,77 @@ class AvdBuildContext:
             initializer=initialize_worker,
             initargs=(scenario,),
         )
-        self.validation_max_workers = validation_max_workers
+        try:
+            self.validation_max_workers = validation_max_workers
 
-        if scenario.custom_templates:
-            # Initialize the Ansible plugin loader in the main process.
-            # This must happen before loading the inventory.
-            init_plugin_loader()
+            if scenario.custom_templates:
+                # Initialize the Ansible plugin loader in the main process.
+                # This must happen before gloading the inventory.
+                init_plugin_loader()
 
-        self.inventory = AnsibleInventory(scenario.full_inventory_file)
+            self.inventory = AnsibleInventory(scenario.full_inventory_file)
 
-        # Initialize the schema store in main process
-        pyavd_init_store()
+            # Initialize the schema store in main process
+            pyavd_init_store()
+
+            self.add_custom_python_path()
+
+        except Exception:
+            self.close()
+            raise
 
     def close(self) -> None:
         """Explicitly cleanup resources."""
         shutdown_process_pool_now(executor=self.executor)
+        self.restore_python_path()
+
+    def add_custom_python_path(self) -> None:
+        if (full_custom_path := self.scenario.full_custom_path) is None:
+            return
+
+        custom_path_str = str(full_custom_path)
+        if custom_path_str in sys.path:
+            return
+
+        self._org_sys_path = sys.path.copy()
+        sys.path.insert(0, custom_path_str)
+
+        importlib.invalidate_caches()
+
+    def restore_python_path(self) -> None:
+        if self._org_sys_path is None or (full_custom_path := self.scenario.full_custom_path) is None:
+            return
+
+        sys.path[:] = self._org_sys_path
+
+        # Unload modules loaded from the custom path
+        modules_to_unload = []
+        for name, mod in list(sys.modules.items()):
+            if mod is None:
+                continue
+
+            # Check file location
+            file_attr = getattr(mod, "__file__", None)
+            if file_attr:
+                try:
+                    if pathlib.Path(file_attr).resolve().is_relative_to(full_custom_path):
+                        modules_to_unload.append(name)
+                        continue
+                except (ValueError, RuntimeError):
+                    pass
+
+            # Check package location
+            for p in getattr(mod, "__path__", []):
+                try:
+                    if pathlib.Path(p).resolve().is_relative_to(full_custom_path):
+                        modules_to_unload.append(name)
+                        break
+                except (ValueError, RuntimeError):
+                    pass
+
+        # Evict from import cache
+        for name in modules_to_unload:
+            del sys.modules[name]
 
 
 class AvdV6Build:
@@ -566,7 +633,7 @@ class AvdV6Build:
         # Clear validated JSON strings - no longer needed
         self._validated_inputs_json.clear()
 
-        pool_manager = PoolManager(self.config.output_dir)
+        pool_manager = PoolManager(self.config.full_output_dir)
         # Get avd_facts from PyAVD
         try:
             avd_facts = get_facts(
@@ -997,7 +1064,13 @@ def load_config_from_dict(dataclass_type: type[DataclassT], documentation_type: 
     config_keys = {field.name for field in fields}
     raw_config = {key: value for key, value in data.items() if key in config_keys}
     if raw_documentation := raw_config.get("documentation"):
-        raw_config["documentation"] = documentation_type(**raw_documentation)
+        if not isinstance(raw_documentation, dict):
+            msg = "Invalid config. 'documentation' must be a dict."
+            raise TypeError(msg)
+        doc_fields = dataclasses.fields(documentation_type)
+        doc_config_keys = {field.name for field in doc_fields}
+        raw_doc_config = {key: value for key, value in raw_documentation.items() if key in doc_config_keys}
+        raw_config["documentation"] = documentation_type(**raw_doc_config)
     return dataclass_type(**raw_config)
 
 
@@ -1054,32 +1127,33 @@ def build(scenario: Scenario) -> None:
         clean_dirs(scenario.config)
 
     build_context = AvdBuildContext(scenario.config)
-    fabric_devices = group_devices_per_fabric(build_context)
-    for fabric_name, devices in fabric_devices.items():
-        print("Building fabric", fabric_name)
-        fabric_overrides = scenario.fabric_overrides.get(fabric_name, FabricConfigOverrides())
-        fabric_config = FabricConfig.from_scenario(fabric_name, scenario.config, fabric_overrides)
+    try:
+        fabric_devices = group_devices_per_fabric(build_context)
+        for fabric_name, devices in fabric_devices.items():
+            print("Building fabric", fabric_name)
+            fabric_overrides = scenario.fabric_overrides.get(fabric_name, FabricConfigOverrides())
+            fabric_config = FabricConfig.from_scenario(fabric_name, scenario.config, fabric_overrides)
 
-        if fabric_config.clean:
-            clean_dirs(fabric_config)
+            if fabric_config.clean:
+                clean_dirs(fabric_config)
 
-        build = AvdV6Build(fabric_config, build_context, devices)
+            build = AvdV6Build(fabric_config, build_context, devices)
+            try:
+                validation_result = list(build.validation_stage())
+                if not any(validation_result):
+                    # All devices failed validation so skip the rest
+                    continue
 
-        validation_result = list(build.validation_stage())
-        if not any(validation_result):
-            # All devices failed validation so skip the rest
-            continue
+                if not build.common_build_stage():
+                    continue
 
-        if not build.common_build_stage():
-            continue
+                _ = all(build.device_build_stage())
 
-        _ = all(build.device_build_stage())
-
-        build.common_documentation_stage()
-
-        build.close()
-
-    build_context.close()
+                build.common_documentation_stage()
+            finally:
+                build.close()
+    finally:
+        build_context.close()
 
 
 def get_git_repo(path: pathlib.Path) -> git.Repo:

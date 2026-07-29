@@ -25,20 +25,6 @@
 # structured_config_suffix  = "yml"  # Suffix for structured config files. Accepts "yml", "yaml" or "json"
 inventory_file = "inventory/hosts.yml"
 
-[scenarios.main]
-
-[scenarios.main.fabrics.DIGITAL_TWIN_SINGLE_SWITCH_FABRIC]
-device_configs = false
-documentation.device_docs = false
-documentation.fabric_doc = false
-
-[scenarios.digital-twin]
-inventory_file = "inventory/hosts.yml"
-output_dir = "digital_twin/intended"
-docs_dir = "digital_twin/documentation"
-digital_twin = true
-
-[scenarios.digital-twin.fabrics.DIGITAL_TWIN_SINGLE_SWITCH_FABRIC]
-device_configs = false
-documentation.device_docs = false
-documentation.fabric_doc = false
+[documentation]
+topology_csv = true
+p2p_links_csv = true
