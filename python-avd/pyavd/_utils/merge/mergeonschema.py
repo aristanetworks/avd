@@ -8,9 +8,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from deepmerge.merger import Merger
 
-    from pyavd._schema.avdschema import AvdSchema
-
 from deepmerge.strategy.core import STRATEGY_END
+from pyavd_utils.schema_store import get_list_primary_key
 
 
 class MergeOnSchema:
@@ -20,26 +19,31 @@ class MergeOnSchema:
     The class is needed to allow a schema to be passed along to the method.
     """
 
-    def __init__(self, schema: AvdSchema | None = None) -> None:
-        self.schema = schema
+    def __init__(self, schema_name: str | None = None) -> None:
+        self.schema_name = schema_name
+        self.get_list_primary_key = get_list_primary_key
+
+        if self.schema_name:
+            from pyavd._schema.store import init_store  # noqa: PLC0415
+
+            init_store()
+
+    def _get_primary_key(self, path: list) -> str | None:
+        try:
+            return self.get_list_primary_key(self.schema_name, [str(path_item) for path_item in path])
+        except Exception:  # pylint: disable=broad-exception-caught
+            msg = "TODO: some better error message"
+            raise Exception(msg)
 
     def strategy(self, config: Merger, path: list, base: list, nxt: list) -> object:
         """Custom strategy to merge lists on schema primary key."""
-        # Skip if no schema is supplied
-        if not self.schema:
-            return STRATEGY_END
-
-        # Skip if we cannot load subschema for path
-        try:
-            schema = self.schema.subschema(path)
-        except Exception:  # pylint: disable=broad-exception-caught
+        # Skip if no schema_name is supplied
+        if not self.schema_name:
             return STRATEGY_END
 
         # Skip if the schema for this list is not having "primary_key"
-        if "primary_key" not in schema:
+        if not (primary_key := self._get_primary_key(path)):
             return STRATEGY_END
-
-        primary_key = schema["primary_key"]
 
         # "merged_nxt_indexes" will contain a list of indexes in nxt that we merged.
         # These will be removed from nxt before passing on to the next strategy.
@@ -63,7 +67,8 @@ class MergeOnSchema:
 
                     # Perform regular dict merge on the matching items.
                     merged_nxt_indexes.append(nxt_index)
-                    base[base_index] = config.value_strategy(path, base_item, nxt_item)
+                    merge_path = [*path, str(base_index)]
+                    base[base_index] = config.value_strategy(merge_path, base_item, nxt_item)
 
         except Exception as e:
             msg = f"An issue occurred while trying to do schema-based deepmerge for the schema path {path} using primary key '{primary_key}'"

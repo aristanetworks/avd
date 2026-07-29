@@ -5,7 +5,7 @@
 dev = [
     "anta==1.8.0",
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.6",
+    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils.git@refs/pull/197/head",
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"

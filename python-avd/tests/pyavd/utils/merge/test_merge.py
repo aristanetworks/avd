@@ -2,11 +2,10 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from pathlib import Path
+from unittest.mock import patch
 
-import pytest
 import yaml
 
-from pyavd._schema.avdschema import AvdSchema
 from pyavd._utils import merge
 
 script_dir = Path(__file__).parent
@@ -23,17 +22,34 @@ with Path(script_dir, "acl_merged.yml").open(encoding="utf-8") as data_file:
 class TestMerge:
     def test_merge_of_lists_with_primary_keys(self) -> None:
         merge_result = {}
-        schema = AvdSchema(acl_schema)
-        merge(merge_result, acl1, acl2, schema=schema)
+        merge(merge_result, acl1, acl2, schema_name="eos_config")
         assert merge_result == acl_merged
 
-    @pytest.mark.parametrize("schema", [None, AvdSchema(acl_schema)])
-    def test_list_merge_replace(self, schema: dict) -> None:
+    def test_merge_of_lists_with_schema_name_uses_indexed_paths(self) -> None:
+        merge_result = {}
+
+        def get_list_primary_key(schema_name: str, data_path: list[str]) -> str | None:
+            assert schema_name == "eos_config"
+            primary_keys = {
+                ("access_lists",): "name",
+                ("access_lists", "1", "sequence_numbers"): "sequence",
+            }
+            return primary_keys.get(tuple(data_path))
+
+        with (
+            patch("pyavd._schema.store.init_store"),
+            patch("pyavd_utils.schema_store.get_list_primary_key", side_effect=get_list_primary_key),
+        ):
+            merge(merge_result, acl1, acl2, schema_name="eos_config")
+
+        assert merge_result == acl_merged
+
+    def test_list_merge_replace(self) -> None:
         """
         Testing with list_merge="replace" with or without schema.
 
         Expecting acl2 as result since we only have lists in the input.
         """
         merge_result = {}
-        merge(merge_result, acl1, acl2, list_merge="replace", schema=schema)
+        merge(merge_result, acl1, acl2, list_merge="replace", schema_name="eos_config")
         assert merge_result == acl2
