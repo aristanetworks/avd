@@ -190,8 +190,6 @@ qos_profiles:
               min: 1
               max: 10
               drop_probability: 90
-      # TODO: Open issue. documentation/qos-profiles.j2 has a WRED drop threshold branch for missing units,
-      # but qos_profiles.[].tx_queues[].random_detect.drop.threshold.units is required by schema validation.
     mc_tx_queues:
       - id: 1
         bandwidth_percent: 50

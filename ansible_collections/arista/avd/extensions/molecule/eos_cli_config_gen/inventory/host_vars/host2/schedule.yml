@@ -1,0 +1,4 @@
+---
+schedule:
+  config:
+    prepend_hostname_logfile: false

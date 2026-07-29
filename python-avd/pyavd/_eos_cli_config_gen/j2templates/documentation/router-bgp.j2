@@ -234,6 +234,11 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             if peer_group.default_originate.enabled is arista.avd.defined(true) %}
 | Default originate | True |
 {%             endif %}
+{%             if peer_group.enforce_first_as is arista.avd.defined(true) %}
+| Enforce first AS | True |
+{%             elif peer_group.enforce_first_as is arista.avd.defined(false) %}
+| Enforce first AS | False |
+{%             endif %}
 {%             if peer_group.session_tracker is arista.avd.defined %}
 | Session tracker | {{ peer_group.session_tracker }} |
 {%             endif %}

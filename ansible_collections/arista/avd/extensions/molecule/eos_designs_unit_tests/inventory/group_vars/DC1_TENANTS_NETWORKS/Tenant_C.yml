@@ -109,6 +109,8 @@ tenant_c:
               route_map_out: TEST_OUT
               rcf_in: TEST_RCF_IN()
               rcf_out: TEST_RCF_OUT()
+              default_originate:
+                always: true
             address_family_ipv6:
               activate: true
               route_map_in: TEST_IN
