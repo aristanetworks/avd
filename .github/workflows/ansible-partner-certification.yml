@@ -38,7 +38,7 @@ concurrency:
 jobs:
   call:
     if: github.repository == 'aristanetworks/avd'
-    uses: ansible-collections/partner-certification-checker/.github/workflows/certification-reusable.yml@6a7d1fe5159620648295b44222c48789008a9660 # v3.0.0
+    uses: ansible-collections/partner-certification-checker/.github/workflows/certification-reusable.yml@31ef407dd12d185388fe0c278eba9fc8bbec2e15 # v3.0.0 + PR #91
     # For details on tested ansible-core branches and Python versions,
     # see: https://github.com/ansible-collections/partner-certification-checker#tested-ansible-core-branches-and-python-versions
     with:
