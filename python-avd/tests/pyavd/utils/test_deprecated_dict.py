@@ -3,8 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import pytest
 import warnings
+
+import pytest
 
 from pyavd._utils.deprecated_dict import DeprecatedDict
 
@@ -14,6 +15,7 @@ def test_get_emits_deprecation() -> None:
 
     with pytest.deprecated_call(match="deprecated"):
         assert deprecated_dict["interface"] == "Ethernet1"
+
 
 def test_deprecated_dict_warning_only_once_on_getitem():
     d = DeprecatedDict({"a": 1, "b": 2}, _message="Deprecated access")
