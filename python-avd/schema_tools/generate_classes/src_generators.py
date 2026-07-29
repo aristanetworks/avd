@@ -71,9 +71,14 @@ class FieldSrc:
         # Build union of multiple type hints
         type_hints = [str(type_hint) for type_hint in self.type_hints]
         has_none = "None" in type_hints
+        type_hints = [type_hint for type_hint in type_hints if type_hint != "None"]
         if include_undefined:
             type_hints.append("UndefinedType")
-        if self.optional and not self.default_value and not has_none and self.field_type in ("str", "int", "bool", "float"):
+        if has_none or (
+            self.optional
+            and not self.default_value
+            and self.field_type in ("str", "int", "bool", "float")
+        ):
             type_hints.append("None")
 
         return " | ".join(type_hints)
