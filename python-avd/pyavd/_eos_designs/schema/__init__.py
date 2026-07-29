@@ -30982,8 +30982,8 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        route_map: str | None | UndefinedType = Undefined,
-                        match: Match | None | UndefinedType = Undefined,
+                        route_map: str | UndefinedType | None = Undefined,
+                        match: Match | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         RedistributeOspfSettings.
@@ -80917,8 +80917,8 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                match: Match | None | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                match: Match | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 RedistributeOspfSettings.
