@@ -9,14 +9,14 @@ T = TypeVar("T")
 
 
 @overload
-def default(*values: None | Undefined) -> None: ...
+def default(*values: Undefined | None) -> None: ...
 
 
 @overload
-def default(*values: T | None | Undefined) -> T: ...
+def default(*values: T | Undefined | None) -> T: ...
 
 
-def default(*values: T | None | Undefined) -> T | None:
+def default(*values: T | Undefined | None) -> T | None:
     """
     Default will test value if defined and is not none.
 
