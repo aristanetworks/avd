@@ -19,7 +19,8 @@ if TYPE_CHECKING:
 class PeerInfo(TypedDict):
     bgp_as: str | None
     ip_address: str
-    overlay_peering_interface: str
+    overlay_peering_interface: str | None
+    is_deployed: bool
 
 
 class UtilsMixin(Protocol):
@@ -74,26 +75,36 @@ class UtilsMixin(Protocol):
         return {remote_peer.hostname for remote_peer in self.shared_utils.node_config.evpn_gateway.remote_peers}
 
     @cached_property
-    def _evpn_gateway_remote_peer_clients(self: AvdStructuredConfigOverlayProtocol) -> dict[str, PeerInfo]:
+    def _evpn_gateway_remote_peer_clients(
+        self: AvdStructuredConfigOverlayProtocol,
+    ) -> dict[str, EosDesignsFactsProtocol.EvpnGatewayRemotePeerClientsItem]:
         if not self.shared_utils.overlay_evpn:
             return {}
 
-        evpn_gateway_remote_peer_clients: dict[str, PeerInfo] = {}
+        evpn_gateway_remote_peer_clients: dict[str, EosDesignsFactsProtocol.EvpnGatewayRemotePeerClientsItem] = {}
 
         for avd_peer in self.facts.evpn_gateway_remote_peer_clients:
-            if avd_peer in self._evpn_gateway_remote_peer_hostnames:
+            if avd_peer.hostname in self._evpn_gateway_remote_peer_hostnames:
                 continue
 
-            if avd_peer in self.facts.evpn_route_servers:
+            if avd_peer.hostname in self.facts.evpn_route_servers:
                 msg = (
-                    f"Cannot configure EVPN Gateway remote peer '{avd_peer}' under both another node's 'evpn_gateway.remote_peers' "
+                    f"Cannot configure EVPN Gateway remote peer '{avd_peer.hostname}' under both another node's 'evpn_gateway.remote_peers' "
                     "and 'evpn_route_servers' on this node. Use each inventory hostname in only one of these inputs."
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
-            peer_facts = self.shared_utils.get_peer_facts(avd_peer)
-            if peer_facts.evpn_role in ["server", "client"]:
-                self._append_peer(evpn_gateway_remote_peer_clients, avd_peer, peer_facts)
+            if not avd_peer.has_evpn:
+                msg = (
+                    f"Cannot configure EVPN Gateway remote peer '{avd_peer.hostname}' on '{self.shared_utils.hostname}' because "
+                    f"EVPN overlay is not enabled for '{avd_peer.hostname}'. Remove 'evpn_gateway.remote_peers' or enable EVPN overlay."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+
+            if avd_peer.evpn_role not in ["server", "client"]:
+                continue
+
+            evpn_gateway_remote_peer_clients[avd_peer.hostname] = avd_peer
 
         return evpn_gateway_remote_peer_clients
 
@@ -156,6 +167,7 @@ class UtilsMixin(Protocol):
             "bgp_as": self.shared_utils.get_asn(str(bgp_as)) if bgp_as is not None else None,
             "ip_address": ip_address,
             "overlay_peering_interface": "Loopback0",
+            "is_deployed": peer_facts.is_deployed,
         }
 
     @cached_property

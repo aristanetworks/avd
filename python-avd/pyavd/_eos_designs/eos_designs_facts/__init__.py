@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError
 from pyavd._utils import remove_cached_property_type
 
 from .mlag import MlagMixin
@@ -348,24 +348,11 @@ class EosDesignsFactsGeneratorProtocol(
 
     def _populate_evpn_gateway_remote_peer_clients_on_peers(self) -> None:
         """
-        Walk through EVPN gateway remote peers present in the inventory and update _their_ facts with the hostname of this device.
+        Walk through EVPN gateway remote peers present in the inventory and update _their_ facts with this device's peering information.
 
         Remote peers with manual overrides are skipped, since the reverse side cannot infer the intended peering parameters from the inventory.
         """
-        if not self.shared_utils.node_config.evpn_gateway.remote_peers:
-            return
-
-        if not self.shared_utils.overlay_evpn:
-            if not self.inputs.avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn:
-                return
-
-            msg = (
-                f"Cannot configure 'evpn_gateway.remote_peers' on '{self.shared_utils.hostname}' because EVPN overlay is not enabled for this node. "
-                "Remove 'evpn_gateway.remote_peers' or enable EVPN overlay."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-
-        if not self.inputs.avd_design_future.configure_reverse_evpn_gateway_remote_peers:
+        if not self.shared_utils.node_config.evpn_gateway.remote_peers or not self.inputs.avd_design_future.configure_reverse_evpn_gateway_remote_peers:
             return
 
         for remote_peer in self.shared_utils.node_config.evpn_gateway.remote_peers:
@@ -373,7 +360,15 @@ class EosDesignsFactsGeneratorProtocol(
                 continue
 
             peer_facts = self.get_peer_facts_generator(remote_peer.hostname)
-            peer_facts._evpn_gateway_remote_peer_clients.append_unique(self.shared_utils.hostname)
+            peer_facts._evpn_gateway_remote_peer_clients.append_new(
+                hostname=self.shared_utils.hostname,
+                bgp_as=self.shared_utils.bgp_as,
+                ip_address=self.shared_utils.overlay_peering_address,
+                overlay_peering_interface="Loopback0",
+                evpn_role=self.shared_utils.evpn_role,
+                has_evpn=self.shared_utils.overlay_evpn,
+                is_deployed=self.is_deployed,
+            )
 
     def _populate_mpls_route_reflector_clients_on_peers(self) -> None:
         """
@@ -406,7 +401,56 @@ class EosDesignsFactsGeneratorProtocol(
     @remove_cached_property_type
     @cached_property
     def evpn_gateway_remote_peer_clients(self) -> EosDesignsFactsProtocol.EvpnGatewayRemotePeerClients:
+        """
+        EVPN Gateway peers configured on other nodes and cross-populated here for reverse peering towards this node.
+
+        These entries are populated only when `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is enabled.
+        """
         return self._evpn_gateway_remote_peer_clients
+
+    @remove_cached_property_type
+    @cached_property
+    def resolved_evpn_gateway_remote_peers(self) -> EosDesignsFactsProtocol.ResolvedEvpnGatewayRemotePeers:
+        """
+        Locally configured EVPN Gateway remote peers resolved during facts.
+
+        Structured config consumes these entries directly instead of resolving local `evpn_gateway.remote_peers` against remote peer facts.
+        """
+        remote_peers = EosDesignsFactsProtocol.ResolvedEvpnGatewayRemotePeers()
+
+        for remote_peer in self.shared_utils.node_config.evpn_gateway.remote_peers:
+            if remote_peer.hostname in self.peer_generators:
+                peer_facts = self.get_peer_facts_generator(remote_peer.hostname)
+                bgp_as = remote_peer.bgp_as or peer_facts.bgp_as
+                ip_address = remote_peer.ip_address or peer_facts.overlay.peering_address
+                # Preserve previous structured-config behavior where inventory-resolved EVPN Gateway peers
+                # were passed as Loopback0 peers for overlay BGP peer description rendering.
+                overlay_peering_interface = "Loopback0"
+                evpn_role = peer_facts.evpn_role
+                has_evpn = peer_facts.shared_utils.overlay_evpn
+                is_deployed = peer_facts.is_deployed
+            else:
+                bgp_as = remote_peer.bgp_as
+                ip_address = remote_peer.ip_address
+                overlay_peering_interface = None
+                evpn_role = None
+                # Non-inventory peers have no facts to validate against. Assume EVPN support to preserve existing manual-peer behavior.
+                has_evpn = True
+                is_deployed = True
+
+            remote_peers.append(
+                EosDesignsFactsProtocol.ResolvedEvpnGatewayRemotePeersItem(
+                    hostname=remote_peer.hostname,
+                    bgp_as=bgp_as,
+                    ip_address=ip_address,
+                    overlay_peering_interface=overlay_peering_interface,
+                    evpn_role=evpn_role,
+                    has_evpn=has_evpn,
+                    is_deployed=is_deployed,
+                )
+            )
+
+        return remote_peers
 
     @remove_cached_property_type
     @cached_property

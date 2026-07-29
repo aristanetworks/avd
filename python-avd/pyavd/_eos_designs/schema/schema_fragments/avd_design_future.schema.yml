@@ -87,12 +87,6 @@ keys:
           Available from AVD 6.2.0.
           Raise an error if an L3 Port-Channel is configured without any member interfaces.
         default: false
-      raise_for_evpn_gateway_remote_peers_without_evpn:
-        type: bool
-        description: |-
-          Available from AVD 6.4.0.
-          Raise an error if `evpn_gateway.remote_peers` is configured on a node where EVPN overlay is not enabled.
-        default: false
       raise_for_underlay_router_with_uplink_type_port_channel:
         type: bool
         description: |-

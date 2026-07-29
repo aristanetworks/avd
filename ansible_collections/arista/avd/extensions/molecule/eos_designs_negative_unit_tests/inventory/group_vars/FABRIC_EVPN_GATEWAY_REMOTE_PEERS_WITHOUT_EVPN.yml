@@ -3,9 +3,9 @@ fabric_name: FABRIC_EVPN_GATEWAY_REMOTE_PEERS_WITHOUT_EVPN
 
 type: l3leaf
 avd_design_future:
-  # Test the future behavior where evpn_gateway.remote_peers is rejected if
-  # the local node does not have EVPN overlay enabled.
-  raise_for_evpn_gateway_remote_peers_without_evpn: true
+  # Test reverse EVPN Gateway validation when the peer requesting reverse
+  # peering does not have EVPN overlay enabled.
+  configure_reverse_evpn_gateway_remote_peers: true
 
 l3leaf:
   defaults:
@@ -24,5 +24,6 @@ l3leaf:
       id: 2
 
 expected_error_message: >-
-  Cannot configure 'evpn_gateway.remote_peers' on 'evpn-gateway-remote-peer-without-evpn' because EVPN overlay is not enabled for this node.
+  Cannot configure EVPN Gateway remote peer 'evpn-gateway-remote-peer-without-evpn' on 'evpn-gateway-remote-peer-target'
+  because EVPN overlay is not enabled for 'evpn-gateway-remote-peer-without-evpn'.
   Remove 'evpn_gateway.remote_peers' or enable EVPN overlay.

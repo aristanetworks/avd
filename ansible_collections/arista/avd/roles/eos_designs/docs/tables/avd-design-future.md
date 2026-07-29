@@ -20,7 +20,6 @@
     | [<samp>&nbsp;&nbsp;only_configure_pvst_border_when_mode_is_mstp</samp>](## "avd_design_future.only_configure_pvst_border_when_mode_is_mstp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>PVST border parameters have no effect unless the spanning-tree mode is MSTP.<br>When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to 'mstp'. |
     | [<samp>&nbsp;&nbsp;only_configure_route_map_connected_to_bgp_vrfs_when_used</samp>](## "avd_design_future.only_configure_route_map_connected_to_bgp_vrfs_when_used") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.<br>The route map is skipped when both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,<br>since 'redistribute connected route-map' is not required in that case. |
     | [<samp>&nbsp;&nbsp;raise_for_port_channels_without_members</samp>](## "avd_design_future.raise_for_port_channels_without_members") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if an L3 Port-Channel is configured without any member interfaces. |
-    | [<samp>&nbsp;&nbsp;raise_for_evpn_gateway_remote_peers_without_evpn</samp>](## "avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Raise an error if `evpn_gateway.remote_peers` is configured on a node where EVPN overlay is not enabled. |
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
 
@@ -81,10 +80,6 @@
       # Available from AVD 6.2.0.
       # Raise an error if an L3 Port-Channel is configured without any member interfaces.
       raise_for_port_channels_without_members: <bool; default=False>
-
-      # Available from AVD 6.4.0.
-      # Raise an error if `evpn_gateway.remote_peers` is configured on a node where EVPN overlay is not enabled.
-      raise_for_evpn_gateway_remote_peers_without_evpn: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,

@@ -15,6 +15,7 @@ from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
     from pyavd._eos_designs.schema import EosDesigns
 
     from . import AvdStructuredConfigOverlayProtocol
@@ -488,12 +489,47 @@ class RouterBgpMixin(Protocol):
         if remote_as is not None:
             neighbor.remote_as = self.shared_utils.get_asn(remote_as)
 
-        if self.inputs.shutdown_bgp_towards_undeployed_peers and (
-            name in self.facts.evpn_route_server_clients or name in self.facts.evpn_gateway_remote_peer_clients
-        ):
-            peer_facts = self.shared_utils.get_peer_facts(name)
-            if not peer_facts.is_deployed:
-                neighbor.shutdown = True
+        if self.inputs.shutdown_bgp_towards_undeployed_peers:
+            if (remote_peer_client_facts := self.facts.evpn_gateway_remote_peer_clients.get(name, None)) is not None:
+                if not remote_peer_client_facts.is_deployed:
+                    neighbor.shutdown = True
+            elif name in self.facts.evpn_route_server_clients:
+                # TODO: Move is_deployed into evpn_route_server_clients facts in a later PR to avoid interrogating remote peer facts.
+                peer_facts = self.shared_utils.get_peer_facts(name)
+                if not peer_facts.is_deployed:
+                    neighbor.shutdown = True
+
+        return neighbor
+
+    def _get_evpn_gateway_remote_peer_neighbor(
+        self: AvdStructuredConfigOverlayProtocol,
+        remote_peer_name: str,
+        data: EosDesignsFactsProtocol.ResolvedEvpnGatewayRemotePeersItem | EosDesignsFactsProtocol.EvpnGatewayRemotePeerClientsItem,
+    ) -> EosCliConfigGen.RouterBgp.NeighborsItem:
+        if data.ip_address is None and data.overlay_peering_interface is not None:
+            msg = f"Unable to determine the remote IP address to use for the EVPN Gateway peer '{remote_peer_name}'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if data.bgp_as is None or data.ip_address is None:
+            msg = f"The EVPN Gateway remote peer '{remote_peer_name}' is missing either `bgp_as` or `ip_address`."
+            raise AristaAvdError(msg)
+
+        if remote_peer_name in self.shared_utils.node_config.evpn_route_servers:
+            msg = (
+                f"EVPN Gateway remote peer '{remote_peer_name}' is also configured under 'evpn_route_servers'. "
+                "Use each inventory hostname in only one of these inputs."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        neighbor = self._create_neighbor(
+            data.ip_address,
+            remote_peer_name,
+            self.inputs.bgp_peer_groups.evpn_overlay_core.name,
+            data.bgp_as,
+            data.overlay_peering_interface,
+        )
+        if self.inputs.shutdown_bgp_towards_undeployed_peers and not data.is_deployed:
+            neighbor.shutdown = True
 
         return neighbor
 
@@ -654,37 +690,8 @@ class RouterBgpMixin(Protocol):
         if not self.shared_utils.overlay_evpn:
             return
 
-        for remote_peer in self.shared_utils.node_config.evpn_gateway.remote_peers._natural_sorted():
-            remote_peer_name = remote_peer.hostname
-
-            peer_facts = self.shared_utils.get_peer_facts(remote_peer_name, required=False)
-            if peer_facts is None:
-                # No matching host found in the inventory for this remote gateway
-                bgp_as = remote_peer.bgp_as
-                ip_address = remote_peer.ip_address
-                overlay_peering_address = None
-            else:
-                # Found a matching name for this remote gateway in the inventory
-                # Apply potential override if present in the input variables
-                bgp_as = remote_peer.bgp_as or peer_facts.bgp_as
-                if not (ip_address := remote_peer.ip_address or peer_facts.overlay.peering_address):
-                    msg = f"Unable to determine the remote IP address to use for the EVPN Gateway peer '{remote_peer_name}'."
-                    raise AristaAvdInvalidInputsError(msg)
-                overlay_peering_address = "Loopback0"
-
-            # In both cases if any key is missing raise
-            if bgp_as is None or ip_address is None:
-                msg = f"The EVPN Gateway remote peer '{remote_peer_name}' is missing either `bgp_as` or `ip_address`."
-                raise AristaAvdError(msg)
-
-            if remote_peer_name in self.shared_utils.node_config.evpn_route_servers:
-                msg = (
-                    f"EVPN Gateway remote peer '{remote_peer_name}' is also configured under 'evpn_route_servers'. "
-                    "Use each inventory hostname in only one of these inputs."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-
-            neighbor = self._create_neighbor(ip_address, remote_peer_name, self.inputs.bgp_peer_groups.evpn_overlay_core.name, bgp_as, overlay_peering_address)
+        for remote_peer_name, data in natural_sort(self.facts.resolved_evpn_gateway_remote_peers.items()):
+            neighbor = self._get_evpn_gateway_remote_peer_neighbor(remote_peer_name, data)
             self.structured_config.router_bgp.neighbors.append(neighbor)
 
             # Create peer-group
@@ -692,13 +699,7 @@ class RouterBgpMixin(Protocol):
 
     def _set_evpn_gateway_remote_peer_clients(self: AvdStructuredConfigOverlayProtocol) -> None:
         for remote_peer_client, data in natural_sort(self._evpn_gateway_remote_peer_clients.items()):
-            neighbor = self._create_neighbor(
-                data["ip_address"],
-                remote_peer_client,
-                self.inputs.bgp_peer_groups.evpn_overlay_core.name,
-                remote_as=data["bgp_as"],
-                overlay_peering_interface=data.get("overlay_peering_interface"),
-            )
+            neighbor = self._get_evpn_gateway_remote_peer_neighbor(remote_peer_client, data)
             self.structured_config.router_bgp.neighbors.append(neighbor)
 
             # Create peer-group

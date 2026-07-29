@@ -5,9 +5,7 @@ type: l3leaf
 evpn_overlay_bgp_rtc: true
 avd_design_future:
   # Exercise automatic reverse EVPN Gateway core peering for inventory peers
-  # referenced by hostname under evpn_gateway.remote_peers, including that
-  # nodes without EVPN overlay are ignored while
-  # raise_for_evpn_gateway_remote_peers_without_evpn stays at its default false.
+  # referenced by hostname under evpn_gateway.remote_peers.
   configure_reverse_evpn_gateway_remote_peers: true
 
 l3leaf:
@@ -143,9 +141,10 @@ l3leaf:
         tenants: []
       evpn_gateway:
         remote_peers:
-          # With EVPN disabled on this host and the future error knob left at
-          # the default false value, this is ignored during facts generation.
+          # Manual overrides keep this peer out of reverse EVPN Gateway auto-rendering.
           - hostname: evpn-gateway-l2-evpn-role-server
+            ip_address: 192.168.100.10
+            bgp_as: 65002
 
 tenants:
   - name: EVPN_GATEWAY_TESTS

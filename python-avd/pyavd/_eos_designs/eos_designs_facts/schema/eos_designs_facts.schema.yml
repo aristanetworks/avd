@@ -422,10 +422,54 @@ keys:
     type: list
     items:
       type: str
-  evpn_gateway_remote_peer_clients:
+  resolved_evpn_gateway_remote_peers:
+    description: |-
+      Resolved EVPN Gateway remote peers configured locally under evpn_gateway.remote_peers.
     type: list
+    primary_key: hostname
     items:
-      type: str
+      type: dict
+      keys:
+        hostname:
+          type: str
+        bgp_as:
+          type: str
+        ip_address:
+          type: str
+        overlay_peering_interface:
+          type: str
+        evpn_role:
+          type: str
+        has_evpn:
+          type: bool
+          required: true
+        is_deployed:
+          type: bool
+          required: true
+  evpn_gateway_remote_peer_clients:
+    description: |-
+      Remote peer clients requesting reverse EVPN Gateway peering towards this node.
+    type: list
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+        bgp_as:
+          type: str
+        ip_address:
+          type: str
+        overlay_peering_interface:
+          type: str
+        evpn_role:
+          type: str
+        has_evpn:
+          type: bool
+          required: true
+        is_deployed:
+          type: bool
+          required: true
   mpls_route_reflector_clients:
     type: list
     items:

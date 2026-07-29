@@ -1094,10 +1094,125 @@ class EosDesignsFactsProtocol(Protocol):
 
     EvpnRouteServerClients._item_type = str
 
-    class EvpnGatewayRemotePeerClients(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
+    class ResolvedEvpnGatewayRemotePeersItem(AvdModel):
+        """Subclass of AvdModel."""
 
-    EvpnGatewayRemotePeerClients._item_type = str
+        _fields: ClassVar[dict] = {
+            "hostname": {"type": str},
+            "bgp_as": {"type": str},
+            "ip_address": {"type": str},
+            "overlay_peering_interface": {"type": str},
+            "evpn_role": {"type": str},
+            "has_evpn": {"type": bool},
+            "is_deployed": {"type": bool},
+        }
+        hostname: str
+        bgp_as: str | None
+        ip_address: str | None
+        overlay_peering_interface: str | None
+        evpn_role: str | None
+        has_evpn: bool
+        is_deployed: bool
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                hostname: str | UndefinedType = Undefined,
+                bgp_as: str | UndefinedType | None = Undefined,
+                ip_address: str | UndefinedType | None = Undefined,
+                overlay_peering_interface: str | UndefinedType | None = Undefined,
+                evpn_role: str | UndefinedType | None = Undefined,
+                has_evpn: bool | UndefinedType = Undefined,
+                is_deployed: bool | UndefinedType = Undefined,
+            ) -> None:
+                """
+                ResolvedEvpnGatewayRemotePeersItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    hostname: hostname
+                    bgp_as: bgp_as
+                    ip_address: ip_address
+                    overlay_peering_interface: overlay_peering_interface
+                    evpn_role: evpn_role
+                    has_evpn: has_evpn
+                    is_deployed: is_deployed
+
+                """
+
+    class ResolvedEvpnGatewayRemotePeers(AvdIndexedList[str, ResolvedEvpnGatewayRemotePeersItem]):
+        """
+        Subclass of AvdIndexedList with `ResolvedEvpnGatewayRemotePeersItem` items. Primary key is
+        `hostname` (`str`).
+        """
+
+        _primary_key: ClassVar[str] = "hostname"
+
+    ResolvedEvpnGatewayRemotePeers._item_type = ResolvedEvpnGatewayRemotePeersItem
+
+    class EvpnGatewayRemotePeerClientsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {
+            "hostname": {"type": str},
+            "bgp_as": {"type": str},
+            "ip_address": {"type": str},
+            "overlay_peering_interface": {"type": str},
+            "evpn_role": {"type": str},
+            "has_evpn": {"type": bool},
+            "is_deployed": {"type": bool},
+        }
+        hostname: str
+        bgp_as: str | None
+        ip_address: str | None
+        overlay_peering_interface: str | None
+        evpn_role: str | None
+        has_evpn: bool
+        is_deployed: bool
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                hostname: str | UndefinedType = Undefined,
+                bgp_as: str | UndefinedType | None = Undefined,
+                ip_address: str | UndefinedType | None = Undefined,
+                overlay_peering_interface: str | UndefinedType | None = Undefined,
+                evpn_role: str | UndefinedType | None = Undefined,
+                has_evpn: bool | UndefinedType = Undefined,
+                is_deployed: bool | UndefinedType = Undefined,
+            ) -> None:
+                """
+                EvpnGatewayRemotePeerClientsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    hostname: hostname
+                    bgp_as: bgp_as
+                    ip_address: ip_address
+                    overlay_peering_interface: overlay_peering_interface
+                    evpn_role: evpn_role
+                    has_evpn: has_evpn
+                    is_deployed: is_deployed
+
+                """
+
+    class EvpnGatewayRemotePeerClients(AvdIndexedList[str, EvpnGatewayRemotePeerClientsItem]):
+        """
+        Subclass of AvdIndexedList with `EvpnGatewayRemotePeerClientsItem` items. Primary key is `hostname`
+        (`str`).
+        """
+
+        _primary_key: ClassVar[str] = "hostname"
+
+    EvpnGatewayRemotePeerClients._item_type = EvpnGatewayRemotePeerClientsItem
 
     class MplsRouteReflectorClients(AvdList[str]):
         """Subclass of AvdList with `str` items."""
@@ -1163,6 +1278,7 @@ class EosDesignsFactsProtocol(Protocol):
         "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
         "downlink_switches": {"type": DownlinkSwitches},
         "evpn_route_server_clients": {"type": EvpnRouteServerClients},
+        "resolved_evpn_gateway_remote_peers": {"type": ResolvedEvpnGatewayRemotePeers},
         "evpn_gateway_remote_peer_clients": {"type": EvpnGatewayRemotePeerClients},
         "mpls_route_reflector_clients": {"type": MplsRouteReflectorClients},
     }
@@ -1331,8 +1447,20 @@ class EosDesignsFactsProtocol(Protocol):
     """Subclass of AvdList with `str` items."""
     evpn_route_server_clients: EvpnRouteServerClients
     """Subclass of AvdList with `str` items."""
+    resolved_evpn_gateway_remote_peers: ResolvedEvpnGatewayRemotePeers
+    """
+    Resolved EVPN Gateway remote peers configured locally under evpn_gateway.remote_peers.
+
+    Subclass of
+    AvdIndexedList with `ResolvedEvpnGatewayRemotePeersItem` items. Primary key is `hostname` (`str`).
+    """
     evpn_gateway_remote_peer_clients: EvpnGatewayRemotePeerClients
-    """Subclass of AvdList with `str` items."""
+    """
+    Remote peer clients requesting reverse EVPN Gateway peering towards this node.
+
+    Subclass of
+    AvdIndexedList with `EvpnGatewayRemotePeerClientsItem` items. Primary key is `hostname` (`str`).
+    """
     mpls_route_reflector_clients: MplsRouteReflectorClients
     """Subclass of AvdList with `str` items."""
 
@@ -1399,6 +1527,7 @@ class EosDesignsFactsProtocol(Protocol):
             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
             downlink_switches: DownlinkSwitches | UndefinedType = Undefined,
             evpn_route_server_clients: EvpnRouteServerClients | UndefinedType = Undefined,
+            resolved_evpn_gateway_remote_peers: ResolvedEvpnGatewayRemotePeers | UndefinedType = Undefined,
             evpn_gateway_remote_peer_clients: EvpnGatewayRemotePeerClients | UndefinedType = Undefined,
             mpls_route_reflector_clients: MplsRouteReflectorClients | UndefinedType = Undefined,
         ) -> None:
@@ -1534,7 +1663,16 @@ class EosDesignsFactsProtocol(Protocol):
                 uplink_switch_interfaces: Subclass of AvdList with `str` items.
                 downlink_switches: Subclass of AvdList with `str` items.
                 evpn_route_server_clients: Subclass of AvdList with `str` items.
-                evpn_gateway_remote_peer_clients: Subclass of AvdList with `str` items.
+                resolved_evpn_gateway_remote_peers:
+                   Resolved EVPN Gateway remote peers configured locally under evpn_gateway.remote_peers.
+
+                   Subclass of
+                   AvdIndexedList with `ResolvedEvpnGatewayRemotePeersItem` items. Primary key is `hostname` (`str`).
+                evpn_gateway_remote_peer_clients:
+                   Remote peer clients requesting reverse EVPN Gateway peering towards this node.
+
+                   Subclass of
+                   AvdIndexedList with `EvpnGatewayRemotePeerClientsItem` items. Primary key is `hostname` (`str`).
                 mpls_route_reflector_clients: Subclass of AvdList with `str` items.
 
             """

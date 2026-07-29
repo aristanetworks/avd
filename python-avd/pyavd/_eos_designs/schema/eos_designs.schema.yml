@@ -436,13 +436,6 @@ keys:
 
           Raise an error if an L3 Port-Channel is configured without any member interfaces.'
         default: false
-      raise_for_evpn_gateway_remote_peers_without_evpn:
-        type: bool
-        description: 'Available from AVD 6.4.0.
-
-          Raise an error if `evpn_gateway.remote_peers` is configured on a node where
-          EVPN overlay is not enabled.'
-        default: false
       raise_for_underlay_router_with_uplink_type_port_channel:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -13795,13 +13788,9 @@ $defs:
                   for inventory peers where neither `ip_address` nor `bgp_as` is manually
                   overridden.
 
-                  When reverse EVPN Gateway core peering is enabled, setting `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn`
-                  to `true` requires the local node to have EVPN overlay enabled when
-                  `remote_peers` is configured.
-
-                  With the default `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn:
-                  false`, `remote_peers` configured on nodes without EVPN overlay
-                  are ignored.
+                  When reverse EVPN Gateway core peering is enabled, inventory peers
+                  without EVPN overlay enabled are rejected while rendering the auto-generated
+                  peering.
 
                   Auto-rendered reverse EVPN Gateway core peering towards inventory
                   peers marked with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
