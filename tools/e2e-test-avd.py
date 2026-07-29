@@ -9,6 +9,7 @@
 # # [tool.uv]
 # # reinstall-package = ["pyavd"]
 # ///
+# pylint: disable=too-many-lines
 
 from __future__ import annotations
 
@@ -32,6 +33,7 @@ from multiprocessing import get_context, shared_memory
 
 import git
 import pyavd_utils
+import tomllib
 import yaml
 from ansible.cli import CLI
 from ansible.inventory.manager import InventoryManager
@@ -50,15 +52,22 @@ from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
 from pyavd._eos_designs.structured_config import get_structured_config
 from pyavd._schema.avdschema import AvdSchema
 from pyavd._schema.store import init_store as pyavd_init_store
-from pyavd._utils import strip_empties_from_dict
+from pyavd._utils import default, strip_empties_from_dict
 from pyavd._utils.avd_templar import AVDTemplar
 from pyavd.api.pool_manager import PoolManager
 from pyavd.api.schemas import AVDDesign
 
 if typing.TYPE_CHECKING:
     from collections.abc import Generator
+    from typing import TypeVar
 
     from ansible.inventory.host import Host
+    from typing_extensions import Self
+
+    class DataclassInstance(typing.Protocol):
+        __dataclass_fields__: typing.ClassVar[dict[str, typing.Any]]
+
+    DataclassT = TypeVar("DataclassT", bound=DataclassInstance)
 
 ANSIBLE_ABOVE_2_19 = ansible_version.startswith(("2.2", "2.19"))
 DEFAULT_FABRIC = "__UNSET_FABRIC_NAME__"
@@ -75,10 +84,47 @@ class PathNotDirError(ValueError):
         return f"The {self.field} path is invalid. The path must point to a directory."
 
 
+@dataclasses.dataclass
+class DocumentationConfigOverrides:
+    device_docs: bool | None = None
+    fabric_doc: bool | None = None
+    include_connected_endpoints: bool | None = None
+    p2p_links_csv: bool | None = None
+    toc: bool | None = None
+    topology_csv: bool | None = None
+
+
 @dataclasses.dataclass(frozen=True)
-class Documentation:
+class DocumentationConfig:
+    device_docs: bool
+    fabric_doc: bool
+    include_connected_endpoints: bool
+    p2p_links_csv: bool
+    toc: bool
+    topology_csv: bool
+
+    @classmethod
+    def from_parent(
+        cls,
+        parent: Self,
+        overrides: DocumentationConfigOverrides,
+    ) -> Self:
+        return cls(
+            device_docs=default(overrides.device_docs, parent.device_docs),
+            fabric_doc=default(overrides.fabric_doc, parent.fabric_doc),
+            include_connected_endpoints=default(overrides.include_connected_endpoints, parent.include_connected_endpoints),
+            p2p_links_csv=default(overrides.p2p_links_csv, parent.p2p_links_csv),
+            toc=default(overrides.toc, parent.toc),
+            topology_csv=default(overrides.topology_csv, parent.topology_csv),
+        )
+
+
+@dataclasses.dataclass(frozen=True)
+class ProjectDocumentationConfig(DocumentationConfig):
+    """Project documentation config implementing defaults for DocumentationConfig."""
+
     device_docs: bool = True
-    fabric_documentation: bool = True
+    fabric_doc: bool = True
     include_connected_endpoints: bool = False
     topology_csv: bool = False
     p2p_links_csv: bool = False
@@ -86,39 +132,208 @@ class Documentation:
 
 
 @dataclasses.dataclass
-class Configuration:
-    inventory_dir: pathlib.Path
-    output_dir: pathlib.Path
-    docs_dir: pathlib.Path
-    inventory_file: str
-    no_clean: bool
-    error_dir: pathlib.Path
-    fabric_name: str
-    """Fabric name. Will be overwritten for each fabric."""
-    structured_config_suffix: typing.Literal["yml", "yaml", "json"] = "yml"
-    digital_twin: bool = False
-    documentation: Documentation = dataclasses.field(default_factory=Documentation)
+class FabricConfigOverrides:
+    """Optional config overrides."""
+
+    clean: bool | None = None
+    device_configs: bool | None = None
+    digital_twin: bool | None = None
+    docs_dir: pathlib.Path | None = None
+    documentation: DocumentationConfigOverrides = dataclasses.field(default_factory=DocumentationConfigOverrides)
+    dump_tracebacks: bool | None = None
+    error_dir: pathlib.Path | None = None
+    output_dir: pathlib.Path | None = None
+    structured_config_suffix: typing.Literal["yml", "yaml", "json"] | None = None
+
+
+@dataclasses.dataclass(frozen=True)
+class ProjectConfig:
+    """Project config implementing defaults for Config."""
+
+    project_dir: pathlib.Path
+    clean: bool = True
     custom_templates: bool = False
     device_configs: bool = True
+    digital_twin: bool = False
+    docs_dir: pathlib.Path = dataclasses.field(default_factory=lambda: pathlib.Path("documentation"))
+    documentation: DocumentationConfig = dataclasses.field(default_factory=ProjectDocumentationConfig)
     dump_tracebacks: bool = False
+    error_dir: pathlib.Path = dataclasses.field(default_factory=lambda: pathlib.Path("errors"))
+    inventory_file: str = "inventory.yml"
+    output_dir: pathlib.Path = dataclasses.field(default_factory=lambda: pathlib.Path("intended"))
+    structured_config_suffix: typing.Literal["yml", "yaml", "json"] = "yml"
 
-    def __postinit__(self) -> None:
-        if not self.inventory_dir.is_dir():
-            msg = "inventory_dir"
-            raise PathNotDirError(msg)
-        if not self.output_dir.is_dir():
-            msg_0 = "--output-dir"
-            raise PathNotDirError(msg_0)
-        if not self.docs_dir.is_dir():
-            msg_1 = "--docs-dir"
-            raise PathNotDirError(msg_1)
+    @cached_property
+    def full_project_dir(self) -> pathlib.Path:
+        return self.project_dir.resolve()
+
+
+@dataclasses.dataclass(frozen=True)
+class ScenarioConfig:
+    scenario_name: str
+    project: ProjectConfig
+    custom_templates: bool
+    inventory_file: str
+
+    # Base config which may override the settings project level.
+    clean: bool
+    device_configs: bool
+    digital_twin: bool
+    docs_dir: pathlib.Path
+    documentation: DocumentationConfig
+    dump_tracebacks: bool
+    error_dir: pathlib.Path
+    output_dir: pathlib.Path
+    structured_config_suffix: typing.Literal["yml", "yaml", "json"]
+
+    @classmethod
+    def from_project(
+        cls,
+        scenario_name: str,
+        project: ProjectConfig,
+        overrides: ScenarioConfigOverrides,
+    ) -> Self:
+        return cls(
+            scenario_name=scenario_name,
+            project=project,
+            custom_templates=default(overrides.custom_templates, project.custom_templates),
+            inventory_file=default(overrides.inventory_file, project.inventory_file),
+            clean=default(overrides.clean, project.clean),
+            device_configs=default(overrides.device_configs, project.device_configs),
+            digital_twin=default(overrides.digital_twin, project.digital_twin),
+            docs_dir=default(overrides.docs_dir, project.docs_dir),
+            documentation=DocumentationConfig.from_parent(project.documentation, overrides.documentation),
+            dump_tracebacks=default(overrides.dump_tracebacks, project.dump_tracebacks),
+            error_dir=default(overrides.error_dir, project.error_dir),
+            output_dir=default(overrides.output_dir, project.output_dir),
+            structured_config_suffix=default(overrides.structured_config_suffix, project.structured_config_suffix),
+        )
+
+    @property
+    def full_project_dir(self) -> pathlib.Path:
+        return self.project.full_project_dir
+
+    @cached_property
+    def full_inventory_file(self) -> pathlib.Path:
+        return self.full_project_dir.joinpath(self.inventory_file).resolve()
+
+    @cached_property
+    def configs_dir(self) -> pathlib.Path:
+        return self.full_output_dir.joinpath("configs").resolve()
+
+    @cached_property
+    def structured_configs_dir(self) -> pathlib.Path:
+        return self.full_output_dir.joinpath("structured_configs").resolve()
+
+    @cached_property
+    def full_output_dir(self) -> pathlib.Path:
+        return self.full_project_dir.joinpath(self.output_dir).resolve()
+
+    @cached_property
+    def full_docs_dir(self) -> pathlib.Path:
+        return self.full_project_dir.joinpath(self.docs_dir).resolve()
+
+    @cached_property
+    def full_error_dir(self) -> pathlib.Path:
+        return self.full_project_dir.joinpath(self.error_dir).resolve()
 
     def get_cleanup_dirs(self) -> set[pathlib.Path]:
         """Return set of directories to clean up."""
-        return {self.output_dir.joinpath("configs"), self.output_dir.joinpath("structured_configs"), self.docs_dir, self.error_dir}
+        return {self.configs_dir, self.structured_configs_dir, self.full_docs_dir, self.full_error_dir}
 
 
-### Ansible wrappers
+@dataclasses.dataclass
+class ScenarioConfigOverrides(FabricConfigOverrides):
+    custom_templates: bool | None = None
+    inventory_file: str | None = None
+
+
+@dataclasses.dataclass(frozen=True)
+class FabricConfig:
+    fabric_name: str
+    scenario: ScenarioConfig
+
+    # Base config which may override the settings project level,
+    # except clean which is local for the fabric level.
+    device_configs: bool
+    digital_twin: bool
+    docs_dir: pathlib.Path
+    documentation: DocumentationConfig
+    dump_tracebacks: bool
+    error_dir: pathlib.Path
+    output_dir: pathlib.Path
+    structured_config_suffix: typing.Literal["yml", "yaml", "json"]
+
+    clean: bool = False
+
+    @classmethod
+    def from_scenario(
+        cls,
+        fabric_name: str,
+        scenario: ScenarioConfig,
+        overrides: FabricConfigOverrides,
+    ) -> Self:
+        return cls(
+            fabric_name=fabric_name,
+            scenario=scenario,
+            clean=overrides.clean if overrides.clean is not None else False,
+            device_configs=default(overrides.device_configs, scenario.device_configs),
+            digital_twin=default(overrides.digital_twin, scenario.digital_twin),
+            docs_dir=default(overrides.docs_dir, scenario.docs_dir),
+            documentation=DocumentationConfig.from_parent(scenario.documentation, overrides.documentation),
+            dump_tracebacks=default(overrides.dump_tracebacks, scenario.dump_tracebacks),
+            error_dir=default(overrides.error_dir, scenario.error_dir),
+            output_dir=default(overrides.output_dir, scenario.output_dir),
+            structured_config_suffix=default(overrides.structured_config_suffix, scenario.structured_config_suffix),
+        )
+
+    @property
+    def project(self) -> ProjectConfig:
+        return self.scenario.project
+
+    @property
+    def full_project_dir(self) -> pathlib.Path:
+        return self.project.full_project_dir
+
+    @property
+    def custom_templates(self) -> bool:
+        return self.scenario.custom_templates
+
+    @cached_property
+    def configs_dir(self) -> pathlib.Path:
+        return self.full_output_dir.joinpath("configs").resolve()
+
+    @cached_property
+    def structured_configs_dir(self) -> pathlib.Path:
+        return self.full_output_dir.joinpath("structured_configs").resolve()
+
+    @cached_property
+    def full_output_dir(self) -> pathlib.Path:
+        return self.full_project_dir.joinpath(self.output_dir).resolve()
+
+    @cached_property
+    def full_docs_dir(self) -> pathlib.Path:
+        return self.full_project_dir.joinpath(self.docs_dir).resolve()
+
+    @cached_property
+    def full_error_dir(self) -> pathlib.Path:
+        return self.full_project_dir.joinpath(self.error_dir).resolve()
+
+    def get_cleanup_dirs(self) -> set[pathlib.Path]:
+        """Return set of directories to clean up."""
+        return {self.configs_dir, self.structured_configs_dir, self.full_docs_dir, self.full_error_dir}
+
+
+@dataclasses.dataclass(frozen=True)
+class Project:
+    config: ProjectConfig
+    scenarios: list[Scenario]
+
+
+@dataclasses.dataclass(frozen=True)
+class Scenario:
+    config: ScenarioConfig
+    fabric_overrides: dict[str, FabricConfigOverrides]
 
 
 class AnsibleInventory:  # pylint: disable=too-few-public-methods
@@ -149,7 +364,7 @@ class AnsibleInventory:  # pylint: disable=too-few-public-methods
 
 
 class AvdBuildContext:
-    configuration: Configuration
+    scenario: ScenarioConfig
     executor: Executor
     """
     ProcessPoolExecutor for CPU-intensive device builds.
@@ -160,27 +375,27 @@ class AvdBuildContext:
 
     def __init__(
         self,
-        configuration: Configuration,
+        scenario: ScenarioConfig,
         max_workers: int | None = None,
         validation_max_workers: int | None = None,
     ) -> None:
-        self.configuration = configuration
+        self.scenario = scenario
 
         # The build server has active threads, so avoid forking directly from it.
         self.executor = ProcessPoolExecutor(
             max_workers=max_workers,
             mp_context=get_context("forkserver"),
             initializer=initialize_worker,
-            initargs=(configuration,),
+            initargs=(scenario,),
         )
         self.validation_max_workers = validation_max_workers
 
-        if configuration.custom_templates:
+        if scenario.custom_templates:
             # Initialize the Ansible plugin loader in the main process.
             # This must happen before loading the inventory.
             init_plugin_loader()
 
-        self.inventory = AnsibleInventory(configuration.inventory_dir.joinpath(configuration.inventory_file))
+        self.inventory = AnsibleInventory(scenario.full_inventory_file)
 
         # Initialize the schema store in main process
         pyavd_init_store()
@@ -194,6 +409,9 @@ class AvdV6Build:
     context: AvdBuildContext
     """Shared context between different fabric builds for the same inventory."""
 
+    config: FabricConfig
+    """Config for one Fabric build."""
+
     _avd_facts_shm_info: SharedMemoryMetadata | None
     """Shared memory metadata for avd_facts (created in common_build_stage, used by workers)."""
     _finalizer: weakref.finalize | None
@@ -206,6 +424,7 @@ class AvdV6Build:
 
     def __init__(
         self,
+        config: FabricConfig,
         context: AvdBuildContext,
         devices: list[str],
     ) -> None:
@@ -213,9 +432,11 @@ class AvdV6Build:
         Initialize an AVD v6 build.
 
         Args:
+            config: Build configuration for this fabric.
             context: Context object holding reusable objects like configuration and executor.
             devices: List of devices to include in this build.
         """
+        self.config = config
         self.context = context
         self.devices = devices
         self._validated_inputs_json = {}  # Store validated JSON strings in main process
@@ -224,10 +445,6 @@ class AvdV6Build:
         self._loaded_avd_designs = {}
 
         self._finalizer = None
-
-    @property
-    def configuration(self) -> Configuration:
-        return self.context.configuration
 
     @property
     def inventory(self) -> AnsibleInventory:
@@ -292,7 +509,7 @@ class AvdV6Build:
         """
         with ThreadPoolExecutor(max_workers=self.context.validation_max_workers) as executor:
             results = executor.map(
-                validate_inputs_for_one_device, self.devices, (self.inventory.get_vars(device) for device in self.devices), repeat(self.configuration)
+                validate_inputs_for_one_device, self.devices, (self.inventory.get_vars(device) for device in self.devices), repeat(self.config)
             )
             for result in results:
                 if result.pyavd_utils_validated_data_result.validated_data is not None:
@@ -316,8 +533,7 @@ class AvdV6Build:
         """
         # Ensure avd_facts shared memory was created in common_build_stage
         if self._avd_facts_shm_info is None:
-            self.configuration.error_dir.mkdir(parents=True, exist_ok=True)
-            self.configuration.error_dir.joinpath("internal_error.txt").write_text("avd_facts shared memory not initialized. Did you run common_build_stage()?")
+            dump_error("avd_facts shared memory not initialized. Did you run common_build_stage()?", self.config, "internal_device")
             yield False
             return
 
@@ -329,7 +545,7 @@ class AvdV6Build:
             [self._loaded_avd_designs[d] for d in validated_devices],
             [self._validated_inputs_dict[d] for d in validated_devices],
             repeat(self._avd_facts_shm_info),
-            repeat(self.configuration),
+            repeat(self.config),
             chunksize=self._chunk_size(),
         )
 
@@ -350,18 +566,18 @@ class AvdV6Build:
         # Clear validated JSON strings - no longer needed
         self._validated_inputs_json.clear()
 
-        pool_manager = PoolManager(self.configuration.output_dir)
+        pool_manager = PoolManager(self.config.output_dir)
         # Get avd_facts from PyAVD
         try:
             avd_facts = get_facts(
                 self._loaded_avd_designs,
                 all_hostvars=self._validated_inputs_dict,
                 pool_manager=pool_manager,
-                templar=get_avd_templar(self.configuration),
-                digital_twin=self.configuration.digital_twin,
+                templar=get_avd_templar(self.config),
+                digital_twin=self.config.digital_twin,
             )
         except Exception as e:
-            dump_error(e, self.configuration, "avd_facts")
+            dump_exception(e, self.config, "avd_facts")
             return False
 
         # Save poolmanager data
@@ -375,8 +591,7 @@ class AvdV6Build:
 
             if shm.buf is None:
                 shm.close()
-                self.configuration.error_dir.mkdir(parents=True, exist_ok=True)
-                self.configuration.error_dir.joinpath("internal_error.txt").write_text("Shared Memory could not be created.")
+                dump_error("Shared Memory could not be created.", self.config, "internal_common")
                 return False
 
             shm.buf[:avd_facts_size] = avd_facts_bytes
@@ -397,7 +612,7 @@ class AvdV6Build:
                 self._avd_facts_shm_info,
             )
         except Exception as e:
-            dump_error(e, self.configuration, "internal")
+            dump_exception(e, self.config, "internal")
             return False
         else:
             return True
@@ -418,35 +633,33 @@ class AvdV6Build:
         """
         # Ensure avd_facts shared memory was created in common_build_stage
         if self._avd_facts_shm_info is None:
-            self.configuration.error_dir.mkdir(parents=True, exist_ok=True)
-            self.configuration.error_dir.joinpath("internal_error.txt").write_text("avd_facts shared memory not initialized. Did you run common_build_stage()?")
+            dump_error("avd_facts shared memory not initialized. Did you run common_build_stage()?", self.config, "internal_common_doc")
             return False
 
         # Ensure avd_facts shared memory was created in common_build_stage
         if self._avd_facts_shm_info is None:
-            self.configuration.error_dir.mkdir(parents=True, exist_ok=True)
-            self.configuration.error_dir.joinpath("internal_error.txt").write_text("avd_facts shared memory not initialized. Did you run common_build_stage()?")
+            dump_error("avd_facts shared memory not initialized. Did you run common_build_stage()?", self.config, "internal_common_doc")
             return False
 
         # Load avd_facts from shared memory.
         avd_facts = _load_avd_facts_from_shm(self._avd_facts_shm_info.name, self._avd_facts_shm_info.size)
         structured_configs = self.read_structured_configs()
 
-        fabric_name: str = self.context.configuration.fabric_name
+        fabric_name: str = self.config.fabric_name
 
-        doc_config = self.configuration.documentation
+        doc_config = self.config.documentation
         output = pyavd.get_fabric_documentation(
             avd_facts=avd_facts,
             structured_configs=structured_configs,
             fabric_name=fabric_name,
-            fabric_documentation=doc_config.fabric_documentation,
+            fabric_documentation=doc_config.fabric_doc,
             include_connected_endpoints=doc_config.include_connected_endpoints,
             topology_csv=doc_config.topology_csv,
             p2p_links_csv=doc_config.p2p_links_csv,
             toc=doc_config.toc,
-            digital_twin=self.configuration.digital_twin,
+            digital_twin=self.config.digital_twin,
         )
-        fabric_doc_dir = self.configuration.docs_dir.joinpath("fabric")
+        fabric_doc_dir = self.config.full_docs_dir.joinpath("fabric")
         if output.fabric_documentation:
             fabric_doc_dir.mkdir(parents=True, exist_ok=True)
             fabric_doc_dir.joinpath(f"{fabric_name}-documentation.md").write_text(output.fabric_documentation)
@@ -481,8 +694,8 @@ class AvdV6Build:
         return structured_configs
 
     def read_one_structured_config(self, device: str) -> dict:
-        structured_config_dir = self.configuration.output_dir.joinpath("structured_configs")
-        structured_config_suffix = self.configuration.structured_config_suffix
+        structured_config_dir = self.config.structured_configs_dir
+        structured_config_suffix = self.config.structured_config_suffix
         path = pathlib.Path(structured_config_dir, f"{device}.{structured_config_suffix}")
         if not path.exists():
             return {}
@@ -499,7 +712,7 @@ class AvdV6Build:
 ### Moved out of the class to avoid the whole class being pickled.
 
 
-def validate_inputs_for_one_device(device: str, device_avd_inputs: dict, configuration: Configuration) -> DevicePyAVDUtilsValidatedDataResult:
+def validate_inputs_for_one_device(device: str, device_avd_inputs: dict, config: FabricConfig) -> DevicePyAVDUtilsValidatedDataResult:
     """
     Run PyAVD to validate AVD inputs for one device.
 
@@ -518,11 +731,11 @@ def validate_inputs_for_one_device(device: str, device_avd_inputs: dict, configu
 
     # Emit deprecation warnings to files
     if deprecations := pyavd_utils_validated_data_result.validation_result.deprecations:
-        dump_deprecations(deprecations, configuration, "input_validation", device)
+        dump_deprecations(deprecations, config, "input_validation", device)
 
     # Check validation status
     if pyavd_utils_validated_data_result.validated_data is None:
-        dump_violations(pyavd_utils_validated_data_result.validation_result.violations, configuration, "input_validation", device)
+        dump_violations(pyavd_utils_validated_data_result.validation_result.violations, config, "input_validation", device)
 
     return DevicePyAVDUtilsValidatedDataResult(device, pyavd_utils_validated_data_result)
 
@@ -532,7 +745,7 @@ def build_validate_and_render_for_one_device(
     device_avd_validated_inputs: AVDDesign,
     device_avd_validated_inputs_dict: dict,
     avd_facts_metadata: SharedMemoryMetadata,
-    configuration: Configuration,
+    config: FabricConfig,
 ) -> bool:
     """
     Build, validate, and render config for one device.
@@ -556,7 +769,7 @@ def build_validate_and_render_for_one_device(
         device_avd_validated_inputs: AVDDesign object.
         device_avd_validated_inputs_dict: Dict with validated inputs (hostvars)
         avd_facts_metadata: Metadata to access `avd_facts` shared memory.
-        configuration: Configuration object with dirs
+        config: FabricConfig object with dirs and other build parameters
     """
     # Load (and cache) avd_facts from shared memory in this worker.
     avd_facts = _load_avd_facts_from_shm(avd_facts_metadata.name, avd_facts_metadata.size)
@@ -568,19 +781,19 @@ def build_validate_and_render_for_one_device(
             inputs=device_avd_validated_inputs,
             hostvars=device_avd_validated_inputs_dict,
             all_facts=avd_facts,
-            templar=get_avd_templar(configuration),
-            digital_twin=configuration.digital_twin,
+            templar=get_avd_templar(config),
+            digital_twin=config.digital_twin,
         )._as_dict()
     except Exception as e:
-        dump_error(e, configuration, "structured_config", device)
+        dump_exception(e, config, "structured_config", device)
         return False
     finally:
         # Free device_avd_validated_inputs - no longer needed after structured config is built
         del device_avd_validated_inputs
 
     # Phase 2: Serialize structured config
-    configuration.output_dir.joinpath("structured_configs").mkdir(parents=True, exist_ok=True)
-    with configuration.output_dir.joinpath("structured_configs", f"{device}.yml").open("w", encoding="utf-8") as stream:
+    config.structured_configs_dir.mkdir(parents=True, exist_ok=True)
+    with config.structured_configs_dir.joinpath(f"{device}.yml").open("w", encoding="utf-8") as stream:
         yaml.dump(eos_config, stream=stream, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130)
 
     # Phase 3: Validate structured config
@@ -588,59 +801,59 @@ def build_validate_and_render_for_one_device(
 
     # Emit deprecation warnings to files
     if deprecations := validated_data_result.validation_result.deprecations:
-        dump_deprecations(deprecations, configuration, "structured_config_validation", device)
+        dump_deprecations(deprecations, config, "structured_config_validation", device)
 
     # Check validation status
     if validated_data_result.validated_data is None:
-        dump_violations(validated_data_result.validation_result.violations, configuration, "structured_config_validation", device)
+        dump_violations(validated_data_result.validation_result.violations, config, "structured_config_validation", device)
 
         # Validation failed - free eos_config before returning
         del eos_config
         return False
 
     # Phase 4: Render EOS CLI
-    if configuration.device_configs:
+    if config.device_configs:
         try:
             eos_cli = pyavd.get_device_config(eos_config)
         except Exception as e:
-            dump_error(e, configuration, "eos_cli", device)
+            dump_exception(e, config, "eos_cli", device)
             return False
 
-        configuration.output_dir.joinpath("configs").mkdir(parents=True, exist_ok=True)
-        configuration.output_dir.joinpath("configs", f"{device}.cfg").write_text(eos_cli)
+        config.configs_dir.mkdir(parents=True, exist_ok=True)
+        config.configs_dir.joinpath(f"{device}.cfg").write_text(eos_cli)
         del eos_cli
 
     # Phase 5: Render device documentation
-    if configuration.documentation.device_docs:
+    if config.documentation.device_docs:
         try:
             device_doc = pyavd.get_device_doc(eos_config, add_md_toc=True)
         except Exception as e:
-            dump_error(e, configuration, "device_doc", device)
+            dump_exception(e, config, "device_doc", device)
             return False
 
-        configuration.docs_dir.joinpath("devices").mkdir(parents=True, exist_ok=True)
-        configuration.docs_dir.joinpath("devices", f"{device}.md").write_text(device_doc)
+        config.full_docs_dir.joinpath("devices").mkdir(parents=True, exist_ok=True)
+        config.full_docs_dir.joinpath("devices", f"{device}.md").write_text(device_doc)
         del device_doc
 
     return True
 
 
-def initialize_worker(configuration: Configuration) -> None:
+def initialize_worker(config: ScenarioConfig) -> None:
     """Initialize various objects once per worker."""
     # Ensure the PyAVD store is initialized once per worker process.
     _ensure_pyavd_store_initialized()
 
-    if configuration.custom_templates:
+    if config.custom_templates:
         init_plugin_loader()
 
 
-def get_avd_templar(configuration: Configuration) -> AVDTemplar | None:
-    if not configuration.custom_templates:
+def get_avd_templar(config: FabricConfig) -> AVDTemplar | None:
+    if not config.custom_templates:
         return None
 
     searchpath = [
-        str(configuration.inventory_dir.joinpath("templates")),
-        str(configuration.inventory_dir),
+        str(config.full_project_dir.joinpath("templates")),
+        str(config.full_project_dir),
     ]
     dataloader = DataLoader()
     return AVDTemplar(
@@ -651,27 +864,34 @@ def get_avd_templar(configuration: Configuration) -> AVDTemplar | None:
     )
 
 
-def dump_deprecations(deprecations: list[pyavd_utils.validation.Deprecation], configuration: Configuration, stage: str, device: str) -> None:
-    error_dir = configuration.error_dir.joinpath(configuration.fabric_name)
+def dump_deprecations(deprecations: list[pyavd_utils.validation.Deprecation], config: FabricConfig, stage: str, device: str) -> None:
+    error_dir = config.full_error_dir.joinpath(config.fabric_name)
     error_dir = error_dir.joinpath(device) if device else error_dir
     error_dir.mkdir(parents=True, exist_ok=True)
     err_lines = [f"[{deprecation.path}]: '{deprecation.message}'" for deprecation in deprecations]
     error_dir.joinpath(f"{stage}_deprecations.txt").write_text("\n".join(err_lines))
 
 
-def dump_violations(violations: list[pyavd_utils.validation.Violation], configuration: Configuration, stage: str, device: str) -> None:
-    error_dir = configuration.error_dir.joinpath(configuration.fabric_name)
+def dump_violations(violations: list[pyavd_utils.validation.Violation], config: FabricConfig, stage: str, device: str) -> None:
+    error_dir = config.full_error_dir.joinpath(config.fabric_name)
     error_dir = error_dir.joinpath(device) if device else error_dir
     error_dir.mkdir(parents=True, exist_ok=True)
     err_lines = [f"[{violation.path}]: '{violation.message}'" for violation in violations]
     error_dir.joinpath(f"{stage}_violations.txt").write_text("\n".join(err_lines))
 
 
-def dump_error(exc: Exception, configuration: Configuration, stage: str, device: str | None = None) -> None:
-    error_dir = configuration.error_dir.joinpath(configuration.fabric_name)
+def dump_error(error: str, config: FabricConfig, stage: str, device: str | None = None) -> None:
+    error_dir = config.full_error_dir.joinpath(config.fabric_name)
     error_dir = error_dir.joinpath(device) if device else error_dir
     error_dir.mkdir(parents=True, exist_ok=True)
-    err_lines = traceback.format_exception(exc) if configuration.dump_tracebacks else traceback.format_exception_only(exc)
+    error_dir.joinpath(f"{stage}_error.txt").write_text(error)
+
+
+def dump_exception(exc: Exception, config: FabricConfig, stage: str, device: str | None = None) -> None:
+    error_dir = config.full_error_dir.joinpath(config.fabric_name)
+    error_dir = error_dir.joinpath(device) if device else error_dir
+    error_dir.mkdir(parents=True, exist_ok=True)
+    err_lines = traceback.format_exception(exc) if config.dump_tracebacks else traceback.format_exception_only(exc)
     error_dir.joinpath(f"{stage}_error.txt").write_text("\n".join(err_lines))
 
 
@@ -772,23 +992,78 @@ def group_devices_per_fabric(context: AvdBuildContext) -> dict[str, list[str]]:
     return fabric_devices
 
 
-def build(configuration: Configuration) -> None:
+def load_config_from_dict(dataclass_type: type[DataclassT], documentation_type: type[DataclassInstance], data: dict[str, typing.Any]) -> DataclassT:
+    fields = dataclasses.fields(dataclass_type)
+    config_keys = {field.name for field in fields}
+    raw_config = {key: value for key, value in data.items() if key in config_keys}
+    if raw_documentation := raw_config.get("documentation"):
+        raw_config["documentation"] = documentation_type(**raw_documentation)
+    return dataclass_type(**raw_config)
+
+
+def load_config(args: Args) -> Project:
+    with args.project_dir.joinpath("e2e-test.toml").open("rb") as stream:
+        raw_config = tomllib.load(stream)
+        project_config = load_config_from_dict(ProjectConfig, ProjectDocumentationConfig, dict(raw_config, project_dir=args.project_dir))
+        scenarios: list[Scenario] = []
+        if "scenarios" not in raw_config:
+            scenarios.append(Scenario(ScenarioConfig.from_project("default", project_config, ScenarioConfigOverrides()), fabric_overrides={}))
+        elif not isinstance((raw_scenarios := raw_config["scenarios"]), dict):
+            msg = "Invalid config. 'scenarios'' must be a dict."
+            raise TypeError(msg)
+        else:
+            for scenario_name, raw_scenario in raw_scenarios.items():
+                if not isinstance(raw_scenario, dict):
+                    msg = f"Invalid config for scenario '{scenario_name}'. Each entry in 'scenarios' must be a dict."
+                    raise TypeError(msg)
+                scenario_overrides = load_config_from_dict(ScenarioConfigOverrides, DocumentationConfigOverrides, raw_scenario)
+                fabric_overrides = {}
+                if "fabrics" not in raw_scenario:
+                    pass
+                elif not isinstance((raw_fabrics := raw_scenario["fabrics"]), dict):
+                    msg = f"Invalid config for scenario '{scenario_name}'. 'fabrics' must be a list."
+                    raise TypeError(msg)
+                else:
+                    for fabric_name, raw_fabric in raw_fabrics.items():
+                        if not isinstance(raw_fabric, dict):
+                            msg = f"Invalid config for fabric '{fabric_name}' under scenario '{scenario_name}'. Each entry in 'fabrics' must be a dict."
+                            raise TypeError(msg)
+                        one_fabric_overrides = load_config_from_dict(FabricConfigOverrides, DocumentationConfigOverrides, raw_fabric)
+                        fabric_overrides[fabric_name] = one_fabric_overrides
+                scenarios.append(
+                    Scenario(config=ScenarioConfig.from_project(scenario_name, project_config, scenario_overrides), fabric_overrides=fabric_overrides)
+                )
+        return Project(config=project_config, scenarios=scenarios)
+
+
+def clean_dirs(configuration: ScenarioConfig | FabricConfig) -> None:
+    """Delete directories recursively."""
+    for directory in configuration.get_cleanup_dirs():
+        if directory.exists():
+            shutil.rmtree(directory)
+
+
+def build(scenario: Scenario) -> None:
     """
     Build AVD for the given inventory path.
 
     Outputs are written to the output_dir relative to the inventory path.
     Captures errors for each stage and writes error files in the output path under the error path.
     """
-    effective_output_dir = configuration.inventory_dir.joinpath(configuration.output_dir)
-    print("Building inventory", configuration.inventory_dir)
-    print("Outputs to", effective_output_dir)
+    if scenario.config.clean:
+        clean_dirs(scenario.config)
 
-    inventory_context = AvdBuildContext(configuration)
-    fabric_devices = group_devices_per_fabric(inventory_context)
-    for fabric, devices in fabric_devices.items():
-        print("Building fabric", fabric)
-        configuration.fabric_name = fabric
-        build = AvdV6Build(inventory_context, devices)
+    build_context = AvdBuildContext(scenario.config)
+    fabric_devices = group_devices_per_fabric(build_context)
+    for fabric_name, devices in fabric_devices.items():
+        print("Building fabric", fabric_name)
+        fabric_overrides = scenario.fabric_overrides.get(fabric_name, FabricConfigOverrides())
+        fabric_config = FabricConfig.from_scenario(fabric_name, scenario.config, fabric_overrides)
+
+        if fabric_config.clean:
+            clean_dirs(fabric_config)
+
+        build = AvdV6Build(fabric_config, build_context, devices)
 
         validation_result = list(build.validation_stage())
         if not any(validation_result):
@@ -804,14 +1079,7 @@ def build(configuration: Configuration) -> None:
 
         build.close()
 
-    inventory_context.close()
-
-
-def clean_dirs(configuration: Configuration) -> None:
-    """Delete directories recursively."""
-    for directory in configuration.get_cleanup_dirs():
-        if directory.exists():
-            shutil.rmtree(directory)
+    build_context.close()
 
 
 def get_git_repo(path: pathlib.Path) -> git.Repo:
@@ -830,62 +1098,59 @@ def get_subdir_diff(repo: git.Repo, path: pathlib.Path) -> str:
     return repo.git.diff("HEAD", "--", path)
 
 
-def parse_args() -> Configuration:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("inventory_dir", type=pathlib.Path)
-    parser.add_argument("-o", "--output-dir", type=pathlib.Path, help="Output path relative to the inventory path.", default="intended/")
-    parser.add_argument("-d", "--docs-dir", type=pathlib.Path, help="Documentation path relative to the inventory path.", default="documentation/")
-    parser.add_argument("-i", "--inventory-file", help="Inventory file name.", default="inventory.yml")
-    parser.add_argument("--no-clean", action="store_true", help="Don't clean output and documentation paths before running.", default=False)
-    parser.add_argument("--no-device-configs", action="store_true", help="Don't generate device configs.", default=False)
-    parser.add_argument("--no-device-docs", action="store_true", help="Don't generate device docs.", default=False)
-    parser.add_argument("--no-fabric-doc", action="store_true", help="Don't generate fabric doc.", default=False)
-    parser.add_argument("--no-toc", action="store_true", help="Don't generate TOC as part of the fabric documentation.", default=False)
-    parser.add_argument("--include-connected-endpoints", action="store_true", help="Include connected endpoints in the fabric documentation.", default=False)
-    parser.add_argument("--topology-csv", action="store_true", help="Generate topology CSV.", default=False)
-    parser.add_argument("--p2p-links-csv", action="store_true", help="Generate p2p links CSV.", default=False)
-    parser.add_argument("--digital-twin", action="store_true", help="Run in digital-twin mode.", default=False)
-    parser.add_argument("--custom-templates", action="store_true", help="Support jinja templates for ip addressing and descriptions.", default=False)
-    parser.add_argument("--tracebacks", action="store_true", help="Include tracebacks in dumped errors.", default=False)
+@dataclasses.dataclass
+class Args:
+    project_dir: pathlib.Path
 
-    args = parser.parse_args()
-    inventory_dir: pathlib.Path = args.inventory_dir.resolve()
-    return Configuration(
-        fabric_name=DEFAULT_FABRIC,
-        inventory_dir=inventory_dir,
-        output_dir=inventory_dir.joinpath(args.output_dir),
-        docs_dir=inventory_dir.joinpath(args.docs_dir),
-        inventory_file=args.inventory_file,
-        no_clean=args.no_clean,
-        digital_twin=args.digital_twin,
-        device_configs=not args.no_device_configs,
-        documentation=Documentation(
-            device_docs=not args.no_device_docs,
-            fabric_documentation=not args.no_fabric_doc,
-            toc=not args.no_toc,
-            include_connected_endpoints=args.include_connected_endpoints,
-            topology_csv=args.topology_csv,
-            p2p_links_csv=args.p2p_links_csv,
-        ),
-        error_dir=inventory_dir.joinpath("errors/"),
-        custom_templates=args.custom_templates,
-        dump_tracebacks=args.tracebacks,
+
+def parse_args() -> Args:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "project",
+        type=pathlib.Path,
+        help="Path to a git project containing an e2e-test.toml file. Also accepts a path directly to an 'e2e-test.toml' file.",
     )
+    args = parser.parse_args()
+
+    project: pathlib.Path = args.project.resolve()
+    if not project.exists():
+        msg = f"The given project path '{project}' does not exist."
+        raise FileNotFoundError(msg)
+    if project.is_dir():
+        project_dir = project
+        if not project_dir.joinpath("e2e-test.toml").exists():
+            msg = f"The given project directory '{project}' does not contain a 'e2e-test.toml' file."
+            raise FileNotFoundError(msg)
+    elif project.is_file():
+        if not project.parts[-1].endswith("e2e-test.toml"):
+            msg = f"The given project file '{project}' must be named e2e-test.toml."
+            raise ValueError(msg)
+        project_dir = project.parent
+    else:
+        msg = "Project must be a path to a directory or an 'e2e-test.toml' file."
+        raise ValueError(msg)
+
+    repo = get_git_repo(project_dir)
+    if not repo:
+        msg = "The project path must be inside a git repo."
+        raise ValueError(msg)
+
+    return Args(project_dir=project_dir)
 
 
 def main() -> int:
-    configuration = parse_args()
+    args = parse_args()
+    project = load_config(args)
 
-    repo = get_git_repo(configuration.inventory_dir)
-    if not repo:
-        msg = "The inventory_dir must be inside a git repo."
-        raise ValueError(msg)
-    if not configuration.no_clean:
-        clean_dirs(configuration)
+    print("Project", project.config.project_dir)
 
-    # Changing to inventory dir to ensure relative paths in things like pool manager files resolve correctly.
-    os.chdir(configuration.inventory_dir)
-    build(configuration)
+    # Change to project dir to ensure things like PoolManager can resolve relative paths.
+    os.chdir(project.config.full_project_dir)
+
+    for scenario in project.scenarios:
+        print("Running scenario", scenario.config.scenario_name)
+        build(scenario)
+
     return 0
 
 

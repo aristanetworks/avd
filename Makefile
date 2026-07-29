@@ -200,9 +200,7 @@ e2e: ##Run end-to-end tests regenerating all outputs and capturing errors to fil
 		--topology-csv
 
 	@echo ########################### molecule/digital_twin ###########################
-	uv run tools/e2e-test-avd.py \
-		ansible_collections/arista/avd/extensions/molecule/digital_twin \
-		--inventory-file inventory/hosts.yml
+	uv run tools/e2e-test-avd.py ansible_collections/arista/avd/extensions/molecule/digital_twin
 
 	@echo ########################### molecule/digital_twin digital-twin ###########################
 	uv run tools/e2e-test-avd.py \
