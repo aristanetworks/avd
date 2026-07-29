@@ -81,15 +81,14 @@ class MlagMixin(Protocol):
         node_config = self.node_type_config.nodes.get(hostname, default=Undefined)
         node_mlag = None if isinstance(node_config, UndefinedType) else node_config._get("mlag")
 
-        member_mlag = node_mlag
-        if member_mlag is None:
-            member_mlag = self.node_group_config.nodes[hostname]._get("mlag")
-        if member_mlag is None:
-            member_mlag = self.node_group_config._get("mlag")
-        if member_mlag is None:
-            member_mlag = self.node_type_config.defaults._get("mlag")
-        if member_mlag is None:
-            member_mlag = True
+        default_member_mlag = self.node_group_config.nodes[hostname].mlag
+        member_mlag = default(
+            node_mlag,
+            self.node_group_config.nodes[hostname]._get("mlag"),
+            self.node_group_config._get("mlag"),
+            self.node_type_config.defaults._get("mlag"),
+            default_member_mlag,
+        )
 
         return member_mlag is True
 
