@@ -110,6 +110,9 @@ ignore = [
 convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
+"ansible_collections/arista/avd/tests/unit/**/__init__.py" = [
+  "CPY001", # Empty __init__.py required by ansible-test sanity empty-init.
+]
 "ansible_collections/arista/avd/plugins/*/*.py" = [
   "E402",   # Ansible plugins require a layout with imports below the docs
   "INP001", # implicit namespace package. Add an `__init__.py` - Ansible plugins are not in packages
