@@ -3,13 +3,16 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 if TYPE_CHECKING:
     from deepmerge.merger import Merger
 
 from deepmerge.strategy.core import STRATEGY_END
 from pyavd_utils.schema_store import get_list_primary_key
+
+VALID_SCHEMA_NAMES = frozenset(("eos_config", "eos_cli_config_gen"))
+PYAVD_UTILS_SCHEMA_NAME: Literal["eos_config"] = "eos_config"
 
 
 class MergeOnSchema:
@@ -20,6 +23,10 @@ class MergeOnSchema:
     """
 
     def __init__(self, schema_name: str | None = None) -> None:
+        if schema_name is not None and schema_name not in VALID_SCHEMA_NAMES:
+            msg = f"Unsupported schema name '{schema_name}'. Expected one of {sorted(VALID_SCHEMA_NAMES)}."
+            raise ValueError(msg)
+
         self.schema_name = schema_name
         self.get_list_primary_key = get_list_primary_key
 
@@ -33,7 +40,7 @@ class MergeOnSchema:
             return None
 
         try:
-            return self.get_list_primary_key(self.schema_name, [str(path_item) for path_item in path])
+            return self.get_list_primary_key(PYAVD_UTILS_SCHEMA_NAME, [str(path_item) for path_item in path])
         except Exception as error:
             msg = f"Unable to get the primary key for schema '{self.schema_name}' at schema path {path}."
             raise RuntimeError(msg) from error
