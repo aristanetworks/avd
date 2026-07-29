@@ -56,7 +56,7 @@ AVD is consumed through Ansible, Python, UI, and other interfaces. Descriptions 
 **Replace with:**
 
 | Instead of | Write |
-|---|---|
+| --- | --- |
 | `hostvars` | `input variables` |
 | `inventory_hostname` | `hostname` |
 | `inventory host` | `device` or `node` |
