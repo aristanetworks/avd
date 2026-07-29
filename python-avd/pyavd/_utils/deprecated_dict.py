@@ -20,6 +20,12 @@ class DeprecatedDict(dict):
 
     def __getitem__(self, key: Any) -> Any:
         if not self._done:
-            warnings.warn(self._message, AvdDeprecationWarning, stacklevel=2)
+            warnings.warn(self._message, DeprecationWarning, stacklevel=2)
             self._done = True
         return super().__getitem__(key)
+
+    def get(self, key: Any, default: Any = None) -> Any:
+        if not self._done:
+            warnings.warn(self._message, DeprecationWarning, stacklevel=1)
+            self._done = True
+        return super().get(key, default)
