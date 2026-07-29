@@ -17,7 +17,7 @@ def test_get_emits_deprecation() -> None:
         assert deprecated_dict["interface"] == "Ethernet1"
 
 
-def test_deprecated_dict_warning_only_once_on_getitem():
+def test_deprecated_dict_warning_only_once_on_getitem() -> None:
     d = DeprecatedDict({"a": 1, "b": 2}, _message="Deprecated access")
 
     # First access triggers warning
