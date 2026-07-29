@@ -91,6 +91,16 @@ router_bgp:
       - 10209:10209
     redistribute_routes:
     - learned
+  - id: 207
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10207
+    route_targets:
+      both:
+      - 10207:10207
+    redistribute_routes:
+    - learned
   - id: 202
     metadata:
       tenants:
@@ -195,6 +205,23 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 209:209
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        enabled: true
+  - name: VRF_ENABLED_ONLY
+    rd: 192.168.99.50:207
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 207:207
+      export:
+      - address_family: evpn
+        route_targets:
+        - 207:207
     router_id: 192.168.99.50
     redistribute:
       connected:
@@ -330,6 +357,13 @@ router_ospf:
     redistribute:
       bgp:
         enabled: true
+  - id: 207
+    vrf: VRF_ENABLED_ONLY
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
   - id: 202
     vrf: VRF_MATCH_EXTERNAL
     passive_interface_default: true
@@ -396,6 +430,14 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF_DEPRECATED_TRUE
   ip_address_virtual: 10.20.9.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: Vlan207
+  description: SVI_207
+  shutdown: false
+  vrf: VRF_ENABLED_ONLY
+  ip_address_virtual: 10.20.7.1/24
   metadata:
     tenants:
     - Tenant_OSPF_REDIST
@@ -468,6 +510,11 @@ vlans:
   metadata:
     tenants:
     - Tenant_OSPF_REDIST
+- id: 207
+  name: SVI_207
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
 - id: 202
   name: SVI_202
   metadata:
@@ -516,6 +563,11 @@ vrfs:
   metadata:
     tenants:
     - Tenant_OSPF_REDIST
+- name: VRF_ENABLED_ONLY
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
 - name: VRF_MATCH_EXTERNAL
   ip_routing: true
   metadata:
@@ -559,6 +611,8 @@ vxlan_interface:
         vni: 10210
       - id: 209
         vni: 10209
+      - id: 207
+        vni: 10207
       - id: 202
         vni: 10202
       - id: 201
@@ -578,6 +632,8 @@ vxlan_interface:
         vni: 210
       - name: VRF_DEPRECATED_TRUE
         vni: 209
+      - name: VRF_ENABLED_ONLY
+        vni: 207
       - name: VRF_MATCH_EXTERNAL
         vni: 202
       - name: VRF_MATCH_INTERNAL

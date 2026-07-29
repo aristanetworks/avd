@@ -104,6 +104,20 @@ tenants:
             enabled: true
             ip_address_virtual: 10.20.6.1/24
 
+      # Path: redistribute_ospf_settings.enabled: true, no match, no route_map -> ospf.enabled: true only (line 284 false branch)
+      - name: VRF_ENABLED_ONLY
+        vrf_vni: 207
+        vrf_id: 207
+        ospf:
+          enabled: true
+        redistribute_ospf_settings:
+          enabled: true
+        svis:
+          - id: 207
+            name: SVI_207
+            enabled: true
+            ip_address_virtual: 10.20.7.1/24
+
       # Path: legacy - neither field set explicitly; default redistribute_ospf: true -> ospf.enabled: true
       - name: VRF_DEFAULT_LEGACY
         vrf_vni: 208
