@@ -156,6 +156,7 @@ interface Port-Channel2
 | MGMT | False |
 | TENANT_A | True |
 | TENANT_B | True (ipv6 interfaces) |
+| TENANT_C | - |
 
 #### IP Routing Device Configuration
 
@@ -176,6 +177,14 @@ ip routing ipv6 interfaces vrf TENANT_B
 | MGMT | false |
 | TENANT_A | false |
 | TENANT_B | false |
+| TENANT_C | true |
+
+#### IPv6 Routing Device Configuration
+
+```eos
+!
+ipv6 unicast-routing vrf TENANT_C
+```
 
 ### Router BGP
 
@@ -256,6 +265,7 @@ router bgp 65006
 | MGMT | disabled |
 | TENANT_A | enabled |
 | TENANT_B | enabled (ipv6 interface) |
+| TENANT_C | disabled |
 
 ### VRF Instances Device Configuration
 
@@ -266,4 +276,6 @@ vrf instance MGMT
 vrf instance TENANT_A
 !
 vrf instance TENANT_B
+!
+vrf instance TENANT_C
 ```
