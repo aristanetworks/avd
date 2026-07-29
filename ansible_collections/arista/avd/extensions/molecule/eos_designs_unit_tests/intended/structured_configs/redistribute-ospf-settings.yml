@@ -184,8 +184,6 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
-      ospf:
-        enabled: true
   - name: VRF_DEPRECATED_TRUE
     rd: 192.168.99.50:209
     route_targets:

@@ -283,15 +283,14 @@ class RouterBgpMixin(Protocol):
                                 bgp_vrf.redistribute.ospf.enabled = True
                                 if ospf_redistribute.route_map:
                                     bgp_vrf.redistribute.ospf.route_map = ospf_redistribute.route_map
-                    else:
-                        if vrf.redistribute_ospf:
+                    elif vrf.redistribute_ospf:
+                            bgp_vrf.redistribute.ospf.enabled = True
                             warnings.warn(
                                 "<network_services_key>.vrfs.redistribute_ospf is deprecated and will be removed in AVD 7.0. "
                                 "Use redistribute_ospf_settings instead.",
                                 AristaAvdModelDeprecationWarning,
                                 stacklevel=2,
                             )
-                        bgp_vrf.redistribute.ospf.enabled = True
 
                 if bgp_vrf.neighbors and self.inputs.bgp_update_wait_install and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install:
                     bgp_vrf.updates.wait_install = True
