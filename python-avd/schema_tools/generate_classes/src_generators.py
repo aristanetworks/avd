@@ -48,26 +48,35 @@ class FieldSrc:
 
     def __str__(self) -> str:
         """
-        Render source code for one field.
+        Render source code for one field as an __init__ argument.
 
         <name>: <type-hints> | UndefinedType = Undefined
+        <name>: <type-hints> | UndefinedType | None = Undefined
         """
-        return f"{self.field_as_class_attr()} | UndefinedType = Undefined"
+        return f"{self.name}: {self._type_hints(include_undefined=True)} = Undefined"
 
     def field_as_class_attr(self) -> str:
         """
         Render source code for one field without default assignment.
 
         Used for class attributes.
+        This does not include UndefinedType, since Undefined is only accepted as the default __init__ argument.
 
         <name>: <type-hints>
         """
-        # Build union of multiple type hints
-        type_hints = " | ".join(str(type_hint) for type_hint in self.type_hints)
-        if self.optional and not self.default_value and "None" not in self.type_hints and self.field_type in ("str", "int", "bool", "float"):
-            type_hints += " | None"
+        return f"{self.name}: {self._type_hints()}"
 
-        return f"{self.name}: {type_hints}"
+    def _type_hints(self, *, include_undefined: bool = False) -> str:
+        """Render type hints for one field."""
+        # Build union of multiple type hints
+        type_hints = [str(type_hint) for type_hint in self.type_hints]
+        has_none = "None" in type_hints
+        if include_undefined:
+            type_hints.append("UndefinedType")
+        if self.optional and not self.default_value and not has_none and self.field_type in ("str", "int", "bool", "float"):
+            type_hints.append("None")
+
+        return " | ".join(type_hints)
 
     def _docstring(self) -> str:
         """Render the content of the docstring for this field as source code."""
