@@ -54,12 +54,12 @@ import pyavd
 from pyavd import validate_structured_config
 from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
 from pyavd._eos_designs.structured_config import get_structured_config
-from pyavd._schema.avdschema import AvdSchema
 from pyavd._schema.store import init_store as pyavd_init_store
-from pyavd._utils import default, strip_empties_from_dict
+from pyavd._utils import default, strip_empties_from_dict, template
 from pyavd._utils.avd_templar import AVDTemplar
 from pyavd.api.pool_manager import PoolManager
 from pyavd.api.schemas import AVDDesign
+from pyavd.j2filters import add_md_toc
 
 if typing.TYPE_CHECKING:
     from collections.abc import Generator
@@ -75,6 +75,12 @@ if typing.TYPE_CHECKING:
 
 ANSIBLE_ABOVE_2_19 = ansible_version.startswith(("2.2", "2.19"))
 DEFAULT_FABRIC = "__UNSET_FABRIC_NAME__"
+CUSTOM_TEMPLATES_CFG_TEMPLATE = str(
+    pathlib.Path(__file__).parents[1].joinpath("ansible_collections/arista/avd/roles/eos_cli_config_gen/templates/eos/custom-templates.j2").resolve()
+)
+CUSTOM_TEMPLATES_DOC_TEMPLATE = str(
+    pathlib.Path(__file__).parents[1].joinpath("ansible_collections/arista/avd/roles/eos_cli_config_gen/templates/documentation/custom-templates.j2").resolve()
+)
 
 
 class PathNotDirError(ValueError):
@@ -91,6 +97,7 @@ class PathNotDirError(ValueError):
 @dataclasses.dataclass
 class DocumentationConfigOverrides:
     device_docs: bool | None = None
+    device_docs_toc: bool | None = None
     fabric_doc: bool | None = None
     include_connected_endpoints: bool | None = None
     p2p_links_csv: bool | None = None
@@ -101,6 +108,7 @@ class DocumentationConfigOverrides:
 @dataclasses.dataclass(frozen=True)
 class DocumentationConfig:
     device_docs: bool
+    device_docs_toc: bool
     fabric_doc: bool
     include_connected_endpoints: bool
     p2p_links_csv: bool
@@ -115,6 +123,7 @@ class DocumentationConfig:
     ) -> Self:
         return cls(
             device_docs=default(overrides.device_docs, parent.device_docs),
+            device_docs_toc=default(overrides.device_docs_toc, parent.device_docs_toc),
             fabric_doc=default(overrides.fabric_doc, parent.fabric_doc),
             include_connected_endpoints=default(overrides.include_connected_endpoints, parent.include_connected_endpoints),
             p2p_links_csv=default(overrides.p2p_links_csv, parent.p2p_links_csv),
@@ -128,6 +137,7 @@ class ProjectDocumentationConfig(DocumentationConfig):
     """Project documentation config implementing defaults for DocumentationConfig."""
 
     device_docs: bool = True
+    device_docs_toc: bool = True
     fabric_doc: bool = True
     include_connected_endpoints: bool = False
     topology_csv: bool = False
@@ -139,6 +149,7 @@ class ProjectDocumentationConfig(DocumentationConfig):
 class FabricConfigOverrides:
     """Optional config overrides."""
 
+    avd_design: bool | None = None
     clean: bool | None = None
     device_configs: bool | None = None
     digital_twin: bool | None = None
@@ -146,6 +157,7 @@ class FabricConfigOverrides:
     documentation: DocumentationConfigOverrides = dataclasses.field(default_factory=DocumentationConfigOverrides)
     dump_tracebacks: bool | None = None
     error_dir: str | None = None
+    extra_vars: dict[str, typing.Any] | None = None
     output_dir: str | None = None
     structured_config_suffix: typing.Literal["yml", "yaml", "json"] | None = None
 
@@ -155,6 +167,7 @@ class ProjectConfig:
     """Project config implementing defaults for Config."""
 
     project_dir: pathlib.Path
+    avd_design: bool = True
     clean: bool = True
     custom_templates: bool = False
     custom_path: str | None = None
@@ -164,6 +177,7 @@ class ProjectConfig:
     documentation: DocumentationConfig = dataclasses.field(default_factory=ProjectDocumentationConfig)
     dump_tracebacks: bool = False
     error_dir: str = "errors"
+    extra_vars: dict[str, typing.Any] | None = None
     inventory_file: str = "inventory.yml"
     output_dir: str = "intended"
     structured_config_suffix: typing.Literal["yml", "yaml", "json"] = "yml"
@@ -179,9 +193,11 @@ class ScenarioConfig:
     project: ProjectConfig
     custom_path: str | None
     custom_templates: bool
+    extra_vars: dict[str, typing.Any] | None
     inventory_file: str
 
     # Base config which may override the settings project level.
+    avd_design: bool
     clean: bool
     device_configs: bool
     digital_twin: bool
@@ -204,7 +220,9 @@ class ScenarioConfig:
             project=project,
             custom_templates=default(overrides.custom_templates, project.custom_templates),
             custom_path=default(overrides.custom_path, project.custom_path),
+            extra_vars=default(overrides.extra_vars, project.extra_vars),
             inventory_file=default(overrides.inventory_file, project.inventory_file),
+            avd_design=default(overrides.avd_design, project.avd_design),
             clean=default(overrides.clean, project.clean),
             device_configs=default(overrides.device_configs, project.device_configs),
             digital_twin=default(overrides.digital_twin, project.digital_twin),
@@ -260,6 +278,7 @@ class ScenarioConfigOverrides(FabricConfigOverrides):
     custom_templates: bool | None = None
     inventory_file: str | None = None
     custom_path: str | None = None
+    extra_vars: dict[str, typing.Any] | None = None
 
 
 @dataclasses.dataclass(frozen=True)
@@ -269,6 +288,7 @@ class FabricConfig:
 
     # Base config which may override the settings project level,
     # except clean which is local for the fabric level.
+    avd_design: bool
     device_configs: bool
     digital_twin: bool
     docs_dir: str
@@ -291,6 +311,7 @@ class FabricConfig:
             fabric_name=fabric_name,
             scenario=scenario,
             clean=overrides.clean if overrides.clean is not None else False,
+            avd_design=default(overrides.avd_design, scenario.avd_design),
             device_configs=default(overrides.device_configs, scenario.device_configs),
             digital_twin=default(overrides.digital_twin, scenario.digital_twin),
             docs_dir=default(overrides.docs_dir, scenario.docs_dir),
@@ -353,7 +374,13 @@ class Scenario:
 class AnsibleInventory:  # pylint: disable=too-few-public-methods
     """Ansible Inventory wrapper."""
 
-    def __init__(self, inventory_path: pathlib.Path, data_loader: DataLoader | None = None, vault_ids: list | None = None) -> None:
+    def __init__(
+        self,
+        inventory_path: pathlib.Path,
+        data_loader: DataLoader | None = None,
+        vault_ids: list | None = None,
+        extra_vars: dict[str, typing.Any] | None = None,
+    ) -> None:
         """Initialize Ansible Inventory Manager."""
         self.inventory_path = inventory_path
         self.data_loader = data_loader if data_loader is not None else DataLoader()
@@ -362,6 +389,8 @@ class AnsibleInventory:  # pylint: disable=too-few-public-methods
 
         self.inventory_manager = InventoryManager(loader=self.data_loader, sources=[self.inventory_path.as_posix()], parse=True)
         self.variable_manager = VariableManager(loader=self.data_loader, inventory=self.inventory_manager)
+        if extra_vars:
+            self.variable_manager._extra_vars = extra_vars
         self.hostvars = HostVars(
             inventory=self.inventory_manager,
             variable_manager=self.variable_manager,
@@ -410,7 +439,7 @@ class AvdBuildContext:
                 # This must happen before gloading the inventory.
                 _ensure_ansible_plugins_initialized()
 
-            self.inventory = AnsibleInventory(scenario.full_inventory_file)
+            self.inventory = AnsibleInventory(scenario.full_inventory_file, extra_vars=scenario.extra_vars)
 
             # Initialize the schema store in main process
             _ensure_pyavd_store_initialized()
@@ -585,6 +614,7 @@ class AvdV6Build:
                 if result.pyavd_utils_validated_data_result.validated_data is not None:
                     # Validation succeeded - store JSON in main process dict
                     self._validated_inputs_json[result.device_id] = result.pyavd_utils_validated_data_result.validated_data
+                    self._validated_inputs_dict[result.device_id] = json.loads(result.pyavd_utils_validated_data_result.validated_data)
                     yield True
                     continue
 
@@ -602,25 +632,26 @@ class AvdV6Build:
         Yielding device_build_result for each.
         """
         # Ensure avd_facts shared memory was created in common_build_stage
-        if self._avd_facts_shm_info is None:
+        if self.config.avd_design and self._avd_facts_shm_info is None:
             dump_error("avd_facts shared memory not initialized. Did you run common_build_stage()?", self.config, "internal_device")
             yield False
             return
 
-        # Pass cached AVDDesign objects directly to workers
-        validated_devices = list(self._loaded_avd_designs.keys())
+        validated_devices = list(self._validated_inputs_dict.keys())
         yield from self.context.executor.map(
             build_validate_and_render_for_one_device,
             validated_devices,
-            [self._loaded_avd_designs[d] for d in validated_devices],
+            [self._loaded_avd_designs[d] for d in validated_devices] if self.config.avd_design else repeat(None),
             [self._validated_inputs_dict[d] for d in validated_devices],
             repeat(self._avd_facts_shm_info),
             repeat(self.config),
             chunksize=self._chunk_size(),
         )
 
-        # Clear loaded AVDDesign objects - no longer needed
-        self._loaded_avd_designs.clear()
+        if self.config.avd_design:
+            # Clear loaded AVDDesign objects and dicts - no longer needed
+            self._loaded_avd_designs.clear()
+            self._validated_inputs_dict.clear()
 
     def common_build_stage(self) -> bool:
         """
@@ -628,10 +659,9 @@ class AvdV6Build:
 
         Load validated inputs from main process dict (created during validation)
         """
-        for device_name, validation_json in self._validated_inputs_json.items():
+        for device_name, validated_inputs_dict in self._validated_inputs_dict.items():
             # Parse JSON and create AVDDesign object
-            self._validated_inputs_dict[device_name] = json.loads(validation_json)
-            self._loaded_avd_designs[device_name] = AVDDesign._from_dict(self._validated_inputs_dict[device_name])
+            self._loaded_avd_designs[device_name] = AVDDesign._from_dict(validated_inputs_dict)
 
         # Clear validated JSON strings - no longer needed
         self._validated_inputs_json.clear()
@@ -686,12 +716,6 @@ class AvdV6Build:
             return False
         else:
             return True
-
-    # TODO: change name for eos_designs to avd_design in AvdSchema
-    @cached_property
-    def eos_designs_schema(self) -> AvdSchema:
-        """Lazily initialize and cache the EOS designs schema."""
-        return AvdSchema(schema_id="eos_designs")
 
     def common_documentation_stage(self) -> bool:
         """
@@ -794,10 +818,13 @@ def validate_inputs_for_one_device(device: str, device_avd_inputs: dict, config:
         msg = f"Unable to serialize inputs: {e}"
         raise ValueError(msg) from e
 
-    pyavd_utils_config = pyavd_utils.validation.Configuration(warn_eos_config_keys=True)
-    pyavd_utils_validated_data_result = pyavd_utils.validation.get_validated_data(
-        data_as_json=data_as_json, schema_name="avd_design", configuration=pyavd_utils_config
-    )
+    if config.avd_design:
+        pyavd_utils_config = pyavd_utils.validation.Configuration(warn_eos_config_keys=True)
+        pyavd_utils_validated_data_result = pyavd_utils.validation.get_validated_data(
+            data_as_json=data_as_json, schema_name="avd_design", configuration=pyavd_utils_config
+        )
+    else:
+        pyavd_utils_validated_data_result = pyavd_utils.validation.get_validated_data(data_as_json=data_as_json, schema_name="eos_config")
 
     # Emit deprecation warnings to files
     if deprecations := pyavd_utils_validated_data_result.validation_result.deprecations:
@@ -812,7 +839,7 @@ def validate_inputs_for_one_device(device: str, device_avd_inputs: dict, config:
 
 def build_validate_and_render_for_one_device(
     device: str,
-    device_avd_validated_inputs: AVDDesign,
+    device_avd_validated_inputs: AVDDesign | None,
     device_avd_validated_inputs_dict: dict,
     avd_facts_metadata: SharedMemoryMetadata,
     config: FabricConfig,
@@ -841,45 +868,53 @@ def build_validate_and_render_for_one_device(
         avd_facts_metadata: Metadata to access `avd_facts` shared memory.
         config: FabricConfig object with dirs and other build parameters
     """
-    # Load (and cache) avd_facts from shared memory in this worker.
-    avd_facts = _load_avd_facts_from_shm(avd_facts_metadata.name, avd_facts_metadata.size)
+    if config.avd_design:
+        device_avd_validated_inputs = typing.cast("AVDDesign", device_avd_validated_inputs)
 
-    # Phase 1: Build structured config
-    try:
-        eos_config = get_structured_config(
-            hostname=device,
-            inputs=device_avd_validated_inputs,
-            hostvars=device_avd_validated_inputs_dict,
-            all_facts=avd_facts,
-            templar=get_avd_templar(config),
-            digital_twin=config.digital_twin,
-        )._as_dict()
-    except Exception as e:
-        dump_exception(e, config, "structured_config", device)
-        return False
-    finally:
-        # Free device_avd_validated_inputs - no longer needed after structured config is built
-        del device_avd_validated_inputs
+        # Load (and cache) avd_facts from shared memory in this worker.
+        avd_facts = _load_avd_facts_from_shm(avd_facts_metadata.name, avd_facts_metadata.size)
 
-    # Phase 2: Serialize structured config
-    config.structured_configs_dir.mkdir(parents=True, exist_ok=True)
-    with config.structured_configs_dir.joinpath(f"{device}.yml").open("w", encoding="utf-8") as stream:
-        yaml.dump(eos_config, stream=stream, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130)
+        # Phase 1: Build structured config
+        try:
+            eos_config = get_structured_config(
+                hostname=device,
+                inputs=device_avd_validated_inputs,
+                hostvars=device_avd_validated_inputs_dict,
+                all_facts=avd_facts,
+                templar=get_avd_templar(config),
+                digital_twin=config.digital_twin,
+            )._as_dict()
+        except Exception as e:
+            dump_exception(e, config, "structured_config", device)
+            return False
+        finally:
+            # Free device_avd_validated_inputs - no longer needed after structured config is built
+            del device_avd_validated_inputs
 
-    # Phase 3: Validate structured config
-    validated_data_result = validate_structured_config(eos_config)
+        # Phase 2: Serialize structured config
+        # TODO: Honor the config.structured_config_suffix setting
+        config.structured_configs_dir.mkdir(parents=True, exist_ok=True)
+        with config.structured_configs_dir.joinpath(f"{device}.yml").open("w", encoding="utf-8") as stream:
+            yaml.dump(eos_config, stream=stream, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130)
 
-    # Emit deprecation warnings to files
-    if deprecations := validated_data_result.validation_result.deprecations:
-        dump_deprecations(deprecations, config, "structured_config_validation", device)
+        # Phase 3: Validate structured config
+        validated_data_result = validate_structured_config(eos_config)
 
-    # Check validation status
-    if validated_data_result.validated_data is None:
-        dump_violations(validated_data_result.validation_result.violations, config, "structured_config_validation", device)
+        # Emit deprecation warnings to files
+        if deprecations := validated_data_result.validation_result.deprecations:
+            dump_deprecations(deprecations, config, "structured_config_validation", device)
 
-        # Validation failed - free eos_config before returning
-        del eos_config
-        return False
+        # Check validation status
+        if validated_data_result.validated_data is None:
+            dump_violations(validated_data_result.validation_result.violations, config, "structured_config_validation", device)
+
+            # Validation failed - free eos_config before returning
+            del eos_config
+            return False
+
+    else:
+        # Pure eos_cli_config_gen run
+        eos_config = device_avd_validated_inputs_dict
 
     # Phase 4: Render EOS CLI
     if config.device_configs:
@@ -889,6 +924,10 @@ def build_validate_and_render_for_one_device(
             dump_exception(e, config, "eos_cli", device)
             return False
 
+        if config.custom_templates and eos_config.get("custom_templates"):
+            templar = get_avd_templar(config)
+            eos_cli += template(CUSTOM_TEMPLATES_CFG_TEMPLATE, device_avd_validated_inputs_dict, templar)
+
         config.configs_dir.mkdir(parents=True, exist_ok=True)
         config.configs_dir.joinpath(f"{device}.cfg").write_text(eos_cli)
         del eos_cli
@@ -896,10 +935,17 @@ def build_validate_and_render_for_one_device(
     # Phase 5: Render device documentation
     if config.documentation.device_docs:
         try:
-            device_doc = pyavd.get_device_doc(eos_config, add_md_toc=True)
+            device_doc = pyavd.get_device_doc(eos_config, add_md_toc=False)
         except Exception as e:
             dump_exception(e, config, "device_doc", device)
             return False
+
+        if config.custom_templates and eos_config.get("custom_templates"):
+            templar = get_avd_templar(config)
+            device_doc += template(CUSTOM_TEMPLATES_DOC_TEMPLATE, device_avd_validated_inputs_dict, templar)
+
+        if config.documentation.device_docs_toc:
+            device_doc = add_md_toc(device_doc, skip_lines=3)
 
         config.full_docs_dir.joinpath("devices").mkdir(parents=True, exist_ok=True)
         config.full_docs_dir.joinpath("devices", f"{device}.md").write_text(device_doc)
@@ -1152,12 +1198,13 @@ def build(scenario: Scenario) -> None:
                     # All devices failed validation so skip the rest
                     continue
 
-                if not build.common_build_stage():
+                if fabric_config.avd_design and not build.common_build_stage():
                     continue
 
                 list(build.device_build_stage())
 
-                build.common_documentation_stage()
+                if fabric_config.avd_design:
+                    build.common_documentation_stage()
             finally:
                 build.close()
     finally:
@@ -1172,12 +1219,6 @@ def get_git_repo(path: pathlib.Path) -> git.Repo:
     """
     # search_parent_directories=True walks up from subdir_path until it finds .git
     return git.Repo(path, search_parent_directories=True)
-
-
-def get_subdir_diff(repo: git.Repo, path: pathlib.Path) -> str:
-    """Returns combined staged + unstaged diffs for the given path."""
-    # "HEAD" captures both staged and unstaged changes against the last commit
-    return repo.git.diff("HEAD", "--", path)
 
 
 @dataclasses.dataclass
