@@ -246,6 +246,7 @@ keys:
               type: str
               required: true
               min_length: 1
+              pattern: '^(?!-)(?!.*[\s=]).+$'
               description: |
                 TerminAttr CLI flag name without the leading dash.
             value:

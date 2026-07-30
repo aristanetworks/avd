@@ -36,3 +36,5 @@ daemon_terminattr:
       value: 9910
     - flag: enablefeaturex
       value: true
+    - flag: disablefeaturey
+      value: "False"
