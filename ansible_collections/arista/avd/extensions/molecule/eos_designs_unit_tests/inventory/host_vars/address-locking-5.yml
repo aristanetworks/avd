@@ -28,7 +28,7 @@ address_locking_settings:
   disabled: true
   locked_address:
     expiration_mac_disabled: true
-    # Should not be rendered for cEOS
+    # Should not be rendered for platform 'patrial_address_locking_platform'
     ipv4_enforcement_disabled: true
     # Should not be rendered for cEOS
     ipv6_enforcement_disabled: true
