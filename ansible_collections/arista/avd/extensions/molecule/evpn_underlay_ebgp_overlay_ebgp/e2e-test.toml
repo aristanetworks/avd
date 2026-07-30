@@ -24,7 +24,6 @@
 # output_dir = "intended"  # Directory where configs and structured_configs will be created. Relative to directory with this config file.
 # structured_config_suffix  = "yml"  # Suffix for structured config files. Accepts "yml", "yaml" or "json"
 inventory_file = "inventory/hosts.yml"
-dump_tracebacks = true
 custom_templates = true
 
 documentation.topology_csv = true

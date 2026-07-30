@@ -5,7 +5,10 @@
 # dependencies = [
 #   "pyavd[ansible] @ file:///${PROJECT_ROOT}/python-avd",
 #   "gitpython>=3.1.57",
+#   "coverage[toml]==7.15.2",
+#   "coverage_plugins @ file:///${PROJECT_ROOT}/development/coverage_plugins"
 # ]
+# requires-python = ">=3.12"
 # # [tool.uv]
 # # reinstall-package = ["pyavd"]
 # ///
@@ -405,12 +408,12 @@ class AvdBuildContext:
             if scenario.custom_templates:
                 # Initialize the Ansible plugin loader in the main process.
                 # This must happen before gloading the inventory.
-                init_plugin_loader()
+                _ensure_ansible_plugins_initialized()
 
             self.inventory = AnsibleInventory(scenario.full_inventory_file)
 
             # Initialize the schema store in main process
-            pyavd_init_store()
+            _ensure_pyavd_store_initialized()
 
             self.add_custom_python_path()
 
@@ -911,7 +914,7 @@ def initialize_worker(config: ScenarioConfig) -> None:
     _ensure_pyavd_store_initialized()
 
     if config.custom_templates:
-        init_plugin_loader()
+        _ensure_ansible_plugins_initialized()
 
 
 def get_avd_templar(config: FabricConfig) -> AVDTemplar | None:
@@ -964,8 +967,14 @@ def dump_exception(exc: Exception, config: FabricConfig, stage: str, device: str
 
 @lru_cache(maxsize=1)
 def _ensure_pyavd_store_initialized() -> None:
-    """Initialize the PyAVD store once per worker process."""
+    """Initialize the PyAVD store once per process."""
     pyavd_init_store()
+
+
+@lru_cache(maxsize=1)
+def _ensure_ansible_plugins_initialized() -> None:
+    """Initialize the Ansible plugins once per process."""
+    init_plugin_loader()
 
 
 @lru_cache(maxsize=1)
@@ -1074,39 +1083,38 @@ def load_config_from_dict(dataclass_type: type[DataclassT], documentation_type: 
     return dataclass_type(**raw_config)
 
 
-def load_config(args: Args) -> Project:
-    with args.project_dir.joinpath("e2e-test.toml").open("rb") as stream:
+def load_config(project_dir: pathlib.Path) -> Project:
+    with project_dir.joinpath("e2e-test.toml").open("rb") as stream:
         raw_config = tomllib.load(stream)
-        project_config = load_config_from_dict(ProjectConfig, ProjectDocumentationConfig, dict(raw_config, project_dir=args.project_dir))
-        scenarios: list[Scenario] = []
-        if "scenarios" not in raw_config:
-            scenarios.append(Scenario(ScenarioConfig.from_project("default", project_config, ScenarioConfigOverrides()), fabric_overrides={}))
-        elif not isinstance((raw_scenarios := raw_config["scenarios"]), dict):
-            msg = "Invalid config. 'scenarios'' must be a dict."
-            raise TypeError(msg)
-        else:
-            for scenario_name, raw_scenario in raw_scenarios.items():
-                if not isinstance(raw_scenario, dict):
-                    msg = f"Invalid config for scenario '{scenario_name}'. Each entry in 'scenarios' must be a dict."
-                    raise TypeError(msg)
-                scenario_overrides = load_config_from_dict(ScenarioConfigOverrides, DocumentationConfigOverrides, raw_scenario)
-                fabric_overrides = {}
-                if "fabrics" not in raw_scenario:
-                    pass
-                elif not isinstance((raw_fabrics := raw_scenario["fabrics"]), dict):
-                    msg = f"Invalid config for scenario '{scenario_name}'. 'fabrics' must be a list."
-                    raise TypeError(msg)
-                else:
-                    for fabric_name, raw_fabric in raw_fabrics.items():
-                        if not isinstance(raw_fabric, dict):
-                            msg = f"Invalid config for fabric '{fabric_name}' under scenario '{scenario_name}'. Each entry in 'fabrics' must be a dict."
-                            raise TypeError(msg)
-                        one_fabric_overrides = load_config_from_dict(FabricConfigOverrides, DocumentationConfigOverrides, raw_fabric)
-                        fabric_overrides[fabric_name] = one_fabric_overrides
-                scenarios.append(
-                    Scenario(config=ScenarioConfig.from_project(scenario_name, project_config, scenario_overrides), fabric_overrides=fabric_overrides)
-                )
-        return Project(config=project_config, scenarios=scenarios)
+
+    project_config = load_config_from_dict(ProjectConfig, ProjectDocumentationConfig, dict(raw_config, project_dir=project_dir))
+    scenarios: list[Scenario] = []
+    if "scenarios" not in raw_config:
+        scenarios.append(Scenario(ScenarioConfig.from_project("default", project_config, ScenarioConfigOverrides()), fabric_overrides={}))
+    elif not isinstance((raw_scenarios := raw_config["scenarios"]), dict):
+        msg = "Invalid config. 'scenarios'' must be a dict."
+        raise TypeError(msg)
+    else:
+        for scenario_name, raw_scenario in raw_scenarios.items():
+            if not isinstance(raw_scenario, dict):
+                msg = f"Invalid config for scenario '{scenario_name}'. Each entry in 'scenarios' must be a dict."
+                raise TypeError(msg)
+            scenario_overrides = load_config_from_dict(ScenarioConfigOverrides, DocumentationConfigOverrides, raw_scenario)
+            fabric_overrides = {}
+            if "fabrics" not in raw_scenario:
+                pass
+            elif not isinstance((raw_fabrics := raw_scenario["fabrics"]), dict):
+                msg = f"Invalid config for scenario '{scenario_name}'. 'fabrics' must be a list."
+                raise TypeError(msg)
+            else:
+                for fabric_name, raw_fabric in raw_fabrics.items():
+                    if not isinstance(raw_fabric, dict):
+                        msg = f"Invalid config for fabric '{fabric_name}' under scenario '{scenario_name}'. Each entry in 'fabrics' must be a dict."
+                        raise TypeError(msg)
+                    one_fabric_overrides = load_config_from_dict(FabricConfigOverrides, DocumentationConfigOverrides, raw_fabric)
+                    fabric_overrides[fabric_name] = one_fabric_overrides
+            scenarios.append(Scenario(config=ScenarioConfig.from_project(scenario_name, project_config, scenario_overrides), fabric_overrides=fabric_overrides))
+    return Project(config=project_config, scenarios=scenarios)
 
 
 def clean_dirs(configuration: ScenarioConfig | FabricConfig) -> None:
@@ -1147,7 +1155,7 @@ def build(scenario: Scenario) -> None:
                 if not build.common_build_stage():
                     continue
 
-                _ = all(build.device_build_stage())
+                list(build.device_build_stage())
 
                 build.common_documentation_stage()
             finally:
@@ -1174,56 +1182,66 @@ def get_subdir_diff(repo: git.Repo, path: pathlib.Path) -> str:
 
 @dataclasses.dataclass
 class Args:
-    project_dir: pathlib.Path
+    project_dirs: list[pathlib.Path]
 
 
 def parse_args() -> Args:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "project",
+        "projects",
         type=pathlib.Path,
-        help="Path to a git project containing an e2e-test.toml file. Also accepts a path directly to an 'e2e-test.toml' file.",
+        nargs="+",
+        help="One or more paths to git projects containing e2e-test.toml files. Also accepts paths directly to 'e2e-test.toml' files.",
     )
     args = parser.parse_args()
 
-    project: pathlib.Path = args.project.resolve()
-    if not project.exists():
-        msg = f"The given project path '{project}' does not exist."
-        raise FileNotFoundError(msg)
-    if project.is_dir():
-        project_dir = project
-        if not project_dir.joinpath("e2e-test.toml").exists():
-            msg = f"The given project directory '{project}' does not contain a 'e2e-test.toml' file."
+    project_dirs: list[pathlib.Path] = []
+    for arg_project in args.projects:
+        project: pathlib.Path = arg_project.resolve()
+        if not project.exists():
+            msg = f"The given project path '{project}' does not exist."
             raise FileNotFoundError(msg)
-    elif project.is_file():
-        if not project.parts[-1].endswith("e2e-test.toml"):
-            msg = f"The given project file '{project}' must be named e2e-test.toml."
+        if project.is_dir():
+            project_dir = project
+            if not project_dir.joinpath("e2e-test.toml").exists():
+                msg = f"The given project directory '{project}' does not contain a 'e2e-test.toml' file."
+                raise FileNotFoundError(msg)
+        elif project.is_file():
+            if not project.parts[-1].endswith("e2e-test.toml"):
+                msg = f"The given project file '{project}' must be named e2e-test.toml."
+                raise ValueError(msg)
+            project_dir = project.parent
+        else:
+            msg = f"Project '{project}' must be a path to a directory or an 'e2e-test.toml' file."
             raise ValueError(msg)
-        project_dir = project.parent
-    else:
-        msg = "Project must be a path to a directory or an 'e2e-test.toml' file."
-        raise ValueError(msg)
 
-    repo = get_git_repo(project_dir)
-    if not repo:
-        msg = "The project path must be inside a git repo."
-        raise ValueError(msg)
+        repo = get_git_repo(project_dir)
+        if not repo:
+            msg = f"The project path '{project_dir}' must be inside a git repo."
+            raise ValueError(msg)
 
-    return Args(project_dir=project_dir)
+        project_dirs.append(project_dir)
+
+    return Args(project_dirs=project_dirs)
 
 
 def main() -> int:
     args = parse_args()
-    project = load_config(args)
+    for project_dir in args.project_dirs:
+        project = load_config(project_dir)
 
-    print("Project", project.config.project_dir)
+        print("#" * 20, "Project", project.config.project_dir, "#" * 20)
 
-    # Change to project dir to ensure things like PoolManager can resolve relative paths.
-    os.chdir(project.config.full_project_dir)
+        org_cwd = pathlib.Path.cwd()
 
-    for scenario in project.scenarios:
-        print("Running scenario", scenario.config.scenario_name)
-        build(scenario)
+        # Change to project dir to ensure things like PoolManager can resolve relative paths while running the scenarios.
+        os.chdir(project.config.full_project_dir)
+
+        for scenario in project.scenarios:
+            print("Running scenario", scenario.config.scenario_name)
+            build(scenario)
+
+        os.chdir(org_cwd)
 
     return 0
 

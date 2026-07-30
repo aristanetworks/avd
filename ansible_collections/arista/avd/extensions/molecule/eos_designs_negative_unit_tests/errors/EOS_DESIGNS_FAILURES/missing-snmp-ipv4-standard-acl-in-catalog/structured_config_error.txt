@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'ipv4_standard_acls[name=acl-not-present-in-catalog]' is required but was not found for host 'missing-snmp-ipv4-standard-acl-in-catalog'.
