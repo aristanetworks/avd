@@ -40,6 +40,7 @@ jobs:
       - ansible_test_integration
       - galaxy_importer
       - ansible_lint
+      - e2e
       - test_pyavd
     if: always()
     runs-on: ubuntu-latest
@@ -60,6 +61,7 @@ jobs:
       pyavd: ${{ steps.filter.outputs.pyavd }}
       requirements: ${{ steps.filter.outputs.requirements }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
+      e2e: ${{ steps.filter.outputs.e2e }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -111,6 +113,11 @@ jobs:
               - 'python-avd/pyavd/api/_anta/*'
               - 'python-avd/pyavd/api/_anta/**/*'
               - 'python-avd/pyavd/get_device_anta_catalog.py'
+            e2e:
+              - '.github/workflows/pull-request-management.yml'
+              - 'Makefile'
+              - 'tools/e2e-test-avd.py'
+              - '**/e2e-test.toml'
 
   # -------------------------------------- #
   # Build PyAVD wheel and upload artifact
@@ -247,26 +254,8 @@ jobs:
       matrix:
         avd_scenario:
           - "ansible_only"
-          - "digital_twin"
-          - "eos_designs_deprecated_vars"
-          - "eos_designs-l2ls"
-          - "eos_designs-mpls-isis-sr-ldp"
-          - "eos_designs-twodc-5stage-clos"
-          - "eos_designs_unit_tests"
-          - "evpn_underlay_ebgp_overlay_ebgp"
-          - "evpn_underlay_isis_overlay_ibgp"
-          - "evpn_underlay_ospf_overlay_ebgp"
-          - "evpn_underlay_rfc5549_overlay_ebgp"
-          - "example-campus-fabric"
-          - "example-dual-dc-l3ls"
-          - "example-isis-ldp-ipvpn"
-          - "example-l2ls-fabric"
-          - "example-single-dc-l3ls"
-          - "example-single-dc-l3ls-ipv6"
-          - "example-single-dc-multipod-l3ls"
           - "example-cv-pathfinder"
           - "howto"
-          - "eos_designs_negative_unit_tests"
         ansible_version:
           - "ansible-core>=2.16.0,<2.22.0"
         python_version:
@@ -667,6 +656,58 @@ jobs:
           ansible-lint --force-color --strict -v
 
   # ----------------------------------- #
+  # End-to-end tests
+  # ----------------------------------- #
+  e2e:
+    name: Run end-to-end tests (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    needs: [file-changes]
+    env:
+      PROJECT_ROOT: ${{ github.workspace }}
+      UV_PYTHON: ${{ matrix.python }}
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.plugins == 'true' ||
+      needs.file-changes.outputs.pyavd == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      needs.file-changes.outputs.e2e == 'true' ||
+      github.event_name == 'merge_group'
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install uv
+        run: python -m pip install uv
+      - name: Run end-to-end tests with coverage
+        if: matrix.python == '3.11'
+        run: |
+          make e2e-coverage
+          uv run --no-project --with-requirements tools/e2e-test-avd.py coverage combine
+      - name: Run end-to-end tests
+        if: matrix.python != '3.11'
+        run: make e2e
+      - name: Check generated outputs
+        run: sh .github/check-git-status.sh
+      - name: Prepare end-to-end coverage data
+        if: matrix.python == '3.11'
+        run: mv .coverage coverage-End-to-End.dat
+      - name: Upload end-to-end coverage data
+        if: matrix.python == '3.11'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-data-End-to-End
+          path: coverage-End-to-End.dat
+
+  # ----------------------------------- #
   # Test of pyavd
   # ----------------------------------- #
   test_pyavd:
@@ -682,7 +723,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        python: ["3.11", "3.12", "3.13", "3.14"]
         suite:
           - name: "Main-Tests"
             id: Main-Tests
@@ -695,10 +736,6 @@ jobs:
             pytest_args: >-
               python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py
               python-avd/tests/schema_tools/metaschema/test_meta_schema_model.py
-          - name: "Excluded-Tests (test_negative_eos_designs)"
-            id: Excluded-test_negative_eos_designs
-            pytest_args: >-
-              python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -727,7 +764,12 @@ jobs:
   generate_pyavd_coverage_report:
     name: Test pyavd python 3.11 coverage report
     runs-on: ubuntu-latest
-    needs: [test_pyavd]
+    needs: [e2e, test_pyavd]
+    if: |
+      always() &&
+      (needs.e2e.result == 'success' || needs.e2e.result == 'skipped') &&
+      (needs.test_pyavd.result == 'success' || needs.test_pyavd.result == 'skipped') &&
+      (needs.e2e.result == 'success' || needs.test_pyavd.result == 'success')
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

@@ -8,7 +8,7 @@
 #   "coverage[toml]==7.15.2",
 #   "coverage_plugins @ file:///${PROJECT_ROOT}/development/coverage_plugins"
 # ]
-# requires-python = ">=3.12"
+# requires-python = ">=3.11"
 # # [tool.uv]
 # # reinstall-package = ["pyavd"]
 # ///
