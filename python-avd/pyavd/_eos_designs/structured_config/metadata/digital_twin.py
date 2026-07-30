@@ -84,4 +84,9 @@ class DigitalTwinMixin(Protocol):
                     self.structured_config.metadata.digital_twin._update(
                         internet_access=act_internet_access,
                     )
+                # Set cv_instance if configured
+                if act_cv_instance := self.inputs.digital_twin.fabric.act_cv_instance:
+                    self.structured_config.metadata.digital_twin._update(
+                        cv_instance=act_cv_instance,
+                    )
                 return

@@ -2343,6 +2343,15 @@ keys:
 
               This setting is only applicable to ACT `veos` and `cloudeos` node types.'
             default: false
+          act_cv_instance:
+            type: str
+            description: 'URL or identifier of the CloudVision instance to target
+              for ACT Digital Twin deployment.
+
+              Use this when the Digital Twin should be deployed to a different CloudVision
+              instance
+
+              than the one used in production (e.g., a dev or staging CVaaS instance).'
       use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false

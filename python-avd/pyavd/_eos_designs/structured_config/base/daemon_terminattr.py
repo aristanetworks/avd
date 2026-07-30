@@ -71,11 +71,13 @@ class DaemonTerminattrMixin(Protocol):
             sflow_vrf = self.shared_utils.get_vrf(sflow_settings.export_to_cloudvision.vrf, context="sflow_settings.export_to_cloudvision.vrf")
             self.structured_config.daemon_terminattr.sflowaddr = f"{sflow_vrf}/127.0.0.1:6343"
 
+        act_cv_instance = self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.act_cv_instance
+
         if len(clusters) == 1:
             # Only one cluster so we add it with general terminattr config.
             cluster = clusters[0]
             self.structured_config.daemon_terminattr._update(
-                cvaddrs=self.get_cv_addrs(cluster),
+                cvaddrs=EosCliConfigGen.DaemonTerminattr.Cvaddrs([act_cv_instance]) if act_cv_instance else self.get_cv_addrs(cluster),
                 cvauth=self.get_cv_auth(cluster),
                 cvvrf=self.shared_utils.get_vrf(
                     cluster.vrf,
@@ -89,7 +91,9 @@ class DaemonTerminattrMixin(Protocol):
         for cluster in clusters:
             self.structured_config.daemon_terminattr.clusters.append_new(
                 name=cluster.name,
-                cvaddrs=self.get_cv_addrs(cluster)._cast_as(EosCliConfigGen.DaemonTerminattr.ClustersItem.Cvaddrs),
+                cvaddrs=EosCliConfigGen.DaemonTerminattr.ClustersItem.Cvaddrs([act_cv_instance])
+                if act_cv_instance
+                else self.get_cv_addrs(cluster)._cast_as(EosCliConfigGen.DaemonTerminattr.ClustersItem.Cvaddrs),
                 cvauth=self.get_cv_auth(cluster)._cast_as(EosCliConfigGen.DaemonTerminattr.ClustersItem.Cvauth),
                 cvvrf=self.shared_utils.get_vrf(
                     cluster.vrf,

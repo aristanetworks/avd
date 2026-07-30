@@ -18259,6 +18259,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_password": {"type": str, "default": "cvp123!"},
                 "act_internet_access": {"type": bool, "default": False},
                 "act_ensure_eapi_access": {"type": bool, "default": False},
+                "act_cv_instance": {"type": str},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -18298,6 +18299,14 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            act_cv_instance: str | None
+            """
+            URL or identifier of the CloudVision instance to target for ACT Digital Twin deployment.
+            Use this
+            when the Digital Twin should be deployed to a different CloudVision instance
+            than the one used in
+            production (e.g., a dev or staging CVaaS instance).
+            """
 
             if TYPE_CHECKING:
 
@@ -18309,6 +18318,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_password: str | UndefinedType = Undefined,
                     act_internet_access: bool | UndefinedType = Undefined,
                     act_ensure_eapi_access: bool | UndefinedType = Undefined,
+                    act_cv_instance: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -18336,6 +18346,12 @@ class EosDesigns(EosDesignsRootModel):
                            default VRF and preserving this connectivity.
                            This setting is only applicable to ACT `veos` and
                            `cloudeos` node types.
+                        act_cv_instance:
+                           URL or identifier of the CloudVision instance to target for ACT Digital Twin deployment.
+                           Use this
+                           when the Digital Twin should be deployed to a different CloudVision instance
+                           than the one used in
+                           production (e.g., a dev or staging CVaaS instance).
 
                     """
 
