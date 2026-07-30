@@ -239,7 +239,7 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
         raise AristaAvdError(msg)
 
     return ContainerlabDigitalTwin(
-        name=f"{fabric_documentation_facts.fabric_name}, Containerlab Digital Twin",
+        name=f"{fabric_documentation_facts.fabric_name}",
         prefix="",
         mgmt=ContainerlabMgmt(network="custom_mgmt", ipv4_subnet=str(next(iter(unique_mgmt_networks)))),
         topology=ContainerlabTopology(
