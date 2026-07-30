@@ -606,11 +606,10 @@ class AvdV6Build:
 
         Yielding device_build_result for each.
         """
-        # Ansible's VariableManager is not thread-safe, so resolve all hostvars before starting validation workers.
-        device_inputs = [self.inventory.get_vars(device) for device in self.devices]
-
         with ThreadPoolExecutor(max_workers=self.context.validation_max_workers) as executor:
-            results = executor.map(validate_inputs_for_one_device, self.devices, device_inputs, repeat(self.config))
+            results = executor.map(
+                validate_inputs_for_one_device, self.devices, (self.inventory.get_vars(device) for device in self.devices), repeat(self.config)
+            )
             for result in results:
                 if result.pyavd_utils_validated_data_result.validated_data is not None:
                     # Validation succeeded - store JSON in main process dict
