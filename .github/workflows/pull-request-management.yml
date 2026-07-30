@@ -185,6 +185,7 @@ jobs:
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
   # ----------------------------------- #
+  # TODO: Remove this once we have support in e2e for eos_cli_config_gen
   molecule_eos_cli_config_gen:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
@@ -261,6 +262,8 @@ jobs:
         python_version:
           - "3.12"
         include:
+          # TODO: reevaluate here what we do as this was done to "guarantee" we don't break
+          # across ansible versions but maybe we don't need it to be these molecule scenario
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.17.0"
             python_version: "3.11"
@@ -280,6 +283,7 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.22.0"
             python_version: "3.14"
+          # TODO: This one in particular may be costly
           - avd_scenario: "eos_designs_negative_unit_tests"
             ansible_version: "ansible-core<2.22.0"
             python_version: "3.14"
@@ -695,6 +699,14 @@ jobs:
       - name: Run end-to-end tests
         if: matrix.python != '3.11'
         run: make e2e
+      - name: Print new end-to-end errors
+        if: always()
+        shell: bash
+        run: |
+          while IFS= read -r error_file; do
+            printf '\n===== %s =====\n' "$error_file"
+            cat "$error_file"
+          done < <(git ls-files --others --exclude-standard -- ':(glob)**/errors/**')
       - name: Check generated outputs
         run: sh .github/check-git-status.sh
       - name: Prepare end-to-end coverage data
@@ -711,7 +723,7 @@ jobs:
   # Test of pyavd
   # ----------------------------------- #
   test_pyavd:
-    name: Test pyavd (Python ${{ matrix.python }}, Suite ${{ matrix.suite.name }})
+    name: Test pyavd (Python ${{ matrix.python }})
     runs-on: ubuntu-latest
     needs: [file-changes]
     if: |
@@ -724,18 +736,6 @@ jobs:
       fail-fast: false
       matrix:
         python: ["3.11", "3.12", "3.13", "3.14"]
-        suite:
-          - name: "Main-Tests"
-            id: Main-Tests
-            pytest_args: >-
-              --ignore=python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py
-              --ignore=python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
-              --ignore=python-avd/tests/schema_tools/metaschema/test_meta_schema_model.py
-          - name: "Excluded-Tests (test_get_device_config and test_meta_schema_model)"
-            id: Excluded-test_get_device_config-and-test_meta_schema_model
-            pytest_args: >-
-              python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py
-              python-avd/tests/schema_tools/metaschema/test_meta_schema_model.py
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -749,17 +749,17 @@ jobs:
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox for ${{ matrix.python }}
         run: |
-          tox run -- ${{ matrix.suite.pytest_args }}
+          tox run -- --ignore=python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
       - name: Rename the coverage file
         if: matrix.python == '3.11'
         run: |
-          mv .coverage coverage-${{ matrix.suite.id }}.dat
+          mv .coverage coverage-PyAVD.dat
       - name: Upload pytest coverage data
         if: matrix.python == '3.11'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: coverage-data-${{ matrix.suite.id }}
-          path: coverage-${{ matrix.suite.id }}.dat
+          name: coverage-data-PyAVD
+          path: coverage-PyAVD.dat
 
   generate_pyavd_coverage_report:
     name: Test pyavd python 3.11 coverage report
