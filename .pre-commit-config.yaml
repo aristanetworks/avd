@@ -168,7 +168,7 @@ repos:
           - 'pytest>=8.2.0'
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.35.0'
-          - 'ruff==0.11.11'
+          - 'ruff==0.16.0'
 
   - repo: https://github.com/pycqa/pylint
     rev: "8a396357098337ba8be714fffdf2d00947a9778c"  # frozen: v4.0.6
