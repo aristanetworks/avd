@@ -384,6 +384,10 @@ class AnsibleInventory:  # pylint: disable=too-few-public-methods
         """Initialize Ansible Inventory Manager."""
         self.inventory_path = inventory_path
         self.data_loader = data_loader if data_loader is not None else DataLoader()
+        if sys.version_info < (3, 12):
+            # Python 3.11 resolves Ansible Core 2.19, whose host_group_vars plugin caches the first path resolved for "." across inventories.
+            # Use an absolute base directory so changing cwd between projects cannot reuse variables from the previous project.
+            self.data_loader.set_basedir(inventory_path.parent.as_posix())
         if vault_ids:
             CLI.setup_vault_secrets(self.data_loader, vault_ids=vault_ids)
 
@@ -435,8 +439,7 @@ class AvdBuildContext:
             self.validation_max_workers = validation_max_workers
 
             if scenario.custom_templates:
-                # Initialize the Ansible plugin loader in the main process.
-                # This must happen before gloading the inventory.
+                # Initialize the Ansible plugin loader in the main process before loading the inventory.
                 _ensure_ansible_plugins_initialized()
 
             self.inventory = AnsibleInventory(scenario.full_inventory_file, extra_vars=scenario.extra_vars)
