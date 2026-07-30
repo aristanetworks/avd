@@ -5478,6 +5478,7 @@ interface Ethernet3
    switchport port-security vlan 41 mac-address maximum 4
    switchport port-security vlan default mac-address maximum 2
    ptp enable
+   ptp management drop
    ptp delay-mechanism e2e
    ptp role dynamic
    ptp sync-message interval 1
@@ -6825,6 +6826,7 @@ interface Port-Channel5
    ntp serve
    ip ospf authentication-key 8a <removed>
    ptp enable
+   ptp management drop
    ptp mpass
    ptp delay-mechanism e2e
    ptp profile g8275.1 destination mac-address forwardable

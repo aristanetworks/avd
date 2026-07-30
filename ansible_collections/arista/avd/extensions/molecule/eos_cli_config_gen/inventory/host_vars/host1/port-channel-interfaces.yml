@@ -63,6 +63,8 @@ port_channel_interfaces:
       version: 2
     ptp:
       enable: true
+      management:
+        drop: true
       mpass: true
       delay_mechanism: e2e
       region:

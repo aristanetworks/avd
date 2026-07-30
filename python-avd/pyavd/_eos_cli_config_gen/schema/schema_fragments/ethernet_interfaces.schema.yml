@@ -864,6 +864,13 @@ keys:
             transport:
               type: str
               valid_values: ["ipv4", "ipv6", "layer2"]
+            management:
+              # In the future, this will grow to include both `drop` and `drop_multicast_boundary` boolean settings.
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Set PTP management messages to drop.
         profile:
           type: str
           description: Interface profile.

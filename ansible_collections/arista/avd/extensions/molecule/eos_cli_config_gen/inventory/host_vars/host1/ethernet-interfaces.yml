@@ -298,6 +298,8 @@ ethernet_interfaces:
       profile: A1
     ptp:
       enable: true
+      management:
+        drop: true
       delay_mechanism: e2e
       region:
         domain_number: 25

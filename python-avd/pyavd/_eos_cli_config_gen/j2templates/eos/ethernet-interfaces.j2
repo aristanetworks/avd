@@ -699,6 +699,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ptp.enable is arista.avd.defined(true) %}
    ptp enable
 {%     endif %}
+{%     if ethernet_interface.ptp.management.drop is arista.avd.defined(true) %}
+   ptp management drop
+{%     endif %}
 {%     if ethernet_interface.ptp.announce.interval is arista.avd.defined %}
    ptp announce interval {{ ethernet_interface.ptp.announce.interval }}
 {%     endif %}
