@@ -29,11 +29,14 @@ class MergeOnSchema:
             init_store()
 
     def _get_primary_key(self, path: list) -> str | None:
+        if not self.schema_name:
+            return None
+
         try:
             return self.get_list_primary_key(self.schema_name, [str(path_item) for path_item in path])
-        except Exception:  # pylint: disable=broad-exception-caught
-            msg = "TODO: some better error message"
-            raise Exception(msg)
+        except Exception as error:
+            msg = f"Unable to get the primary key for schema '{self.schema_name}' at schema path {path}."
+            raise RuntimeError(msg) from error
 
     def strategy(self, config: Merger, path: list, base: list, nxt: list) -> object:
         """Custom strategy to merge lists on schema primary key."""
