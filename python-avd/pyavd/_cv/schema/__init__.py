@@ -138,12 +138,12 @@ class CvDeploy(AvdModel):
             def __init__(
                 self,
                 *,
-                is_deployed: bool | UndefinedType | None = Undefined,
-                serial_number: str | UndefinedType | None = Undefined,
-                system_mac_address: str | UndefinedType | None = Undefined,
+                is_deployed: bool | None | UndefinedType = Undefined,
+                serial_number: str | None | UndefinedType = Undefined,
+                system_mac_address: str | None | UndefinedType = Undefined,
                 cv_tags: EosCliConfigGen.Metadata.CvTags | UndefinedType = Undefined,
                 cv_pathfinder: EosCliConfigGen.Metadata.CvPathfinder | UndefinedType = Undefined,
-                cv_use_static_config_manifest: bool | UndefinedType | None = Undefined,
+                cv_use_static_config_manifest: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -262,12 +262,12 @@ class CvDeploy(AvdModel):
             self,
             *,
             is_deployed: bool | UndefinedType = Undefined,
-            serial_number: str | UndefinedType | None = Undefined,
-            system_mac_address: str | UndefinedType | None = Undefined,
+            serial_number: str | None | UndefinedType = Undefined,
+            system_mac_address: str | None | UndefinedType = Undefined,
             cv_device_tags: CvDeviceTags | UndefinedType = Undefined,
             cv_interface_tags: CvInterfaceTags | UndefinedType = Undefined,
             cv_pathfinder_metadata: EosCliConfigGen.Metadata.CvPathfinder | UndefinedType = Undefined,
-            cv_use_static_config_manifest: bool | UndefinedType | None = Undefined,
+            cv_use_static_config_manifest: bool | None | UndefinedType = Undefined,
             metadata: Metadata | UndefinedType = Undefined,
         ) -> None:
             """

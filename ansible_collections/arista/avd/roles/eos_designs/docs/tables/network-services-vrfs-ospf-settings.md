@@ -32,7 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.nodes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.nodes.[]") | String |  |  |  | Hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for the EOS Config schema. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf") | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospf inside the VRF.<br>Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf") <span style="color:red">deprecated</span> | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospf inside the VRF.<br>Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>redistribute_ospf_settings</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf_settings</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf_settings") | Dictionary |  |  |  | Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.<br>When `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf_settings.enabled") | Boolean |  | `True` |  | Enable or disable redistribution of OSPF routes into BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf_settings.route_map") | String |  |  |  | Route-map name to apply to redistributed OSPF routes. |
@@ -92,7 +92,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "network_services.[].vrfs.[].ospf.nodes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].ospf.nodes.[]") | String |  |  |  | Hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_services.[].vrfs.[].ospf.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for the EOS Config schema. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf</samp>](## "network_services.[].vrfs.[].redistribute_ospf") | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospf inside the VRF.<br>Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf</samp>](## "network_services.[].vrfs.[].redistribute_ospf") <span style="color:red">deprecated</span> | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospf inside the VRF.<br>Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>redistribute_ospf_settings</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf_settings</samp>](## "network_services.[].vrfs.[].redistribute_ospf_settings") | Dictionary |  |  |  | Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.<br>When `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].redistribute_ospf_settings.enabled") | Boolean |  | `True` |  | Enable or disable redistribution of OSPF routes into BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "network_services.[].vrfs.[].redistribute_ospf_settings.route_map") | String |  |  |  | Route-map name to apply to redistributed OSPF routes. |
@@ -234,6 +234,9 @@
 
             # Non-selectively enabling or disabling redistribute ospf inside the VRF.
             # Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `redistribute_ospf_settings` instead.
             redistribute_ospf: <bool; default=True>
 
             # Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.
@@ -400,6 +403,9 @@
 
             # Non-selectively enabling or disabling redistribute ospf inside the VRF.
             # Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `redistribute_ospf_settings` instead.
             redistribute_ospf: <bool; default=True>
 
             # Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.

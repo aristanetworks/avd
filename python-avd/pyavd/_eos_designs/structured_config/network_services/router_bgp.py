@@ -4,14 +4,13 @@
 from __future__ import annotations
 
 import ipaddress
-import warnings
 from itertools import groupby as itertools_groupby
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError, AristaAvdModelDeprecationWarning
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
 from pyavd.j2filters import list_compress
 
@@ -285,12 +284,6 @@ class RouterBgpMixin(Protocol):
                                     bgp_vrf.redistribute.ospf.route_map = ospf_redistribute.route_map
                     elif vrf.redistribute_ospf:
                         bgp_vrf.redistribute.ospf.enabled = True
-                        warnings.warn(
-                            "<network_services_key>.vrfs.redistribute_ospf is deprecated and will be removed in AVD 7.0. "
-                            "Use redistribute_ospf_settings instead.",
-                            AristaAvdModelDeprecationWarning,
-                            stacklevel=2,
-                        )
 
                 if bgp_vrf.neighbors and self.inputs.bgp_update_wait_install and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install:
                     bgp_vrf.updates.wait_install = True

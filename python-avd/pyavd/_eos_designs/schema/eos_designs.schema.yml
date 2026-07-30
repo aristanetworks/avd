@@ -6004,6 +6004,11 @@ keys:
                   table: network-services-vrfs-ospf-settings
                 type: bool
                 default: true
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
+                  new_key: redistribute_ospf_settings
                 description: 'Non-selectively enabling or disabling redistribute ospf
                   inside the VRF.
 
