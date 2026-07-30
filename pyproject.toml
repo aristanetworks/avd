@@ -253,6 +253,13 @@ compiled_template_roots = [
   "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
 ]
 
+[tool.coverage.paths]
+pyavd = [
+    "python-avd/pyavd",
+    # Catches site-packages/pyavd inside uv cache for e2e
+    "*/pyavd",
+]
+
 [tool.coverage.report]
 show_missing = true
 fail_under = 85
