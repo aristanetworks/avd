@@ -5,7 +5,7 @@ MUFFET_TIMEOUT ?= 60
 
 .PHONY: help
 help: ## Display help message
-	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s", $$1, $$2}'
+	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 #########################################
 # Ansible Collection actions            #
@@ -158,10 +158,10 @@ docs-serve-docker: ## Same as docs-serve, but inside the webdoc_avd container (n
 ##########################
 
 .PHONY: e2e
-e2e: ##Run end-to-end tests, regenerating all outputs and capturing errors to files.
+e2e: ## Run end-to-end tests, regenerating all outputs and capturing errors to files.
 	@uv run --no-project tools/e2e-test-avd.py $$(find . -type f -name e2e-test.toml -print | sort)
 
 .PHONY: e2e-coverage
-e2e-coverage: ##Run end-to-end tests with coverage, regenerating all outputs and capturing errors to files.
+e2e-coverage: ## Run end-to-end tests with coverage, regenerating all outputs and capturing errors to files.
 	@uv run --no-project --with-requirements tools/e2e-test-avd.py \
 		coverage run tools/e2e-test-avd.py $$(find . -type f -name e2e-test.toml -print | sort)
