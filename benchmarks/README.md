@@ -34,7 +34,7 @@ CodSpeed upload and no write-capable checkout token. It runs on:
   benchmark workflow files.
 - Pull requests with the `benchmark` label.
 
-CI runs:
+Default CI runs:
 
 ```bash
 python -m pytest --codspeed \
@@ -44,9 +44,9 @@ python -m pytest --codspeed \
   -q
 ```
 
-Manual local full-suite runs include the 150-device scale benchmark. They do not add
-an all-host render benchmark for the full molecule scenario; that kind of load
-test is intentionally outside the CodSpeed suite.
+Local full-suite runs include the 150-device scale benchmark. They do not add an
+all-host render benchmark for the full molecule scenario; that kind of load test
+is intentionally outside the CodSpeed suite.
 
 ```bash
 python -m pytest --codspeed benchmarks -q
