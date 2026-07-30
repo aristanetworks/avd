@@ -131,9 +131,7 @@ jobs:
             requirements:
               - '.codecov.yml'
               - 'pyproject.toml'
-              - 'uv.lock'
               - 'python-avd/pyproject.toml'
-              - 'python-avd/uv.lock'
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/meta/runtime.yml'
               - 'ansible_collections/arista/avd/requirements.yml'
