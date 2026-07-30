@@ -29,9 +29,9 @@ inventory_file = "inventory/hosts.yml"
 [scenarios.main]
 
 [scenarios.main.fabrics.DIGITAL_TWIN_SINGLE_SWITCH_FABRIC]
+avd_design = false
 device_configs = false
 documentation.device_docs = false
-documentation.fabric_doc = false
 
 [scenarios.digital-twin]
 inventory_file = "inventory/hosts.yml"
