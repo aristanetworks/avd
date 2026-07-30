@@ -83,17 +83,17 @@ class AvdStructuredConfigBaseProtocol(
         if self.shared_utils.oob_mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
             return
 
-        if self.shared_utils.mgmt_gateway is None:
+        if self.shared_utils.oob_mgmt_gateway is None:
             return
 
         if self.inputs.mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.mgmt_destination_networks:
                 self.structured_config.static_routes.append_new(
-                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway
+                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.oob_mgmt_gateway
                 )
         else:
             self.structured_config.static_routes.append_new(
-                vrf=self.shared_utils.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway
+                vrf=self.shared_utils.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.oob_mgmt_gateway
             )
 
     @structured_config_contributor
