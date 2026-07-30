@@ -1,5 +1,5 @@
 ---
-name: DIGITAL_TWIN_CONTAINERLAB, Containerlab Digital Twin
+name: DIGITAL_TWIN_CONTAINERLAB
 prefix: ''
 mgmt:
   network: custom_mgmt
