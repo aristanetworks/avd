@@ -8718,8 +8718,8 @@ ip routing vrf TEST3
 ```eos
 !
 ipv6 unicast-routing
-ipv6 unicast-routing vrf TEST1
 ipv6 hardware fib optimize prefixes profile internet
+ipv6 unicast-routing vrf TEST1
 ```
 
 ### Static Routes
