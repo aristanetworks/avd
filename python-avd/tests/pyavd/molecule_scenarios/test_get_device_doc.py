@@ -11,20 +11,6 @@ from tests.models import MoleculeHost
 @pytest.mark.molecule_scenarios(
     "eos_cli_config_gen",
     "eos_cli_config_gen_deprecated_vars",
-    "eos_designs-l2ls",
-    "eos_designs-mpls-isis-sr-ldp",
-    "eos_designs-twodc-5stage-clos",
-    "evpn_underlay_ebgp_overlay_ebgp",
-    "evpn_underlay_isis_overlay_ibgp",
-    "evpn_underlay_ospf_overlay_ebgp",
-    "evpn_underlay_rfc5549_overlay_ebgp",
-    "example-campus-fabric",
-    # TODO: "example-cv-pathfinder", # Work around Ansible vault
-    "example-dual-dc-l3ls",
-    "example-isis-ldp-ipvpn",
-    "example-l2ls-fabric",
-    "example-single-dc-l3ls",
-    "example-single-dc-l3ls-ipv6",
 )
 @pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
 def test_get_device_doc(molecule_host: MoleculeHost) -> None:

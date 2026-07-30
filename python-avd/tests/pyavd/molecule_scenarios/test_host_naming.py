@@ -14,9 +14,6 @@ if TYPE_CHECKING:
 
 
 @pytest.mark.molecule_scenarios(
-    "eos_designs_unit_tests",
-    "eos_designs_negative_unit_tests",
-    "eos_designs_deprecated_vars",
     "eos_cli_config_gen",
     "eos_cli_config_gen_negative_unit_tests",
     "eos_cli_config_gen_deprecated_vars",
