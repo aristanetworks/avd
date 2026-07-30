@@ -774,6 +774,7 @@ jobs:
     name: Test pyavd python 3.12 coverage report
     runs-on: ubuntu-latest
     needs: [e2e, test_pyavd]
+    # Run with coverage from either producer when the other is skipped by path filtering, but not if either producer fails or both are skipped.
     if: |
       always() &&
       (needs.e2e.result == 'success' || needs.e2e.result == 'skipped') &&
