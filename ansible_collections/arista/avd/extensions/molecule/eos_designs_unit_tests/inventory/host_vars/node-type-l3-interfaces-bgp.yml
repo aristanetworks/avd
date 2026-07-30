@@ -12,6 +12,16 @@ ipv4_prefix_list_catalog:
       - sequence: 10
         action: permit 0.0.0.0/0
 
+ipv6_prefix_list_catalog:
+  - name: ALLOW-IPV6-DEFAULT
+    sequence_numbers:
+      - sequence: 10
+        action: permit ::/0
+  - name: ALLOW-IPV6-LOCAL
+    sequence_numbers:
+      - sequence: 10
+        action: permit 2001:db8:42::/64
+
 l3spine:
   nodes:
     - name: node-type-l3-interfaces-bgp
@@ -29,3 +39,28 @@ l3spine:
           bgp:
             peer_as: 65042
             ipv4_prefix_list_in: ALLOW-DEFAULT
+        - # IPv6 BGP peering on an L3 interface with inbound and outbound policies.
+          name: Ethernet44
+          ipv6_addresses:
+            - 2001:db8:42::2/64
+          peer: PEER-IPV6
+          peer_interface: Ethernet1
+          peer_ipv6_address: 2001:db8:42::1
+          bgp:
+            peer_as: 65043
+            ipv6_prefix_list_in: ALLOW-IPV6-DEFAULT
+            ipv6_prefix_list_out: ALLOW-IPV6-LOCAL
+      l3_port_channels:
+        - # IPv6 BGP peering with the default deny-all outbound policy.
+          name: Port-Channel45
+          ipv6_addresses:
+            - 2001:db8:45::2/64
+          peer: PEER-IPV6-PC
+          peer_port_channel: Port-Channel1
+          peer_ipv6_address: 2001:db8:45::1
+          member_interfaces:
+            - name: Ethernet45
+              peer: PEER-IPV6-PC
+              peer_interface: Ethernet1
+          bgp:
+            peer_as: 65045

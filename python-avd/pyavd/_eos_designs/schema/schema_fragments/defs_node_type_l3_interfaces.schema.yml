@@ -103,11 +103,14 @@ $defs:
           type: str
           description: |-
             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token.
+        peer_ipv6_address:
+          type: str
+          description: |-
+            The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
         bgp:
           type: dict
           description: |-
-            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-            IPv6 BGP peering on L3 interfaces is not yet supported.
+            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set.
           keys:
             peer_as:
               type: str
@@ -131,6 +134,17 @@ $defs:
                 Prefix List Name. Advertise routes for only these prefixes.
                 If not specified, nothing would be advertised.
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+            ipv6_prefix_list_in:
+              type: str
+              description: |-
+                Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+            ipv6_prefix_list_out:
+              type: str
+              description: |-
+                Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                If not specified, nothing would be advertised.
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
         ipv4_acl_in:
           description: |-
             Name of the IPv4 access-list to be assigned in the ingress direction.

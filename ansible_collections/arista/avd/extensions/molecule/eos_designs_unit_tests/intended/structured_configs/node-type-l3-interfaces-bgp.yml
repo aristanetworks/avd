@@ -12,10 +12,41 @@ ethernet_interfaces:
     peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet44
+  description: PEER-IPV6_Ethernet1
+  shutdown: false
+  ipv6_addresses:
+  - 2001:db8:42::2/64
+  metadata:
+    peer: PEER-IPV6
+    peer_interface: Ethernet1
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet45
+  description: PEER-IPV6-PC_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 45
+    mode: active
+  metadata:
+    peer: PEER-IPV6-PC
+    peer_interface: Ethernet1
+    peer_type: l3_port_channel_member
 hostname: node-type-l3-interfaces-bgp
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
+ipv6_prefix_lists:
+- name: ALLOW-IPV6-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit ::/0
+- name: ALLOW-IPV6-LOCAL
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:db8:42::/64
+ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -24,6 +55,18 @@ loopback_interfaces:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel45
+  description: PEER-IPV6-PC_Port-Channel1
+  shutdown: false
+  ipv6_addresses:
+  - 2001:db8:45::2/64
+  metadata:
+    peer: PEER-IPV6-PC
+    peer_interface: Port-Channel1
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
 prefix_lists:
 - name: ALLOW-DEFAULT
   sequence_numbers:
@@ -39,6 +82,24 @@ route_maps:
     set:
     - community no-advertise additive
 - name: RM-BGP-192.168.42.1-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+- name: RM-BGP-2001:db8:42::1-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ipv6 address prefix-list ALLOW-IPV6-DEFAULT
+- name: RM-BGP-2001:db8:42::1-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ipv6 address prefix-list ALLOW-IPV6-LOCAL
+  - sequence: 20
+    type: deny
+- name: RM-BGP-2001:db8:45::1-OUT
   sequence_numbers:
   - sequence: 10
     type: deny
@@ -58,12 +119,27 @@ router_bgp:
     description: INTERNET
     route_map_in: RM-BGP-192.168.42.1-IN
     route_map_out: RM-BGP-192.168.42.1-OUT
+  - ip_address: 2001:db8:42::1
+    remote_as: '65043'
+    description: PEER-IPV6_Ethernet1
+    route_map_in: RM-BGP-2001:db8:42::1-IN
+    route_map_out: RM-BGP-2001:db8:42::1-OUT
+  - ip_address: 2001:db8:45::1
+    remote_as: '65045'
+    description: PEER-IPV6-PC_Port-Channel1
+    route_map_out: RM-BGP-2001:db8:45::1-OUT
   redistribute:
     connected:
       enabled: true
   address_family_ipv4:
     neighbors:
     - ip_address: 192.168.42.1
+      activate: true
+  address_family_ipv6:
+    neighbors:
+    - ip_address: 2001:db8:42::1
+      activate: true
+    - ip_address: 2001:db8:45::1
       activate: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true

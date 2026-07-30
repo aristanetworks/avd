@@ -4104,6 +4104,40 @@ keys:
       advertisements are expected to provide the gateway and default route.
 
       '
+  ipv6_prefix_list_catalog:
+    type: list
+    primary_key: name
+    description: 'IPv6 prefix-list catalog.
+
+      Entries are only rendered when explicitly referenced by `ipv6_prefix_list_in`
+      or
+
+      `ipv6_prefix_list_out` under BGP on an L3 interface or L3 Port-Channel.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Prefix-list Name.
+        sequence_numbers:
+          type: list
+          primary_key: sequence
+          required: true
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                required: true
+                description: 'Action as string.
+
+                  Example: "permit 2001:db8::/32 le 128"'
   is_deployed:
     documentation_options:
       table: is-deployed
@@ -15542,12 +15576,14 @@ $defs:
           type: str
           description: The peer device IPv6 address (no mask). Used for field substitution
             in `ipv6_acls` entries with the "peer_ipv6" token.
+        peer_ipv6_address:
+          type: str
+          description: The peer device IPv6 address (no mask). Used for creating IPv6
+            BGP peering if `bgp` is also set.
         bgp:
           type: dict
-          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
-            peering (when `peer_ip` is set).
-
-            IPv6 BGP peering on L3 interfaces is not yet supported.'
+          description: Configure IPv4 and/or IPv6 BGP peering for the interface when
+            `peer_ip` and/or `peer_ipv6_address` is set.
           keys:
             peer_as:
               type: str
@@ -15573,6 +15609,20 @@ $defs:
                 If not specified, nothing would be advertised.
 
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
+            ipv6_prefix_list_in:
+              type: str
+              description: 'Prefix List Name. Accept routes for only these IPv6 prefixes
+                from the peer.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
+            ipv6_prefix_list_out:
+              type: str
+              description: 'Prefix List Name. Advertise routes for only these IPv6
+                prefixes.
+
+                If not specified, nothing would be advertised.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
@@ -15827,12 +15877,14 @@ $defs:
           type: str
           description: The peer device IPv6 address (no mask). Used for field substitution
             in `ipv6_acls` entries with the "peer_ipv6" token.
+        peer_ipv6_address:
+          type: str
+          description: The peer device IPv6 address (no mask). Used for creating IPv6
+            BGP peering if `bgp` is also set.
         bgp:
           type: dict
-          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
-            peering (when `peer_ip` is set).
-
-            IPv6 BGP peering on L3 Port-Channels is not yet supported.'
+          description: Configure IPv4 and/or IPv6 BGP peering for the interface when
+            `peer_ip` and/or `peer_ipv6_address` is set.
           keys:
             peer_as:
               type: str
@@ -15858,6 +15910,20 @@ $defs:
                 If not specified, nothing would be advertised.
 
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
+            ipv6_prefix_list_in:
+              type: str
+              description: 'Prefix List Name. Accept routes for only these IPv6 prefixes
+                from the peer.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
+            ipv6_prefix_list_out:
+              type: str
+              description: 'Prefix List Name. Advertise routes for only these IPv6
+                prefixes.
+
+                If not specified, nothing would be advertised.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
