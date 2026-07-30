@@ -525,7 +525,7 @@ jobs:
             integration_args: ""
           - ansible_version: ansible_core_2_18
             pip_installation: "ansible-core>=2.18.0,<2.19.0"
-            python_version: "3.11"
+            python_version: "3.12"
             # TODO: Remove this exclusion once AVDActionPlugin stores log warnings in result["warnings"] for ansible-core <2.19.
             integration_args: "--exclude eos_designs_documentation"
     steps:
@@ -701,12 +701,12 @@ jobs:
           uv run --no-project --with-requirements tools/e2e-test-avd.py \
             ansible-galaxy collection install /tmp/avd-collection/arista-avd-*.tar.gz ansible.utils
       - name: Run end-to-end tests with coverage
-        if: matrix.python == '3.11'
+        if: matrix.python == '3.12'
         run: |
           make e2e-coverage
           uv run --no-project --with-requirements tools/e2e-test-avd.py coverage combine
       - name: Run end-to-end tests
-        if: matrix.python != '3.11'
+        if: matrix.python != '3.12'
         run: make e2e
       - name: Print new end-to-end errors
         if: always()
@@ -719,10 +719,10 @@ jobs:
       - name: Check generated outputs
         run: sh .github/check-git-status.sh
       - name: Prepare end-to-end coverage data
-        if: matrix.python == '3.11'
+        if: matrix.python == '3.12'
         run: mv .coverage coverage-End-to-End.dat
       - name: Upload end-to-end coverage data
-        if: matrix.python == '3.11'
+        if: matrix.python == '3.12'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: coverage-data-End-to-End
@@ -760,18 +760,18 @@ jobs:
         run: |
           tox run -- --ignore=python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
       - name: Rename the coverage file
-        if: matrix.python == '3.11'
+        if: matrix.python == '3.12'
         run: |
           mv .coverage coverage-PyAVD.dat
       - name: Upload pytest coverage data
-        if: matrix.python == '3.11'
+        if: matrix.python == '3.12'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: coverage-data-PyAVD
           path: coverage-PyAVD.dat
 
   generate_pyavd_coverage_report:
-    name: Test pyavd python 3.11 coverage report
+    name: Test pyavd python 3.12 coverage report
     runs-on: ubuntu-latest
     needs: [e2e, test_pyavd]
     if: |
@@ -783,10 +783,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up Python 3.11
+      - name: Set up Python 3.12
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - name: Install coverage
         run: pip install --group coverage -e development/coverage_plugins
       - name: Download coverage artifacts
