@@ -483,24 +483,21 @@ class AvdBuildContext:
             if mod is None:
                 continue
 
-            # Check file location
-            file_attr = getattr(mod, "__file__", None)
-            if file_attr:
-                try:
-                    if pathlib.Path(file_attr).resolve().is_relative_to(full_custom_path):
-                        modules_to_unload.append(name)
-                        continue
-                except (ValueError, RuntimeError):
-                    pass
+            try:
+                # Check file location
+                file_attr = getattr(mod, "__file__", None)
+                if file_attr and pathlib.Path(file_attr).resolve().is_relative_to(full_custom_path):
+                    modules_to_unload.append(name)
+                    continue
 
-            # Check package location
-            for p in getattr(mod, "__path__", []):
-                try:
+                # Check package location
+                for p in getattr(mod, "__path__", []):
                     if pathlib.Path(p).resolve().is_relative_to(full_custom_path):
                         modules_to_unload.append(name)
                         break
-                except (ValueError, RuntimeError):
-                    pass
+            except (ReferenceError, ValueError, RuntimeError):
+                # Coverage instrumentation can leave expired weak-reference proxies in sys.modules, which have no module path to clean up.
+                pass
 
         # Evict from import cache
         for name in modules_to_unload:

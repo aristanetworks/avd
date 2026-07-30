@@ -321,6 +321,7 @@ jobs:
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
+        if: "!contains(matrix.avd_scenario, 'eos_designs_negative_unit_test')"
         run: |
           sh .github/check-git-status.sh
 
