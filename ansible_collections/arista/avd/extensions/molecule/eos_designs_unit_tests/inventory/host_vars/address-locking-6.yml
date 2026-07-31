@@ -13,13 +13,14 @@ l3leaf:
       bgp_as: 101
       platform: no_address_locking_platform
 
-# Testing feature_support.address_locking: false
+# Testing feature_support.address_locking.supported: false
 # All Address Locking config should be skipped
 custom_platform_settings:
   - platforms:
       - no_address_locking_platform
     feature_support:
-      address_locking: false
+      address_locking:
+        supported: false
 
 address_locking_settings:
   disabled: true

@@ -13,7 +13,8 @@ custom_platform_settings:
   - platforms:
       - no_address_locking_platform
     feature_support:
-      address_locking: false
+      address_locking:
+        supported: false
 
 address_locking_settings:
   dhcp_servers_ipv4:

@@ -105,7 +105,7 @@ class VlansMixin(Protocol):
         )
         vlans_vlan.metadata.tenants.append(tenant.name)
         feature_support = self.shared_utils.platform_settings.feature_support
-        if feature_support.address_locking:
+        if feature_support.address_locking.supported:
             if vlan.address_locking.ipv4:
                 self._apply_vlan_af_address_locking(
                     vlans_vlan,
@@ -114,7 +114,7 @@ class VlansMixin(Protocol):
                     "ipv4",
                     self.inputs.address_locking_settings.locked_address.ipv4_enforcement_disabled,
                 )
-            if vlan.address_locking.ipv6 and feature_support.address_locking_ipv6_vlan:
+            if vlan.address_locking.ipv6 and feature_support.address_locking.ipv6_vlan:
                 self._apply_vlan_af_address_locking(
                     vlans_vlan,
                     vlan.id,

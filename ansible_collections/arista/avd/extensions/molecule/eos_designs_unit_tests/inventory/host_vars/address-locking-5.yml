@@ -18,10 +18,11 @@ custom_platform_settings:
   - platforms:
       - patrial_address_locking_platform
     feature_support:
-      address_locking_ipv4_enforcement_disabled: false
-      address_locking_ipv6_enforcement_disabled: false
-      address_locking_ipv6_ethernet_interface: false
-      address_locking_ipv6_vlan: false
+      address_locking:
+        ipv4_enforcement_disabled: false
+        ipv6_enforcement_disabled: false
+        ipv6_ethernet_interface: false
+        ipv6_vlan: false
 
 # Testing feature support on virtual platforms
 address_locking_settings:

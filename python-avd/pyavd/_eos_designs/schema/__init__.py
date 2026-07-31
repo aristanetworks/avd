@@ -41056,6 +41056,98 @@ class EosDesigns(EosDesignsRootModel):
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
+            class AddressLocking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "supported": {"type": bool, "default": True},
+                    "ipv4_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_ethernet_interface": {"type": bool, "default": True},
+                    "ipv6_vlan": {"type": bool, "default": True},
+                }
+                supported: bool
+                """
+                Global support for Address Locking feature.
+                The feature will be ignored on platforms where this is
+                false.
+
+                Default value: `True`
+                """
+                ipv4_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv4 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv6 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_ethernet_interface: bool
+                """
+                Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                The feature will be
+                ignored on platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_vlan: bool
+                """
+                Support for controlling IPv6 Address Locking on the VLAN level.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        supported: bool | UndefinedType = Undefined,
+                        ipv4_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_ethernet_interface: bool | UndefinedType = Undefined,
+                        ipv6_vlan: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AddressLocking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            supported:
+                               Global support for Address Locking feature.
+                               The feature will be ignored on platforms where this is
+                               false.
+                            ipv4_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv4 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv6 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_ethernet_interface:
+                               Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                               The feature will be
+                               ignored on platforms where this is false.
+                            ipv6_vlan:
+                               Support for controlling IPv6 Address Locking on the VLAN level.
+                               The feature will be ignored on
+                               platforms where this is false.
+
+                        """
+
             class PlatformSfeInterfaceProfile(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -42201,11 +42293,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
-                "address_locking": {"type": bool, "default": True},
-                "address_locking_ipv4_enforcement_disabled": {"type": bool, "default": True},
-                "address_locking_ipv6_enforcement_disabled": {"type": bool, "default": True},
-                "address_locking_ipv6_ethernet_interface": {"type": bool, "default": True},
-                "address_locking_ipv6_vlan": {"type": bool, "default": True},
+                "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
@@ -42231,46 +42319,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
-            address_locking: bool
-            """
-            Global support for Address Locking feature.
-            The feature will be ignored on platforms where this is
-            false.
-
-            Default value: `True`
-            """
-            address_locking_ipv4_enforcement_disabled: bool
-            """
-            Support for disabling enforcement for locked IPv4 addresses.
-            The feature will be ignored on
-            platforms where this is false.
-
-            Default value: `True`
-            """
-            address_locking_ipv6_enforcement_disabled: bool
-            """
-            Support for disabling enforcement for locked IPv6 addresses.
-            The feature will be ignored on
-            platforms where this is false.
-
-            Default value: `True`
-            """
-            address_locking_ipv6_ethernet_interface: bool
-            """
-            Support for controlling IPv6 Address Locking on the Ethernet interface level.
-            The feature will be
-            ignored on platforms where this is false.
-
-            Default value: `True`
-            """
-            address_locking_ipv6_vlan: bool
-            """
-            Support for controlling IPv6 Address Locking on the VLAN level.
-            The feature will be ignored on
-            platforms where this is false.
-
-            Default value: `True`
-            """
+            address_locking: AddressLocking
+            """Subclass of AvdModel."""
             queue_monitor: bool
             """
             Support for LANZ.
@@ -42477,11 +42527,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    address_locking: bool | UndefinedType = Undefined,
-                    address_locking_ipv4_enforcement_disabled: bool | UndefinedType = Undefined,
-                    address_locking_ipv6_enforcement_disabled: bool | UndefinedType = Undefined,
-                    address_locking_ipv6_ethernet_interface: bool | UndefinedType = Undefined,
-                    address_locking_ipv6_vlan: bool | UndefinedType = Undefined,
+                    address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
@@ -42514,26 +42560,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        address_locking:
-                           Global support for Address Locking feature.
-                           The feature will be ignored on platforms where this is
-                           false.
-                        address_locking_ipv4_enforcement_disabled:
-                           Support for disabling enforcement for locked IPv4 addresses.
-                           The feature will be ignored on
-                           platforms where this is false.
-                        address_locking_ipv6_enforcement_disabled:
-                           Support for disabling enforcement for locked IPv6 addresses.
-                           The feature will be ignored on
-                           platforms where this is false.
-                        address_locking_ipv6_ethernet_interface:
-                           Support for controlling IPv6 Address Locking on the Ethernet interface level.
-                           The feature will be
-                           ignored on platforms where this is false.
-                        address_locking_ipv6_vlan:
-                           Support for controlling IPv6 Address Locking on the VLAN level.
-                           The feature will be ignored on
-                           platforms where this is false.
+                        address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
                            The feature will be ignored on platforms where this is false.
@@ -42875,6 +42902,98 @@ class EosDesigns(EosDesignsRootModel):
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
+            class AddressLocking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "supported": {"type": bool, "default": True},
+                    "ipv4_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_ethernet_interface": {"type": bool, "default": True},
+                    "ipv6_vlan": {"type": bool, "default": True},
+                }
+                supported: bool
+                """
+                Global support for Address Locking feature.
+                The feature will be ignored on platforms where this is
+                false.
+
+                Default value: `True`
+                """
+                ipv4_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv4 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv6 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_ethernet_interface: bool
+                """
+                Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                The feature will be
+                ignored on platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_vlan: bool
+                """
+                Support for controlling IPv6 Address Locking on the VLAN level.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        supported: bool | UndefinedType = Undefined,
+                        ipv4_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_ethernet_interface: bool | UndefinedType = Undefined,
+                        ipv6_vlan: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AddressLocking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            supported:
+                               Global support for Address Locking feature.
+                               The feature will be ignored on platforms where this is
+                               false.
+                            ipv4_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv4 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv6 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_ethernet_interface:
+                               Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                               The feature will be
+                               ignored on platforms where this is false.
+                            ipv6_vlan:
+                               Support for controlling IPv6 Address Locking on the VLAN level.
+                               The feature will be ignored on
+                               platforms where this is false.
+
+                        """
+
             class PlatformSfeInterfaceProfile(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -44020,11 +44139,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
-                "address_locking": {"type": bool, "default": True},
-                "address_locking_ipv4_enforcement_disabled": {"type": bool, "default": True},
-                "address_locking_ipv6_enforcement_disabled": {"type": bool, "default": True},
-                "address_locking_ipv6_ethernet_interface": {"type": bool, "default": True},
-                "address_locking_ipv6_vlan": {"type": bool, "default": True},
+                "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
@@ -44050,46 +44165,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
-            address_locking: bool
-            """
-            Global support for Address Locking feature.
-            The feature will be ignored on platforms where this is
-            false.
-
-            Default value: `True`
-            """
-            address_locking_ipv4_enforcement_disabled: bool
-            """
-            Support for disabling enforcement for locked IPv4 addresses.
-            The feature will be ignored on
-            platforms where this is false.
-
-            Default value: `True`
-            """
-            address_locking_ipv6_enforcement_disabled: bool
-            """
-            Support for disabling enforcement for locked IPv6 addresses.
-            The feature will be ignored on
-            platforms where this is false.
-
-            Default value: `True`
-            """
-            address_locking_ipv6_ethernet_interface: bool
-            """
-            Support for controlling IPv6 Address Locking on the Ethernet interface level.
-            The feature will be
-            ignored on platforms where this is false.
-
-            Default value: `True`
-            """
-            address_locking_ipv6_vlan: bool
-            """
-            Support for controlling IPv6 Address Locking on the VLAN level.
-            The feature will be ignored on
-            platforms where this is false.
-
-            Default value: `True`
-            """
+            address_locking: AddressLocking
+            """Subclass of AvdModel."""
             queue_monitor: bool
             """
             Support for LANZ.
@@ -44296,11 +44373,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    address_locking: bool | UndefinedType = Undefined,
-                    address_locking_ipv4_enforcement_disabled: bool | UndefinedType = Undefined,
-                    address_locking_ipv6_enforcement_disabled: bool | UndefinedType = Undefined,
-                    address_locking_ipv6_ethernet_interface: bool | UndefinedType = Undefined,
-                    address_locking_ipv6_vlan: bool | UndefinedType = Undefined,
+                    address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
@@ -44333,26 +44406,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        address_locking:
-                           Global support for Address Locking feature.
-                           The feature will be ignored on platforms where this is
-                           false.
-                        address_locking_ipv4_enforcement_disabled:
-                           Support for disabling enforcement for locked IPv4 addresses.
-                           The feature will be ignored on
-                           platforms where this is false.
-                        address_locking_ipv6_enforcement_disabled:
-                           Support for disabling enforcement for locked IPv6 addresses.
-                           The feature will be ignored on
-                           platforms where this is false.
-                        address_locking_ipv6_ethernet_interface:
-                           Support for controlling IPv6 Address Locking on the Ethernet interface level.
-                           The feature will be
-                           ignored on platforms where this is false.
-                        address_locking_ipv6_vlan:
-                           Support for controlling IPv6 Address Locking on the VLAN level.
-                           The feature will be ignored on
-                           platforms where this is false.
+                        address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
                            The feature will be ignored on platforms where this is false.

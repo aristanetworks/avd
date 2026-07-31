@@ -64,39 +64,42 @@ $defs:
           type: dict
           keys:
             address_locking:
-              type: bool
-              description: |-
-                Global support for Address Locking feature.
-                The feature will be ignored on platforms where this is false.
-              default: true
-            # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
-            address_locking_ipv4_enforcement_disabled:
-              type: bool
-              description: |-
-                Support for disabling enforcement for locked IPv4 addresses.
-                The feature will be ignored on platforms where this is false.
-              default: true
-            # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
-            address_locking_ipv6_enforcement_disabled:
-              type: bool
-              description: |-
-                Support for disabling enforcement for locked IPv6 addresses.
-                The feature will be ignored on platforms where this is false.
-              default: true
-            # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
-            address_locking_ipv6_ethernet_interface:
-              type: bool
-              description: |-
-                Support for controlling IPv6 Address Locking on the Ethernet interface level.
-                The feature will be ignored on platforms where this is false.
-              default: true
-            # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
-            address_locking_ipv6_vlan:
-              type: bool
-              description: |-
-                Support for controlling IPv6 Address Locking on the VLAN level.
-                The feature will be ignored on platforms where this is false.
-              default: true
+              type: dict
+              keys:
+                supported:
+                  type: bool
+                  description: |-
+                    Global support for Address Locking feature.
+                    The feature will be ignored on platforms where this is false.
+                  default: true
+                # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
+                ipv4_enforcement_disabled:
+                  type: bool
+                  description: |-
+                    Support for disabling enforcement for locked IPv4 addresses.
+                    The feature will be ignored on platforms where this is false.
+                  default: true
+                # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
+                ipv6_enforcement_disabled:
+                  type: bool
+                  description: |-
+                    Support for disabling enforcement for locked IPv6 addresses.
+                    The feature will be ignored on platforms where this is false.
+                  default: true
+                # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
+                ipv6_ethernet_interface:
+                  type: bool
+                  description: |-
+                    Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                    The feature will be ignored on platforms where this is false.
+                  default: true
+                # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
+                ipv6_vlan:
+                  type: bool
+                  description: |-
+                    Support for controlling IPv6 Address Locking on the VLAN level.
+                    The feature will be ignored on platforms where this is false.
+                  default: true
             queue_monitor:
               type: bool
               description: |-
