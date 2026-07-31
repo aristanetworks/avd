@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import importlib
 import sys
+from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
 import pytest
@@ -131,6 +132,18 @@ def test_package_relative_roots_are_discovered_without_importing_package(tmp_pat
     assert list(plugin.find_executable_files(str(package_root))) == [str(source_file.resolve())]
     assert not list(plugin.find_executable_files(str(tmp_path / "other")))
     assert package_name not in sys.modules
+
+
+def test_multiprocessing_worker_does_not_enumerate_unexecuted_templates(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "simple.j2"
+    compiled_root.mkdir(parents=True)
+    source_file.write_text("hello\n", encoding="utf-8")
+    plugin = JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,))
+    monkeypatch.setattr("coverage_plugins.jinja.current_process", lambda: SimpleNamespace(name="ForkServerProcess-1"))
+
+    assert not list(plugin.find_executable_files(str(tmp_path)))
 
 
 def test_coverage_init_requires_compiled_template_roots() -> None:

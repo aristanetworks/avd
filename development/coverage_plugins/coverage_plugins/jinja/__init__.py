@@ -12,6 +12,7 @@ generated scaffolding to the nearest template line.
 from __future__ import annotations
 
 from importlib.util import find_spec
+from multiprocessing import current_process
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
@@ -77,6 +78,11 @@ class JinjaTemplateCoveragePlugin(CoveragePlugin):
 
     def find_executable_files(self, src_dir: str) -> Iterable[str]:
         """Yield Jinja source templates below the source directory being scanned by coverage.py."""
+        # Runtime tracing must remain active in multiprocessing workers, but only the
+        # main process needs to add every unexecuted template to the coverage data.
+        if current_process().name != "MainProcess":
+            return
+
         source_dir = Path(src_dir).resolve()
         template_roots = {compiled_root.parent for compiled_root in self.compiled_template_roots}
         for template_root in sorted(template_roots):
