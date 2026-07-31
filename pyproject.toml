@@ -244,7 +244,9 @@ source_dirs = [
   "python-avd/pyavd/_eos_designs/j2templates",
 ]
 omit = [
+  # Exclude both the local source tree and the package installed in uv's isolated E2E environment.
   "python-avd/pyavd/_cv/api/*",
+  "*/site-packages/pyavd/_cv/api/*",
 ]
 
 [tool.coverage.coverage_plugins.jinja]
