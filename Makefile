@@ -160,8 +160,3 @@ docs-serve-docker: ## Same as docs-serve, but inside the webdoc_avd container (n
 .PHONY: e2e
 e2e: ## Run end-to-end tests, regenerating all outputs and capturing errors to files.
 	@uv run --no-project tools/e2e-test-avd.py $$(find . -type f -name e2e-test.toml -print | sort)
-
-.PHONY: e2e-coverage
-e2e-coverage: ## Run end-to-end tests with coverage, regenerating all outputs and capturing errors to files.
-	@uv run --no-project --with-requirements tools/e2e-test-avd.py \
-		coverage run tools/e2e-test-avd.py $$(find . -type f -name e2e-test.toml -print | sort)

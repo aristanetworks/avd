@@ -246,28 +246,16 @@ source_pkgs = [
   "pyavd",
   "schema_tools",
 ]
-source_dirs = [
-  # Jinja source roots are included so the coverage plugin can report compiled-template execution against checked-in .j2 files.
-  "python-avd/pyavd/_eos_cli_config_gen/j2templates",
-  "python-avd/pyavd/_eos_designs/j2templates",
-]
 omit = [
-  # Exclude both the local source tree and the package installed in uv's isolated E2E environment.
+  # Generated CloudVision API bindings are excluded from coverage.
   "python-avd/pyavd/_cv/api/*",
-  "*/site-packages/pyavd/_cv/api/*",
 ]
 
 [tool.coverage.coverage_plugins.jinja]
+package = "pyavd"
 compiled_template_roots = [
-  "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
-  "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
-]
-
-[tool.coverage.paths]
-pyavd = [
-    "python-avd/pyavd",
-    # Catches site-packages/pyavd inside uv cache for e2e
-    "*/pyavd",
+  "_eos_cli_config_gen/j2templates/compiled_templates",
+  "_eos_designs/j2templates/compiled_templates",
 ]
 
 [tool.coverage.report]

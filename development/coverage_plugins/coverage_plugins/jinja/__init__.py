@@ -11,8 +11,9 @@ generated scaffolding to the nearest template line.
 
 from __future__ import annotations
 
+from importlib.util import find_spec
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from coverage import CoveragePlugin, FileReporter, FileTracer
 from coverage.exceptions import ConfigError
@@ -44,9 +45,9 @@ __all__ = (
 class JinjaTemplateCoveragePlugin(CoveragePlugin):
     """Coverage.py file tracer plugin for generated Jinja modules."""
 
-    def __init__(self, compiled_template_roots: Iterable[str | Path] | None = None) -> None:
+    def __init__(self, compiled_template_roots: Iterable[str | Path] | None = None, package: str | None = None) -> None:
         """Store normalized directories containing generated Jinja Python modules."""
-        self.compiled_template_roots = _configured_compiled_template_roots(compiled_template_roots)
+        self.compiled_template_roots = _configured_compiled_template_roots(compiled_template_roots, package)
 
     def file_tracer(self, filename: str) -> JinjaTemplateFileTracer | None:
         """Return a tracer for generated Jinja modules under configured compiled-template roots."""
@@ -67,6 +68,22 @@ class JinjaTemplateCoveragePlugin(CoveragePlugin):
     def file_reporter(self, filename: str) -> JinjaTemplateFileReporter:
         """Return the reporter used by coverage.py when generating reports for a source template."""
         return JinjaTemplateFileReporter(filename)
+
+    def configure(self, config) -> None:  # noqa: ANN001
+        """Allow coverage.py to trace generated modules before the file tracer remaps them."""
+        template_roots = [str(root.parent) for root in self.compiled_template_roots if root.parent.is_dir()]
+        source_dirs = cast("list[str] | None", config.get_option("run:source_dirs")) or []
+        config.set_option("run:source_dirs", [*source_dirs, *template_roots])
+
+    def find_executable_files(self, src_dir: str) -> Iterable[str]:
+        """Yield Jinja source templates below the source directory being scanned by coverage.py."""
+        source_dir = Path(src_dir).resolve()
+        template_roots = {compiled_root.parent for compiled_root in self.compiled_template_roots}
+        for template_root in sorted(template_roots):
+            if not template_root.is_dir() or not template_root.is_relative_to(source_dir):
+                continue
+
+            yield from (str(template_file) for template_file in sorted(template_root.rglob("*.j2")) if template_file.is_file())
 
     def _compiled_root_for(self, filename: Path) -> Path | None:
         """Find the configured compiled-template root containing ``filename``."""
@@ -169,10 +186,20 @@ def coverage_init(reg, options) -> None:  # noqa: ANN001
         msg = "coverage_plugins.jinja requires the compiled_template_roots coverage plugin option."
         raise ConfigError(msg)
 
-    reg.add_file_tracer(JinjaTemplateCoveragePlugin(compiled_template_roots=configured_roots))
+    package = options.get("package")
+    if package is not None and not isinstance(package, str):
+        msg = "coverage_plugins.jinja requires the package coverage plugin option to be a string."
+        raise ConfigError(msg)
+
+    plugin = JinjaTemplateCoveragePlugin(compiled_template_roots=configured_roots, package=package)
+    reg.add_file_tracer(plugin)
+    reg.add_configurer(plugin)
 
 
-def _configured_compiled_template_roots(configured_roots: Iterable[str | Path] | str | Path | None) -> tuple[Path, ...]:
+def _configured_compiled_template_roots(
+    configured_roots: Iterable[str | Path] | str | Path | None,
+    package: str | None = None,
+) -> tuple[Path, ...]:
     """Normalize the configured compiled-template roots to absolute ``Path`` objects."""
     if configured_roots is None:
         return ()
@@ -180,4 +207,25 @@ def _configured_compiled_template_roots(configured_roots: Iterable[str | Path] |
     if isinstance(configured_roots, (str, Path)):
         configured_roots = (configured_roots,)
 
-    return tuple(Path(root).resolve() for root in configured_roots)
+    roots = tuple(Path(root) for root in configured_roots)
+    if package is None:
+        return tuple(root.resolve() for root in roots)
+
+    package_roots = _package_roots(package)
+    resolved_roots = {(package_root / root).resolve() for root in roots for package_root in (package_roots if not root.is_absolute() else (Path(),))}
+    return tuple(sorted(resolved_roots))
+
+
+def _package_roots(package: str) -> tuple[Path, ...]:
+    """Resolve package search locations without importing the package."""
+    try:
+        package_spec = find_spec(package)
+    except (ImportError, ModuleNotFoundError, ValueError) as error:
+        msg = f"coverage_plugins.jinja could not find package {package!r}."
+        raise ConfigError(msg) from error
+
+    if package_spec is None or package_spec.submodule_search_locations is None:
+        msg = f"coverage_plugins.jinja could not find package {package!r}."
+        raise ConfigError(msg)
+
+    return tuple(Path(location).resolve() for location in package_spec.submodule_search_locations)

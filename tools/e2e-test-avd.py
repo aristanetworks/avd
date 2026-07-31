@@ -4,9 +4,7 @@
 # /// script
 # dependencies = [
 #   "pyavd[ansible] @ file:///${PROJECT_ROOT}/python-avd",
-#   "gitpython>=3.1.57",
-#   "coverage[toml]==7.15.2",
-#   "coverage_plugins @ file:///${PROJECT_ROOT}/development/coverage_plugins"
+#   "gitpython>=3.1.57"
 # ]
 # requires-python = ">=3.11"
 # # [tool.uv]
