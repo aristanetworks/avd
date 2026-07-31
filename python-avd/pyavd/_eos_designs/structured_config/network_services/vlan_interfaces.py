@@ -98,7 +98,7 @@ class VlanInterfacesMixin(Protocol):
                 interface_ip=ipv4_interface_ip,
             )
             vlan_interface_config.access_group_in = acl.name
-            self._set_ipv4_acl(acl)
+            self.structured_config_utils._set_ipv4_acl(acl)
 
         if svi.ipv4_acl_out:
             acl = self.shared_utils.get_ipv4_acl(
@@ -107,25 +107,41 @@ class VlanInterfacesMixin(Protocol):
                 interface_ip=ipv4_interface_ip,
             )
             vlan_interface_config.access_group_out = acl.name
-            self._set_ipv4_acl(acl)
+            self.structured_config_utils._set_ipv4_acl(acl)
 
         if svi.ipv6_acl_in:
             acl = self.shared_utils.get_ipv6_acl(
                 name=svi.ipv6_acl_in,
                 interface_name=interface_name,
-                interface_ip=ipv6_interface_ip,
+                interface_ipv6=ipv6_interface_ip,
             )
             vlan_interface_config.ipv6_access_group_in = acl.name
-            self._set_ipv6_acl(acl)
+            self.structured_config_utils._set_ipv6_acl(acl)
 
         if svi.ipv6_acl_out:
             acl = self.shared_utils.get_ipv6_acl(
                 name=svi.ipv6_acl_out,
                 interface_name=interface_name,
-                interface_ip=ipv6_interface_ip,
+                interface_ipv6=ipv6_interface_ip,
             )
             vlan_interface_config.ipv6_access_group_out = acl.name
-            self._set_ipv6_acl(acl)
+            self.structured_config_utils._set_ipv6_acl(acl)
+
+        if (lifetime := svi.ipv6_nd.ra_dns_servers.dns_servers_lifetime) is not None:
+            vlan_interface_config.ipv6_nd.ra.dns_servers_lifetime = lifetime
+
+        for dns_server in svi.ipv6_nd.ra_dns_servers.servers:
+            vlan_interface_config.ipv6_nd.ra.dns_servers.append_new(address=dns_server.address, lifetime=dns_server.lifetime)
+
+        if settings := svi.ipv6_dhcp_relay:
+            for destination in settings.destinations:
+                vlan_interface_config.ipv6_dhcp_relay_destinations.append_new(
+                    address=destination.address,
+                    vrf=destination.vrf or None,
+                    local_interface=destination.local_interface,
+                    source_address=destination.source_address,
+                    link_address=destination.link_address,
+                )
 
         if svi.structured_config:
             self.custom_structured_configs.nested.vlan_interfaces.obtain(interface_name)._deepmerge(

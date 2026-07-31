@@ -9,6 +9,127 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | `True` |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
     | [<samp>default_interface_mtu</samp>](## "default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Can be overridden per platform under platform settings.<br> |
+    | [<samp>errdisable_settings</samp>](## "errdisable_settings") | Dictionary |  |  |  | Errdisable settings for the device.<br>Causes are filtered based on platform feature support defined in<br>`platform_settings.feature_support.errdisable_causes.<cause>.detection` and<br>`platform_settings.feature_support.errdisable_causes.<cause>.recovery`. |
+    | [<samp>&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for all recovery causes in seconds. |
+    | [<samp>&nbsp;&nbsp;causes</samp>](## "errdisable_settings.causes") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "errdisable_settings.causes.acl") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.acl.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.acl.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.acl.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_inspection</samp>](## "errdisable_settings.causes.arp_inspection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.arp_inspection.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.arp_inspection.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.arp_inspection.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bpduguard</samp>](## "errdisable_settings.causes.bpduguard") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.bpduguard.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.bpduguard.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "errdisable_settings.causes.dot1x") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.dot1x.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.dot1x.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.dot1x.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x_coa</samp>](## "errdisable_settings.causes.dot1x_coa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.dot1x_coa.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.dot1x_coa.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.dot1x_coa.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x_phone_classification</samp>](## "errdisable_settings.causes.dot1x_phone_classification") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.dot1x_phone_classification.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.dot1x_phone_classification.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.dot1x_phone_classification.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x_session_replace</samp>](## "errdisable_settings.causes.dot1x_session_replace") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.dot1x_session_replace.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.dot1x_session_replace.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.dot1x_session_replace.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;error_correction_encoding</samp>](## "errdisable_settings.causes.error_correction_encoding") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.error_correction_encoding.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.error_correction_encoding.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.error_correction_encoding.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fabric_capacity_low</samp>](## "errdisable_settings.causes.fabric_capacity_low") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.fabric_capacity_low.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.fabric_capacity_low.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.fabric_capacity_low.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "errdisable_settings.causes.hardware_speed_group") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.hardware_speed_group.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.hardware_speed_group.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.hardware_speed_group.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hitless_reload_down</samp>](## "errdisable_settings.causes.hitless_reload_down") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.hitless_reload_down.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.hitless_reload_down.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface_speed</samp>](## "errdisable_settings.causes.interface_speed") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.interface_speed.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.interface_speed.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.interface_speed.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internal_error</samp>](## "errdisable_settings.causes.internal_error") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.internal_error.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.internal_error.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.internal_error.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lacp_rate_limit</samp>](## "errdisable_settings.causes.lacp_rate_limit") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.lacp_rate_limit.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.lacp_rate_limit.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_change</samp>](## "errdisable_settings.causes.link_change") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.link_change.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_flap</samp>](## "errdisable_settings.causes.link_flap") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.link_flap.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.link_flap.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;no_internal_vlan</samp>](## "errdisable_settings.causes.no_internal_vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.no_internal_vlan.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.no_internal_vlan.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_breakout</samp>](## "errdisable_settings.causes.port_breakout") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.port_breakout.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.port_breakout.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.port_breakout.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;portchannelguard</samp>](## "errdisable_settings.causes.portchannelguard") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.portchannelguard.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.portchannelguard.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;portsec</samp>](## "errdisable_settings.causes.portsec") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.portsec.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.portsec.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed_misconfigured</samp>](## "errdisable_settings.causes.speed_misconfigured") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.speed_misconfigured.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.speed_misconfigured.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;storm_control</samp>](## "errdisable_settings.causes.storm_control") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.storm_control.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.storm_control.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.storm_control.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;stuck_queue</samp>](## "errdisable_settings.causes.stuck_queue") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.stuck_queue.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.stuck_queue.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchcard_unreachable</samp>](## "errdisable_settings.causes.switchcard_unreachable") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.switchcard_unreachable.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.switchcard_unreachable.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.switchcard_unreachable.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tap_port_init</samp>](## "errdisable_settings.causes.tap_port_init") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.tap_port_init.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.tap_port_init.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "errdisable_settings.causes.tapagg") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.tapagg.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.tapagg.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.tapagg.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tpid</samp>](## "errdisable_settings.causes.tpid") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.tpid.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.tpid.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.tpid.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_adapter</samp>](## "errdisable_settings.causes.transceiver_adapter") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.transceiver_adapter.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.transceiver_adapter.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.transceiver_adapter.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_failure_detection</samp>](## "errdisable_settings.causes.uplink_failure_detection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.uplink_failure_detection.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.uplink_failure_detection.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;xcvr_misconfigured</samp>](## "errdisable_settings.causes.xcvr_misconfigured") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.xcvr_misconfigured.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.xcvr_misconfigured.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.xcvr_misconfigured.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;xcvr_overheat</samp>](## "errdisable_settings.causes.xcvr_overheat") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.xcvr_overheat.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.xcvr_overheat.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.xcvr_overheat.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;xcvr_power_unsupported</samp>](## "errdisable_settings.causes.xcvr_power_unsupported") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.xcvr_power_unsupported.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.xcvr_power_unsupported.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.xcvr_power_unsupported.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;xcvr_unsupported</samp>](## "errdisable_settings.causes.xcvr_unsupported") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.xcvr_unsupported.recovery") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.xcvr_unsupported.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
     | [<samp>general_settings</samp>](## "general_settings") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;interface_defaults</samp>](## "general_settings.interface_defaults") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ethernet_shutdown</samp>](## "general_settings.interface_defaults.ethernet_shutdown") | Boolean |  | `False` |  | Shutdown Ethernet interfaces by default unless they are explicitly enabled. |
@@ -23,6 +144,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;information_option</samp>](## "general_settings.dhcp_relay.information_option") | Boolean |  | `False` |  | Enables the insertion of DHCP Relay Agent Information (Option 82). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tunnel_requests_disabled</samp>](## "general_settings.dhcp_relay.tunnel_requests_disabled") | Boolean |  | `False` |  | Blocks DHCP relay for packets received over VXLAN tunnels.<br>This is a VTEP-specific optimization and will only be configured on VXLAN VTEPs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peerlink_requests_disabled</samp>](## "general_settings.dhcp_relay.mlag_peerlink_requests_disabled") | Boolean |  | `False` |  | Blocks DHCP relay for packets arriving via the MLAG peer-link.<br>This will only be configured on VXLAN VTEPs which are also MLAG devices. |
+    | [<samp>&nbsp;&nbsp;suspended_vlans</samp>](## "general_settings.suspended_vlans") | List, items: Dictionary |  |  |  | Suspended VLANs are rendered only as local suspended VLAN definitions.<br>They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs defined by network services. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "general_settings.suspended_vlans.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "general_settings.suspended_vlans.[].name") | String |  |  |  |  |
     | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsibility of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "hardware_counters.features.[].name") | String | Required |  | Valid Values:<br>- <code>acl</code><br>- <code>decap-group</code><br>- <code>directflow</code><br>- <code>ecn</code><br>- <code>flow-spec</code><br>- <code>gre tunnel interface</code><br>- <code>ip</code><br>- <code>mpls interface</code><br>- <code>mpls lfib</code><br>- <code>mpls tunnel</code><br>- <code>multicast</code><br>- <code>nexthop</code><br>- <code>pbr</code><br>- <code>pdp</code><br>- <code>policing interface</code><br>- <code>qos</code><br>- <code>qos dual-rate-policer</code><br>- <code>route</code><br>- <code>routed-port</code><br>- <code>segment-security</code><br>- <code>subinterface</code><br>- <code>tapagg</code><br>- <code>traffic-class</code><br>- <code>traffic-policy</code><br>- <code>traffic-policy vlan-interface</code><br>- <code>vlan</code><br>- <code>vlan-interface</code><br>- <code>vni decap</code><br>- <code>vni encap</code><br>- <code>vtep decap</code><br>- <code>vtep encap</code> |  |
@@ -65,6 +189,198 @@
     # Default interface MTU configured on EOS under "interface defaults".
     # Can be overridden per platform under platform settings.
     default_interface_mtu: <int; 68-65535>
+
+    # Errdisable settings for the device.
+    # Causes are filtered based on platform feature support defined in
+    # `platform_settings.feature_support.errdisable_causes.<cause>.detection` and
+    # `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.
+    errdisable_settings:
+
+      # Interval for all recovery causes in seconds.
+      recovery_interval: <int; 30-86400>
+      causes:
+        acl:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        arp_inspection:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        bpduguard:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        dot1x:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        dot1x_coa:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        dot1x_phone_classification:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        dot1x_session_replace:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        error_correction_encoding:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        fabric_capacity_low:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        hardware_speed_group:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        hitless_reload_down:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        interface_speed:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        internal_error:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        lacp_rate_limit:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        link_change:
+          detection: <bool>
+        link_flap:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        no_internal_vlan:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        port_breakout:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        portchannelguard:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        portsec:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        speed_misconfigured:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        storm_control:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        stuck_queue:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        switchcard_unreachable:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        tap_port_init:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        tapagg:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        tpid:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        transceiver_adapter:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        uplink_failure_detection:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        xcvr_misconfigured:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        xcvr_overheat:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        xcvr_power_unsupported:
+          detection: <bool>
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        xcvr_unsupported:
+          recovery: <bool>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
     general_settings:
       interface_defaults:
 
@@ -95,6 +411,12 @@
         # Blocks DHCP relay for packets arriving via the MLAG peer-link.
         # This will only be configured on VXLAN VTEPs which are also MLAG devices.
         mlag_peerlink_requests_disabled: <bool; default=False>
+
+      # Suspended VLANs are rendered only as local suspended VLAN definitions.
+      # They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs defined by network services.
+      suspended_vlans:
+        - id: <int; 1-4094; required; unique>
+          name: <str>
     hardware_counters:
 
       # This data model allows to configure the list of hardware counters feature

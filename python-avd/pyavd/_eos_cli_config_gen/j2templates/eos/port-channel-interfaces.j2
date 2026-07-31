@@ -426,10 +426,20 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.lacp_id is arista.avd.defined %}
    lacp system-id {{ port_channel_interface.lacp_id }}
 {%     endif %}
-{%     if port_channel_interface.address_locking.address_family.ipv4 is arista.avd.defined(false) %}
+{%     if port_channel_interface.address_locking.address_family.ipv4 is arista.avd.defined(false) or port_channel_interface.address_locking.address_family.ipv6 is arista.avd.defined(false) %}
    !
    address locking
+{%         if port_channel_interface.address_locking.address_family.ipv4 is arista.avd.defined(false) %}
       address-family ipv4 disabled
+{%         endif %}
+{%         if port_channel_interface.address_locking.address_family.ipv6 is arista.avd.defined(false) %}
+      address-family ipv6 disabled
+{%         endif %}
+{%     endif %}
+{%     if port_channel_interface.loop_protection is arista.avd.defined(false) %}
+   no loop-protection
+{%     elif port_channel_interface.loop_protection is arista.avd.defined(true) %}
+   loop-protection
 {%     endif %}
 {%     if port_channel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
    mpls ldp igp sync
@@ -754,7 +764,11 @@ interface {{ port_channel_interface.name }}
    no logging event storm-control discards
 {%     endif %}
 {%     if port_channel_interface.spanning_tree_portfast is arista.avd.defined("edge") %}
+{%         if eos_config_future.render_spanning_tree_portfast_edge is arista.avd.defined(true) %}
+   spanning-tree portfast edge
+{%         else %}
    spanning-tree portfast
+{%         endif %}
 {%     elif port_channel_interface.spanning_tree_portfast is arista.avd.defined("network") %}
    spanning-tree portfast network
 {%     endif %}

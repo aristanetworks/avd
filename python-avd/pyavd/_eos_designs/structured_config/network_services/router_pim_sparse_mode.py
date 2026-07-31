@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get
 
 if TYPE_CHECKING:
@@ -33,6 +34,12 @@ class RouterPimSparseModeMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 if vrf_rps := getattr(vrf._internal_data, "pim_rp_addresses", None):
+                    if vrf.name == "default":
+                        msg = (
+                            f"Use 'underlay_multicast_rps' instead of 'tenant[name={tenant.name}].vrfs[name=default].pim_rp_addresses'"
+                            f" for host '{self.shared_utils.hostname}'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     ipv4_config = EosCliConfigGen.RouterPimSparseMode.VrfsItem.Ipv4()
                     for rps in vrf_rps:
                         rpaddress = EosCliConfigGen.RouterPimSparseMode.VrfsItem.Ipv4.RpAddressesItem()

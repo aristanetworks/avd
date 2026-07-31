@@ -1,7 +1,7 @@
 nodes:
 - digital-twin-adjust-oob-mgmt-1:
     node_type: veos
-    ip_addr: 192.168.1.1/32
+    ip_addr: 192.168.10.1/32
     version: 4.33.1.1F
 - digital-twin-adjust-oob-mgmt-2:
     node_type: veos
@@ -15,6 +15,9 @@ nodes:
     node_type: third-party
     ip_addr: 192.168.1.4/32
     version: byod
+- digital-twin-cloudeos-no-mgmt:
+    node_type: cloudeos
+    version: 4.33.2F
 - digital-twin-default-interfaces-digital-twin-platform:
     node_type: veos
     ip_addr: 10.10.10.100/24
@@ -72,6 +75,9 @@ nodes:
     node_type: third-party
     ip_addr: 192.169.3.3/32
     version: byod
+- digital-twin-veos-no-mgmt:
+    node_type: veos
+    version: 4.33.1.1F
 - digital.twin.ethernet.ports.2:
     node_type: veos
     ip_addr: 192.169.3.2/32
@@ -96,6 +102,9 @@ nodes:
     - Ethernet21
     - Ethernet22
     - Ethernet23
+cloudeos:
+  username: cvpadmin
+  password: cvp123!
 third-party:
   username: cvpadmin
   password: cvp123!

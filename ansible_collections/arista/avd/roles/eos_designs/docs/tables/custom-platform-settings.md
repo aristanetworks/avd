@@ -24,6 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "custom_platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  | Support for storm-control.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "custom_platform_settings.[].feature_support.poe") | Boolean |  | `False` |  | Support for PoE.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_mtu</samp>](## "custom_platform_settings.[].feature_support.subinterface_mtu") | Boolean |  | `True` |  | Support for MTU configuration under sub-interfaces.<br>When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_monitor_session</samp>](## "custom_platform_settings.[].feature_support.subinterface_monitor_session") | Boolean |  | `True` |  | Support for monitor session configuration on sub-interfaces.<br>When this key is set to false, an error will be raised if a monitor session is configured on a sub-interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_mtu</samp>](## "custom_platform_settings.[].feature_support.per_interface_mtu") | Boolean |  | `True` |  | Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.<br>Effectively this means that all settings regarding interface MTU will be ignored if this is false.<br>Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mtu</samp>](## "custom_platform_settings.[].feature_support.per_interface_l2_mtu") | Boolean |  | `True` |  | Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.<br>The feature will be ignored on platforms where this is false.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mru</samp>](## "custom_platform_settings.[].feature_support.per_interface_l2_mru") | Boolean |  | `True` |  | Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.<br>The feature will be ignored on platforms where this is false.<br> |
@@ -73,6 +74,93 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan</samp>](## "custom_platform_settings.[].feature_support.wan") | Boolean |  | `True` |  | Support for Arista WAN features.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "custom_platform_settings.[].feature_support.ptp") | Boolean |  | `True` |  | Support for Precision Time Protocol (PTP).<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_validation</samp>](## "custom_platform_settings.[].feature_support.hardware_validation") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errdisable_causes</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes") | Dictionary |  |  |  | Per-cause support for errdisable detection and recovery.<br>Causes with `detection: false` will suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.<br>Causes with `recovery: false` will suppress recovery for that cause even if enabled in `errdisable_settings.causes.<cause>.recovery`.<br>The supported causes depends on the EOS version and the hardware platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.acl") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.acl.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.acl.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arp_inspection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.arp_inspection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.arp_inspection.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.arp_inspection.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bpduguard</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.bpduguard") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.bpduguard.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_coa</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x_coa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x_coa.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x_coa.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_phone_classification</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x_phone_classification") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x_phone_classification.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x_phone_classification.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_session_replace</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x_session_replace") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x_session_replace.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.dot1x_session_replace.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_correction_encoding</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.error_correction_encoding") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.error_correction_encoding.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.error_correction_encoding.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fabric_capacity_low</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.fabric_capacity_low") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.fabric_capacity_low.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.fabric_capacity_low.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.hardware_speed_group") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.hardware_speed_group.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.hardware_speed_group.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hitless_reload_down</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.hitless_reload_down") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.hitless_reload_down.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_speed</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.interface_speed") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.interface_speed.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.interface_speed.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal_error</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.internal_error") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.internal_error.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.internal_error.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_rate_limit</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.lacp_rate_limit") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.lacp_rate_limit.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_change</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.link_change") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.link_change.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_flap</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.link_flap") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.link_flap.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_internal_vlan</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.no_internal_vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.no_internal_vlan.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_breakout</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.port_breakout") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.port_breakout.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.port_breakout.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;portchannelguard</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.portchannelguard") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.portchannelguard.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;portsec</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.portsec") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.portsec.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed_misconfigured</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.speed_misconfigured") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.speed_misconfigured.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;storm_control</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.storm_control") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.storm_control.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.storm_control.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stuck_queue</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.stuck_queue") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.stuck_queue.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switchcard_unreachable</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.switchcard_unreachable") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.switchcard_unreachable.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.switchcard_unreachable.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tap_port_init</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tap_port_init") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tap_port_init.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tapagg") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tapagg.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tapagg.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tpid</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tpid") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tpid.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tpid.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_adapter</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.transceiver_adapter") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.transceiver_adapter.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.transceiver_adapter.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_failure_detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.uplink_failure_detection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.uplink_failure_detection.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_misconfigured</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_misconfigured") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_misconfigured.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_misconfigured.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_overheat</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_overheat") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_overheat.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_overheat.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_power_unsupported</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_power_unsupported") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_power_unsupported.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_power_unsupported.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_unsupported</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_unsupported") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.xcvr_unsupported.recovery") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -137,6 +225,10 @@
           # Support for MTU configuration under sub-interfaces.
           # When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.
           subinterface_mtu: <bool; default=True>
+
+          # Support for monitor session configuration on sub-interfaces.
+          # When this key is set to false, an error will be raised if a monitor session is configured on a sub-interface.
+          subinterface_monitor_session: <bool; default=True>
 
           # Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
           # Effectively this means that all settings regarding interface MTU will be ignored if this is false.
@@ -245,6 +337,98 @@
           # Enable hardware validation for the device.
           # When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
           hardware_validation: <bool; default=True>
+
+          # Per-cause support for errdisable detection and recovery.
+          # Causes with `detection: false` will suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
+          # Causes with `recovery: false` will suppress recovery for that cause even if enabled in `errdisable_settings.causes.<cause>.recovery`.
+          # The supported causes depends on the EOS version and the hardware platform.
+          errdisable_causes:
+            acl:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            arp_inspection:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            bpduguard:
+              recovery: <bool; default=True>
+            dot1x:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            dot1x_coa:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            dot1x_phone_classification:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            dot1x_session_replace:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            error_correction_encoding:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            fabric_capacity_low:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            hardware_speed_group:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            hitless_reload_down:
+              recovery: <bool; default=True>
+            interface_speed:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            internal_error:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            lacp_rate_limit:
+              recovery: <bool; default=True>
+            link_change:
+              detection: <bool; default=True>
+            link_flap:
+              recovery: <bool; default=True>
+            no_internal_vlan:
+              recovery: <bool; default=True>
+            port_breakout:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            portchannelguard:
+              recovery: <bool; default=True>
+            portsec:
+              recovery: <bool; default=True>
+            speed_misconfigured:
+              recovery: <bool; default=True>
+            storm_control:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            stuck_queue:
+              recovery: <bool; default=True>
+            switchcard_unreachable:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            tap_port_init:
+              recovery: <bool; default=True>
+            tapagg:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            tpid:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            transceiver_adapter:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            uplink_failure_detection:
+              recovery: <bool; default=True>
+            xcvr_misconfigured:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            xcvr_overheat:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            xcvr_power_unsupported:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            xcvr_unsupported:
+              recovery: <bool; default=True>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.

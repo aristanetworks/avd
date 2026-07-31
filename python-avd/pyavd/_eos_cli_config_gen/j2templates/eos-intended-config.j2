@@ -5,7 +5,7 @@
 #}
 {# Device Configuration #}
 {# context used to hide password and keys #}
-{% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(false) %}
+{% set hide_passwords = _eos_cli_config_gen_hide_passwords | arista.avd.default(eos_cli_config_gen_configuration.hide_passwords, false) %}
 {% include 'eos/config-comment.j2' %}
 {# System Boot Configuration #}
 {% include 'eos/boot.j2' %}
@@ -35,6 +35,8 @@
 {% include 'eos/terminal.j2' %}
 {# aliases #}
 {% include 'eos/aliases.j2' %}
+{# schedule #}
+{% include 'eos/schedule.j2' %}
 {# logging event storm-control #}
 {% include 'eos/logging-event-storm-control.j2' %}
 {# daemon TerminAttr #}
@@ -55,6 +57,10 @@
 {% include 'eos/switchport-default.j2' %}
 {# internal vlan allocation policy #}
 {% include 'eos/vlan-internal-order.j2' %}
+{# switchport ethernet llc validation #}
+{% include 'eos/switchport-ethernet-llc-validation.j2' %}
+{# switchport vlan tag validation #}
+{% include 'eos/switchport-vlan-tag-validation.j2' %}
 {# errdisable #}
 {% include 'eos/errdisable.j2' %}
 {# event monitor #}
@@ -175,6 +181,8 @@
 {% include 'eos/system-l1.j2' %}
 {# Tap Aggregation #}
 {% include 'eos/tap-aggregation.j2' %}
+{# environment fan-speed #}
+{% include 'eos/environment-fan-speed.j2' %}
 {# clock #}
 {% include 'eos/clock.j2' %}
 {# VLANs #}
@@ -295,12 +303,8 @@
 {% include 'eos/prefix-lists.j2' %}
 {# IPv6 Prefix-lists #}
 {% include 'eos/ipv6-prefix-lists.j2' %}
-{# IPv6 Unicast Routing #}
-{% include 'eos/ipv6-unicast-routing.j2' %}
-{# eos - IPv6 Hardware #}
-{% include 'eos/ipv6-hardware.j2' %}
-{# eos - IPv6 Unicast Routing VRFs #}
-{% include 'eos/ipv6-unicast-routing-vrfs.j2' %}
+{# IPv6 Unicast Routing/IPv6 Hardware/IPv6 Unicast Routing VRFs #}
+{% include 'eos/ipv6-hardware-and-unicast-routing.j2' %}
 {# IPv6 Neighbors #}
 {% include 'eos/ipv6-neighbors.j2' %}
 {# MAC Access-lists #}
@@ -396,6 +400,8 @@
 {% include 'eos/vmtracer-sessions.j2' %}
 {# dot1x part2 #}
 {% include 'eos/dot1x_part2.j2' %}
+{# management ldap #}
+{% include 'eos/management-ldap.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
 {# management tech-support #}

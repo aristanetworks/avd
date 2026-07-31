@@ -49,8 +49,24 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
+{%     if vlan_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or vlan_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
+{%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
+{%         if vlan_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv4 " ~ vlan_interface.tcp_mss_ceiling.ipv4 %}
+{%         endif %}
+{%         if vlan_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv6 " ~ vlan_interface.tcp_mss_ceiling.ipv6 %}
+{%         endif %}
+{%         if vlan_interface.tcp_mss_ceiling.direction is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " " ~ vlan_interface.tcp_mss_ceiling.direction %}
+{%         endif %}
+   {{ tcp_mss_ceiling_cli }}
+{%     endif %}
 {%     if vlan_interface.arp_gratuitous_accept is arista.avd.defined(true) %}
    arp gratuitous accept
+{%     endif %}
+{%     if vlan_interface.ip_address is arista.avd.defined("dhcp") and vlan_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
+   dhcp client accept default-route
 {%     endif %}
 {%     if vlan_interface.ip_verify_unicast_source_reachable_via is arista.avd.defined %}
    ip verify unicast source reachable-via {{ vlan_interface.ip_verify_unicast_source_reachable_via }}
@@ -103,6 +119,7 @@ interface {{ vlan_interface.name }}
 {%         endif %}
    {{ ip_helper_cli }}
 {%     endfor %}
+{#     TODO: AVD 7.0.0 Check for CLI order and Inherited Interface VRF #}
 {%     if vlan_interface.ipv6_dhcp_relay_destinations is arista.avd.defined %}
 {%         set with_vrf_dest = vlan_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort('address') | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
 {%         set without_vrf_dest = vlan_interface.ipv6_dhcp_relay_destinations | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort('address') %}
@@ -254,6 +271,16 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ipv6_access_group_out is arista.avd.defined %}
    ipv6 access-group {{ vlan_interface.ipv6_access_group_out }} out
 {%     endif %}
+{%     if vlan_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
+   mpls ldp igp sync
+{%     elif vlan_interface.mpls.ldp.igp_sync is arista.avd.defined(false) %}
+   no mpls ldp igp sync
+{%     endif %}
+{%     if vlan_interface.mpls.ldp.interface is arista.avd.defined(true) %}
+   mpls ldp interface
+{%     elif vlan_interface.mpls.ldp.interface is arista.avd.defined(false) %}
+   no mpls ldp interface
+{%     endif %}
 {%     if vlan_interface.multicast is arista.avd.defined %}
 {%         if vlan_interface.multicast.ipv4.boundaries is arista.avd.defined %}
 {%             for boundary in vlan_interface.multicast.ipv4.boundaries | arista.avd.natural_sort("boundary") %}
@@ -289,6 +316,11 @@ interface {{ vlan_interface.name }}
 {%         if vlan_interface.multicast.ipv6.static is arista.avd.defined(true) %}
    multicast ipv6 static
 {%         endif %}
+{%     endif %}
+{%     if vlan_interface.mpls.ip is arista.avd.defined(true) %}
+   mpls ip
+{%     elif vlan_interface.mpls.ip is arista.avd.defined(false) %}
+   no mpls ip
 {%     endif %}
 {%     if vlan_interface.ip_nat is arista.avd.defined %}
 {%         set interface_ip_nat = vlan_interface.ip_nat %}
@@ -368,11 +400,19 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.isis_bfd is arista.avd.defined(true) %}
    isis bfd
 {%     endif %}
+{%     if vlan_interface.isis_circuit_type is arista.avd.defined %}
+   isis circuit-type {{ vlan_interface.isis_circuit_type }}
+{%     endif %}
 {%     if vlan_interface.isis_metric is arista.avd.defined %}
    isis metric {{ vlan_interface.isis_metric }}
 {%     endif %}
 {%     if vlan_interface.isis_passive is arista.avd.defined(true) %}
    isis passive
+{%     endif %}
+{%     if vlan_interface.isis_hello_padding is arista.avd.defined(false) %}
+   no isis hello padding
+{%     elif vlan_interface.isis_hello_padding is arista.avd.defined(true) %}
+   isis hello padding
 {%     endif %}
 {%     if vlan_interface.isis_network_point_to_point is arista.avd.defined(true) %}
    isis network point-to-point

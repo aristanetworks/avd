@@ -300,6 +300,10 @@ router_bgp:
       description: 'BGP Connection in passive mode'
       remote_as: 65003
       passive: true
+    - name: TEST-ENFORCE-FIRST-AS-TRUE
+      enforce_first_as: true
+    - name: TEST-ENFORCE-FIRST-AS-FALSE
+      enforce_first_as: false
   aggregate_addresses:
     - prefix: 1.1.1.0/24
       advertise_only: true
@@ -1516,6 +1520,10 @@ router_bgp:
       peer_group: TEST
       bfd: false
       remote_as: 65438
+    - ip_address: 192.168.0.11
+      enforce_first_as: true
+    - ip_address: 192.168.0.12
+      enforce_first_as: false
   neighbor_interfaces:
     - name: Ethernet2
       peer_group: PG-FOO-v4
@@ -1949,6 +1957,9 @@ router_bgp:
             receive: true
             send: ecmp
             send_limit: 24
+          enforce_first_as: true
+        - ip_address: 192.168.0.10
+          enforce_first_as: false
       bgp:
         additional_paths:
           send: limit
@@ -2373,6 +2384,7 @@ router_bgp:
     - name: TENANT_A_PROJECT03
       router_id: 192.168.255.3
       rd: "192.168.255.3:13"
+      no_graceful_restart: true
       evpn_multicast: true
       evpn_multicast_address_family:
         ipv4:

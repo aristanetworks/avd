@@ -140,6 +140,12 @@ class UtilsMixin(Protocol):
 
         # Need this to assist the type checker.
         if isinstance(adapter_or_network_port_settings, EosDesigns.NetworkPortsItem):  # NOSONAR(S3923)
+            if adapter_profile.port_channel._get("subinterfaces"):
+                msg = (
+                    f"'port_profiles[profile={profile_name}].port_channel.subinterfaces' is not supported "
+                    "since this profile is referenced under a network_port."
+                )
+                raise AristaAvdInvalidInputsError(msg)
             profile_as_adapter_or_network_port_settings = adapter_profile._cast_as(type(adapter_or_network_port_settings))
             adapter_or_network_port_settings._deepinherit(profile_as_adapter_or_network_port_settings)
         else:
@@ -288,7 +294,7 @@ class UtilsMixin(Protocol):
 
         match vrf_input:
             case "use_mgmt_interface_vrf":
-                has_mgmt_ip = (self.node_config.mgmt_ip is not None) or (self.node_config.ipv6_mgmt_ip is not None)
+                has_mgmt_ip = (self.oob_mgmt_ip is not None) or (self.node_config.ipv6_mgmt_ip is not None)
                 if not has_mgmt_ip:
                     msg = f"'{context}' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
                     raise AristaAvdInvalidInputsError(msg)

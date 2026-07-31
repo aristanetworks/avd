@@ -474,6 +474,7 @@ validation_profiles:
       min_line_cards: 8
       min_fabric_cards: 6
       transceiver_manufacturers: [ "Arista Networks", "Arastra, Inc." ]
+      ignore_no_transceivers: true
 ```
 
 #### Logging Validation

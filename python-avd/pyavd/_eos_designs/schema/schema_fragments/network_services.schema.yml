@@ -177,6 +177,33 @@ keys:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+              listen_ranges:
+                type: list
+                description: |-
+                  Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp listen ranges.
+                items:
+                  type: dict
+                  keys:
+                    prefix:
+                      type: str
+                      required: true
+                      description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                    remote_as:
+                      type: str
+                      description: |-
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+                        note: `peer_filter` or `remote_as` is required.
+                      convert_types:
+                        - int
+                    peer_id_include_router_id:
+                      type: bool
+                      description: Include router ID as part of peer filter.
+                    peer_filter:
+                      type: str
+                      description: |
+                        Peer-filter name.
+                        note: `peer_filter` or `remote_as` is required.
         igmp_snooping:
           documentation_options:
             table: network-services-multicast-settings
@@ -533,10 +560,25 @@ keys:
                       description: IPv4 DHCP server IP.
                     source_interface:
                       type: str
-                      description: Interface name.
+                      description: |-
+                        Interface name to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted according to these rules:
+                        - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+                        - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+                        - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+                        - Any other string will be used directly as the source interface.
                     source_vrf:
                       type: str
-                      description: VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF.
+                      description: |-
+                        VRF to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted according to these rules:
+                        - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                          An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                        - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                          An error will be raised if inband management is not configured for the device.
+                        - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                        - Any other string will be used directly as the source VRF name.
+                        - If not set, EOS uses the VRF on the SVI.
                       convert_types:
                         - int
               enable_mlag_ibgp_peering_vrfs:
@@ -986,6 +1028,16 @@ keys:
                       items:
                         type: str
                         description: IPv4_address/Mask.
+                    ipv6_addresses:
+                      type: list
+                      description: |-
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        Can be used instead of or together with `ip_addresses`.
+                        For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses` must be set.
+                      items:
+                        type: str
+                        min_length: 1
+                        description: IPv6 address/Mask.
                     static_routes:
                       type: list
                       $ref: "eos_designs#/$defs/static_routes"
@@ -1023,6 +1075,24 @@ keys:
                       convert_types:
                         - int
                     ipv4_acl_out:
+                      type: str
+                      convert_types:
+                        - int
+                    ipv6_acl_in:
+                      description: |-
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the IPv6 address set on the interface for this node.
+                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+                      type: str
+                      convert_types:
+                        - int
+                    ipv6_acl_out:
+                      description: |-
+                        Name of the IPv6 access-list to be assigned in the egress direction.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the IPv6 address set on the interface for this node.
+                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                       type: str
                       convert_types:
                         - int
@@ -1221,6 +1291,16 @@ keys:
                       items:
                         type: str
                         description: IPv4 address/Mask.
+                    ipv6_addresses:
+                      type: list
+                      description: |-
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        Can be used instead of or together with `ip_address`.
+                        For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                      items:
+                        type: str
+                        min_length: 1
+                        description: IPv6 address/Mask.
                     encapsulation_dot1q_vlan:
                       description: For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                       type: int
@@ -1254,6 +1334,24 @@ keys:
                     ipv4_acl_out:
                       description: |-
                         Name of the IPv4 Access-list to be assigned in the egress direction.
+                      type: str
+                      convert_types:
+                        - int
+                    ipv6_acl_in:
+                      description: |-
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the first IPv6 address set on the interface.
+                        Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
+                      type: str
+                      convert_types:
+                        - int
+                    ipv6_acl_out:
+                      description: |-
+                        Name of the IPv6 access-list to be assigned in the egress direction.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the first IPv6 address set on the interface.
+                        Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                       type: str
                       convert_types:
                         - int
@@ -1614,6 +1712,9 @@ keys:
                     bfd_timers:
                       type: dict
                       $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/neighbors/items/keys/bfd_timers"
+                    route_reflector_client:
+                      type: bool
+                      description: Configure the peer as a route-reflector-client.
                     shutdown:
                       type: bool
               bgp:
@@ -1742,6 +1843,13 @@ keys:
                         prefix_list_out:
                           type: str
                           description: Outbound prefix-list name.
+                    listen_ranges:
+                      type: list
+                      $ref: "eos_designs#/keys/network_services/items/keys/bgp_peer_groups/items/keys/listen_ranges"
+                      description: |-
+                        Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp listen ranges.
+                        When set for VRF default, this is configured under root `router bgp <as>`. For other VRFs this is configured under
+                        respective VRF.
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings

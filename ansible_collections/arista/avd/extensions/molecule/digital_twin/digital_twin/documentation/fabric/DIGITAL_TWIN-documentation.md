@@ -17,10 +17,11 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-1 | 192.168.1.1/32 | vEOS-lab | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-1 | 192.168.10.1/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-2 | 192.168.1.2/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-3 | - | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-4 | 192.168.1.4/32 | custom-platform | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-cloudeos-no-mgmt | - | CloudEOS | Provisioned | - |
 | DIGITAL_TWIN | l2spine | digital-twin-default-interfaces-digital-twin-platform | 10.10.10.100/24 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-default-interfaces-original-platform | 10.10.10.101/24 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-1 | 192.168.0.1/32 | vEOS-lab | Provisioned | - |
@@ -29,6 +30,7 @@
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-4 | 192.168.0.4/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital-twin-ethernet-ports-1 | 192.169.3.1/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital-twin-ethernet-ports-3 | 192.169.3.3/32 | custom-platform | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-veos-no-mgmt | - | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital.twin.ethernet.ports.2 | 192.169.3.2/32 | vEOS-lab | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.

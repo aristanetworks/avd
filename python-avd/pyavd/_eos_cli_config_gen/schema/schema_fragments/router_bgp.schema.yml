@@ -438,6 +438,9 @@ keys:
                 route_map:
                   type: str
                   description: Route-map name.
+            enforce_first_as:
+              type: bool
+              description: Enforce the first AS in eBGP updates. EOS default is true.
             send_community:
               type: str
               description: "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."
@@ -702,6 +705,9 @@ keys:
                   type: bool
                 route_map:
                   type: str
+            enforce_first_as:
+              type: bool
+              description: Enforce the first AS in eBGP updates. EOS default is true.
             send_community:
               type: str
               description: "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."
@@ -3902,6 +3908,10 @@ keys:
                   min: 1
                   max: 3600
                   description: Number of seconds.
+            no_graceful_restart:
+              type: bool
+              description: |
+                Disables graceful-restart for this VRF. Mutually exclusive with `graceful_restart`. `graceful_restart` takes precedence.
             networks:
               type: list
               primary_key: prefix
@@ -4133,6 +4143,9 @@ keys:
                         type: bool
                       route_map:
                         type: str
+                  enforce_first_as:
+                    type: bool
+                    description: Enforce the first AS in eBGP updates. EOS default is true.
                   update_source:
                     type: str
                   route_map_in:

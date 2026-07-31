@@ -58,6 +58,24 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
 
     ![Figure 1: Ansible Role arista.avd.cv_deploy](../../../../../docs/_media/studios_end_to_end_provisioning.png)
 
+- **CloudVision device replacement** is not fully supported when using the default flat-layout configuration deployment.
+  When CloudVision replaces a device using the
+  [Replace](https://www.arista.io/help/articles/provisioning-studios-built-in-inventory#cHJvdmlzaW9uaW5nLnN0dWRpby9UT1BPTE9HWQ==-replacing-devices)
+  workflow in the [Inventory & Topology Studio](https://www.arista.io/help/articles/provisioning-studios-built-in-inventory#inventory-and-topology-studio), it updates the serial number reference inside the existing Static Configuration Studio container.
+  On the next `cv_deploy` run, AVD creates a **new** container and configlet keyed to the new serial number. While the original container and
+  configlet become orphaned (from `cv_deploy` point of view), they are still associated with the replacement device through the updated query.
+
+  Choose one of the following approaches to avoid duplicate configlet assignment:
+
+  - **After replacement**: Manually delete (using CloudVision UI) the orphaned container and configlet from the Static Configuration Studio in CloudVision after
+    the replacement is complete but before running `cv_deploy` again.
+  - **Instead of replacement**: Use the CloudVision
+    [Decommission](https://www.arista.io/help/articles/provisioning-studios-built-in-inventory#cHJvdmlzaW9uaW5nLnN0dWRpby9UT1BPTE9HWQ==-decommissioning-devices-from-cloud-vision)
+    workflow to remove the old device first, then run `cv_deploy` again to onboard and apply the configuration to the replacement device.
+
+  The manifest-based deployment is **not affected** by this limitation, as it automatically removes unused/orphaned manifest-created containers and
+  configlets on each run.
+
 ## Roadmap
 
 This feature is still under development, so several planned features are not implemented yet.
@@ -262,6 +280,11 @@ cv_workspace_build_timeout: 300
 # Deploy a custom hierarchy of containers and configlets to the Static Configuration Studio.
 # See the "Static Configuration Studio" section below for more details.
 # cv_static_config_manifest:
+#   Preserve existing manifest-managed root containers and their children when they are not declared in the current manifest.
+#   This enables partial manifests managing separate root-level branches.
+#   Existing manifest-managed container order is preserved, and newly declared containers are appended.
+#   Manually created root containers are always preserved and ordered after the manifest-managed containers.
+#   preserve_existing_containers: <bool, default=false>
 #
 #   # A list of dictionaries defining configlets to be created in the Configlet Library.
 #   # Configlet names must be unique across all defined configlets.
@@ -276,6 +299,7 @@ cv_workspace_build_timeout: 300
 #       description: <str, optional>
 #       tag_query: <str>
 #       match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#       preserve_existing_sub_containers: <bool, default=false>
 #       configlets:
 #         - name: <str>
 #       sub_containers:
@@ -283,6 +307,7 @@ cv_workspace_build_timeout: 300
 #           description: <str, optional>
 #           tag_query: <str>
 #           match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#           preserve_existing_sub_containers: <bool, default=false>
 #           configlets:
 #             - name: <str>
 #           sub_containers: <list of containers>
@@ -453,6 +478,16 @@ For each opted-in device, you are responsible for ensuring the manifest defines 
 !!! note "Root Containers Order"
     When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**.
 
+!!! note "Partial Manifest Deployments"
+    By default, the manifest owns the root-level `containers` list, so existing manifest-managed root containers not declared in the manifest are removed.
+    Set `preserve_existing_containers: true` on the manifest to preserve existing root containers that are not declared in the current manifest. This enables workflows where separate manifests manage root-level branches.
+    Existing manifest-managed container order is preserved, and newly declared containers are appended.
+    Manually created root containers are always preserved and ordered after the manifest-managed containers.
+
+    Additionally, every container in the manifest owns its complete `sub_containers` list, so existing child containers not declared in the manifest are removed.
+    Set `preserve_existing_sub_containers: true` on a container to preserve existing manifest-managed child containers that are not declared in the current manifest. This enables workflows where separate manifests manage sibling branches under a shared parent container.
+    Existing manifest-managed child container order is preserved, and any newly declared child containers are appended.
+
 !!! warning "Manual configlet assignments"
     Before you remove a configlet created by a cv_deploy manifest, ensure it is not manually assigned to any non-manifest containers. Otherwise you must manually unassign the configlet from such containers first.
 
@@ -472,6 +507,7 @@ cv_static_config_manifest:
     - name: FABRIC
       description: "Fabric devices"
       tag_query: "device:*"
+      preserve_existing_sub_containers: true  # Ignore other DC containers under FABRIC
       sub_containers:
         - name: DC1
           tag_query: "DC:DC1"
@@ -634,6 +670,45 @@ proxy_host: proxy.local.domain
 proxy_port: 3128
 proxy_username: "avd_proxy_user"
 proxy_password: "avd_proxy_password"
+```
+
+## gRPC keepalives
+
+The `arista.avd.cv_deploy` role supports client-side gRPC keepalives on the CloudVision connection. When enabled, AVD periodically pings CloudVision over the gRPC connection so the connection is not silently terminated by intermediate firewalls or load balancers during long-running deployments.
+
+Keepalives are disabled by default. To enable them, set `cv_grpc_keepalives.enabled: true`. The other settings can be left at their defaults and only need to be adjusted to match a specific network environment.
+
+Below settings allow modifying the default keepalive behavior as needed. The values below are the default values.
+
+```yaml
+cv_grpc_keepalives:
+  # Enable client-side gRPC keepalives. When false, the other settings have no effect.
+  enabled: false
+  # Interval in seconds between keepalive pings. Must be >= 30s.
+  keepalive_time: 60
+  # Time in seconds to wait for a keepalive ACK before considering the connection dead.
+  keepalive_timeout: 20
+  # If true, keepalive pings are sent even when there are no active gRPC calls.
+  permit_without_calls: false
+```
+
+Example of enabling keepalives with the default settings:
+
+```yaml
+cv_grpc_keepalives:
+  enabled: true
+```
+
+## Future cv_deploy Behaviors
+
+Opt-in to future `cv_deploy` behaviors which will become default behaviors in a future major version.
+
+```yaml
+# Opt-in to future cv_deploy behaviors which will become default behaviors in a future major version.
+cv_deploy_future:
+  # Use system certificates instead of Python's bundled certificate store.
+  # Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
+  use_system_certs: <bool; default=false>
 ```
 
 ## License

@@ -6,10 +6,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import Undefined, UndefinedType
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import StructuredConfigUtilsProtocol
 
 
@@ -36,9 +39,24 @@ class UtilsMixin(Protocol):
         # Non-Digital-Twin: follow the user input if set, otherwise leave unset.
         return Undefined if user_input is None else user_input
 
+    def _set_ipv4_acl(self: StructuredConfigUtilsProtocol, ipv4_acl: EosDesigns.Ipv4AclsItem) -> None:
+        """Append an IPv4 ACL to structured config ip_access_lists."""
+        self.structured_config.ip_access_lists.append(ipv4_acl._cast_as(EosCliConfigGen.IpAccessListsItem))
+
+    def _set_ipv6_acl(self: StructuredConfigUtilsProtocol, ipv6_acl: EosDesigns.Ipv6AclsItem) -> None:
+        """Append an IPv6 ACL to structured config ipv6_access_lists."""
+        self.structured_config.ipv6_access_lists.append(ipv6_acl._cast_as(EosCliConfigGen.Ipv6AccessListsItem))
+
     @run_once_method
     def set_once_ip_extcommunity_list_evpn_soo(self: StructuredConfigUtilsProtocol) -> None:
         """Set ip extcommunity-list ECL-EVPN-SOO."""
         ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
         ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
         self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
+
+    def _set_ipv4_standard_acl(self: StructuredConfigUtilsProtocol, acl_name: str) -> None:
+        if acl_name not in self.inputs.ipv4_standard_acls:
+            msg = f"ipv4_standard_acls[name={acl_name}]"
+            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+        if acl_name in self.inputs.ipv4_standard_acls:
+            self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))
