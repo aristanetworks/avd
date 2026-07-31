@@ -1832,8 +1832,7 @@ keys:
           '
       custom_cv_options:
         type: list
-        description: 'Escape hatch for arbitrary TerminAttr CLI options not covered
-          by the schema.
+        description: 'TerminAttr CLI options not covered by the schema.
 
           Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>`
           when `value` is omitted.

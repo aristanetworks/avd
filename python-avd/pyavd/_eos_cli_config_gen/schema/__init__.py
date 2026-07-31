@@ -4351,15 +4351,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         custom_cv_options: CustomCvOptions
         """
-        Escape hatch for arbitrary TerminAttr CLI options not covered by the schema.
-        Each entry renders as
-        `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.
-        Options are appended at
-        the end of the TerminAttr exec command line after all other flags.
+        TerminAttr CLI options not covered by the schema.
+        Each entry renders as `-<flag>=<value>` when
+        `value` is set, or `-<flag>` when `value` is omitted.
+        Options are appended at the end of the
+        TerminAttr exec command line after all other flags.
 
 
-        Subclass of AvdList with
-        `CustomCvOptionsItem` items.
+        Subclass of AvdList with `CustomCvOptionsItem`
+        items.
         """
 
         if TYPE_CHECKING:
@@ -4481,15 +4481,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Set to false to disable DNS
                        lookups on sFlow/IPFIX flow records.
                     custom_cv_options:
-                       Escape hatch for arbitrary TerminAttr CLI options not covered by the schema.
-                       Each entry renders as
-                       `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.
-                       Options are appended at
-                       the end of the TerminAttr exec command line after all other flags.
+                       TerminAttr CLI options not covered by the schema.
+                       Each entry renders as `-<flag>=<value>` when
+                       `value` is set, or `-<flag>` when `value` is omitted.
+                       Options are appended at the end of the
+                       TerminAttr exec command line after all other flags.
 
 
-                       Subclass of AvdList with
-                       `CustomCvOptionsItem` items.
+                       Subclass of AvdList with `CustomCvOptionsItem`
+                       items.
 
                 """
 
