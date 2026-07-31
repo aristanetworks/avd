@@ -1785,7 +1785,7 @@ $defs:
               table: node-type-digital-twin-configuration
             description: |-
               PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-              Set the OS version and management IP address for the digital twin of the associated node(s).
+              Set the OS version, management IP address, and management gateway for the digital twin of the associated node(s).
             type: dict
             keys:
               act_os_version:
@@ -1802,6 +1802,11 @@ $defs:
                 # TODO: Add this in a separate PR.
                 # Overrides the dynamically generated (from the pool `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
                 format: cidr
+              mgmt_gateway:
+                type: str
+                description: |-
+                  Desired OOB management gateway for the Digital Twin.
+                  In ACT Digital Twin mode, if the regular `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular management gateway for the generated OOB management interface.
               act_internet_access:
                 type: bool
                 description: |-
