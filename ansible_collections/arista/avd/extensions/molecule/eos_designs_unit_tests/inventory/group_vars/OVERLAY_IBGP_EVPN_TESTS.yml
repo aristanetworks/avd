@@ -3,6 +3,8 @@ type: l3leaf
 fabric_evpn_encapsulation: mpls
 overlay_routing_protocol: ibgp
 evpn_overlay_bgp_rtc: true
+avd_design_future:
+  configure_reverse_evpn_gateway_remote_peers: true
 
 l3leaf:
   defaults:
@@ -41,3 +43,11 @@ l3leaf:
       overlay_address_families: [evpn]
       # Test when the peer is mpls server and evpn server - neighbor created with RR peer group.
       mpls_route_reflectors: [evpn-overlay-mpls-route-reflectors2-ibgp]
+    - name: evpn-gateway-remote-peer-overlay-vxlan-ibgp
+      id: 5
+      mgmt_ip: 192.168.0.212/24
+      evpn_role: client
+      overlay_address_families: [evpn]
+      evpn_gateway:
+        remote_peers:
+          - hostname: evpn-role-server-overlay-vxlan-ibgp
