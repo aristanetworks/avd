@@ -24,8 +24,7 @@ class TestMerge:
     @pytest.mark.parametrize("schema_name", ["eos_config", "eos_cli_config_gen"])
     def test_merge_of_lists_with_primary_keys(self, schema_name: str) -> None:
         """Merge list items by primary key using both public and internal EOS config schema names."""
-        merge_result = {}
-        merge(merge_result, acl1, acl2, schema_name=schema_name)
+        merge_result = merge({}, acl1, acl2, schema_name=schema_name, destructive_merge=False)
         assert merge_result == acl_merged
 
     @pytest.mark.parametrize("schema_name", [None, "eos_config"])
