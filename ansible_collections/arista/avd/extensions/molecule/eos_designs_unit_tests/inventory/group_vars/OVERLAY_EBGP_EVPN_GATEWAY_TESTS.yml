@@ -130,8 +130,9 @@ l3leaf:
       mpls_overlay_role: client
       evpn_gateway:
         remote_peers:
-          # Inventory peer used to exercise the reverse EVPN Gateway filtering
-          # of peers without an EVPN server/client role.
+          # Regression test: this node has `evpn_role: none`, and its host_vars explicitly disables
+          # `avd_design_future.configure_reverse_evpn_gateway_remote_peers`. AVD must still render
+          # this existing one-way remote peering without validating or generating the reverse peer.
           - hostname: evpn-gateway-l2-evpn-role-server
 
     - name: evpn-gateway-remote-peer-without-evpn-ignored

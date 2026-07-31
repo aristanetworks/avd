@@ -13788,9 +13788,8 @@ $defs:
                   for inventory peers where neither `ip_address` nor `bgp_as` is manually
                   overridden.
 
-                  When reverse EVPN Gateway core peering is enabled, inventory peers
-                  without EVPN overlay enabled are rejected while rendering the auto-generated
-                  peering.
+                  Auto-rendered reverse EVPN Gateway peers must have EVPN enabled
+                  with role `server` or `client`.
 
                   Auto-rendered reverse EVPN Gateway core peering towards inventory
                   peers marked with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.

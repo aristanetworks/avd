@@ -177,16 +177,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "resolved_evpn_gateway_remote_peers.[].bgp_as") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "resolved_evpn_gateway_remote_peers.[].ip_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;overlay_peering_interface</samp>](## "resolved_evpn_gateway_remote_peers.[].overlay_peering_interface") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "resolved_evpn_gateway_remote_peers.[].evpn_role") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;has_evpn</samp>](## "resolved_evpn_gateway_remote_peers.[].has_evpn") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "resolved_evpn_gateway_remote_peers.[].evpn_role") | String |  |  | Valid Values:<br>- <code>server</code><br>- <code>client</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;is_deployed</samp>](## "resolved_evpn_gateway_remote_peers.[].is_deployed") | Boolean | Required |  |  |  |
     | [<samp>evpn_gateway_remote_peer_clients</samp>](## "evpn_gateway_remote_peer_clients") | List, items: Dictionary |  |  |  | Remote peer clients requesting reverse EVPN Gateway peering towards this node. |
     | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "evpn_gateway_remote_peer_clients.[].hostname") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "evpn_gateway_remote_peer_clients.[].bgp_as") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "evpn_gateway_remote_peer_clients.[].ip_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;overlay_peering_interface</samp>](## "evpn_gateway_remote_peer_clients.[].overlay_peering_interface") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "evpn_gateway_remote_peer_clients.[].evpn_role") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;has_evpn</samp>](## "evpn_gateway_remote_peer_clients.[].has_evpn") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "evpn_gateway_remote_peer_clients.[].evpn_role") | String |  |  | Valid Values:<br>- <code>server</code><br>- <code>client</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;is_deployed</samp>](## "evpn_gateway_remote_peer_clients.[].is_deployed") | Boolean | Required |  |  |  |
     | [<samp>mpls_route_reflector_clients</samp>](## "mpls_route_reflector_clients") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mpls_route_reflector_clients.[]") | String |  |  |  |  |
@@ -486,8 +484,7 @@
         bgp_as: <str>
         ip_address: <str>
         overlay_peering_interface: <str>
-        evpn_role: <str>
-        has_evpn: <bool; required>
+        evpn_role: <str; "server" | "client">
         is_deployed: <bool; required>
 
     # Remote peer clients requesting reverse EVPN Gateway peering towards this node.
@@ -496,8 +493,7 @@
         bgp_as: <str>
         ip_address: <str>
         overlay_peering_interface: <str>
-        evpn_role: <str>
-        has_evpn: <bool; required>
+        evpn_role: <str; "server" | "client">
         is_deployed: <bool; required>
     mpls_route_reflector_clients:
       - <str>

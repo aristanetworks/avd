@@ -94,13 +94,6 @@ class UtilsMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
-            if not avd_peer.has_evpn:
-                msg = (
-                    f"Cannot configure EVPN Gateway remote peer '{avd_peer.hostname}' on '{self.shared_utils.hostname}' because "
-                    f"EVPN overlay is not enabled for '{avd_peer.hostname}'. Remove 'evpn_gateway.remote_peers' or enable EVPN overlay."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-
             if avd_peer.evpn_role not in ["server", "client"]:
                 continue
 

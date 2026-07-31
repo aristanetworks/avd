@@ -365,10 +365,25 @@ class EosDesignsFactsGeneratorProtocol(
                 bgp_as=self.shared_utils.bgp_as,
                 ip_address=self.shared_utils.overlay_peering_address,
                 overlay_peering_interface="Loopback0",
-                evpn_role=self.shared_utils.evpn_role,
-                has_evpn=self.shared_utils.overlay_evpn,
+                evpn_role=self._evpn_gateway_peer_evpn_role(self.shared_utils.overlay_evpn, self.shared_utils.evpn_role),
                 is_deployed=self.is_deployed,
             )
+
+    @staticmethod
+    def _evpn_gateway_peer_evpn_role(overlay_evpn: bool, evpn_role: str | None) -> EosDesignsFactsProtocol.EvpnGatewayRemotePeerClientsItem.EvpnRole | None:
+        """
+        Return the EVPN role only when it is usable for EVPN Gateway peering.
+
+        A missing role implies EVPN is not enabled.
+        """
+        if not overlay_evpn:
+            return None
+
+        match evpn_role:
+            case "server" | "client":
+                return evpn_role
+            case _:
+                return None
 
     def _populate_mpls_route_reflector_clients_on_peers(self) -> None:
         """
@@ -426,16 +441,15 @@ class EosDesignsFactsGeneratorProtocol(
                 # Preserve previous structured-config behavior where inventory-resolved EVPN Gateway peers
                 # were passed as Loopback0 peers for overlay BGP peer description rendering.
                 overlay_peering_interface = "Loopback0"
-                evpn_role = peer_facts.evpn_role
-                has_evpn = peer_facts.shared_utils.overlay_evpn
+                evpn_role = self._evpn_gateway_peer_evpn_role(peer_facts.shared_utils.overlay_evpn, peer_facts.evpn_role)
                 is_deployed = peer_facts.is_deployed
             else:
+                # Non inventory peers
                 bgp_as = remote_peer.bgp_as
                 ip_address = remote_peer.ip_address
                 overlay_peering_interface = None
-                evpn_role = None
-                # Non-inventory peers have no facts to validate against. Assume EVPN support to preserve existing manual-peer behavior.
-                has_evpn = True
+                # Assume server for non inventory remote gateway
+                evpn_role = "server"
                 is_deployed = True
 
             remote_peers.append(
@@ -445,7 +459,6 @@ class EosDesignsFactsGeneratorProtocol(
                     ip_address=ip_address,
                     overlay_peering_interface=overlay_peering_interface,
                     evpn_role=evpn_role,
-                    has_evpn=has_evpn,
                     is_deployed=is_deployed,
                 )
             )

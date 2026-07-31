@@ -1,0 +1,3 @@
+---
+avd_design_future:
+  configure_reverse_evpn_gateway_remote_peers: false

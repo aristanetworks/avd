@@ -440,9 +440,9 @@ keys:
           type: str
         evpn_role:
           type: str
-        has_evpn:
-          type: bool
-          required: true
+          valid_values:
+          - server
+          - client
         is_deployed:
           type: bool
           required: true
@@ -464,9 +464,9 @@ keys:
           type: str
         evpn_role:
           type: str
-        has_evpn:
-          type: bool
-          required: true
+          valid_values:
+          - server
+          - client
         is_deployed:
           type: bool
           required: true

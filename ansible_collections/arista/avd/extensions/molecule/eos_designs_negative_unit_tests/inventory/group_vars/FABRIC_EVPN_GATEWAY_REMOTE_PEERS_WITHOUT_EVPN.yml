@@ -14,16 +14,16 @@ l3leaf:
     bgp_as: 65101
     mlag: false
   nodes:
-    # overlay_routing_protocol is set to "none" for this host in hosts.yml.
     - name: evpn-gateway-remote-peer-without-evpn
       id: 1
-      evpn_gateway:
-        remote_peers:
-          - hostname: evpn-gateway-remote-peer-target
     - name: evpn-gateway-remote-peer-target
       id: 2
+      evpn_gateway:
+        remote_peers:
+          # overlay_routing_protocol is set to "none" for this inventory peer in hosts.yml.
+          - hostname: evpn-gateway-remote-peer-without-evpn
 
 expected_error_message: >-
   Cannot configure EVPN Gateway remote peer 'evpn-gateway-remote-peer-without-evpn' on 'evpn-gateway-remote-peer-target'
-  because EVPN overlay is not enabled for 'evpn-gateway-remote-peer-without-evpn'.
-  Remove 'evpn_gateway.remote_peers' or enable EVPN overlay.
+  because EVPN is not enabled with a 'server' or 'client' role for 'evpn-gateway-remote-peer-without-evpn'.
+  Remove 'evpn_gateway.remote_peers' or enable EVPN with a supported role.

@@ -539,6 +539,17 @@ class RouterBgpMixin(Protocol):
 
         return neighbor
 
+    @staticmethod
+    def _remote_peer_has_local_overrides(
+        remote_peer: EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.EvpnGateway.RemotePeersItem,
+    ) -> bool:
+        """
+        Return whether the remote peer has a local IP address or BGP AS override.
+
+        Either override prevents AVD from auto-rendering the reverse peering from inventory facts.
+        """
+        return bool(remote_peer.ip_address or remote_peer.bgp_as)
+
     def _set_neighbors(self: AvdStructuredConfigOverlayProtocol) -> None:
         neighbors = self.structured_config.router_bgp.neighbors
         if self.shared_utils.overlay_routing_protocol == "ebgp":
@@ -697,6 +708,19 @@ class RouterBgpMixin(Protocol):
             return
 
         for remote_peer_name, data in natural_sort(self.facts.resolved_evpn_gateway_remote_peers.items()):
+            remote_peer = self.shared_utils.node_config.evpn_gateway.remote_peers[remote_peer_name]
+            if (
+                self.inputs.avd_design_future.configure_reverse_evpn_gateway_remote_peers
+                and not self._remote_peer_has_local_overrides(remote_peer)
+                and data.evpn_role not in ["server", "client"]
+            ):
+                msg = (
+                    f"Cannot configure EVPN Gateway remote peer '{remote_peer_name}' on '{self.shared_utils.hostname}' because "
+                    f"EVPN is not enabled with a 'server' or 'client' role for '{remote_peer_name}'. "
+                    "Remove 'evpn_gateway.remote_peers' or enable EVPN with a supported role."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+
             neighbor = self._get_evpn_gateway_remote_peer_neighbor(remote_peer_name, data)
             self.structured_config.router_bgp.neighbors.append(neighbor)
 

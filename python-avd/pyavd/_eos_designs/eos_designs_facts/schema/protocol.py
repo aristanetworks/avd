@@ -1097,21 +1097,20 @@ class EosDesignsFactsProtocol(Protocol):
     class ResolvedEvpnGatewayRemotePeersItem(AvdModel):
         """Subclass of AvdModel."""
 
+        EvpnRole: TypeAlias = Literal["server", "client"]
         _fields: ClassVar[dict] = {
             "hostname": {"type": str},
             "bgp_as": {"type": str},
             "ip_address": {"type": str},
             "overlay_peering_interface": {"type": str},
             "evpn_role": {"type": str},
-            "has_evpn": {"type": bool},
             "is_deployed": {"type": bool},
         }
         hostname: str
         bgp_as: str | None
         ip_address: str | None
         overlay_peering_interface: str | None
-        evpn_role: str | None
-        has_evpn: bool
+        evpn_role: EvpnRole | None
         is_deployed: bool
 
         if TYPE_CHECKING:
@@ -1123,8 +1122,7 @@ class EosDesignsFactsProtocol(Protocol):
                 bgp_as: str | UndefinedType | None = Undefined,
                 ip_address: str | UndefinedType | None = Undefined,
                 overlay_peering_interface: str | UndefinedType | None = Undefined,
-                evpn_role: str | UndefinedType | None = Undefined,
-                has_evpn: bool | UndefinedType = Undefined,
+                evpn_role: EvpnRole | UndefinedType | None = Undefined,
                 is_deployed: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -1139,7 +1137,6 @@ class EosDesignsFactsProtocol(Protocol):
                     ip_address: ip_address
                     overlay_peering_interface: overlay_peering_interface
                     evpn_role: evpn_role
-                    has_evpn: has_evpn
                     is_deployed: is_deployed
 
                 """
@@ -1157,21 +1154,20 @@ class EosDesignsFactsProtocol(Protocol):
     class EvpnGatewayRemotePeerClientsItem(AvdModel):
         """Subclass of AvdModel."""
 
+        EvpnRole: TypeAlias = Literal["server", "client"]
         _fields: ClassVar[dict] = {
             "hostname": {"type": str},
             "bgp_as": {"type": str},
             "ip_address": {"type": str},
             "overlay_peering_interface": {"type": str},
             "evpn_role": {"type": str},
-            "has_evpn": {"type": bool},
             "is_deployed": {"type": bool},
         }
         hostname: str
         bgp_as: str | None
         ip_address: str | None
         overlay_peering_interface: str | None
-        evpn_role: str | None
-        has_evpn: bool
+        evpn_role: EvpnRole | None
         is_deployed: bool
 
         if TYPE_CHECKING:
@@ -1183,8 +1179,7 @@ class EosDesignsFactsProtocol(Protocol):
                 bgp_as: str | UndefinedType | None = Undefined,
                 ip_address: str | UndefinedType | None = Undefined,
                 overlay_peering_interface: str | UndefinedType | None = Undefined,
-                evpn_role: str | UndefinedType | None = Undefined,
-                has_evpn: bool | UndefinedType = Undefined,
+                evpn_role: EvpnRole | UndefinedType | None = Undefined,
                 is_deployed: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -1199,7 +1194,6 @@ class EosDesignsFactsProtocol(Protocol):
                     ip_address: ip_address
                     overlay_peering_interface: overlay_peering_interface
                     evpn_role: evpn_role
-                    has_evpn: has_evpn
                     is_deployed: is_deployed
 
                 """
