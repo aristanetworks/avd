@@ -8,7 +8,6 @@ from pyavd._eos_designs.structured_config.structured_config_generator import Str
 from .agents import AgentsMixin
 from .dhcp_servers import DhcpServersMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
-from .ip_access_lists import IpAccesslistsMixin
 from .kernel_settings import KernelSettingsMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
 from .mpls import MplsMixin
@@ -43,7 +42,6 @@ class AvdStructuredConfigUnderlayProtocol(
     MplsMixin,
     AgentsMixin,
     KernelSettingsMixin,
-    IpAccesslistsMixin,
     DhcpServersMixin,
     UtilsMixin,
     StructuredConfigGeneratorProtocol,
