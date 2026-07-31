@@ -361,7 +361,8 @@ jobs:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install uv
-          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct > /tmp/pyavd/min_requirements.txt
+          # TODO: Remove --no-emit-package pyavd-utils once minimum requirements cannot downgrade pyavd-utils below the pyavd wheel metadata.
+          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct --no-emit-package pyavd-utils > /tmp/pyavd/min_requirements.txt
           cat /tmp/pyavd/min_requirements.txt
           pip install pip --upgrade
           python -m pip install --group molecule
