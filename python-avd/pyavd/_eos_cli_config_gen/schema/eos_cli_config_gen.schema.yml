@@ -11333,8 +11333,7 @@ keys:
               devices by default.'
           cv_instance:
             type: str
-            description: URL or identifier of the CloudVision instance targeted by
-              this Digital Twin deployment.
+            description: CloudVision instance targeted by this Digital Twin deployment.
       validate_no_errors_period:
         type: int
         convert_types:

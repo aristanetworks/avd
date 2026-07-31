@@ -18301,11 +18301,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             act_cv_instance: str | None
             """
-            URL or identifier of the CloudVision instance to target for ACT Digital Twin deployment.
-            Use this
-            when the Digital Twin should be deployed to a different CloudVision instance
-            than the one used in
-            production (e.g., a dev or staging CVaaS instance).
+            CloudVision instance to target for ACT Digital Twin deployment.
+            This value overrides
+            `daemon_terminattr.cvaddrs` in ACT Digital Twin mode.
             """
 
             if TYPE_CHECKING:
@@ -18347,11 +18345,9 @@ class EosDesigns(EosDesignsRootModel):
                            This setting is only applicable to ACT `veos` and
                            `cloudeos` node types.
                         act_cv_instance:
-                           URL or identifier of the CloudVision instance to target for ACT Digital Twin deployment.
-                           Use this
-                           when the Digital Twin should be deployed to a different CloudVision instance
-                           than the one used in
-                           production (e.g., a dev or staging CVaaS instance).
+                           CloudVision instance to target for ACT Digital Twin deployment.
+                           This value overrides
+                           `daemon_terminattr.cvaddrs` in ACT Digital Twin mode.
 
                     """
 

@@ -59,9 +59,8 @@ keys:
           act_cv_instance:
             type: str
             description: |-
-              URL or identifier of the CloudVision instance to target for ACT Digital Twin deployment.
-              Use this when the Digital Twin should be deployed to a different CloudVision instance
-              than the one used in production (e.g., a dev or staging CVaaS instance).
+              CloudVision instance to target for ACT Digital Twin deployment.
+              This value overrides `daemon_terminattr.cvaddrs` in ACT Digital Twin mode.
       use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false

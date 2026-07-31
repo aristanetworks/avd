@@ -29437,7 +29437,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
             """
             cv_instance: str | None
-            """URL or identifier of the CloudVision instance targeted by this Digital Twin deployment."""
+            """CloudVision instance targeted by this Digital Twin deployment."""
 
             if TYPE_CHECKING:
 
@@ -29477,7 +29477,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
                            types.
                            ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
-                        cv_instance: URL or identifier of the CloudVision instance targeted by this Digital Twin deployment.
+                        cv_instance: CloudVision instance targeted by this Digital Twin deployment.
 
                     """
 
