@@ -4,50 +4,49 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet9
-  description: P2P_sflow-tests-r-series-no-future_Ethernet9
+- name: Ethernet10
+  description: P2P_sflow-tests-r-series-avd-future-disabled_Ethernet10
   shutdown: false
   mtu: 9214
   metadata:
-    peer: sflow-tests-r-series-no-future
-    peer_interface: Ethernet9
+    peer: sflow-tests-r-series-avd-future-disabled
+    peer_interface: Ethernet10
     peer_type: spine
   sflow:
     enable: true
   switchport:
     enabled: false
-- name: Ethernet9.100
-  description: P2P_sflow-tests-r-series-no-future_Ethernet9.100
+- name: Ethernet10.100
+  description: P2P_sflow-tests-r-series-avd-future-disabled_Ethernet10.100
   shutdown: false
+  mtu: 9214
   metadata:
-    peer: sflow-tests-r-series-no-future
-    peer_interface: Ethernet9.100
+    peer: sflow-tests-r-series-avd-future-disabled
+    peer_interface: Ethernet10.100
     peer_type: spine
+  sflow:
+    enable: true
   switchport:
     enabled: false
-hostname: sflow-tests-r-series-future
+hostname: sflow-tests-non-r-series-avd-future-enabled
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 10.255.0.4/32
+  ip_address: 10.255.0.5/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.0.41/24
+  ip_address: 192.168.0.51/24
   type: oob
   gateway: 192.168.0.1
 metadata:
   is_deployed: true
-  platform: 7280R
+  platform: default
   fabric_name: SFLOW_TESTS
-platform:
-  sand:
-    lag:
-      hardware_only: true
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -67,7 +66,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65200'
-  router_id: 10.255.0.4
+  router_id: 10.255.0.5
   maximum_paths:
     paths: 4
   updates:
@@ -99,8 +98,6 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 192.168.0.1
-tcam_profile:
-  system: vxlan-routing
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

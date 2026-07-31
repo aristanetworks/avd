@@ -1029,25 +1029,28 @@ class EosDesigns(EosDesignsRootModel):
         disable_sflow_subinterfaces_on_r_series_platforms: bool
         """
         Available from AVD 6.4.0.
-        Apply the future
-        `platform_settings[].feature_support.sflow_subinterfaces_future` value for platform settings where
-        it is set.
-        When this is enabled, `sflow_subinterfaces_future` is used instead of
-        `sflow_subinterfaces` for platform settings where `sflow_subinterfaces_future` is set.
-        The default
-        platform settings set `sflow_subinterfaces_future: false` for 7020R, 7280R, 7280R2, 7280R3, 7500R,
-        7500R2, 7500R3, and 7800R3.
-        To apply this future behavior to custom R series platform definitions,
-        set `sflow_subinterfaces_future` under `custom_platform_settings[].feature_support`.
-        Ingress sFlow
-        on subinterfaces of R series platforms requires a user-defined TCAM profile (with `feature sflow
-        subintf`) to be created and applied as
-        the system TCAM profile.
-        Applying a custom system TCAM
-        profile may impact traffic and the functionality of other features on a live/production switch and
-        therefore
-        requires Customers to work with their Arista Account team or TAC to define/test the new
-        TCAM profile before deploying it on production switches.
+        Use updated feature-support defaults for sFlow on subinterfaces.
+        When
+        enabled, AVD uses `platform_settings[].feature_support.sflow_subinterfaces_future` as the value of
+        `sflow_subinterfaces` only when
+        `sflow_subinterfaces_future` is set and `sflow_subinterfaces` is not
+        explicitly set for the matched platform.
+        The default platform settings set
+        `sflow_subinterfaces_future: false` for 7020R, 7280R, 7280R2, 7280R3, 7500R, 7500R2, 7500R3, and
+        7800R3,
+        which disables sFlow configuration on subinterfaces for these platforms.
+        To apply this
+        behavior to custom R Series platform definitions, set `sflow_subinterfaces_future` under
+        `custom_platform_settings[].feature_support`.
+        Ingress sFlow on subinterfaces of R Series platforms
+        requires a user-defined TCAM profile containing `feature sflow subintf` to be applied as
+        the system
+        TCAM profile.
+        Applying a custom system TCAM profile may impact traffic and the functionality of
+        other features on a live/production switch and therefore
+        requires customers to work with their
+        Arista account team or TAC to define and test the new TCAM profile before deploying it on production
+        switches.
 
         Default value: `False`
         """
@@ -1174,25 +1177,28 @@ class EosDesigns(EosDesignsRootModel):
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
                     disable_sflow_subinterfaces_on_r_series_platforms:
                        Available from AVD 6.4.0.
-                       Apply the future
-                       `platform_settings[].feature_support.sflow_subinterfaces_future` value for platform settings where
-                       it is set.
-                       When this is enabled, `sflow_subinterfaces_future` is used instead of
-                       `sflow_subinterfaces` for platform settings where `sflow_subinterfaces_future` is set.
-                       The default
-                       platform settings set `sflow_subinterfaces_future: false` for 7020R, 7280R, 7280R2, 7280R3, 7500R,
-                       7500R2, 7500R3, and 7800R3.
-                       To apply this future behavior to custom R series platform definitions,
-                       set `sflow_subinterfaces_future` under `custom_platform_settings[].feature_support`.
-                       Ingress sFlow
-                       on subinterfaces of R series platforms requires a user-defined TCAM profile (with `feature sflow
-                       subintf`) to be created and applied as
-                       the system TCAM profile.
-                       Applying a custom system TCAM
-                       profile may impact traffic and the functionality of other features on a live/production switch and
-                       therefore
-                       requires Customers to work with their Arista Account team or TAC to define/test the new
-                       TCAM profile before deploying it on production switches.
+                       Use updated feature-support defaults for sFlow on subinterfaces.
+                       When
+                       enabled, AVD uses `platform_settings[].feature_support.sflow_subinterfaces_future` as the value of
+                       `sflow_subinterfaces` only when
+                       `sflow_subinterfaces_future` is set and `sflow_subinterfaces` is not
+                       explicitly set for the matched platform.
+                       The default platform settings set
+                       `sflow_subinterfaces_future: false` for 7020R, 7280R, 7280R2, 7280R3, 7500R, 7500R2, 7500R3, and
+                       7800R3,
+                       which disables sFlow configuration on subinterfaces for these platforms.
+                       To apply this
+                       behavior to custom R Series platform definitions, set `sflow_subinterfaces_future` under
+                       `custom_platform_settings[].feature_support`.
+                       Ingress sFlow on subinterfaces of R Series platforms
+                       requires a user-defined TCAM profile containing `feature sflow subintf` to be applied as
+                       the system
+                       TCAM profile.
+                       Applying a custom system TCAM profile may impact traffic and the functionality of
+                       other features on a live/production switch and therefore
+                       requires customers to work with their
+                       Arista account team or TAC to define and test the new TCAM profile before deploying it on production
+                       switches.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk
@@ -42440,15 +42446,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow_subinterfaces_future: bool | None
             """
-            Temporary future value for `sflow_subinterfaces`.
-            This setting has no effect unless
-            `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled.
-            When enabled, this
-            value overrides `sflow_subinterfaces` for the matched platform setting.
-            This can be set under
-            `custom_platform_settings` for custom R series platform definitions.
-            This setting will be removed in
-            AVD 7.0.
+            Temporary value for `sflow_subinterfaces` used to opt in to updated platform behavior before AVD
+            7.0.
+            This value is used for the matched platform only when
+            `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled and
+            `sflow_subinterfaces` is not explicitly set.
+            For custom R Series platform definitions, set this
+            under `custom_platform_settings[].feature_support`.
+            This setting will be removed in AVD 7.0.
             """
             wan: bool
             """
@@ -42614,15 +42619,14 @@ class EosDesigns(EosDesignsRootModel):
                            Support for sFlow on sub-interfaces.
                            The feature will be ignored on platforms where this is false.
                         sflow_subinterfaces_future:
-                           Temporary future value for `sflow_subinterfaces`.
-                           This setting has no effect unless
-                           `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled.
-                           When enabled, this
-                           value overrides `sflow_subinterfaces` for the matched platform setting.
-                           This can be set under
-                           `custom_platform_settings` for custom R series platform definitions.
-                           This setting will be removed in
-                           AVD 7.0.
+                           Temporary value for `sflow_subinterfaces` used to opt in to updated platform behavior before AVD
+                           7.0.
+                           This value is used for the matched platform only when
+                           `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled and
+                           `sflow_subinterfaces` is not explicitly set.
+                           For custom R Series platform definitions, set this
+                           under `custom_platform_settings[].feature_support`.
+                           This setting will be removed in AVD 7.0.
                         wan:
                            Support for Arista WAN features.
                            An error will be raised if the feature is enabled and this is
@@ -44213,15 +44217,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow_subinterfaces_future: bool | None
             """
-            Temporary future value for `sflow_subinterfaces`.
-            This setting has no effect unless
-            `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled.
-            When enabled, this
-            value overrides `sflow_subinterfaces` for the matched platform setting.
-            This can be set under
-            `custom_platform_settings` for custom R series platform definitions.
-            This setting will be removed in
-            AVD 7.0.
+            Temporary value for `sflow_subinterfaces` used to opt in to updated platform behavior before AVD
+            7.0.
+            This value is used for the matched platform only when
+            `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled and
+            `sflow_subinterfaces` is not explicitly set.
+            For custom R Series platform definitions, set this
+            under `custom_platform_settings[].feature_support`.
+            This setting will be removed in AVD 7.0.
             """
             wan: bool
             """
@@ -44387,15 +44390,14 @@ class EosDesigns(EosDesignsRootModel):
                            Support for sFlow on sub-interfaces.
                            The feature will be ignored on platforms where this is false.
                         sflow_subinterfaces_future:
-                           Temporary future value for `sflow_subinterfaces`.
-                           This setting has no effect unless
-                           `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled.
-                           When enabled, this
-                           value overrides `sflow_subinterfaces` for the matched platform setting.
-                           This can be set under
-                           `custom_platform_settings` for custom R series platform definitions.
-                           This setting will be removed in
-                           AVD 7.0.
+                           Temporary value for `sflow_subinterfaces` used to opt in to updated platform behavior before AVD
+                           7.0.
+                           This value is used for the matched platform only when
+                           `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled and
+                           `sflow_subinterfaces` is not explicitly set.
+                           For custom R Series platform definitions, set this
+                           under `custom_platform_settings[].feature_support`.
+                           This setting will be removed in AVD 7.0.
                         wan:
                            Support for Arista WAN features.
                            An error will be raised if the feature is enabled and this is

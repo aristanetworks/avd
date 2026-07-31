@@ -5,11 +5,11 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet9
-  description: P2P_sflow-tests-r-series-future_Ethernet9
+  description: P2P_sflow-tests-r-series-avd-future-disabled_Ethernet9
   shutdown: false
   mtu: 9214
   metadata:
-    peer: sflow-tests-r-series-future
+    peer: sflow-tests-r-series-avd-future-disabled
     peer_interface: Ethernet9
     peer_type: spine
   sflow:
@@ -17,75 +17,27 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet9.100
-  description: P2P_sflow-tests-r-series-future_Ethernet9.100
+  description: P2P_sflow-tests-r-series-avd-future-disabled_Ethernet9.100
   shutdown: false
   metadata:
-    peer: sflow-tests-r-series-future
+    peer: sflow-tests-r-series-avd-future-disabled
     peer_interface: Ethernet9.100
     peer_type: spine
-  sflow:
-    enable: true
   switchport:
     enabled: false
-- name: Ethernet10
-  description: P2P_sflow-tests-non-r-series-future_Ethernet10
-  shutdown: false
-  mtu: 9214
-  metadata:
-    peer: sflow-tests-non-r-series-future
-    peer_interface: Ethernet10
-    peer_type: spine
-  sflow:
-    enable: true
-  switchport:
-    enabled: false
-- name: Ethernet10.100
-  description: P2P_sflow-tests-non-r-series-future_Ethernet10.100
-  shutdown: false
-  metadata:
-    peer: sflow-tests-non-r-series-future
-    peer_interface: Ethernet10.100
-    peer_type: spine
-  sflow:
-    enable: true
-  switchport:
-    enabled: false
-- name: Ethernet11
-  description: P2P_sflow-tests-custom-r-series-future_Ethernet11
-  shutdown: false
-  mtu: 9214
-  metadata:
-    peer: sflow-tests-custom-r-series-future
-    peer_interface: Ethernet11
-    peer_type: spine
-  sflow:
-    enable: true
-  switchport:
-    enabled: false
-- name: Ethernet11.100
-  description: P2P_sflow-tests-custom-r-series-future_Ethernet11.100
-  shutdown: false
-  metadata:
-    peer: sflow-tests-custom-r-series-future
-    peer_interface: Ethernet11.100
-    peer_type: spine
-  sflow:
-    enable: true
-  switchport:
-    enabled: false
-hostname: sflow-tests-r-series-no-future
+hostname: sflow-tests-r-series-avd-future-enabled
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 10.255.0.3/32
+  ip_address: 10.255.0.4/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.0.31/24
+  ip_address: 192.168.0.41/24
   type: oob
   gateway: 192.168.0.1
 metadata:
@@ -115,7 +67,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65200'
-  router_id: 10.255.0.3
+  router_id: 10.255.0.4
   maximum_paths:
     paths: 4
   updates:

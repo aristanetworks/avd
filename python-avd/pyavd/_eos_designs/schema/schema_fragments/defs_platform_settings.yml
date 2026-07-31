@@ -289,10 +289,10 @@ $defs:
             sflow_subinterfaces_future:
               type: bool
               description: |-
-                Temporary future value for `sflow_subinterfaces`.
-                This setting has no effect unless `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled.
-                When enabled, this value overrides `sflow_subinterfaces` for the matched platform setting.
-                This can be set under `custom_platform_settings` for custom R series platform definitions.
+                Temporary value for `sflow_subinterfaces` used to opt in to updated platform behavior before AVD 7.0.
+                This value is used for the matched platform only when `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled and
+                `sflow_subinterfaces` is not explicitly set.
+                For custom R Series platform definitions, set this under `custom_platform_settings[].feature_support`.
                 This setting will be removed in AVD 7.0.
             wan:
               type: bool

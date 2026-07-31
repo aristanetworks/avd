@@ -6,4 +6,6 @@ custom_platform_settings:
   - platforms:
       - custom-r-series-platform
     feature_support:
+      # The setting takes precedence over the future fallback.
+      sflow_subinterfaces: true
       sflow_subinterfaces_future: false

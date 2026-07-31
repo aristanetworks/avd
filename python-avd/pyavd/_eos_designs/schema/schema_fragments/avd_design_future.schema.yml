@@ -40,14 +40,17 @@ keys:
         default: false
         description: |-
           Available from AVD 6.4.0.
-          Apply the future `platform_settings[].feature_support.sflow_subinterfaces_future` value for platform settings where it is set.
-          When this is enabled, `sflow_subinterfaces_future` is used instead of `sflow_subinterfaces` for platform settings where `sflow_subinterfaces_future` is set.
-          The default platform settings set `sflow_subinterfaces_future: false` for 7020R, 7280R, 7280R2, 7280R3, 7500R, 7500R2, 7500R3, and 7800R3.
-          To apply this future behavior to custom R series platform definitions, set `sflow_subinterfaces_future` under `custom_platform_settings[].feature_support`.
-          Ingress sFlow on subinterfaces of R series platforms requires a user-defined TCAM profile (with `feature sflow subintf`) to be created and applied as
+          Use updated feature-support defaults for sFlow on subinterfaces.
+          When enabled, AVD uses `platform_settings[].feature_support.sflow_subinterfaces_future` as the value of `sflow_subinterfaces` only when
+          `sflow_subinterfaces_future` is set and `sflow_subinterfaces` is not explicitly set for the matched platform.
+          The default platform settings set `sflow_subinterfaces_future: false` for 7020R, 7280R, 7280R2, 7280R3, 7500R, 7500R2, 7500R3, and 7800R3,
+          which disables sFlow configuration on subinterfaces for these platforms.
+          To apply this behavior to custom R Series platform definitions, set `sflow_subinterfaces_future` under
+          `custom_platform_settings[].feature_support`.
+          Ingress sFlow on subinterfaces of R Series platforms requires a user-defined TCAM profile containing `feature sflow subintf` to be applied as
           the system TCAM profile.
           Applying a custom system TCAM profile may impact traffic and the functionality of other features on a live/production switch and therefore
-          requires Customers to work with their Arista Account team or TAC to define/test the new TCAM profile before deploying it on production switches.
+          requires customers to work with their Arista account team or TAC to define and test the new TCAM profile before deploying it on production switches.
       consistent_uplink_vlans:
         type: bool
         description: |-
