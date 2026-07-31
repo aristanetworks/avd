@@ -15063,8 +15063,8 @@ $defs:
             description: 'PREVIEW: This option is marked as "preview", meaning the
               data models or generated configuration can change at any time.
 
-              Set the OS version and management IP address for the digital twin of
-              the associated node(s).'
+              Set the OS version, management IP address, and management gateway for
+              the digital twin of the associated node(s).'
             type: dict
             keys:
               act_os_version:
@@ -15082,6 +15082,13 @@ $defs:
                   If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip` address
                   is also used for the generated OOB management interface.'
                 format: cidr
+              mgmt_gateway:
+                type: str
+                description: 'Desired OOB management gateway for the Digital Twin.
+
+                  In ACT Digital Twin mode, if the regular `mgmt_ip` is set, this
+                  `digital_twin.mgmt_gateway` address takes precedence over the regular
+                  management gateway for the generated OOB management interface.'
               act_internet_access:
                 type: bool
                 description: 'Specifies if the ACT Digital Twin device is deployed
