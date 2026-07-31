@@ -91,9 +91,7 @@ class IpIgmpSnoopingMixin(Protocol):
         else:
             # vlan.igmp_snooping.enabled takes precedence over deprecated key vlan.igmp_snooping_enabled.
             igmp_snooping_enabled = default(vlan.igmp_snooping.enabled, vlan.igmp_snooping_enabled)
-            if l2vlan_node_specific_igmp_snooping_querier or (
-                self.shared_utils.network_services_l3 and self.shared_utils.uplink_type in ["p2p", "p2p-vrfs"]
-            ):
+            if l2vlan_node_specific_igmp_snooping_querier or (self.shared_utils.network_services_l3 and self.shared_utils.uplink_type in ["p2p", "p2p-vrfs"]):
                 # vlan.igmp_snooping.querier.enabled takes precedence over deprecated key vlan.igmp_snooping_querier.enabled.
                 # tenant.igmp_snooping.querier.enabled takes precedence over deprecated key tenant.igmp_snooping_querier.enabled.
                 igmp_snooping_querier_enabled = default(
