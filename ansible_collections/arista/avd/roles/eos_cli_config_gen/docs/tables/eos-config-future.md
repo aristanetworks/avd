@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>eos_config_future</samp>](## "eos_config_future") | Dictionary |  |  |  | Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major version. |
     | [<samp>&nbsp;&nbsp;always_render_ip_routing_separator</samp>](## "eos_config_future.always_render_ip_routing_separator") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always render a '!' before the '(no) ip routing' command section.<br>Without this the '!' is missing when only configuring routing for VRFs. |
+    | [<samp>&nbsp;&nbsp;render_combined_separator_for_ipv6_hardware_and_unicast_routing</samp>](## "eos_config_future.render_combined_separator_for_ipv6_hardware_and_unicast_routing") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Render a single '!' separator for the combined IPv6 routing block when any of these are rendered:<br>- 'ipv6 unicast-routing'<br>- 'ipv6 unicast-routing vrf <vrf_name>'<br>- 'ipv6 hardware fib optimize prefixes profile <profile_name>'<br>Also render the '!' separator before the VRF IPv6 unicast-routing section even when 'ipv6 unicast-routing' and 'ipv6 hardware fib optimize prefixes' are not present globally, as long as at least one VRF is configured for IPv6 routing.<br>When 'false', separators are handled by each individual section. |
     | [<samp>&nbsp;&nbsp;new_ip_radius_cli_order</samp>](## "eos_config_future.new_ip_radius_cli_order") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.<br>When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source interface name. |
     | [<samp>&nbsp;&nbsp;new_ip_tacacs_cli_order</samp>](## "eos_config_future.new_ip_tacacs_cli_order") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.<br>When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source interface name. |
     | [<samp>&nbsp;&nbsp;only_render_mpls_rsvp_with_settings</samp>](## "eos_config_future.only_render_mpls_rsvp_with_settings") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*` setting is defined.<br>When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined, even if no sub-settings are set. |
@@ -26,6 +27,15 @@
       # Always render a '!' before the '(no) ip routing' command section.
       # Without this the '!' is missing when only configuring routing for VRFs.
       always_render_ip_routing_separator: <bool; default=False>
+
+      # Available from AVD 6.4.0.
+      # Render a single '!' separator for the combined IPv6 routing block when any of these are rendered:
+      # - 'ipv6 unicast-routing'
+      # - 'ipv6 unicast-routing vrf <vrf_name>'
+      # - 'ipv6 hardware fib optimize prefixes profile <profile_name>'
+      # Also render the '!' separator before the VRF IPv6 unicast-routing section even when 'ipv6 unicast-routing' and 'ipv6 hardware fib optimize prefixes' are not present globally, as long as at least one VRF is configured for IPv6 routing.
+      # When 'false', separators are handled by each individual section.
+      render_combined_separator_for_ipv6_hardware_and_unicast_routing: <bool; default=False>
 
       # Available from AVD 6.1.0.
       # When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.

@@ -1,0 +1,113 @@
+---
+# Tests IPv6 ACL support on node_type l3_interfaces and l3_port_channels.
+# Similar structure to ipv4-acls.yml but testing IPv6 ACL functionality.
+type: spine
+
+spine:
+  nodes:
+    - bgp_as: 65001
+      name: ipv6-acls-l3-interfaces
+      id: 1
+      loopback_ipv4_pool: 192.168.1.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.0.2/30
+          peer_ip: 172.16.0.1
+          ipv6_addresses:
+            - 2001:db8:1::2/64
+          peer_ipv6: 2001:db8:1::1
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+        - name: Ethernet2
+          ip_address: 172.17.0.2/30
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+        # Testing using the same ACL name on multiple interfaces - should not produce duplicate ACLs in structured config.
+        - name: Ethernet3
+          ip_address: 172.18.0.2/30
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+        - name: Ethernet4
+          ip_address: 172.19.0.2/30
+          peer_ip: 172.19.0.1
+          ipv6_addresses:
+            - 2001:db8:4::2/64
+          peer_ipv6: 2001:db8:4::1
+          # Only in direction
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+        - name: Ethernet5/1
+          ip_address: 172.20.0.2/30
+          ipv6_addresses:
+            - 2001:db8:5::2/64
+          # Only out direction
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+        - name: Ethernet6/6.6
+          ip_address: 172.21.0.2/30
+          ipv6_addresses:
+            - 2001:db8:6::2/64
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+        # Testing interface_ipv6 substitution token in both in and out directions.
+        - name: Ethernet7
+          ip_address: 172.23.0.2/30
+          ipv6_addresses:
+            - 2001:db8:7::2/64
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD
+      l3_port_channels:
+        - name: Port-Channel1
+          mode: active
+          member_interfaces:
+            - name: Ethernet10
+              peer: peer1
+              peer_interface: Ethernet1
+          ip_address: 172.22.0.2/30
+          peer_ip: 172.22.0.1
+          ipv6_addresses:
+            - 2001:db8:10::2/64
+          peer_ipv6: 2001:db8:10::1
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+          peer: peer1
+          peer_port_channel: Port-Channel10
+
+ipv6_acls:
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - sequence: 15
+        action: deny
+        protocol: ipv6
+        source: any
+        destination: interface_ip
+      - action: permit
+        protocol: ipv6
+        source: peer_ipv6
+        destination: interface_ip
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+    entries:
+      - remark: Some remark will not require source and destination fields.
+      - action: permit
+        protocol: ipv6
+        source: interface_ipv6
+        destination: any
+  - name: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD
+    entries:
+      - action: permit
+        protocol: ipv6
+        source: any
+        destination: interface_ipv6
+      - action: deny
+        protocol: ipv6
+        source: interface_ipv6
+        destination: any
+  - name: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
+    entries:
+      - action: permit
+        protocol: ipv6
+        source: 2001:db8:ffff::1
+        destination: any
+  - name: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+    entries:
+      - action: permit
+        protocol: ipv6
+        source: 2001:db8:ffff::1
+        destination: any
