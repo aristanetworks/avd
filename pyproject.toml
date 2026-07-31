@@ -247,8 +247,9 @@ source_pkgs = [
   "schema_tools",
 ]
 omit = [
-  # Generated CloudVision API bindings are excluded from coverage.
+  # Exclude generated CloudVision API bindings from the checkout and tox site-packages.
   "python-avd/pyavd/_cv/api/*",
+  "*/site-packages/pyavd/_cv/api/*",
 ]
 
 [tool.coverage.coverage_plugins.jinja]
