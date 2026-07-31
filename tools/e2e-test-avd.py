@@ -25,12 +25,10 @@ import pathlib
 import pickle
 import shutil
 import sys
-import time
 import traceback
 import typing
 import weakref
 from concurrent.futures import Executor, ProcessPoolExecutor, ThreadPoolExecutor
-from contextlib import suppress
 from functools import cached_property, lru_cache
 from itertools import repeat
 from multiprocessing import get_context, shared_memory
@@ -455,7 +453,8 @@ class AvdBuildContext:
 
     def close(self) -> None:
         """Explicitly cleanup resources."""
-        shutdown_process_pool_now(executor=self.executor)
+        # Wait for a clean worker exit so finalizers such as coverage can persist their data.
+        self.executor.shutdown(wait=True, cancel_futures=True)
         self.restore_python_path()
 
     def add_custom_python_path(self) -> None:
@@ -1060,44 +1059,6 @@ class SharedMemoryMetadata:
     """Name of the shared memory block (used by workers to attach)."""
     size: int
     """Size of data in the shared memory block."""
-
-
-def shutdown_process_pool_now(executor: Executor, *, deadline_s: float = 1.5) -> None:
-    """
-    Shuts down the passed executor in such a way that golang won't need to issue a sigkill.
-
-    The golang process managing the AVD python build processes issues a SIGKILL on the
-    python process if it does not acknowledge the shutdown RPC within 2s.
-    Drops queued futures and returns immediately; do not wait for  in-flight workers
-    (would commonly block past the 2s window).
-    Best-effort: terminate worker processes so they don't outlive as orphans of the
-    forkserver (which would leak RSS until the pod restarts).
-    """
-    processes = getattr(executor, "_processes", None) or {}
-    workers = list(processes.values())
-
-    with suppress(Exception):
-        executor.shutdown(wait=False, cancel_futures=True)
-
-    for proc in workers:
-        with suppress(Exception):
-            proc.terminate()
-
-    deadline = time.monotonic() + deadline_s
-    for proc in workers:
-        remaining = max(0.0, deadline - time.monotonic())
-        with suppress(Exception):
-            proc.join(timeout=remaining)
-
-    for proc in workers:
-        with suppress(Exception):
-            if proc.is_alive():
-                proc.kill()
-
-    for proc in workers:
-        remaining = max(0.0, deadline - time.monotonic())
-        with suppress(Exception):
-            proc.join(timeout=remaining)
 
 
 def group_devices_per_fabric(context: AvdBuildContext) -> dict[str, list[str]]:
