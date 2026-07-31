@@ -168,6 +168,9 @@ keys:
           flowdns:
             type: bool
             $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/flowdns
+          custom_cv_options:
+            type: list
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/custom_cv_options
       set_source_interfaces:
         type: bool
         # TODO: AVD7.0 remove mention of `cv_instances` in description
