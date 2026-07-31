@@ -9,7 +9,7 @@ grpclib>=0.4.8
 jinja2>=3.0
 netaddr>=0.7.19
 pyavd==6.4.0.dev1
-pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils.git@refs/pull/197/head
+pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils.git@main
 python-socks[asyncio]>=2.7.2
 pyyaml>=6.0.0
 requests>=2.27.0
