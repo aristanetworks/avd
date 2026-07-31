@@ -87,7 +87,7 @@ class MlagMixin(Protocol):
         node_config = self.node_type_config.nodes.get(hostname, default=Undefined)
         node_mlag = None if isinstance(node_config, UndefinedType) else node_config._get("mlag")
 
-        default_member_mlag = self.node_group_config.nodes[hostname].mlag
+        default_member_mlag = True
         member_mlag = default(
             node_mlag,
             self.node_group_config.nodes[hostname]._get("mlag"),
