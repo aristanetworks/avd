@@ -27,4 +27,4 @@ wan_path_groups:
     name: INTERNET
 
 expected_error_message: >-
-  IPv6 BGP peering is not supported on WAN interfaces. Got 'peer_ipv6_address: 2001:db8::1' on 'l3_interfaces[Ethernet1]'.
+  IPv6 BGP peering is not supported on WAN interfaces. Got 'peer_ipv6_address: 2001:db8::1' on 'l3_interfaces[Ethernet1]'
