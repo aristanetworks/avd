@@ -29,7 +29,13 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag(self: SharedUtilsProtocol) -> bool:
-        if not self.node_type_key_data.mlag_support or not self.node_config.mlag:
+        if not self.node_type_key_data.mlag_support:
+            return False
+
+        if self.node_group_config is not None and len(self.node_group_config.nodes) > 2 and self.inputs.avd_design_future.allow_mlag_in_shared_node_groups:
+            return self.node_group_mlag_is_primary_and_peer_hostname is not None
+
+        if not self.node_config.mlag:
             return False
 
         # Node groups used for mlag peer.
