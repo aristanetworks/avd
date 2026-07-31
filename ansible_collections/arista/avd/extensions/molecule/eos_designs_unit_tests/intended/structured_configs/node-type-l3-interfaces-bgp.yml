@@ -99,6 +99,12 @@ route_maps:
     - ipv6 address prefix-list ALLOW-IPV6-LOCAL
   - sequence: 20
     type: deny
+- name: RM-BGP-2001:db8:45::1-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ipv6 address prefix-list ALLOW-IPV6-DEFAULT
 - name: RM-BGP-2001:db8:45::1-OUT
   sequence_numbers:
   - sequence: 10
@@ -127,6 +133,7 @@ router_bgp:
   - ip_address: 2001:db8:45::1
     remote_as: '65045'
     description: PEER-IPV6-PC_Port-Channel1
+    route_map_in: RM-BGP-2001:db8:45::1-IN
     route_map_out: RM-BGP-2001:db8:45::1-OUT
   redistribute:
     connected:

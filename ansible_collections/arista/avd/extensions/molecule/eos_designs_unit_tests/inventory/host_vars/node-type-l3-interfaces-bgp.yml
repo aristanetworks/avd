@@ -64,3 +64,5 @@ l3spine:
               peer_interface: Ethernet1
           bgp:
             peer_as: 65045
+            # Reuse the prefix-list from Ethernet44 to cover deduplication.
+            ipv6_prefix_list_in: ALLOW-IPV6-DEFAULT
