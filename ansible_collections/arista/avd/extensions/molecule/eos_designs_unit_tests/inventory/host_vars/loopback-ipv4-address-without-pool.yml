@@ -1,0 +1,15 @@
+---
+node_type_keys:
+  - key: spine
+    type: spine
+    default_overlay_routing_protocol: her
+
+spine:
+  defaults:
+    bgp_as: 65000
+  nodes:
+    - name: loopback-ipv4-address-without-pool
+      id: 42
+      loopback_ipv4_address: 10.42.42.42
+
+type: spine
