@@ -31009,8 +31009,8 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             RedistributeBgp.
@@ -31042,8 +31042,8 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             RedistributeConnected.
@@ -31103,10 +31103,10 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | None | UndefinedType = Undefined,
-                        process_id: int | None | UndefinedType = Undefined,
+                        enabled: bool | UndefinedType | None = Undefined,
+                        process_id: int | UndefinedType | None = Undefined,
                         router_id: str | UndefinedType = Undefined,
-                        auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
+                        auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                         redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                         redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
                         nodes: Nodes | UndefinedType = Undefined,
@@ -32221,7 +32221,7 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | None | UndefinedType = Undefined,
+                                enabled: bool | UndefinedType | None = Undefined,
                                 area: str | UndefinedType = Undefined,
                                 point_to_point: bool | UndefinedType = Undefined,
                             ) -> None:
@@ -33678,7 +33678,7 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | None | UndefinedType = Undefined,
+                            enabled: bool | UndefinedType | None = Undefined,
                             area: str | UndefinedType = Undefined,
                             point_to_point: bool | UndefinedType = Undefined,
                         ) -> None:
@@ -49214,7 +49214,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        enabled: bool | None | UndefinedType = Undefined,
+                        enabled: bool | UndefinedType | None = Undefined,
                         area: str | UndefinedType = Undefined,
                         point_to_point: bool | UndefinedType = Undefined,
                     ) -> None:
@@ -50646,7 +50646,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | None | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType | None = Undefined,
                     area: str | UndefinedType = Undefined,
                     point_to_point: bool | UndefinedType = Undefined,
                 ) -> None:
@@ -81333,8 +81333,8 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | None | UndefinedType = Undefined,
-                                    include_leaked: bool | None | UndefinedType = Undefined,
+                                    route_map: str | UndefinedType | None = Undefined,
+                                    include_leaked: bool | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     RedistributeBgp.
@@ -81370,8 +81370,8 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | None | UndefinedType = Undefined,
-                                    include_leaked: bool | None | UndefinedType = Undefined,
+                                    route_map: str | UndefinedType | None = Undefined,
+                                    include_leaked: bool | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     RedistributeConnected.
@@ -81431,10 +81431,10 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | None | UndefinedType = Undefined,
-                                process_id: int | None | UndefinedType = Undefined,
+                                enabled: bool | UndefinedType | None = Undefined,
+                                process_id: int | UndefinedType | None = Undefined,
                                 router_id: str | UndefinedType = Undefined,
-                                auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
+                                auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                                 redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                                 redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
@@ -82562,7 +82562,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        enabled: bool | None | UndefinedType = Undefined,
+                                        enabled: bool | UndefinedType | None = Undefined,
                                         area: str | UndefinedType = Undefined,
                                         point_to_point: bool | UndefinedType = Undefined,
                                     ) -> None:
@@ -84021,7 +84021,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    enabled: bool | None | UndefinedType = Undefined,
+                                    enabled: bool | UndefinedType | None = Undefined,
                                     area: str | UndefinedType = Undefined,
                                     point_to_point: bool | UndefinedType = Undefined,
                                 ) -> None:
