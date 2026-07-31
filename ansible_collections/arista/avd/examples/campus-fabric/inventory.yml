@@ -1,38 +1,38 @@
 ---
 # inventory.yml
-DC1:
+ACME:
   children:
-    DC1_FABRIC:
+    SITE1:
       children:
-        DC1_SPINES:
+        SITE1_SPINES:
           hosts:
-            SPINE1:
+            SITE1_SPINE1:
               ansible_host: 172.16.100.101
-            SPINE2:
+            SITE1_SPINE2:
               ansible_host: 172.16.100.102
-        DC1_LEAFS:
+        SITE1_LEAFS:
           hosts:
-            LEAF1A:
+            SITE1_LEAF1A:
               ansible_host: 172.16.100.103
-            LEAF1B:
+            SITE1_LEAF1B:
               ansible_host: 172.16.100.104
-            LEAF2A:
+            SITE1_LEAF2A:
               ansible_host: 172.16.100.105
-            LEAF3A:
+            SITE1_LEAF3A:
               ansible_host: 172.16.100.106
-            LEAF3B:
+            SITE1_LEAF3B:
               ansible_host: 172.16.100.107
-            LEAF3C:
+            SITE1_LEAF3C:
               ansible_host: 172.16.100.108
-            LEAF3D:
+            SITE1_LEAF3D:
               ansible_host: 172.16.100.109
-            LEAF3E:
+            SITE1_LEAF3E:
               ansible_host: 172.16.100.110
-    DC1_NETWORK_SERVICES:
+    NETWORK_SERVICES:
       children:
-        DC1_LEAFS:
-        DC1_SPINES:
-    DC1_NETWORK_PORTS:
+        SITE1_LEAFS:
+        SITE1_SPINES:
+    CONNECTED_ENDPOINTS:
       children:
-        DC1_LEAFS:
-        DC1_SPINES:
+        SITE1_LEAFS:
+        SITE1_SPINES:

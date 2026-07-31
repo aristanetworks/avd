@@ -1,0 +1,60 @@
+---
+### group_vars/ACME.yml
+
+# Ansible connectivity definitions
+# eAPI connectivity via HTTPS is specified (as opposed to network_cli via SSH)
+ansible_connection: ansible.netcommon.httpapi
+# Specifies that we are indeed using Arista EOS
+ansible_network_os: arista.eos.eos
+# This user/password must exist on the switches to enable Ansible access
+ansible_user: arista
+ansible_password: arista
+# User escalation (to enter enable mode)
+ansible_become: true
+ansible_become_method: enable
+# Use SSL (HTTPS)
+ansible_httpapi_use_ssl: true
+# Do not try to validate certs
+ansible_httpapi_validate_certs: false
+# Explicitly configure Python3 interpreter
+ansible_python_interpreter: $(which python3)
+
+# Enable eAPI for programmatic access
+management_eapi:
+  enabled: true
+
+# aaa settings
+aaa_settings:
+  local_users:
+    - name: arista
+      privilege: 15
+      role: network-admin
+      sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
+  authorization:
+    exec:
+      default: local
+  radius:
+    servers:
+      - host: 172.16.100.250
+        key: 1304051B181805
+        vrf: MGMT
+
+# OOB Management network default gateway.
+mgmt_gateway: 172.16.100.1
+
+# dns servers.
+dns_settings:
+  servers:
+    - ip_address: 8.8.4.4
+    - ip_address: 8.8.8.8
+
+# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: time.google.com
+    - name: pool.ntp.org
+
+# Enable 802.1X globally
+dot1x_settings:
+  enabled: true
