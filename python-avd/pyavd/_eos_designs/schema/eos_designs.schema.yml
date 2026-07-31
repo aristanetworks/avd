@@ -15627,8 +15627,6 @@ $defs:
               description: 'Prefix List Name. Advertise routes for only these IPv6
                 prefixes.
 
-                If not specified, nothing would be advertised.
-
                 The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress

@@ -9254,9 +9254,8 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_prefix_list_out: str | None
                 """
                 Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                If not specified, nothing would be
-                advertised.
-                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                The specified prefix list name must
+                exist in `ipv6_prefix_list_catalog`.
                 """
 
                 if TYPE_CHECKING:
@@ -9297,9 +9296,8 @@ class EosDesigns(EosDesignsRootModel):
                                list name must exist in `ipv6_prefix_list_catalog`.
                             ipv6_prefix_list_out:
                                Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                               If not specified, nothing would be
-                               advertised.
-                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                               The specified prefix list name must
+                               exist in `ipv6_prefix_list_catalog`.
 
                         """
 
@@ -14766,9 +14764,8 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_prefix_list_out: str | None
                 """
                 Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                If not specified, nothing would be
-                advertised.
-                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                The specified prefix list name must
+                exist in `ipv6_prefix_list_catalog`.
                 """
 
                 if TYPE_CHECKING:
@@ -14809,9 +14806,8 @@ class EosDesigns(EosDesignsRootModel):
                                list name must exist in `ipv6_prefix_list_catalog`.
                             ipv6_prefix_list_out:
                                Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                               If not specified, nothing would be
-                               advertised.
-                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                               The specified prefix list name must
+                               exist in `ipv6_prefix_list_catalog`.
 
                         """
 
@@ -26015,9 +26011,8 @@ class EosDesigns(EosDesignsRootModel):
             ipv6_prefix_list_out: str | None
             """
             Prefix List Name. Advertise routes for only these IPv6 prefixes.
-            If not specified, nothing would be
-            advertised.
-            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+            The specified prefix list name must
+            exist in `ipv6_prefix_list_catalog`.
             """
 
             if TYPE_CHECKING:
@@ -26058,9 +26053,8 @@ class EosDesigns(EosDesignsRootModel):
                            list name must exist in `ipv6_prefix_list_catalog`.
                         ipv6_prefix_list_out:
                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                           If not specified, nothing would be
-                           advertised.
-                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                           The specified prefix list name must
+                           exist in `ipv6_prefix_list_catalog`.
 
                     """
 
@@ -55369,9 +55363,8 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            If not specified, nothing would be
-                            advertised.
-                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            The specified prefix list name must
+                            exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -55412,9 +55405,8 @@ class EosDesigns(EosDesignsRootModel):
                                            list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           If not specified, nothing would be
-                                           advertised.
-                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                           The specified prefix list name must
+                                           exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -60863,9 +60855,8 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv6_prefix_list_out: str | None
                                 """
                                 Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                If not specified, nothing would be
-                                advertised.
-                                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                The specified prefix list name must
+                                exist in `ipv6_prefix_list_catalog`.
                                 """
 
                                 if TYPE_CHECKING:
@@ -60906,9 +60897,8 @@ class EosDesigns(EosDesignsRootModel):
                                                list name must exist in `ipv6_prefix_list_catalog`.
                                             ipv6_prefix_list_out:
                                                Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                               If not specified, nothing would be
-                                               advertised.
-                                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                               The specified prefix list name must
+                                               exist in `ipv6_prefix_list_catalog`.
 
                                         """
 
@@ -66302,9 +66292,8 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            If not specified, nothing would be
-                            advertised.
-                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            The specified prefix list name must
+                            exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -66345,9 +66334,8 @@ class EosDesigns(EosDesignsRootModel):
                                            list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           If not specified, nothing would be
-                                           advertised.
-                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                           The specified prefix list name must
+                                           exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -71817,9 +71805,8 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            If not specified, nothing would be
-                            advertised.
-                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            The specified prefix list name must
+                            exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -71860,9 +71847,8 @@ class EosDesigns(EosDesignsRootModel):
                                            list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           If not specified, nothing would be
-                                           advertised.
-                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                           The specified prefix list name must
+                                           exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -91736,9 +91722,8 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            If not specified, nothing would be
-                            advertised.
-                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            The specified prefix list name must
+                            exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -91779,9 +91764,8 @@ class EosDesigns(EosDesignsRootModel):
                                            list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           If not specified, nothing would be
-                                           advertised.
-                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                           The specified prefix list name must
+                                           exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -97230,9 +97214,8 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv6_prefix_list_out: str | None
                                 """
                                 Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                If not specified, nothing would be
-                                advertised.
-                                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                The specified prefix list name must
+                                exist in `ipv6_prefix_list_catalog`.
                                 """
 
                                 if TYPE_CHECKING:
@@ -97273,9 +97256,8 @@ class EosDesigns(EosDesignsRootModel):
                                                list name must exist in `ipv6_prefix_list_catalog`.
                                             ipv6_prefix_list_out:
                                                Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                               If not specified, nothing would be
-                                               advertised.
-                                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                               The specified prefix list name must
+                                               exist in `ipv6_prefix_list_catalog`.
 
                                         """
 
@@ -102669,9 +102651,8 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            If not specified, nothing would be
-                            advertised.
-                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            The specified prefix list name must
+                            exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -102712,9 +102693,8 @@ class EosDesigns(EosDesignsRootModel):
                                            list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           If not specified, nothing would be
-                                           advertised.
-                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                           The specified prefix list name must
+                                           exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -108184,9 +108164,8 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            If not specified, nothing would be
-                            advertised.
-                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            The specified prefix list name must
+                            exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -108227,9 +108206,8 @@ class EosDesigns(EosDesignsRootModel):
                                            list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           If not specified, nothing would be
-                                           advertised.
-                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                           The specified prefix list name must
+                                           exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
