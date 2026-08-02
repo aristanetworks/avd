@@ -358,11 +358,26 @@ interface {{ vlan_interface.name }}
    ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} {{ ospf_message_digest_key.key_type | arista.avd.default("7") }} {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
-{%     if vlan_interface.ipv6_ospf.network_point_to_point is arista.avd.defined(true) %}
+{%     if vlan_interface.ospfv3 is arista.avd.defined %}
+{%         if vlan_interface.ospfv3.passive_interface is arista.avd.defined(true) %}
+   ospfv3 passive-interface
+{%         endif %}
+{%         if vlan_interface.ospfv3.network_point_to_point is arista.avd.defined(true) %}
+   ospfv3 network point-to-point
+{%         endif %}
+{%         if vlan_interface.ospfv3.ipv4 is arista.avd.defined %}
+   ospfv3 ipv4 area {{ vlan_interface.ospfv3.ipv4.area }}
+{%         endif %}
+{%         if vlan_interface.ospfv3.ipv6 is arista.avd.defined %}
+   ospfv3 ipv6 area {{ vlan_interface.ospfv3.ipv6.area }}
+{%         endif %}
+{%     elif vlan_interface.ipv6_ospf is arista.avd.defined %}
+{%         if vlan_interface.ipv6_ospf.network_point_to_point is arista.avd.defined(true) %}
    ipv6 ospf network point-to-point
-{%     endif %}
-{%     if vlan_interface.ipv6_ospf.process is arista.avd.defined %}
+{%         endif %}
+{%         if vlan_interface.ipv6_ospf.process is arista.avd.defined %}
    ipv6 ospf {{ vlan_interface.ipv6_ospf.process.id }} area {{ vlan_interface.ipv6_ospf.process.area }}
+{%         endif %}
 {%     endif %}
 {%     if vlan_interface.service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ vlan_interface.service_policy.pbr.input }}
