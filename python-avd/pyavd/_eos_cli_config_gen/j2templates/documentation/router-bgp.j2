@@ -268,10 +268,15 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | Maximum routes | {{ value }} |
 {%             endif %}
 {%             if peer_group.maximum_advertised_routes is arista.avd.defined %}
-| Maximum Advertise Routes | {{ peer_group.maximum_advertised_routes }} |
-{%                 if peer_group.maximum_advertised_routes_warning_limit is arista.avd.defined %}
-| Maximum Advertise Routes Warning Limit | {{ peer_group.maximum_advertised_routes_warning_limit }} |
+{%                 if peer_group.maximum_advertised_routes == 0 %}
+{%                     set value = "0 (no limit)" %}
+{%                 else %}
+{%                     set value = peer_group.maximum_advertised_routes %}
 {%                 endif %}
+{%                 if peer_group.maximum_advertised_routes_warning_limit is arista.avd.defined %}
+{%                     set value = value ~ " (warning-limit " ~ peer_group.maximum_advertised_routes_warning_limit ~ ")" %}
+{%                 endif %}
+| Maximum Advertise Routes | {{ value }} |
 {%             endif %}
 {%             if peer_group.link_bandwidth.enabled is arista.avd.defined(true) %}
 {%                 set value = "enabled" %}
@@ -391,15 +396,15 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             set active_parameter.maximum_routes = value | arista.avd.default(inherited.maximum_routes, '-') %}
 {%             if neighbor.maximum_advertised_routes is arista.avd.defined %}
 {%                 if neighbor.maximum_advertised_routes == 0 %}
-{%                     set value = "0 (no limit)" %}
+{%                     set maximum_advertised_routes_value = "0 (no limit)" %}
 {%                 else %}
-{%                     set value = neighbor.maximum_advertised_routes %}
+{%                     set maximum_advertised_routes_value = neighbor.maximum_advertised_routes %}
 {%                 endif %}
 {%                 if neighbor.maximum_advertised_routes_warning_limit is arista.avd.defined %}
-{%                     set value = value ~ " (warning-limit " ~ neighbor.maximum_advertised_routes_warning_limit ~ ")" %}
+{%                     set maximum_advertised_routes_value = maximum_advertised_routes_value ~ " (warning-limit " ~ neighbor.maximum_advertised_routes_warning_limit ~ ")" %}
 {%                 endif %}
 {%             endif %}
-{%             set active_parameter.maximum_advertised_routes = value | arista.avd.default(inherited.maximum_advertised_routes, '-') %}
+{%             set active_parameter.maximum_advertised_routes = maximum_advertised_routes_value | arista.avd.default(inherited.maximum_advertised_routes, '-') %}
 {%             if neighbor.allowas_in.enabled is arista.avd.defined(true) %}
 {%                 if neighbor.allowas_in.times is arista.avd.defined %}
 {%                     set value_allowas = "Allowed, allowed " ~ neighbor.allowas_in.times ~ " times" %}
@@ -502,7 +507,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf.rib_in_pre_policy_retain = neighbor_rib_in_pre_policy_retain | arista.avd.default(inherited_vrf.rib_in_pre_policy_retain, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} | {{ active_parameter_vrf.route_reflector_client }} | {{ active_parameter_vrf.passive }} | - |
+| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} | {{ active_parameter_vrf.route_reflector_client }} | {{ active_parameter_vrf.passive }} | - | - |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
