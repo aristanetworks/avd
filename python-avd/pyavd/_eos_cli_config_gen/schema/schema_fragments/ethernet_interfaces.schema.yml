@@ -870,7 +870,7 @@ keys:
               keys:
                 drop:
                   type: bool
-                  description: Set PTP management messages to drop.
+                  description: Drop PTP management messages.
         profile:
           type: str
           description: Interface profile.
