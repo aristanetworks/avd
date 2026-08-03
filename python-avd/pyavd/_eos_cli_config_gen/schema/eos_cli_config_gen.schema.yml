@@ -1830,6 +1830,39 @@ keys:
           Set to false to disable DNS lookups on sFlow/IPFIX flow records.
 
           '
+      custom_cv_options:
+        type: list
+        description: 'TerminAttr CLI options not covered by the schema.
+
+          Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>`
+          when `value` is omitted.
+
+          Options are appended at the end of the TerminAttr exec command line after
+          all other flags.
+
+          '
+        items:
+          type: dict
+          keys:
+            flag:
+              type: str
+              required: true
+              min_length: 1
+              pattern: ^(?!-)(?!.*[\s=]).+$
+              description: 'TerminAttr CLI flag name without the leading dash.
+
+                '
+            value:
+              type: str
+              description: 'Flag value. If omitted, the flag is rendered without a
+                value (e.g. `-someflag`).
+
+                If set, the flag is rendered as `-flag=value`.
+
+                '
+              convert_types:
+              - bool
+              - int
   daemons:
     type: list
     primary_key: name
@@ -4368,6 +4401,12 @@ keys:
               - ipv4
               - ipv6
               - layer2
+            management:
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         profile:
           type: str
           description: Interface profile.
@@ -14259,6 +14298,12 @@ keys:
 
                 Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
                 devices.'
+            management:
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".
@@ -26989,7 +27034,10 @@ keys:
           - int
         ipv6_ospf:
           type: dict
-          description: IPv6 OSPF configuration for the interface.
+          description: 'IPv6 OSPF configuration for the interface. Mutually exclusive
+            with ''ospfv3''. Ignored when ''ospfv3'' is also configured.
+
+            Use only one style throughout the configuration.'
           keys:
             process:
               type: dict
@@ -27009,6 +27057,38 @@ keys:
                   convert_types:
                   - int
                   required: true
+            network_point_to_point:
+              type: bool
+        ospfv3:
+          type: dict
+          description: 'Mutually exclusive with ''ipv6_ospf'' and takes precedence
+            over it.
+
+            Use only one style throughout the configuration.'
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  convert_types:
+                  - int
+                  required: true
+                  description: 'OSPF area ID in IPv4 address or decimal format (range:
+                    0 to 4294967295).'
+            ipv6:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  convert_types:
+                  - int
+                  required: true
+                  description: 'OSPF area ID in IPv4 address or decimal format (range:
+                    0 to 4294967295).'
+            passive_interface:
+              type: bool
+              description: Include interface but without actively running OSPF.
             network_point_to_point:
               type: bool
         ospf_cost:

@@ -591,7 +591,7 @@ dhcp relay
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvopt ac7.addr=10.20.20.3:9910 -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt -cvopt DC1.vrf=mgt -cvopt DC1.sourceintf=Loopback10 -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=key,<removed> -cvopt DC2.vrf=mgt -cvopt DC2.sourceintf=Vlan500 -cvopt DC3.addr=10.40.40.1:9910 -cvopt DC3.auth=token,/tmp/tokenDC3 -cvopt DC3.vrf=mgt -cvopt DC3.sourceintf=Vlan500 -cvopt DC4.addr=10.40.40.1:9910 -cvopt DC4.auth=token-secure,/tmp/tokenDC4 -cvopt DC4.vrf=mgt -cvopt DC4.sourceip=10.10.10.10 -cvopt DC4.proxy=http://arista:arista@10.10.10.1:3128 -cvopt DC4.obscurekeyfile=True -cvopt DC4.sourceintf=Vlan500 -cvopt DC5.addr=10.20.20.2:9910 -cvopt DC5.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key -cvopt DC5.vrf=mgt -cvopt DC5.sourceintf=Loopback11 -cvopt DC6.addr=10.20.20.3:9910 -cvaddr=apiserver.arista.io:443 -cvauth=key,<removed> -taillogs -ipfix=false -sflow=false -flowdns
+   exec /usr/bin/TerminAttr -cvopt ac7.addr=10.20.20.3:9910 -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt -cvopt DC1.vrf=mgt -cvopt DC1.sourceintf=Loopback10 -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=key,<removed> -cvopt DC2.vrf=mgt -cvopt DC2.sourceintf=Vlan500 -cvopt DC3.addr=10.40.40.1:9910 -cvopt DC3.auth=token,/tmp/tokenDC3 -cvopt DC3.vrf=mgt -cvopt DC3.sourceintf=Vlan500 -cvopt DC4.addr=10.40.40.1:9910 -cvopt DC4.auth=token-secure,/tmp/tokenDC4 -cvopt DC4.vrf=mgt -cvopt DC4.sourceip=10.10.10.10 -cvopt DC4.proxy=http://arista:arista@10.10.10.1:3128 -cvopt DC4.obscurekeyfile=True -cvopt DC4.sourceintf=Vlan500 -cvopt DC5.addr=10.20.20.2:9910 -cvopt DC5.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key -cvopt DC5.vrf=mgt -cvopt DC5.sourceintf=Loopback11 -cvopt DC6.addr=10.20.20.3:9910 -cvaddr=apiserver.arista.io:443 -cvauth=key,<removed> -taillogs -ipfix=false -sflow=false -flowdns -someflag
    no shutdown
 ```
 
@@ -1005,12 +1005,24 @@ interface Dps1
 | Interface | Description | VRF | MTU | Shutdown |
 | --------- | ----------- | --- | --- | -------- |
 | Vlan85 | SVI Description | default | - | - |
+| Vlan1000 | Vlan with minimal ospfv3 configurations | default | - | - |
+| Vlan1001 | Test VLAN with both ospfv3 and ipv6_ospf configurations | default | - | - |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
 | Vlan85 | default | 10.10.84.1/24 | - | - | - | - |
+| Vlan1000 | default | - | - | - | - | - |
+| Vlan1001 | default | - | - | - | - | - |
+
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
+| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+| Vlan85 | True | True | 0.0.0.0 | 1000 |
+| Vlan1000 | - | - | 1000 | 0.0.0.0 |
+| Vlan1001 | True | True | 1000 | 0.0.0.0 |
 
 ##### ISIS
 
@@ -1029,10 +1041,26 @@ interface Vlan85
    bfd echo
    no mpls ldp igp sync
    no mpls ip
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.0.0
+   ospfv3 ipv6 area 1000
    isis enable EVPN_UNDERLAY
    no isis hello padding
    isis authentication mode sha key-id 2
    isis authentication key 0 password
+!
+interface Vlan1000
+   description Vlan with minimal ospfv3 configurations
+   ospfv3 ipv4 area 1000
+   ospfv3 ipv6 area 0.0.0.0
+!
+interface Vlan1001
+   description Test VLAN with both ospfv3 and ipv6_ospf configurations
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 1000
+   ospfv3 ipv6 area 0.0.0.0
 ```
 
 ### VXLAN Interface
