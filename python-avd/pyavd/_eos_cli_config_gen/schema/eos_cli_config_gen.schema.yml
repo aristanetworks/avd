@@ -4401,6 +4401,12 @@ keys:
               - ipv4
               - ipv6
               - layer2
+            management:
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         profile:
           type: str
           description: Interface profile.
@@ -14292,6 +14298,12 @@ keys:
 
                 Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
                 devices.'
+            management:
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".
