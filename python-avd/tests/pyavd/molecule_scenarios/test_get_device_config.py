@@ -13,7 +13,6 @@ from tests.models import MoleculeHost
     "eos_cli_config_gen",
     "eos_cli_config_gen_deprecated_vars",
 )
-@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin")
 def test_get_device_config(molecule_host: MoleculeHost) -> None:
     """Test get_device_config."""
     # For eos_designs scenarios, only load structured config, so this will fail if any inputs are not covered by eos_designs schemas.

@@ -12,7 +12,6 @@ from tests.models import MoleculeHost
     "eos_cli_config_gen",
     "eos_cli_config_gen_deprecated_vars",
 )
-@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin")
 def test_validate_structured_config_with_valid_data(molecule_host: MoleculeHost) -> None:
     """Test validate_structured_config."""
     structured_config = molecule_host.hostvars if molecule_host.scenario.name.startswith("eos_cli_config_gen") else molecule_host.structured_config
