@@ -4406,7 +4406,7 @@ keys:
               keys:
                 drop:
                   type: bool
-                  description: Set PTP management messages to drop.
+                  description: Drop PTP management messages.
         profile:
           type: str
           description: Interface profile.
@@ -14303,7 +14303,7 @@ keys:
               keys:
                 drop:
                   type: bool
-                  description: Set PTP management messages to drop.
+                  description: Drop PTP management messages.
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".

@@ -10969,7 +10969,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"drop": {"type": bool}}
                 drop: bool | None
-                """Set PTP management messages to drop."""
+                """Drop PTP management messages."""
 
                 if TYPE_CHECKING:
 
@@ -10981,7 +10981,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            drop: Set PTP management messages to drop.
+                            drop: Drop PTP management messages.
 
                         """
 
@@ -36747,7 +36747,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"drop": {"type": bool}}
                 drop: bool | None
-                """Set PTP management messages to drop."""
+                """Drop PTP management messages."""
 
                 if TYPE_CHECKING:
 
@@ -36759,7 +36759,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            drop: Set PTP management messages to drop.
+                            drop: Drop PTP management messages.
 
                         """
 
