@@ -79,6 +79,8 @@ ethernet_interfaces:
     sync_message:
       interval: 2
     transport: ipv4
+    management:
+      drop: false
   metadata:
     peer: ptp-tests-spine1
     peer_interface: Ethernet6
