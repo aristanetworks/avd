@@ -4165,6 +4165,42 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Cvtargetconfigs._item_type = str
 
+        class CustomCvOptionsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"flag": {"type": str}, "value": {"type": str}}
+            flag: str
+            """TerminAttr CLI flag name without the leading dash."""
+            value: str | None
+            """
+            Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+            If set, the flag is
+            rendered as `-flag=value`.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, flag: str | UndefinedType = Undefined, value: str | UndefinedType | None = Undefined) -> None:
+                    """
+                    CustomCvOptionsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        flag: TerminAttr CLI flag name without the leading dash.
+                        value:
+                           Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                           If set, the flag is
+                           rendered as `-flag=value`.
+
+                    """
+
+        class CustomCvOptions(AvdList[CustomCvOptionsItem]):
+            """Subclass of AvdList with `CustomCvOptionsItem` items."""
+
+        CustomCvOptions._item_type = CustomCvOptionsItem
+
         _fields: ClassVar[dict] = {
             "cvaddrs": {"type": Cvaddrs},
             "clusters": {"type": Clusters},
@@ -4190,6 +4226,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_loss_timeout": {"type": int},
             "cvtargetconfigs": {"type": Cvtargetconfigs},
             "flowdns": {"type": bool},
+            "custom_cv_options": {"type": CustomCvOptions},
         }
         cvaddrs: Cvaddrs
         """
@@ -4312,6 +4349,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Set to false to disable DNS
         lookups on sFlow/IPFIX flow records.
         """
+        custom_cv_options: CustomCvOptions
+        """
+        TerminAttr CLI options not covered by the schema.
+        Each entry renders as `-<flag>=<value>` when
+        `value` is set, or `-<flag>` when `value` is omitted.
+        Options are appended at the end of the
+        TerminAttr exec command line after all other flags.
+
+
+        Subclass of AvdList with `CustomCvOptionsItem`
+        items.
+        """
 
         if TYPE_CHECKING:
 
@@ -4342,6 +4391,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cv_loss_timeout: int | UndefinedType | None = Undefined,
                 cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
                 flowdns: bool | UndefinedType | None = Undefined,
+                custom_cv_options: CustomCvOptions | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4430,6 +4480,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Enable DNS resolution for flow records (TerminAttr default is true).
                        Set to false to disable DNS
                        lookups on sFlow/IPFIX flow records.
+                    custom_cv_options:
+                       TerminAttr CLI options not covered by the schema.
+                       Each entry renders as `-<flag>=<value>` when
+                       `value` is set, or `-<flag>` when `value` is omitted.
+                       Options are appended at the end of the
+                       TerminAttr exec command line after all other flags.
+
+
+                       Subclass of AvdList with `CustomCvOptionsItem`
+                       items.
 
                 """
 
@@ -73671,6 +73731,89 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Ospfv3(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            class Ipv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "ipv4": {"type": Ipv4},
+                "ipv6": {"type": Ipv6},
+                "passive_interface": {"type": bool},
+                "network_point_to_point": {"type": bool},
+            }
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+            ipv6: Ipv6
+            """Subclass of AvdModel."""
+            passive_interface: bool | None
+            """Include interface but without actively running OSPF."""
+            network_point_to_point: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4: Ipv4 | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
+                    passive_interface: bool | UndefinedType | None = Undefined,
+                    network_point_to_point: bool | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    Ospfv3.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4: Subclass of AvdModel.
+                        ipv6: Subclass of AvdModel.
+                        passive_interface: Include interface but without actively running OSPF.
+                        network_point_to_point: network_point_to_point
+
+                    """
+
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
         OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
@@ -75073,6 +75216,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_network_point_to_point": {"type": bool},
             "ospf_area": {"type": str},
             "ipv6_ospf": {"type": Ipv6Ospf},
+            "ospfv3": {"type": Ospfv3},
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
@@ -75219,7 +75363,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_area: str | None
         ipv6_ospf: Ipv6Ospf
         """
-        IPv6 OSPF configuration for the interface.
+        IPv6 OSPF configuration for the interface. Mutually exclusive with 'ospfv3'. Ignored when 'ospfv3'
+        is also configured.
+        Use only one style throughout the configuration.
+
+        Subclass of AvdModel.
+        """
+        ospfv3: Ospfv3
+        """
+        Mutually exclusive with 'ipv6_ospf' and takes precedence over it.
+        Use only one style throughout the
+        configuration.
 
         Subclass of AvdModel.
         """
@@ -75340,6 +75494,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_network_point_to_point: bool | UndefinedType | None = Undefined,
                 ospf_area: str | UndefinedType | None = Undefined,
                 ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                ospfv3: Ospfv3 | UndefinedType = Undefined,
                 ospf_cost: int | UndefinedType | None = Undefined,
                 ospf_authentication: OspfAuthentication | UndefinedType | None = Undefined,
                 ospf_authentication_key: str | UndefinedType | None = Undefined,
@@ -75451,7 +75606,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ospf_network_point_to_point: ospf_network_point_to_point
                     ospf_area: ospf_area
                     ipv6_ospf:
-                       IPv6 OSPF configuration for the interface.
+                       IPv6 OSPF configuration for the interface. Mutually exclusive with 'ospfv3'. Ignored when 'ospfv3'
+                       is also configured.
+                       Use only one style throughout the configuration.
+
+                       Subclass of AvdModel.
+                    ospfv3:
+                       Mutually exclusive with 'ipv6_ospf' and takes precedence over it.
+                       Use only one style throughout the
+                       configuration.
 
                        Subclass of AvdModel.
                     ospf_cost: ospf_cost

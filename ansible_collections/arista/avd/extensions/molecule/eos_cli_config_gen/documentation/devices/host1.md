@@ -2662,7 +2662,7 @@ environment fan-speed minimum 60
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy -flowdns=false
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy -flowdns=false -somecustomflag -grpcport=9910 -enablefeaturex=true -disablefeaturey=false
    no shutdown
 ```
 
@@ -7836,6 +7836,7 @@ interface Tunnel7
 | Vlan369 | TCP MSS ceiling - IPv4 and IPv6 egress | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
+| Vlan1000 | Vlan with minimal ipv6 ospf configurations | default | - | - |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
 | Vlan1002 | SVI Description | Tenant_A | - | False |
 | Vlan2001 | SVI Description | Tenant_B | - | - |
@@ -7912,6 +7913,7 @@ interface Tunnel7
 | Vlan369 | default | - | - | - | - | - |
 | Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
 | Vlan667 | default | 192.0.2.2/25 | - | - | - | - |
+| Vlan1000 | default | - | - | - | - | - |
 | Vlan1001 | Tenant_A | - | 10.1.1.1/24 | - | - | - |
 | Vlan1002 | Tenant_A | - | 10.1.2.1/24 | - | - | - |
 | Vlan2001 | Tenant_B | - | 10.2.1.1/24 | - | - | - |
@@ -7980,9 +7982,16 @@ interface Tunnel7
 
 ##### OSPF
 
-| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
-| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
-| Vlan26 | True | 0.0.0.24 | 99 | message-digest | 100 | 0.0.0.29 | True |
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication |
+| --------- | --------------------------- | --------- | --------- | ------------------- |
+| Vlan26 | True | 0.0.0.24 | 99 | message-digest |
+
+##### IPv6 OSPF
+
+| Interface | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | -------------------- | -------------- | -------------------------------- |
+| Vlan26 | 100 | 0.0.0.29 | True |
+| Vlan1000 | 100 | 0.0.0.29 | - |
 
 ##### ISIS
 
@@ -8414,6 +8423,10 @@ interface Vlan667
    vrrp 1 ipv4 192.0.4.4 secondary
    vrrp 2 peer authentication text 0 <removed>
    vrrp 2 ipv6 2001:db8:667::1
+!
+interface Vlan1000
+   description Vlan with minimal ipv6 ospf configurations
+   ipv6 ospf 100 area 0.0.0.29
 !
 interface Vlan1001
    description SVI Description
