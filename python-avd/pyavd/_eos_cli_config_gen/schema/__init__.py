@@ -10963,6 +10963,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Role: TypeAlias = Literal["master", "dynamic"]
             Transport: TypeAlias = Literal["ipv4", "ipv6", "layer2"]
+
+            class Management(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"drop": {"type": bool}}
+                drop: bool | None
+                """Drop PTP management messages."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, drop: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Management.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            drop: Drop PTP management messages.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "enable": {"type": bool},
                 "announce": {"type": Announce},
@@ -10974,6 +10996,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "role": {"type": str},
                 "vlan": {"type": str},
                 "transport": {"type": str},
+                "management": {"type": Management},
             }
             enable: bool | None
             announce: Announce
@@ -10990,6 +11013,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlan: str | None
             """VLAN can be 'all' or list of vlans as string."""
             transport: Transport | None
+            management: Management
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -11006,6 +11031,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     role: Role | UndefinedType | None = Undefined,
                     vlan: str | UndefinedType | None = Undefined,
                     transport: Transport | UndefinedType | None = Undefined,
+                    management: Management | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ptp.
@@ -11024,6 +11050,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         role: role
                         vlan: VLAN can be 'all' or list of vlans as string.
                         transport: transport
+                        management: Subclass of AvdModel.
 
                     """
 
@@ -36714,6 +36741,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Role: TypeAlias = Literal["master", "dynamic"]
             Transport: TypeAlias = Literal["ipv4", "ipv6", "layer2"]
+
+            class Management(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"drop": {"type": bool}}
+                drop: bool | None
+                """Drop PTP management messages."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, drop: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Management.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            drop: Drop PTP management messages.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "enable": {"type": bool},
                 "announce": {"type": Announce},
@@ -36726,6 +36775,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "vlan": {"type": str},
                 "transport": {"type": str},
                 "mpass": {"type": bool},
+                "management": {"type": Management},
             }
             enable: bool | None
             announce: Announce
@@ -36751,6 +36801,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
             devices.
             """
+            management: Management
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -36768,6 +36820,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     vlan: str | UndefinedType | None = Undefined,
                     transport: Transport | UndefinedType | None = Undefined,
                     mpass: bool | UndefinedType | None = Undefined,
+                    management: Management | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ptp.
@@ -36793,6 +36846,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            within the port-channel.
                            Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
                            devices.
+                        management: Subclass of AvdModel.
 
                     """
 
