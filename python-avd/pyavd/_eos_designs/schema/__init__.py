@@ -29821,6 +29821,8 @@ class EosDesigns(EosDesignsRootModel):
                 "session_tracker": {"type": str},
                 "shared_secret": {"type": SharedSecret},
                 "ttl_maximum_hops": {"type": int},
+                "maximum_advertised_routes": {"type": int},
+                "maximum_advertised_routes_warning_limit": {"type": str},
             }
             name: str
             """BGP peer group name."""
@@ -29951,6 +29953,14 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             ttl_maximum_hops: int | None
             """Maximum number of hops."""
+            maximum_advertised_routes: int | None
+            """Maximum number of routes (0 means unlimited)."""
+            maximum_advertised_routes_warning_limit: str | None
+            """
+            Maximum number of routes after which a warning is issued (0 means never warn) or
+            Percentage of
+            maximum number of routes at which to warn ("<1-100> percent").
+            """
 
             if TYPE_CHECKING:
 
@@ -30001,6 +30011,8 @@ class EosDesigns(EosDesignsRootModel):
                     session_tracker: str | UndefinedType | None = Undefined,
                     shared_secret: SharedSecret | UndefinedType = Undefined,
                     ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                    maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                    maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     BgpPeerGroupsItem.
@@ -30093,6 +30105,11 @@ class EosDesigns(EosDesignsRootModel):
                         session_tracker: session_tracker
                         shared_secret: Subclass of AvdModel.
                         ttl_maximum_hops: Maximum number of hops.
+                        maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                        maximum_advertised_routes_warning_limit:
+                           Maximum number of routes after which a warning is issued (0 means never warn) or
+                           Percentage of
+                           maximum number of routes at which to warn ("<1-100> percent").
 
                     """
 
@@ -37026,6 +37043,8 @@ class EosDesigns(EosDesignsRootModel):
                     "session_tracker": {"type": str},
                     "shared_secret": {"type": SharedSecret},
                     "ttl_maximum_hops": {"type": int},
+                    "maximum_advertised_routes": {"type": int},
+                    "maximum_advertised_routes_warning_limit": {"type": str},
                 }
                 name: str
                 """BGP peer group name."""
@@ -37160,6 +37179,14 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 ttl_maximum_hops: int | None
                 """Maximum number of hops."""
+                maximum_advertised_routes: int | None
+                """Maximum number of routes (0 means unlimited)."""
+                maximum_advertised_routes_warning_limit: str | None
+                """
+                Maximum number of routes after which a warning is issued (0 means never warn) or
+                Percentage of
+                maximum number of routes at which to warn ("<1-100> percent").
+                """
 
                 if TYPE_CHECKING:
 
@@ -37210,6 +37237,8 @@ class EosDesigns(EosDesignsRootModel):
                         session_tracker: str | UndefinedType | None = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                        maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                        maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         BgpPeerGroupsItem.
@@ -37306,6 +37335,11 @@ class EosDesigns(EosDesignsRootModel):
                             session_tracker: session_tracker
                             shared_secret: Subclass of AvdModel.
                             ttl_maximum_hops: Maximum number of hops.
+                            maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                            maximum_advertised_routes_warning_limit:
+                               Maximum number of routes after which a warning is issued (0 means never warn) or
+                               Percentage of
+                               maximum number of routes at which to warn ("<1-100> percent").
 
                         """
 
@@ -79742,6 +79776,8 @@ class EosDesigns(EosDesignsRootModel):
                         "session_tracker": {"type": str},
                         "shared_secret": {"type": SharedSecret},
                         "ttl_maximum_hops": {"type": int},
+                        "maximum_advertised_routes": {"type": int},
+                        "maximum_advertised_routes_warning_limit": {"type": str},
                     }
                     name: str
                     """BGP peer group name."""
@@ -79872,6 +79908,14 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     ttl_maximum_hops: int | None
                     """Maximum number of hops."""
+                    maximum_advertised_routes: int | None
+                    """Maximum number of routes (0 means unlimited)."""
+                    maximum_advertised_routes_warning_limit: str | None
+                    """
+                    Maximum number of routes after which a warning is issued (0 means never warn) or
+                    Percentage of
+                    maximum number of routes at which to warn ("<1-100> percent").
+                    """
 
                     if TYPE_CHECKING:
 
@@ -79922,6 +79966,8 @@ class EosDesigns(EosDesignsRootModel):
                             session_tracker: str | UndefinedType | None = Undefined,
                             shared_secret: SharedSecret | UndefinedType = Undefined,
                             ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                            maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                            maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             BgpPeerGroupsItem.
@@ -80014,6 +80060,11 @@ class EosDesigns(EosDesignsRootModel):
                                 session_tracker: session_tracker
                                 shared_secret: Subclass of AvdModel.
                                 ttl_maximum_hops: Maximum number of hops.
+                                maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                                maximum_advertised_routes_warning_limit:
+                                   Maximum number of routes after which a warning is issued (0 means never warn) or
+                                   Percentage of
+                                   maximum number of routes at which to warn ("<1-100> percent").
 
                             """
 
@@ -86984,6 +87035,8 @@ class EosDesigns(EosDesignsRootModel):
                             "session_tracker": {"type": str},
                             "shared_secret": {"type": SharedSecret},
                             "ttl_maximum_hops": {"type": int},
+                            "maximum_advertised_routes": {"type": int},
+                            "maximum_advertised_routes_warning_limit": {"type": str},
                         }
                         name: str
                         """BGP peer group name."""
@@ -87118,6 +87171,14 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         ttl_maximum_hops: int | None
                         """Maximum number of hops."""
+                        maximum_advertised_routes: int | None
+                        """Maximum number of routes (0 means unlimited)."""
+                        maximum_advertised_routes_warning_limit: str | None
+                        """
+                        Maximum number of routes after which a warning is issued (0 means never warn) or
+                        Percentage of
+                        maximum number of routes at which to warn ("<1-100> percent").
+                        """
 
                         if TYPE_CHECKING:
 
@@ -87168,6 +87229,8 @@ class EosDesigns(EosDesignsRootModel):
                                 session_tracker: str | UndefinedType | None = Undefined,
                                 shared_secret: SharedSecret | UndefinedType = Undefined,
                                 ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                                maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                                maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 BgpPeerGroupsItem.
@@ -87264,6 +87327,11 @@ class EosDesigns(EosDesignsRootModel):
                                     session_tracker: session_tracker
                                     shared_secret: Subclass of AvdModel.
                                     ttl_maximum_hops: Maximum number of hops.
+                                    maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                                    maximum_advertised_routes_warning_limit:
+                                       Maximum number of routes after which a warning is issued (0 means never warn) or
+                                       Percentage of
+                                       maximum number of routes at which to warn ("<1-100> percent").
 
                                 """
 

@@ -81,14 +81,19 @@ router_bgp:
         interval: 500
         min_rx: 500
         multiplier: 3
+      maximum_advertised_routes: 120000
+      maximum_advertised_routes_warning_limit: 1000
     - name: SR-TE-PG-1
       remote_as: 65000
     - name: SR-TE-PG-2
       remote_as: 65000
+      maximum_advertised_routes: 120000
     - name: STARDARD-COMMUNITY
       metadata:
         type: ipv4
       send_community: standard
+      maximum_advertised_routes: 120000
+      maximum_advertised_routes_warning_limit: 10 percent
     - name: EXTENDED-COMMUNITY
       metadata:
         type: ipv4
@@ -541,11 +546,16 @@ router_bgp:
         peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4
         additional_paths:
           send: disabled
+        maximum_advertised_routes: 120000
+        maximum_advertised_routes_warning_limit: 10 percent
       - name: TEST_RCF
         rcf_in: Address_Family_IPV4_In()
         rcf_out: Address_Family_IPV4_Out()
+        maximum_advertised_routes: 120000
+        maximum_advertised_routes_warning_limit: 10
       - name: NHP
         activate: true
+        maximum_advertised_routes: 1200
       - name: EVPN-OVERLAY-PEERS
         activate: false
       - name: IPv4-UNDERLAY-PEERS
@@ -607,6 +617,8 @@ router_bgp:
           address_family_ipv6:
             enabled: true
             originate: true
+        maximum_advertised_routes: 120000
+        maximum_advertised_routes_warning_limit: 10 percent
       - ip_address: 10.2.3.8
         rcf_in: Address_Family_IPV4_In()
         additional_paths:
@@ -614,6 +626,8 @@ router_bgp:
         next_hop:
           address_family_ipv6:
             enabled: false
+        maximum_advertised_routes: 120000
+        maximum_advertised_routes_warning_limit: 100
       - ip_address: 10.2.3.9
         rcf_out: Address_Family_IPV4_Out()
         additional_paths:
@@ -625,6 +639,7 @@ router_bgp:
         next_hop:
           address_family_ipv6:
             enabled: true
+        maximum_advertised_routes: 120000
       - ip_address: 192.168.66.21
         activate: false
         additional_paths:
@@ -704,16 +719,21 @@ router_bgp:
         route_map_out: RM-HIDE-AS-PATH
         peer_tag_in: PEER_TAG_IN_IPV6
         peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6
+        maximum_advertised_routes: 120000
+        maximum_advertised_routes_warning_limit: 10 percent
       - name: IPV6-UNDERLAY-MLAG
         activate: true
         additional_paths:
           send: disabled
+        maximum_advertised_routes: 120000
+        maximum_advertised_routes_warning_limit: 111
       - name: TEST_RCF
         additional_paths:
           send: limit
           send_limit: 11
         rcf_in: Address_Family_IPV6_In()
         rcf_out: Address_Family_IPV6_Out()
+        maximum_advertised_routes: 120000
       - name: baz
         prefix_list_in: PL-BAR-v6-IN
         prefix_list_out: PL-BAR-v6-OUT
@@ -758,6 +778,8 @@ router_bgp:
           receive: true
           send: ecmp
           send_limit: 20
+        maximum_advertised_routes: 120000
+        maximum_advertised_routes_warning_limit: 11 percent
       - ip_address: 2001:db8::2
         activate: true
         additional_paths:
@@ -767,12 +789,15 @@ router_bgp:
         default_originate:
           enabled: true
           always: true
+        maximum_advertised_routes: 120000
+        maximum_advertised_routes_warning_limit: 10
       - ip_address: 2001:db8::21
         activate: false
         additional_paths:
           send: disabled
         default_originate:
           enabled: true
+        maximum_advertised_routes: 120000
       - ip_address: 2001:db8::22
         additional_paths:
           send: limit
@@ -1326,11 +1351,16 @@ router_bgp:
   neighbors:
     - ip_address: 192.168.255.101
       peer_group: MPLS-IBGP-PEERS
+      maximum_advertised_routes: 120000
+      maximum_advertised_routes_warning_limit: 10 percent
     - ip_address: 192.168.255.201
       peer_group: MPLS-IBGP-PEERS
+      maximum_advertised_routes: 120000
+      maximum_advertised_routes_warning_limit: 11236
     - ip_address: 192.168.255.4
       remote_as: 65004
       send_community: all
+      maximum_advertised_routes: 120000
     - ip_address: 2001:cafe:192:168::4
       remote_as: 65004
       send_community: all
