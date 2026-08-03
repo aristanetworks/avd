@@ -177,7 +177,6 @@ $defs:
               type: str
               description: |-
                 Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                If not specified, nothing would be advertised.
                 The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
         ipv4_acl_in:
           description: |-

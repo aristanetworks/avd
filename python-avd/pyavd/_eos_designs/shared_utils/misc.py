@@ -367,16 +367,13 @@ class MiscMixin(Protocol):
         )
         return route_map
 
-    def get_l3_bgp_ipv6_route_map_out(self: SharedUtilsProtocol, name: str, prefix_list_name: str | None = None) -> EosCliConfigGen.RouteMapsItem:
+    def get_l3_bgp_ipv6_route_map_out(self: SharedUtilsProtocol, name: str, prefix_list_name: str) -> EosCliConfigGen.RouteMapsItem:
         """Generate an outbound IPv6 route-map for an L3 interface or L3 Port-Channel BGP neighbor."""
         route_map = EosCliConfigGen.RouteMapsItem(name=name)
-        if prefix_list_name:
-            route_map.sequence_numbers.append_new(
-                sequence=10, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match([f"ipv6 address prefix-list {prefix_list_name}"])
-            )
-            route_map.sequence_numbers.append_new(sequence=20, type="deny")
-        else:
-            route_map.sequence_numbers.append_new(sequence=10, type="deny")
+        route_map.sequence_numbers.append_new(
+            sequence=10, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match([f"ipv6 address prefix-list {prefix_list_name}"])
+        )
+        route_map.sequence_numbers.append_new(sequence=20, type="deny")
         return route_map
 
     def _get_l3_generic_interface_bgp_description(
@@ -482,12 +479,14 @@ class MiscMixin(Protocol):
             neighbor.route_map_in = rm_in_name
             route_maps.append(self.get_l3_bgp_ipv6_route_map_in(rm_in_name, interface.bgp.ipv6_prefix_list_in))
 
-        if interface.bgp.ipv6_prefix_list_out and interface.bgp.ipv6_prefix_list_out not in prefix_lists:
-            prefix_lists.append(self.get_ipv6_prefix_list(interface.bgp.ipv6_prefix_list_out))
+        # Since IPv6 BGP is not supported on WAN interfaces, only configure an outbound route-map when an IPv6 prefix-list is explicitly defined.
+        if interface.bgp.ipv6_prefix_list_out:
+            if interface.bgp.ipv6_prefix_list_out not in prefix_lists:
+                prefix_lists.append(self.get_ipv6_prefix_list(interface.bgp.ipv6_prefix_list_out))
+            rm_out_name = f"RM-BGP-{neighbor.ip_address}-OUT"
+            neighbor.route_map_out = rm_out_name
+            route_maps.append(self.get_l3_bgp_ipv6_route_map_out(rm_out_name, interface.bgp.ipv6_prefix_list_out))
 
-        rm_out_name = f"RM-BGP-{neighbor.ip_address}-OUT"
-        neighbor.route_map_out = rm_out_name
-        route_maps.append(self.get_l3_bgp_ipv6_route_map_out(rm_out_name, interface.bgp.ipv6_prefix_list_out))
         neighbors.append(neighbor)
 
     @cached_property
