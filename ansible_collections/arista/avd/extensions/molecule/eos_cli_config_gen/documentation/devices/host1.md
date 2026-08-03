@@ -5580,6 +5580,7 @@ interface Ethernet6
    no lldp transmit
    ip ospf authentication-key 8a <removed>
    ptp enable
+   no ptp management drop
    ptp announce interval 3
    ptp announce timeout 9
    ptp delay-mechanism e2e
@@ -6864,6 +6865,8 @@ interface Port-Channel7
    address locking
       address-family ipv4 disabled
       address-family ipv6 disabled
+   ptp enable
+   no ptp management drop
 !
 interface Port-Channel8
    description to Dev02 Port-channel 8

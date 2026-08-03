@@ -560,6 +560,8 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.ptp.management.drop is arista.avd.defined(true) %}
    ptp management drop
+{%     elif port_channel_interface.ptp.management.drop is arista.avd.defined(false) %}
+   no ptp management drop
 {%     endif %}
 {%     if port_channel_interface.ptp.mpass is arista.avd.defined(true) %}
    ptp mpass
