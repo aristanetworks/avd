@@ -167,7 +167,7 @@ repos:
           - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.37.0'
-          - 'ruff==0.15.22'
+          - 'ruff==0.16.0'
 
   - repo: https://github.com/pycqa/pylint
     rev: "8a396357098337ba8be714fffdf2d00947a9778c"  # frozen: v4.0.6
@@ -295,7 +295,7 @@ repos:
         language: python
         files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
-        additional_dependencies: ['deepmerge>=1.1.0', 'pyyaml>=6.0.0', 'pydantic>=2.11.10', 'jsonschema-rs>=0.46.0', 'referencing>=0.37.0', 'ruff==0.15.22']
+        additional_dependencies: ['deepmerge>=1.1.0', 'pyyaml>=6.0.0', 'pydantic>=2.11.10', 'jsonschema-rs>=0.46.0', 'referencing>=0.37.0', 'ruff==0.16.0']
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
