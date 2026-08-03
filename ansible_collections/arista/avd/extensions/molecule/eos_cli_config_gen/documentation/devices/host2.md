@@ -1005,12 +1005,24 @@ interface Dps1
 | Interface | Description | VRF | MTU | Shutdown |
 | --------- | ----------- | --- | --- | -------- |
 | Vlan85 | SVI Description | default | - | - |
+| Vlan1000 | Vlan with minimal ospfv3 configurations | default | - | - |
+| Vlan1001 | Test VLAN with both ospfv3 and ipv6_ospf configurations | default | - | - |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
 | Vlan85 | default | 10.10.84.1/24 | - | - | - | - |
+| Vlan1000 | default | - | - | - | - | - |
+| Vlan1001 | default | - | - | - | - | - |
+
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
+| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+| Vlan85 | True | True | 0.0.0.0 | 1000 |
+| Vlan1000 | - | - | 1000 | 0.0.0.0 |
+| Vlan1001 | True | True | 1000 | 0.0.0.0 |
 
 ##### ISIS
 
@@ -1029,10 +1041,26 @@ interface Vlan85
    bfd echo
    no mpls ldp igp sync
    no mpls ip
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.0.0
+   ospfv3 ipv6 area 1000
    isis enable EVPN_UNDERLAY
    no isis hello padding
    isis authentication mode sha key-id 2
    isis authentication key 0 password
+!
+interface Vlan1000
+   description Vlan with minimal ospfv3 configurations
+   ospfv3 ipv4 area 1000
+   ospfv3 ipv6 area 0.0.0.0
+!
+interface Vlan1001
+   description Test VLAN with both ospfv3 and ipv6_ospf configurations
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 1000
+   ospfv3 ipv6 area 0.0.0.0
 ```
 
 ### VXLAN Interface
