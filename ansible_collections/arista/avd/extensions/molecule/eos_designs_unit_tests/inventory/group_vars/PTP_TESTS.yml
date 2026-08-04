@@ -42,6 +42,19 @@ ptp_settings:
   # profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016  >
   # domain: < 0-255 | default -> 127 >
 
+# Since adapters default to the "aes67-r16-2016" profile, it must be included when defining custom PTP profiles.
+ptp_profiles:
+  - profile: port-channel-management-drop
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    management:
+      drop: true
+
 tenants:
   - name: PTP
     mac_vrf_vni_base: 10000
