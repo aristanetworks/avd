@@ -727,10 +727,6 @@ class AvdV6Build:
             dump_error("avd_facts shared memory not initialized. Did you run common_build_stage()?", self.config, "internal_common_doc")
             return False
 
-        # Ensure avd_facts shared memory was created in common_build_stage
-        if self._avd_facts_shm_info is None:
-            dump_error("avd_facts shared memory not initialized. Did you run common_build_stage()?", self.config, "internal_common_doc")
-            return False
 
         # Load avd_facts from shared memory.
         avd_facts = _load_avd_facts_from_shm(self._avd_facts_shm_info.name, self._avd_facts_shm_info.size)
