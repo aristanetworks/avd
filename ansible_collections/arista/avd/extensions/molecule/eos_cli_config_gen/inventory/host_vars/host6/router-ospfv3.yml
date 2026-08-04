@@ -6,9 +6,6 @@ router_ospfv3:
   auto_cost_reference_bandwidth: 1000
   address_family_ipv4:
     enabled: true
-    router_id: 2.2.2.2
-    auto_cost_reference_bandwidth: 2000
-    passive_interface_default: true
     redistribute:
       bgp:
         enabled: true
@@ -32,9 +29,6 @@ router_ospfv3:
         route_map: map1
   address_family_ipv6:
     enabled: true
-    router_id: 3.3.3.3
-    auto_cost_reference_bandwidth: 2000
-    passive_interface_default: true
     redistribute:
       ospfv3:
         leaked:

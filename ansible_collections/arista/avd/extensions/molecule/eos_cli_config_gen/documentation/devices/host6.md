@@ -191,13 +191,13 @@ ipv6 unicast-routing vrf TENANT_C
 
 #### VRF: default
 
-##### Address Family IPv4
-
 | Parameter | Value |
 | --------- | ----- |
-| Router ID | 2.2.2.2 |
+| Router ID | 1.1.1.1 |
 | Passive Interface Default | True |
-| Auto Cost Reference Bandwidth | 2000 |
+| Auto Cost Reference Bandwidth | 1000 |
+
+##### Address Family IPv4
 
 ###### Redistribution
 
@@ -210,12 +210,6 @@ ipv6 unicast-routing vrf TENANT_C
 | static | True | map1 |
 
 ##### Address Family IPv6
-
-| Parameter | Value |
-| --------- | ----- |
-| Router ID | 3.3.3.3 |
-| Passive Interface Default | True |
-| Auto Cost Reference Bandwidth | 2000 |
 
 ###### Redistribution
 
@@ -298,10 +292,11 @@ router ospfv3 vrf data
       passive-interface default
 !
 router ospfv3
+   router-id 1.1.1.1
+   auto-cost reference-bandwidth 1000
+   passive-interface default
+   !
    address-family ipv4
-      router-id 2.2.2.2
-      auto-cost reference-bandwidth 2000
-      passive-interface default
       redistribute bgp include leaked route-map map1
       redistribute connected include leaked route-map map1
       redistribute isis include leaked level-1 route-map map1
@@ -309,9 +304,6 @@ router ospfv3
       redistribute static include leaked route-map map1
    !
    address-family ipv6
-      router-id 3.3.3.3
-      auto-cost reference-bandwidth 2000
-      passive-interface default
       redistribute bgp include leaked route-map map1
       redistribute dhcp route-map map1
       redistribute connected include leaked route-map map1
