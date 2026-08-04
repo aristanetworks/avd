@@ -9741,6 +9741,7 @@ ASN Notation: asdot
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | extended |
+| Maximum Advertise Routes | 0 (no limit) |
 
 ##### IPv4-UNDERLAY-PEERS
 
@@ -9927,6 +9928,7 @@ ASN Notation: asdot
 | Settings | Value |
 | -------- | ----- |
 | TTL Max Hops | 42 |
+| Maximum Advertise Routes | 120000 (warning-limit 1000) |
 
 ##### TEST-ENFORCE-FIRST-AS-FALSE
 
@@ -10006,8 +10008,8 @@ ASN Notation: asdot
 | 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - | - | - | - | - |
 | 192.0.3.6 | 65437 | default | - | - | - | - | - | - | False | - | - | - |
 | 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True | - | - | - |
-| 192.0.3.8 | 65438 | default | - | - | - | - | True | - | - | - | Inherited from peer group TEST | - |
-| 192.0.3.9 | 65438 | default | - | - | - | - | False | - | - | - | Inherited from peer group TEST | - |
+| 192.0.3.8 | 65438 | default | - | - | - | - | True | - | - | - | Inherited from peer group TEST | Inherited from peer group TEST |
+| 192.0.3.9 | 65438 | default | - | - | - | - | False | - | - | - | Inherited from peer group TEST | Inherited from peer group TEST |
 | 192.168.0.11 | - | default | - | - | - | - | - | - | - | - | - | - |
 | 192.168.0.12 | - | default | - | - | - | - | - | - | - | - | - | - |
 | 192.168.42.42 | 65004 | default | - | - | - | - | - | - | - | - | - | - |
@@ -10022,7 +10024,7 @@ ASN Notation: asdot
 | 192.168.255.21 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS(interval: 2000, min_rx: 2000, multiplier: 3) | False | - | - | - | - |
 | 192.168.255.101 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - | - | - | - | 120000 (warning-limit 10 percent) |
 | 192.168.255.201 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - | - | - | - | 120000 (warning-limit 11236) |
-| 2001:cafe:192:168::4 | 65004 | default | - | all | - | - | - | - | - | - | - | - |
+| 2001:cafe:192:168::4 | 65004 | default | - | all | - | - | - | - | - | - | - | 0 (no limit) |
 | 2001:db8::dead:beef:cafe | 65004 | default | - | - | - | - | - | - | - | - | - | - |
 | fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default | - | Inherited from peer group IPV6-UNDERLAY-MLAG | Inherited from peer group IPV6-UNDERLAY-MLAG | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | False | - | - | - |
@@ -10396,6 +10398,7 @@ router bgp 65101
    neighbor EVPN-OVERLAY-RS-PEERS peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor EXTENDED-COMMUNITY peer group
    neighbor EXTENDED-COMMUNITY send-community extended
+   neighbor EXTENDED-COMMUNITY maximum-advertised-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS remote-as 65001
    no neighbor IPv4-UNDERLAY-PEERS rib-in pre-policy retain
@@ -10486,6 +10489,7 @@ router bgp 65101
    neighbor STARDARD-COMMUNITY maximum-advertised-routes 120000 warning-limit 10 percent
    neighbor TEST peer group
    neighbor TEST ttl maximum-hops 42
+   neighbor TEST maximum-advertised-routes 120000 warning-limit 1000
    neighbor TEST-ENFORCE-FIRST-AS-FALSE peer group
    no neighbor TEST-ENFORCE-FIRST-AS-FALSE enforce-first-as
    neighbor TEST-ENFORCE-FIRST-AS-TRUE peer group
@@ -10604,6 +10608,7 @@ router bgp 65101
    neighbor 192.168.255.201 maximum-advertised-routes 120000 warning-limit 11236
    neighbor 2001:cafe:192:168::4 remote-as 65004
    neighbor 2001:cafe:192:168::4 send-community
+   neighbor 2001:cafe:192:168::4 maximum-advertised-routes 0
    neighbor 2001:db8::dead:beef:cafe remote-as 65004
    neighbor fe80::b%Vl4094 peer group IPV6-UNDERLAY-MLAG
    no bgp redistribute-internal

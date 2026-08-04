@@ -98,6 +98,7 @@ router_bgp:
       metadata:
         type: ipv4
       send_community: extended
+      maximum_advertised_routes: 0
     - name: LARGE-COMMUNITY
       metadata:
         type: ipv4
@@ -268,6 +269,8 @@ router_bgp:
       session_tracker: ST2
     - name: TEST
       ttl_maximum_hops: 42
+      maximum_advertised_routes: 120000
+      maximum_advertised_routes_warning_limit: 1000
     - name: OBS_WAN
       metadata:
         type: ipv4
@@ -1364,6 +1367,7 @@ router_bgp:
     - ip_address: 2001:cafe:192:168::4
       remote_as: 65004
       send_community: all
+      maximum_advertised_routes: 0
     - ip_address: 192.168.42.42
       remote_as: 65004
       next_hop_self: true
