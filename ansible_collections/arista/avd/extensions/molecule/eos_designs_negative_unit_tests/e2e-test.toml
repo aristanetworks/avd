@@ -30,3 +30,6 @@ device_configs = false
 [documentation]
 device_docs = false
 fabric_doc = false
+
+[scenarios.main.fabrics.EOS_DESIGNS_FAILURES_DIGITAL_TWIN]
+digital_twin = true
