@@ -9,8 +9,8 @@ dev = [
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"
-    {include-group = "pytest"},
     {include-group = "molecule"},
+    {include-group = "pytest"},
     "ansible-doc-extractor>=0.1.11",
     "ansible-lint>=26.6.0",
     "aristaproto[compiler]==0.1.5",
@@ -65,6 +65,9 @@ schema-tools = [
     "pydantic>=2.11.10",
     "pyyaml>=6.0.0",
     "referencing>=0.37.0",
+]
+benchmark = [
+    "pytest-codspeed>=3.1.0",
 ]
 
 [tool.ruff]
@@ -159,6 +162,11 @@ convention = "google"
   "INP001", # implicit namespace package. Add an `__init__.py` - Tests are not in packages
   "PLC0415", # `import` should be at the top-level of a file
 ]
+"benchmarks/**/*" = [
+  "S101",   # Accept 'assert' in benchmarks (they are tests).
+  "INP001", # implicit namespace package. Add an `__init__.py` - Benchmarks are not in packages
+  "PLC0415", # `import` should be at the top-level of a file
+]
 "python-avd/pyavd/_anta/index.py" = [
   "F403", # Allow wildcard imports to avoid cluttering the index
   "F405", # Allow names defined in via a wildcard import
@@ -215,8 +223,9 @@ pythonpath = [
   "python-avd",
 ]
 markers = [
-    "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
-    "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
+    "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios. Pass hosts=(...) to limit molecule_host parametrization.",
+    "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode. Pass hosts=(...) to limit molecule_host parametrization.",
+    "benchmark_scale: Benchmarks excluded from the default CodSpeed PR suite.",
 ]
 asyncio_default_fixture_loop_scope = "function"
 # log_file = "pytest.log"

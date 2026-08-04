@@ -1,0 +1,61 @@
+---
+name: "Benchmarks"
+
+"on":
+  push:
+    branches: [devel]
+    paths:
+      - ".github/workflows/benchmarks.yml"
+      - "benchmarks/**"
+      - "pyproject.toml"
+      - "python-avd/pyavd/**"
+      - "python-avd/tests/models.py"
+      - "ansible_collections/arista/avd/extensions/molecule/**"
+  pull_request:
+    types: [reopened, synchronize, labeled]
+    branches: [devel]
+
+env:
+  PY_COLORS: 1
+  ANSIBLE_FORCE_COLOR: 1
+
+jobs:
+  benchmarks:
+    name: CodSpeed benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    if: >-
+      github.event_name != 'pull_request' ||
+      contains(github.event.pull_request.labels.*.name, 'benchmark')
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install --group dev --group benchmark --upgrade
+
+      - name: Generate PyAVD artifacts
+        run: |
+          make -C python-avd dep
+
+      - name: Run default benchmarks
+        uses: CodSpeedHQ/action@c0179f10961f7a08defab9f862e9a09562d674d0 # v4
+        with:
+          mode: simulation
+          run: |
+            python -m pytest --codspeed \
+              benchmarks/test_molecule_scenarios.py \
+              benchmarks/test_large_fabric_scaling.py \
+              -m "not benchmark_scale" \
+              -q
