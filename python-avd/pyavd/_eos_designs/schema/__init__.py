@@ -6730,12 +6730,49 @@ class EosDesigns(EosDesignsRootModel):
 
             Cvtargetconfigs._item_type = str
 
+            class CustomCvOptionsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"flag": {"type": str}, "value": {"type": str}}
+                flag: str
+                """TerminAttr CLI flag name without the leading dash."""
+                value: str | None
+                """
+                Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                If set, the flag is
+                rendered as `-flag=value`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, flag: str | UndefinedType = Undefined, value: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        CustomCvOptionsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            flag: TerminAttr CLI flag name without the leading dash.
+                            value:
+                               Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                               If set, the flag is
+                               rendered as `-flag=value`.
+
+                        """
+
+            class CustomCvOptions(AvdList[CustomCvOptionsItem]):
+                """Subclass of AvdList with `CustomCvOptionsItem` items."""
+
+            CustomCvOptions._item_type = CustomCvOptionsItem
+
             _fields: ClassVar[dict] = {
                 "ingestexclude": {"type": str},
                 "smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
                 "disable_aaa": {"type": bool, "default": False},
                 "cvtargetconfigs": {"type": Cvtargetconfigs},
                 "flowdns": {"type": bool},
+                "custom_cv_options": {"type": CustomCvOptions},
             }
             ingestexclude: str | None
             """
@@ -6772,6 +6809,18 @@ class EosDesigns(EosDesignsRootModel):
             Set to false to disable DNS
             lookups on sFlow/IPFIX flow records.
             """
+            custom_cv_options: CustomCvOptions
+            """
+            TerminAttr CLI options not covered by the schema.
+            Each entry renders as `-<flag>=<value>` when
+            `value` is set, or `-<flag>` when `value` is omitted.
+            Options are appended at the end of the
+            TerminAttr exec command line after all other flags.
+
+
+            Subclass of AvdList with `CustomCvOptionsItem`
+            items.
+            """
 
             if TYPE_CHECKING:
 
@@ -6783,6 +6832,7 @@ class EosDesigns(EosDesignsRootModel):
                     disable_aaa: bool | UndefinedType = Undefined,
                     cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
                     flowdns: bool | UndefinedType | None = Undefined,
+                    custom_cv_options: CustomCvOptions | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Terminattr.
@@ -6812,6 +6862,16 @@ class EosDesigns(EosDesignsRootModel):
                            Enable DNS resolution for flow records (TerminAttr default is true).
                            Set to false to disable DNS
                            lookups on sFlow/IPFIX flow records.
+                        custom_cv_options:
+                           TerminAttr CLI options not covered by the schema.
+                           Each entry renders as `-<flag>=<value>` when
+                           `value` is set, or `-<flag>` when `value` is omitted.
+                           Options are appended at the end of the
+                           TerminAttr exec command line after all other flags.
+
+
+                           Subclass of AvdList with `CustomCvOptionsItem`
+                           items.
 
                     """
 
@@ -10745,7 +10805,12 @@ class EosDesigns(EosDesignsRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "act_os_version": {"type": str},
+                "mgmt_ip": {"type": str},
+                "mgmt_gateway": {"type": str},
+                "act_internet_access": {"type": bool},
+            }
             act_os_version: str | None
             """
             Desired ACT Digital Twin OS version.
@@ -10758,6 +10823,13 @@ class EosDesigns(EosDesignsRootModel):
             address is used in the ACT topology.
             If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
             address is also used for the generated OOB management interface.
+            """
+            mgmt_gateway: str | None
+            """
+            Desired OOB management gateway for the Digital Twin.
+            In ACT Digital Twin mode, if the regular
+            `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+            management gateway for the generated OOB management interface.
             """
             act_internet_access: bool | None
             """
@@ -10777,6 +10849,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     act_os_version: str | UndefinedType | None = Undefined,
                     mgmt_ip: str | UndefinedType | None = Undefined,
+                    mgmt_gateway: str | UndefinedType | None = Undefined,
                     act_internet_access: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -10795,6 +10868,11 @@ class EosDesigns(EosDesignsRootModel):
                            address is used in the ACT topology.
                            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                            address is also used for the generated OOB management interface.
+                        mgmt_gateway:
+                           Desired OOB management gateway for the Digital Twin.
+                           In ACT Digital Twin mode, if the regular
+                           `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                           management gateway for the generated OOB management interface.
                         act_internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
@@ -11871,8 +11949,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
-        Set the OS version and management IP address for the digital twin of the
-        associated node(s).
+        Set the OS version, management IP address, and management gateway for the
+        digital twin of the associated node(s).
 
         Subclass of AvdModel.
         """
@@ -12681,8 +12759,8 @@ class EosDesigns(EosDesignsRootModel):
                     digital_twin:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
-                       Set the OS version and management IP address for the digital twin of the
-                       associated node(s).
+                       Set the OS version, management IP address, and management gateway for the
+                       digital twin of the associated node(s).
 
                        Subclass of AvdModel.
                     validation_profile:
@@ -16173,7 +16251,12 @@ class EosDesigns(EosDesignsRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "act_os_version": {"type": str},
+                "mgmt_ip": {"type": str},
+                "mgmt_gateway": {"type": str},
+                "act_internet_access": {"type": bool},
+            }
             act_os_version: str | None
             """
             Desired ACT Digital Twin OS version.
@@ -16186,6 +16269,13 @@ class EosDesigns(EosDesignsRootModel):
             address is used in the ACT topology.
             If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
             address is also used for the generated OOB management interface.
+            """
+            mgmt_gateway: str | None
+            """
+            Desired OOB management gateway for the Digital Twin.
+            In ACT Digital Twin mode, if the regular
+            `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+            management gateway for the generated OOB management interface.
             """
             act_internet_access: bool | None
             """
@@ -16205,6 +16295,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     act_os_version: str | UndefinedType | None = Undefined,
                     mgmt_ip: str | UndefinedType | None = Undefined,
+                    mgmt_gateway: str | UndefinedType | None = Undefined,
                     act_internet_access: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -16223,6 +16314,11 @@ class EosDesigns(EosDesignsRootModel):
                            address is used in the ACT topology.
                            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                            address is also used for the generated OOB management interface.
+                        mgmt_gateway:
+                           Desired OOB management gateway for the Digital Twin.
+                           In ACT Digital Twin mode, if the regular
+                           `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                           management gateway for the generated OOB management interface.
                         act_internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
@@ -17310,8 +17406,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
-        Set the OS version and management IP address for the digital twin of the
-        associated node(s).
+        Set the OS version, management IP address, and management gateway for the
+        digital twin of the associated node(s).
 
         Subclass of AvdModel.
         """
@@ -18129,8 +18225,8 @@ class EosDesigns(EosDesignsRootModel):
                     digital_twin:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
-                       Set the OS version and management IP address for the digital twin of the
-                       associated node(s).
+                       Set the OS version, management IP address, and management gateway for the
+                       digital twin of the associated node(s).
 
                        Subclass of AvdModel.
                     validation_profile:
@@ -56594,7 +56690,12 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+                        _fields: ClassVar[dict] = {
+                            "act_os_version": {"type": str},
+                            "mgmt_ip": {"type": str},
+                            "mgmt_gateway": {"type": str},
+                            "act_internet_access": {"type": bool},
+                        }
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -56607,6 +56708,13 @@ class EosDesigns(EosDesignsRootModel):
                         address is used in the ACT topology.
                         If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                         address is also used for the generated OOB management interface.
+                        """
+                        mgmt_gateway: str | None
+                        """
+                        Desired OOB management gateway for the Digital Twin.
+                        In ACT Digital Twin mode, if the regular
+                        `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                        management gateway for the generated OOB management interface.
                         """
                         act_internet_access: bool | None
                         """
@@ -56626,6 +56734,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 act_os_version: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
+                                mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -56644,6 +56753,11 @@ class EosDesigns(EosDesignsRootModel):
                                        address is used in the ACT topology.
                                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                                        address is also used for the generated OOB management interface.
+                                    mgmt_gateway:
+                                       Desired OOB management gateway for the Digital Twin.
+                                       In ACT Digital Twin mode, if the regular
+                                       `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                                       management gateway for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -57695,8 +57809,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -58488,8 +58602,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
@@ -62016,7 +62130,12 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+                            _fields: ClassVar[dict] = {
+                                "act_os_version": {"type": str},
+                                "mgmt_ip": {"type": str},
+                                "mgmt_gateway": {"type": str},
+                                "act_internet_access": {"type": bool},
+                            }
                             act_os_version: str | None
                             """
                             Desired ACT Digital Twin OS version.
@@ -62029,6 +62148,13 @@ class EosDesigns(EosDesignsRootModel):
                             address is used in the ACT topology.
                             If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                             address is also used for the generated OOB management interface.
+                            """
+                            mgmt_gateway: str | None
+                            """
+                            Desired OOB management gateway for the Digital Twin.
+                            In ACT Digital Twin mode, if the regular
+                            `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                            management gateway for the generated OOB management interface.
                             """
                             act_internet_access: bool | None
                             """
@@ -62048,6 +62174,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     act_os_version: str | UndefinedType | None = Undefined,
                                     mgmt_ip: str | UndefinedType | None = Undefined,
+                                    mgmt_gateway: str | UndefinedType | None = Undefined,
                                     act_internet_access: bool | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
@@ -62066,6 +62193,11 @@ class EosDesigns(EosDesignsRootModel):
                                            address is used in the ACT topology.
                                            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                                            address is also used for the generated OOB management interface.
+                                        mgmt_gateway:
+                                           Desired OOB management gateway for the Digital Twin.
+                                           In ACT Digital Twin mode, if the regular
+                                           `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                                           management gateway for the generated OOB management interface.
                                         act_internet_access:
                                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                            This option
@@ -63129,8 +63261,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
-                        Set the OS version and management IP address for the digital twin of the
-                        associated node(s).
+                        Set the OS version, management IP address, and management gateway for the
+                        digital twin of the associated node(s).
 
                         Subclass of AvdModel.
                         """
@@ -63931,8 +64063,8 @@ class EosDesigns(EosDesignsRootModel):
                                     digital_twin:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
-                                       Set the OS version and management IP address for the digital twin of the
-                                       associated node(s).
+                                       Set the OS version, management IP address, and management gateway for the
+                                       digital twin of the associated node(s).
 
                                        Subclass of AvdModel.
                                     validation_profile:
@@ -67367,7 +67499,12 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+                        _fields: ClassVar[dict] = {
+                            "act_os_version": {"type": str},
+                            "mgmt_ip": {"type": str},
+                            "mgmt_gateway": {"type": str},
+                            "act_internet_access": {"type": bool},
+                        }
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -67380,6 +67517,13 @@ class EosDesigns(EosDesignsRootModel):
                         address is used in the ACT topology.
                         If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                         address is also used for the generated OOB management interface.
+                        """
+                        mgmt_gateway: str | None
+                        """
+                        Desired OOB management gateway for the Digital Twin.
+                        In ACT Digital Twin mode, if the regular
+                        `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                        management gateway for the generated OOB management interface.
                         """
                         act_internet_access: bool | None
                         """
@@ -67399,6 +67543,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 act_os_version: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
+                                mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -67417,6 +67562,11 @@ class EosDesigns(EosDesignsRootModel):
                                        address is used in the ACT topology.
                                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                                        address is also used for the generated OOB management interface.
+                                    mgmt_gateway:
+                                       Desired OOB management gateway for the Digital Twin.
+                                       In ACT Digital Twin mode, if the regular
+                                       `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                                       management gateway for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -68483,8 +68633,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -69287,8 +69437,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
@@ -72798,7 +72948,12 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+                        _fields: ClassVar[dict] = {
+                            "act_os_version": {"type": str},
+                            "mgmt_ip": {"type": str},
+                            "mgmt_gateway": {"type": str},
+                            "act_internet_access": {"type": bool},
+                        }
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -72811,6 +72966,13 @@ class EosDesigns(EosDesignsRootModel):
                         address is used in the ACT topology.
                         If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                         address is also used for the generated OOB management interface.
+                        """
+                        mgmt_gateway: str | None
+                        """
+                        Desired OOB management gateway for the Digital Twin.
+                        In ACT Digital Twin mode, if the regular
+                        `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                        management gateway for the generated OOB management interface.
                         """
                         act_internet_access: bool | None
                         """
@@ -72830,6 +72992,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 act_os_version: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
+                                mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -72848,6 +73011,11 @@ class EosDesigns(EosDesignsRootModel):
                                        address is used in the ACT topology.
                                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                                        address is also used for the generated OOB management interface.
+                                    mgmt_gateway:
+                                       Desired OOB management gateway for the Digital Twin.
+                                       In ACT Digital Twin mode, if the regular
+                                       `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                                       management gateway for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -73911,8 +74079,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -74713,8 +74881,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
@@ -92633,7 +92801,12 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+                        _fields: ClassVar[dict] = {
+                            "act_os_version": {"type": str},
+                            "mgmt_ip": {"type": str},
+                            "mgmt_gateway": {"type": str},
+                            "act_internet_access": {"type": bool},
+                        }
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -92646,6 +92819,13 @@ class EosDesigns(EosDesignsRootModel):
                         address is used in the ACT topology.
                         If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                         address is also used for the generated OOB management interface.
+                        """
+                        mgmt_gateway: str | None
+                        """
+                        Desired OOB management gateway for the Digital Twin.
+                        In ACT Digital Twin mode, if the regular
+                        `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                        management gateway for the generated OOB management interface.
                         """
                         act_internet_access: bool | None
                         """
@@ -92665,6 +92845,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 act_os_version: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
+                                mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -92683,6 +92864,11 @@ class EosDesigns(EosDesignsRootModel):
                                        address is used in the ACT topology.
                                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                                        address is also used for the generated OOB management interface.
+                                    mgmt_gateway:
+                                       Desired OOB management gateway for the Digital Twin.
+                                       In ACT Digital Twin mode, if the regular
+                                       `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                                       management gateway for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -93734,8 +93920,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -94527,8 +94713,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
@@ -98055,7 +98241,12 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+                            _fields: ClassVar[dict] = {
+                                "act_os_version": {"type": str},
+                                "mgmt_ip": {"type": str},
+                                "mgmt_gateway": {"type": str},
+                                "act_internet_access": {"type": bool},
+                            }
                             act_os_version: str | None
                             """
                             Desired ACT Digital Twin OS version.
@@ -98068,6 +98259,13 @@ class EosDesigns(EosDesignsRootModel):
                             address is used in the ACT topology.
                             If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                             address is also used for the generated OOB management interface.
+                            """
+                            mgmt_gateway: str | None
+                            """
+                            Desired OOB management gateway for the Digital Twin.
+                            In ACT Digital Twin mode, if the regular
+                            `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                            management gateway for the generated OOB management interface.
                             """
                             act_internet_access: bool | None
                             """
@@ -98087,6 +98285,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     act_os_version: str | UndefinedType | None = Undefined,
                                     mgmt_ip: str | UndefinedType | None = Undefined,
+                                    mgmt_gateway: str | UndefinedType | None = Undefined,
                                     act_internet_access: bool | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
@@ -98105,6 +98304,11 @@ class EosDesigns(EosDesignsRootModel):
                                            address is used in the ACT topology.
                                            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                                            address is also used for the generated OOB management interface.
+                                        mgmt_gateway:
+                                           Desired OOB management gateway for the Digital Twin.
+                                           In ACT Digital Twin mode, if the regular
+                                           `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                                           management gateway for the generated OOB management interface.
                                         act_internet_access:
                                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                            This option
@@ -99168,8 +99372,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
-                        Set the OS version and management IP address for the digital twin of the
-                        associated node(s).
+                        Set the OS version, management IP address, and management gateway for the
+                        digital twin of the associated node(s).
 
                         Subclass of AvdModel.
                         """
@@ -99970,8 +100174,8 @@ class EosDesigns(EosDesignsRootModel):
                                     digital_twin:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
-                                       Set the OS version and management IP address for the digital twin of the
-                                       associated node(s).
+                                       Set the OS version, management IP address, and management gateway for the
+                                       digital twin of the associated node(s).
 
                                        Subclass of AvdModel.
                                     validation_profile:
@@ -103406,7 +103610,12 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+                        _fields: ClassVar[dict] = {
+                            "act_os_version": {"type": str},
+                            "mgmt_ip": {"type": str},
+                            "mgmt_gateway": {"type": str},
+                            "act_internet_access": {"type": bool},
+                        }
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -103419,6 +103628,13 @@ class EosDesigns(EosDesignsRootModel):
                         address is used in the ACT topology.
                         If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                         address is also used for the generated OOB management interface.
+                        """
+                        mgmt_gateway: str | None
+                        """
+                        Desired OOB management gateway for the Digital Twin.
+                        In ACT Digital Twin mode, if the regular
+                        `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                        management gateway for the generated OOB management interface.
                         """
                         act_internet_access: bool | None
                         """
@@ -103438,6 +103654,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 act_os_version: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
+                                mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -103456,6 +103673,11 @@ class EosDesigns(EosDesignsRootModel):
                                        address is used in the ACT topology.
                                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                                        address is also used for the generated OOB management interface.
+                                    mgmt_gateway:
+                                       Desired OOB management gateway for the Digital Twin.
+                                       In ACT Digital Twin mode, if the regular
+                                       `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                                       management gateway for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -104522,8 +104744,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -105326,8 +105548,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
@@ -108837,7 +109059,12 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+                        _fields: ClassVar[dict] = {
+                            "act_os_version": {"type": str},
+                            "mgmt_ip": {"type": str},
+                            "mgmt_gateway": {"type": str},
+                            "act_internet_access": {"type": bool},
+                        }
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -108850,6 +109077,13 @@ class EosDesigns(EosDesignsRootModel):
                         address is used in the ACT topology.
                         If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                         address is also used for the generated OOB management interface.
+                        """
+                        mgmt_gateway: str | None
+                        """
+                        Desired OOB management gateway for the Digital Twin.
+                        In ACT Digital Twin mode, if the regular
+                        `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                        management gateway for the generated OOB management interface.
                         """
                         act_internet_access: bool | None
                         """
@@ -108869,6 +109103,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 act_os_version: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
+                                mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -108887,6 +109122,11 @@ class EosDesigns(EosDesignsRootModel):
                                        address is used in the ACT topology.
                                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
                                        address is also used for the generated OOB management interface.
+                                    mgmt_gateway:
+                                       Desired OOB management gateway for the Digital Twin.
+                                       In ACT Digital Twin mode, if the regular
+                                       `mgmt_ip` is set, this `digital_twin.mgmt_gateway` address takes precedence over the regular
+                                       management gateway for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -109950,8 +110190,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -110752,8 +110992,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:

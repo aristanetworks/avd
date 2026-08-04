@@ -56,6 +56,11 @@ class DaemonTerminattrMixin(Protocol):
                 EosCliConfigGen.DaemonTerminattr.Cvtargetconfigs
             )
 
+        if cv_settings.terminattr.custom_cv_options:
+            self.structured_config.daemon_terminattr.custom_cv_options = cv_settings.terminattr.custom_cv_options._cast_as(
+                EosCliConfigGen.DaemonTerminattr.CustomCvOptions
+            )
+
         if first_tracker_exported_to_cloudvision is not None:
             flow_tracking_vrf = self.shared_utils.get_vrf(
                 flow_tracking_settings.cloudvision_exporter.vrf, context="flow_tracking_settings.export_to_cloudvision.vrf"
