@@ -11,6 +11,8 @@ from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import default
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import SharedUtilsProtocol
 
 
@@ -119,20 +121,23 @@ class OverlayMixin(Protocol):
             if not self.is_cv_pathfinder_client:
                 return f"{self.router_id}:0"
 
-            if self.wan_site is None:
+            # Since we know we are not a pathfinder we cannot be at a global site.
+            wan_site = cast("EosDesigns.CvPathfinderRegionsItem.SitesItem | None", self.wan_site)
+
+            if wan_site is None:
                 # Should never happen but just in case.
                 # The self.wan_site could be None only when 'cv_pathfinder_site' is not defined and 'self.is_cv_pathfinder_client' is false.
-                # it will return from line 116.
+                # it will return above.
                 msg = "Could not find 'cv_pathfinder_site' so it is not possible to generate evpn_soo."
                 raise AristaAvdInvalidInputsError(msg)
 
             if not self.wan_ha:
-                return f"{self.router_id}:{self.wan_site.id}"
+                return f"{self.router_id}:{wan_site.id}"
             if self.is_first_ha_peer:
-                return f"{self.router_id}:{self.wan_site.id}"
+                return f"{self.router_id}:{wan_site.id}"
 
             peer_fact = self.get_peer_facts(cast("str", self.wan_ha_peer))
-            return f"{peer_fact.router_id}:{self.wan_site.id}"
+            return f"{peer_fact.router_id}:{wan_site.id}"
 
         if self.vtep_loopback.lower() == "loopback0":
             return f"{self.router_id}:1"
