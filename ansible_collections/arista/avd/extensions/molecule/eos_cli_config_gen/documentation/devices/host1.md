@@ -10995,7 +10995,7 @@ router bgp 65101
       neighbor baz prefix-list PL-BAR-v6-IN in
       neighbor baz prefix-list PL-BAR-v6-OUT out
       neighbor baz default-originate route-map RM-FOO always
-      neighbor baz additional-paths send ecmp limit 20
+      neighbor baz additional-paths send ecmp limit 20 prefix-list PL2
       no neighbor FOOBAR activate
       neighbor FOOBAR1 activate
       neighbor FOOBAR1 default-originate
@@ -11020,7 +11020,7 @@ router bgp 65101
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-IN in
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
       neighbor 2001:db8::1 default-originate route-map RM-FOO-MATCH3 always
-      neighbor 2001:db8::1 additional-paths send ecmp limit 20
+      neighbor 2001:db8::1 additional-paths send ecmp limit 20 prefix-list PL-IPV6-ADDITIONAL-PATHS
       neighbor 2001:db8::1 peer-tag in PEER_TAG_IN_IPV6
       neighbor 2001:db8::1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6
       neighbor 2001:db8::2 activate

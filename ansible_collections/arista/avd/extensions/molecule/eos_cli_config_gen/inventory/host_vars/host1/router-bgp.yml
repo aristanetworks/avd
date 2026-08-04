@@ -758,6 +758,7 @@ router_bgp:
           receive: true
           send: ecmp
           send_limit: 20
+          prefix_list: PL-IPV6-ADDITIONAL-PATHS
       - ip_address: 2001:db8::2
         activate: true
         additional_paths:
