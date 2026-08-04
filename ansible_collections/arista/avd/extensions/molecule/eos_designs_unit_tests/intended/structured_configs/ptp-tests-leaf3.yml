@@ -18,8 +18,6 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-    management:
-      drop: true
   metadata:
     peer: ptp-tests-spine1
     peer_interface: Ethernet15
@@ -40,8 +38,6 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-    management:
-      drop: true
   metadata:
     peer: ptp-tests-spine2
     peer_interface: Ethernet15

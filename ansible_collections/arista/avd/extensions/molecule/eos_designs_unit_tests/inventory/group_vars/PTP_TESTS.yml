@@ -54,6 +54,22 @@ ptp_profiles:
     transport: ipv4
     management:
       drop: true
+  - profile: aes67-r16-2016
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  - profile: smpte2059-2
+    announce:
+      interval: -2
+      timeout: 3
+    delay_req: -4
+    sync_message:
+      interval: -4
+    transport: ipv4
 
 tenants:
   - name: PTP
