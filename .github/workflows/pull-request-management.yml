@@ -790,8 +790,8 @@ jobs:
       - name: Upload end-to-end coverage data
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: coverage-data-End-to-End-$JOB_INDEX
-          path: coverage-End-to-End-$JOB_INDEX.dat
+          name: coverage-data-End-to-End-${{ strategy.job-index }}
+          path: coverage-End-to-End-${{ strategy.job-index }}.dat
 
   # ----------------------------------- #
   # Test of pyavd
