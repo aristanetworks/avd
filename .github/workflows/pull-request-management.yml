@@ -747,7 +747,7 @@ jobs:
       fail-fast: false
       matrix:
         # The project is an object with display_name and path properties.
-        e2e_test_project: ${{ steps.file-changes.outputs.e2e_test_matrix }}
+        e2e_test_project: ${{ fromJson(needs.file-changes.outputs.e2e_test_matrix) }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
