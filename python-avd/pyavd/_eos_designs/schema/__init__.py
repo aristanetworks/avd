@@ -36308,6 +36308,7 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
                     "router_id": {"type": str, "default": "main_router_id"},
+                    "graceful_restart": {"type": bool},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.RouterBgp.VrfsItem},
                 }
@@ -36337,6 +36338,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 Default value: `"main_router_id"`
                 """
+                graceful_restart: bool | None
+                """Enable or disable BGP graceful-restart for this VRF."""
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                 structured_config: EosCliConfigGen.RouterBgp.VrfsItem
@@ -36349,6 +36352,7 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         enabled: bool | UndefinedType | None = Undefined,
                         router_id: str | UndefinedType = Undefined,
+                        graceful_restart: bool | UndefinedType | None = Undefined,
                         raw_eos_cli: str | UndefinedType | None = Undefined,
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem | UndefinedType = Undefined,
                     ) -> None:
@@ -36379,6 +36383,7 @@ class EosDesigns(EosDesignsRootModel):
                                Router ID for this VRF. EOS will use the main BGP Router ID.
                                - "diagnostic_loopback" will use the IP
                                address of the VRF Diagnostic Loopback interface.
+                            graceful_restart: Enable or disable BGP graceful-restart for this VRF.
                             raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                             structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
 
@@ -86454,6 +86459,7 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "router_id": {"type": str, "default": "main_router_id"},
+                            "graceful_restart": {"type": bool},
                             "raw_eos_cli": {"type": str},
                             "structured_config": {"type": EosCliConfigGen.RouterBgp.VrfsItem},
                         }
@@ -86483,6 +86489,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `"main_router_id"`
                         """
+                        graceful_restart: bool | None
+                        """Enable or disable BGP graceful-restart for this VRF."""
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem
@@ -86495,6 +86503,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 enabled: bool | UndefinedType | None = Undefined,
                                 router_id: str | UndefinedType = Undefined,
+                                graceful_restart: bool | UndefinedType | None = Undefined,
                                 raw_eos_cli: str | UndefinedType | None = Undefined,
                                 structured_config: EosCliConfigGen.RouterBgp.VrfsItem | UndefinedType = Undefined,
                             ) -> None:
@@ -86525,6 +86534,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Router ID for this VRF. EOS will use the main BGP Router ID.
                                        - "diagnostic_loopback" will use the IP
                                        address of the VRF Diagnostic Loopback interface.
+                                    graceful_restart: Enable or disable BGP graceful-restart for this VRF.
                                     raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                                     structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
 

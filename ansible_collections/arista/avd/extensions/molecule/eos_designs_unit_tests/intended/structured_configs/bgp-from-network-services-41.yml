@@ -43,6 +43,20 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.41.42
       activate: true
+  vrfs:
+  - name: graceful-restart-disabled
+    router_id: 192.0.255.41
+    no_graceful_restart: true
+    redistribute:
+      connected:
+        enabled: true
+  - name: graceful-restart-enabled
+    router_id: 192.0.255.41
+    graceful_restart:
+      enabled: true
+    redistribute:
+      connected:
+        enabled: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
@@ -55,3 +69,13 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: graceful-restart-disabled
+  ip_routing: true
+  metadata:
+    tenants:
+    - TEST5
+- name: graceful-restart-enabled
+  ip_routing: true
+  metadata:
+    tenants:
+    - TEST5

@@ -7095,6 +7095,9 @@ keys:
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic
                       Loopback interface.'
                     default: main_router_id
+                  graceful_restart:
+                    type: bool
+                    description: Enable or disable BGP graceful-restart for this VRF.
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF

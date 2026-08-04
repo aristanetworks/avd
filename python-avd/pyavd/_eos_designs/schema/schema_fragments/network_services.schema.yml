@@ -1669,6 +1669,9 @@ keys:
                       - "none" will not configure a BGP Router ID for this VRF. EOS will use the main BGP Router ID.
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
                     default: main_router_id
+                  graceful_restart:
+                    type: bool
+                    description: Enable or disable BGP graceful-restart for this VRF.
                   raw_eos_cli:
                     type: str
                     description: |
