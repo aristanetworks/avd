@@ -26,14 +26,12 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 # Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
 if TYPE_CHECKING:  # pragma: no cover
     from pyavd._eos_designs.structured_config import get_structured_config
-    from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils import merge, strip_null_from_data
     from pyavd._utils import template as templater
     from pyavd.api.schemas import AVDDesign
 
 try:
     from pyavd._eos_designs.structured_config import get_structured_config
-    from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils import merge, strip_null_from_data
     from pyavd._utils import template as templater
     from pyavd.api.schemas import AVDDesign
@@ -97,9 +95,6 @@ class ActionModule(AVDActionPlugin):
 
         # eos_designs_custom_templates can contain a list of jinja templates to run after PyAVD
         if eos_designs_custom_templates:
-            # Load output schema used by merger on output of custom templates
-            output_schema = AvdSchema(schema_id="eos_cli_config_gen")
-
             for template_item in eos_designs_custom_templates:
                 template_options = template_item.get("options", {})
                 list_merge = template_options.get("list_merge", "append_rp")
@@ -129,7 +124,7 @@ class ActionModule(AVDActionPlugin):
                 if not isinstance(template_result_data, list):
                     template_result_data = [template_result_data]
 
-                merge(output, *template_result_data, list_merge=list_merge, schema=output_schema)
+                merge(output, *template_result_data, list_merge=list_merge, schema_name="eos_config")
 
         # If the argument 'template_output' is set, run the output data through another jinja2 rendering.
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.

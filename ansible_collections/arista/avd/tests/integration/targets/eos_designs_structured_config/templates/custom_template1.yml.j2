@@ -7,7 +7,11 @@
 custom_template1_var: {{ (l2leaf.nodes | selectattr("name", "eq", "testhost") | first).id }}
 custom_template1_list:
   - custom_template1_item
-custom_template1_none_var: {# Nothing here on purpose. Means "null" #}
+{# Explicit null keeps the rendered YAML valid before strip_empty_keys removes it. #}
+custom_template1_none_var: null
+vrfs:
+  - name: MGMT
+    ip_routing: true
 
 {# Testing access to structured config #}
 my_is_deployed: {{ metadata.is_deployed }}
