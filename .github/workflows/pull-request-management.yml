@@ -63,6 +63,7 @@ jobs:
       requirements: ${{ steps.filter.outputs.requirements }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
       e2e: ${{ steps.filter.outputs.e2e }}
+      e2e_test_matrix: ${{ steps.e2e_test_matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -119,6 +120,18 @@ jobs:
               - 'Makefile'
               - 'tools/e2e-test-avd.py'
               - '**/e2e-test.toml'
+      - name: Find all e2e-test.toml file
+        id: e2e_test_matrix
+        run: |
+          # 1. Find all matching files
+          # 2. Convert raw lines into a JSON array of objects with 'path' and 'display_name'
+          JSON_ARRAY=$(find . -type f -name e2e-test.toml -print | sort | jq -R . | jq -s -c 'map({
+            path: .,
+            # Split path by "/", remove the filename, take the last 2 directories, and join with "/"
+            display_name: (split("/") | .[0:-1] | .[-2:] | join("/"))
+          })')
+
+          echo "matrix=$JSON_ARRAY" >> $GITHUB_OUTPUT
 
   # -------------------------------------- #
   # Build PyAVD wheel and upload artifact
@@ -717,12 +730,11 @@ jobs:
         run: sh .github/check-git-status.sh
 
   e2e_coverage:
-    name: Run end-to-end tests with coverage (Python ${{ matrix.python }})
+    name: E2E coverage ${{ matrix.e2e_test_project.display_name }}
     runs-on: ubuntu-latest
     needs: [file-changes, build_collection]
     env:
-      PROJECT_ROOT: ${{ github.workspace }}
-      UV_PYTHON: ${{ matrix.python }}
+      JOB_INDEX: ${{ strategy.job-index }}
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.config_gen == 'true' ||
@@ -734,15 +746,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.12"]
+        # The project is an object with display_name and path properties.
+        e2e_test_project: ${{ steps.file-changes.outputs.e2e_test_matrix }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up Python ${{ matrix.python }}
+      - name: Set up Python 3.12
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: ${{ matrix.python }}
+          python-version: "3.12"
       - name: Install end-to-end coverage requirements
         run: |
           python -m pip install --group coverage \
@@ -758,7 +771,7 @@ jobs:
         run: ansible-galaxy collection install /tmp/avd-collection/arista-avd-*.tar.gz ansible.utils
       - name: Run end-to-end tests with coverage
         run: |
-          coverage run --debug=sys tools/e2e-test-avd.py $(find . -type f -name e2e-test.toml -print | sort)
+          coverage run tools/e2e-test-avd.py ${{ matrix.e2e_test_project.path }}
           # Workers inherit each E2E project's working directory, so collect their parallel data files recursively.
           mapfile -t coverage_files < <(find . -type f -name '.coverage.*' -print | sort)
           coverage combine "${coverage_files[@]}"
@@ -773,12 +786,12 @@ jobs:
       - name: Check generated outputs
         run: sh .github/check-git-status.sh
       - name: Prepare end-to-end coverage data
-        run: mv .coverage coverage-End-to-End.dat
+        run: mv .coverage coverage-End-to-End-$JOB_INDEX.dat
       - name: Upload end-to-end coverage data
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: coverage-data-End-to-End
-          path: coverage-End-to-End.dat
+          name: coverage-data-End-to-End-$JOB_INDEX
+          path: coverage-End-to-End-$JOB_INDEX.dat
 
   # ----------------------------------- #
   # Test of pyavd
