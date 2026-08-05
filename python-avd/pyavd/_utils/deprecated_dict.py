@@ -7,7 +7,6 @@ import warnings
 from typing import Any
 
 
-
 class DeprecatedDict(dict):
     _done: bool
     _message: str
