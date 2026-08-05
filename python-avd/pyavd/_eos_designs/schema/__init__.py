@@ -9307,15 +9307,15 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 ipv6_prefix_list_in: str | None
                 """
-                Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                The specified prefix
-                list name must exist in `ipv6_prefix_list_catalog`.
+                IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                The specified
+                prefix list name must exist in `ipv6_prefix_list_catalog`.
                 """
                 ipv6_prefix_list_out: str | None
                 """
-                Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                The specified prefix list name must
-                exist in `ipv6_prefix_list_catalog`.
+                IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                The specified prefix list name
+                must exist in `ipv6_prefix_list_catalog`.
                 """
 
                 if TYPE_CHECKING:
@@ -9351,13 +9351,13 @@ class EosDesigns(EosDesignsRootModel):
                                advertised.
                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             ipv6_prefix_list_in:
-                               Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                               The specified prefix
-                               list name must exist in `ipv6_prefix_list_catalog`.
+                               IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                               The specified
+                               prefix list name must exist in `ipv6_prefix_list_catalog`.
                             ipv6_prefix_list_out:
-                               Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                               The specified prefix list name must
-                               exist in `ipv6_prefix_list_catalog`.
+                               IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                               The specified prefix list name
+                               must exist in `ipv6_prefix_list_catalog`.
 
                         """
 
@@ -9544,7 +9544,6 @@ class EosDesigns(EosDesignsRootModel):
                 "peer_interface": {"type": str},
                 "peer_ip": {"type": str},
                 "peer_ipv6": {"type": str},
-                "peer_ipv6_address": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -9648,15 +9647,12 @@ class EosDesigns(EosDesignsRootModel):
             peer_ipv6: str | None
             """
             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-            "peer_ipv6" token.
+            "peer_ipv6" token
+            and for creating IPv6 BGP peering if `bgp` is also set.
             """
-            peer_ipv6_address: str | None
-            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
-            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-            is set.
-
+            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -9768,7 +9764,6 @@ class EosDesigns(EosDesignsRootModel):
                     peer_interface: str | UndefinedType | None = Undefined,
                     peer_ip: str | UndefinedType | None = Undefined,
                     peer_ipv6: str | UndefinedType | None = Undefined,
-                    peer_ipv6_address: str | UndefinedType | None = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -9846,12 +9841,10 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6:
                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                           "peer_ipv6" token.
-                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                           "peer_ipv6" token
+                           and for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
-                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                           is set.
-
+                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -10313,7 +10306,6 @@ class EosDesigns(EosDesignsRootModel):
                 "peer_port_channel": {"type": str},
                 "peer_ip": {"type": str},
                 "peer_ipv6": {"type": str},
-                "peer_ipv6_address": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -10414,15 +10406,12 @@ class EosDesigns(EosDesignsRootModel):
             peer_ipv6: str | None
             """
             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-            "peer_ipv6" token.
+            "peer_ipv6" token
+            and for creating IPv6 BGP peering if `bgp` is also set.
             """
-            peer_ipv6_address: str | None
-            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
-            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-            is set.
-
+            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -10519,7 +10508,6 @@ class EosDesigns(EosDesignsRootModel):
                     peer_port_channel: str | UndefinedType | None = Undefined,
                     peer_ip: str | UndefinedType | None = Undefined,
                     peer_ipv6: str | UndefinedType | None = Undefined,
-                    peer_ipv6_address: str | UndefinedType | None = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -10594,12 +10582,10 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6:
                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                           "peer_ipv6" token.
-                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                           "peer_ipv6" token
+                           and for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
-                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                           is set.
-
+                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -14815,15 +14801,15 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 ipv6_prefix_list_in: str | None
                 """
-                Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                The specified prefix
-                list name must exist in `ipv6_prefix_list_catalog`.
+                IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                The specified
+                prefix list name must exist in `ipv6_prefix_list_catalog`.
                 """
                 ipv6_prefix_list_out: str | None
                 """
-                Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                The specified prefix list name must
-                exist in `ipv6_prefix_list_catalog`.
+                IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                The specified prefix list name
+                must exist in `ipv6_prefix_list_catalog`.
                 """
 
                 if TYPE_CHECKING:
@@ -14859,13 +14845,13 @@ class EosDesigns(EosDesignsRootModel):
                                advertised.
                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             ipv6_prefix_list_in:
-                               Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                               The specified prefix
-                               list name must exist in `ipv6_prefix_list_catalog`.
+                               IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                               The specified
+                               prefix list name must exist in `ipv6_prefix_list_catalog`.
                             ipv6_prefix_list_out:
-                               Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                               The specified prefix list name must
-                               exist in `ipv6_prefix_list_catalog`.
+                               IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                               The specified prefix list name
+                               must exist in `ipv6_prefix_list_catalog`.
 
                         """
 
@@ -15052,7 +15038,6 @@ class EosDesigns(EosDesignsRootModel):
                 "peer_interface": {"type": str},
                 "peer_ip": {"type": str},
                 "peer_ipv6": {"type": str},
-                "peer_ipv6_address": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -15156,15 +15141,12 @@ class EosDesigns(EosDesignsRootModel):
             peer_ipv6: str | None
             """
             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-            "peer_ipv6" token.
+            "peer_ipv6" token
+            and for creating IPv6 BGP peering if `bgp` is also set.
             """
-            peer_ipv6_address: str | None
-            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
-            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-            is set.
-
+            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -15276,7 +15258,6 @@ class EosDesigns(EosDesignsRootModel):
                     peer_interface: str | UndefinedType | None = Undefined,
                     peer_ip: str | UndefinedType | None = Undefined,
                     peer_ipv6: str | UndefinedType | None = Undefined,
-                    peer_ipv6_address: str | UndefinedType | None = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -15354,12 +15335,10 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6:
                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                           "peer_ipv6" token.
-                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                           "peer_ipv6" token
+                           and for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
-                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                           is set.
-
+                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -15821,7 +15800,6 @@ class EosDesigns(EosDesignsRootModel):
                 "peer_port_channel": {"type": str},
                 "peer_ip": {"type": str},
                 "peer_ipv6": {"type": str},
-                "peer_ipv6_address": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -15922,15 +15900,12 @@ class EosDesigns(EosDesignsRootModel):
             peer_ipv6: str | None
             """
             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-            "peer_ipv6" token.
+            "peer_ipv6" token
+            and for creating IPv6 BGP peering if `bgp` is also set.
             """
-            peer_ipv6_address: str | None
-            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
-            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-            is set.
-
+            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -16027,7 +16002,6 @@ class EosDesigns(EosDesignsRootModel):
                     peer_port_channel: str | UndefinedType | None = Undefined,
                     peer_ip: str | UndefinedType | None = Undefined,
                     peer_ipv6: str | UndefinedType | None = Undefined,
-                    peer_ipv6_address: str | UndefinedType | None = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -16102,12 +16076,10 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6:
                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                           "peer_ipv6" token.
-                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                           "peer_ipv6" token
+                           and for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
-                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                           is set.
-
+                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -26060,15 +26032,15 @@ class EosDesigns(EosDesignsRootModel):
             """
             ipv6_prefix_list_in: str | None
             """
-            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-            The specified prefix
-            list name must exist in `ipv6_prefix_list_catalog`.
+            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+            The specified
+            prefix list name must exist in `ipv6_prefix_list_catalog`.
             """
             ipv6_prefix_list_out: str | None
             """
-            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-            The specified prefix list name must
-            exist in `ipv6_prefix_list_catalog`.
+            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+            The specified prefix list name
+            must exist in `ipv6_prefix_list_catalog`.
             """
 
             if TYPE_CHECKING:
@@ -26104,13 +26076,13 @@ class EosDesigns(EosDesignsRootModel):
                            advertised.
                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                         ipv6_prefix_list_in:
-                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                           The specified prefix
-                           list name must exist in `ipv6_prefix_list_catalog`.
+                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                           The specified
+                           prefix list name must exist in `ipv6_prefix_list_catalog`.
                         ipv6_prefix_list_out:
-                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                           The specified prefix list name must
-                           exist in `ipv6_prefix_list_catalog`.
+                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                           The specified prefix list name
+                           must exist in `ipv6_prefix_list_catalog`.
 
                     """
 
@@ -26297,7 +26269,6 @@ class EosDesigns(EosDesignsRootModel):
             "peer_interface": {"type": str},
             "peer_ip": {"type": str},
             "peer_ipv6": {"type": str},
-            "peer_ipv6_address": {"type": str},
             "bgp": {"type": Bgp},
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
@@ -26404,15 +26375,12 @@ class EosDesigns(EosDesignsRootModel):
         peer_ipv6: str | None
         """
         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-        "peer_ipv6" token.
+        "peer_ipv6" token
+        and for creating IPv6 BGP peering if `bgp` is also set.
         """
-        peer_ipv6_address: str | None
-        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
         bgp: Bgp
         """
-        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-        is set.
-
+        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
         Subclass of AvdModel.
         """
         ipv4_acl_in: str | None
@@ -26524,7 +26492,6 @@ class EosDesigns(EosDesignsRootModel):
                 peer_interface: str | UndefinedType | None = Undefined,
                 peer_ip: str | UndefinedType | None = Undefined,
                 peer_ipv6: str | UndefinedType | None = Undefined,
-                peer_ipv6_address: str | UndefinedType | None = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -26604,12 +26571,10 @@ class EosDesigns(EosDesignsRootModel):
                        and `ip` is an IP address.
                     peer_ipv6:
                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                       "peer_ipv6" token.
-                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                       "peer_ipv6" token
+                       and for creating IPv6 BGP peering if `bgp` is also set.
                     bgp:
-                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                       is set.
-
+                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                        Subclass of AvdModel.
                     ipv4_acl_in:
                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -55412,15 +55377,15 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ipv6_prefix_list_in: str | None
                             """
-                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                            The specified prefix
-                            list name must exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            The specified
+                            prefix list name must exist in `ipv6_prefix_list_catalog`.
                             """
                             ipv6_prefix_list_out: str | None
                             """
-                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            The specified prefix list name must
-                            exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            The specified prefix list name
+                            must exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -55456,13 +55421,13 @@ class EosDesigns(EosDesignsRootModel):
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv6_prefix_list_in:
-                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                                           The specified prefix
-                                           list name must exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           The specified
+                                           prefix list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
-                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           The specified prefix list name must
-                                           exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           The specified prefix list name
+                                           must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -55651,7 +55616,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -55755,15 +55719,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -55875,7 +55836,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_interface: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -55953,12 +55913,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -56420,7 +56378,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -56521,15 +56478,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -56626,7 +56580,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_port_channel: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -56701,12 +56654,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -60902,15 +60853,15 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 ipv6_prefix_list_in: str | None
                                 """
-                                Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                                The specified prefix
-                                list name must exist in `ipv6_prefix_list_catalog`.
+                                IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                The specified
+                                prefix list name must exist in `ipv6_prefix_list_catalog`.
                                 """
                                 ipv6_prefix_list_out: str | None
                                 """
-                                Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                The specified prefix list name must
-                                exist in `ipv6_prefix_list_catalog`.
+                                IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                The specified prefix list name
+                                must exist in `ipv6_prefix_list_catalog`.
                                 """
 
                                 if TYPE_CHECKING:
@@ -60946,13 +60897,13 @@ class EosDesigns(EosDesignsRootModel):
                                                advertised.
                                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                             ipv6_prefix_list_in:
-                                               Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                                               The specified prefix
-                                               list name must exist in `ipv6_prefix_list_catalog`.
+                                               IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                               The specified
+                                               prefix list name must exist in `ipv6_prefix_list_catalog`.
                                             ipv6_prefix_list_out:
-                                               Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                               The specified prefix list name must
-                                               exist in `ipv6_prefix_list_catalog`.
+                                               IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                               The specified prefix list name
+                                               must exist in `ipv6_prefix_list_catalog`.
 
                                         """
 
@@ -61143,7 +61094,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer_interface": {"type": str},
                                 "peer_ip": {"type": str},
                                 "peer_ipv6": {"type": str},
-                                "peer_ipv6_address": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -61247,15 +61197,12 @@ class EosDesigns(EosDesignsRootModel):
                             peer_ipv6: str | None
                             """
                             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                            "peer_ipv6" token.
+                            "peer_ipv6" token
+                            and for creating IPv6 BGP peering if `bgp` is also set.
                             """
-                            peer_ipv6_address: str | None
-                            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
-                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                            is set.
-
+                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -61367,7 +61314,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_interface: str | UndefinedType | None = Undefined,
                                     peer_ip: str | UndefinedType | None = Undefined,
                                     peer_ipv6: str | UndefinedType | None = Undefined,
-                                    peer_ipv6_address: str | UndefinedType | None = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -61445,12 +61391,10 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6:
                                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                           "peer_ipv6" token.
-                                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                           "peer_ipv6" token
+                                           and for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
-                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                           is set.
-
+                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -61914,7 +61858,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer_port_channel": {"type": str},
                                 "peer_ip": {"type": str},
                                 "peer_ipv6": {"type": str},
-                                "peer_ipv6_address": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -62015,15 +61958,12 @@ class EosDesigns(EosDesignsRootModel):
                             peer_ipv6: str | None
                             """
                             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                            "peer_ipv6" token.
+                            "peer_ipv6" token
+                            and for creating IPv6 BGP peering if `bgp` is also set.
                             """
-                            peer_ipv6_address: str | None
-                            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
-                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                            is set.
-
+                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -62120,7 +62060,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_port_channel: str | UndefinedType | None = Undefined,
                                     peer_ip: str | UndefinedType | None = Undefined,
                                     peer_ipv6: str | UndefinedType | None = Undefined,
-                                    peer_ipv6_address: str | UndefinedType | None = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -62195,12 +62134,10 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6:
                                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                           "peer_ipv6" token.
-                                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                           "peer_ipv6" token
+                                           and for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
-                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                           is set.
-
+                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -66337,15 +66274,15 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ipv6_prefix_list_in: str | None
                             """
-                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                            The specified prefix
-                            list name must exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            The specified
+                            prefix list name must exist in `ipv6_prefix_list_catalog`.
                             """
                             ipv6_prefix_list_out: str | None
                             """
-                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            The specified prefix list name must
-                            exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            The specified prefix list name
+                            must exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -66381,13 +66318,13 @@ class EosDesigns(EosDesignsRootModel):
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv6_prefix_list_in:
-                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                                           The specified prefix
-                                           list name must exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           The specified
+                                           prefix list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
-                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           The specified prefix list name must
-                                           exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           The specified prefix list name
+                                           must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -66576,7 +66513,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -66680,15 +66616,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -66800,7 +66733,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_interface: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -66878,12 +66810,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -67345,7 +67275,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -67446,15 +67375,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -67551,7 +67477,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_port_channel: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -67626,12 +67551,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -71848,15 +71771,15 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ipv6_prefix_list_in: str | None
                             """
-                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                            The specified prefix
-                            list name must exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            The specified
+                            prefix list name must exist in `ipv6_prefix_list_catalog`.
                             """
                             ipv6_prefix_list_out: str | None
                             """
-                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            The specified prefix list name must
-                            exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            The specified prefix list name
+                            must exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -71892,13 +71815,13 @@ class EosDesigns(EosDesignsRootModel):
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv6_prefix_list_in:
-                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                                           The specified prefix
-                                           list name must exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           The specified
+                                           prefix list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
-                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           The specified prefix list name must
-                                           exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           The specified prefix list name
+                                           must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -72087,7 +72010,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -72191,15 +72113,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -72311,7 +72230,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_interface: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -72389,12 +72307,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -72856,7 +72772,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -72957,15 +72872,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -73062,7 +72974,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_port_channel: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -73137,12 +73048,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -91763,15 +91672,15 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ipv6_prefix_list_in: str | None
                             """
-                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                            The specified prefix
-                            list name must exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            The specified
+                            prefix list name must exist in `ipv6_prefix_list_catalog`.
                             """
                             ipv6_prefix_list_out: str | None
                             """
-                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            The specified prefix list name must
-                            exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            The specified prefix list name
+                            must exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -91807,13 +91716,13 @@ class EosDesigns(EosDesignsRootModel):
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv6_prefix_list_in:
-                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                                           The specified prefix
-                                           list name must exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           The specified
+                                           prefix list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
-                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           The specified prefix list name must
-                                           exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           The specified prefix list name
+                                           must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -92002,7 +91911,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -92106,15 +92014,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -92226,7 +92131,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_interface: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -92304,12 +92208,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -92771,7 +92673,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -92872,15 +92773,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -92977,7 +92875,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_port_channel: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -93052,12 +92949,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -97253,15 +97148,15 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 ipv6_prefix_list_in: str | None
                                 """
-                                Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                                The specified prefix
-                                list name must exist in `ipv6_prefix_list_catalog`.
+                                IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                The specified
+                                prefix list name must exist in `ipv6_prefix_list_catalog`.
                                 """
                                 ipv6_prefix_list_out: str | None
                                 """
-                                Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                The specified prefix list name must
-                                exist in `ipv6_prefix_list_catalog`.
+                                IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                The specified prefix list name
+                                must exist in `ipv6_prefix_list_catalog`.
                                 """
 
                                 if TYPE_CHECKING:
@@ -97297,13 +97192,13 @@ class EosDesigns(EosDesignsRootModel):
                                                advertised.
                                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                             ipv6_prefix_list_in:
-                                               Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                                               The specified prefix
-                                               list name must exist in `ipv6_prefix_list_catalog`.
+                                               IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                               The specified
+                                               prefix list name must exist in `ipv6_prefix_list_catalog`.
                                             ipv6_prefix_list_out:
-                                               Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                               The specified prefix list name must
-                                               exist in `ipv6_prefix_list_catalog`.
+                                               IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                               The specified prefix list name
+                                               must exist in `ipv6_prefix_list_catalog`.
 
                                         """
 
@@ -97494,7 +97389,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer_interface": {"type": str},
                                 "peer_ip": {"type": str},
                                 "peer_ipv6": {"type": str},
-                                "peer_ipv6_address": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -97598,15 +97492,12 @@ class EosDesigns(EosDesignsRootModel):
                             peer_ipv6: str | None
                             """
                             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                            "peer_ipv6" token.
+                            "peer_ipv6" token
+                            and for creating IPv6 BGP peering if `bgp` is also set.
                             """
-                            peer_ipv6_address: str | None
-                            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
-                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                            is set.
-
+                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -97718,7 +97609,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_interface: str | UndefinedType | None = Undefined,
                                     peer_ip: str | UndefinedType | None = Undefined,
                                     peer_ipv6: str | UndefinedType | None = Undefined,
-                                    peer_ipv6_address: str | UndefinedType | None = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -97796,12 +97686,10 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6:
                                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                           "peer_ipv6" token.
-                                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                           "peer_ipv6" token
+                                           and for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
-                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                           is set.
-
+                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -98265,7 +98153,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer_port_channel": {"type": str},
                                 "peer_ip": {"type": str},
                                 "peer_ipv6": {"type": str},
-                                "peer_ipv6_address": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -98366,15 +98253,12 @@ class EosDesigns(EosDesignsRootModel):
                             peer_ipv6: str | None
                             """
                             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                            "peer_ipv6" token.
+                            "peer_ipv6" token
+                            and for creating IPv6 BGP peering if `bgp` is also set.
                             """
-                            peer_ipv6_address: str | None
-                            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
-                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                            is set.
-
+                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -98471,7 +98355,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_port_channel: str | UndefinedType | None = Undefined,
                                     peer_ip: str | UndefinedType | None = Undefined,
                                     peer_ipv6: str | UndefinedType | None = Undefined,
-                                    peer_ipv6_address: str | UndefinedType | None = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -98546,12 +98429,10 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6:
                                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                           "peer_ipv6" token.
-                                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                           "peer_ipv6" token
+                                           and for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
-                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                           is set.
-
+                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -102688,15 +102569,15 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ipv6_prefix_list_in: str | None
                             """
-                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                            The specified prefix
-                            list name must exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            The specified
+                            prefix list name must exist in `ipv6_prefix_list_catalog`.
                             """
                             ipv6_prefix_list_out: str | None
                             """
-                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            The specified prefix list name must
-                            exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            The specified prefix list name
+                            must exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -102732,13 +102613,13 @@ class EosDesigns(EosDesignsRootModel):
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv6_prefix_list_in:
-                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                                           The specified prefix
-                                           list name must exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           The specified
+                                           prefix list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
-                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           The specified prefix list name must
-                                           exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           The specified prefix list name
+                                           must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -102927,7 +102808,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -103031,15 +102911,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -103151,7 +103028,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_interface: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -103229,12 +103105,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -103696,7 +103570,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -103797,15 +103670,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -103902,7 +103772,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_port_channel: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -103977,12 +103846,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -108199,15 +108066,15 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ipv6_prefix_list_in: str | None
                             """
-                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                            The specified prefix
-                            list name must exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            The specified
+                            prefix list name must exist in `ipv6_prefix_list_catalog`.
                             """
                             ipv6_prefix_list_out: str | None
                             """
-                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                            The specified prefix list name must
-                            exist in `ipv6_prefix_list_catalog`.
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            The specified prefix list name
+                            must exist in `ipv6_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -108243,13 +108110,13 @@ class EosDesigns(EosDesignsRootModel):
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv6_prefix_list_in:
-                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
-                                           The specified prefix
-                                           list name must exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           The specified
+                                           prefix list name must exist in `ipv6_prefix_list_catalog`.
                                         ipv6_prefix_list_out:
-                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
-                                           The specified prefix list name must
-                                           exist in `ipv6_prefix_list_catalog`.
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           The specified prefix list name
+                                           must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -108438,7 +108305,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -108542,15 +108408,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -108662,7 +108525,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_interface: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -108740,12 +108602,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -109207,7 +109067,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
                             "peer_ipv6": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -109308,15 +109167,12 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                        is set.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -109413,7 +109269,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer_port_channel: str | UndefinedType | None = Undefined,
                                 peer_ip: str | UndefinedType | None = Undefined,
                                 peer_ipv6: str | UndefinedType | None = Undefined,
-                                peer_ipv6_address: str | UndefinedType | None = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
@@ -109488,12 +109343,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address`
-                                       is set.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.

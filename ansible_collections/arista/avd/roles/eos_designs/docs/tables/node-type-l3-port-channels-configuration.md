@@ -36,9 +36,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_port_channel</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].peer_port_channel") | String |  |  |  | The peer device port-channel interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6_address</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].peer_ipv6_address") | String |  |  |  | The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token<br>and for creating IPv6 BGP peering if `bgp` is also set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -90,9 +89,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_port_channel</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].peer_port_channel") | String |  |  |  | The peer device port-channel interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].peer_ipv6_address") | String |  |  |  | The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token<br>and for creating IPv6 BGP peering if `bgp` is also set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -140,9 +138,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_port_channel</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].peer_port_channel") | String |  |  |  | The peer device port-channel interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6_address</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].peer_ipv6_address") | String |  |  |  | The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token<br>and for creating IPv6 BGP peering if `bgp` is also set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -192,9 +189,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_port_channel</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].peer_port_channel") | String |  |  |  | The peer device port-channel interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6_address</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].peer_ipv6_address") | String |  |  |  | The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token<br>and for creating IPv6 BGP peering if `bgp` is also set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -244,9 +240,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "device_profiles.[].l3_port_channels.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_port_channel</samp>](## "device_profiles.[].l3_port_channels.[].peer_port_channel") | String |  |  |  | The peer device port-channel interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "device_profiles.[].l3_port_channels.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "device_profiles.[].l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6_address</samp>](## "device_profiles.[].l3_port_channels.[].peer_ipv6_address") | String |  |  |  | The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "device_profiles.[].l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "device_profiles.[].l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token<br>and for creating IPv6 BGP peering if `bgp` is also set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "device_profiles.[].l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "device_profiles.[].l3_port_channels.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "device_profiles.[].l3_port_channels.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "device_profiles.[].l3_port_channels.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -296,9 +291,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "devices.[].l3_port_channels.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_port_channel</samp>](## "devices.[].l3_port_channels.[].peer_port_channel") | String |  |  |  | The peer device port-channel interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "devices.[].l3_port_channels.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "devices.[].l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6_address</samp>](## "devices.[].l3_port_channels.[].peer_ipv6_address") | String |  |  |  | The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "devices.[].l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6</samp>](## "devices.[].l3_port_channels.[].peer_ipv6") | String |  |  |  | The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token<br>and for creating IPv6 BGP peering if `bgp` is also set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "devices.[].l3_port_channels.[].bgp") | Dictionary |  |  |  | Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "devices.[].l3_port_channels.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "devices.[].l3_port_channels.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "devices.[].l3_port_channels.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -427,13 +421,11 @@
             # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
             peer_ip: <str>
 
-            # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token.
+            # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token
+            # and for creating IPv6 BGP peering if `bgp` is also set.
             peer_ipv6: <str>
 
-            # The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
-            peer_ipv6_address: <str>
-
-            # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set.
+            # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             bgp:
 
               # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -623,13 +615,11 @@
                   # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
                   peer_ip: <str>
 
-                  # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token.
+                  # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token
+                  # and for creating IPv6 BGP peering if `bgp` is also set.
                   peer_ipv6: <str>
 
-                  # The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
-                  peer_ipv6_address: <str>
-
-                  # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set.
+                  # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                   bgp:
 
                     # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -806,13 +796,11 @@
               # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
               peer_ip: <str>
 
-              # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token.
+              # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token
+              # and for creating IPv6 BGP peering if `bgp` is also set.
               peer_ipv6: <str>
 
-              # The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
-              peer_ipv6_address: <str>
-
-              # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set.
+              # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
               bgp:
 
                 # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -995,13 +983,11 @@
               # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
               peer_ip: <str>
 
-              # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token.
+              # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token
+              # and for creating IPv6 BGP peering if `bgp` is also set.
               peer_ipv6: <str>
 
-              # The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
-              peer_ipv6_address: <str>
-
-              # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set.
+              # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
               bgp:
 
                 # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -1184,13 +1170,11 @@
             # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
             peer_ip: <str>
 
-            # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token.
+            # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token
+            # and for creating IPv6 BGP peering if `bgp` is also set.
             peer_ipv6: <str>
 
-            # The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
-            peer_ipv6_address: <str>
-
-            # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set.
+            # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             bgp:
 
               # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -1373,13 +1357,11 @@
             # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
             peer_ip: <str>
 
-            # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token.
+            # The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token
+            # and for creating IPv6 BGP peering if `bgp` is also set.
             peer_ipv6: <str>
 
-            # The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
-            peer_ipv6_address: <str>
-
-            # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6_address` is set.
+            # Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             bgp:
 
               # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".

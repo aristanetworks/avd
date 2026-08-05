@@ -459,15 +459,15 @@ class MiscMixin(Protocol):
         route_maps: EosCliConfigGen.RouteMaps,
     ) -> None:
         """Create an IPv6 BGP neighbor and its prefix-list and route-map policy objects."""
-        if not (interface.peer_ipv6_address and interface.bgp):
+        if not (interface.peer_ipv6 and interface.bgp):
             return
 
         if interface.wan_carrier:
-            msg = f"IPv6 BGP peering is not supported on WAN interfaces. Got 'peer_ipv6_address: {interface.peer_ipv6_address}' on '{context}'"
+            msg = f"IPv6 BGP peering is not supported on WAN interfaces. Got 'peer_ipv6: {interface.peer_ipv6}' on '{context}'"
             raise AristaAvdInvalidInputsError(msg)
 
         neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
-            ip_address=interface.peer_ipv6_address,
+            ip_address=interface.peer_ipv6,
             remote_as=interface.bgp.peer_as,
             description=description,
         )
@@ -500,7 +500,7 @@ class MiscMixin(Protocol):
         route_maps = EosCliConfigGen.RouteMaps()
 
         for interface in self.l3_interfaces:
-            has_bgp = bool(interface.bgp and (interface.peer_ip or interface.peer_ipv6_address))
+            has_bgp = bool(interface.bgp and (interface.peer_ip or interface.peer_ipv6))
             description = (
                 self._get_l3_generic_interface_bgp_description(interface, interface.peer_interface, self.interface_descriptions.underlay_ethernet_interface)
                 if has_bgp
@@ -510,7 +510,7 @@ class MiscMixin(Protocol):
             self._update_l3_generic_interface_ipv6_bgp(interface, description, f"l3_interfaces[{interface.name}]", neighbors, ipv6_prefix_lists, route_maps)
 
         for interface in self.node_config.l3_port_channels:
-            has_bgp = bool(interface.bgp and (interface.peer_ip or interface.peer_ipv6_address))
+            has_bgp = bool(interface.bgp and (interface.peer_ip or interface.peer_ipv6))
             description = (
                 self._get_l3_generic_interface_bgp_description(
                     interface, interface.peer_port_channel, self.interface_descriptions.underlay_port_channel_interface

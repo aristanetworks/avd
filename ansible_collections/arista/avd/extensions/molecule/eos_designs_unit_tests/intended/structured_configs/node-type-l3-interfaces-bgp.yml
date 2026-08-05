@@ -15,6 +15,7 @@ ethernet_interfaces:
 - name: Ethernet44
   description: PEER-IPV6_Ethernet1
   shutdown: false
+  ip_address: 192.168.43.2/24
   ipv6_addresses:
   - 2001:db8:42::2/64
   metadata:
@@ -85,6 +86,16 @@ route_maps:
   sequence_numbers:
   - sequence: 10
     type: deny
+- name: RM-BGP-192.168.43.1-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list ALLOW-DEFAULT
+- name: RM-BGP-192.168.43.1-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: deny
 - name: RM-BGP-2001:db8:42::1-IN
   sequence_numbers:
   - sequence: 10
@@ -121,6 +132,11 @@ router_bgp:
     description: INTERNET
     route_map_in: RM-BGP-192.168.42.1-IN
     route_map_out: RM-BGP-192.168.42.1-OUT
+  - ip_address: 192.168.43.1
+    remote_as: '65043'
+    description: PEER-IPV6_Ethernet1
+    route_map_in: RM-BGP-192.168.43.1-IN
+    route_map_out: RM-BGP-192.168.43.1-OUT
   - ip_address: 2001:db8:42::1
     remote_as: '65043'
     description: PEER-IPV6_Ethernet1
@@ -136,6 +152,8 @@ router_bgp:
   address_family_ipv4:
     neighbors:
     - ip_address: 192.168.42.1
+      activate: true
+    - ip_address: 192.168.43.1
       activate: true
   address_family_ipv6:
     neighbors:

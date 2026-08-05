@@ -16,7 +16,7 @@ spine:
             - 2001:db8::1/64
           peer: PEER-IPV6
           peer_interface: Ethernet1
-          peer_ipv6_address: 2001:db8::2
+          peer_ipv6: 2001:db8::2
           bgp:
             peer_as: 65001
             ipv6_prefix_list_in: MISSING-IPV6-PREFIX-LIST
