@@ -6,26 +6,25 @@ from __future__ import annotations
 import warnings
 from typing import Any
 
-from pyavd._errors import AvdDeprecationWarning
 
 
 class DeprecatedDict(dict):
     _done: bool
-    _message: list[str]
+    _message: str
 
-    def __init__(self, *args: Any, _message: list[str], **kwargs: Any) -> None:
+    def __init__(self, *args: Any, _message: str, **kwargs: Any) -> None:
         self._done = False
         self._message = _message
         super().__init__(*args, **kwargs)
 
     def __getitem__(self, key: Any) -> Any:
         if not self._done:
-            warnings.warn(self._message, AvdDeprecationWarning, stacklevel=2)
+            warnings.warn(self._message, DeprecationWarning, stacklevel=2)
             self._done = True
         return super().__getitem__(key)
 
     def get(self, key: Any, default: Any = None) -> Any:
         if not self._done:
-            warnings.warn(self._message, AvdDeprecationWarning, stacklevel=2)
+            warnings.warn(self._message, DeprecationWarning, stacklevel=2)
             self._done = True
         return super().get(key, default)
