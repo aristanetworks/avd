@@ -24,7 +24,7 @@ class ManagementInterfaceMixin(Protocol):
         """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
         if self.shared_utils.node_config.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
             # Check if mgmt_ip is set to "dhcp"
-            is_dhcp = self.shared_utils.node_config.mgmt_ip == "dhcp"
+            is_dhcp = self.shared_utils.oob_mgmt_ip == "dhcp"
             is_auto_config = self.shared_utils.node_config.ipv6_mgmt_ip == "auto-config"
 
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
@@ -32,7 +32,7 @@ class ManagementInterfaceMixin(Protocol):
                 description=self.shared_utils.mgmt_interface_description,
                 shutdown=False,
                 vrf=self.shared_utils.mgmt_interface_vrf,
-                ip_address=self.shared_utils.node_config.mgmt_ip,
+                ip_address=self.shared_utils.oob_mgmt_ip,
                 type="oob",
             )
 
@@ -41,7 +41,7 @@ class ManagementInterfaceMixin(Protocol):
                 interface_settings.dhcp_client_accept_default_route = True
             else:
                 # For static IP, set gateway (metadata field, actual routing done via static_routes)
-                interface_settings.gateway = self.shared_utils.mgmt_gateway
+                interface_settings.gateway = self.shared_utils.oob_mgmt_gateway
 
             """
             inserting ipv6 variables if ipv6_mgmt_ip is set

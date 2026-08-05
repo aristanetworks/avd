@@ -311,6 +311,10 @@ Serial Number: DEADBEEFC0FFEW
   - [BGP Groups](#bgp-groups)
   - [Interface Groups](#interface-groups)
   - [Maintenance](#maintenance)
+- [Schedule](#schedule)
+  - [Schedule Config](#schedule-config)
+  - [Schedule Jobs Summary](#schedule-jobs-summary)
+  - [Schedule Device Configuration](#schedule-device-configuration)
 - [EOS CLI Device Configuration](#eos-cli-device-configuration)
 
 ## Management
@@ -2658,7 +2662,7 @@ environment fan-speed minimum 60
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy -flowdns=false
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy -flowdns=false -somecustomflag -grpcport=9910 -enablefeaturex=true -disablefeaturey=false
    no shutdown
 ```
 
@@ -5474,6 +5478,7 @@ interface Ethernet3
    switchport port-security vlan 41 mac-address maximum 4
    switchport port-security vlan default mac-address maximum 2
    ptp enable
+   ptp management drop
    ptp delay-mechanism e2e
    ptp role dynamic
    ptp sync-message interval 1
@@ -5575,6 +5580,7 @@ interface Ethernet6
    no lldp transmit
    ip ospf authentication-key 8a <removed>
    ptp enable
+   no ptp management drop
    ptp announce interval 3
    ptp announce timeout 9
    ptp delay-mechanism e2e
@@ -6821,6 +6827,7 @@ interface Port-Channel5
    ntp serve
    ip ospf authentication-key 8a <removed>
    ptp enable
+   ptp management drop
    ptp mpass
    ptp delay-mechanism e2e
    ptp profile g8275.1 destination mac-address forwardable
@@ -6858,6 +6865,8 @@ interface Port-Channel7
    address locking
       address-family ipv4 disabled
       address-family ipv6 disabled
+   ptp enable
+   no ptp management drop
 !
 interface Port-Channel8
    description to Dev02 Port-channel 8
@@ -7830,6 +7839,7 @@ interface Tunnel7
 | Vlan369 | TCP MSS ceiling - IPv4 and IPv6 egress | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
+| Vlan1000 | Vlan with minimal ipv6 ospf configurations | default | - | - |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
 | Vlan1002 | SVI Description | Tenant_A | - | False |
 | Vlan2001 | SVI Description | Tenant_B | - | - |
@@ -7906,6 +7916,7 @@ interface Tunnel7
 | Vlan369 | default | - | - | - | - | - |
 | Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
 | Vlan667 | default | 192.0.2.2/25 | - | - | - | - |
+| Vlan1000 | default | - | - | - | - | - |
 | Vlan1001 | Tenant_A | - | 10.1.1.1/24 | - | - | - |
 | Vlan1002 | Tenant_A | - | 10.1.2.1/24 | - | - | - |
 | Vlan2001 | Tenant_B | - | 10.2.1.1/24 | - | - | - |
@@ -7974,9 +7985,16 @@ interface Tunnel7
 
 ##### OSPF
 
-| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
-| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
-| Vlan26 | True | 0.0.0.24 | 99 | message-digest | 100 | 0.0.0.29 | True |
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication |
+| --------- | --------------------------- | --------- | --------- | ------------------- |
+| Vlan26 | True | 0.0.0.24 | 99 | message-digest |
+
+##### IPv6 OSPF
+
+| Interface | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | -------------------- | -------------- | -------------------------------- |
+| Vlan26 | 100 | 0.0.0.29 | True |
+| Vlan1000 | 100 | 0.0.0.29 | - |
 
 ##### ISIS
 
@@ -8409,6 +8427,10 @@ interface Vlan667
    vrrp 2 peer authentication text 0 <removed>
    vrrp 2 ipv6 2001:db8:667::1
 !
+interface Vlan1000
+   description Vlan with minimal ipv6 ospf configurations
+   ipv6 ospf 100 area 0.0.0.29
+!
 interface Vlan1001
    description SVI Description
    no shutdown
@@ -8714,8 +8736,8 @@ ip routing vrf TEST3
 ```eos
 !
 ipv6 unicast-routing
-ipv6 unicast-routing vrf TEST1
 ipv6 hardware fib optimize prefixes profile internet
+ipv6 unicast-routing vrf TEST1
 ```
 
 ### Static Routes
@@ -15751,6 +15773,41 @@ maintenance
    !
    unit UNIT2
       quiesce
+```
+
+## Schedule
+
+### Schedule Config
+
+| Max Concurrent Jobs | Prepend Hostname Logfile |
+| ------------------- | ------------------------ |
+| 2 | True |
+
+### Schedule Jobs Summary
+
+| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size | Compression |
+| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- | ----------- |
+| at_date_interval | at 06:00:00 2027-12-22 interval 60 minutes | show logging | 10 | 30 | - | - | - | gzip |
+| at_date_once | at 11:11:11 02/12/2029 once | show tech-support | 3 | 3 | - | - | - | bzip2 |
+| at_time_once | at 08:00:00 2028-01-15 once | show ip route | 5 | - | - | - | - | - |
+| interval_full_options | interval 44 minutes | show running-config | 3 | 30 | True | flash:/schedule | 1024m | xz |
+| interval_minimal | interval 5 minutes | show version | 44 | 4 | - | - | - | - |
+| interval_simple | interval 31 minutes | show lldp neighbors | 2 | 30 | - | - | - | - |
+| interval_standard | interval 33 minutes | show interfaces | 4 | 30 | - | - | - | - |
+
+### Schedule Device Configuration
+
+```eos
+!
+schedule config max-concurrent-jobs 2
+schedule config prepend-hostname-logfile
+schedule at_date_interval at 06:00:00 2027-12-22 interval 60 timeout 30 max-log-files 10 compression gzip command show logging
+schedule at_date_once at 11:11:11 02/12/2029 once timeout 3 max-log-files 3 compression bzip2 command show tech-support
+schedule at_time_once at 08:00:00 2028-01-15 once max-log-files 5 command show ip route
+schedule interval_full_options interval 44 timeout 30 max-log-files 3 max-total-size 1024m logging verbose loglocation flash:/schedule compression xz command show running-config
+schedule interval_minimal interval 5 timeout 4 max-log-files 44 command show version
+schedule interval_simple interval 31 timeout 30 max-log-files 2 command show lldp neighbors
+schedule interval_standard interval 33 timeout 30 max-log-files 4 command show interfaces
 ```
 
 ## EOS CLI Device Configuration

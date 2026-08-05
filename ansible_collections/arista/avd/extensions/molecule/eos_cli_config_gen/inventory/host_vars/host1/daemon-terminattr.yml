@@ -30,3 +30,11 @@ daemon_terminattr:
     - mss
     - arista/traffic-policy
   flowdns: false
+  custom_cv_options:
+    - flag: somecustomflag
+    - flag: grpcport
+      value: 9910
+    - flag: enablefeaturex
+      value: true
+    - flag: disablefeaturey
+      value: "False"

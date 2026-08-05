@@ -1830,6 +1830,39 @@ keys:
           Set to false to disable DNS lookups on sFlow/IPFIX flow records.
 
           '
+      custom_cv_options:
+        type: list
+        description: 'TerminAttr CLI options not covered by the schema.
+
+          Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>`
+          when `value` is omitted.
+
+          Options are appended at the end of the TerminAttr exec command line after
+          all other flags.
+
+          '
+        items:
+          type: dict
+          keys:
+            flag:
+              type: str
+              required: true
+              min_length: 1
+              pattern: ^(?!-)(?!.*[\s=]).+$
+              description: 'TerminAttr CLI flag name without the leading dash.
+
+                '
+            value:
+              type: str
+              description: 'Flag value. If omitted, the flag is rendered without a
+                value (e.g. `-someflag`).
+
+                If set, the flag is rendered as `-flag=value`.
+
+                '
+              convert_types:
+              - bool
+              - int
   daemons:
     type: list
     primary_key: name
@@ -2630,6 +2663,26 @@ keys:
           Always render a ''!'' before the ''(no) ip routing'' command section.
 
           Without this the ''!'' is missing when only configuring routing for VRFs.'
+      render_combined_separator_for_ipv6_hardware_and_unicast_routing:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Render a single ''!'' separator for the combined IPv6 routing block when
+          any of these are rendered:
+
+          - ''ipv6 unicast-routing''
+
+          - ''ipv6 unicast-routing vrf <vrf_name>''
+
+          - ''ipv6 hardware fib optimize prefixes profile <profile_name>''
+
+          Also render the ''!'' separator before the VRF IPv6 unicast-routing section
+          even when ''ipv6 unicast-routing'' and ''ipv6 hardware fib optimize prefixes''
+          are not present globally, as long as at least one VRF is configured for
+          IPv6 routing.
+
+          When ''false'', separators are handled by each individual section.'
       new_ip_radius_cli_order:
         type: bool
         default: false
@@ -4348,6 +4401,12 @@ keys:
               - ipv4
               - ipv6
               - layer2
+            management:
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         profile:
           type: str
           description: Interface profile.
@@ -12629,7 +12688,8 @@ keys:
                 are set.'
             source_address:
               type: str
-              description: 'Source IPv4 address.
+              description: 'Source IPv4/IPv6 address. If ''name'' is an IP address,
+                ''source_address'' must use the same IP version.
 
                 Mutually exclusive with ''local_interface''. ''local_interface'' takes
                 precedence if both are set.'
@@ -14238,6 +14298,12 @@ keys:
 
                 Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
                 devices.'
+            management:
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".
@@ -24728,6 +24794,103 @@ keys:
                 be less than the value of B) formats. Example. 30-34,55,RED
               convert_types:
               - int
+  schedule:
+    type: dict
+    description: Configuration of EOS scheduled jobs.
+    keys:
+      config:
+        type: dict
+        description: Global schedule configuration.
+        keys:
+          max_concurrent_jobs:
+            type: int
+            min: 1
+            max: 4
+            convert_types:
+            - str
+            description: Maximum number of concurrent scheduled jobs.
+          prepend_hostname_logfile:
+            type: bool
+            description: Prepend hostname to the log file name.
+      jobs:
+        type: list
+        primary_key: name
+        description: List of schedule jobs.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Schedule job name.
+              pattern: (?!config)(?!summary$)[a-z0-9_-]+
+            interval:
+              type: int
+              min: 2
+              max: 1440
+              convert_types:
+              - str
+              description: 'Interval in minutes. Used as the standalone interval when
+                `at` is not set,
+
+                or as the recurring interval when combined with `at` and `at.once`
+                is not True.'
+            at:
+              type: dict
+              description: Schedule job at a specific time on a specific date.
+              keys:
+                time:
+                  required: true
+                  type: str
+                  description: Start time in HH:MM:SS format.
+                date:
+                  required: true
+                  type: str
+                  description: 'Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd.'
+                once:
+                  type: bool
+                  description: 'Run the command a single time at the given time/date.
+
+                    Mutually exclusive with `interval`. `once` takes precedence if
+                    both are set.'
+            timeout:
+              type: int
+              min: 1
+              max: 480
+              convert_types:
+              - str
+              description: Job timeout in minutes for CLI command execution. Must
+                be less than the job interval.
+            max_log_files:
+              type: int
+              required: true
+              min: 0
+              max: 10000
+              convert_types:
+              - str
+              description: Maximum number of log files to retain.
+            logging_verbose:
+              type: bool
+              description: Enable verbose logging.
+            loglocation:
+              type: str
+              description: Log file location path (e.g. flash:/schedule/logs).
+            max_total_size:
+              type: str
+              description: 'Maximum total size of log files (e.g. 110m, 1g).
+
+                Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes),
+                g (gigabytes).'
+            compression:
+              type: str
+              valid_values:
+              - gzip
+              - bzip2
+              - xz
+              description: Compression algorithm for log files.
+            command:
+              type: str
+              required: true
+              description: EOS CLI command to execute.
   service_routing_configuration_bgp:
     type: dict
     keys:
@@ -26871,7 +27034,10 @@ keys:
           - int
         ipv6_ospf:
           type: dict
-          description: IPv6 OSPF configuration for the interface.
+          description: 'IPv6 OSPF configuration for the interface. Mutually exclusive
+            with ''ospfv3''. Ignored when ''ospfv3'' is also configured.
+
+            Use only one style throughout the configuration.'
           keys:
             process:
               type: dict
@@ -26891,6 +27057,38 @@ keys:
                   convert_types:
                   - int
                   required: true
+            network_point_to_point:
+              type: bool
+        ospfv3:
+          type: dict
+          description: 'Mutually exclusive with ''ipv6_ospf'' and takes precedence
+            over it.
+
+            Use only one style throughout the configuration.'
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  convert_types:
+                  - int
+                  required: true
+                  description: 'OSPF area ID in IPv4 address or decimal format (range:
+                    0 to 4294967295).'
+            ipv6:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  convert_types:
+                  - int
+                  required: true
+                  description: 'OSPF area ID in IPv4 address or decimal format (range:
+                    0 to 4294967295).'
+            passive_interface:
+              type: bool
+              description: Include interface but without actively running OSPF.
             network_point_to_point:
               type: bool
         ospf_cost:

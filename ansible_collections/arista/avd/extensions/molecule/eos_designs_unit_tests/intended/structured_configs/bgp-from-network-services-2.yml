@@ -117,6 +117,17 @@ router_bgp:
     peer_group: MYPEERGROUP
     metadata:
       validate_state: false
+    route_reflector_client: true
+    default_originate:
+      enabled: true
+      always: true
+  - ip_address: 12.12.1.2
+    peer_group: MYPEERGROUP
+    metadata:
+      validate_state: false
+    default_originate:
+      enabled: true
+      always: false
   redistribute:
     connected:
       enabled: true
@@ -127,6 +138,8 @@ router_bgp:
       activate: true
     neighbors:
     - ip_address: 10.10.1.2
+      activate: true
+    - ip_address: 12.12.1.2
       activate: true
   vrfs:
   - name: validate_bgp_peers
@@ -142,6 +155,9 @@ router_bgp:
         validate_state: true
     - ip_address: 10.10.2.2
       peer_group: VALIDATE_BGP_PEERS
+      route_reflector_client: true
+      default_originate:
+        always: true
       metadata:
         validate_state: true
     redistribute:
