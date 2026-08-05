@@ -8,6 +8,7 @@ from typing import Any
 
 from pyavd._errors import AvdDeprecationWarning
 
+
 class DeprecatedDict(dict):
     _done: bool
     _message: list[str]
