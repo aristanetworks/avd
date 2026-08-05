@@ -7,7 +7,6 @@
 {% if router_ospfv3 is arista.avd.defined %}
 
 ### Router OSPFv3
-
 {#     Build rows for default VRF #}
 {%     set default_router_id = router_ospfv3.router_id is arista.avd.defined
            and router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined
@@ -187,7 +186,7 @@
                or vrf_auto_cost_reference_bandwidth
                or vrf_address_family_ipv4
                or vrf_address_family_ipv6 %}
- 
+
 #### VRF: {{ vrf.name }}
 {%             if vrf_router_id
                    or vrf_passive_interface_default
