@@ -15,3 +15,4 @@ spanning_tree_settings:
     minimum: 201
     maximum: 2001
   loop_guard_default: true
+  bpdu_guard_default: true

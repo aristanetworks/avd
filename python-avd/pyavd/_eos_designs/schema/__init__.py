@@ -48113,6 +48113,7 @@ class EosDesigns(EosDesignsRootModel):
             "priority": {"type": int, "default": 32768},
             "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
             "loop_guard_default": {"type": bool, "default": False},
+            "bpdu_guard_default": {"type": bool, "default": False},
         }
         mode: Mode | None
         """
@@ -48145,6 +48146,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        bpdu_guard_default: bool
+        """
+        Enable BPDUGuard by default on edge ports.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -48155,6 +48162,7 @@ class EosDesigns(EosDesignsRootModel):
                 priority: int | UndefinedType = Undefined,
                 port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
                 loop_guard_default: bool | UndefinedType = Undefined,
+                bpdu_guard_default: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 SpanningTreeSettings.
@@ -48181,6 +48189,7 @@ class EosDesigns(EosDesignsRootModel):
                        If
                        both are set, the setting under node type settings takes precedence.
                     loop_guard_default: Enable loopguard by default on all ports.
+                    bpdu_guard_default: Enable BPDUGuard by default on edge ports.
 
                 """
 
