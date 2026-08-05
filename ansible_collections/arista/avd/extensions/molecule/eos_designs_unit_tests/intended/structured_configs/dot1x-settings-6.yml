@@ -40,6 +40,7 @@ management_interfaces:
   type: oob
 metadata:
   is_deployed: true
+  platform: no_address_locking_platform
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 radius_server:
   vrfs:
