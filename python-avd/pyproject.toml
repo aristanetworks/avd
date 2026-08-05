@@ -28,7 +28,7 @@ dependencies = [
     # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
     "grpclib>=0.4.8",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.6",
+    "pyavd-utils==0.0.7",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
@@ -54,7 +54,7 @@ requires = [
     "deepmerge>=1.1.0",
     "jinja2>=3.0",
     "jsonschema-rs>=0.24",
-    "pyavd-utils==0.0.6",
+    "pyavd-utils==0.0.7",
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
