@@ -1670,8 +1670,19 @@ keys:
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
                     default: main_router_id
                   graceful_restart:
-                    type: bool
-                    description: Enable or disable BGP graceful-restart for this VRF.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        description: Enable or disable BGP graceful-restart for this VRF.
+                      restart_time:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 1
+                        max: 3600
+                        default: 300
+                        description: Restart time in seconds.
                   raw_eos_cli:
                     type: str
                     description: |

@@ -54,6 +54,7 @@ router_bgp:
     router_id: 192.0.255.41
     graceful_restart:
       enabled: true
+      restart_time: 120
     redistribute:
       connected:
         enabled: true

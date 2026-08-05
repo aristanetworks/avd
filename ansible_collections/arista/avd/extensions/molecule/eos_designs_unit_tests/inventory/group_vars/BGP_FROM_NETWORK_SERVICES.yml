@@ -182,10 +182,13 @@ tenants:
         address_families: []
         bgp:
           enabled: true
-          graceful_restart: true
+          graceful_restart:
+            enabled: true
+            restart_time: 120
       - name: graceful-restart-disabled
         vrf_id: 106
         address_families: []
         bgp:
           enabled: true
-          graceful_restart: false
+          graceful_restart:
+            enabled: false

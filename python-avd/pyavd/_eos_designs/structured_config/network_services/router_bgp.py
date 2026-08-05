@@ -146,10 +146,12 @@ class RouterBgpMixin(Protocol):
                     continue
 
                 bgp_vrf = EosCliConfigGen.RouterBgp.VrfsItem()
-                if vrf.bgp.graceful_restart:
-                    bgp_vrf.graceful_restart.enabled = vrf.bgp.graceful_restart
-                elif vrf.bgp.graceful_restart is False:
+                if vrf.bgp.graceful_restart.enabled:
+                    bgp_vrf.graceful_restart.enabled = vrf.bgp.graceful_restart.enabled
+                    bgp_vrf.graceful_restart.restart_time = vrf.bgp.graceful_restart.restart_time
+                elif vrf.bgp.graceful_restart.enabled is False:
                     bgp_vrf.no_graceful_restart = True
+
                 if vrf.bgp.raw_eos_cli:
                     bgp_vrf.eos_cli = vrf.bgp.raw_eos_cli
 
