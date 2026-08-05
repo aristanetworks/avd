@@ -25,22 +25,23 @@
            or default_auto_cost_reference_bandwidth
            or default_address_family_ipv4
            or default_address_family_ipv6 %}
-#### VRF: default
 
+#### VRF: default
 {%         if default_router_id
                or default_passive_interface_default
                or default_auto_cost_reference_bandwidth %}
 {%             set default_vrf_router_id = router_ospfv3.router_id | arista.avd.default('-') %}
 {%             set default_vrf_passive_interface_default = router_ospfv3.passive_interface_default | arista.avd.default('-') %}
 {%             set default_vrf_auto_cost_reference_bandwidth = router_ospfv3.auto_cost_reference_bandwidth | arista.avd.default('-') %}
+
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | {{ default_vrf_router_id if default_router_id else '-' }} |
 | Passive Interface Default | {{ default_vrf_passive_interface_default if default_passive_interface_default else '-' }} |
 | Auto Cost Reference Bandwidth | {{ default_vrf_auto_cost_reference_bandwidth if default_auto_cost_reference_bandwidth else '-' }} |
-
 {%         endif %}
 {%         if default_address_family_ipv4 %}
+
 ##### Address Family IPv4
 {%             if router_ospfv3.address_family_ipv4.router_id is arista.avd.defined
                    or router_ospfv3.address_family_ipv4.passive_interface_default is arista.avd.defined
@@ -100,9 +101,9 @@
 {%                     endif %}
 {%                 endif %}
 {%             endif %}
-
 {%         endif %}
 {%         if default_address_family_ipv6 %}
+
 ##### Address Family IPv6
 {%             if router_ospfv3.address_family_ipv6.router_id is arista.avd.defined
                    or router_ospfv3.address_family_ipv6.passive_interface_default is arista.avd.defined
@@ -167,7 +168,6 @@
 {%                 endif %}
 {%             endif %}
 {%         endif %}
-
 {%     endif %}
 {#     Build rows for each VRF #}
 {%     for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
@@ -187,22 +187,23 @@
                or vrf_auto_cost_reference_bandwidth
                or vrf_address_family_ipv4
                or vrf_address_family_ipv6 %}
+ 
 #### VRF: {{ vrf.name }}
-
 {%             if vrf_router_id
                    or vrf_passive_interface_default
                    or vrf_auto_cost_reference_bandwidth %}
 {%                 set vrf_summary_router_id = vrf.router_id | arista.avd.default('-') %}
 {%                 set vrf_summary_passive_interface_default = vrf.passive_interface_default | arista.avd.default('-') %}
 {%                 set vrf_summary_auto_cost_reference_bandwidth = vrf.auto_cost_reference_bandwidth | arista.avd.default('-') %}
+
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | {{ vrf_summary_router_id if vrf_router_id else '-' }} |
 | Passive Interface Default | {{ vrf_summary_passive_interface_default if vrf_passive_interface_default else '-' }} |
 | Auto Cost Reference Bandwidth | {{ vrf_summary_auto_cost_reference_bandwidth if vrf_auto_cost_reference_bandwidth else '-' }} |
-
 {%             endif %}
 {%             if vrf_address_family_ipv4 %}
+
 ##### Address Family IPv4
 {%                 if vrf.address_family_ipv4.router_id is arista.avd.defined
                        or vrf.address_family_ipv4.passive_interface_default is arista.avd.defined
@@ -262,9 +263,9 @@
 {%                         endif %}
 {%                     endif %}
 {%                 endif %}
-
 {%             endif %}
 {%             if vrf_address_family_ipv6 %}
+
 ##### Address Family IPv6
 {%                 if vrf.address_family_ipv6.router_id is arista.avd.defined
                        or vrf.address_family_ipv6.passive_interface_default is arista.avd.defined
@@ -328,10 +329,10 @@
 {%                         endif %}
 {%                     endif %}
 {%                 endif %}
-
 {%             endif %}
 {%         endif %}
 {%     endfor %}
+
 #### Router OSPFv3 Device Configuration
 
 ```eos
