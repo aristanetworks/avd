@@ -184,6 +184,8 @@ router_bgp:
       password: "q+VNViP5i4rVjW1cxFv2wA=="
       send_community: all
       maximum_routes: 0
+      maximum_accepted_routes: 12000
+      maximum_accepted_routes_warning_limit: 80 percent
       default_originate:
         enabled: true
         route_map: RM-FOO
@@ -550,6 +552,8 @@ router_bgp:
         activate: false
       - name: IPv4-UNDERLAY-PEERS
         activate: true
+        maximum_accepted_routes: 12000
+        maximum_accepted_routes_warning_limit: 80 percent
       - name: MLAG-IPv4-UNDERLAY-PEER
         activate: true
       - name: TEST_PEER_GRP
@@ -598,6 +602,8 @@ router_bgp:
         route_map_out: Address_Family_IPV4_Out
         peer_tag_in: PEER_TAG_IN_IPV4
         peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4
+        maximum_accepted_routes: 1000
+        maximum_accepted_routes_warning_limit: 80 percent
         additional_paths:
           receive: true
           send: limit
@@ -700,6 +706,8 @@ router_bgp:
         activate: true
         additional_paths:
           send: any
+        maximum_accepted_routes: 12000
+        maximum_accepted_routes_warning_limit: 80 percent
         route_map_in: RM-HIDE-AS-PATH
         route_map_out: RM-HIDE-AS-PATH
         peer_tag_in: PEER_TAG_IN_IPV6
@@ -750,6 +758,8 @@ router_bgp:
         route_map_out: Address_Family_IPV6_Out
         peer_tag_in: PEER_TAG_IN_IPV6
         peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6
+        maximum_accepted_routes: 2000
+        maximum_accepted_routes_warning_limit: 90 percent
         default_originate:
           enabled: true
           route_map: RM-FOO-MATCH3
@@ -1409,6 +1419,8 @@ router_bgp:
         enabled: true
         times: 5
       maximum_routes: 52000
+      maximum_accepted_routes: 51000
+      maximum_accepted_routes_warning_limit: 90 percent
       missing_policy:
         direction_in:
           action: deny
@@ -2276,6 +2288,8 @@ router_bgp:
           maximum_routes: 0
           maximum_routes_warning_limit: 100
           maximum_routes_warning_only: true
+          maximum_accepted_routes: 1000
+          maximum_accepted_routes_warning_limit: 80 percent
           default_originate:
             always: true
             route_map: RM-10.2.3.4-SET-NEXT-HOP-OUT

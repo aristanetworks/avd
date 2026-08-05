@@ -29808,6 +29808,8 @@ class EosDesigns(EosDesignsRootModel):
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
                 "maximum_routes_warning_only": {"type": bool},
+                "maximum_accepted_routes": {"type": int},
+                "maximum_accepted_routes_warning_limit": {"type": str},
                 "missing_policy": {"type": MissingPolicy},
                 "link_bandwidth": {"type": LinkBandwidth},
                 "allowas_in": {"type": AllowasIn},
@@ -29923,6 +29925,14 @@ class EosDesigns(EosDesignsRootModel):
             maximum number of routes at which to warn ("<1-100> percent").
             """
             maximum_routes_warning_only: bool | None
+            maximum_accepted_routes: int | None
+            """Maximum number of accepted routes (0 means unlimited)."""
+            maximum_accepted_routes_warning_limit: str | None
+            """
+            Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+            Percentage
+            of maximum number of accepted routes at which to warn ("<1-100> percent").
+            """
             missing_policy: MissingPolicy
             """
             Missing policy configuration for all address-families.
@@ -29988,6 +29998,8 @@ class EosDesigns(EosDesignsRootModel):
                     maximum_routes: int | UndefinedType | None = Undefined,
                     maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                     maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                    maximum_accepted_routes: int | UndefinedType | None = Undefined,
+                    maximum_accepted_routes_warning_limit: str | UndefinedType | None = Undefined,
                     missing_policy: MissingPolicy | UndefinedType = Undefined,
                     link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                     allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -30077,6 +30089,11 @@ class EosDesigns(EosDesignsRootModel):
                            Percentage of
                            maximum number of routes at which to warn ("<1-100> percent").
                         maximum_routes_warning_only: maximum_routes_warning_only
+                        maximum_accepted_routes: Maximum number of accepted routes (0 means unlimited).
+                        maximum_accepted_routes_warning_limit:
+                           Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                           Percentage
+                           of maximum number of accepted routes at which to warn ("<1-100> percent").
                         missing_policy:
                            Missing policy configuration for all address-families.
 
@@ -37013,6 +37030,8 @@ class EosDesigns(EosDesignsRootModel):
                     "maximum_routes": {"type": int},
                     "maximum_routes_warning_limit": {"type": str},
                     "maximum_routes_warning_only": {"type": bool},
+                    "maximum_accepted_routes": {"type": int},
+                    "maximum_accepted_routes_warning_limit": {"type": str},
                     "missing_policy": {"type": MissingPolicy},
                     "link_bandwidth": {"type": LinkBandwidth},
                     "allowas_in": {"type": AllowasIn},
@@ -37132,6 +37151,14 @@ class EosDesigns(EosDesignsRootModel):
                 maximum number of routes at which to warn ("<1-100> percent").
                 """
                 maximum_routes_warning_only: bool | None
+                maximum_accepted_routes: int | None
+                """Maximum number of accepted routes (0 means unlimited)."""
+                maximum_accepted_routes_warning_limit: str | None
+                """
+                Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                Percentage
+                of maximum number of accepted routes at which to warn ("<1-100> percent").
+                """
                 missing_policy: MissingPolicy
                 """
                 Missing policy configuration for all address-families.
@@ -37197,6 +37224,8 @@ class EosDesigns(EosDesignsRootModel):
                         maximum_routes: int | UndefinedType | None = Undefined,
                         maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                         maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                        maximum_accepted_routes: int | UndefinedType | None = Undefined,
+                        maximum_accepted_routes_warning_limit: str | UndefinedType | None = Undefined,
                         missing_policy: MissingPolicy | UndefinedType = Undefined,
                         link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                         allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -37290,6 +37319,11 @@ class EosDesigns(EosDesignsRootModel):
                                Percentage of
                                maximum number of routes at which to warn ("<1-100> percent").
                             maximum_routes_warning_only: maximum_routes_warning_only
+                            maximum_accepted_routes: Maximum number of accepted routes (0 means unlimited).
+                            maximum_accepted_routes_warning_limit:
+                               Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                               Percentage
+                               of maximum number of accepted routes at which to warn ("<1-100> percent").
                             missing_policy:
                                Missing policy configuration for all address-families.
 
@@ -79923,6 +79957,8 @@ class EosDesigns(EosDesignsRootModel):
                         "maximum_routes": {"type": int},
                         "maximum_routes_warning_limit": {"type": str},
                         "maximum_routes_warning_only": {"type": bool},
+                        "maximum_accepted_routes": {"type": int},
+                        "maximum_accepted_routes_warning_limit": {"type": str},
                         "missing_policy": {"type": MissingPolicy},
                         "link_bandwidth": {"type": LinkBandwidth},
                         "allowas_in": {"type": AllowasIn},
@@ -80038,6 +80074,14 @@ class EosDesigns(EosDesignsRootModel):
                     maximum number of routes at which to warn ("<1-100> percent").
                     """
                     maximum_routes_warning_only: bool | None
+                    maximum_accepted_routes: int | None
+                    """Maximum number of accepted routes (0 means unlimited)."""
+                    maximum_accepted_routes_warning_limit: str | None
+                    """
+                    Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                    Percentage
+                    of maximum number of accepted routes at which to warn ("<1-100> percent").
+                    """
                     missing_policy: MissingPolicy
                     """
                     Missing policy configuration for all address-families.
@@ -80103,6 +80147,8 @@ class EosDesigns(EosDesignsRootModel):
                             maximum_routes: int | UndefinedType | None = Undefined,
                             maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                             maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                            maximum_accepted_routes: int | UndefinedType | None = Undefined,
+                            maximum_accepted_routes_warning_limit: str | UndefinedType | None = Undefined,
                             missing_policy: MissingPolicy | UndefinedType = Undefined,
                             link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                             allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -80192,6 +80238,11 @@ class EosDesigns(EosDesignsRootModel):
                                    Percentage of
                                    maximum number of routes at which to warn ("<1-100> percent").
                                 maximum_routes_warning_only: maximum_routes_warning_only
+                                maximum_accepted_routes: Maximum number of accepted routes (0 means unlimited).
+                                maximum_accepted_routes_warning_limit:
+                                   Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                                   Percentage
+                                   of maximum number of accepted routes at which to warn ("<1-100> percent").
                                 missing_policy:
                                    Missing policy configuration for all address-families.
 
@@ -87165,6 +87216,8 @@ class EosDesigns(EosDesignsRootModel):
                             "maximum_routes": {"type": int},
                             "maximum_routes_warning_limit": {"type": str},
                             "maximum_routes_warning_only": {"type": bool},
+                            "maximum_accepted_routes": {"type": int},
+                            "maximum_accepted_routes_warning_limit": {"type": str},
                             "missing_policy": {"type": MissingPolicy},
                             "link_bandwidth": {"type": LinkBandwidth},
                             "allowas_in": {"type": AllowasIn},
@@ -87284,6 +87337,14 @@ class EosDesigns(EosDesignsRootModel):
                         maximum number of routes at which to warn ("<1-100> percent").
                         """
                         maximum_routes_warning_only: bool | None
+                        maximum_accepted_routes: int | None
+                        """Maximum number of accepted routes (0 means unlimited)."""
+                        maximum_accepted_routes_warning_limit: str | None
+                        """
+                        Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                        Percentage
+                        of maximum number of accepted routes at which to warn ("<1-100> percent").
+                        """
                         missing_policy: MissingPolicy
                         """
                         Missing policy configuration for all address-families.
@@ -87349,6 +87410,8 @@ class EosDesigns(EosDesignsRootModel):
                                 maximum_routes: int | UndefinedType | None = Undefined,
                                 maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                                 maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                                maximum_accepted_routes: int | UndefinedType | None = Undefined,
+                                maximum_accepted_routes_warning_limit: str | UndefinedType | None = Undefined,
                                 missing_policy: MissingPolicy | UndefinedType = Undefined,
                                 link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                                 allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -87442,6 +87505,11 @@ class EosDesigns(EosDesignsRootModel):
                                        Percentage of
                                        maximum number of routes at which to warn ("<1-100> percent").
                                     maximum_routes_warning_only: maximum_routes_warning_only
+                                    maximum_accepted_routes: Maximum number of accepted routes (0 means unlimited).
+                                    maximum_accepted_routes_warning_limit:
+                                       Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                                       Percentage
+                                       of maximum number of accepted routes at which to warn ("<1-100> percent").
                                     missing_policy:
                                        Missing policy configuration for all address-families.
 

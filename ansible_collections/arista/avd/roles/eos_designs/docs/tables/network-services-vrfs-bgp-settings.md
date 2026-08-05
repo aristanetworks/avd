@@ -81,6 +81,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_accepted_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of accepted routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes_warning_limit</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_accepted_routes_warning_limit") | String |  |  |  | Maximum number of routes accepted after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -219,6 +221,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of accepted routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes_warning_limit</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes_warning_limit") | String |  |  |  | Maximum number of routes accepted after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -325,6 +329,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "network_services.[].bgp_peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "network_services.[].bgp_peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "network_services.[].bgp_peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "network_services.[].bgp_peer_groups.[].maximum_accepted_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of accepted routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes_warning_limit</samp>](## "network_services.[].bgp_peer_groups.[].maximum_accepted_routes_warning_limit") | String |  |  |  | Maximum number of routes accepted after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "network_services.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "network_services.[].bgp_peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_services.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -463,6 +469,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of accepted routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes_warning_limit</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes_warning_limit") | String |  |  |  | Maximum number of routes accepted after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -676,6 +684,13 @@
             # Percentage of maximum number of routes at which to warn ("<1-100> percent").
             maximum_routes_warning_limit: <str>
             maximum_routes_warning_only: <bool>
+
+            # Maximum number of accepted routes (0 means unlimited).
+            maximum_accepted_routes: <int; 0-4294967294>
+
+            # Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+            # Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+            maximum_accepted_routes_warning_limit: <str>
 
             # Missing policy configuration for all address-families.
             missing_policy:
@@ -1026,6 +1041,13 @@
                 # Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 maximum_routes_warning_limit: <str>
                 maximum_routes_warning_only: <bool>
+
+                # Maximum number of accepted routes (0 means unlimited).
+                maximum_accepted_routes: <int; 0-4294967294>
+
+                # Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                # Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+                maximum_accepted_routes_warning_limit: <str>
 
                 # Missing policy configuration for all address-families.
                 missing_policy:
@@ -1280,6 +1302,13 @@
             maximum_routes_warning_limit: <str>
             maximum_routes_warning_only: <bool>
 
+            # Maximum number of accepted routes (0 means unlimited).
+            maximum_accepted_routes: <int; 0-4294967294>
+
+            # Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+            # Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+            maximum_accepted_routes_warning_limit: <str>
+
             # Missing policy configuration for all address-families.
             missing_policy:
 
@@ -1629,6 +1658,13 @@
                 # Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 maximum_routes_warning_limit: <str>
                 maximum_routes_warning_only: <bool>
+
+                # Maximum number of accepted routes (0 means unlimited).
+                maximum_accepted_routes: <int; 0-4294967294>
+
+                # Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                # Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+                maximum_accepted_routes_warning_limit: <str>
 
                 # Missing policy configuration for all address-families.
                 missing_policy:

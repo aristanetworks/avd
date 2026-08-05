@@ -460,6 +460,20 @@ keys:
                 - int
             maximum_routes_warning_only:
               type: bool
+            maximum_accepted_routes:
+              type: int
+              description: Maximum number of accepted routes (0 means unlimited).
+              min: 0
+              max: 4294967294
+              convert_types:
+                - str
+            maximum_accepted_routes_warning_limit:
+              type: str
+              description: |
+                Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+              convert_types:
+                - int
             missing_policy:
               type: dict
               description: Missing policy configuration for all address-families.
@@ -727,6 +741,20 @@ keys:
                 - int
             maximum_routes_warning_only:
               type: bool
+            maximum_accepted_routes:
+              type: int
+              description: Maximum number of accepted routes (0 means unlimited).
+              min: 0
+              max: 4294967294
+              convert_types:
+                - str
+            maximum_accepted_routes_warning_limit:
+              type: str
+              description: |
+                Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+              convert_types:
+                - int
             missing_policy:
               type: dict
               description: Missing policy configuration for all address-families.
@@ -1752,6 +1780,20 @@ keys:
                           required: true
                         originate:
                           type: bool
+                maximum_accepted_routes:
+                  type: int
+                  description: Maximum number of accepted routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                  convert_types:
+                    - str
+                maximum_accepted_routes_warning_limit:
+                  type: str
+                  description: |
+                    Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                    Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+                  convert_types:
+                    - int
           neighbors:
             type: list
             primary_key: ip_address
@@ -1816,6 +1858,20 @@ keys:
                           description: Enables advertising the Extended Next Hop Encoding capability.
                         originate:
                           type: bool
+                maximum_accepted_routes:
+                  type: int
+                  description: Maximum number of accepted routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                  convert_types:
+                    - str
+                maximum_accepted_routes_warning_limit:
+                  type: str
+                  description: |
+                    Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                    Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+                  convert_types:
+                    - int
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -2780,6 +2836,20 @@ keys:
                     route_map:
                       type: str
                       description: Route-map name.
+                maximum_accepted_routes:
+                  type: int
+                  description: Maximum number of accepted routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                  convert_types:
+                    - str
+                maximum_accepted_routes_warning_limit:
+                  type: str
+                  description: |
+                    Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                    Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+                  convert_types:
+                    - int
           neighbors:
             type: list
             primary_key: ip_address
@@ -2836,6 +2906,20 @@ keys:
                     prefix_list:
                       type: str
                       description: Apply the configurations only to the routes matching the prefix list.
+                maximum_accepted_routes:
+                  type: int
+                  description: Maximum number of accepted routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                  convert_types:
+                    - str
+                maximum_accepted_routes_warning_limit:
+                  type: str
+                  description: |
+                    Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                    Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+                  convert_types:
+                    - int
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -4122,6 +4206,20 @@ keys:
                       Percentage of maximum number of routes at which to warn ("<1-100> percent").
                   maximum_routes_warning_only:
                     type: bool
+                  maximum_accepted_routes:
+                    type: int
+                    description: Maximum number of accepted routes (0 means unlimited).
+                    min: 0
+                    max: 4294967294
+                    convert_types:
+                      - str
+                  maximum_accepted_routes_warning_limit:
+                    type: str
+                    description: |
+                      Maximum number of routes accepted after which a warning is issued (0 means never warn) or
+                      Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
+                    convert_types:
+                      - int
                   allowas_in:
                     type: dict
                     keys:
