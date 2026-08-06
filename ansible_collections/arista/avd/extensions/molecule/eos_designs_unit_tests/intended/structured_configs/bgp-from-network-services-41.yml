@@ -44,6 +44,14 @@ router_bgp:
     - ip_address: 10.10.41.42
       activate: true
   vrfs:
+  - name: graceful-restart-default_restart_time
+    router_id: 192.0.255.41
+    graceful_restart:
+      enabled: true
+      restart_time: 300
+    redistribute:
+      connected:
+        enabled: true
   - name: graceful-restart-disabled
     router_id: 192.0.255.41
     no_graceful_restart: true
@@ -70,6 +78,11 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: graceful-restart-default_restart_time
+  ip_routing: true
+  metadata:
+    tenants:
+    - TEST5
 - name: graceful-restart-disabled
   ip_routing: true
   metadata:

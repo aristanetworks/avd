@@ -82,7 +82,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.enabled") | Boolean |  |  |  | Force (no) configuration of BGP for the VRF.<br>If not set, BGP will be configured when needed according to the following rules:<br>- If the VRF is part of an overlay (`evpn` or `mpls`), BGP will be configured for it.<br>- If any BGP peers are configured under the VRF, BGP will be configured for it. This is useful for L2LS designs with VRFs.<br>- If uplink type is `p2p-vrfs` *and* the vrf is included in the uplink VRFs, BGP will be configured for it. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.router_id") | String |  | `main_router_id` |  | Router ID to use for BGP in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure a BGP Router ID for this VRF. EOS will use the main BGP Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.graceful_restart") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.graceful_restart.enabled") | Boolean |  |  |  | Enable or disable BGP graceful-restart for this VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.graceful_restart.enabled") | Boolean | Required |  |  | Enable or disable BGP graceful-restart for this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restart_time</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.graceful_restart.restart_time") | Integer |  | `300` | Min: 1<br>Max: 3600 | Restart time in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema. |
@@ -182,7 +182,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].bgp.enabled") | Boolean |  |  |  | Force (no) configuration of BGP for the VRF.<br>If not set, BGP will be configured when needed according to the following rules:<br>- If the VRF is part of an overlay (`evpn` or `mpls`), BGP will be configured for it.<br>- If any BGP peers are configured under the VRF, BGP will be configured for it. This is useful for L2LS designs with VRFs.<br>- If uplink type is `p2p-vrfs` *and* the vrf is included in the uplink VRFs, BGP will be configured for it. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "network_services.[].vrfs.[].bgp.router_id") | String |  | `main_router_id` |  | Router ID to use for BGP in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure a BGP Router ID for this VRF. EOS will use the main BGP Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "network_services.[].vrfs.[].bgp.graceful_restart") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].bgp.graceful_restart.enabled") | Boolean |  |  |  | Enable or disable BGP graceful-restart for this VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].bgp.graceful_restart.enabled") | Boolean | Required |  |  | Enable or disable BGP graceful-restart for this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restart_time</samp>](## "network_services.[].vrfs.[].bgp.graceful_restart.restart_time") | Integer |  | `300` | Min: 1<br>Max: 3600 | Restart time in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_services.[].vrfs.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_services.[].vrfs.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema. |
@@ -472,7 +472,7 @@
               graceful_restart:
 
                 # Enable or disable BGP graceful-restart for this VRF.
-                enabled: <bool>
+                enabled: <bool; required>
 
                 # Restart time in seconds.
                 restart_time: <int; 1-3600; default=300>
@@ -792,7 +792,7 @@
               graceful_restart:
 
                 # Enable or disable BGP graceful-restart for this VRF.
-                enabled: <bool>
+                enabled: <bool; required>
 
                 # Restart time in seconds.
                 restart_time: <int; 1-3600; default=300>

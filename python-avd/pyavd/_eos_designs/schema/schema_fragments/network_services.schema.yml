@@ -1674,6 +1674,7 @@ keys:
                     keys:
                       enabled:
                         type: bool
+                        required: true
                         description: Enable or disable BGP graceful-restart for this VRF.
                       restart_time:
                         type: int

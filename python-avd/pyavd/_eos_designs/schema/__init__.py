@@ -36309,7 +36309,7 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
 
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "restart_time": {"type": int, "default": 300}}
-                    enabled: bool | None
+                    enabled: bool
                     """Enable or disable BGP graceful-restart for this VRF."""
                     restart_time: int
                     """
@@ -36320,7 +36320,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, restart_time: int | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, restart_time: int | UndefinedType = Undefined) -> None:
                             """
                             GracefulRestart.
 
@@ -86488,7 +86488,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "restart_time": {"type": int, "default": 300}}
-                            enabled: bool | None
+                            enabled: bool
                             """Enable or disable BGP graceful-restart for this VRF."""
                             restart_time: int
                             """
@@ -86499,7 +86499,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, restart_time: int | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, restart_time: int | UndefinedType = Undefined) -> None:
                                     """
                                     GracefulRestart.
 
