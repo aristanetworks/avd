@@ -9,14 +9,14 @@
 ### Router OSPFv3
 {#     Build rows for default VRF #}
 {%     set default_router_id = router_ospfv3.router_id is arista.avd.defined
-           and router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined
-           and router_ospfv3.address_family_ipv6.router_id is not arista.avd.defined %}
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.router_id is not arista.avd.defined) %}
 {%     set default_passive_interface_default = router_ospfv3.passive_interface_default is arista.avd.defined(true)
-           and router_ospfv3.address_family_ipv4.passive_interface_default is not arista.avd.defined
-           and router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined %}
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.passive_interface_default is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined) %}
 {%     set default_auto_cost_reference_bandwidth = router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
-           and router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
-           and router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
 {%     set default_address_family_ipv4 = router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%     set default_address_family_ipv6 = router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%     if default_router_id
@@ -171,14 +171,14 @@
 {#     Build rows for each VRF #}
 {%     for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 {%         set vrf_router_id = vrf.router_id is arista.avd.defined
-               and vrf.address_family_ipv4.router_id is not arista.avd.defined
-               and vrf.address_family_ipv6.router_id is not arista.avd.defined %}
+               and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.router_id is not arista.avd.defined)
+               and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.router_id is not arista.avd.defined) %}
 {%         set vrf_passive_interface_default = vrf.passive_interface_default is arista.avd.defined(true)
-               and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined
-               and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined %}
+               and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined)
+               and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined) %}
 {%         set vrf_auto_cost_reference_bandwidth = vrf.auto_cost_reference_bandwidth is arista.avd.defined
-               and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
-               and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
+               and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined)
+               and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
 {%         set vrf_address_family_ipv4 = vrf.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%         set vrf_address_family_ipv6 = vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%         if vrf_router_id

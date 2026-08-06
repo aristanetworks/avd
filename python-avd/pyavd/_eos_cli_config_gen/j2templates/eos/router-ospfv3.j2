@@ -9,20 +9,20 @@
 router ospfv3 vrf {{ vrf.name }}
 {%     set use_delimiter = false %}
 {%     if vrf.router_id is arista.avd.defined
-           and vrf.address_family_ipv4.router_id is not arista.avd.defined
-           and vrf.address_family_ipv6.router_id is not arista.avd.defined %}
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.router_id is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.router_id is not arista.avd.defined) %}
    router-id {{ vrf.router_id }}
 {%         set use_delimiter = true %}
 {%     endif %}
 {%     if vrf.auto_cost_reference_bandwidth is arista.avd.defined
-           and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
-           and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
    auto-cost reference-bandwidth {{ vrf.auto_cost_reference_bandwidth }}
 {%         set use_delimiter = true %}
 {%     endif %}
 {%     if vrf.passive_interface_default is arista.avd.defined(true)
-           and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined
-           and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined %}
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined) %}
    passive-interface default
 {%         set use_delimiter = true %}
 {%     endif %}
@@ -206,27 +206,27 @@ router ospfv3 vrf {{ vrf.name }}
 {% if router_ospfv3.router_id is arista.avd.defined
       or router_ospfv3.passive_interface_default is arista.avd.defined
       or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
-      or router_ospfv3.address_family_ipv4 is arista.avd.defined
-      or router_ospfv3.address_family_ipv6 is arista.avd.defined
+      or router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true)
+      or router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true)
       or router_ospfv3.eos_cli is arista.avd.defined %}
 !
 router ospfv3
 {%     set use_delimiter = false %}
 {%     if router_ospfv3.router_id is arista.avd.defined
-           and router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined
-           and router_ospfv3.address_family_ipv6.router_id is not arista.avd.defined %}
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.router_id is not arista.avd.defined) %}
    router-id {{ router_ospfv3.router_id }}
 {%         set use_delimiter = true %}
 {%     endif %}
 {%     if router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
-           and router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
-           and router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
    auto-cost reference-bandwidth {{ router_ospfv3.auto_cost_reference_bandwidth }}
 {%         set use_delimiter = true %}
 {%     endif %}
 {%     if router_ospfv3.passive_interface_default is arista.avd.defined(true)
-           and router_ospfv3.address_family_ipv4.passive_interface_default is not arista.avd.defined
-           and router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined %}
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.passive_interface_default is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined) %}
    passive-interface default
 {%         set use_delimiter = true %}
 {%     endif %}

@@ -113,3 +113,37 @@ router_ospfv3:
         enabled: false
         router_id: 1.1.1.1
         passive_interface_default: true
+    # address_family_ipv4.enabled is false
+    - name: TEST_VRF
+      router_id: 2.2.2.2
+      auto_cost_reference_bandwidth: 100
+      passive_interface_default: true
+      address_family_ipv4:
+        enabled: false
+        passive_interface_default: false
+        redistribute:
+          bgp:
+            enabled: true
+      address_family_ipv6:
+        enabled: true
+        passive_interface_default: true
+        redistribute:
+          bgp:
+            enabled: true
+    # address_family_ipv4.enabled and address_family_ipv6.enabled is false, will generate global configurations
+    - name: TEST_VRF2
+      router_id: 2.2.2.2
+      auto_cost_reference_bandwidth: 100
+      passive_interface_default: true
+      address_family_ipv4:
+        enabled: false
+        passive_interface_default: false
+        redistribute:
+          bgp:
+            enabled: true
+      address_family_ipv6:
+        enabled: false
+        passive_interface_default: true
+        redistribute:
+          bgp:
+            enabled: true

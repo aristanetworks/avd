@@ -253,6 +253,36 @@ ipv6 unicast-routing vrf TENANT_C
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
 
+#### VRF: TEST_VRF
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
+
+##### Address Family IPv6
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | - |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | - | - |
+
+#### VRF: TEST_VRF2
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 100 |
+
 #### VRF: data
 
 ##### Address Family IPv4
@@ -282,6 +312,19 @@ router ospfv3 vrf MGMT
 !
 router ospfv3 vrf TEST
    auto-cost reference-bandwidth 100
+!
+router ospfv3 vrf TEST_VRF
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
+   !
+   address-family ipv6
+      passive-interface default
+      redistribute bgp
+!
+router ospfv3 vrf TEST_VRF2
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
+   passive-interface default
 !
 router ospfv3 vrf data
    bfd default
