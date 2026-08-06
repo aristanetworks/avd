@@ -40,6 +40,26 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# TCP MSS Ceiling #}
+{%     set tcp_mss_vlan_interfaces = [] %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
+{%         if vlan_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or vlan_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
+{%             do tcp_mss_vlan_interfaces.append(vlan_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if tcp_mss_vlan_interfaces | length > 0 %}
+
+##### TCP MSS Ceiling
+
+| Interface | IPv4 MSS | IPv6 MSS | Direction |
+| --------- | -------- | -------- | --------- |
+{%         for vlan_interface in tcp_mss_vlan_interfaces | arista.avd.natural_sort('name') %}
+{%             set ipv4 = vlan_interface.tcp_mss_ceiling.ipv4 | arista.avd.default('-') %}
+{%             set ipv6 = vlan_interface.tcp_mss_ceiling.ipv6 | arista.avd.default('-') %}
+{%             set direction = vlan_interface.tcp_mss_ceiling.direction | arista.avd.default('-') %}
+| {{ vlan_interface.name }} | {{ ipv4 }} | {{ ipv6 }} | {{ direction }} |
+{%         endfor %}
+{%     endif %}
 
 ##### IPv4
 
@@ -176,23 +196,49 @@
 {%     endif %}
 {# OSPF #}
 {%     set ospf_vlan_interfaces = [] %}
+{%     set ospfv3_vlan_interfaces = [] %}
+{%     set ipv6_ospf_vlan_interfaces = [] %}
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         if vlan_interface.ospf_network_point_to_point is arista.avd.defined or
               vlan_interface.ospf_area is arista.avd.defined or
               vlan_interface.ospf_cost is arista.avd.defined or
-              vlan_interface.ospf_authentication is arista.avd.defined or
-              vlan_interface.ipv6_ospf is arista.avd.defined %}
+              vlan_interface.ospf_authentication is arista.avd.defined %}
 {%             do ospf_vlan_interfaces.append(vlan_interface) %}
+{%         endif %}
+{%         if vlan_interface.ospfv3 is arista.avd.defined %}
+{%             do ospfv3_vlan_interfaces.append(vlan_interface) %}
+{%         elif vlan_interface.ipv6_ospf is arista.avd.defined %}
+{%             do ipv6_ospf_vlan_interfaces.append(vlan_interface) %}
 {%         endif %}
 {%     endfor %}
 {%     if ospf_vlan_interfaces %}
 
 ##### OSPF
 
-| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
-| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication |
+| --------- | --------------------------- | --------- | --------- | ------------------- |
 {%         for vlan_interface in ospf_vlan_interfaces %}
-| {{ vlan_interface.name }} | {{ vlan_interface.ospf_network_point_to_point | arista.avd.default('-') }} | {{ vlan_interface.ospf_area | arista.avd.default('-') }} | {{ vlan_interface.ospf_cost | arista.avd.default('-') }} | {{ vlan_interface.ospf_authentication | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.process.id | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.process.area | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.network_point_to_point | arista.avd.default('-') }} |
+| {{ vlan_interface.name }} | {{ vlan_interface.ospf_network_point_to_point | arista.avd.default('-') }} | {{ vlan_interface.ospf_area | arista.avd.default('-') }} | {{ vlan_interface.ospf_cost | arista.avd.default('-') }} | {{ vlan_interface.ospf_authentication | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+{%     if ospfv3_vlan_interfaces %}
+
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
+| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+{%         for vlan_interface in ospfv3_vlan_interfaces %}
+| {{ vlan_interface.name }} | {{ vlan_interface.ospfv3.passive_interface | arista.avd.default('-') }} | {{ vlan_interface.ospfv3.network_point_to_point | arista.avd.default('-') }} | {{ vlan_interface.ospfv3.ipv4.area | arista.avd.default('-') }} | {{ vlan_interface.ospfv3.ipv6.area | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+{%     if ipv6_ospf_vlan_interfaces %}
+
+##### IPv6 OSPF
+
+| Interface | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | -------------------- | -------------- | -------------------------------- |
+{%         for vlan_interface in ipv6_ospf_vlan_interfaces %}
+| {{ vlan_interface.name }} | {{ vlan_interface.ipv6_ospf.process.id | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.process.area | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.network_point_to_point | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {# ISIS #}
@@ -208,8 +254,8 @@
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
-| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
 {%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%             if vlan_interface.isis_authentication.both.mode is arista.avd.defined %}
 {%                 set isis_authentication_mode = vlan_interface.isis_authentication.both.mode %}
@@ -220,6 +266,8 @@
 {%             elif vlan_interface.isis_authentication.level_2.mode is arista.avd.defined %}
 {%                 set isis_authentication_mode = "Level-2: " ~ vlan_interface.isis_authentication.level_2.mode %}
 {%             endif %}
+{%             set isis_circuit_type = vlan_interface.isis_circuit_type | arista.avd.default("-") %}
+{%             set isis_hello_padding = vlan_interface.isis_hello_padding | arista.avd.default("-") %}
 {%             if vlan_interface.isis_enable is arista.avd.defined %}
 {%                 set isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
 {%                 if vlan_interface.isis_network_point_to_point is arista.avd.defined %}
@@ -229,7 +277,7 @@
 {%                 else %}
 {%                     set mode = "-" %}
 {%                 endif %}
-| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("-") }} | {{ isis_metric }} | {{ mode }} | {{ isis_authentication_mode | arista.avd.default("-") }} |
+| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("-") }} | {{ isis_metric }} | {{ mode }} | {{ isis_circuit_type }} | {{ isis_hello_padding }} | {{ isis_authentication_mode | arista.avd.default("-") }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

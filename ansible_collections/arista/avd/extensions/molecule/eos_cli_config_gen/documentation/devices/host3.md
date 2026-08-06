@@ -34,9 +34,9 @@ interface Management1
 
 ##### NTP Servers
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 2.2.2.55 | - | - | - | - | - | - | - | - |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -115,6 +115,32 @@ No specific password policy is set for management accounts.
 management accounts
 ```
 
+## Management LDAP
+
+### LDAP Server Defaults
+
+| Setting | Value |
+| ------- | ----- |
+| Authorization Group Policy | LDAP_GROUP_POLICY |
+
+### LDAP Server Hosts
+
+| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy | Search Username |
+| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- | --------------- |
+| ldap1.example.com | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - | - |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   server defaults
+      authorization group policy LDAP_GROUP_POLICY
+   !
+   server host ldap1.example.com
+      ssl-profile LDAP_HOST_SSL_PROFILE
+```
+
 ## CVX
 
 CVX is enabled
@@ -173,6 +199,19 @@ aaa accounting commands 1 console start-stop logging
 aaa accounting system default start-stop logging
 aaa accounting commands all default none
 aaa accounting commands 0 default none
+```
+
+## System Boot Settings
+
+### Boot Secret Summary
+
+- The md5 hashed Aboot password is configured
+
+### System Boot Device Configuration
+
+```eos
+!
+boot secret 5 <removed>
 ```
 
 ## Monitoring
@@ -584,4 +623,26 @@ priority-flow-control pause watchdog override action drop
 stun
    server
       local-interface Ethernet2
+```
+
+## Schedule
+
+### Schedule Config
+
+| Max Concurrent Jobs | Prepend Hostname Logfile |
+| ------------------- | ------------------------ |
+| 3 | - |
+
+### Schedule Jobs Summary
+
+| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size | Compression |
+| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- | ----------- |
+| at_interval_nodate | at 10:00:00 2028-03-10 interval 60 minutes | show clock | 1 | - | - | - | - | - |
+
+### Schedule Device Configuration
+
+```eos
+!
+schedule config max-concurrent-jobs 3
+schedule at_interval_nodate at 10:00:00 2028-03-10 interval 60 max-log-files 1 command show clock
 ```

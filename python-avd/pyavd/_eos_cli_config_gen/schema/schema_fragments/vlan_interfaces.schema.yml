@@ -409,7 +409,9 @@ keys:
             - int
         ipv6_ospf:
           type: dict
-          description: IPv6 OSPF configuration for the interface.
+          description: |-
+            IPv6 OSPF configuration for the interface. Mutually exclusive with 'ospfv3'. Ignored when 'ospfv3' is also configured.
+            Use only one style throughout the configuration.
           keys:
             process:
               type: dict
@@ -428,6 +430,37 @@ keys:
                   convert_types:
                     - int
                   required: true
+            network_point_to_point:
+              type: bool
+        ospfv3:
+          type: dict
+          description: |-
+            Mutually exclusive with 'ipv6_ospf' and takes precedence over it.
+            Use only one style throughout the configuration.
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  convert_types:
+                    - int
+                  required: true
+                  description: |-
+                    OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+            ipv6:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  convert_types:
+                    - int
+                  required: true
+                  description: |-
+                    OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+            passive_interface:
+              type: bool
+              description: Include interface but without actively running OSPF.
             network_point_to_point:
               type: bool
         ospf_cost:
@@ -539,6 +572,11 @@ keys:
           convert_types:
             - str
         isis_network_point_to_point:
+          type: bool
+        isis_circuit_type:
+          type: str
+          valid_values: ["level-1-2", "level-1", "level-2"]
+        isis_hello_padding:
           type: bool
         isis_authentication:
           type: dict
@@ -733,6 +771,28 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4.
+              min: 64
+              max: 65495
+              convert_types:
+                - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6.
+              min: 64
+              max: 65475
+              convert_types:
+                - str
+            direction:
+              type: str
+              valid_values: ["ingress", "egress"]
+              description: |
+                Optional direction ('ingress', 'egress')  for tcp mss ceiling.
         traffic_policy:
           type: dict
           keys:
@@ -742,6 +802,21 @@ keys:
             output:
               type: str
               description: Egress traffic policy.
+        mpls:
+          type: dict
+          keys:
+            ip:
+              type: bool
+              description: Enable MPLS traffic on interface if MPLS enabled globally.
+            ldp:
+              type: dict
+              keys:
+                interface:
+                  type: bool
+                  description: Enable LDP on this interface.
+                igp_sync:
+                  type: bool
+                  description: Tell the IGP to keep a link at max metric until LDP labels are ready.
         ntp_serve:
           type: bool
           description: Enable/disable serving NTP to clients.

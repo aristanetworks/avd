@@ -28,6 +28,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ingestexclude</samp>](## "cv_settings.terminattr.ingestexclude") | String |  |  |  | Exclude paths from Sysdb on the ingest side.<br>e.g. "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;smashexcludes</samp>](## "cv_settings.terminattr.smashexcludes") | String |  | `ale,flexCounter,hardware,kni,pulse,strata` |  | Exclude paths from the shared memory table.<br>e.g. "ale,flexCounter,hardware,kni,pulse,strata"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disable_aaa</samp>](## "cv_settings.terminattr.disable_aaa") | Boolean |  | `False` |  | Disable AAA authorization and accounting.<br>When setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cvtargetconfigs</samp>](## "cv_settings.terminattr.cvtargetconfigs") | List, items: String |  |  | Min Length: 1 | Set the target configuration path(s) for dynamic device configuration from CloudVision.<br>Used for MSS (Multi-Domain Segmentation Service) integrations.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "cv_settings.terminattr.cvtargetconfigs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flowdns</samp>](## "cv_settings.terminattr.flowdns") | Boolean |  |  |  | Enable DNS resolution for flow records (TerminAttr default is true).<br>Set to false to disable DNS lookups on sFlow/IPFIX flow records.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;custom_cv_options</samp>](## "cv_settings.terminattr.custom_cv_options") | List, items: Dictionary |  |  |  | TerminAttr CLI options not covered by the schema.<br>Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.<br>Options are appended at the end of the TerminAttr exec command line after all other flags.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;flag</samp>](## "cv_settings.terminattr.custom_cv_options.[].flag") | String | Required |  | Min Length: 1<br>Pattern: `^(?!-)(?!.*[\s=]).+$` | TerminAttr CLI flag name without the leading dash.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "cv_settings.terminattr.custom_cv_options.[].value") | String |  |  |  | Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).<br>If set, the flag is rendered as `-flag=value`.<br> |
     | [<samp>&nbsp;&nbsp;set_source_interfaces</samp>](## "cv_settings.set_source_interfaces") | Boolean |  | `True` |  | Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>Can be set to `false` to avoid changes when migrating from the old `cv_instances` model. |
     | [<samp>cvp_ingestauth_key</samp>](## "cvp_ingestauth_key") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
     | [<samp>cvp_instance_ips</samp>](## "cvp_instance_ips") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
@@ -123,6 +129,27 @@
         # Disable AAA authorization and accounting.
         # When setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization.
         disable_aaa: <bool; default=False>
+
+        # Set the target configuration path(s) for dynamic device configuration from CloudVision.
+        # Used for MSS (Multi-Domain Segmentation Service) integrations.
+        cvtargetconfigs: # >=1 items
+          - <str>
+
+        # Enable DNS resolution for flow records (TerminAttr default is true).
+        # Set to false to disable DNS lookups on sFlow/IPFIX flow records.
+        flowdns: <bool>
+
+        # TerminAttr CLI options not covered by the schema.
+        # Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.
+        # Options are appended at the end of the TerminAttr exec command line after all other flags.
+        custom_cv_options:
+
+            # TerminAttr CLI flag name without the leading dash.
+          - flag: <str; length >=1; required>
+
+            # Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+            # If set, the flag is rendered as `-flag=value`.
+            value: <str>
 
       # Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
       # Can be set to `false` to avoid changes when migrating from the old `cv_instances` model.

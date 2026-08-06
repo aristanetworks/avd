@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 
 import logging
-import os
 from importlib.metadata import PackageNotFoundError
 from itertools import repeat
 from pathlib import Path
@@ -269,27 +268,93 @@ def test__validate_ansible_collections(n_reqs: int, mocked_version: str | None, 
         assert ret == expected_return
 
 
-def test__get_running_collection_version_git_not_installed(caplog: pytest.LogCaptureFixture) -> None:
-    """Verify that when git is not found in PATH the function returns properly."""
-    # setting PATH to empty string to make sure git is not present
-    os.environ["PATH"] = ""
-    # setting ANSIBLE_VERBOSITY to trigger the log message when raising the exception
-    os.environ["ANSIBLE_VERBOSITY"] = "3"
+def test__get_running_collection_version_published_install_skips_git(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+    """Verify that when MANIFEST.json is present the collection metadata version is returned."""
+    collection_path = tmp_path / "ansible_collections/arista/avd"
+    collection_path.mkdir(parents=True)
+    (collection_path / "MANIFEST.json").touch()
     result = {}
     with (
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.Path") as patched_path,
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path") as patched__get_collection_path,
         patch(
             "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version",
         ) as patched__get_collection_version,
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_git_command_output") as patched__get_git_command_output,
     ):
-        patched__get_collection_path.return_value = "."
+        patched__get_collection_path.return_value = str(collection_path)
         patched__get_collection_version.return_value = "42.0.0"
-        # TODO: Path is less kind than os.path was
-        patched_path.return_value = Path("/collections/foo/bar/__synthetic__/blah")
 
         with caplog.at_level(logging.DEBUG):
             _get_running_collection_version("dummy", result)
 
-    assert result == {"collection": {"name": "dummy", "path": "/collections/foo/bar", "version": "42.0.0"}}
+    assert result == {"collection": {"name": "dummy", "path": str(tmp_path / "ansible_collections"), "version": "42.0.0"}}
+    patched__get_git_command_output.assert_not_called()
+    assert "Published collection detected, returning collection version" in caplog.text
+
+
+def test__get_running_collection_version_git_not_installed(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+    """Verify that when git is not found in PATH the function returns the collection metadata version."""
+    collection_path = tmp_path / "ansible_collections/arista/avd"
+    result = {}
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=True),
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path") as patched__get_collection_path,
+        patch(
+            "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version",
+        ) as patched__get_collection_version,
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.Popen", side_effect=FileNotFoundError),
+    ):
+        patched__get_collection_path.return_value = str(collection_path)
+        patched__get_collection_version.return_value = "42.0.0"
+
+        with caplog.at_level(logging.DEBUG):
+            _get_running_collection_version("dummy", result)
+
+    assert result == {"collection": {"name": "dummy", "path": str(tmp_path / "ansible_collections"), "version": "42.0.0"}}
     assert "Could not find 'git' executable, returning collection version" in caplog.text
+
+
+def test__get_running_collection_version_source_checkout_uses_git(tmp_path: Path) -> None:
+    """Verify that an AVD source checkout uses git describe for the running collection version."""
+    collection_path = tmp_path / "ansible_collections/arista/avd"
+    result = {}
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=True),
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path") as patched__get_collection_path,
+        patch(
+            "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version",
+        ) as patched__get_collection_version,
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_git_command_output") as patched__get_git_command_output,
+    ):
+        patched__get_collection_path.return_value = str(collection_path)
+        patched__get_collection_version.return_value = "42.0.0"
+        patched__get_git_command_output.return_value = "v42.0.1-1-gabcdef"
+
+        _get_running_collection_version("dummy", result)
+
+    assert result == {"collection": {"name": "dummy", "path": str(tmp_path / "ansible_collections"), "version": "v42.0.1-1-gabcdef"}}
+    patched__get_git_command_output.assert_called_once_with(["git", "describe", "--tags"], str(collection_path))
+
+
+def test__get_running_collection_version_not_running_from_source_skips_git(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+    """Verify that non-source collections use the collection metadata version."""
+    customer_repo_path = tmp_path / "customer"
+    collection_path = customer_repo_path / "collections/ansible_collections/arista/avd"
+    result = {}
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=False),
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path") as patched__get_collection_path,
+        patch(
+            "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version",
+        ) as patched__get_collection_version,
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_git_command_output") as patched__get_git_command_output,
+    ):
+        patched__get_collection_path.return_value = str(collection_path)
+        patched__get_collection_version.return_value = "42.0.0"
+
+        with caplog.at_level(logging.DEBUG):
+            _get_running_collection_version("dummy", result)
+
+    assert result == {"collection": {"name": "dummy", "path": str(customer_repo_path / "collections/ansible_collections"), "version": "42.0.0"}}
+    patched__get_git_command_output.assert_not_called()
+    assert "AVD is not running from source, returning collection version" in caplog.text

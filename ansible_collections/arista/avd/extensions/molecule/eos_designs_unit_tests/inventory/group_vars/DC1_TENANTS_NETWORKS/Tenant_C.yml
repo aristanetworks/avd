@@ -43,6 +43,25 @@ tenant_c:
           activate: true
           rcf_in: TEST_RCF_IN()
           rcf_out: TEST_RCF_OUT()
+        # Validate that listen_ranges are not rendered unless the peer group has a nodes match.
+        # This peer group is still rendered through bgp_peers, but its listen_ranges must be ignored.
+        listen_ranges:
+          - prefix: 192.168.143.0/24
+            peer_id_include_router_id: true
+            peer_filter: peerfilter
+          - prefix: 192.168.144.0/24
+            peer_filter: peerfilter
+      # Dedicated peer group to validate top-level bgp_peer_groups listen_ranges.
+      # The nodes match is required since top-level listen_ranges only render when the peer group is scoped to this host.
+      - name: Tenant_C_LISTEN_RANGE_PEER_GROUP
+        remote_as: "668"
+        nodes: [dc1-bl1b]
+        listen_ranges:
+          - prefix: 192.168.143.0/24
+            peer_id_include_router_id: true
+            peer_filter: peerfilter1
+          - prefix: 192.168.144.0/24
+            remote_as: 112
     vrfs:
       - name: Tenant_C_OP_Zone
         vrf_vni: 30
@@ -74,6 +93,13 @@ tenant_c:
             send_community: all
             next_hop_self: true
             maximum_routes: 1000
+            listen_ranges:
+              - prefix: 192.168.141.0/24
+                remote_as: 111
+              - prefix: 192.168.142.0/24
+                peer_filter: peerfilter1
+              - prefix: cafe::cafe/64
+                peer_filter: peerfilter1
             default_originate:
               enabled: true
               always: true
@@ -83,6 +109,8 @@ tenant_c:
               route_map_out: TEST_OUT
               rcf_in: TEST_RCF_IN()
               rcf_out: TEST_RCF_OUT()
+              default_originate:
+                always: true
             address_family_ipv6:
               activate: true
               route_map_in: TEST_IN

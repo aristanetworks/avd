@@ -126,6 +126,14 @@ options:
     description: Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
     type: dict
     suboptions:
+      preserve_existing_containers:
+        description: |-
+          Preserve existing manifest-managed root containers and their children when they are not declared in the current manifest.
+          This enables partial manifests managing separate root-level branches.
+          Existing manifest-managed container order is preserved, and newly declared containers are appended.
+          Manually created root containers are always preserved and ordered after the manifest-managed containers.
+        type: bool
+        default: false
       configlets:
         description: |-
           A list of dictionaries defining configlets to be pushed to the Configlet Library.

@@ -544,6 +544,7 @@ class AvdManifest:
 
     configlets: tuple[AvdConfiglet, ...] = field(default_factory=tuple)
     containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
+    preserve_existing_containers: bool = False
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> AvdManifest:
@@ -551,11 +552,12 @@ class AvdManifest:
         try:
             configlets_data = data.get("configlets", [])
             containers_data = data.get("containers", [])
+            preserve_existing_containers = data.get("preserve_existing_containers", False)
 
             configlets = tuple(AvdConfiglet.from_dict(configlet_data) for configlet_data in configlets_data)
             containers = tuple(AvdContainer.from_dict(container_data) for container_data in containers_data)
 
-            return cls(configlets=configlets, containers=containers)
+            return cls(configlets=configlets, containers=containers, preserve_existing_containers=preserve_existing_containers)
         except (KeyError, TypeError, ValueError) as e:
             msg = f"Failed to build the static configuration manifest. Please check your input data. Original error: {e}"
             raise ValueError(msg) from e
@@ -567,6 +569,7 @@ class CVManifest:
 
     configlets: tuple[CVConfiglet, ...]
     containers: tuple[CVContainer, ...]
+    preserve_existing_containers: bool = False
 
     @classmethod
     def from_avd_manifest(cls, avd_manifest: AvdManifest) -> CVManifest:
@@ -589,7 +592,11 @@ class CVManifest:
             cls._process_container_recursively(container=root_container, parent_path="", cv_configlet_map=cv_configlet_map, cv_container_map=cv_container_map)
 
         # Return the completed manifest.
-        return cls(configlets=tuple(cv_configlet_map.values()), containers=tuple(cv_container_map.values()))
+        return cls(
+            configlets=tuple(cv_configlet_map.values()),
+            containers=tuple(cv_container_map.values()),
+            preserve_existing_containers=avd_manifest.preserve_existing_containers,
+        )
 
     @classmethod
     def _process_container_recursively(

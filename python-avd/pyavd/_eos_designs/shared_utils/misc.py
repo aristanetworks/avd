@@ -35,6 +35,11 @@ class MiscMixin(Protocol):
         return frozenset(self.peer_facts.keys())
 
     @cached_property
+    def is_act_digital_twin(self: SharedUtilsProtocol) -> bool:
+        """Return True when rendering the ACT Digital Twin version of the fabric."""
+        return self.digital_twin and self.inputs.digital_twin.environment == "act"
+
+    @cached_property
     def id(self: SharedUtilsProtocol) -> int | None:
         """
         Node ID.
@@ -233,7 +238,9 @@ class MiscMixin(Protocol):
             ipv4_acl.name += f"_{self.sanitize_interface_name(interface_name)}"
         return ipv4_acl
 
-    def get_ipv6_acl(self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None) -> EosDesigns.Ipv6AclsItem:
+    def get_ipv6_acl(
+        self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ipv6: str | None = None, peer_ipv6: str | None = None
+    ) -> EosDesigns.Ipv6AclsItem:
         """
         Get one IPv6 ACL from "ipv6_acls" where fields have been substituted.
 
@@ -246,7 +253,10 @@ class MiscMixin(Protocol):
         # deepcopy to avoid inplace updates below from modifying the original.
         ipv6_acl = org_ipv6_acl._deepcopy()
         ip_replacements = {
-            "interface_ip": interface_ip,
+            "interface_ipv6": interface_ipv6,
+            "peer_ipv6": peer_ipv6,
+            # TODO: AVD 7.0.0 - Remove deprecated token below.
+            "interface_ip": interface_ipv6,
         }
         changed = False
         for index, entry in enumerate(ipv6_acl.entries):

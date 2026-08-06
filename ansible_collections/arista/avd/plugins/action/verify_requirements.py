@@ -22,7 +22,8 @@ from ansible.utils.display import Display
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
     # Relying on packaging installed by ansible
     from packaging.requirements import Requirement
     from packaging.specifiers import SpecifierSet
@@ -330,26 +331,33 @@ def _get_collection_version(collection_path: str) -> str:
     return version
 
 
+def _get_git_command_output(command: list[str], collection_path: str) -> str | None:
+    """Return the output of a git command or None if git is unavailable or the command failed."""
+    try:
+        with Popen(command, stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:  # noqa: S603
+            output, err = process.communicate()
+    except FileNotFoundError:
+        LOGGER.debug("Could not find 'git' executable, returning collection version")
+        return None
+
+    if process.returncode or err:
+        return None
+
+    return output.decode("UTF-8").strip()
+
+
 def _get_running_collection_version(running_collection_name: str, result: dict[str, Any]) -> None:
     """Stores the version collection in result."""
     collection_path = _get_collection_path(running_collection_name)
     version = _get_collection_version(collection_path)
 
-    try:
-        # Try to detect a git tag
-        # Using subprocess for now
-        with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:  # noqa: S607
-            output, err = process.communicate()
-            if err:
-                # Not that when molecule runs, it runs in a copy of the directory that is not a git repo
-                # so only the latest tag is being returned
-                LOGGER.debug("Not a git repository")
-            else:
-                LOGGER.debug("This is a git repository, overwriting version with 'git describe --tags output'")
-                version = output.decode("UTF-8").strip()
-    except FileNotFoundError:
-        # Handle the case where `git` is not installed or not in the PATH
-        LOGGER.debug("Could not find 'git' executable, returning collection version")
+    if Path(collection_path, "MANIFEST.json").exists():
+        LOGGER.debug("Published collection detected, returning collection version")
+    elif not RUNNING_FROM_SOURCE:
+        LOGGER.debug("AVD is not running from source, returning collection version")
+    elif git_version := _get_git_command_output(["git", "describe", "--tags"], collection_path):
+        LOGGER.debug("Overwriting version with 'git describe --tags output'")
+        version = git_version
 
     result["collection"] = {
         "name": running_collection_name,

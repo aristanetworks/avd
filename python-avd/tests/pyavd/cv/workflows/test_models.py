@@ -99,6 +99,7 @@ class TestCVManifestGeneration:
         # Verify counts.
         assert len(cv_manifest.configlets) == 3
         assert len(cv_manifest.containers) == 4  # 2 roots + 2 children
+        assert cv_manifest.preserve_existing_containers is False
 
         # Organize results for easier lookup.
         container_map = {c.name: c for c in cv_manifest.containers}
@@ -331,10 +332,20 @@ class TestAvdManifestFromDict:
         manifest = AvdManifest.from_dict(full_manifest_dict)
         assert len(manifest.configlets) == 2
         assert len(manifest.containers) == 1
+        assert manifest.preserve_existing_containers is False
         assert manifest.configlets[0].name == "global_cfg"
         assert manifest.containers[0].name == "ROOT"
         assert len(manifest.containers[0].sub_containers) == 1
         assert manifest.containers[0].sub_containers[0].name == "LEAVES"
+
+    def test_success_with_preserve_existing_containers(self, full_manifest_dict: dict[str, Any]) -> None:
+        """Tests successful creation of AvdManifest with root-level preservation enabled."""
+        full_manifest_dict["preserve_existing_containers"] = True
+        manifest = AvdManifest.from_dict(full_manifest_dict)
+        assert manifest.preserve_existing_containers is True
+
+        cv_manifest = CVManifest.from_avd_manifest(manifest)
+        assert cv_manifest.preserve_existing_containers is True
 
     def test_success_configlets_only(self) -> None:
         """Tests successful creation of AvdManifest with only configlets defined."""
@@ -357,10 +368,12 @@ class TestAvdManifestFromDict:
         manifest_empty_dict = AvdManifest.from_dict({})
         assert not manifest_empty_dict.configlets
         assert not manifest_empty_dict.containers
+        assert manifest_empty_dict.preserve_existing_containers is False
 
         manifest_empty_lists = AvdManifest.from_dict({"configlets": [], "containers": []})
         assert not manifest_empty_lists.configlets
         assert not manifest_empty_lists.containers
+        assert manifest_empty_lists.preserve_existing_containers is False
 
     @pytest.mark.parametrize(
         ("invalid_data", "match_str"),

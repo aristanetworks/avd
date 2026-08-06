@@ -374,16 +374,30 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/patch-panel.
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/port-channel-interfaces.md
 --8<--
 
-### Switchport default
+### Switchport
+
+#### Switchport default
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-default.md
 --8<--
 
-### Switchport port security
+#### Switchport port security
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-port-security.md
+--8<--
+
+#### Switchport Ethernet LLC Validation
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-ethernet-llc-validation.md
+--8<--
+
+#### Switchport VLAN Tag Validation
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-vlan-tag-validation.md
 --8<--
 
 ### Sync-e
@@ -480,6 +494,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/dns-domain.m
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/domain-list.md
 --8<--
 
+### Environment
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/environment-fan-speed.md
+--8<--
+
 ### Hostname
 
 --8<--
@@ -550,6 +570,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-c
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-defaults.md
+--8<--
+
+### Management LDAP
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-ldap.md
 --8<--
 
 ### Management security
@@ -746,6 +772,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/queue-monito
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/queue-monitor-streaming.md
+--8<--
+
+### Schedule
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/schedule.md
 --8<--
 
 ### SFLOW

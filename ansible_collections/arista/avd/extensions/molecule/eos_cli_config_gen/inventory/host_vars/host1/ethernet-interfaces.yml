@@ -298,6 +298,8 @@ ethernet_interfaces:
       profile: A1
     ptp:
       enable: true
+      management:
+        drop: true
       delay_mechanism: e2e
       region:
         domain_number: 25
@@ -439,6 +441,8 @@ ethernet_interfaces:
       receive: true
     ptp:
       enable: true
+      management:
+        drop: false
       announce:
         interval: 3
         timeout: 9

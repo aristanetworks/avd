@@ -75,6 +75,8 @@ vlan_interfaces:
         key_type: 0
         key: password
         mode: md5
+    isis_hello_padding: true
+    isis_circuit_type: level-2
 
   - name: Vlan84
     description: SVI Description
@@ -115,6 +117,11 @@ vlan_interfaces:
         mode: sha
         sha:
           key_id: 2
+    mpls:
+      ip: true
+      ldp:
+        igp_sync: true
+        interface: false
 
   - name: Vlan86
     description: SVI Description
@@ -232,6 +239,11 @@ vlan_interfaces:
   - name: Vlan4093
     description: MLAG_PEER_L3_PEERING
     ip_address: 10.255.251.0/31
+    mpls:
+      ip: true
+      ldp:
+        igp_sync: true
+        interface: true
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
@@ -813,3 +825,64 @@ vlan_interfaces:
     arp_gratuitous_accept: true
     ip_verify_unicast_source_reachable_via: rx
     ip_directed_broadcast: true
+
+  - name: Vlan361
+    description: TCP MSS ceiling - IPv4
+    tcp_mss_ceiling:
+      ipv4: 1310
+
+  - name: Vlan362
+    description: TCP MSS ceiling - IPv6
+    tcp_mss_ceiling:
+      ipv6: 1320
+
+  - name: Vlan363
+    description: TCP MSS ceiling - IPv4 and IPv6
+    tcp_mss_ceiling:
+      ipv4: 1330
+      ipv6: 1340
+
+  - name: Vlan364
+    description: TCP MSS ceiling - IPv4 ingress
+    tcp_mss_ceiling:
+      ipv4: 1310
+      direction: ingress
+
+  - name: Vlan365
+    description: TCP MSS ceiling - IPv6 ingress
+    tcp_mss_ceiling:
+      ipv6: 1320
+      direction: ingress
+
+  - name: Vlan366
+    description: TCP MSS ceiling - IPv4 and IPv6 ingress
+    tcp_mss_ceiling:
+      ipv4: 1330
+      ipv6: 1340
+      direction: ingress
+
+  - name: Vlan367
+    description: TCP MSS ceiling - IPv4 egress
+    tcp_mss_ceiling:
+      ipv4: 1310
+      direction: egress
+
+  - name: Vlan368
+    description: TCP MSS ceiling - IPv6 egress
+    tcp_mss_ceiling:
+      ipv6: 1320
+      direction: egress
+
+  - name: Vlan369
+    description: TCP MSS ceiling - IPv4 and IPv6 egress
+    tcp_mss_ceiling:
+      ipv4: 1330
+      ipv6: 1340
+      direction: egress
+
+  - name: Vlan1000
+    description: Vlan with minimal ipv6 ospf configurations
+    ipv6_ospf:
+      process:
+        id: 100
+        area: 0.0.0.29

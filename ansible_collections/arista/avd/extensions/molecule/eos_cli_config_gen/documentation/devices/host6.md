@@ -8,6 +8,9 @@
   - [SNMP](#snmp)
 - [Monitor Layer 1 Logging](#monitor-layer-1-logging)
   - [Monitor Layer 1 Device Configuration](#monitor-layer-1-device-configuration)
+- [Interfaces](#interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -85,6 +88,62 @@ monitor layer1
    logging mac fault
 ```
 
+## Interfaces
+
+### Ethernet Interfaces
+
+#### Ethernet Interfaces Summary
+
+##### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet1 | Test portfast edge keyword | - | - | - | - | - |
+| Ethernet2 | Test portfast network keyword | - | - | - | - | - |
+
+*Inherited from Port-Channel Interface
+
+#### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   description Test portfast edge keyword
+   switchport
+   spanning-tree portfast edge
+!
+interface Ethernet2
+   description Test portfast network keyword
+   switchport
+   spanning-tree portfast network
+```
+
+### Port-Channel Interfaces
+
+#### Port-Channel Interfaces Summary
+
+##### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | Test portfast edge keyword | - | - | - | - | - | - | - | - |
+| Port-Channel2 | Test portfast network keyword | - | - | - | - | - | - | - | - |
+
+#### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel1
+   description Test portfast edge keyword
+   switchport
+   spanning-tree portfast edge
+!
+interface Port-Channel2
+   description Test portfast network keyword
+   switchport
+   spanning-tree portfast network
+```
+
 ## Routing
 
 ### IP Routing
@@ -97,6 +156,7 @@ monitor layer1
 | MGMT | False |
 | TENANT_A | True |
 | TENANT_B | True (ipv6 interfaces) |
+| TENANT_C | - |
 
 #### IP Routing Device Configuration
 
@@ -117,6 +177,14 @@ ip routing ipv6 interfaces vrf TENANT_B
 | MGMT | false |
 | TENANT_A | false |
 | TENANT_B | false |
+| TENANT_C | true |
+
+#### IPv6 Routing Device Configuration
+
+```eos
+!
+ipv6 unicast-routing vrf TENANT_C
+```
 
 ### Router BGP
 
@@ -197,6 +265,7 @@ router bgp 65006
 | MGMT | disabled |
 | TENANT_A | enabled |
 | TENANT_B | enabled (ipv6 interface) |
+| TENANT_C | disabled |
 
 ### VRF Instances Device Configuration
 
@@ -207,4 +276,6 @@ vrf instance MGMT
 vrf instance TENANT_A
 !
 vrf instance TENANT_B
+!
+vrf instance TENANT_C
 ```

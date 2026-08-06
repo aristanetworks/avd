@@ -239,16 +239,20 @@ class UtilsMixin(Protocol):
         output_type: type[T_AddressLocking],
     ) -> T_AddressLocking | UndefinedType:
         """Return address_locking for one adapter, mapping ipv4/ipv6 flags to address_family format."""
-        if not adapter.address_locking:
+        feature_support = self.shared_utils.platform_settings.feature_support
+        if not (adapter.address_locking and feature_support.address_locking.supported):
             return Undefined
 
         address_locking = output_type()
         if isinstance(address_locking, EosCliConfigGen.PortChannelInterfacesItem.AddressLocking):
             if adapter.address_locking.ipv4 is False:
                 address_locking.address_family.ipv4 = adapter.address_locking.ipv4
+            if adapter.address_locking.ipv6 is False:
+                address_locking.address_family.ipv6 = adapter.address_locking.ipv6
         else:  # EosCliConfigGen.EthernetInterfacesItem.AddressLocking
             address_locking.address_family.ipv4 = adapter.address_locking.ipv4
-            address_locking.address_family.ipv6 = adapter.address_locking.ipv6
+            if feature_support.address_locking.ipv6_ethernet_interface:
+                address_locking.address_family.ipv6 = adapter.address_locking.ipv6
         return address_locking
 
     def _get_adapter_dot1x(

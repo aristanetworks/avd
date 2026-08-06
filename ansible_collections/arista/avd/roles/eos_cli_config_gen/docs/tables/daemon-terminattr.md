@@ -54,6 +54,10 @@
     | [<samp>&nbsp;&nbsp;cv_loss_timeout</samp>](## "daemon_terminattr.cv_loss_timeout") | Integer |  |  |  | Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to CloudVision after a configuration change.<br>The recommended timeout is five minutes. |
     | [<samp>&nbsp;&nbsp;cvtargetconfigs</samp>](## "daemon_terminattr.cvtargetconfigs") | List, items: String |  |  | Min Length: 1 | Set the target configuration path(s) for dynamic device configuration from CloudVision.<br>Used for MSS (Multi-Domain Segmentation Service) integrations.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "daemon_terminattr.cvtargetconfigs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;flowdns</samp>](## "daemon_terminattr.flowdns") | Boolean |  |  |  | Enable DNS resolution for flow records (TerminAttr default is true).<br>Set to false to disable DNS lookups on sFlow/IPFIX flow records.<br> |
+    | [<samp>&nbsp;&nbsp;custom_cv_options</samp>](## "daemon_terminattr.custom_cv_options") | List, items: Dictionary |  |  |  | TerminAttr CLI options not covered by the schema.<br>Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.<br>Options are appended at the end of the TerminAttr exec command line after all other flags.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;flag</samp>](## "daemon_terminattr.custom_cv_options.[].flag") | String | Required |  | Min Length: 1<br>Pattern: `^(?!-)(?!.*[\s=]).+$` | TerminAttr CLI flag name without the leading dash.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "daemon_terminattr.custom_cv_options.[].value") | String |  |  |  | Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).<br>If set, the flag is rendered as `-flag=value`.<br> |
 
 === "YAML"
 
@@ -217,4 +221,20 @@
       # Used for MSS (Multi-Domain Segmentation Service) integrations.
       cvtargetconfigs: # >=1 items
         - <str>
+
+      # Enable DNS resolution for flow records (TerminAttr default is true).
+      # Set to false to disable DNS lookups on sFlow/IPFIX flow records.
+      flowdns: <bool>
+
+      # TerminAttr CLI options not covered by the schema.
+      # Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.
+      # Options are appended at the end of the TerminAttr exec command line after all other flags.
+      custom_cv_options:
+
+          # TerminAttr CLI flag name without the leading dash.
+        - flag: <str; length >=1; required>
+
+          # Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+          # If set, the flag is rendered as `-flag=value`.
+          value: <str>
     ```

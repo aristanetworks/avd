@@ -699,6 +699,11 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ptp.enable is arista.avd.defined(true) %}
    ptp enable
 {%     endif %}
+{%     if ethernet_interface.ptp.management.drop is arista.avd.defined(true) %}
+   ptp management drop
+{%     elif ethernet_interface.ptp.management.drop is arista.avd.defined(false) %}
+   no ptp management drop
+{%     endif %}
 {%     if ethernet_interface.ptp.announce.interval is arista.avd.defined %}
    ptp announce interval {{ ethernet_interface.ptp.announce.interval }}
 {%     endif %}
@@ -918,7 +923,11 @@ interface {{ ethernet_interface.name }}
    no logging event storm-control discards
 {%     endif %}
 {%     if ethernet_interface.spanning_tree_portfast is arista.avd.defined('edge') %}
+{%         if eos_config_future.render_spanning_tree_portfast_edge is arista.avd.defined(true) %}
+   spanning-tree portfast edge
+{%         else %}
    spanning-tree portfast
+{%         endif %}
 {%     elif ethernet_interface.spanning_tree_portfast is arista.avd.defined('network') %}
    spanning-tree portfast network
 {%     endif %}

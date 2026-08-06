@@ -65,6 +65,17 @@ daemon_terminattr:
   ingestexclude: this_is_ingest_excluded
   smashexcludes: this_is_smash_excluded
   sflowaddr: INBAND_MGMT_VRF/127.0.0.1:6343
+  cvtargetconfigs:
+  - arista/traffic-policy
+  flowdns: false
+  custom_cv_options:
+  - flag: somecustomflag
+  - flag: grpcport
+    value: '9910'
+  - flag: enablefeaturex
+    value: 'True'
+  - flag: disablefeaturey
+    value: 'False'
 dns_domain: testfabric.local
 enable_password:
   disabled: true
