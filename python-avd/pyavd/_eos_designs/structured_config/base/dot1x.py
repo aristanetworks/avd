@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -129,7 +129,7 @@ class Dot1xMixin(Protocol):
             url=web_authentication.url,
         )
         if web_authentication.ipv4_acl is not None:
-            self.structured_config_utils._set_ipv4_acl(web_authentication.ipv4_acl)
+            self._set_ipv4_acl(web_authentication.ipv4_acl)
             self.structured_config.dot1x.captive_portal.access_list_ipv4 = web_authentication.ipv4_acl
 
     def _configure_dot1x_device_profiling(
@@ -219,3 +219,9 @@ class Dot1xMixin(Protocol):
     def _radius_server_groups(self: AvdStructuredConfigBaseProtocol) -> set[str]:
         """Return a set of all RADIUS server group names defined under `aaa_settings.radius.servers`."""
         return {group for server in self.inputs.aaa_settings.radius.servers for group in server.groups}
+
+    def _set_ipv4_acl(self: AvdStructuredConfigBaseProtocol, acl_name: str) -> None:
+        if acl_name not in self.inputs.ipv4_acls:
+            msg = f"ipv4_acls[name={acl_name}]"
+            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+        self.structured_config.ip_access_lists.append(self.inputs.ipv4_acls[acl_name]._cast_as(EosCliConfigGen.IpAccessListsItem))
