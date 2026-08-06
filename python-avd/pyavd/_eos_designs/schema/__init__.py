@@ -6744,12 +6744,49 @@ class EosDesigns(EosDesignsRootModel):
 
             Cvtargetconfigs._item_type = str
 
+            class CustomCvOptionsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"flag": {"type": str}, "value": {"type": str}}
+                flag: str
+                """TerminAttr CLI flag name without the leading dash."""
+                value: str | None
+                """
+                Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                If set, the flag is
+                rendered as `-flag=value`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, flag: str | UndefinedType = Undefined, value: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        CustomCvOptionsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            flag: TerminAttr CLI flag name without the leading dash.
+                            value:
+                               Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                               If set, the flag is
+                               rendered as `-flag=value`.
+
+                        """
+
+            class CustomCvOptions(AvdList[CustomCvOptionsItem]):
+                """Subclass of AvdList with `CustomCvOptionsItem` items."""
+
+            CustomCvOptions._item_type = CustomCvOptionsItem
+
             _fields: ClassVar[dict] = {
                 "ingestexclude": {"type": str},
                 "smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
                 "disable_aaa": {"type": bool, "default": False},
                 "cvtargetconfigs": {"type": Cvtargetconfigs},
                 "flowdns": {"type": bool},
+                "custom_cv_options": {"type": CustomCvOptions},
             }
             ingestexclude: str | None
             """
@@ -6786,6 +6823,18 @@ class EosDesigns(EosDesignsRootModel):
             Set to false to disable DNS
             lookups on sFlow/IPFIX flow records.
             """
+            custom_cv_options: CustomCvOptions
+            """
+            TerminAttr CLI options not covered by the schema.
+            Each entry renders as `-<flag>=<value>` when
+            `value` is set, or `-<flag>` when `value` is omitted.
+            Options are appended at the end of the
+            TerminAttr exec command line after all other flags.
+
+
+            Subclass of AvdList with `CustomCvOptionsItem`
+            items.
+            """
 
             if TYPE_CHECKING:
 
@@ -6797,6 +6846,7 @@ class EosDesigns(EosDesignsRootModel):
                     disable_aaa: bool | UndefinedType = Undefined,
                     cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
                     flowdns: bool | UndefinedType | None = Undefined,
+                    custom_cv_options: CustomCvOptions | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Terminattr.
@@ -6826,6 +6876,16 @@ class EosDesigns(EosDesignsRootModel):
                            Enable DNS resolution for flow records (TerminAttr default is true).
                            Set to false to disable DNS
                            lookups on sFlow/IPFIX flow records.
+                        custom_cv_options:
+                           TerminAttr CLI options not covered by the schema.
+                           Each entry renders as `-<flag>=<value>` when
+                           `value` is set, or `-<flag>` when `value` is omitted.
+                           Options are appended at the end of the
+                           TerminAttr exec command line after all other flags.
+
+
+                           Subclass of AvdList with `CustomCvOptionsItem`
+                           items.
 
                     """
 
@@ -41108,6 +41168,98 @@ class EosDesigns(EosDesignsRootModel):
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
+            class AddressLocking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "supported": {"type": bool, "default": True},
+                    "ipv4_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_ethernet_interface": {"type": bool, "default": True},
+                    "ipv6_vlan": {"type": bool, "default": True},
+                }
+                supported: bool
+                """
+                Global support for Address Locking feature.
+                The feature will be ignored on platforms where this is
+                false.
+
+                Default value: `True`
+                """
+                ipv4_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv4 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv6 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_ethernet_interface: bool
+                """
+                Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                The feature will be
+                ignored on platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_vlan: bool
+                """
+                Support for controlling IPv6 Address Locking on the VLAN level.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        supported: bool | UndefinedType = Undefined,
+                        ipv4_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_ethernet_interface: bool | UndefinedType = Undefined,
+                        ipv6_vlan: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AddressLocking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            supported:
+                               Global support for Address Locking feature.
+                               The feature will be ignored on platforms where this is
+                               false.
+                            ipv4_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv4 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv6 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_ethernet_interface:
+                               Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                               The feature will be
+                               ignored on platforms where this is false.
+                            ipv6_vlan:
+                               Support for controlling IPv6 Address Locking on the VLAN level.
+                               The feature will be ignored on
+                               platforms where this is false.
+
+                        """
+
             class PlatformSfeInterfaceProfile(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -42253,6 +42405,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
@@ -42278,6 +42431,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            address_locking: AddressLocking
+            """Subclass of AvdModel."""
             queue_monitor: bool
             """
             Support for LANZ.
@@ -42484,6 +42639,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
@@ -42516,6 +42672,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
                            The feature will be ignored on platforms where this is false.
@@ -42857,6 +43014,98 @@ class EosDesigns(EosDesignsRootModel):
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
+            class AddressLocking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "supported": {"type": bool, "default": True},
+                    "ipv4_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_ethernet_interface": {"type": bool, "default": True},
+                    "ipv6_vlan": {"type": bool, "default": True},
+                }
+                supported: bool
+                """
+                Global support for Address Locking feature.
+                The feature will be ignored on platforms where this is
+                false.
+
+                Default value: `True`
+                """
+                ipv4_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv4 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv6 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_ethernet_interface: bool
+                """
+                Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                The feature will be
+                ignored on platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_vlan: bool
+                """
+                Support for controlling IPv6 Address Locking on the VLAN level.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        supported: bool | UndefinedType = Undefined,
+                        ipv4_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_ethernet_interface: bool | UndefinedType = Undefined,
+                        ipv6_vlan: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AddressLocking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            supported:
+                               Global support for Address Locking feature.
+                               The feature will be ignored on platforms where this is
+                               false.
+                            ipv4_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv4 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv6 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_ethernet_interface:
+                               Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                               The feature will be
+                               ignored on platforms where this is false.
+                            ipv6_vlan:
+                               Support for controlling IPv6 Address Locking on the VLAN level.
+                               The feature will be ignored on
+                               platforms where this is false.
+
+                        """
+
             class PlatformSfeInterfaceProfile(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -44002,6 +44251,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
@@ -44027,6 +44277,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            address_locking: AddressLocking
+            """Subclass of AvdModel."""
             queue_monitor: bool
             """
             Support for LANZ.
@@ -44233,6 +44485,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
@@ -44265,6 +44518,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
                            The feature will be ignored on platforms where this is false.
