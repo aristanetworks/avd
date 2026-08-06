@@ -14,7 +14,7 @@ ethernet_interfaces:
     peer: mlag-shared-node-groups-defaults-2
     peer_interface: Ethernet50
     peer_type: mlag_peer
-- name: Ethernet52
+- name: Ethernet51
   description: MLAG_mlag-shared-node-groups-defaults-2_Ethernet51
   shutdown: false
   channel_group:
@@ -22,14 +22,14 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: mlag-shared-node-groups-defaults-2
-    peer_interface: Ethernet52
+    peer_interface: Ethernet51
     peer_type: mlag_peer
-- name: Ethernet51
-  description: L2_mlag-shared-node-groups-defaults-4_Ethernet52
+- name: Ethernet52
+  description: L2_mlag-shared-node-groups-defaults-4_Ethernet41
   shutdown: false
   metadata:
     peer: mlag-shared-node-groups-defaults-4
-    peer_interface: Ethernet52
+    peer_interface: Ethernet41
     peer_type: l2leaf
   switchport:
     enabled: true

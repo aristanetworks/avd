@@ -1,5 +1,5 @@
 ---
-# Test to not allow more then two MLAG peers in a shared node_group.
+# Test to not allow more than two MLAG peers in a shared node_group.
 type: l2leaf
 fabric_name: FABRIC_MLAG_SHARED_NODE_GROUPS
 avd_design_future:

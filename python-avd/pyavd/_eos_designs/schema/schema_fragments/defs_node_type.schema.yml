@@ -947,9 +947,10 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             description: |-
-              Enable / Disable auto MLAG, when two nodes are defined in node group.
+              Enable / Disable auto MLAG for nodes in a node group.
               When using shared node groups with `avd_design_future.allow_mlag_in_shared_node_groups: true`,
-                the order of this list determines MLAG role assignment for the two nodes with effective `mlag: true`:
+                the order of `node_groups[].nodes` determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                nodes with effective `mlag: false` are ignored:
                 - The first node is the MLAG primary.
                 - The second node is the MLAG secondary.
             type: bool

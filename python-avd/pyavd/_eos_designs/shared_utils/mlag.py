@@ -81,6 +81,7 @@ class MlagMixin(Protocol):
 
     def _node_group_member_has_mlag_enabled(self: SharedUtilsProtocol, hostname: str) -> bool:
         """Return whether the given node_group member has effective 'mlag: true' after inheritance."""
+        # This condition is already checked before calling this method, it is kept here only to make pyright happy.
         if self.node_group_config is None or self.node_type_config is None:
             return False
 

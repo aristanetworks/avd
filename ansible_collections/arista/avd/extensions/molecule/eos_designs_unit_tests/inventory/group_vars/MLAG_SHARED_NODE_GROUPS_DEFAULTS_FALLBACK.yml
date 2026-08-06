@@ -21,16 +21,14 @@ l2leaf:
         - name: mlag-shared-node-groups-defaults-1
           id: 1
           mgmt_ip: 192.168.202.211/24
-          mlag_interfaces: [Ethernet50, Ethernet52]
         - name: mlag-shared-node-groups-defaults-2
           id: 2
           mgmt_ip: 192.168.202.212/24
-          mlag_interfaces: [Ethernet50, Ethernet51]
         - name: mlag-shared-node-groups-defaults-3
           id: 3
           mgmt_ip: 192.168.202.213/24
           mlag: false
-          uplink_interfaces: [Ethernet51, Ethernet52]
+          uplink_interfaces: [Ethernet41, Ethernet42]
           uplink_switches: [mlag-shared-node-groups-defaults-2, mlag-shared-node-groups-defaults-4]
           uplink_switch_interfaces: [Ethernet52, Ethernet51]
           uplink_type: l2-ethernet
@@ -39,8 +37,8 @@ l2leaf:
           id: 4
           mgmt_ip: 192.168.202.214/24
           mlag: false
-          uplink_interfaces: [Ethernet51, Ethernet52]
-          uplink_switches: [mlag-shared-node-groups-defaults-3, mlag-shared-node-groups-defaults-1]
+          uplink_interfaces: [Ethernet41, Ethernet42]
+          uplink_switches: [mlag-shared-node-groups-defaults-1, mlag-shared-node-groups-defaults-3]
           uplink_switch_interfaces: [Ethernet52, Ethernet51]
           uplink_type: l2-ethernet
           cv_tags_topology_type: member-leaf

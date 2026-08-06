@@ -4,11 +4,11 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet51
-  description: L2_mlag-shared-node-groups-defaults-3_Ethernet52
+- name: Ethernet41
+  description: L2_mlag-shared-node-groups-defaults-1_Ethernet52
   shutdown: false
   metadata:
-    peer: mlag-shared-node-groups-defaults-3
+    peer: mlag-shared-node-groups-defaults-1
     peer_interface: Ethernet52
     peer_type: l2leaf
   switchport:
@@ -16,12 +16,24 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
-- name: Ethernet52
-  description: L2_mlag-shared-node-groups-defaults-1_Ethernet51
+- name: Ethernet42
+  description: L2_mlag-shared-node-groups-defaults-3_Ethernet51
   shutdown: false
   metadata:
-    peer: mlag-shared-node-groups-defaults-1
+    peer: mlag-shared-node-groups-defaults-3
     peer_interface: Ethernet51
+    peer_type: l2leaf
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+- name: Ethernet51
+  description: L2_mlag-shared-node-groups-defaults-3_Ethernet42
+  shutdown: false
+  metadata:
+    peer: mlag-shared-node-groups-defaults-3
+    peer_interface: Ethernet42
     peer_type: l2leaf
   switchport:
     enabled: true
