@@ -17,6 +17,8 @@ ipv4_acls:
         source: any
         destination: any
         copy_captive_portal: true
+        destination_ports_match: eq
+        destination_ports: [www]
 
 dot1x_settings:
   enabled: true
