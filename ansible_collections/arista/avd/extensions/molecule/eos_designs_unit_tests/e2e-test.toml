@@ -33,6 +33,6 @@ fabric_doc = false
 
 [scenarios.main]
 
-[scenarios.idempotency]
+# [scenarios.idempotency]
 # TODO: Add feature to detect if anything changed.
-clean = false
+# clean = false
