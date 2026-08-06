@@ -143,6 +143,7 @@ router_bgp:
       password: "dRx9sULvl+hzkCMYJLEQCw=="
       send_community: all
       maximum_routes: 0
+      maximum_accepted_routes: 0
       peer_tag_in: PEER_TAG_IN
       peer_tag_out_discard: PEER_TAG_DISCARD_OUT
     - name: MPLS-IBGP-PEERS
@@ -553,7 +554,7 @@ router_bgp:
       - name: IPv4-UNDERLAY-PEERS
         activate: true
         maximum_accepted_routes: 12000
-        maximum_accepted_routes_warning_limit: 80 percent
+        maximum_accepted_routes_warning_limit: 80
       - name: MLAG-IPv4-UNDERLAY-PEER
         activate: true
       - name: TEST_PEER_GRP
@@ -620,6 +621,8 @@ router_bgp:
         next_hop:
           address_family_ipv6:
             enabled: false
+        maximum_accepted_routes: 1000
+        maximum_accepted_routes_warning_limit: 800
       - ip_address: 10.2.3.9
         rcf_out: Address_Family_IPV4_Out()
         additional_paths:
@@ -631,6 +634,7 @@ router_bgp:
         next_hop:
           address_family_ipv6:
             enabled: true
+        maximum_accepted_routes: 0
       - ip_address: 192.168.66.21
         activate: false
         additional_paths:
@@ -716,12 +720,15 @@ router_bgp:
         activate: true
         additional_paths:
           send: disabled
+        maximum_accepted_routes: 1000
+        maximum_accepted_routes_warning_limit: 80
       - name: TEST_RCF
         additional_paths:
           send: limit
           send_limit: 11
         rcf_in: Address_Family_IPV6_In()
         rcf_out: Address_Family_IPV6_Out()
+        maximum_accepted_routes: 1000
       - name: baz
         prefix_list_in: PL-BAR-v6-IN
         prefix_list_out: PL-BAR-v6-OUT
@@ -777,12 +784,15 @@ router_bgp:
         default_originate:
           enabled: true
           always: true
+        maximum_accepted_routes: 1000
+        maximum_accepted_routes_warning_limit: 89
       - ip_address: 2001:db8::21
         activate: false
         additional_paths:
           send: disabled
         default_originate:
           enabled: true
+        maximum_accepted_routes: 1000
       - ip_address: 2001:db8::22
         additional_paths:
           send: limit
@@ -1394,6 +1404,7 @@ router_bgp:
     - ip_address: 192.168.252.1
     - ip_address: 172.31.255.2
     - ip_address: 172.31.255.3
+      maximum_accepted_routes: 1000
     - ip_address: 172.31.255.4
       peer_group: EVPN-OVERLAY-PEERS
       allowas_in:
@@ -1414,6 +1425,8 @@ router_bgp:
           action: deny-in-out
       peer_tag_in: PEER_TAG_IN
       peer_tag_out_discard: PEER_TAG_DISCARD_OUT
+      maximum_accepted_routes: 1000
+      maximum_accepted_routes_warning_limit: 88
     - ip_address: 192.168.255.3
       allowas_in:
         enabled: true
@@ -2275,6 +2288,7 @@ router_bgp:
           remove_private_as_ingress:
             enabled: true
             replace_as: true
+          maximum_accepted_routes: 0
         - ip_address: 10.2.3.4
           remote_as: 1234
           local_as: 123

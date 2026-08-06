@@ -9735,6 +9735,7 @@ ASN Notation: asdot
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
+| Maximum accepted routes | 0 (no limit) |
 
 ##### EXTENDED-COMMUNITY
 
@@ -9995,7 +9996,7 @@ ASN Notation: asdot
 | 169.254.252.1 | - | default | - | - | - | - | - | - | - | - | - | - |
 | 172.31.255.0 | Inherited from peer group IPv4-UNDERLAY-PEERS | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - | - |
 | 172.31.255.2 | - | default | - | - | - | - | - | - | - | - | - | - |
-| 172.31.255.3 | - | default | - | - | - | - | - | - | - | - | - | - |
+| 172.31.255.3 | - | default | - | - | - | 1000 | - | - | - | - | - | - |
 | 172.31.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Allowed, allowed 5 times | Inherited from peer group EVPN-OVERLAY-PEERS(interval: 2000, min_rx: 2000, multiplier: 3) | True (All) | - | - | - |
 | 192.0.3.1 | 65432 | default | - | all | - | - | - | True(interval: 2000, min_rx: 2000, multiplier: 3) | True | - | True | - |
 | 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | False | True (All) | - | - | - |
@@ -10017,7 +10018,7 @@ ASN Notation: asdot
 | 192.168.255.3 | - | default | - | - | 52000 (warning-limit 2000, warning-only) | 51000 (warning-limit 90 percent) | Allowed, allowed 5 times | - | - | - | - | - |
 | 192.168.255.4 | 65004 | default | - | all | - | - | - | - | - | - | - | - |
 | 192.168.255.11 | - | default | - | - | - | - | - | - | - | - | - | - |
-| 192.168.255.21 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS(interval: 2000, min_rx: 2000, multiplier: 3) | False | - | - | - |
+| 192.168.255.21 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | 1000 (warning-limit 88) | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS(interval: 2000, min_rx: 2000, multiplier: 3) | False | - | - | - |
 | 192.168.255.101 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - | - | - | - | - |
 | 192.168.255.201 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - | - | - | - | - |
 | 2001:cafe:192:168::4 | 65004 | default | - | all | - | - | - | - | - | - | - | - |
@@ -10036,7 +10037,7 @@ ASN Notation: asdot
 | 10.10.10.0 | - | NHP-PEER | - | - | - | - | - | Inherited from peer group NHP(interval: 500, min_rx: 500, multiplier: 3) | - | - | - | - |
 | 11.11.11.0 | - | NHP-PEER1 | - | - | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 0 (no limit) | - | - | - | - | - | - |
 | 10.2.3.4 | 1234 | TENANT_A_PROJECT01 | - | all | 0 (no limit) (warning-limit 100, warning-only) | 1000 (warning-limit 80 percent) | - | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | standard | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - |
 | 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | extended | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - |
@@ -10391,6 +10392,7 @@ router bgp 65101
    neighbor EVPN-OVERLAY-RS-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-RS-PEERS send-community
    neighbor EVPN-OVERLAY-RS-PEERS maximum-routes 0
+   neighbor EVPN-OVERLAY-RS-PEERS maximum-accepted-routes 0
    neighbor EVPN-OVERLAY-RS-PEERS peer-tag in PEER_TAG_IN
    neighbor EVPN-OVERLAY-RS-PEERS peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor EXTENDED-COMMUNITY peer group
@@ -10523,6 +10525,7 @@ router bgp 65101
    neighbor 172.31.255.0 timers 1500 1500
    neighbor 172.31.255.0 password 7 <removed>
    no neighbor 172.31.255.0 remove-private-as ingress
+   neighbor 172.31.255.3 maximum-accepted-routes 1000
    neighbor 172.31.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 172.31.255.4 allowas-in 5
    neighbor 172.31.255.4 rib-in pre-policy retain all
@@ -10591,6 +10594,7 @@ router bgp 65101
    neighbor 192.168.255.11 password 8a <removed>
    neighbor 192.168.255.21 peer group EVPN-OVERLAY-PEERS
    no neighbor 192.168.255.21 rib-in pre-policy retain
+   neighbor 192.168.255.21 maximum-accepted-routes 1000 warning-limit 88
    neighbor 192.168.255.21 missing-policy address-family all direction out action deny-in-out
    neighbor 192.168.255.21 peer-tag in PEER_TAG_IN
    neighbor 192.168.255.21 peer-tag out discard PEER_TAG_DISCARD_OUT
@@ -10831,7 +10835,7 @@ router bgp 65101
       neighbor IPV4-UNDERLAY peer-tag in PEER_TAG_IN_IPV4
       neighbor IPV4-UNDERLAY peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4
       neighbor IPv4-UNDERLAY-PEERS activate
-      neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 12000 warning-limit 80 percent
+      neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 12000 warning-limit 80
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
       neighbor NHP activate
       neighbor OBS_WAN activate
@@ -10849,10 +10853,12 @@ router bgp 65101
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
       no neighbor 10.2.3.8 additional-paths send
       no neighbor 10.2.3.8 next-hop address-family ipv6
+      neighbor 10.2.3.8 maximum-accepted-routes 1000 warning-limit 800
       neighbor 10.2.3.9 rcf out Address_Family_IPV4_Out()
       neighbor 10.2.3.9 default-originate route-map Address_Family_IPV4 always
       neighbor 10.2.3.9 additional-paths send ecmp limit 4
       neighbor 10.2.3.9 next-hop address-family ipv6
+      neighbor 10.2.3.9 maximum-accepted-routes 0
       neighbor 192.0.2.1 additional-paths receive
       neighbor 192.0.2.1 route-map Address_Family_IPV4_In in
       neighbor 192.0.2.1 route-map Address_Family_IPV4_Out out
@@ -11022,9 +11028,11 @@ router bgp 65101
       neighbor IPV6-UNDERLAY peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6
       neighbor IPV6-UNDERLAY-MLAG activate
       no neighbor IPV6-UNDERLAY-MLAG additional-paths send
+      neighbor IPV6-UNDERLAY-MLAG maximum-accepted-routes 1000 warning-limit 80
       neighbor TEST_RCF rcf in Address_Family_IPV6_In()
       neighbor TEST_RCF rcf out Address_Family_IPV6_Out()
       neighbor TEST_RCF additional-paths send limit 11
+      neighbor TEST_RCF maximum-accepted-routes 1000
       neighbor 2001:db8::1 additional-paths receive
       neighbor 2001:db8::1 route-map Address_Family_IPV6_In in
       neighbor 2001:db8::1 route-map Address_Family_IPV6_Out out
@@ -11040,9 +11048,11 @@ router bgp 65101
       neighbor 2001:db8::2 rcf out Address_Family_IPV6_Out()
       neighbor 2001:db8::2 default-originate always
       neighbor 2001:db8::2 additional-paths send any
+      neighbor 2001:db8::2 maximum-accepted-routes 1000 warning-limit 89
       no neighbor 2001:db8::21 activate
       neighbor 2001:db8::21 default-originate
       no neighbor 2001:db8::21 additional-paths send
+      neighbor 2001:db8::21 maximum-accepted-routes 1000
       neighbor 2001:db8::22 default-originate route-map RM-FOO-MATCH3
       neighbor 2001:db8::22 additional-paths send limit 5
       network 2001:db8:100::/40
@@ -11301,6 +11311,7 @@ router bgp 65101
       neighbor 10.2.3.4 maximum-routes 0 warning-limit 100 warning-only
       neighbor 10.2.3.4 maximum-accepted-routes 1000 warning-limit 80 percent
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.1 maximum-accepted-routes 0
       neighbor 10.255.251.1 remove-private-as ingress replace-as
       network 10.0.0.0/8 route-map VRF-RM
       network 100.64.0.0/10
