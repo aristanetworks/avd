@@ -45,7 +45,7 @@ l3spine:
           peer_ip: 192.168.43.1
           ipv6_addresses:
             - 2001:db8:42::2/64
-          peer: PEER-IPV6
+          peer: PEER-DUAL-STACK
           peer_interface: Ethernet1
           peer_ipv6: 2001:db8:42::1
           bgp:

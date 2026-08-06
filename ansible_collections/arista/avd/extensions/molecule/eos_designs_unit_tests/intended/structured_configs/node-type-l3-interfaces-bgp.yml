@@ -13,13 +13,13 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet44
-  description: PEER-IPV6_Ethernet1
+  description: PEER-DUAL-STACK_Ethernet1
   shutdown: false
   ip_address: 192.168.43.2/24
   ipv6_addresses:
   - 2001:db8:42::2/64
   metadata:
-    peer: PEER-IPV6
+    peer: PEER-DUAL-STACK
     peer_interface: Ethernet1
     peer_type: l3_interface
   switchport:
@@ -134,12 +134,12 @@ router_bgp:
     route_map_out: RM-BGP-192.168.42.1-OUT
   - ip_address: 192.168.43.1
     remote_as: '65043'
-    description: PEER-IPV6_Ethernet1
+    description: PEER-DUAL-STACK_Ethernet1
     route_map_in: RM-BGP-192.168.43.1-IN
     route_map_out: RM-BGP-192.168.43.1-OUT
   - ip_address: 2001:db8:42::1
     remote_as: '65043'
-    description: PEER-IPV6_Ethernet1
+    description: PEER-DUAL-STACK_Ethernet1
     route_map_in: RM-BGP-2001:db8:42::1-IN
     route_map_out: RM-BGP-2001:db8:42::1-OUT
   - ip_address: 2001:db8:45::1
