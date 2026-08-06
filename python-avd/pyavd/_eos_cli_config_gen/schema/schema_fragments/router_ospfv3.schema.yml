@@ -10,7 +10,7 @@ keys:
     type: dict
     display_name: Router OSPFv3 Configuration
     description: |-
-      Mutually exclusive with 'ipv6_router_ospf'.
+      Mutually exclusive with 'ipv6_router_ospf' on EOS.
       Use only one style across all VRFs and instances.
     keys:
       router_id:
