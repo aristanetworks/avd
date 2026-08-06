@@ -5,7 +5,7 @@
 dev = [
     "anta==1.9.0",
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.6",
+    "pyavd-utils==0.0.7",
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"
