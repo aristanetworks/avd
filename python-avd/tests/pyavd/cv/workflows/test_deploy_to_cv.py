@@ -13,9 +13,11 @@ import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
 from pyavd._cv.workflows.models import (
+    AvdDevice,
     AvdWorkspace,
     CloudVision,
     CVDeployFuture,
+    CVDevice,
     CVDeviceDeployment,
     CVEosConfig,
     CVGRPCChannelConfiguration,
@@ -192,6 +194,57 @@ async def test_deploy_to_cv(
     assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
     assert result.workspace.force == workspace_force_submission
     assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("deploy_avd_device", "decommission_avd_device"),
+    [
+        pytest.param(
+            AvdDevice(hostname="leaf1", serial_number="SN1"),
+            AvdDevice(hostname="old-leaf1", serial_number="SN1"),
+            id="DUPLICATE_SERIAL_NUMBER",
+        ),
+        pytest.param(
+            AvdDevice(hostname="leaf1", system_mac_address="00:1c:73:00:00:01"),
+            AvdDevice(hostname="old-leaf1", system_mac_address="00:1c:73:00:00:01"),
+            id="DUPLICATE_SYSTEM_MAC_WITHOUT_SERIAL_NUMBER",
+        ),
+    ],
+)
+async def test_deploy_to_cv_rejects_duplicate_identity_across_deploy_and_decommission(
+    deploy_avd_device: AvdDevice,
+    decommission_avd_device: AvdDevice,
+) -> None:
+    """A physical device cannot be targeted by both deploy and decommission actions."""
+    mock_cv_client = AsyncMock()
+    deploy_device = CVDevice(avd_device=deploy_avd_device)
+    decommission_device = CVDevice(avd_device=decommission_avd_device, action="decommission")
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", new_callable=AsyncMock),
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            device_deployments=[CVDeviceDeployment(device=deploy_device), CVDeviceDeployment(device=decommission_device)],
+        )
+
+    assert result.failed
+    assert len(result.errors) == 1
+    assert "Duplicated devices found in inventory" in str(result.errors[0])
+    mock_cv_client.get_inventory_devices.assert_not_called()
+    mock_cv_client.stage_devices_for_decommission.assert_not_called()
 
 
 @pytest.mark.asyncio

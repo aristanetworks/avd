@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, cast
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
 
-    from .models import CVDeviceDeployment, CVEosConfig, DeployToCvResult
+    from .models import CVDevice, CVDeviceDeployment, CVEosConfig, DeployToCvResult
 
 LOGGER = getLogger(__name__)
 
@@ -180,9 +180,6 @@ async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], r
     via the static config manifest instead of the flat "AVD Configurations" layout. This function removes
     the corresponding container (avd-<serial>) and configlet for these devices if they exist.
 
-    For decommission devices (device.action="decommission") not using the manifest layout, the flat-layout container and configlet are also removed.
-    Manifest-layout decommission devices are excluded (their cleanup is handled by deploy_static_config_studio_manifest_to_cv).
-
     If all children are removed, the root container itself is deleted and unregistered from the Studio.
     """
     workspace_id = result.workspace.id
@@ -194,15 +191,6 @@ async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], r
         if device_deployment.device.action != "decommission" and device_deployment.use_static_config_manifest and device_deployment.device.serial_number
     ]
 
-    # Flat-layout configlets for decommission devices.
-    target_ids.extend(
-        f"{CONFIGLET_ID_PREFIX}{device_deployment.device.serial_number}"
-        for device_deployment in device_deployments
-        if device_deployment.device.action == "decommission"
-        and not device_deployment.use_static_config_manifest
-        and device_deployment.device.serial_number
-        and device_deployment.device.exists_on_cv
-    )
     if not target_ids:
         return
     target_ids_set = set(target_ids)
@@ -268,3 +256,19 @@ async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], r
             input_path=["configletAssignmentRoots"],
             inputs=root_containers,
         )
+
+
+async def delete_decommissioned_device_configlets_from_cv(devices: list[CVDevice], result: DeployToCvResult, cv_client: CVClient) -> None:
+    """Delete flat-layout configlets left behind after CloudVision successfully stages devices for decommission."""
+    configlet_ids = [f"{CONFIGLET_ID_PREFIX}{device.serial_number}" for device in devices if device.serial_number]
+    if not configlet_ids:
+        return
+
+    existing_configlets = await cv_client.get_configlets(workspace_id=result.workspace.id, configlet_ids=configlet_ids)
+    if not existing_configlets:
+        return
+
+    existing_configlet_ids = [cast("str", configlet.key.configlet_id) for configlet in existing_configlets]
+    LOGGER.info("delete_decommissioned_device_configlets_from_cv: Removing %s configlets.", len(existing_configlet_ids))
+    await cv_client.delete_configlets(workspace_id=result.workspace.id, configlet_ids=existing_configlet_ids)
+    result.removed_configs.extend(cast("str", configlet.display_name) for configlet in existing_configlets)

@@ -219,16 +219,14 @@ class ActionModule(ActionBase):
                 structured_config_dir = validated_args.get("structured_config_dir")
                 structured_config_suffix = validated_args.get("structured_config_suffix")
 
-            inventory_mode = get(validated_args, "inventory_mode", default="loose")
-
-            # Build list of CVDeviceDeployment objects (one per deployed device).
+            # Build one CVDeviceDeployment per targeted device. In loose inventory mode, devices with `is_deployed: false` are omitted.
             device_deployments = await self.build_device_deployments(
                 device_list=get(validated_args, "device_list", default=[]),
                 structured_config_dir=structured_config_dir,
                 structured_config_suffix=structured_config_suffix,
                 configuration_dir=get(validated_args, "configuration_dir"),
                 configlet_name_template=get(validated_args, "configlet_name_template"),
-                inventory_mode=inventory_mode,
+                inventory_mode=get(validated_args, "inventory_mode"),
             )
 
             # Extract to individual list objects to maintain the same Ansible result.
@@ -261,7 +259,6 @@ class ActionModule(ActionBase):
                     interface_tag_objects,
                     cv_pathfinder_metadata_objects,
                     static_config_manifest,
-                    # Decommission devices (contribute no configs or tags).
                     any(device_deployment.device.action == "decommission" for device_deployment in device_deployments),
                 ]
             )
@@ -352,8 +349,9 @@ class ActionModule(ActionBase):
             inventory_mode: Controls handling of devices with `is_deployed: false`. In loose mode they are silently skipped.
                 In controlled mode they are included with `device.action="decommission"`.
 
-        Return:
-            List of CVDeviceDeployment objects (one per deployed device, skipping devices where is_deployed is false when inventory_mode is "loose").
+        Returns:
+            List of CVDeviceDeployment objects. Devices with `is_deployed: false` are skipped when `inventory_mode` is `loose` and included with
+            `device.action="decommission"` when `inventory_mode` is `controlled`.
 
         Workflow:
             Per device:
@@ -363,8 +361,9 @@ class ActionModule(ActionBase):
               - Read serial_number & system_mac from structured config.
               - Create CVDevice object.
               - Read cv_use_static_config_manifest from structured config.
-              - If cv_use_static_config_manifest is false, create CVEosConfig object.
-              - Create tag and pathfinder metadata objects.
+              - For deployed devices not using the static config manifest, create a CVEosConfig object.
+              - Create device and interface tag objects for both deploy and decommission devices.
+              - Create a Pathfinder metadata object for deployed devices when the metadata is present.
               - Return CVDeviceDeployment object bundling all per-device objects.
         """
         coroutines = [
@@ -429,53 +428,49 @@ class ActionModule(ActionBase):
             get(structured_config, "cv_use_static_config_manifest", default=False),
         )
 
-        # Build device config objects (only for devices being deployed and only if NOT opted into manifest layout).
+        # Build a device config object only for deployed devices not using the manifest layout.
         eos_config = None
         if is_deployed and not use_static_config_manifest:
             configlet_name = Template(configlet_name_template).substitute(hostname=hostname)
             config_file_path = str(Path(configuration_dir, f"{hostname}.cfg"))
             eos_config = CVEosConfig(file=config_file_path, device=device_object, configlet_name=configlet_name)
 
-        # Build device tag objects for this device (deploy only — CloudVision unassociates tags automatically on decommission).
+        # Build device tag objects for this device.
         # ! metadata:
         # !   cv_tags:
         # !     device_tags:
         # !     - name: topology_hint_datacenter
         # !       value: DC1
-        device_tag_objects: list[CVDeviceTag] = []
-        interface_tag_objects: list[CVInterfaceTag] = []
-        if is_deployed:
-            device_tags = default(get(structured_config, "metadata.cv_tags.device_tags"), get(structured_config, "cv_device_tags"), [])
-            device_tag_objects = [
-                CVDeviceTag(label=device_tag["name"], value=device_tag["value"], device=device_object)
-                for device_tag in device_tags
-                if "name" in device_tag and "value" in device_tag
-            ]
+        device_tags = default(get(structured_config, "metadata.cv_tags.device_tags"), get(structured_config, "cv_device_tags"), [])
+        device_tag_objects = [
+            CVDeviceTag(label=device_tag["name"], value=device_tag["value"], device=device_object)
+            for device_tag in device_tags
+            if "name" in device_tag and "value" in device_tag
+        ]
 
-            # Build interface tag objects for this device.
-            # ! metadata:
-            # !  cv_tags:
-            # !    interface_tags:
-            # !    - interface: Ethernet3
-            # !      tags:
-            # !      - name: peer_device_interface
-            # !        value: Ethernet3
-            all_interface_tags = default(get(structured_config, "metadata.cv_tags.interface_tags"), get(structured_config, "cv_interface_tags"), [])
-            interface_tag_objects = [
-                CVInterfaceTag(
-                    label=interface_tag["name"],
-                    value=interface_tag["value"],
-                    device=device_object,
-                    interface=one_interface_tags["interface"],
-                )
-                for one_interface_tags in all_interface_tags
-                if "interface" in one_interface_tags and "tags" in one_interface_tags
-                for interface_tag in one_interface_tags["tags"]
-                if "name" in interface_tag and "value" in interface_tag
-            ]
+        # Build interface tag objects for this device.
+        # ! metadata:
+        # !  cv_tags:
+        # !    interface_tags:
+        # !    - interface: Ethernet3
+        # !      tags:
+        # !      - name: peer_device_interface
+        # !        value: Ethernet3
+        all_interface_tags = default(get(structured_config, "metadata.cv_tags.interface_tags"), get(structured_config, "cv_interface_tags"), [])
+        interface_tag_objects = [
+            CVInterfaceTag(
+                label=interface_tag["name"],
+                value=interface_tag["value"],
+                device=device_object,
+                interface=one_interface_tags["interface"],
+            )
+            for one_interface_tags in all_interface_tags
+            if "interface" in one_interface_tags and "tags" in one_interface_tags
+            for interface_tag in one_interface_tags["tags"]
+            if "name" in interface_tag and "value" in interface_tag
+        ]
 
-        # Build WAN metadata object for this device (only if device is being deployed).
-        # TODO: Implement pathfinder metadata cleanup for decommission devices.
+        # Build a WAN metadata object only for deployed devices.
         cv_pathfinder_metadata_object = None
         if (
             is_deployed

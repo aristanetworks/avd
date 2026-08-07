@@ -103,10 +103,11 @@ options:
 
       - `loose` (default): Devices with `is_deployed: false` are silently skipped. No changes are made to CloudVision for these devices.
       - `controlled`: Devices with `is_deployed: false` are decommissioned from CloudVision.
-          On top of the native CloudVision decommission process, AVD performs the following additional cleanup:
-          - Any user-created tag (label+value pair) that is no longer assigned to any device after the device is removed is deleted from CloudVision.
-          - The flat-layout configlet and per-device container are removed from the "Static Configuration Studio".
-              For devices using `cv_use_static_config_manifest`, the manifest update handles config cleanup automatically.
+          CloudVision removes device-specific containers and all device and interface tag assignments associated with the device.
+          CloudVision does not remove configlets or tag definitions.
+          For the flat layout, AVD removes the device configlet after decommission staging succeeds.
+          For the manifest layout, the supplied static configuration manifest remains authoritative and is reconciled after decommission staging.
+          AVD does not delete tag definitions.
 
       Requires CloudVision 2025.1.0 or later when set to `controlled`.
     type: str

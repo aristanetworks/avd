@@ -25,6 +25,9 @@ async def stage_devices_for_decommission_on_cv(
     """
     Stage the given devices for decommission in the CloudVision Workspace.
 
+    CloudVision removes all device and interface tag assignments associated with successfully decommissioned devices.
+    Tag definitions remain in CloudVision and are not deleted by AVD.
+
     Parameters:
         devices: Devices to decommission. Must have `serial_number` set and `exists_on_cv=True`.
         workspace_id: Workspace ID to stage the decommission in.
