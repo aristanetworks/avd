@@ -2022,7 +2022,7 @@ router bgp {{ router_bgp.as }}
 {%                     else %}
 {%                         set add_path_cli = 'neighbor ' ~ peer_group.name ~ ' additional-paths send ' ~ peer_group.additional_paths.send %}
 {%                     endif %}
-{%                     if peer_group.additional_paths.prefix_list is arista.avd.defined and add_path_cli is arista.avd.defined %}
+{%                     if peer_group.additional_paths.prefix_list is arista.avd.defined %}
 {%                         set add_path_cli = add_path_cli ~ ' prefix-list ' ~ peer_group.additional_paths.prefix_list %}
 {%                     endif %}
 {%                     if add_path_cli is arista.avd.defined %}
