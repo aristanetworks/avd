@@ -371,6 +371,7 @@ class ActionModule(ActionBase):
             for hostname in device_list
         ]
         results = await gather(*coroutines)
+
         return [deployment for deployment in results if deployment is not None]
 
     async def build_device_deployment(
