@@ -71,7 +71,7 @@ class MlagMixin(Protocol):
         if (length := len(mlag_nodes)) != 2:
             msg = (
                 f"Node group '{self.node_group_config.group}' has {length} nodes with 'mlag: true' ({natural_sort(mlag_nodes)}). "
-                "Exactly two MLAG nodes are required when 'avd_design_future.allow_mlag_in_shared_node_groups' is true."
+                "Exactly two MLAG-enabled nodes are supported in a shared node group when 'avd_design_future.allow_mlag_in_shared_node_groups' is true."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
