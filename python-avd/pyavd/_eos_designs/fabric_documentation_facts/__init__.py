@@ -35,19 +35,30 @@ class FabricDocumentationFacts(AvdFacts):
     _fabric_name: str
     _include_connected_endpoints: bool
     """Avoid building data for connected endpoints unless we need it."""
+    _include_vrf_summary: bool
+    _include_bgp_peer_groups: bool
 
     # Overriding class vars from AvdFacts, since fabric documentation covers all devices.
     _hostvars = NotImplemented
     shared_utils = NotImplemented
 
     def __init__(  # pylint: disable=super-init-not-called
-        self, avd_facts: dict[str, EosDesignsFacts], structured_configs: dict[str, dict], fabric_name: str, include_connected_endpoints: bool, toc: bool
+        self,
+        avd_facts: dict[str, EosDesignsFacts],
+        structured_configs: dict[str, dict],
+        fabric_name: str,
+        include_connected_endpoints: bool,
+        toc: bool,
+        include_vrf_summary: bool = False,
+        include_bgp_peer_groups: bool = False,
     ) -> None:
         self.avd_facts = avd_facts
         self._fabric_name = fabric_name
         self.structured_configs = structured_configs
         self._include_connected_endpoints = include_connected_endpoints
         self._toc = toc
+        self._include_vrf_summary = include_vrf_summary
+        self._include_bgp_peer_groups = include_bgp_peer_groups
 
     def render(self) -> dict[str, Any]:
         return {key: value for key in self.keys() if (value := getattr(self, key)) is not None}
@@ -61,6 +72,16 @@ class FabricDocumentationFacts(AvdFacts):
     def toc(self) -> bool:
         """Generate the table of content(TOC) on fabric documentation."""
         return self._toc
+
+    @cached_property
+    def include_vrf_summary(self) -> bool:
+        """Include the VRF Summary section in the fabric documentation."""
+        return self._include_vrf_summary
+
+    @cached_property
+    def include_bgp_peer_groups(self) -> bool:
+        """Include the BGP Peer Groups section in the fabric documentation."""
+        return self._include_bgp_peer_groups
 
     @cached_property
     def fabric_switches(self) -> list[dict]:
@@ -85,6 +106,20 @@ class FabricDocumentationFacts(AvdFacts):
                         get_item(get(structured_config, "loopback_interfaces", default=[]), "name", "Loopback1", default={}), "ip_address"
                     ),
                     "router_isis_net": get(structured_config, "router_isis.net"),
+                    # MPLS/SP fields
+                    "mpls_router_id": get(structured_config, "mpls.ldp.router_id"),
+                    "mpls_ldp_enabled": get(structured_config, "mpls.ldp.shutdown") is False or None if get(structured_config, "mpls.ldp") else None,
+                    "bgp_as": self.avd_facts[hostname].bgp_as,
+                    "router_id": self.avd_facts[hostname].router_id,
+                    "isis_sr_enabled": get(structured_config, "router_isis.segment_routing_mpls.enabled"),
+                    "isis_node_sid_ipv4_index": get(
+                        get_item(get(structured_config, "loopback_interfaces", default=[]), "name", "Loopback0", default={}),
+                        "node_segment.ipv4_index",
+                    ),
+                    "isis_node_sid_ipv6_index": get(
+                        get_item(get(structured_config, "loopback_interfaces", default=[]), "name", "Loopback0", default={}),
+                        "node_segment.ipv6_index",
+                    ),
                 }
                 for hostname, structured_config in self.structured_configs.items()
             ],
@@ -95,6 +130,198 @@ class FabricDocumentationFacts(AvdFacts):
     def has_isis(self) -> bool:
         """At least one device has ISIS configured, so we should include the section in the docs."""
         return any(fabric_switch.get("router_isis_net") for fabric_switch in self.fabric_switches)
+
+    @cached_property
+    def has_mpls(self) -> bool:
+        """At least one device has MPLS/LDP configured, so we should include the section in the docs."""
+        return any(fabric_switch.get("mpls_ldp_enabled") for fabric_switch in self.fabric_switches)
+
+    @cached_property
+    def has_isis_sr(self) -> bool:
+        """At least one device has ISIS Segment Routing configured, so we should include the section in the docs."""
+        return any(fabric_switch.get("isis_sr_enabled") for fabric_switch in self.fabric_switches)
+
+    @cached_property
+    def mpls_overlay_nodes(self) -> list[dict]:
+        """List of nodes with MPLS overlay BGP configuration (VPN-IPv4/VPN-IPv6)."""
+        overlay_nodes = []
+        for hostname, structured_config in self.structured_configs.items():
+            router_bgp = get(structured_config, "router_bgp", default={})
+            # Check if VPN-IPv4 or VPN-IPv6 address family is configured
+            has_vpn_ipv4 = get(router_bgp, "address_family_vpn_ipv4") is not None
+            has_vpn_ipv6 = get(router_bgp, "address_family_vpn_ipv6") is not None
+            if has_vpn_ipv4 or has_vpn_ipv6:
+                address_families = []
+                if has_vpn_ipv4:
+                    address_families.append("vpn-ipv4")
+                if has_vpn_ipv6:
+                    address_families.append("vpn-ipv6")
+                overlay_nodes.append(
+                    {
+                        "node": hostname,
+                        "type": self.avd_facts[hostname].type,
+                        "bgp_as": self.avd_facts[hostname].bgp_as or "-",
+                        "router_id": self.avd_facts[hostname].router_id or "-",
+                        "address_families": ", ".join(address_families),
+                    }
+                )
+        return natural_sort(overlay_nodes, sort_key="node")
+
+    @cached_property
+    def has_mpls_overlay(self) -> bool:
+        """At least one device has MPLS overlay BGP configured."""
+        return len(self.mpls_overlay_nodes) > 0
+
+    @cached_property
+    def mpls_route_reflectors(self) -> list[dict]:
+        """List of MPLS route reflector nodes."""
+        rr_nodes = []
+        for hostname, structured_config in self.structured_configs.items():
+            router_bgp = get(structured_config, "router_bgp", default={})
+            for peer_group in get(router_bgp, "peer_groups", default=[]):
+                if get(peer_group, "route_reflector_client") is True and get(peer_group, "metadata.type") == "mpls":
+                    rr_nodes.append(
+                        {
+                            "node": hostname,
+                            "type": self.avd_facts[hostname].type,
+                            "bgp_as": self.avd_facts[hostname].bgp_as or "-",
+                            "router_id": self.avd_facts[hostname].router_id or "-",
+                            "cluster_id": get(router_bgp, "bgp_cluster_id", default="-"),
+                        }
+                    )
+                    break
+        return natural_sort(rr_nodes, sort_key="node")
+
+    @cached_property
+    def has_mpls_route_reflectors(self) -> bool:
+        """At least one device is an MPLS route reflector."""
+        return len(self.mpls_route_reflectors) > 0
+
+    @cached_property
+    def vrf_summary(self) -> list[dict]:
+        """List of VRFs with RD/RT allocations across the fabric."""
+        vrf_data: dict[str, dict] = {}
+        for hostname, structured_config in self.structured_configs.items():
+            router_bgp = get(structured_config, "router_bgp", default={})
+            for vrf in get(router_bgp, "vrfs", default=[]):
+                vrf_name = get(vrf, "name")
+                if not vrf_name or vrf_name == "default":
+                    continue
+                rd = get(vrf, "rd")
+                if not rd:
+                    continue
+                if vrf_name not in vrf_data:
+                    vrf_data[vrf_name] = {
+                        "vrf": vrf_name,
+                        "rd_pattern": rd.split(":")[1] if ":" in rd else rd,  # Extract VRF ID portion
+                        "import_rt": ", ".join(sorted(set(self._collect_route_targets(vrf, "import")))),
+                        "export_rt": ", ".join(sorted(set(self._collect_route_targets(vrf, "export")))),
+                        "nodes": [hostname],
+                    }
+                elif hostname not in vrf_data[vrf_name]["nodes"]:
+                    vrf_data[vrf_name]["nodes"].append(hostname)
+
+        for vrf in vrf_data.values():
+            vrf["nodes"] = ", ".join(natural_sort(vrf["nodes"]))
+
+        return natural_sort(list(vrf_data.values()), sort_key="vrf")
+
+    @staticmethod
+    def _collect_route_targets(vrf: dict, direction: str) -> list[str]:
+        """Return unique route targets for the given direction ("import" or "export"), preserving discovery order."""
+        rts: list[str] = []
+        for rt_group in get(vrf, f"route_targets.{direction}", default=[]):
+            for rt in get(rt_group, "route_targets", default=[]):
+                if rt not in rts:
+                    rts.append(rt)
+        return rts
+
+    @cached_property
+    def has_vrfs(self) -> bool:
+        """At least one VRF is configured with BGP RD/RT."""
+        return len(self.vrf_summary) > 0
+
+    @cached_property
+    def bgp_peer_groups(self) -> list[dict]:
+        """List of BGP peer groups used across the fabric."""
+        peer_groups_data: dict[str, dict] = {}
+        for hostname, structured_config in self.structured_configs.items():
+            router_bgp = get(structured_config, "router_bgp", default={})
+            for peer_group in get(router_bgp, "peer_groups", default=[]):
+                pg_name = get(peer_group, "name")
+                if not pg_name:
+                    continue
+                if pg_name not in peer_groups_data:
+                    peer_groups_data[pg_name] = self._new_peer_group_entry(peer_group, hostname)
+                else:
+                    self._merge_peer_group_entry(peer_groups_data[pg_name], peer_group, hostname)
+
+        for pg in peer_groups_data.values():
+            pg["nodes"] = ", ".join(natural_sort(pg["nodes"]))
+            pg["remote_as"] = pg["remote_as"] if pg["remote_as"] is not None else "-"
+
+        return natural_sort(list(peer_groups_data.values()), sort_key="name")
+
+    @staticmethod
+    def _new_peer_group_entry(peer_group: dict, hostname: str) -> dict:
+        return {
+            "name": get(peer_group, "name"),
+            "remote_as": get(peer_group, "remote_as"),
+            "update_source": get(peer_group, "update_source", default="-"),
+            "bfd": "Yes" if get(peer_group, "bfd") is True else "No",
+            "send_community": get(peer_group, "send_community", default="-"),
+            "nodes": [hostname],
+        }
+
+    @staticmethod
+    def _merge_peer_group_entry(entry: dict, peer_group: dict, hostname: str) -> None:
+        if hostname not in entry["nodes"]:
+            entry["nodes"].append(hostname)
+        # If remote_as differs across nodes, mark it as varying so it renders as "-".
+        if entry["remote_as"] != get(peer_group, "remote_as"):
+            entry["remote_as"] = None
+
+    @cached_property
+    def has_bgp_peer_groups(self) -> bool:
+        """At least one BGP peer group is configured."""
+        return len(self.bgp_peer_groups) > 0
+
+    _REDISTRIBUTE_PROTOCOLS: tuple[tuple[str, str], ...] = (
+        ("connected.enabled", "connected"),
+        ("ospf.enabled", "OSPF"),
+        ("static.enabled", "static"),
+        ("bgp.enabled", "BGP"),
+    )
+
+    @cached_property
+    def vrf_routing_protocols(self) -> list[dict]:
+        """List of VRFs with their routing protocol configurations."""
+        vrf_routing_data: dict[str, dict] = {}
+        for hostname, structured_config in self.structured_configs.items():
+            router_bgp = get(structured_config, "router_bgp", default={})
+            for vrf in get(router_bgp, "vrfs", default=[]):
+                vrf_name = get(vrf, "name")
+                if not vrf_name or vrf_name == "default":
+                    continue
+                key = f"{hostname}:{vrf_name}"
+                if key in vrf_routing_data:
+                    continue
+                redistribute = get(vrf, "redistribute", default={})
+                protocols = [label for path, label in self._REDISTRIBUTE_PROTOCOLS if get(redistribute, path)]
+                vrf_routing_data[key] = {
+                    "node": hostname,
+                    "type": self.avd_facts[hostname].type,
+                    "vrf": vrf_name,
+                    "router_id": get(vrf, "router_id", default="-"),
+                    "redistribute": ", ".join(protocols) if protocols else "-",
+                }
+
+        return natural_sort(list(vrf_routing_data.values()), sort_key="node")
+
+    @cached_property
+    def has_vrf_routing_protocols(self) -> bool:
+        """At least one VRF has routing protocol redistribution configured."""
+        return len(self.vrf_routing_protocols) > 0
 
     @cached_property
     def _node_types(self) -> set[str]:

@@ -11,6 +11,13 @@
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [ISIS CLNS interfaces](#isis-clns-interfaces)
+  - [MPLS and LDP Configuration](#mpls-and-ldp-configuration)
+  - [ISIS Segment Routing Node-SID Allocation](#isis-segment-routing-node-sid-allocation)
+  - [BGP MPLS Overlay](#bgp-mpls-overlay)
+  - [MPLS Route Reflectors](#mpls-route-reflectors)
+  - [VRF Summary](#vrf-summary)
+  - [BGP Peer Groups](#bgp-peer-groups)
+  - [VRF Redistribute Summary](#vrf-redistribute-summary)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -111,6 +118,79 @@
 | MPLS_CORE | SITE2-RR1 | 49.0001.1000.7000.0009.00 |
 | MPLS_CORE | SITE3-LER1 | 49.0001.1000.7000.0010.00 |
 | MPLS_CORE | SITE3-RR1 | 49.0001.1000.7000.0012.00 |
+
+### MPLS and LDP Configuration
+
+| POD | Node | Type | MPLS Router ID | LDP Enabled |
+| --- | ---- | ---- | -------------- | ----------- |
+| MPLS_CORE | SITE1-LER1 | pe | 100.70.0.5 | True |
+| MPLS_CORE | SITE1-LER2 | pe | 100.70.0.6 | True |
+| MPLS_CORE | SITE1-LSR1 | p | 100.70.0.1 | True |
+| MPLS_CORE | SITE1-LSR2 | p | 100.70.0.2 | True |
+| MPLS_CORE | SITE1-RR1 | rr | 100.70.0.8 | True |
+| MPLS_CORE | SITE2-LER1 | pe | 100.70.0.7 | True |
+| MPLS_CORE | SITE2-LSR1 | p | 100.70.0.3 | True |
+| MPLS_CORE | SITE2-LSR2 | p | 100.70.0.4 | True |
+| MPLS_CORE | SITE2-RR1 | rr | 100.70.0.9 | True |
+| MPLS_CORE | SITE3-LER1 | pe | 100.70.0.10 | True |
+| MPLS_CORE | SITE3-RR1 | rr | 100.70.0.12 | True |
+
+### ISIS Segment Routing Node-SID Allocation
+
+| POD | Node | Type | Node SID IPv4 Index | Node SID IPv6 Index |
+| --- | ---- | ---- | ------------------- | ------------------- |
+| MPLS_CORE | SITE1-LER1 | pe | 205 | 1205 |
+| MPLS_CORE | SITE1-LER2 | pe | 206 | 1206 |
+| MPLS_CORE | SITE1-LSR1 | p | 301 | 1301 |
+| MPLS_CORE | SITE1-LSR2 | p | 302 | 1302 |
+| MPLS_CORE | SITE1-RR1 | rr | 108 | 1108 |
+| MPLS_CORE | SITE2-LER1 | pe | 207 | 1207 |
+| MPLS_CORE | SITE2-LSR1 | p | 303 | 1303 |
+| MPLS_CORE | SITE2-LSR2 | p | 344 | 1344 |
+| MPLS_CORE | SITE2-RR1 | rr | 109 | 1109 |
+| MPLS_CORE | SITE3-LER1 | pe | 210 | 1210 |
+| MPLS_CORE | SITE3-RR1 | rr | 112 | 1112 |
+
+### BGP MPLS Overlay
+
+| Node | Type | BGP AS | Router ID | Address Families |
+| ---- | ---- | ------ | --------- | ---------------- |
+| SITE1-LER2 | pe | 65000 | 100.70.0.6 | vpn-ipv4, vpn-ipv6 |
+| SITE1-RR1 | rr | 65000 | 100.70.0.8 | vpn-ipv4, vpn-ipv6 |
+| SITE2-LER1 | pe | 65000 | 100.70.0.7 | vpn-ipv4, vpn-ipv6 |
+| SITE2-RR1 | rr | 65000 | 100.70.0.9 | vpn-ipv4, vpn-ipv6 |
+| SITE3-RR1 | rr | 65000 | 100.70.0.12 | vpn-ipv4 |
+
+### MPLS Route Reflectors
+
+| Node | Type | BGP AS | Router ID | Cluster ID |
+| ---- | ---- | ------ | --------- | ---------- |
+| SITE1-RR1 | rr | 65000 | 100.70.0.8 | 1.1.1.1 |
+| SITE2-RR1 | rr | 65000 | 100.70.0.9 | 1.1.1.1 |
+
+### VRF Summary
+
+| VRF | RD Pattern | Import RT | Export RT | Nodes |
+| --- | ---------- | --------- | --------- | ----- |
+| TENANT_B_INTRA | 19 | 65000:19 | 65000:19 | SITE1-LER1, SITE1-LER2, SITE2-LER1 |
+| TENANT_B_WAN | 20 | 65000:20 | 65000:20 | SITE1-LER2, SITE2-LER1 |
+
+### BGP Peer Groups
+
+| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
+| ---------- | --------- | ------------- | --- | -------------- | ----- |
+| MPLS-OVERLAY-PEERS | 65000 | Loopback0 | Yes | all | SITE1-LER1, SITE1-LER2, SITE1-RR1, SITE2-LER1, SITE2-RR1 |
+| RR-OVERLAY-PEERS | 65000 | Loopback0 | Yes | all | SITE1-RR1, SITE2-RR1, SITE3-RR1 |
+
+### VRF Redistribute Summary
+
+| Node | Type | VRF | Router ID | Redistribute |
+| ---- | ---- | --- | --------- | ------------ |
+| SITE1-LER1 | pe | TENANT_B_INTRA | 100.70.0.5 | connected, OSPF |
+| SITE1-LER2 | pe | TENANT_B_INTRA | 100.70.0.6 | connected |
+| SITE1-LER2 | pe | TENANT_B_WAN | 100.70.0.6 | connected |
+| SITE2-LER1 | pe | TENANT_B_INTRA | 100.70.0.7 | connected, static |
+| SITE2-LER1 | pe | TENANT_B_WAN | 100.70.0.7 | connected, OSPF |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 

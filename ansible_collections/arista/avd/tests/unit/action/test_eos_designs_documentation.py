@@ -38,6 +38,8 @@ BASE_VALIDATED_ARGS = {
     "p2p_links_csv": False,
     "toc": True,
     "digital_twin": False,
+    "include_vrf_summary": False,
+    "include_bgp_peer_groups": False,
 }
 
 

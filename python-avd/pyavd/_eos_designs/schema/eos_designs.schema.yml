@@ -2752,6 +2752,21 @@ keys:
           with thousands of endpoints.'
         type: bool
         default: false
+      sections:
+        description: 'Control individual documentation sections.
+
+          New sections default to `false` so users must opt in.'
+        type: dict
+        keys:
+          vrf_summary:
+            description: Include the `VRF Summary` section in the fabric-wide documentation.
+            type: bool
+            default: false
+          bgp_peer_groups:
+            description: Include the `BGP Peer Groups` section in the fabric-wide
+              documentation.
+            type: bool
+            default: false
       topology_csv:
         description: Generate Topology CSV with all interfaces towards other devices.
         type: bool

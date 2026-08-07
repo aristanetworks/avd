@@ -10,6 +10,7 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
+  - [VRF Redistribute Summary](#vrf-redistribute-summary)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 - [Connected Endpoints](#connected-endpoints)
@@ -242,6 +243,31 @@
 | DC2 | DC2-RS2 | 172.16.20.2/32 |
 | DC2 | DC2-SUPER-SPINE1 | 172.16.200.1/32 |
 | DC2 | DC2-SUPER-SPINE2 | 172.16.200.2/32 |
+
+### VRF Redistribute Summary
+
+| Node | Type | VRF | Router ID | Redistribute |
+| ---- | ---- | --- | --------- | ------------ |
+| DC1-POD1-LEAF1B | l3leaf | Common_VRF | 172.16.110.4 | connected |
+| DC1-POD1-LEAF1B | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.110.4 | connected |
+| DC1-POD1-LEAF1B | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.110.4 | connected |
+| DC1-POD1-LEAF1B | l3leaf | vrf_with_loopbacks_from_pod_pools | 172.16.110.4 | connected |
+| DC1-POD1-LEAF2B | l3leaf | Common_VRF | 172.16.110.5 | connected |
+| DC1-POD1-LEAF2B | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.110.5 | connected |
+| DC1-POD1-LEAF2B | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.110.5 | connected |
+| DC1-POD1-LEAF2B | l3leaf | vrf_with_loopbacks_from_pod_pools | 172.16.110.5 | connected |
+| DC1-POD2-LEAF1A | l3leaf | Common_VRF | 172.16.120.3 | connected |
+| DC1-POD2-LEAF1A | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.120.3 | connected |
+| DC1-POD2-LEAF1A | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.120.3 | connected |
+| DC1-POD2-LEAF1A | l3leaf | vrf_with_loopbacks_from_pod_pools | 172.16.120.3 | connected |
+| DC1.POD1.LEAF2A | l3leaf | Common_VRF | 172.16.110.6 | connected |
+| DC1.POD1.LEAF2A | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.110.6 | connected |
+| DC1.POD1.LEAF2A | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.110.6 | connected |
+| DC1.POD1.LEAF2A | l3leaf | vrf_with_loopbacks_from_pod_pools | 172.16.110.6 | connected |
+| DC2-POD1-LEAF1A | l3leaf | Common_VRF | 172.16.210.3 | connected |
+| DC2-POD1-LEAF1A | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.210.3 | connected |
+| DC2-POD1-LEAF1A | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.210.3 | connected |
+| DC2-POD1-LEAF1A | l3leaf | vrf_with_loopbacks_from_pod_pools | 172.16.210.3 | connected |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 

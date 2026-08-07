@@ -20,6 +20,9 @@
     | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  | Control fabric documentation generation.<br> |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_designs_documentation.enable") | Boolean |  | `True` |  | Generate fabric-wide documentation. |
     | [<samp>&nbsp;&nbsp;connected_endpoints</samp>](## "eos_designs_documentation.connected_endpoints") | Boolean |  | `False` |  | Include connected endpoints in the fabric-wide documentation.<br>This is `false` by default to avoid cluttering documentation for projects with thousands of endpoints. |
+    | [<samp>&nbsp;&nbsp;sections</samp>](## "eos_designs_documentation.sections") | Dictionary |  |  |  | Control individual documentation sections.<br>New sections default to `false` so users must opt in. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf_summary</samp>](## "eos_designs_documentation.sections.vrf_summary") | Boolean |  | `False` |  | Include the `VRF Summary` section in the fabric-wide documentation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_peer_groups</samp>](## "eos_designs_documentation.sections.bgp_peer_groups") | Boolean |  | `False` |  | Include the `BGP Peer Groups` section in the fabric-wide documentation. |
     | [<samp>&nbsp;&nbsp;topology_csv</samp>](## "eos_designs_documentation.topology_csv") | Boolean |  | `False` |  | Generate Topology CSV with all interfaces towards other devices. |
     | [<samp>&nbsp;&nbsp;p2p_links_csv</samp>](## "eos_designs_documentation.p2p_links_csv") | Boolean |  | `False` |  | Generate P2P links CSV with all routed point-to-point links between devices. |
     | [<samp>&nbsp;&nbsp;toc</samp>](## "eos_designs_documentation.toc") | Boolean |  | `True` |  | Generate the table of content(TOC) on fabric documentation. |
@@ -66,6 +69,16 @@
       # Include connected endpoints in the fabric-wide documentation.
       # This is `false` by default to avoid cluttering documentation for projects with thousands of endpoints.
       connected_endpoints: <bool; default=False>
+
+      # Control individual documentation sections.
+      # New sections default to `false` so users must opt in.
+      sections:
+
+        # Include the `VRF Summary` section in the fabric-wide documentation.
+        vrf_summary: <bool; default=False>
+
+        # Include the `BGP Peer Groups` section in the fabric-wide documentation.
+        bgp_peer_groups: <bool; default=False>
 
       # Generate Topology CSV with all interfaces towards other devices.
       topology_csv: <bool; default=False>

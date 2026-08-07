@@ -31,6 +31,8 @@ def get_fabric_documentation(
     p2p_links_csv: bool = False,
     toc: bool = True,
     digital_twin: bool = False,
+    include_vrf_summary: bool = False,
+    include_bgp_peer_groups: bool = False,
 ) -> FabricDocumentation:
     """
     Build and return the AVD fabric documentation.
@@ -52,6 +54,8 @@ def get_fabric_documentation(
         p2p_links_csv: Returns P2P links CSV when set to True.
         toc: Skip TOC when set to False.
         digital_twin: PREVIEW: Returns Digital Twin topology when set to True.
+        include_vrf_summary: Include the VRF Summary section in the fabric documentation.
+        include_bgp_peer_groups: Include the BGP Peer Groups section in the fabric documentation.
 
     Returns:
         FabricDocumentation object containing the requested documentation areas.
@@ -72,7 +76,9 @@ def get_fabric_documentation(
 
     structured_configs = cast("dict[str, dict]", structured_configs)
 
-    fabric_documentation_facts = FabricDocumentationFacts(avd_facts, structured_configs, fabric_name, include_connected_endpoints, toc)
+    fabric_documentation_facts = FabricDocumentationFacts(
+        avd_facts, structured_configs, fabric_name, include_connected_endpoints, toc, include_vrf_summary, include_bgp_peer_groups
+    )
     result = FabricDocumentation()
     doc_templar = Templar(precompiled_templates_path=EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH)
     if fabric_documentation:

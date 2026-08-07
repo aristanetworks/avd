@@ -19423,9 +19423,42 @@ class EosDesigns(EosDesignsRootModel):
     class EosDesignsDocumentation(AvdModel):
         """Subclass of AvdModel."""
 
+        class Sections(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"vrf_summary": {"type": bool, "default": False}, "bgp_peer_groups": {"type": bool, "default": False}}
+            vrf_summary: bool
+            """
+            Include the `VRF Summary` section in the fabric-wide documentation.
+
+            Default value: `False`
+            """
+            bgp_peer_groups: bool
+            """
+            Include the `BGP Peer Groups` section in the fabric-wide documentation.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, vrf_summary: bool | UndefinedType = Undefined, bgp_peer_groups: bool | UndefinedType = Undefined) -> None:
+                    """
+                    Sections.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vrf_summary: Include the `VRF Summary` section in the fabric-wide documentation.
+                        bgp_peer_groups: Include the `BGP Peer Groups` section in the fabric-wide documentation.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "enable": {"type": bool, "default": True},
             "connected_endpoints": {"type": bool, "default": False},
+            "sections": {"type": Sections},
             "topology_csv": {"type": bool, "default": False},
             "p2p_links_csv": {"type": bool, "default": False},
             "toc": {"type": bool, "default": True},
@@ -19443,6 +19476,12 @@ class EosDesigns(EosDesignsRootModel):
         cluttering documentation for projects with thousands of endpoints.
 
         Default value: `False`
+        """
+        sections: Sections
+        """
+        Control individual documentation sections.
+        New sections default to `false` so users must opt in.
+        Subclass of AvdModel.
         """
         topology_csv: bool
         """
@@ -19470,6 +19509,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 enable: bool | UndefinedType = Undefined,
                 connected_endpoints: bool | UndefinedType = Undefined,
+                sections: Sections | UndefinedType = Undefined,
                 topology_csv: bool | UndefinedType = Undefined,
                 p2p_links_csv: bool | UndefinedType = Undefined,
                 toc: bool | UndefinedType = Undefined,
@@ -19486,6 +19526,10 @@ class EosDesigns(EosDesignsRootModel):
                        Include connected endpoints in the fabric-wide documentation.
                        This is `false` by default to avoid
                        cluttering documentation for projects with thousands of endpoints.
+                    sections:
+                       Control individual documentation sections.
+                       New sections default to `false` so users must opt in.
+                       Subclass of AvdModel.
                     topology_csv: Generate Topology CSV with all interfaces towards other devices.
                     p2p_links_csv: Generate P2P links CSV with all routed point-to-point links between devices.
                     toc: Generate the table of content(TOC) on fabric documentation.
