@@ -2050,8 +2050,8 @@ router bgp {{ router_bgp.as }}
 {%                     else %}
 {%                         set add_path_cli = 'neighbor ' ~ peer_group.name ~ ' additional-paths send ' ~ peer_group.additional_paths.send %}
 {%                     endif %}
-{%                     if router_bgp.address_family_ipv6.bgp.additional_paths.prefix_list is arista.avd.defined %}
-{%                         set add_path_cli = add_path_cli ~ ' prefix-list ' ~ router_bgp.address_family_ipv6.bgp.additional_paths.prefix_list %}
+{%                     if peer_group.additional_paths.prefix_list is arista.avd.defined %}
+{%                         set add_path_cli = add_path_cli ~ ' prefix-list ' ~ peer_group.additional_paths.prefix_list %}
 {%                     endif %}
 {%                     if add_path_cli is arista.avd.defined %}
       {{ add_path_cli }}
@@ -2122,8 +2122,8 @@ router bgp {{ router_bgp.as }}
 {%                     else %}
 {%                         set add_path_cli = 'neighbor ' ~ neighbor.ip_address ~ ' additional-paths send ' ~ neighbor.additional_paths.send %}
 {%                     endif %}
-{%                     if router_bgp.address_family_ipv6.bgp.additional_paths.prefix_list is arista.avd.defined %}
-{%                         set add_path_cli = add_path_cli ~ ' prefix-list ' ~ router_bgp.address_family_ipv6.bgp.additional_paths.prefix_list %}
+{%                     if neighbor.additional_paths.prefix_list is arista.avd.defined %}
+{%                         set add_path_cli = add_path_cli ~ ' prefix-list ' ~ neighbor.additional_paths.prefix_list %}
 {%                     endif %}
 {%                     if add_path_cli is arista.avd.defined %}
       {{ add_path_cli }}

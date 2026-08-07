@@ -81,6 +81,8 @@ router_bgp:
         interval: 500
         min_rx: 500
         multiplier: 3
+      maximum_accepted_routes: 12000
+      maximum_accepted_routes_warning_limit: 80 percent
     - name: SR-TE-PG-1
       remote_as: 65000
     - name: SR-TE-PG-2
@@ -547,6 +549,7 @@ router_bgp:
       - name: TEST_RCF
         rcf_in: Address_Family_IPV4_In()
         rcf_out: Address_Family_IPV4_Out()
+        maximum_accepted_routes: 12000
       - name: NHP
         activate: true
       - name: EVPN-OVERLAY-PEERS
@@ -775,6 +778,7 @@ router_bgp:
           receive: true
           send: ecmp
           send_limit: 20
+          prefix_list: PL-IPV6-ADDITIONAL-PATHS
       - ip_address: 2001:db8::2
         activate: true
         additional_paths:
@@ -1416,6 +1420,7 @@ router_bgp:
       shared_secret:
         profile: profile1
         hash_algorithm: aes-128-cmac-96
+      maximum_accepted_routes: 0
     - ip_address: 192.168.255.21
       peer_group: EVPN-OVERLAY-PEERS
       rib_in_pre_policy_retain:
@@ -1985,6 +1990,7 @@ router_bgp:
           enforce_first_as: true
         - ip_address: 192.168.0.10
           enforce_first_as: false
+          peer_tag_in: peer-tag
       bgp:
         additional_paths:
           send: limit

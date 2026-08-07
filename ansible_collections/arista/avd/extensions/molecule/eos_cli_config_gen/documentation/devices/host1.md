@@ -9823,6 +9823,7 @@ ASN Notation: asdot
 | Next-hop peer | True |
 | BFD | True |
 | BFD Timers | interval: 500, min_rx: 500, multiplier: 3 |
+| Maximum accepted routes | 12000 (warning-limit 80 percent) |
 
 ##### NO-COMMUNITY
 
@@ -9997,7 +9998,7 @@ ASN Notation: asdot
 | 172.31.255.0 | Inherited from peer group IPv4-UNDERLAY-PEERS | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - | - |
 | 172.31.255.2 | - | default | - | - | - | - | - | - | - | - | - | - |
 | 172.31.255.3 | - | default | - | - | - | 1000 | - | - | - | - | - | - |
-| 172.31.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Allowed, allowed 5 times | Inherited from peer group EVPN-OVERLAY-PEERS(interval: 2000, min_rx: 2000, multiplier: 3) | True (All) | - | - | - |
+| 172.31.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | 0 (no limit) | Allowed, allowed 5 times | Inherited from peer group EVPN-OVERLAY-PEERS(interval: 2000, min_rx: 2000, multiplier: 3) | True (All) | - | - | - |
 | 192.0.3.1 | 65432 | default | - | all | - | - | - | True(interval: 2000, min_rx: 2000, multiplier: 3) | True | - | True | - |
 | 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | False | True (All) | - | - | - |
 | 192.0.3.3 | 65434 | default | - | standard | - | - | - | - | True | - | - | - |
@@ -10034,7 +10035,7 @@ ASN Notation: asdot
 | 101.0.3.6 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | - | True(interval: 2500, min_rx: 2000, multiplier: 3) | - | - | - | - |
 | 101.0.3.7 | - | BLUE-C1 | - | - | - | - | - | True | - | - | - | - |
 | 101.0.3.8 | - | BLUE-C1 | - | - | - | - | - | False | - | - | - | - |
-| 10.10.10.0 | - | NHP-PEER | - | - | - | - | - | Inherited from peer group NHP(interval: 500, min_rx: 500, multiplier: 3) | - | - | - | - |
+| 10.10.10.0 | - | NHP-PEER | - | - | - | Inherited from peer group NHP | - | Inherited from peer group NHP(interval: 500, min_rx: 500, multiplier: 3) | - | - | - | - |
 | 11.11.11.0 | - | NHP-PEER1 | - | - | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 0 (no limit) | - | - | - | - | - | - |
@@ -10446,6 +10447,7 @@ router bgp 65101
    neighbor NHP next-hop-peer
    neighbor NHP bfd
    neighbor NHP bfd interval 500 min-rx 500 multiplier 3
+   neighbor NHP maximum-accepted-routes 12000 warning-limit 80 percent
    neighbor NO-COMMUNITY peer group
    neighbor OBS_WAN peer group
    neighbor OBS_WAN remote-as 65000
@@ -10530,6 +10532,7 @@ router bgp 65101
    neighbor 172.31.255.4 allowas-in 5
    neighbor 172.31.255.4 rib-in pre-policy retain all
    neighbor 172.31.255.4 password shared-secret profile profile1 algorithm aes-128-cmac-96
+   neighbor 172.31.255.4 maximum-accepted-routes 0
    neighbor 192.0.3.1 remote-as 65432
    neighbor 192.0.3.1 as-path prepend-own disabled
    neighbor 192.0.3.1 as-path remote-as replace out
@@ -10848,6 +10851,7 @@ router bgp 65101
       neighbor TEST_PEER_GRP next-hop address-family ipv6 originate
       neighbor TEST_RCF rcf in Address_Family_IPV4_In()
       neighbor TEST_RCF rcf out Address_Family_IPV4_Out()
+      neighbor TEST_RCF maximum-accepted-routes 12000
       neighbor WELCOME_ROUTERS activate
       neighbor WELCOME_ROUTERS additional-paths send any
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
@@ -11011,7 +11015,7 @@ router bgp 65101
       neighbor baz prefix-list PL-BAR-v6-IN in
       neighbor baz prefix-list PL-BAR-v6-OUT out
       neighbor baz default-originate route-map RM-FOO always
-      neighbor baz additional-paths send ecmp limit 20
+      neighbor baz additional-paths send ecmp limit 20 prefix-list PL2
       no neighbor FOOBAR activate
       neighbor FOOBAR1 activate
       neighbor FOOBAR1 default-originate
@@ -11039,7 +11043,7 @@ router bgp 65101
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-IN in
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
       neighbor 2001:db8::1 default-originate route-map RM-FOO-MATCH3 always
-      neighbor 2001:db8::1 additional-paths send ecmp limit 20
+      neighbor 2001:db8::1 additional-paths send ecmp limit 20 prefix-list PL-IPV6-ADDITIONAL-PATHS
       neighbor 2001:db8::1 maximum-accepted-routes 2000 warning-limit 90 percent
       neighbor 2001:db8::1 peer-tag in PEER_TAG_IN_IPV6
       neighbor 2001:db8::1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6
@@ -11523,6 +11527,7 @@ router bgp 65101
       neighbor 1.1.1.1 password 7 <removed>
       neighbor 1.1.1.1 enforce-first-as
       no neighbor 192.168.0.10 enforce-first-as
+      neighbor 192.168.0.10 peer-tag in peer-tag
       redistribute connected include leaked route-map RM_VRF_CONNECTED
       redistribute isis level-2 include leaked route-map RM_VRF_ISIS
       redistribute ospf include leaked route-map RM_VRF_OSPF
