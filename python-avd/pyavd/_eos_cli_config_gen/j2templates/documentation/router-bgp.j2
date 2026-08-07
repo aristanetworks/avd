@@ -276,7 +276,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                 if peer_group.maximum_advertised_routes_warning_limit is arista.avd.defined %}
 {%                     set value = value ~ " (warning-limit " ~ peer_group.maximum_advertised_routes_warning_limit ~ ")" %}
 {%                 endif %}
-| Maximum Advertise Routes | {{ value }} |
+| Maximum Advertised Routes | {{ value }} |
 {%             endif %}
 {%             if peer_group.link_bandwidth.enabled is arista.avd.defined(true) %}
 {%                 set value = "enabled" %}
