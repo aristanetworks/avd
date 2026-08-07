@@ -266,7 +266,7 @@ async def test_staging_flat_layout_device_for_decommission_only_cleans_up_config
     with (
         patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
         patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", new_callable=AsyncMock),
-        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_in_cloudvision_inventory", new=AsyncMock(return_value=[device])),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_in_cloudvision_inventory", new=AsyncMock(return_value=[device])) as inventory_mock,
         patch("pyavd._cv.workflows.deploy_to_cv.delete_decommissioned_device_configlets_from_cv", new_callable=AsyncMock) as configlet_cleanup_mock,
         patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", new_callable=AsyncMock),
     ):
@@ -288,6 +288,7 @@ async def test_staging_flat_layout_device_for_decommission_only_cleans_up_config
 
     configlet_cleanup_mock.assert_called_once()
     assert configlet_cleanup_mock.call_args.kwargs["devices"] == [device]
+    assert inventory_mock.call_args.kwargs["warn_on_missing_devices"] is False
     mock_cv_client.get_configlet_containers.assert_not_called()
     mock_cv_client.delete_configlet_container.assert_not_called()
     mock_cv_client.set_configlet_container.assert_not_called()

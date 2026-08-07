@@ -187,6 +187,7 @@ async def deploy_to_cv(
                         skip_missing_devices=True,
                         warnings=result.warnings,
                         cv_client=cv_client,
+                        warn_on_missing_devices=False,
                     )
                 existing_decommission_devices = [decommission_device for decommission_device in decommission_devices if decommission_device.exists_on_cv]
 
