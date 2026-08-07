@@ -11299,6 +11299,7 @@ keys:
             description: Targeted Digital Twin environment.
             valid_values:
             - act
+            - containerlab
           node_type:
             type: str
             description: 'Digital Twin''s internal device type used for deploying

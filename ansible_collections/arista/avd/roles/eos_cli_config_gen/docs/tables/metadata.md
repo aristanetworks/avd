@@ -136,7 +136,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.applications.categories.user_defined_applications.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;category</samp>](## "metadata.cv_pathfinder.applications.categories.user_defined_applications.[].category") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;digital_twin</samp>](## "metadata.digital_twin") | Dictionary |  |  |  | Metadata used to generate Digital Twin topology. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;environment</samp>](## "metadata.digital_twin.environment") | String |  |  | Valid Values:<br>- <code>act</code> | Targeted Digital Twin environment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;environment</samp>](## "metadata.digital_twin.environment") | String |  |  | Valid Values:<br>- <code>act</code><br>- <code>containerlab</code> | Targeted Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;node_type</samp>](## "metadata.digital_twin.node_type") | String |  |  |  | Digital Twin's internal device type used for deploying a replica of the fabric device.<br>Possible values depend on the target Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_addr</samp>](## "metadata.digital_twin.ip_addr") | String |  |  |  | Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "metadata.digital_twin.version") | String |  |  |  | OS version used for deploying a replica of the fabric device within the Digital Twin environment. |
@@ -326,7 +326,7 @@
       digital_twin:
 
         # Targeted Digital Twin environment.
-        environment: <str; "act">
+        environment: <str; "act" | "containerlab">
 
         # Digital Twin's internal device type used for deploying a replica of the fabric device.
         # Possible values depend on the target Digital Twin environment.

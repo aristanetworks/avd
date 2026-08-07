@@ -3,13 +3,15 @@
 # that can be found in the LICENSE file.
 import sys
 from copy import deepcopy
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import pytest
 
 from pyavd import get_fabric_documentation
 from pyavd._utils import get
-from pyavd.api.fabric_documentation import ACTDigitalTwin, FabricDocumentation
+from pyavd.api.fabric_documentation import ACTDigitalTwin, ContainerlabDigitalTwin, FabricDocumentation
+from pyavd.get_fabric_documentation import _get_digital_twin
 from tests.models import MoleculeScenario
 
 
@@ -48,6 +50,13 @@ def test_get_fabric_documentation_with_no_connected_endpoints(monkeypatch: pytes
     assert "## Connected Endpoints\n\nNo connected endpoint configured!" in fabric_documentation_obj.fabric_documentation
 
 
+def test_get_digital_twin_returns_none_for_unsupported_environment() -> None:
+    """Test fallback path for unsupported Digital Twin environment."""
+    fabric_documentation_facts = SimpleNamespace(structured_configs={"leaf1": {"metadata": {"digital_twin": {"environment": "unsupported"}}}})
+
+    assert _get_digital_twin(fabric_documentation_facts) is None
+
+
 @pytest.mark.molecule_scenarios(
     "digital_twin",
     "eos_designs_unit_tests",
@@ -67,7 +76,7 @@ def test_get_fabric_documentation_with_no_connected_endpoints(monkeypatch: pytes
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
 )
-@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin")
+@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin", "digital_twin_containerlab")
 def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
     """Test get_fabric_documentation."""
     with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
@@ -126,7 +135,11 @@ def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
 
     if molecule_scenario.digital_twin:
         # We expect digital twin topology
-        assert isinstance(fabric_documentation_obj.digital_twin, ACTDigitalTwin)
+        digital_twin_environment = get(first_hostvars, "digital_twin.environment", default="act")
+        if digital_twin_environment == "containerlab":
+            assert isinstance(fabric_documentation_obj.digital_twin, ContainerlabDigitalTwin)
+        else:
+            assert isinstance(fabric_documentation_obj.digital_twin, ACTDigitalTwin)
         # TODO: add shortcut to the digital twin topology file contents in the MoleculeScenario object and assert that it matches.
     else:
         # No digital twin topology

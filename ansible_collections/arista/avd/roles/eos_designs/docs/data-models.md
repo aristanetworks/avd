@@ -1838,8 +1838,9 @@ The generated artifacts are automatically optimized for the specific Digital Twi
 AVD currently supports the following Digital Twin environments:
 
 - ACT (Arista Cloud Test)
+- Containerlab
 
-To generate the ACT Digital Twin artifacts, run the `eos_designs` and `eos_cli_config_gen` roles with the `avd_digital_twin_mode`  flag set to `true` in your Ansible playbook:
+To generate Digital Twin artifacts, run the `eos_designs` and `eos_cli_config_gen` roles with the `avd_digital_twin_mode` flag set to `true` in your Ansible playbook:
 
 ```yaml
 ---
@@ -1880,7 +1881,7 @@ To generate the ACT Digital Twin artifacts, run the `eos_designs` and `eos_cli_c
 
 ```
 
-Produced artifacts:
+Produced artifacts (ACT Digital Twin):
 
 ```text
 .
@@ -1920,6 +1921,177 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-config
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
 --8<--
+
+### Containerlab Digital Twin
+
+Produced artifacts (Containerlab Digital Twin):
+
+```text
+.
+├── digital_twin
+│   ├── <FABRIC_NAME>-topology.clab.yml
+│   ├── interface_mapping.json
+│   ├── documentation
+│   │   ├── devices
+│   │   │   ├── <DEVICE_NAME>.md
+│   │   │   └── ...
+│   │   └── fabric
+│   │       ├── <FABRIC_NAME>-documentation.md
+│   │       ├── <FABRIC_NAME>-p2p-links.csv
+│   │       └── <FABRIC_NAME>-topology.csv
+│   └── intended
+│       ├── configs
+│       │   ├── <DEVICE_NAME>.cfg
+│       │   └── ...
+│       └── structured_configs
+│           ├── <DEVICE_NAME>.yml
+│           └── ...
+```
+
+Containerlab Digital Twin is available as a `PREVIEW` feature. It is not ready for production use and is intended for user testing only.
+
+To enable it, set `digital_twin.environment: containerlab` and run the same Digital Twin playbook shown above with the environment set to `containerlab`:
+
+```yaml
+---
+- name: Build Containerlab Digital Twin artifacts
+  hosts: FABRIC
+  gather_facts: false
+  vars:
+    output_dir_name: "digital_twin/intended"
+    documentation_dir_name: "digital_twin/documentation"
+    avd_digital_twin_mode: true
+    digital_twin:
+      environment: containerlab
+      fabric: {}
+  tasks:
+    - name: Generate AVD Structured Configurations and Fabric Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate Device Configurations and Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+```
+
+For Containerlab, `digital_twin.fabric` is still required for schema validation, even if it is left empty as `fabric: {}`. This is a temporary limitation and it will be removed once the shared Digital Twin schema is updated.
+
+Important caveats for the current Containerlab implementation:
+
+- It is a `PREVIEW` feature and behavior may still change.
+- Only out-of-band management is supported.
+- Only a single IPv4 management subnet is supported across the lab.
+- Management IP addresses in the lab and production must currently match.
+- Each node must have a static `mgmt_ip`. Unset management IPs and `mgmt_ip: dhcp` are not supported.
+- `digital_twin.mgmt_ip` is not currently used by the Containerlab topology generator. Instead, topology generation uses each node `mgmt_ip` value from the AVD fabric facts.
+- The generated topology includes fabric nodes and point-to-point fabric links. Connected endpoints and non-point-to-point links are not modeled.
+- The generated topology sets `prefix: ""` intentionally to preserve the original AVD hostnames.
+- The generated topology currently defaults to `arista_ceos` with `image: arista/ceos:latest`. Please set up your lab environment accordingly, or update the generated topology file if needed.
+
+!!! warning
+    Make sure your lab environment is isolated from production. The management addresses are reused, so take the necessary precautions to avoid pushing configurations to the wrong environment.
+
+The generated topology file is written to the Digital Twin root directory as `{{ output_dir | dirname }}/{{ fabric_name }}-topology.clab.yml`. The generated intended configs remain under `{{ output_dir }}/configs/<hostname>.cfg`, and the topology references them as `intended/configs/<hostname>.cfg`.
+
+Example generated topology:
+
+```yaml
+---
+name: FABRIC, Containerlab Digital Twin
+prefix: ''
+mgmt:
+  network: custom_mgmt
+  ipv4-subnet: 172.16.1.0/24
+topology:
+  defaults:
+    kind: arista_ceos
+  kinds:
+    arista_ceos:
+      enforce-startup-config: true
+      image: arista/ceos:latest
+      binds:
+      - interface_mapping.json:/mnt/flash/EosIntfMapping.json:ro
+  nodes:
+    dc1-leaf1a:
+      mgmt-ipv4: 172.16.1.101
+      startup-config: intended/configs/dc1-leaf1a.cfg
+    dc1-leaf1b:
+      mgmt-ipv4: 172.16.1.102
+      startup-config: intended/configs/dc1-leaf1b.cfg
+    dc1-leaf1c:
+      mgmt-ipv4: 172.16.1.151
+      startup-config: intended/configs/dc1-leaf1c.cfg
+    dc1-leaf2a:
+      mgmt-ipv4: 172.16.1.103
+      startup-config: intended/configs/dc1-leaf2a.cfg
+    dc1-leaf2b:
+      mgmt-ipv4: 172.16.1.104
+      startup-config: intended/configs/dc1-leaf2b.cfg
+    dc1-leaf2c:
+      mgmt-ipv4: 172.16.1.152
+      startup-config: intended/configs/dc1-leaf2c.cfg
+    dc1-spine1:
+      mgmt-ipv4: 172.16.1.11
+      startup-config: intended/configs/dc1-spine1.cfg
+    dc1-spine2:
+      mgmt-ipv4: 172.16.1.12
+      startup-config: intended/configs/dc1-spine2.cfg
+  links:
+  - endpoints:
+    - dc1-leaf1a:eth1
+    - dc1-spine1:eth1
+  - endpoints:
+    - dc1-leaf1a:eth2
+    - dc1-spine2:eth1
+  - endpoints:
+    - dc1-leaf1a:eth3
+    - dc1-leaf1b:eth3
+  - endpoints:
+    - dc1-leaf1a:eth4
+    - dc1-leaf1b:eth4
+  - endpoints:
+    - dc1-leaf1a:eth8
+    - dc1-leaf1c:eth1
+  - endpoints:
+    - dc1-leaf1b:eth1
+    - dc1-spine1:eth2
+  - endpoints:
+    - dc1-leaf1b:eth2
+    - dc1-spine2:eth2
+  - endpoints:
+    - dc1-leaf1b:eth8
+    - dc1-leaf1c:eth2
+  - endpoints:
+    - dc1-leaf2a:eth1
+    - dc1-spine1:eth3
+  - endpoints:
+    - dc1-leaf2a:eth2
+    - dc1-spine2:eth3
+  - endpoints:
+    - dc1-leaf2a:eth3
+    - dc1-leaf2b:eth3
+  - endpoints:
+    - dc1-leaf2a:eth4
+    - dc1-leaf2b:eth4
+  - endpoints:
+    - dc1-leaf2a:eth8
+    - dc1-leaf2c:eth1
+  - endpoints:
+    - dc1-leaf2b:eth1
+    - dc1-spine1:eth4
+  - endpoints:
+    - dc1-leaf2b:eth2
+    - dc1-spine2:eth4
+  - endpoints:
+    - dc1-leaf2b:eth8
+    - dc1-leaf2c:eth2
+```
+
+To launch the generated topology use following command:
+
+```bash
+containerlab deploy -t digital_twin/documentation/fabric/<FABRIC_NAME>-topology.clab.yml
+```
 
 ## PREVIEW - New devices models
 

@@ -1,0 +1,36 @@
+---
+fabric_name: DIGITAL_TWIN_CONTAINERLAB_MULTIPLE_MGMT_SUBNETS
+
+management_eapi:
+  enabled: true
+
+eos_designs_documentation:
+  enable: false
+  topology_csv: false
+  p2p_links_csv: false
+
+digital_twin:
+  environment: containerlab
+  # TODO: remove `fabric` once #5649 is ready
+  fabric: {}
+
+type: spine
+
+spine:
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.255.0.0/27
+    bgp_as: 65100
+  nodes:
+    - name: containerlab-subnet-a
+      id: 1
+      mgmt_ip: 172.16.1.201/24
+    - name: containerlab-subnet-b
+      id: 2
+      mgmt_ip: 172.16.2.202/24
+
+expected_error_message: >-
+  Containerlab Digital Twin requires all node management IPv4 addresses to belong to the same subnet.
+expected_mgmt_subnets:
+  - 172.16.1.0/24
+  - 172.16.2.0/24

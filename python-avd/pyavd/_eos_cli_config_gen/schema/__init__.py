@@ -29398,7 +29398,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
-            Environment: TypeAlias = Literal["act"]
+            Environment: TypeAlias = Literal["act", "containerlab"]
             _fields: ClassVar[dict] = {
                 "environment": {"type": str},
                 "node_type": {"type": str},

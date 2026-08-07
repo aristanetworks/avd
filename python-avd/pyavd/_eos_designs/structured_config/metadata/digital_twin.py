@@ -85,3 +85,5 @@ class DigitalTwinMixin(Protocol):
                         internet_access=act_internet_access,
                     )
                 return
+            case "containerlab":
+                self.structured_config.metadata.digital_twin._update(environment=environment)

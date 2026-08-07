@@ -1,0 +1,14 @@
+---
+fabric_name: DIGITAL_TWIN_CONTAINERLAB
+
+management_eapi:
+  enabled: true
+
+eos_designs_documentation:
+  topology_csv: true
+  p2p_links_csv: true
+
+digital_twin:
+  environment: containerlab
+  # TODO: remove `fabric` once #5649 is ready
+  fabric: {}

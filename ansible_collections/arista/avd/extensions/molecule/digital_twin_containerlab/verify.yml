@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: DIGITAL_TWIN_CONTAINERLAB
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Assert Containerlab topology file exists
+      delegate_to: 127.0.0.1
+      ansible.builtin.stat:
+        path: "{{ root_dir }}/digital_twin/{{ fabric_name }}-topology.clab.yml"
+      register: containerlab_topology_file
+      run_once: true
+
+    - name: Assert Containerlab interface mapping file exists
+      delegate_to: 127.0.0.1
+      ansible.builtin.stat:
+        path: "{{ root_dir }}/digital_twin/interface_mapping.json"
+      register: containerlab_interface_mapping_file
+      run_once: true
+
+    - name: Validate generated Containerlab topology artifact
+      ansible.builtin.assert:
+        that:
+          - "containerlab_topology_file.stat.exists"
+          - "containerlab_interface_mapping_file.stat.exists"
+      run_once: true
