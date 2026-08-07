@@ -902,9 +902,9 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops | Maximum Advertise Routes |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ | ------------------------ |
-| 2001:1::5 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum Advertised Routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 2001:1::5 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_APP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - |
 | 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_DB_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - |
 | 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - |

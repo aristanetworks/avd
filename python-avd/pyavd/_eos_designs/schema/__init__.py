@@ -29954,12 +29954,11 @@ class EosDesigns(EosDesignsRootModel):
             ttl_maximum_hops: int | None
             """Maximum number of hops."""
             maximum_advertised_routes: int | None
-            """Maximum number of routes (0 means unlimited)."""
+            """Maximum number of advertised routes (0 means unlimited)."""
             maximum_advertised_routes_warning_limit: str | None
             """
-            Maximum number of routes after which a warning is issued (0 means never warn) or
-            Percentage of
-            maximum number of routes at which to warn ("<1-100> percent").
+            Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+            Percentage of maximum number of routes at which to warn ("<1-100> percent").
             """
 
             if TYPE_CHECKING:
@@ -30105,11 +30104,10 @@ class EosDesigns(EosDesignsRootModel):
                         session_tracker: session_tracker
                         shared_secret: Subclass of AvdModel.
                         ttl_maximum_hops: Maximum number of hops.
-                        maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                        maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                         maximum_advertised_routes_warning_limit:
-                           Maximum number of routes after which a warning is issued (0 means never warn) or
-                           Percentage of
-                           maximum number of routes at which to warn ("<1-100> percent").
+                           Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                           Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                     """
 
@@ -37180,12 +37178,11 @@ class EosDesigns(EosDesignsRootModel):
                 ttl_maximum_hops: int | None
                 """Maximum number of hops."""
                 maximum_advertised_routes: int | None
-                """Maximum number of routes (0 means unlimited)."""
+                """Maximum number of advertised routes (0 means unlimited)."""
                 maximum_advertised_routes_warning_limit: str | None
                 """
-                Maximum number of routes after which a warning is issued (0 means never warn) or
-                Percentage of
-                maximum number of routes at which to warn ("<1-100> percent").
+                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 """
 
                 if TYPE_CHECKING:
@@ -37335,11 +37332,10 @@ class EosDesigns(EosDesignsRootModel):
                             session_tracker: session_tracker
                             shared_secret: Subclass of AvdModel.
                             ttl_maximum_hops: Maximum number of hops.
-                            maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                             maximum_advertised_routes_warning_limit:
-                               Maximum number of routes after which a warning is issued (0 means never warn) or
-                               Percentage of
-                               maximum number of routes at which to warn ("<1-100> percent").
+                               Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                         """
 
@@ -80103,12 +80099,11 @@ class EosDesigns(EosDesignsRootModel):
                     ttl_maximum_hops: int | None
                     """Maximum number of hops."""
                     maximum_advertised_routes: int | None
-                    """Maximum number of routes (0 means unlimited)."""
+                    """Maximum number of advertised routes (0 means unlimited)."""
                     maximum_advertised_routes_warning_limit: str | None
                     """
-                    Maximum number of routes after which a warning is issued (0 means never warn) or
-                    Percentage of
-                    maximum number of routes at which to warn ("<1-100> percent").
+                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                    Percentage of maximum number of routes at which to warn ("<1-100> percent").
                     """
 
                     if TYPE_CHECKING:
@@ -80254,11 +80249,10 @@ class EosDesigns(EosDesignsRootModel):
                                 session_tracker: session_tracker
                                 shared_secret: Subclass of AvdModel.
                                 ttl_maximum_hops: Maximum number of hops.
-                                maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                                maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                                 maximum_advertised_routes_warning_limit:
-                                   Maximum number of routes after which a warning is issued (0 means never warn) or
-                                   Percentage of
-                                   maximum number of routes at which to warn ("<1-100> percent").
+                                   Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                                   Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                             """
 
@@ -87366,12 +87360,11 @@ class EosDesigns(EosDesignsRootModel):
                         ttl_maximum_hops: int | None
                         """Maximum number of hops."""
                         maximum_advertised_routes: int | None
-                        """Maximum number of routes (0 means unlimited)."""
+                        """Maximum number of advertised routes (0 means unlimited)."""
                         maximum_advertised_routes_warning_limit: str | None
                         """
-                        Maximum number of routes after which a warning is issued (0 means never warn) or
-                        Percentage of
-                        maximum number of routes at which to warn ("<1-100> percent").
+                        Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                        Percentage of maximum number of routes at which to warn ("<1-100> percent").
                         """
 
                         if TYPE_CHECKING:
@@ -87521,11 +87514,10 @@ class EosDesigns(EosDesignsRootModel):
                                     session_tracker: session_tracker
                                     shared_secret: Subclass of AvdModel.
                                     ttl_maximum_hops: Maximum number of hops.
-                                    maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                                    maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                                     maximum_advertised_routes_warning_limit:
-                                       Maximum number of routes after which a warning is issued (0 means never warn) or
-                                       Percentage of
-                                       maximum number of routes at which to warn ("<1-100> percent").
+                                       Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                                       Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                                 """
 

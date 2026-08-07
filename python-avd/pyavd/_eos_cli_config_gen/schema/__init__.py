@@ -45355,12 +45355,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ttl_maximum_hops: int | None
             """Maximum number of hops."""
             maximum_advertised_routes: int | None
-            """Maximum number of routes (0 means unlimited)."""
+            """Maximum number of advertised routes (0 means unlimited)."""
             maximum_advertised_routes_warning_limit: str | None
             """
-            Maximum number of routes after which a warning is issued (0 means never warn) or
-            Percentage of
-            maximum number of routes at which to warn ("<1-100> percent").
+            Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+            Percentage of maximum number of routes at which to warn ("<1-100> percent").
             """
 
             if TYPE_CHECKING:
@@ -45479,11 +45478,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         session_tracker: session_tracker
                         shared_secret: Subclass of AvdModel.
                         ttl_maximum_hops: Maximum number of hops.
-                        maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                        maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                         maximum_advertised_routes_warning_limit:
-                           Maximum number of routes after which a warning is issued (0 means never warn) or
-                           Percentage of
-                           maximum number of routes at which to warn ("<1-100> percent").
+                           Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                           Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                     """
 
@@ -46022,12 +46020,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ttl_maximum_hops: int | None
             """Maximum number of hops."""
             maximum_advertised_routes: int | None
-            """Maximum number of routes (0 means unlimited)."""
+            """Maximum number of advertised routes (0 means unlimited)."""
             maximum_advertised_routes_warning_limit: str | None
             """
-            Maximum number of routes after which a warning is issued (0 means never warn) or
-            Percentage of
-            maximum number of routes at which to warn ("<1-100> percent").
+            Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+            Percentage of maximum number of routes at which to warn ("<1-100> percent").
             """
 
             if TYPE_CHECKING:
@@ -46146,11 +46143,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         session_tracker: session_tracker
                         shared_secret: Subclass of AvdModel.
                         ttl_maximum_hops: Maximum number of hops.
-                        maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                        maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                         maximum_advertised_routes_warning_limit:
-                           Maximum number of routes after which a warning is issued (0 means never warn) or
-                           Percentage of
-                           maximum number of routes at which to warn ("<1-100> percent").
+                           Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                           Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                     """
 
@@ -48978,12 +48974,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 next_hop: NextHop
                 """Subclass of AvdModel."""
                 maximum_advertised_routes: int | None
-                """Maximum number of routes (0 means unlimited)."""
+                """Maximum number of advertised routes (0 means unlimited)."""
                 maximum_advertised_routes_warning_limit: str | None
                 """
-                Maximum number of routes after which a warning is issued (0 means never warn) or
-                Percentage of
-                maximum number of routes at which to warn ("<1-100> percent").
+                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 """
 
                 if TYPE_CHECKING:
@@ -49031,11 +49026,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             prefix_list_out: Outbound prefix-list name.
                             additional_paths: Subclass of AvdModel.
                             next_hop: Subclass of AvdModel.
-                            maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                             maximum_advertised_routes_warning_limit:
-                               Maximum number of routes after which a warning is issued (0 means never warn) or
-                               Percentage of
-                               maximum number of routes at which to warn ("<1-100> percent").
+                               Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                         """
 
@@ -49223,12 +49217,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 next_hop: NextHop
                 """Subclass of AvdModel."""
                 maximum_advertised_routes: int | None
-                """Maximum number of routes (0 means unlimited)."""
+                """Maximum number of advertised routes (0 means unlimited)."""
                 maximum_advertised_routes_warning_limit: str | None
                 """
-                Maximum number of routes after which a warning is issued (0 means never warn) or
-                Percentage of
-                maximum number of routes at which to warn ("<1-100> percent").
+                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 """
 
                 if TYPE_CHECKING:
@@ -49276,11 +49269,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             default_originate: Subclass of AvdModel.
                             additional_paths: Subclass of AvdModel.
                             next_hop: Subclass of AvdModel.
-                            maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                             maximum_advertised_routes_warning_limit:
-                               Maximum number of routes after which a warning is issued (0 means never warn) or
-                               Percentage of
-                               maximum number of routes at which to warn ("<1-100> percent").
+                               Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                         """
 
@@ -50562,12 +50554,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 graceful_restart_helper: GracefulRestartHelper
                 """Subclass of AvdModel."""
                 maximum_advertised_routes: int | None
-                """Maximum number of routes (0 means unlimited)."""
+                """Maximum number of advertised routes (0 means unlimited)."""
                 maximum_advertised_routes_warning_limit: str | None
                 """
-                Maximum number of routes after which a warning is issued (0 means never warn) or
-                Percentage of
-                maximum number of routes at which to warn ("<1-100> percent").
+                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 """
                 missing_policy: MissingPolicy
                 """
@@ -50640,11 +50631,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             aigp_session: aigp_session
                             graceful_restart: graceful_restart
                             graceful_restart_helper: Subclass of AvdModel.
-                            maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                             maximum_advertised_routes_warning_limit:
-                               Maximum number of routes after which a warning is issued (0 means never warn) or
-                               Percentage of
-                               maximum number of routes at which to warn ("<1-100> percent").
+                               Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
                             missing_policy:
                                Missing policy configuration for BGP Labeled-Unicast neighbor.
 
@@ -50910,12 +50900,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 graceful_restart_helper: GracefulRestartHelper
                 """Subclass of AvdModel."""
                 maximum_advertised_routes: int | None
-                """Maximum number of routes (0 means unlimited)."""
+                """Maximum number of advertised routes (0 means unlimited)."""
                 maximum_advertised_routes_warning_limit: str | None
                 """
-                Maximum number of routes after which a warning is issued (0 means never warn) or
-                Percentage of
-                maximum number of routes at which to warn ("<1-100> percent").
+                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 """
                 missing_policy: MissingPolicy
                 """
@@ -50988,11 +50977,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             aigp_session: aigp_session
                             graceful_restart: graceful_restart
                             graceful_restart_helper: Subclass of AvdModel.
-                            maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                             maximum_advertised_routes_warning_limit:
-                               Maximum number of routes after which a warning is issued (0 means never warn) or
-                               Percentage of
-                               maximum number of routes at which to warn ("<1-100> percent").
+                               Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
                             missing_policy:
                                Missing policy configuration for BGP Labeled-Unicast neighbor.
 
@@ -52405,12 +52393,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
                 maximum_advertised_routes: int | None
-                """Maximum number of routes (0 means unlimited)."""
+                """Maximum number of advertised routes (0 means unlimited)."""
                 maximum_advertised_routes_warning_limit: str | None
                 """
-                Maximum number of routes after which a warning is issued (0 means never warn) or
-                Percentage of
-                maximum number of routes at which to warn ("<1-100> percent").
+                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 """
 
                 if TYPE_CHECKING:
@@ -52456,11 +52443,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             prefix_list_out: Outbound prefix-list name.
                             additional_paths: Subclass of AvdModel.
                             default_originate: Subclass of AvdModel.
-                            maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                             maximum_advertised_routes_warning_limit:
-                               Maximum number of routes after which a warning is issued (0 means never warn) or
-                               Percentage of
-                               maximum number of routes at which to warn ("<1-100> percent").
+                               Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                         """
 
@@ -52611,12 +52597,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
                 maximum_advertised_routes: int | None
-                """Maximum number of routes (0 means unlimited)."""
+                """Maximum number of advertised routes (0 means unlimited)."""
                 maximum_advertised_routes_warning_limit: str | None
                 """
-                Maximum number of routes after which a warning is issued (0 means never warn) or
-                Percentage of
-                maximum number of routes at which to warn ("<1-100> percent").
+                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 """
 
                 if TYPE_CHECKING:
@@ -52662,11 +52647,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             prefix_list_out: Outbound prefix-list name.
                             default_originate: Subclass of AvdModel.
                             additional_paths: Subclass of AvdModel.
-                            maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                             maximum_advertised_routes_warning_limit:
-                               Maximum number of routes after which a warning is issued (0 means never warn) or
-                               Percentage of
-                               maximum number of routes at which to warn ("<1-100> percent").
+                               Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                         """
 

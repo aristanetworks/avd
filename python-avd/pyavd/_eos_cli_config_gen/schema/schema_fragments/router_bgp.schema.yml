@@ -581,7 +581,7 @@ keys:
               description: Maximum number of hops.
             maximum_advertised_routes:
               type: int
-              description: Maximum number of routes (0 means unlimited).
+              description: Maximum number of advertised routes (0 means unlimited).
               min: 0
               max: 4294967294
               convert_types:
@@ -591,7 +591,7 @@ keys:
               convert_types:
                 - int
               description: |
-                Maximum number of routes after which a warning is issued (0 means never warn) or
+                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
                 Percentage of maximum number of routes at which to warn ("<1-100> percent").
       neighbors:
         type: list
@@ -869,7 +869,7 @@ keys:
               description: Maximum number of hops.
             maximum_advertised_routes:
               type: int
-              description: Maximum number of routes (0 means unlimited).
+              description: Maximum number of advertised routes (0 means unlimited).
               min: 0
               max: 4294967294
               convert_types:
@@ -879,7 +879,7 @@ keys:
               convert_types:
                 - int
               description: |
-                Maximum number of routes after which a warning is issued (0 means never warn) or
+                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
                 Percentage of maximum number of routes at which to warn ("<1-100> percent").
       neighbor_interfaces:
         type: list
@@ -1782,7 +1782,7 @@ keys:
                           type: bool
                 maximum_advertised_routes:
                   type: int
-                  description: Maximum number of routes (0 means unlimited).
+                  description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
                   convert_types:
@@ -1792,7 +1792,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
           neighbors:
             type: list
@@ -1860,7 +1860,7 @@ keys:
                           type: bool
                 maximum_advertised_routes:
                   type: int
-                  description: Maximum number of routes (0 means unlimited).
+                  description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
                   convert_types:
@@ -1870,7 +1870,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
           redistribute:
             type: dict
@@ -2207,7 +2207,7 @@ keys:
                       type: str
                 maximum_advertised_routes:
                   type: int
-                  description: Maximum number of routes (0 means unlimited).
+                  description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
                   convert_types:
@@ -2217,7 +2217,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 missing_policy:
                   type: dict
@@ -2323,7 +2323,7 @@ keys:
                       type: str
                 maximum_advertised_routes:
                   type: int
-                  description: Maximum number of routes (0 means unlimited).
+                  description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
                   convert_types:
@@ -2333,7 +2333,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 missing_policy:
                   type: dict
@@ -2838,7 +2838,7 @@ keys:
                       description: Route-map name.
                 maximum_advertised_routes:
                   type: int
-                  description: Maximum number of routes (0 means unlimited).
+                  description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
                   convert_types:
@@ -2848,7 +2848,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
           neighbors:
             type: list
@@ -2908,7 +2908,7 @@ keys:
                       description: Apply the configurations only to the routes matching the prefix list.
                 maximum_advertised_routes:
                   type: int
-                  description: Maximum number of routes (0 means unlimited).
+                  description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
                   convert_types:
@@ -2918,7 +2918,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
           redistribute:
             type: dict
