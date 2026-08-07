@@ -575,6 +575,7 @@ class TestCVDevice:
         assert result["system_mac_address"] == "00:11:22:33:44:55"
         assert result["exists_on_cv"] is True
         assert result["streaming"] is True
+        assert result["action"] == "deploy"
 
 
 class TestDeployToCvResult:
@@ -777,3 +778,4 @@ class TestDeployToCvResult:
         # removed_devices
         assert result["removed_devices"][0]["hostname"] == "decom-leaf1"
         assert result["removed_devices"][0]["serial_number"] == "sndecom1"
+        assert result["removed_devices"][0]["action"] == "decommission"

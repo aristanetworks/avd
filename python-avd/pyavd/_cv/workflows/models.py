@@ -425,6 +425,7 @@ class CVDevice:
             "system_mac_address": self.system_mac_address,
             "exists_on_cv": self.exists_on_cv,
             "streaming": self.streaming,
+            "action": self.action,
         }
 
 
