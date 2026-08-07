@@ -158,7 +158,7 @@ class Dot1xMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         address_locking_settings = self.inputs.address_locking_settings
-        if address_locking_settings and not address_locking_settings.disabled:
+        if self.shared_utils.platform_settings.feature_support.address_locking.supported and address_locking_settings and not address_locking_settings.disabled:
             msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
             raise AristaAvdInvalidInputsError(msg)
 

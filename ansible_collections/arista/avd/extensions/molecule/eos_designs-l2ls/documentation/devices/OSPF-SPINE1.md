@@ -322,9 +322,9 @@ interface Loopback0
 
 ##### OSPF
 
-| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
-| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
-| Vlan4094 | True | 0.0.0.0 | - | - | - | - | - |
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication |
+| --------- | --------------------------- | --------- | --------- | ------------------- |
+| Vlan4094 | True | 0.0.0.0 | - | - |
 
 #### VLAN Interfaces Device Configuration
 
