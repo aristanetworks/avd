@@ -252,6 +252,43 @@ async def test_deploy_to_cv_rejects_duplicate_identity_across_deploy_and_decommi
 
 
 @pytest.mark.asyncio
+async def test_decommission_devices_already_missing_from_cv_are_skipped() -> None:
+    """Test that decommission devices already missing from CloudVision are silently skipped."""
+    mock_cv_client = AsyncMock()
+    mock_cv_client.__aenter__.return_value = mock_cv_client
+    mock_cv_client.get_inventory_devices.return_value = []
+    device = CVDevice(avd_device=AvdDevice(hostname="leaf1", serial_number="SN1"), action="decommission")
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", new_callable=AsyncMock),
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", new_callable=AsyncMock),
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(name="pytest", id="pytest")),
+            device_deployments=[CVDeviceDeployment(device=device)],
+        )
+
+    mock_cv_client.get_inventory_devices.assert_called_once_with(devices={("SN1", None, None)})
+    assert device.exists_on_cv is False
+    assert not result.warnings
+    mock_cv_client.stage_devices_for_decommission.assert_not_called()
+    mock_cv_client.wait_for_device_decommission_staging.assert_not_called()
+    mock_cv_client.get_configlets.assert_not_called()
+
+
+@pytest.mark.asyncio
 async def test_staging_flat_layout_device_for_decommission_only_cleans_up_configlet() -> None:
     """Test that AVD only cleans up the configlet after staging a flat-layout device for decommission."""
     mock_cv_client = AsyncMock()
