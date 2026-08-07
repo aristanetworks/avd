@@ -259,7 +259,7 @@ async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], r
 
 
 async def delete_decommissioned_device_configlets_from_cv(devices: list[CVDevice], result: DeployToCvResult, cv_client: CVClient) -> None:
-    """Delete flat-layout configlets left behind after CloudVision successfully stages devices for decommission."""
+    """Delete flat-layout configlets left behind for successfully staged decommission devices, including devices using a manifest."""
     configlet_ids = [f"{CONFIGLET_ID_PREFIX}{device.serial_number}" for device in devices if device.serial_number]
     if not configlet_ids:
         return

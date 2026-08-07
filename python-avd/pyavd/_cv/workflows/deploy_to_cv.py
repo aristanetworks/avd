@@ -135,11 +135,6 @@ async def deploy_to_cv(
     # Split device_deployments into deploy and decommission sub-lists.
     deploy_devices = [device_deployment.device for device_deployment in device_deployments if device_deployment.device.action != "decommission"]
     decommission_devices = [device_deployment.device for device_deployment in device_deployments if device_deployment.device.action == "decommission"]
-    flat_decommission_devices = [
-        device_deployment.device
-        for device_deployment in device_deployments
-        if device_deployment.device.action == "decommission" and not device_deployment.use_static_config_manifest
-    ]
 
     # Extract sub-lists from device deployments.
     # TODO: Refactor sub-workflows to accept list[CVDeviceDeployment] directly and extract what they need internally.
@@ -211,9 +206,9 @@ async def deploy_to_cv(
                             cv_client=cv_client,
                         )
 
-                    successfully_decommissioned_serials = {device.serial_number for device in result.removed_devices}
+                    successfully_staged_decommission_serials = {device.serial_number for device in result.removed_devices}
                     await delete_decommissioned_device_configlets_from_cv(
-                        devices=[device for device in flat_decommission_devices if device.serial_number in successfully_decommissioned_serials],
+                        devices=[device for device in decommission_devices if device.serial_number in successfully_staged_decommission_serials],
                         result=result,
                         cv_client=cv_client,
                     )

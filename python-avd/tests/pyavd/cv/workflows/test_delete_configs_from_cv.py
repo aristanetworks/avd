@@ -265,14 +265,16 @@ class TestDeleteConfigsFromCv:
 
 @pytest.mark.asyncio
 class TestDeleteDecommissionedDeviceConfigletsFromCv:
-    """Test flat-layout configlet cleanup after successful decommission staging."""
+    """Test suite for flat-layout configlet cleanup after successful decommission staging."""
 
     async def test_no_devices_does_nothing(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that an empty device list results in no actions."""
         await delete_decommissioned_device_configlets_from_cv([], deployment_result, mock_cv_client)
 
         mock_cv_client.get_configlets.assert_not_called()
 
     async def test_existing_configlets_are_deleted_without_container_changes(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that existing configlets are deleted without changing containers."""
         devices = [
             CVDevice(avd_device=AvdDevice(hostname="leaf1"), serial_number="SN1", action="decommission"),
             CVDevice(avd_device=AvdDevice(hostname="leaf2"), serial_number="SN2", action="decommission"),
@@ -281,6 +283,7 @@ class TestDeleteDecommissionedDeviceConfigletsFromCv:
 
         await delete_decommissioned_device_configlets_from_cv(devices, deployment_result, mock_cv_client)
 
+        mock_cv_client.get_configlets.assert_called_once_with(workspace_id="pytest_workspace", configlet_ids=["avd-SN1", "avd-SN2"])
         mock_cv_client.delete_configlets.assert_called_once_with(workspace_id="pytest_workspace", configlet_ids=["avd-SN1", "avd-SN2"])
         mock_cv_client.get_configlet_containers.assert_not_called()
         mock_cv_client.delete_configlet_container.assert_not_called()
@@ -288,6 +291,7 @@ class TestDeleteDecommissionedDeviceConfigletsFromCv:
         assert set(deployment_result.removed_configs) == {"AVD-avd-SN1", "AVD-avd-SN2"}
 
     async def test_missing_configlet_does_nothing(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a missing configlet results in no deletion."""
         device = CVDevice(avd_device=AvdDevice(hostname="leaf1"), serial_number="SN1", action="decommission")
         mock_cv_client.get_configlets.return_value = []
 

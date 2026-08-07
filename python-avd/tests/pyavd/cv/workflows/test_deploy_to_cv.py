@@ -11,14 +11,18 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
+from pyavd._cv.api.arista.studio_topology.v1 import Decommission, DecommissionStatus, DeviceKey
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
 from pyavd._cv.workflows.models import (
+    AvdContainer,
     AvdDevice,
+    AvdManifest,
     AvdWorkspace,
     CloudVision,
     CVDeployFuture,
     CVDevice,
     CVDeviceDeployment,
+    CVDeviceTag,
     CVEosConfig,
     CVGRPCChannelConfiguration,
     CVGRPCKeepalives,
@@ -216,7 +220,7 @@ async def test_deploy_to_cv_rejects_duplicate_identity_across_deploy_and_decommi
     deploy_avd_device: AvdDevice,
     decommission_avd_device: AvdDevice,
 ) -> None:
-    """A physical device cannot be targeted by both deploy and decommission actions."""
+    """Test that one physical device cannot be targeted by both deploy and decommission actions."""
     mock_cv_client = AsyncMock()
     deploy_device = CVDevice(avd_device=deploy_avd_device)
     decommission_device = CVDevice(avd_device=decommission_avd_device, action="decommission")
@@ -245,6 +249,101 @@ async def test_deploy_to_cv_rejects_duplicate_identity_across_deploy_and_decommi
     assert "Duplicated devices found in inventory" in str(result.errors[0])
     mock_cv_client.get_inventory_devices.assert_not_called()
     mock_cv_client.stage_devices_for_decommission.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_staging_flat_layout_device_for_decommission_only_cleans_up_configlet() -> None:
+    """Test that AVD only cleans up the configlet after staging a flat-layout device for decommission."""
+    mock_cv_client = AsyncMock()
+    mock_cv_client.__aenter__.return_value = mock_cv_client
+    device = CVDevice(avd_device=AvdDevice(hostname="leaf1", serial_number="SN1"), exists_on_cv=True, action="decommission")
+    device_tag = CVDeviceTag(label="role", value="leaf", device=device)
+    mock_cv_client.stage_devices_for_decommission.return_value = []
+    mock_cv_client.wait_for_device_decommission_staging.return_value = [
+        Decommission(key=DeviceKey(device_id="SN1", workspace_id="pytest"), status=DecommissionStatus.SUCCESS)
+    ]
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", new_callable=AsyncMock),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_in_cloudvision_inventory", new=AsyncMock(return_value=[device])),
+        patch("pyavd._cv.workflows.deploy_to_cv.delete_decommissioned_device_configlets_from_cv", new_callable=AsyncMock) as configlet_cleanup_mock,
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", new_callable=AsyncMock),
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(name="pytest", id="pytest")),
+            device_deployments=[CVDeviceDeployment(device=device, device_tags=[device_tag])],
+        )
+
+    configlet_cleanup_mock.assert_called_once()
+    assert configlet_cleanup_mock.call_args.kwargs["devices"] == [device]
+    mock_cv_client.get_configlet_containers.assert_not_called()
+    mock_cv_client.delete_configlet_container.assert_not_called()
+    mock_cv_client.set_configlet_container.assert_not_called()
+    mock_cv_client.set_configlet_containers.assert_not_called()
+    mock_cv_client.set_studio_inputs.assert_not_called()
+    mock_cv_client.get_tags.assert_not_called()
+    mock_cv_client.set_tags.assert_not_called()
+    mock_cv_client.get_tag_assignments.assert_not_called()
+    mock_cv_client.set_tag_assignments.assert_not_called()
+    mock_cv_client.delete_tag_assignments.assert_not_called()
+    assert result.skipped_device_tags == [device_tag]
+
+
+@pytest.mark.asyncio
+async def test_manifest_is_deployed_and_flat_configlet_is_cleaned_up_after_staging_device_for_decommission() -> None:
+    """Test that manifest deployment and flat-configlet cleanup both run after staging a device for decommission."""
+    mock_cv_client = AsyncMock()
+    mock_cv_client.__aenter__.return_value = mock_cv_client
+    device = CVDevice(avd_device=AvdDevice(hostname="leaf1", serial_number="SN1"), exists_on_cv=True, action="decommission")
+    manifest = AvdManifest(containers=(AvdContainer(name="leaf1", tag_query="device:SN1"),))
+    mock_cv_client.stage_devices_for_decommission.return_value = []
+    mock_cv_client.wait_for_device_decommission_staging.return_value = [
+        Decommission(key=DeviceKey(device_id="SN1", workspace_id="pytest"), status=DecommissionStatus.SUCCESS)
+    ]
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", new_callable=AsyncMock),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_in_cloudvision_inventory", new=AsyncMock(return_value=[device])),
+        patch("pyavd._cv.workflows.deploy_to_cv.deploy_static_config_studio_manifest_to_cv", new_callable=AsyncMock) as manifest_mock,
+        patch("pyavd._cv.workflows.deploy_to_cv.delete_decommissioned_device_configlets_from_cv", new_callable=AsyncMock) as configlet_cleanup_mock,
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", new_callable=AsyncMock),
+    ):
+        await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(name="pytest", id="pytest")),
+            device_deployments=[CVDeviceDeployment(device=device, use_static_config_manifest=True)],
+            static_config_manifest=manifest,
+        )
+
+    mock_cv_client.stage_devices_for_decommission.assert_called_once_with(workspace_id="pytest", device_ids=["SN1"])
+    manifest_mock.assert_called_once()
+    assert manifest_mock.call_args.kwargs["manifest"] is manifest
+    assert manifest_mock.call_args.kwargs["cv_client"] is mock_cv_client
+    configlet_cleanup_mock.assert_called_once()
+    assert configlet_cleanup_mock.call_args.kwargs["devices"] == [device]
 
 
 @pytest.mark.asyncio

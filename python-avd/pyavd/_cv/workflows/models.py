@@ -373,7 +373,7 @@ class DeployToCvResult:
     removed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     removed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
     removed_devices: list[CVDevice] = field(default_factory=list)
-    """Devices decommissioned from CloudVision."""
+    """Devices successfully staged for decommission in CloudVision."""
 
     def get_result(self) -> dict[str, Any]:
         """Return a representation of this object for the Ansible module result."""
