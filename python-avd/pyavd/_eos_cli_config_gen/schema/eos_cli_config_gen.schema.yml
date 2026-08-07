@@ -24068,6 +24068,193 @@ keys:
               type: str
               description: Multiline EOS CLI rendered directly on the Router OSPF
                 process ID in the final EOS configuration.
+  router_ospfv3:
+    type: dict
+    display_name: Router OSPFv3 Configuration
+    description: 'Mutually exclusive with ''ipv6_router_ospf'' on EOS.
+
+      Use only one style across all VRFs and instances.'
+    keys:
+      router_id:
+        type: str
+        description: 32-bit OSPF router ID as an IP address.
+      passive_interface_default:
+        type: bool
+      auto_cost_reference_bandwidth:
+        type: int
+        convert_types:
+        - str
+        min: 1
+        max: 4294967
+        description: Reference bandwidth in Mbps.
+      address_family_ipv4:
+        type: dict
+        description: 'Address family IPv4 configuration.
+
+          Common configurations defined at the router-level and address-family level
+          are mutually exclusive.
+
+          If both are provided, the address-family level configuration takes precedence.'
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Activate the address family.
+          router_id:
+            type: str
+            description: 32-bit OSPF router ID as an IP address.
+          passive_interface_default:
+            type: bool
+          auto_cost_reference_bandwidth:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967
+            description: Reference bandwidth in Mbps.
+          redistribute:
+            type: dict
+            description: Redistribute routes into OSPFv3.
+            keys:
+              bgp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              connected:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              isis:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  level:
+                    type: str
+                    valid_values:
+                    - level-1
+                    - level-2
+                    - level-1-2
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              ospfv3:
+                type: dict
+                keys:
+                  leaked:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                        description: Redistribute OSPFv3 leaked routes.
+                      match_internal:
+                        type: bool
+                        description: Redistribute internal OSPFv3 leaked routes.
+                      route_map:
+                        type: str
+                  leaked_match_external:
+                    type: dict
+                    description: Redistribute external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                  leaked_match_nssa_external:
+                    type: dict
+                    description: Redistribute NSSA external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+      address_family_ipv6:
+        type: dict
+        description: 'Address family IPv6 configuration.
+
+          Common configurations defined at the router-level and address-family level
+          are mutually exclusive.
+
+          If both are provided, the address-family level configuration takes precedence.'
+        $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4
+        keys:
+          redistribute:
+            type: dict
+            description: Redistribute routes into OSPFv3.
+            keys:
+              dhcp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: 'VRF name.
+
+                VRF ''default'' must be configured directly under ''router_ospfv3''.'
+              pattern: (?!default$).+
+            router_id:
+              type: str
+              description: 32-bit OSPF router ID as an IP address.
+            passive_interface_default:
+              type: bool
+            auto_cost_reference_bandwidth:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4294967
+              description: Reference bandwidth in Mbps.
+            address_family_ipv4:
+              type: dict
+              $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4
+            address_family_ipv6:
+              type: dict
+              $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv6
+            eos_cli:
+              type: str
+              description: Multiline EOS CLI rendered directly on this VRF OSPFv3
+                instance.
+      eos_cli:
+        type: str
+        description: Multiline EOS CLI rendered directly on the default VRF OSPFv3
+          instance.
   router_path_selection:
     type: dict
     description: Dynamic path selection configuration.
