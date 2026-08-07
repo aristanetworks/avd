@@ -10026,6 +10026,12 @@ keys:
           type: str
           valid_values:
           - ipv4
+        management:
+          type: dict
+          keys:
+            drop:
+              type: bool
+              description: Drop PTP management messages.
     default:
     - profile: aes67-r16-2016
       announce:
