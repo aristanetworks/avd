@@ -16,6 +16,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sync_message</samp>](## "ptp_profiles.[].sync_message") | Dictionary |  |  |  | PTP sync message interval. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "ptp_profiles.[].sync_message.interval") | Integer |  |  | Min: -7<br>Max: 3 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transport</samp>](## "ptp_profiles.[].transport") | String |  |  | Valid Values:<br>- <code>ipv4</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management</samp>](## "ptp_profiles.[].management") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "ptp_profiles.[].management.drop") | Boolean |  |  |  | Drop PTP management messages. |
     | [<samp>ptp_settings</samp>](## "ptp_settings") | Dictionary |  |  |  | Common PTP settings. |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "ptp_settings.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;profile</samp>](## "ptp_settings.profile") | String |  | `aes67-r16-2016` |  | Default available profiles are:<br>  - "aes67"<br>  - "aes67-r16-2016"<br>  - "smpte2059-2" |
@@ -44,6 +46,10 @@
         sync_message:
           interval: <int; -7-3>
         transport: <str; "ipv4">
+        management:
+
+          # Drop PTP management messages.
+          drop: <bool>
 
     # Common PTP settings.
     ptp_settings:
