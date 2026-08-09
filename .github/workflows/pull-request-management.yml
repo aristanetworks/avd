@@ -730,7 +730,7 @@ jobs:
         run: sh .github/check-git-status.sh
 
   e2e_coverage:
-    name: E2E coverage ${{ matrix.e2e_test_project.display_name }}
+    name: E2E coverage ${{ matrix.e2e_test_project.display_name }} (Python 3.12)
     runs-on: ubuntu-latest
     needs: [file-changes, build_collection]
     env:
