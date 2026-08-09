@@ -566,7 +566,7 @@ class AvdV6Build:
                 # Expected: shared memory already cleaned up
                 pass
             except OSError as e:
-                print("Failed to cleanup avd_facts shared memory: %s", e)
+                print("Failed to cleanup avd_facts shared memory:", e)
 
     def close(self) -> None:
         """Explicitly cleanup resources."""
