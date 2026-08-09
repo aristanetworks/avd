@@ -823,7 +823,7 @@ jobs:
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox for ${{ matrix.python }}
         run: |
-          tox run -- --ignore=python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
+          tox run
       - name: Rename the coverage file
         if: matrix.python == '3.12'
         run: |
