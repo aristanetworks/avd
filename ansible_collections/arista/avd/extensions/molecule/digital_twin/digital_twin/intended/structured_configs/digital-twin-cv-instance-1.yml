@@ -41,7 +41,6 @@ metadata:
     version: 4.33.1.1F
     username: cvpadmin
     password: cvp123!
-    cv_instance: 10.20.30.40:9910
 ntp:
   local_interface:
     name: Management1

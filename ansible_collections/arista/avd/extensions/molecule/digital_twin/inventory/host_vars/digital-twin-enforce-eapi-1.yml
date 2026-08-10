@@ -12,7 +12,6 @@ digital_twin:
   environment: act
   fabric:
     act_ensure_eapi_access: true
-    act_cv_instance: cv-dev.example.com:443
 
 management_eapi:
   enabled: false

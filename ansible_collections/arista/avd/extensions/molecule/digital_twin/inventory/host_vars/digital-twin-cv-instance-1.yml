@@ -1,5 +1,5 @@
 ---
-# Test that act_cv_instance overrides daemon_terminattr.cvaddrs in ACT Digital Twin mode.
+# Test that act_cv_settings overrides cv_settings for daemon_terminattr in ACT Digital Twin mode.
 type: l2leaf
 
 l2leaf:
@@ -12,7 +12,11 @@ l2leaf:
 digital_twin:
   environment: act
   fabric:
-    act_cv_instance: 10.20.30.40:9910
+    act_cv_settings:
+      onprem_clusters:
+        - name: dev
+          servers:
+            - name: 10.20.30.40
 
 cv_settings:
   onprem_clusters:

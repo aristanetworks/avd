@@ -56,11 +56,12 @@ keys:
               Set this to `true` to enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the default VRF and preserving this connectivity.
               This setting is only applicable to ACT `veos` and `cloudeos` node types.
             default: false
-          act_cv_instance:
-            type: str
+          act_cv_settings:
+            type: dict
+            $ref: "eos_designs#/keys/cv_settings"
             description: |-
-              CloudVision instance to target for ACT Digital Twin deployment.
-              This value overrides `daemon_terminattr.cvaddrs` in ACT Digital Twin mode.
+              CloudVision settings for ACT Digital Twin deployment.
+              When set, overrides `cv_settings` for devices in ACT Digital Twin mode.
       use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false
