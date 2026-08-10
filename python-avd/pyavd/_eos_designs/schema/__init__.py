@@ -46614,12 +46614,35 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         Transport: TypeAlias = Literal["ipv4"]
+
+        class Management(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"drop": {"type": bool}}
+            drop: bool | None
+            """Drop PTP management messages."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, drop: bool | UndefinedType | None = Undefined) -> None:
+                    """
+                    Management.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        drop: Drop PTP management messages.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "profile": {"type": str},
             "announce": {"type": Announce},
             "delay_req": {"type": int},
             "sync_message": {"type": SyncMessage},
             "transport": {"type": str},
+            "management": {"type": Management},
         }
         profile: str
         """PTP profile."""
@@ -46637,6 +46660,8 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdModel.
         """
         transport: Transport | None
+        management: Management
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -46648,6 +46673,7 @@ class EosDesigns(EosDesignsRootModel):
                 delay_req: int | UndefinedType | None = Undefined,
                 sync_message: SyncMessage | UndefinedType = Undefined,
                 transport: Transport | UndefinedType | None = Undefined,
+                management: Management | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpProfilesItem.
@@ -46667,6 +46693,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     transport: transport
+                    management: Subclass of AvdModel.
 
                 """
 
