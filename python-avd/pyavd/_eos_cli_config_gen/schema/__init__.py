@@ -11340,7 +11340,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 action: Action | None
                 allow_vlan: int | None
                 allow_access_list: str | None
-                """Name of access-list to apply when authentication fails."""
+                """Name of the standard or extended access list to be applied to unauthenticated traffic."""
 
                 if TYPE_CHECKING:
 
@@ -11360,7 +11360,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             action: action
                             allow_vlan: allow_vlan
-                            allow_access_list: Name of access-list to apply when authentication fails.
+                            allow_access_list: Name of the standard or extended access list to be applied to unauthenticated traffic.
 
                         """
 

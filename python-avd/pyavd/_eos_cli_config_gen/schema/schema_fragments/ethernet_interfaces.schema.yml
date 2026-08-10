@@ -995,7 +995,7 @@ keys:
                     - str
                 allow_access_list:
                   type: str
-                  description: Name of access-list to apply when authentication fails.
+                  description: Name of the standard or extended access list to be applied to unauthenticated traffic.
             host_mode:
               type: dict
               keys:
