@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: One or more L3 Port-Channels 'Port-Channel5' need to be specified as they have sub-interfaces referencing them.
