@@ -465,8 +465,6 @@ keys:
               description: Maximum number of accepted routes (0 means unlimited).
               min: 0
               max: 4294967294
-              convert_types:
-                - str
             maximum_accepted_routes_warning_limit:
               type: str
               description: |
@@ -746,8 +744,6 @@ keys:
               description: Maximum number of accepted routes (0 means unlimited).
               min: 0
               max: 4294967294
-              convert_types:
-                - str
             maximum_accepted_routes_warning_limit:
               type: str
               description: |
@@ -1785,8 +1781,6 @@ keys:
                   description: Maximum number of accepted routes (0 means unlimited).
                   min: 0
                   max: 4294967294
-                  convert_types:
-                    - str
                 maximum_accepted_routes_warning_limit:
                   type: str
                   description: |
@@ -1863,8 +1857,6 @@ keys:
                   description: Maximum number of accepted routes (0 means unlimited).
                   min: 0
                   max: 4294967294
-                  convert_types:
-                    - str
                 maximum_accepted_routes_warning_limit:
                   type: str
                   description: |
@@ -2841,8 +2833,6 @@ keys:
                   description: Maximum number of accepted routes (0 means unlimited).
                   min: 0
                   max: 4294967294
-                  convert_types:
-                    - str
                 maximum_accepted_routes_warning_limit:
                   type: str
                   description: |
@@ -2911,8 +2901,6 @@ keys:
                   description: Maximum number of accepted routes (0 means unlimited).
                   min: 0
                   max: 4294967294
-                  convert_types:
-                    - str
                 maximum_accepted_routes_warning_limit:
                   type: str
                   description: |
@@ -4211,8 +4199,6 @@ keys:
                     description: Maximum number of accepted routes (0 means unlimited).
                     min: 0
                     max: 4294967294
-                    convert_types:
-                      - str
                   maximum_accepted_routes_warning_limit:
                     type: str
                     description: |
