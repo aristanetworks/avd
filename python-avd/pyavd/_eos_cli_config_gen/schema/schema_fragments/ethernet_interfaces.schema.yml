@@ -993,6 +993,9 @@ keys:
                   max: 4094
                   convert_types:
                     - str
+                allow_access_list:
+                  type: str
+                  description: Name of access-list to apply when authentication fails.
             host_mode:
               type: dict
               keys:

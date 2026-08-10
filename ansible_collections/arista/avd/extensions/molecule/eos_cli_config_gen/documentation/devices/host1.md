@@ -5925,7 +5925,7 @@ interface Ethernet33
 interface Ethernet34
    description DOT1X Testing - authentication_failure allow
    switchport
-   dot1x authentication failure action traffic allow vlan 800
+   dot1x authentication failure action traffic allow vlan 800 access-list ACL1
 !
 interface Ethernet35
    description DOT1X Testing - authentication_failure drop
