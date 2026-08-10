@@ -17384,8 +17384,6 @@ keys:
               description: Maximum number of advertised routes (0 means unlimited).
               min: 0
               max: 4294967294
-              convert_types:
-              - str
             maximum_advertised_routes_warning_limit:
               type: str
               convert_types:
@@ -17690,8 +17688,6 @@ keys:
               description: Maximum number of advertised routes (0 means unlimited).
               min: 0
               max: 4294967294
-              convert_types:
-              - str
             maximum_advertised_routes_warning_limit:
               type: str
               convert_types:
@@ -18633,8 +18629,6 @@ keys:
                   description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
-                  convert_types:
-                  - str
                 maximum_advertised_routes_warning_limit:
                   type: str
                   convert_types:
@@ -18717,8 +18711,6 @@ keys:
                   description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
-                  convert_types:
-                  - str
                 maximum_advertised_routes_warning_limit:
                   type: str
                   convert_types:
@@ -19756,8 +19748,6 @@ keys:
                   description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
-                  convert_types:
-                  - str
                 maximum_advertised_routes_warning_limit:
                   type: str
                   convert_types:
@@ -19831,8 +19821,6 @@ keys:
                   description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
-                  convert_types:
-                  - str
                 maximum_advertised_routes_warning_limit:
                   type: str
                   convert_types:
