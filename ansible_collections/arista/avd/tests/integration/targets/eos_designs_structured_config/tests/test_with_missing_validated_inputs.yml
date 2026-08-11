@@ -1,4 +1,9 @@
 ---
+- name: Clear temporary directory for missing validated inputs test
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/tmp_missing_validated_inputs"
+    state: absent
+
 - name: Ensure temporary directory exists for missing validated inputs test
   ansible.builtin.file:
     path: "{{ actual_output_dir }}/tmp_missing_validated_inputs"
