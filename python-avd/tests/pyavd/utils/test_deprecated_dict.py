@@ -10,21 +10,29 @@ import pytest
 from pyavd._utils.deprecated_dict import DeprecatedDict
 
 
-def test_get_emits_deprecation() -> None:
-    deprecated_dict = DeprecatedDict({"interface": "Ethernet1"}, _message="deprecated")
+def test_get_emits_deprecation_once() -> None:
+    deprecated_dict = DeprecatedDict(
+        {"interface": "Ethernet1", "type": "sometype"},
+        _deprecated_dict_key="link",
+        _new_keys={"interface": "interface", "type": "link_type"},
+        _remove_in_version="7.0.0",
+    )
 
+    # Warn on first __get_item__ for a key.
     with pytest.deprecated_call(match="deprecated"):
-        assert deprecated_dict["interface"] == "Ethernet1"
+        assert deprecated_dict["type"] == "sometype"
 
-
-def test_deprecated_dict_warning_only_once_on_getitem() -> None:
-    d = DeprecatedDict({"a": 1, "b": 2}, _message="Deprecated access")
-
-    # First access triggers warning
-    with pytest.deprecated_call():
-        _ = d["a"]
-
-    # Second access should NOT issue any warnings
+    # No warning on second access - here using get() for the same key.
     with warnings.catch_warnings():
         warnings.simplefilter("error", DeprecationWarning)
-        assert d["b"] == 2
+        assert deprecated_dict.get("type") == "sometype"
+
+    # Warn on first get() for another key.
+    with pytest.deprecated_call(match="deprecated"):
+        assert deprecated_dict.get("type") == "sometype"
+        assert deprecated_dict["interface"] == "Ethernet1"
+
+    # No warning on second access - here using __get_item__ for the other key.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", DeprecationWarning)
+        assert deprecated_dict["interface"] == "Ethernet1"

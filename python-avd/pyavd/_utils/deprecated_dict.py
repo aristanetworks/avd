@@ -6,24 +6,37 @@ from __future__ import annotations
 import warnings
 from typing import Any
 
+from pyavd._errors import AvdDeprecationWarning
+
 
 class DeprecatedDict(dict):
-    _done: bool
-    _message: str
+    _deprecated_dict_key: str
+    _done: set[str]
+    _new_keys: dict[str, str]
+    _remove_in_version: str
 
-    def __init__(self, *args: Any, _message: str, **kwargs: Any) -> None:
-        self._done = False
-        self._message = _message
+    def __init__(self, *args: Any, _deprecated_dict_key: str, _new_keys: dict[str, str], _remove_in_version: str, **kwargs: Any) -> None:
+        self._deprecated_dict_key = _deprecated_dict_key
+        self._done = set()
+        self._new_keys = _new_keys
+        self._remove_in_version = _remove_in_version
         super().__init__(*args, **kwargs)
 
+    def _warn(self, key: Any) -> None:
+        if key in self._done or key not in self._new_keys:
+            return
+
+        path = [self._deprecated_dict_key, key]
+        new_key = self._new_keys[key]
+
+        deprecation_warning = AvdDeprecationWarning(path, new_key, remove_in_version=self._remove_in_version)
+        warnings.warn(deprecation_warning, stacklevel=2)
+        self._done.add(key)
+
     def __getitem__(self, key: Any) -> Any:
-        if not self._done:
-            warnings.warn(self._message, DeprecationWarning, stacklevel=2)
-            self._done = True
+        self._warn(key)
         return super().__getitem__(key)
 
     def get(self, key: Any, default: Any = None) -> Any:
-        if not self._done:
-            warnings.warn(self._message, DeprecationWarning, stacklevel=2)
-            self._done = True
+        self._warn(key)
         return super().get(key, default)

@@ -92,7 +92,17 @@ class AvdInterfaceDescriptions(AvdFacts):
                         "wan_circuit_id": data.wan_circuit_id,
                         "main_interface_wan_carrier": data.main_interface_wan_carrier,
                     },
-                    _message="The 'link' variable in interface_descriptions templates is deprecated and will be removed in AVD 7.0.0.",
+                    _deprecated_dict_key="link",
+                    _new_keys={
+                        "type": "link_type",
+                        "interface": "interface",
+                        "peer": "peer",
+                        "peer_interface": "peer_interface",
+                        "wan_carrier": "wan_carrier",
+                        "wan_circuit_id": "wan_circuit_id",
+                        "main_interface_wan_carrier": "main_interface_wan_carrier",
+                    },
+                    _remove_in_version="7.0.0",
                 ),
             )
 
@@ -187,7 +197,19 @@ class AvdInterfaceDescriptions(AvdFacts):
                         "wan_circuit_id": data.wan_circuit_id,
                         "main_interface_wan_carrier": data.main_interface_wan_carrier,
                     },
-                    _message="The 'link' in variable in interface_descriptions template is deprecated and will be removed in AVD 7.0.0.",
+                    _deprecated_dict_key="link",
+                    _new_keys={
+                        "interface": "interface",
+                        "peer": "peer",
+                        "channel_group_id": "port_channel_id",
+                        "peer_channel_group_id": "peer_channel_group_id",
+                        "channel_description": "port_channel_description",
+                        "peer_node_group": "peer_node_group",
+                        "wan_carrier": "wan_carrier",
+                        "wan_circuit_id": "wan_circuit_id",
+                        "main_interface_wan_carrier": "main_interface_wan_carrier",
+                    },
+                    _remove_in_version="7.0.0",
                 ),
             )
 
