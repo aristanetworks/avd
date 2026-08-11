@@ -14464,6 +14464,39 @@ keys:
                       min: 1
                       max: 65535
                       description: PIM hello interval in seconds.
+        multicast:
+          type: dict
+          description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix
+            but not combination of both.
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                boundaries:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        description: ACL name or multicast IP subnet.
+                      out:
+                        type: bool
+                static:
+                  type: bool
+            ipv6:
+              type: dict
+              keys:
+                boundaries:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        description: ACL name or multicast IP subnet.
+                static:
+                  type: bool
         service_profile:
           type: str
           description: QOS profile.
