@@ -1135,7 +1135,7 @@ ethernet_interfaces:
         mode: multi-host
       authentication_failure:
         action: allow
-        allow_access_list: ACL1
+        allow_access_list: Test_ACL
 
   - name: Ethernet38
     switchport:

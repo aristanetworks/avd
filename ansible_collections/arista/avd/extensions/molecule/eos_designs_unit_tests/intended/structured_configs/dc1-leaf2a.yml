@@ -368,6 +368,7 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 800
+      allow_access_list: ACL1
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -394,6 +395,7 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 800
+      allow_access_list: ACL1
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
