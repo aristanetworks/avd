@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: ipv4_acls[name=ACL-NAT-IE-DIRECT] field substitution is not supported for internet exit access lists

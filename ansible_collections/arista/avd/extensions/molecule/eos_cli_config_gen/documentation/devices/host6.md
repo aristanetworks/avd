@@ -14,6 +14,7 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+  - [Router OSPFv3](#router-ospfv3)
   - [Router BGP](#router-bgp)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
@@ -184,6 +185,174 @@ ip routing ipv6 interfaces vrf TENANT_B
 ```eos
 !
 ipv6 unicast-routing vrf TENANT_C
+```
+
+### Router OSPFv3
+
+#### VRF: default
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 1.1.1.1 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 1000 |
+
+##### Address Family IPv4
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | map1 |
+| connected | True | map1 |
+| isis level-1 | True | map1 |
+| ospfv3 leaked | True | - |
+| static | True | map1 |
+
+##### Address Family IPv6
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | map1 |
+| connected | True | map1 |
+| dhcp | - | map1 |
+| isis level-1 | True | map1 |
+| ospfv3 leaked | True | - |
+| static | True | map1 |
+
+#### VRF: MGMT
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
+
+##### Address Family IPv6
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | map1 |
+| connected | True | map1 |
+| dhcp | - | map1 |
+| isis level-1 | True | map1 |
+| ospfv3 leaked | True | map1 |
+| ospfv3 leaked match external | True | map1 |
+| ospfv3 leaked match nssa-external | True | map1 |
+| static | True | map1 |
+
+#### VRF: TEST
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
+
+#### VRF: TEST_VRF
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
+
+##### Address Family IPv6
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | - |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | - | - |
+
+#### VRF: TEST_VRF2
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 100 |
+
+#### VRF: data
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 1.1.1.1 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 1000 |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3 vrf MGMT
+   auto-cost reference-bandwidth 100
+   !
+   address-family ipv6
+      redistribute bgp include leaked route-map map1
+      redistribute dhcp route-map map1
+      redistribute connected include leaked route-map map1
+      redistribute isis include leaked level-1 route-map map1
+      redistribute ospfv3 leaked route-map map1
+      redistribute ospfv3 leaked match external route-map map1
+      redistribute ospfv3 leaked match nssa-external route-map map1
+      redistribute static include leaked route-map map1
+!
+router ospfv3 vrf TEST
+   auto-cost reference-bandwidth 100
+!
+router ospfv3 vrf TEST_VRF
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
+   !
+   address-family ipv6
+      passive-interface default
+      redistribute bgp
+!
+router ospfv3 vrf TEST_VRF2
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
+   passive-interface default
+!
+router ospfv3 vrf data
+   bfd default
+   !
+   address-family ipv4
+      router-id 1.1.1.1
+      auto-cost reference-bandwidth 1000
+      passive-interface default
+!
+router ospfv3
+   router-id 1.1.1.1
+   auto-cost reference-bandwidth 1000
+   passive-interface default
+   !
+   address-family ipv4
+      redistribute bgp include leaked route-map map1
+      redistribute connected include leaked route-map map1
+      redistribute isis include leaked level-1 route-map map1
+      redistribute ospfv3 leaked
+      redistribute static include leaked route-map map1
+   !
+   address-family ipv6
+      redistribute bgp include leaked route-map map1
+      redistribute dhcp route-map map1
+      redistribute connected include leaked route-map map1
+      redistribute isis include leaked level-1 route-map map1
+      redistribute ospfv3 leaked
+      redistribute static include leaked route-map map1
 ```
 
 ### Router BGP

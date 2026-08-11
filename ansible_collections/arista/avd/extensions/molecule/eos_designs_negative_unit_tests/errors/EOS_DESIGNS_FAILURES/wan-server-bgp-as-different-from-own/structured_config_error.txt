@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Only iBGP is supported for WAN, the BGP AS 65000 on missing-cv-pathfinder-site-under-cv-pathfinder-global-sites is different from our own: 65001.
