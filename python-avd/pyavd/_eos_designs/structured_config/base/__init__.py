@@ -325,7 +325,7 @@ class AvdStructuredConfigBaseProtocol(
         if stp_settings.loop_guard_default:
             self.structured_config.spanning_tree.loop_guard_default = True
 
-        if stp_settings.bpdu_guard_default:
+        if stp_settings.edge_port_bpdu_guard_default:
             self.structured_config.spanning_tree.edge_port.bpduguard_default = True
 
         if spanning_tree_mode is not None:
