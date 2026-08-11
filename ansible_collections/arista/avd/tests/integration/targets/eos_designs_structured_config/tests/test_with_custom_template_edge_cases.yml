@@ -1,0 +1,35 @@
+---
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_custom_template_edge_cases"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_custom_template_edge_cases"
+  check_mode: false
+  run_once: true
+
+- name: Test with custom template edge cases
+  ignore_errors: false
+  register: result
+  arista.avd.eos_designs_structured_config:
+    tmp_dir: "{{ actual_output_dir }}/tmp_custom_template_edge_cases"
+    eos_designs_custom_templates:
+      - template: empty_output.yml.j2
+      - template: null_only.yml.j2
+      - template: list_result.yml.j2
+    return_structured_config: true
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.ansible_facts is defined
+      - result.ansible_facts.list_template_var == 3
+      - result.ansible_facts.null_only is not defined

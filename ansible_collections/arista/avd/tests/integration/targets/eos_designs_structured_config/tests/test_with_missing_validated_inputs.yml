@@ -1,0 +1,23 @@
+---
+- name: Ensure temporary directory exists for missing validated inputs test
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/tmp_missing_validated_inputs"
+    state: directory
+    mode: "0700"
+
+- name: Test with missing validated inputs
+  ignore_errors: true
+  register: result
+  arista.avd.eos_designs_structured_config:
+    tmp_dir: "{{ actual_output_dir }}/tmp_missing_validated_inputs"
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - expected_error in result.msg
+  vars:
+    expected_error: >-
+      Error during plugin 'arista.avd.eos_designs_structured_config' execution: Missing validated inputs for host
+      'testhost'. Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no
+      validation errors occurred.
