@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'ipv6_acls[name=TEST-IPV6-ACL-MISSING-SOURCE].entries[0].source' is required but was not found.

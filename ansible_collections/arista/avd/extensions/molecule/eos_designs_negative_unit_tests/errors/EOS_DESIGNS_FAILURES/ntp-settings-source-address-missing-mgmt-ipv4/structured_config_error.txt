@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'ntp_settings.servers[name=pool.ntp.com].source_address' is set to 'use_mgmt_interface_ipv4' but this node is missing 'mgmt_ip'.
