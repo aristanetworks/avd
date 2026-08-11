@@ -43,5 +43,5 @@ keys:
         default: false
       bpdu_guard_default:
         type: bool
-        description: Enable BPDUGuard by default on edge ports.
+        description: Enable BPDU Guard on portfast interfaces.
         default: false
