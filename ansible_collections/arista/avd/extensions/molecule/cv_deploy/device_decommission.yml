@@ -1,0 +1,748 @@
+---
+- name: "Converge - cv_deploy device decommission - {{ test_id | upper }}"
+  hosts: avd-ci-leaf1:avd-ci-leaf2:avd-ci-leaf3:avd-ci-leaf4
+  connection: local
+  gather_facts: false
+  vars:
+    cv_server: "{{ lookup('env', 'CV_SERVER') }}"
+    cv_token: "{{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+    proxy_host: "{{ lookup('env', 'CV_PROXY_HOST') | default('', true) }}"
+    proxy_port: "{{ lookup('env', 'CV_PROXY_PORT') | default(3128, true) | int }}"
+    proxy_username: "{{ lookup('env', 'CV_PROXY_USERNAME') | default('', true) }}"
+    proxy_password: "{{ lookup('env', 'CV_PROXY_PASSWORD') | default('', true) }}"
+    cv_verify_certs: "{{ lookup('env', 'CV_VERIFY_CERTS') | default(true, true) | bool }}"
+    eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
+    original_structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
+    structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_device_decommission_configs"
+    cv_deploy_tmp_dir: "{{ playbook_dir }}/intended/tmp_cv_deploy"
+    existing_decommission_devices:
+      - avd-ci-leaf1
+      - avd-ci-leaf3
+    missing_decommission_device: avd-ci-missing
+    deploy_devices:
+      - avd-ci-leaf2
+      - avd-ci-leaf4
+    flat_layout_devices:
+      - avd-ci-leaf3
+      - avd-ci-leaf4
+    test_id: "device-decommission"
+    cv_common_pattern: "avd_cv-deploy_{{ test_id }}"
+
+  tasks:
+    - name: "Banner - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      ansible.builtin.debug:
+        msg:
+          - "{{ ('#' * (31 + test_id | length))[:100] }}"
+          - "### STARTING MOLECULE TEST {{ test_id[:69] | upper }} ###"
+          - "{{ ('#' * (31 + test_id | length))[:100] }}"
+
+    - name: "Create target structured_config directory if it doesn't exist - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.file:
+        path: "{{ structured_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: "{{ (test_id | upper) + ' - Fetch device inventory stats for all targeted devices - ' + cv_server }}"
+      tags: ["{{ test_id }}"]
+      delegate_to: localhost
+      ansible.legacy.uri:
+        url: "https://{{ cv_server }}/api/resources/inventory/v1/Device/all"
+        use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+        validate_certs: "{{ cv_verify_certs }}"
+        return_content: true
+        headers:
+          Accept: "application/json"
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ cv_token }}"
+        method: POST
+        body_format: json
+        body:
+          partialEqFilter:
+            - hostname: "{{ inventory_hostname }}"
+        timeout: 10
+      register: device_inventory_status_on_cv
+      until: >
+        device_inventory_status_on_cv.status == 200 and (device_inventory_status_on_cv.json.result.value.key.deviceId | default('') | length > 0) and
+        (device_inventory_status_on_cv.json.result.value.systemMacAddress | default('') | length > 0)
+      retries: 10
+      delay: 10
+      environment:
+        https_proxy: >-
+          http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+    - name: "Process raw device_inventory_status_on_cv variables - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      ansible.builtin.set_fact:
+        device_serial_number: "{{ device_inventory_status_on_cv.json.result.value.key.deviceId }}"
+        device_system_mac_address: "{{ device_inventory_status_on_cv.json.result.value.systemMacAddress }}"
+
+    - name: "Copy original structured_config files - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      delegate_to: localhost
+      ansible.builtin.copy:
+        src: "{{ original_structured_dir }}/{{ inventory_hostname }}.yml"
+        dest: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
+        mode: "0644"
+
+    - name: "Remove overridden metadata from the structured_config files - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      delegate_to: localhost
+      ansible.builtin.lineinfile:
+        path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
+        regexp: '^\s+(serial_number|system_mac_address|is_deployed|cv_use_static_config_manifest):'
+        state: absent
+
+    - name: "Update metadata in the structured_config files - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      delegate_to: localhost
+      ansible.builtin.lineinfile:
+        line: |-
+          metadata:
+            serial_number: {{ device_serial_number }}
+            system_mac_address: {{ device_system_mac_address }}
+            is_deployed: {{ (inventory_hostname not in existing_decommission_devices) | lower }}
+            cv_use_static_config_manifest: {{ (inventory_hostname not in flat_layout_devices) | lower }}
+        path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
+        regexp: '^metadata:'
+
+    - name: "Read updated structured_config files - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      delegate_to: localhost
+      ansible.builtin.slurp:
+        src: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
+      register: updated_structured_config
+
+    - name: "Add temporary tags when the original structured_config has none - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      delegate_to: localhost
+      ansible.builtin.lineinfile:
+        line: |2-
+            cv_tags:
+              device_tags:
+                - name: molecule_decommission
+                  value: "{{ inventory_hostname }}"
+              interface_tags:
+                - interface: Ethernet1
+                  tags:
+                    - name: molecule_decommission
+                      value: "{{ inventory_hostname }}"
+        path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
+        insertafter: '^\s+cv_use_static_config_manifest:'
+      when: "'cv_tags:' not in updated_structured_config.content | b64decode"
+
+    - name: "Copy structured_config for the missing decommission device - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.copy:
+        src: "{{ original_structured_dir }}/{{ missing_decommission_device }}.yml"
+        dest: "{{ structured_dir }}/{{ missing_decommission_device }}.yml"
+        mode: "0644"
+
+    - name: "Remove overridden metadata for the missing decommission device - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.lineinfile:
+        path: "{{ structured_dir }}/{{ missing_decommission_device }}.yml"
+        regexp: '^\s+(serial_number|system_mac_address|is_deployed|cv_use_static_config_manifest):'
+        state: absent
+
+    - name: "Update metadata for the missing decommission device - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.lineinfile:
+        line: |-
+          metadata:
+            is_deployed: false
+            cv_use_static_config_manifest: false
+        path: "{{ structured_dir }}/{{ missing_decommission_device }}.yml"
+        regexp: '^metadata:'
+
+    - name: "Read updated structured_config for the missing decommission device - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.slurp:
+        src: "{{ structured_dir }}/{{ missing_decommission_device }}.yml"
+      register: updated_missing_structured_config
+
+    - name: "Add temporary tags when the missing device structured_config has none - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.lineinfile:
+        line: |2-
+            cv_tags:
+              device_tags:
+                - name: molecule_decommission
+                  value: "{{ missing_decommission_device }}"
+              interface_tags:
+                - interface: Ethernet1
+                  tags:
+                    - name: molecule_decommission
+                      value: "{{ missing_decommission_device }}"
+        path: "{{ structured_dir }}/{{ missing_decommission_device }}.yml"
+        insertafter: '^\s+cv_use_static_config_manifest:'
+      when: "'cv_tags:' not in updated_missing_structured_config.content | b64decode"
+
+    - name: "{{ (test_id | upper) + ' - ' + ('Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate') + ' molecule execution ID' }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      ansible.builtin.set_fact:
+        r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
+
+    - name: "Code block to stage device decommission - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      delegate_to: localhost
+
+      block:
+        - name: "(BLOCK) Provision CVP without submitting the workspace - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          delegate_to: localhost
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_register_detailed_results: true
+            cv_devices: "{{ existing_decommission_devices + [missing_decommission_device] + deploy_devices }}"
+            cv_inventory_mode: controlled
+            cv_submit_workspace: false
+            cv_static_config_manifest:
+              configlets:
+                - name: "AVD-MANIFEST-avd-ci-leaf2"
+                  file: "{{ eos_config_dir }}/avd-ci-leaf2.cfg"
+              containers:
+                - name: "AVD-DECOMMISSION-MANIFEST-ROOT"
+                  description: "Manifest containers for deploy and decommission devices"
+                  tag_query: "device:*"
+                  sub_containers:
+                    - name: "AVD-DECOMMISSION-MANIFEST-DEVICE"
+                      description: "Manifest container retained for a device staged for decommission"
+                      tag_query: "device:{{ hostvars['avd-ci-leaf1'].device_serial_number }}"
+                    - name: "AVD-DEPLOY-MANIFEST-DEVICE"
+                      description: "Manifest container for a deployed device"
+                      tag_query: "device:{{ hostvars['avd-ci-leaf2'].device_serial_number }}"
+                      configlets:
+                        - name: "AVD-MANIFEST-avd-ci-leaf2"
+
+        - name: "(BLOCK) Check CVP returns - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - cv_deploy_results.workspace.name == cv_workspace_name
+              - cv_deploy_results.workspace.state == "built"
+              - cv_deploy_results.workspace.requested_state == "built"
+              - cv_deploy_results.workspace.description == cv_workspace_description
+              - cv_deploy_results.errors == []
+              - cv_deploy_results.warnings | default([]) | length == 0
+              # Devices are added here only after CloudVision reports successful decommission staging.
+              - cv_deploy_results.removed_devices | length == 2
+              # Both existing decommission devices should be reported as removed devices.
+              - >-
+                cv_deploy_results.removed_devices | map(attribute='hostname') | sort ==
+                existing_decommission_devices | sort
+              # Devices successfully staged for decommission should use the serial numbers discovered from CloudVision.
+              - >-
+                cv_deploy_results.removed_devices | map(attribute='serial_number') | sort ==
+                existing_decommission_devices | map('extract', hostvars, 'device_serial_number') | sort
+              - cv_deploy_results.removed_devices | map(attribute='action') | unique | list == ["decommission"]
+              - missing_decommission_device not in cv_deploy_results.removed_devices | map(attribute='hostname') | list
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+
+        - name: "(BLOCK) Verify deploy and decommission device results - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              # Only the active flat-layout device should use the regular config workflow.
+              - >-
+                cv_deploy_results.deployed_configs | map(attribute='device.hostname') | list ==
+                ['avd-ci-leaf4']
+              # Remove old flat configlets for both decommission devices and the device moving to the manifest.
+              - >-
+                cv_deploy_results.removed_configs | sort ==
+                ['AVD-avd-ci-leaf1', 'AVD-avd-ci-leaf2', 'AVD-avd-ci-leaf3']
+              # Device tags for existing and missing decommission devices should be skipped.
+              - >-
+                cv_deploy_results.skipped_device_tags |
+                map(attribute='device.hostname') | unique | sort ==
+                (existing_decommission_devices + [missing_decommission_device]) | sort
+              # Every skipped device tag should belong to a decommission action.
+              - >-
+                cv_deploy_results.skipped_device_tags |
+                map(attribute='device.action') | unique | list == ['decommission']
+              # Interface tags for existing and missing decommission devices should also be skipped.
+              - >-
+                cv_deploy_results.skipped_interface_tags |
+                map(attribute='device.hostname') | unique | sort ==
+                (existing_decommission_devices + [missing_decommission_device]) | sort
+              # Device tags should still be deployed for both active devices, regardless of layout.
+              - >-
+                cv_deploy_results.deployed_device_tags |
+                map(attribute='device.hostname') | unique | sort == deploy_devices | sort
+              # Interface tags should still be deployed for both active devices, regardless of layout.
+              - >-
+                cv_deploy_results.deployed_interface_tags |
+                map(attribute='device.hostname') | unique | sort == deploy_devices | sort
+
+        - name: "(BLOCK) Verify manifest deployment - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - cv_deploy_results.deployed_static_config_containers | length == 3
+              # The active manifest device should receive its configuration through the manifest.
+              - >-
+                cv_deploy_results.deployed_static_config_configlets |
+                selectattr('name', 'equalto', 'AVD-MANIFEST-avd-ci-leaf2') | list | length == 1
+              # The manifest should retain the container targeting the device staged for decommission.
+              - >-
+                cv_deploy_results.deployed_static_config_containers |
+                selectattr('name', 'equalto', 'AVD-DECOMMISSION-MANIFEST-DEVICE') |
+                selectattr('tag_query', 'equalto', 'device:' + hostvars['avd-ci-leaf1'].device_serial_number) | list | length == 1
+              # The active manifest device should retain its own device-specific container.
+              - >-
+                cv_deploy_results.deployed_static_config_containers |
+                selectattr('name', 'equalto', 'AVD-DEPLOY-MANIFEST-DEVICE') |
+                selectattr('tag_query', 'equalto', 'device:' + hostvars['avd-ci-leaf2'].device_serial_number) | list | length == 1
+
+        - name: "(BLOCK) Fetch staged device input configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: "https://{{ cv_server }}/api/resources/studio_topology/v1/DeviceInputConfig/all"
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ cv_token }}"
+            method: POST
+            body_format: json
+            body:
+              partialEqFilter:
+                - key:
+                    workspaceId: "{{ cv_deploy_results.workspace.id }}"
+            timeout: 10
+          register: cvp_device_input_configs_result
+          until: cvp_device_input_configs_result.status == 200
+          retries: 3
+          delay: 3
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(BLOCK) Process staged device input configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            cvp_device_input_configs: >-
+              {{ cvp_device_input_configs_result.content.splitlines() | reject('equalto', '') | map('from_json') | list }}
+
+        - name: "(BLOCK) Verify devices are staged for decommission - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - >-
+                cvp_device_input_configs | map(attribute='result.value.key.deviceId') | sort ==
+                existing_decommission_devices | map('extract', hostvars, 'device_serial_number') | sort
+              - >-
+                cvp_device_input_configs | map(attribute='result.value.key.workspaceId') | unique | list ==
+                [cv_deploy_results.workspace.id]
+              - cvp_device_input_configs | map(attribute='result.value.remove') | unique | list == [true]
+
+        - name: "(BLOCK) Fetch staged configlet configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: "https://{{ cv_server }}/api/resources/configlet/v1/ConfigletConfig/all"
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ cv_token }}"
+            method: POST
+            body_format: json
+            body:
+              partialEqFilter:
+                - key:
+                    workspaceId: "{{ cv_deploy_results.workspace.id }}"
+            timeout: 10
+          register: cvp_configlet_configs_result
+          until: cvp_configlet_configs_result.status == 200
+          retries: 3
+          delay: 3
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(BLOCK) Process staged configlet configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            cvp_configlet_configs: >-
+              {{ cvp_configlet_configs_result.content.splitlines() | reject('equalto', '') | map('from_json') | list }}
+
+        - name: "(BLOCK) Verify staged configlet configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - >-
+                cvp_configlet_configs | map(attribute='result.value.key.workspaceId') | unique | list ==
+                [cv_deploy_results.workspace.id]
+              - >-
+                cvp_configlet_configs |
+                selectattr('result.value.remove', 'equalto', true) |
+                map(attribute='result.value.displayName') | sort ==
+                ['AVD-avd-ci-leaf1', 'AVD-avd-ci-leaf2', 'AVD-avd-ci-leaf3']
+              - >-
+                cvp_configlet_configs |
+                selectattr('result.value.remove', 'equalto', false) |
+                map(attribute='result.value.displayName') | list ==
+                ['AVD-MANIFEST-avd-ci-leaf2']
+
+        - name: "(BLOCK) Fetch staged configlet assignment configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: "https://{{ cv_server }}/api/resources/configlet/v1/ConfigletAssignmentConfig/all"
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ cv_token }}"
+            method: POST
+            body_format: json
+            body:
+              partialEqFilter:
+                - key:
+                    workspaceId: "{{ cv_deploy_results.workspace.id }}"
+            timeout: 10
+          register: cvp_configlet_assignment_configs_result
+          until: cvp_configlet_assignment_configs_result.status == 200
+          retries: 3
+          delay: 3
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(BLOCK) Process stable staged configlet assignment configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            cvp_configlet_assignment_configs: >-
+              {{
+                cvp_configlet_assignment_configs_result.content.splitlines() |
+                reject('equalto', '') |
+                map('from_json') |
+                rejectattr('result.value.displayName', 'search', 'PLACEHOLDER') |
+                list
+              }}
+
+        - name: "(BLOCK) Verify staged configlet assignment configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - >-
+                cvp_configlet_assignment_configs | map(attribute='result.value.key.workspaceId') | unique | list ==
+                [cv_deploy_results.workspace.id]
+              # The three old flat-layout device containers must be removed.
+              - >-
+                cvp_configlet_assignment_configs |
+                selectattr('result.value.remove', 'equalto', true) |
+                map(attribute='result.value.displayName') | sort ==
+                ['avd-ci-leaf1', 'avd-ci-leaf2', 'avd-ci-leaf3']
+              # The updated flat-layout root container must be present exactly once.
+              - >-
+                cvp_configlet_assignment_configs |
+                selectattr('result.value.displayName', 'equalto', 'AVD Configurations') |
+                selectattr('result.value.remove', 'equalto', false) | list | length == 1
+              # Their assignment IDs must also be absent from the updated flat-layout root container.
+              - >-
+                cvp_configlet_assignment_configs |
+                selectattr('result.value.displayName', 'equalto', 'AVD Configurations') |
+                map(attribute='result.value.childAssignmentIds.values') | first | default([]) |
+                intersect(removed_flat_assignment_ids) | length == 0
+              # The manifest root and its two device containers must be staged for addition.
+              - >-
+                cvp_configlet_assignment_configs |
+                selectattr('result.value.remove', 'equalto', false) |
+                rejectattr('result.value.displayName', 'equalto', 'AVD Configurations') |
+                map(attribute='result.value.displayName') | sort ==
+                ['AVD-DECOMMISSION-MANIFEST-DEVICE', 'AVD-DECOMMISSION-MANIFEST-ROOT', 'AVD-DEPLOY-MANIFEST-DEVICE']
+          vars:
+            removed_flat_assignment_ids:
+              - "avd-{{ hostvars['avd-ci-leaf1'].device_serial_number }}"
+              - "avd-{{ hostvars['avd-ci-leaf2'].device_serial_number }}"
+              - "avd-{{ hostvars['avd-ci-leaf3'].device_serial_number }}"
+
+        - name: "(BLOCK) Fetch mainline static configuration studio inputs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: "https://{{ cv_server }}/api/resources/studio/v1/Inputs/all"
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ cv_token }}"
+            method: POST
+            body_format: json
+            body:
+              partialEqFilter:
+                - key:
+                    studioId: studio-static-configlet
+                    workspaceId: ""
+                    path: {}
+            timeout: 10
+          register: cvp_mainline_static_config_inputs_result
+          until: cvp_mainline_static_config_inputs_result.status == 200
+          retries: 3
+          delay: 3
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(BLOCK) Fetch workspace static configuration studio inputs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: "https://{{ cv_server }}/api/resources/studio/v1/Inputs/all"
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ cv_token }}"
+            method: POST
+            body_format: json
+            body:
+              partialEqFilter:
+                - key:
+                    studioId: studio-static-configlet
+                    workspaceId: "{{ cv_deploy_results.workspace.id }}"
+                    path: {}
+            timeout: 10
+          register: cvp_workspace_static_config_inputs_result
+          until: cvp_workspace_static_config_inputs_result.status == 200
+          retries: 3
+          delay: 3
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(BLOCK) Process static configuration studio root containers - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            cvp_mainline_static_config_roots: >-
+              {{ ((cvp_mainline_static_config_inputs_result.content | from_json).result.value.inputs |
+                  from_json).configletAssignmentRoots }}
+            cvp_workspace_static_config_roots: >-
+              {{ ((cvp_workspace_static_config_inputs_result.content | from_json).result.value.inputs |
+                  from_json).configletAssignmentRoots }}
+
+        - name: "(BLOCK) Verify static configuration studio root container changes - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              # Mainline must contain at least one old AVD-managed Placement root.
+              - cvp_mainline_static_config_roots | select('match', '^avd_') | list | length > 0
+              # No old AVD-managed Placement root may remain in the workspace root list.
+              - >-
+                cvp_mainline_static_config_roots | select('match', '^avd_') | list |
+                intersect(cvp_workspace_static_config_roots) | length == 0
+              # The new manifest root must be the only AVD-managed Placement root in the workspace.
+              - >-
+                cvp_workspace_static_config_roots | select('match', '^avd_') | list ==
+                [new_manifest_root_assignment_id]
+              # Every root not managed by the AVD manifest must remain untouched.
+              - >-
+                cvp_mainline_static_config_roots | reject('match', '^avd_') | list ==
+                cvp_workspace_static_config_roots | reject('match', '^avd_') | list
+          vars:
+            new_manifest_root_assignment_id: >-
+              {{
+                cvp_configlet_assignment_configs |
+                selectattr('result.value.displayName', 'equalto', 'AVD-DECOMMISSION-MANIFEST-ROOT') |
+                map(attribute='result.value.key.configletAssignmentId') |
+                first
+              }}
+
+        - name: "(BLOCK) Fetch staged tag assignment configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: "https://{{ cv_server }}/api/resources/tag/v2/TagAssignmentConfig/all"
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ cv_token }}"
+            method: POST
+            body_format: json
+            body:
+              partialEqFilter:
+                - key:
+                    workspaceId: "{{ cv_deploy_results.workspace.id }}"
+            timeout: 10
+          register: cvp_tag_assignment_configs_result
+          until: cvp_tag_assignment_configs_result.status == 200
+          retries: 3
+          delay: 3
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(BLOCK) Process staged tag assignment configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            cvp_tag_assignment_configs: >-
+              {{ cvp_tag_assignment_configs_result.content.splitlines() | reject('equalto', '') | map('from_json') | list }}
+
+        - name: "(BLOCK) Verify staged tag assignment configs - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - >-
+                cvp_tag_assignment_configs | map(attribute='result.value.key.workspaceId') | unique | list ==
+                [cv_deploy_results.workspace.id]
+              # Tag assignment removals must target only the two devices staged for decommission.
+              - >-
+                cvp_tag_assignment_configs |
+                selectattr('result.value.remove', 'equalto', true) |
+                map(attribute='result.value.key.deviceId') | unique | sort ==
+                existing_decommission_devices | map('extract', hostvars, 'device_serial_number') | sort
+              # Exactly one device and one interface assignment must be added for each active device.
+              - >-
+                cvp_tag_assignment_configs |
+                selectattr('result.value.remove', 'equalto', false) | list | length ==
+                deploy_devices | length * 2
+              # Only the tag created by this scenario may be added.
+              - >-
+                cvp_tag_assignment_configs |
+                selectattr('result.value.remove', 'equalto', false) |
+                map(attribute='result.value.key.label') | unique | list ==
+                ['molecule_decommission']
+              - >-
+                cvp_tag_assignment_configs |
+                selectattr('result.value.remove', 'equalto', false) |
+                map(attribute='result.value.key.value') | unique | sort ==
+                deploy_devices | sort
+              - >-
+                cvp_tag_assignment_configs |
+                selectattr('result.value.remove', 'equalto', false) |
+                map(attribute='result.value.key.deviceId') | unique | sort ==
+                deploy_devices | map('extract', hostvars, 'device_serial_number') | sort
+              - >-
+                cvp_tag_assignment_configs |
+                selectattr('result.value.remove', 'equalto', false) |
+                map(attribute='result.value.key.elementType') | unique | sort ==
+                ['ELEMENT_TYPE_DEVICE', 'ELEMENT_TYPE_INTERFACE']
+
+        - name: "(BLOCK) Verify staged tag assignments per active device - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              # Each active device must receive exactly one device tag from this scenario.
+              - >-
+                cvp_tag_assignment_configs |
+                selectattr('result.value.remove', 'equalto', false) |
+                selectattr('result.value.key.deviceId', 'equalto', hostvars[deploy_target].device_serial_number) |
+                selectattr('result.value.key.elementType', 'equalto', 'ELEMENT_TYPE_DEVICE') |
+                selectattr('result.value.key.label', 'equalto', 'molecule_decommission') |
+                selectattr('result.value.key.value', 'equalto', deploy_target) | list | length == 1
+              # Each active device must receive exactly one matching Ethernet1 interface tag.
+              - >-
+                cvp_tag_assignment_configs |
+                selectattr('result.value.remove', 'equalto', false) |
+                selectattr('result.value.key.deviceId', 'equalto', hostvars[deploy_target].device_serial_number) |
+                selectattr('result.value.key.elementType', 'equalto', 'ELEMENT_TYPE_INTERFACE') |
+                selectattr('result.value.key.interfaceId', 'equalto', 'Ethernet1') |
+                selectattr('result.value.key.label', 'equalto', 'molecule_decommission') |
+                selectattr('result.value.key.value', 'equalto', deploy_target) | list | length == 1
+          loop: "{{ deploy_devices }}"
+          loop_control:
+            loop_var: deploy_target
+
+      always:
+        - name: "(ALWAYS) Display CVP detailed result - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            var: cv_deploy_results
+
+        - name: "(ALWAYS) Cleanup orphan workspace - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ cv_token }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "values": [
+                  {
+                    "key": {
+                      "workspaceId": "{{ cv_deploy_results.workspace.id }}"
+                    },
+                    "request": "REQUEST_ABANDON",
+                    "requestParams": {
+                      "requestId": "{{ r }}"
+                    }
+                  }
+                ]
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_abandon_workspace_result
+          until: cvp_abandon_workspace_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          when:
+            - cv_deploy_results is defined
+            - cv_deploy_results.workspace is defined
+            - cv_deploy_results.workspace.id | default('') | length > 0
+            - cv_deploy_results.workspace.state | default('') != "abandoned"
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
