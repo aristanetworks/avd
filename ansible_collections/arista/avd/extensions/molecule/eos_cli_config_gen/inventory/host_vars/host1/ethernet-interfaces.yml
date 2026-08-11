@@ -1133,6 +1133,9 @@ ethernet_interfaces:
     dot1x:
       host_mode:
         mode: multi-host
+      authentication_failure:
+        action: allow
+        allow_access_list: ACL1
 
   - name: Ethernet38
     switchport:
