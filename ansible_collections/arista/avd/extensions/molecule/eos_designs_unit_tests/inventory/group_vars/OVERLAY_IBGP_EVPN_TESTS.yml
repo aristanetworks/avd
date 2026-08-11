@@ -33,7 +33,14 @@ l3leaf:
       mgmt_ip: 192.168.0.206/24
       evpn_role: server
       overlay_address_families: [evpn]
-      evpn_route_servers: [evpn-overlay-mpls-route-reflectors-ibgp, evpn-overlay-mpls-route-reflectors2-ibgp]
+      evpn_route_servers:
+        - evpn-overlay-mpls-route-reflectors-ibgp
+        - evpn-overlay-mpls-route-reflectors2-ibgp
+        - evpn-overlay-mpls-route-reflectors3-ibgp
+      evpn_gateway:
+        remote_peers:
+          # Test that the regular iBGP EVPN neighbor is suppressed when the core neighbor uses the same peering address.
+          - hostname: evpn-overlay-mpls-route-reflectors3-ibgp
     - name: evpn-overlay-mpls-route-reflectors3-ibgp
       id: 4
       evpn_role: server
