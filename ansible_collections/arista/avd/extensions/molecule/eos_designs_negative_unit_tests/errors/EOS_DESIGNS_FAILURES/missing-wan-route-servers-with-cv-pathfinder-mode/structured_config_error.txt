@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'wan_route_servers' must be configured for WAN routers operating in 'cv_pathfinder' mode.
