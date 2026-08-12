@@ -7,7 +7,7 @@ from functools import cached_property
 from re import findall
 from typing import TYPE_CHECKING, Protocol, cast
 
-from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, UndefinedType, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
