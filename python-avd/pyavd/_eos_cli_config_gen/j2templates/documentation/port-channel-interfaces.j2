@@ -143,9 +143,15 @@
 {%             if multicast_interface.multicast.ipv4 is arista.avd.defined %}
 {%                 set static = multicast_interface.multicast.ipv4.static | arista.avd.default('-') %}
 {%                 if multicast_interface.multicast.ipv4.boundaries is arista.avd.defined %}
-{%                     set boundaries = multicast_interface.multicast.ipv4.boundaries | selectattr('boundary', 'arista.avd.defined') |
-                                                                                        map(attribute='boundary') |
-                                                                                        join(', ') %}
+{%                     set boundaries_list = [] %}
+{%                     for boundary in multicast_interface.multicast.ipv4.boundaries | selectattr('boundary', 'arista.avd.defined') %}
+{%                         set boundary_str = boundary.boundary %}
+{%                         if boundary.out is arista.avd.defined(true) %}
+{%                             set boundary_str = boundary_str ~ ' (out)' %}
+{%                         endif %}
+{%                         do boundaries_list.append(boundary_str) %}
+{%                     endfor %}
+{%                     set boundaries = boundaries_list | join(', ') %}
 {%                 else %}
 {%                     set boundaries = '-' %}
 {%                 endif %}
@@ -154,9 +160,15 @@
 {%             if multicast_interface.multicast.ipv6 is arista.avd.defined %}
 {%                 set static = multicast_interface.multicast.ipv6.static | arista.avd.default('-') %}
 {%                 if multicast_interface.multicast.ipv6.boundaries is arista.avd.defined %}
-{%                     set boundaries = multicast_interface.multicast.ipv6.boundaries | selectattr('boundary', 'arista.avd.defined') |
-                                                                                        map(attribute='boundary') |
-                                                                                        join(', ') %}
+{%                     set boundaries_list = [] %}
+{%                     for boundary in multicast_interface.multicast.ipv6.boundaries | selectattr('boundary', 'arista.avd.defined') %}
+{%                         set boundary_str = boundary.boundary %}
+{%                         if boundary.out is arista.avd.defined(true) %}
+{%                             set boundary_str = boundary_str ~ ' (out)' %}
+{%                         endif %}
+{%                         do boundaries_list.append(boundary_str) %}
+{%                     endfor %}
+{%                     set boundaries = boundaries_list | join(', ') %}
 {%                 else %}
 {%                     set boundaries = '-' %}
 {%                 endif %}

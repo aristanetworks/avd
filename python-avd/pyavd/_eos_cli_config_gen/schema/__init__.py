@@ -37624,13 +37624,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Subclass of AvdModel."""
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
-                    boundary: str | None
+                    boundary: str
                     """ACL name or multicast IP subnet."""
                     out: bool | None
+                    """Multicast boundary direction - outbound."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, boundary: str | UndefinedType | None = Undefined, out: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, boundary: str | UndefinedType = Undefined, out: bool | UndefinedType | None = Undefined) -> None:
                             """
                             BoundariesItem.
 
@@ -37639,7 +37640,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 boundary: ACL name or multicast IP subnet.
-                                out: out
+                                out: Multicast boundary direction - outbound.
 
                             """
 
@@ -37674,13 +37675,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class BoundariesItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"boundary": {"type": str}}
-                    boundary: str | None
+                    _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
+                    boundary: str
                     """ACL name or multicast IP subnet."""
+                    out: bool
+                    """IPv6 boundaries always include out direction."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, boundary: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, boundary: str | UndefinedType = Undefined, out: bool | UndefinedType = Undefined) -> None:
                             """
                             BoundariesItem.
 
@@ -37689,6 +37692,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 boundary: ACL name or multicast IP subnet.
+                                out: IPv6 boundaries always include out direction.
 
                             """
 
