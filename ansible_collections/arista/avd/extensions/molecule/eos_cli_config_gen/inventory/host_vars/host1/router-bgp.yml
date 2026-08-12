@@ -149,6 +149,8 @@ router_bgp:
       maximum_routes: 0
       maximum_accepted_routes:
         limit: 0
+        warning_limit:
+          count: 0
       peer_tag_in: PEER_TAG_IN
       peer_tag_out_discard: PEER_TAG_DISCARD_OUT
     - name: MPLS-IBGP-PEERS
@@ -576,6 +578,10 @@ router_bgp:
             count: 80
       - name: MLAG-IPv4-UNDERLAY-PEER
         activate: true
+        maximum_accepted_routes:
+          limit: 12000
+          warning_limit:
+            percent: 10
       - name: TEST_PEER_GRP
         activate: true
         next_hop:
@@ -2028,6 +2034,10 @@ router_bgp:
         - ip_address: 192.168.0.10
           enforce_first_as: false
           peer_tag_in: peer-tag
+          maximum_accepted_routes:
+            limit: 10
+            warning_limit:
+              count: 0
       bgp:
         additional_paths:
           send: limit

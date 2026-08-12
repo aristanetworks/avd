@@ -9735,7 +9735,7 @@ ASN Notation: asdot
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
-| Maximum accepted routes | 0 (no limit) |
+| Maximum accepted routes | 0 (no limit) (never warn) |
 
 ##### EXTENDED-COMMUNITY
 
@@ -10049,7 +10049,7 @@ ASN Notation: asdot
 | 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | large | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - |
 | 10.255.251.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | True | - | - | - | - |
 | 1.1.1.1 | - | VRF02 | - | - | - | - | - | - | - | - | - | - |
-| 192.168.0.10 | - | VRF02 | - | - | - | - | - | - | - | - | - | - |
+| 192.168.0.10 | - | VRF02 | - | - | - | 10 (never warn) | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
 
 #### BGP Neighbor Interfaces
@@ -10397,7 +10397,7 @@ router bgp 65101
    neighbor EVPN-OVERLAY-RS-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-RS-PEERS send-community
    neighbor EVPN-OVERLAY-RS-PEERS maximum-routes 0
-   neighbor EVPN-OVERLAY-RS-PEERS maximum-accepted-routes 0
+   neighbor EVPN-OVERLAY-RS-PEERS maximum-accepted-routes 0 warning-limit 0
    neighbor EVPN-OVERLAY-RS-PEERS peer-tag in PEER_TAG_IN
    neighbor EVPN-OVERLAY-RS-PEERS peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor EXTENDED-COMMUNITY peer group
@@ -10846,6 +10846,7 @@ router bgp 65101
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 12000 warning-limit 80
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor MLAG-IPv4-UNDERLAY-PEER maximum-accepted-routes 12000 warning-limit 10 percent
       neighbor NHP activate
       neighbor OBS_WAN activate
       neighbor OBS_WAN additional-paths send limit 8
@@ -11535,6 +11536,7 @@ router bgp 65101
       neighbor 1.1.1.1 password 7 <removed>
       neighbor 1.1.1.1 enforce-first-as
       no neighbor 192.168.0.10 enforce-first-as
+      neighbor 192.168.0.10 maximum-accepted-routes 10 warning-limit 0
       neighbor 192.168.0.10 peer-tag in peer-tag
       redistribute connected include leaked route-map RM_VRF_CONNECTED
       redistribute isis level-2 include leaked route-map RM_VRF_ISIS
