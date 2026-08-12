@@ -62,6 +62,9 @@ route_maps:
 router_bgp:
   as: '65001'
   router_id: 192.0.255.31
+  graceful_restart:
+    enabled: false
+    restart_time: 100
   maximum_paths:
     paths: 4
   updates:

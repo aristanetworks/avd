@@ -1671,11 +1671,15 @@ keys:
                     default: main_router_id
                   graceful_restart:
                     type: dict
+                    description: |
+                      BGP graceful-restart configuration for this VRF.
+                      For VRF default, this setting is generated in the global Router BGP context and takes precedence over `bgp_graceful_restart`
                     keys:
                       enabled:
                         type: bool
                         required: true
-                        description: Enable or disable BGP graceful-restart for this VRF.
+                        description: |
+                          Enable or disable BGP graceful-restart for this VRF.
                       restart_time:
                         type: int
                         convert_types:
