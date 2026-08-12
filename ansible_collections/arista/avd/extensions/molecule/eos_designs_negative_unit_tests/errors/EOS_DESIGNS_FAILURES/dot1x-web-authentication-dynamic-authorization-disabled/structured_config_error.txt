@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'dot1x_settings.web_authentication' requires 'dot1x_settings.dynamic_authorization.enabled: true' since captive portal relies on RADIUS CoA to authorize the session after portal login.

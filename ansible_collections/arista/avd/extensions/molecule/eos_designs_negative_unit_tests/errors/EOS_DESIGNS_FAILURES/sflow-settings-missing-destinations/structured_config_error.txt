@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Either `sflow_settings.destinations` or `sflow_settings.export_to_cloudvision.enabled: true` is required to configure `sflow`.
