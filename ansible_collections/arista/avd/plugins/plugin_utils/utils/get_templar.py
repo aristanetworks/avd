@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:  # pragma: no cover
     from ansible.plugins.action import ActionBase
 
+from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 
 from .compile_searchpath import compile_searchpath
@@ -40,4 +41,4 @@ def get_templar(action_plugin_instance: ActionBase, task_vars: dict[str, Any]) -
     searchpath = compile_searchpath(task_vars.get("ansible_search_path", []))
     templar = action_plugin_instance._templar.copy_with_new_env(searchpath=searchpath)
     loader = action_plugin_instance._task.get_loader()
-    return AVDTemplar(templar, loader, searchpath)
+    return AVDTemplar(templar, loader, searchpath, ansible_above_2_19=ANSIBLE_ABOVE_2_19)

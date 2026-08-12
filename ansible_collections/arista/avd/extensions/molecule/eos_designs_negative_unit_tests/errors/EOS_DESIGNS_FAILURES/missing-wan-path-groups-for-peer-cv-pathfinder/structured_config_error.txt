@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'wan_path_groups' is missing for peering with sfe-interface-profile-exceed-max-rx-queue-cnt, either set it under 'wan_route_servers' or something is wrong with the peer facts.

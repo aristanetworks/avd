@@ -13,6 +13,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Router OSPF](#router-ospf)
+  - [Router OSPFv3](#router-ospfv3)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
 - [MPLS](#mpls)
@@ -141,6 +142,78 @@ ip routing vrf FUTURE_IPV4
 !
 router ospf 703
    router-id 10.255.0.4
+```
+
+### Router OSPFv3
+
+#### VRF: default
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
+
+##### Address Family IPv4
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | - |
+| connected | True | - |
+| isis level-1 | True | - |
+| ospfv3 leaked | True | map1 |
+| static | - | map1 |
+
+##### Address Family IPv6
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | - |
+| connected | True | - |
+| dhcp | - | map1 |
+| isis level-1 | True | - |
+| ospfv3 leaked | True | map1 |
+| static | - | map1 |
+
+#### VRF: Test
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 100 |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3 vrf Test
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
+   passive-interface default
+!
+router ospfv3
+   auto-cost reference-bandwidth 100
+   bfd default
+   !
+   address-family ipv4
+      redistribute bgp include leaked
+      redistribute connected include leaked
+      redistribute isis include leaked level-1
+      redistribute ospfv3 leaked route-map map1
+      redistribute static route-map map1
+   !
+   address-family ipv6
+      redistribute bgp include leaked
+      redistribute dhcp route-map map1
+      redistribute connected include leaked
+      redistribute isis include leaked level-1
+      redistribute ospfv3 leaked route-map map1
+      redistribute static route-map map1
 ```
 
 ### Router ISIS
