@@ -484,6 +484,7 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def prefix_lists(self) -> None:
         self.structured_config.prefix_lists.extend(self.shared_utils.l3_bgp_prefix_lists)
+        self.structured_config.ipv6_prefix_lists.extend(self.shared_utils.l3_bgp_ipv6_prefix_lists)
 
     @structured_config_contributor
     def route_maps(self) -> None:

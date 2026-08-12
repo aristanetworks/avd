@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Either all `wan_ha.ha_interfaces` must be uplink interfaces or all of them must not be uplinks.

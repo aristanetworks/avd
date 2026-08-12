@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. vtep_vvtep_ip is not supported with numbered IPv6 underlay for host 'unsupported-vtep-vvtep-ip-underlay-ipv6-numbered'.

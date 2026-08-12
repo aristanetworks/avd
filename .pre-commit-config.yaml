@@ -137,7 +137,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: 39d9ac5938dadb73df0564a45f163e25ff9fa6e2  # frozen: v0.16.1
+    rev: 7c55798a78262d14b2074abf623d8a992ebb70d4  # frozen: v0.16.2
     hooks:
       # Run the linter.
       - id: ruff
@@ -160,6 +160,7 @@ repos:
           - 'anta>=1.8.0'
           - 'coverage[toml]==7.15.2'
           - 'deepmerge>=1.1.0'
+          - 'gitpython>=3.1.57'
           - 'jinja2>=3.0'
           - 'jsonschema-rs>=0.24'
           - 'pyavd-utils==0.0.7'
@@ -170,7 +171,7 @@ repos:
           - 'ruff==0.16.0'
 
   - repo: https://github.com/pycqa/pylint
-    rev: "8a396357098337ba8be714fffdf2d00947a9778c"  # frozen: v4.0.6
+    rev: "f5a6e3b1de17502747a40d7f92f285ccf9c6c459"  # frozen: v4.0.7
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
