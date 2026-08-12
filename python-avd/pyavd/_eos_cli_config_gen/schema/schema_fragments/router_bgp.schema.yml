@@ -461,17 +461,28 @@ keys:
             maximum_routes_warning_only:
               type: bool
             maximum_accepted_routes:
-              type: int
-              description: Maximum number of accepted routes (0 means unlimited).
-              min: 0
-              max: 4294967294
-            maximum_accepted_routes_warning_limit:
-              type: str
-              description: |
-                Maximum number of routes accepted after which a warning is issued (0 means never warn) or
-                Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
-              convert_types:
-                - int
+              type: dict
+              keys:
+                limit:
+                  type: int
+                  description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                  min: 0
+                  max: 4294967294
+                  required: true
+                warning_limit:
+                  type: dict
+                  description: Warning threshold for the maximum number of accepted routes.
+                  keys:
+                    count:
+                      type: int
+                      description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                      min: 0
+                      max: 4294967294
+                    percent:
+                      type: int
+                      description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                      min: 1
+                      max: 100
             missing_policy:
               type: dict
               description: Missing policy configuration for all address-families.
@@ -740,17 +751,28 @@ keys:
             maximum_routes_warning_only:
               type: bool
             maximum_accepted_routes:
-              type: int
-              description: Maximum number of accepted routes (0 means unlimited).
-              min: 0
-              max: 4294967294
-            maximum_accepted_routes_warning_limit:
-              type: str
-              description: |
-                Maximum number of routes accepted after which a warning is issued (0 means never warn) or
-                Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
-              convert_types:
-                - int
+              type: dict
+              keys:
+                limit:
+                  type: int
+                  description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                  min: 0
+                  max: 4294967294
+                  required: true
+                warning_limit:
+                  type: dict
+                  description: Warning threshold for the maximum number of accepted routes.
+                  keys:
+                    count:
+                      type: int
+                      description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                      min: 0
+                      max: 4294967294
+                    percent:
+                      type: int
+                      description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                      min: 1
+                      max: 100
             missing_policy:
               type: dict
               description: Missing policy configuration for all address-families.
@@ -1777,17 +1799,28 @@ keys:
                         originate:
                           type: bool
                 maximum_accepted_routes:
-                  type: int
-                  description: Maximum number of accepted routes (0 means unlimited).
-                  min: 0
-                  max: 4294967294
-                maximum_accepted_routes_warning_limit:
-                  type: str
-                  description: |
-                    Maximum number of routes accepted after which a warning is issued (0 means never warn) or
-                    Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
-                  convert_types:
-                    - int
+                  type: dict
+                  keys:
+                    limit:
+                      type: int
+                      description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                      min: 0
+                      max: 4294967294
+                      required: true
+                    warning_limit:
+                      type: dict
+                      description: Warning threshold for the maximum number of accepted routes.
+                      keys:
+                        count:
+                          type: int
+                          description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                          min: 0
+                          max: 4294967294
+                        percent:
+                          type: int
+                          description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                          min: 1
+                          max: 100
           neighbors:
             type: list
             primary_key: ip_address
@@ -1853,17 +1886,28 @@ keys:
                         originate:
                           type: bool
                 maximum_accepted_routes:
-                  type: int
-                  description: Maximum number of accepted routes (0 means unlimited).
-                  min: 0
-                  max: 4294967294
-                maximum_accepted_routes_warning_limit:
-                  type: str
-                  description: |
-                    Maximum number of routes accepted after which a warning is issued (0 means never warn) or
-                    Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
-                  convert_types:
-                    - int
+                  type: dict
+                  keys:
+                    limit:
+                      type: int
+                      description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                      min: 0
+                      max: 4294967294
+                      required: true
+                    warning_limit:
+                      type: dict
+                      description: Warning threshold for the maximum number of accepted routes.
+                      keys:
+                        count:
+                          type: int
+                          description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                          min: 0
+                          max: 4294967294
+                        percent:
+                          type: int
+                          description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                          min: 1
+                          max: 100
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -2829,17 +2873,28 @@ keys:
                       type: str
                       description: Route-map name.
                 maximum_accepted_routes:
-                  type: int
-                  description: Maximum number of accepted routes (0 means unlimited).
-                  min: 0
-                  max: 4294967294
-                maximum_accepted_routes_warning_limit:
-                  type: str
-                  description: |
-                    Maximum number of routes accepted after which a warning is issued (0 means never warn) or
-                    Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
-                  convert_types:
-                    - int
+                  type: dict
+                  keys:
+                    limit:
+                      type: int
+                      description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                      min: 0
+                      max: 4294967294
+                      required: true
+                    warning_limit:
+                      type: dict
+                      description: Warning threshold for the maximum number of accepted routes.
+                      keys:
+                        count:
+                          type: int
+                          description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                          min: 0
+                          max: 4294967294
+                        percent:
+                          type: int
+                          description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                          min: 1
+                          max: 100
           neighbors:
             type: list
             primary_key: ip_address
@@ -2897,17 +2952,28 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching the prefix list.
                 maximum_accepted_routes:
-                  type: int
-                  description: Maximum number of accepted routes (0 means unlimited).
-                  min: 0
-                  max: 4294967294
-                maximum_accepted_routes_warning_limit:
-                  type: str
-                  description: |
-                    Maximum number of routes accepted after which a warning is issued (0 means never warn) or
-                    Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
-                  convert_types:
-                    - int
+                  type: dict
+                  keys:
+                    limit:
+                      type: int
+                      description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                      min: 0
+                      max: 4294967294
+                      required: true
+                    warning_limit:
+                      type: dict
+                      description: Warning threshold for the maximum number of accepted routes.
+                      keys:
+                        count:
+                          type: int
+                          description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                          min: 0
+                          max: 4294967294
+                        percent:
+                          type: int
+                          description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                          min: 1
+                          max: 100
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -4195,17 +4261,28 @@ keys:
                   maximum_routes_warning_only:
                     type: bool
                   maximum_accepted_routes:
-                    type: int
-                    description: Maximum number of accepted routes (0 means unlimited).
-                    min: 0
-                    max: 4294967294
-                  maximum_accepted_routes_warning_limit:
-                    type: str
-                    description: |
-                      Maximum number of routes accepted after which a warning is issued (0 means never warn) or
-                      Percentage of maximum number of accepted routes at which to warn ("<1-100> percent").
-                    convert_types:
-                      - int
+                    type: dict
+                    keys:
+                      limit:
+                        type: int
+                        description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                        min: 0
+                        max: 4294967294
+                        required: true
+                      warning_limit:
+                        type: dict
+                        description: Warning threshold for the maximum number of accepted routes.
+                        keys:
+                          count:
+                            type: int
+                            description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                            min: 0
+                            max: 4294967294
+                          percent:
+                            type: int
+                            description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                            min: 1
+                            max: 100
                   allowas_in:
                     type: dict
                     keys:
