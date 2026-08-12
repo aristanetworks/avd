@@ -639,6 +639,20 @@ port_channel_interfaces:
         hello:
           count: 4.5
           interval: 15
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: ACL_MULTICAST_OUTBOUND
+            out: true
+          - boundary: 224.0.1.0/24
+      ipv6:
+        static: true
+        boundaries:
+          - boundary: ff00::/8
+            out: true
+          - boundary: ff01::/16
+            out: true
     ip_proxy_arp: true
     logging:
       event:
@@ -1344,3 +1358,59 @@ port_channel_interfaces:
       min_delay_static:
         number: 7
         unit: microseconds
+
+  # IPv4-only multicast (no IPv6)
+  - name: Port-Channel320
+    description: Multicast IPv4-only with mixed out flags
+    switchport:
+      enabled: false
+    ip_address: 100.64.127.40/31
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: ACL_IPV4_ONLY
+            out: true
+          - boundary: 224.1.0.0/16
+
+  # IPv6-only multicast (no IPv4)
+  - name: Port-Channel321
+    description: Multicast IPv6-only with out flags
+    switchport:
+      enabled: false
+    ipv6_address: 2001:db8:321::1/64
+    multicast:
+      ipv6:
+        static: true
+        boundaries:
+          - boundary: ff02::/16
+            out: true
+
+  # IPv4 boundaries ALL without out flag
+  - name: Port-Channel322
+    description: Multicast IPv4 boundaries without out flag
+    switchport:
+      enabled: false
+    ip_address: 100.64.127.41/31
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: 224.2.0.0/16
+          - boundary: ACL_NO_OUT_FLAG
+
+  # Boundaries defined, static flag undefined
+  - name: Port-Channel323
+    description: Multicast boundaries without static flag
+    switchport:
+      enabled: false
+    ip_address: 100.64.127.42/31
+    multicast:
+      ipv4:
+        boundaries:
+          - boundary: ACL_NO_STATIC
+            out: true
+      ipv6:
+        boundaries:
+          - boundary: ff04::/16
+            out: true
