@@ -462,27 +462,7 @@ keys:
               type: bool
             maximum_accepted_routes:
               type: dict
-              keys:
-                limit:
-                  type: int
-                  description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
-                  min: 0
-                  max: 4294967294
-                  required: true
-                warning_limit:
-                  type: dict
-                  description: Warning threshold for the maximum number of accepted routes.
-                  keys:
-                    count:
-                      type: int
-                      description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
-                      min: 0
-                      max: 4294967294
-                    percent:
-                      type: int
-                      description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
-                      min: 1
-                      max: 100
+              $ref: "eos_cli_config_gen#/$defs/maximum_accepted_routes"
             missing_policy:
               type: dict
               description: Missing policy configuration for all address-families.
@@ -752,27 +732,7 @@ keys:
               type: bool
             maximum_accepted_routes:
               type: dict
-              keys:
-                limit:
-                  type: int
-                  description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
-                  min: 0
-                  max: 4294967294
-                  required: true
-                warning_limit:
-                  type: dict
-                  description: Warning threshold for the maximum number of accepted routes.
-                  keys:
-                    count:
-                      type: int
-                      description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
-                      min: 0
-                      max: 4294967294
-                    percent:
-                      type: int
-                      description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
-                      min: 1
-                      max: 100
+              $ref: "eos_cli_config_gen#/$defs/maximum_accepted_routes"
             missing_policy:
               type: dict
               description: Missing policy configuration for all address-families.
@@ -1800,27 +1760,7 @@ keys:
                           type: bool
                 maximum_accepted_routes:
                   type: dict
-                  keys:
-                    limit:
-                      type: int
-                      description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
-                      min: 0
-                      max: 4294967294
-                      required: true
-                    warning_limit:
-                      type: dict
-                      description: Warning threshold for the maximum number of accepted routes.
-                      keys:
-                        count:
-                          type: int
-                          description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
-                          min: 0
-                          max: 4294967294
-                        percent:
-                          type: int
-                          description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
-                          min: 1
-                          max: 100
+                  $ref: "eos_cli_config_gen#/$defs/maximum_accepted_routes"
           neighbors:
             type: list
             primary_key: ip_address
@@ -1887,27 +1827,7 @@ keys:
                           type: bool
                 maximum_accepted_routes:
                   type: dict
-                  keys:
-                    limit:
-                      type: int
-                      description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
-                      min: 0
-                      max: 4294967294
-                      required: true
-                    warning_limit:
-                      type: dict
-                      description: Warning threshold for the maximum number of accepted routes.
-                      keys:
-                        count:
-                          type: int
-                          description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
-                          min: 0
-                          max: 4294967294
-                        percent:
-                          type: int
-                          description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
-                          min: 1
-                          max: 100
+                  $ref: "eos_cli_config_gen#/$defs/maximum_accepted_routes"
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -2874,27 +2794,7 @@ keys:
                       description: Route-map name.
                 maximum_accepted_routes:
                   type: dict
-                  keys:
-                    limit:
-                      type: int
-                      description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
-                      min: 0
-                      max: 4294967294
-                      required: true
-                    warning_limit:
-                      type: dict
-                      description: Warning threshold for the maximum number of accepted routes.
-                      keys:
-                        count:
-                          type: int
-                          description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
-                          min: 0
-                          max: 4294967294
-                        percent:
-                          type: int
-                          description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
-                          min: 1
-                          max: 100
+                  $ref: "eos_cli_config_gen#/$defs/maximum_accepted_routes"
           neighbors:
             type: list
             primary_key: ip_address
@@ -2953,27 +2853,7 @@ keys:
                       description: Apply the configurations only to the routes matching the prefix list.
                 maximum_accepted_routes:
                   type: dict
-                  keys:
-                    limit:
-                      type: int
-                      description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
-                      min: 0
-                      max: 4294967294
-                      required: true
-                    warning_limit:
-                      type: dict
-                      description: Warning threshold for the maximum number of accepted routes.
-                      keys:
-                        count:
-                          type: int
-                          description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
-                          min: 0
-                          max: 4294967294
-                        percent:
-                          type: int
-                          description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
-                          min: 1
-                          max: 100
+                  $ref: "eos_cli_config_gen#/$defs/maximum_accepted_routes"
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -4262,27 +4142,7 @@ keys:
                     type: bool
                   maximum_accepted_routes:
                     type: dict
-                    keys:
-                      limit:
-                        type: int
-                        description: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
-                        min: 0
-                        max: 4294967294
-                        required: true
-                      warning_limit:
-                        type: dict
-                        description: Warning threshold for the maximum number of accepted routes.
-                        keys:
-                          count:
-                            type: int
-                            description: Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
-                            min: 0
-                            max: 4294967294
-                          percent:
-                            type: int
-                            description: Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
-                            min: 1
-                            max: 100
+                    $ref: "eos_cli_config_gen#/$defs/maximum_accepted_routes"
                   allowas_in:
                     type: dict
                     keys:
