@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -120,14 +121,41 @@ class NodeConfigMixin(Protocol):
         """
         Node group position and peer used for MLAG and WAN HA.
 
-        Returns None if the device is not in a node_group with exactly two devices.
+        Returns None if this device is not part of the active peer pair in the node_group.
+
+        For legacy behavior, a node_group must contain exactly two devices.
+        If `avd_design_future.allow_mlag_in_shared_node_groups` is set, shared node groups are supported for MLAG
+        and exactly two MLAG-enabled devices are selected as peers.
+
         Returns True, <peer> if this device is the first one in the node_group.
         Returns False, <peer> if this device is the second one in the node_group.
         """
-        if self.node_group_config is None or len(self.node_group_config.nodes) != 2:
+        if self.node_group_config is None:
             return None
 
-        nodes = list(self.node_group_config.nodes.keys())
+        if len(self.node_group_config.nodes) == 2:
+            nodes = list(self.node_group_config.nodes.keys())
+            index = nodes.index(self.hostname)
+            peer_index = not index  # (0->1 and 1>0)
+            return index == 0, nodes[peer_index]
+
+        if not self.inputs.avd_design_future.allow_mlag_in_shared_node_groups:
+            return None
+
+        mlag_nodes = [hostname for hostname, _ in self.node_group_config.nodes.items() if self._node_group_member_has_mlag_enabled(hostname)]
+
+        if self.hostname not in mlag_nodes:
+            return None
+
+        if (length := len(mlag_nodes)) != 2:
+            msg = (
+                f"Node group '{self.node_group_config.group}' has {length} nodes with 'mlag: true' ({natural_sort(mlag_nodes)}). "
+                "Exactly two MLAG-enabled nodes are supported in a shared node group when "
+                "'avd_design_future.allow_mlag_in_shared_node_groups' is true."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+
+        nodes = mlag_nodes
         index = nodes.index(self.hostname)
         peer_index = not index  # (0->1 and 1>0)
         return index == 0, nodes[peer_index]

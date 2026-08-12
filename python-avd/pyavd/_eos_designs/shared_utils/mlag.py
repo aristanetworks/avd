@@ -7,7 +7,7 @@ from functools import cached_property
 from re import findall
 from typing import TYPE_CHECKING, Protocol, cast
 
-from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import Undefined, UndefinedType, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -33,51 +33,17 @@ class MlagMixin(Protocol):
             return False
 
         if self.node_group_config is not None and len(self.node_group_config.nodes) > 2 and self.inputs.avd_design_future.allow_mlag_in_shared_node_groups:
-            return self.node_group_mlag_is_primary_and_peer_hostname is not None
+            return self.node_group_is_primary_and_peer_hostname is not None
 
         if not self.node_config.mlag:
             return False
 
         # Node groups used for mlag peer.
-        if self.node_group_mlag_is_primary_and_peer_hostname:
+        if self.node_group_is_primary_and_peer_hostname:
             return True
 
         # devices[].mlag_group used for mlag peer.
         return bool(self.device_config and self.device_config.mlag_group)
-
-    @cached_property
-    def node_group_mlag_is_primary_and_peer_hostname(self: SharedUtilsProtocol) -> tuple[bool, str] | None:
-        """
-        Node group position and peer used for MLAG.
-
-        Returns None if the device should not use a node_group peer for MLAG.
-        Returns True, <peer> if this device is the first MLAG node in node_group.
-        Returns False, <peer> if this device is the second MLAG node in node_group.
-        """
-        if self.node_group_config is None:
-            return None
-
-        if len(self.node_group_config.nodes) == 2:
-            return self.node_group_is_primary_and_peer_hostname
-
-        if not self.inputs.avd_design_future.allow_mlag_in_shared_node_groups:
-            return None
-
-        mlag_nodes = [hostname for hostname, _ in self.node_group_config.nodes.items() if self._node_group_member_has_mlag_enabled(hostname)]
-
-        if self.hostname not in mlag_nodes:
-            return None
-
-        if (length := len(mlag_nodes)) != 2:
-            msg = (
-                f"Node group '{self.node_group_config.group}' has {length} nodes with 'mlag: true' ({natural_sort(mlag_nodes)}). "
-                "Exactly two MLAG-enabled nodes are supported in a shared node group when 'avd_design_future.allow_mlag_in_shared_node_groups' is true."
-            )
-            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-
-        index = mlag_nodes.index(self.hostname)
-        peer_index = not index
-        return index == 0, mlag_nodes[peer_index]
 
     def _node_group_member_has_mlag_enabled(self: SharedUtilsProtocol, hostname: str) -> bool:
         """Return whether the given node_group member has effective 'mlag: true' after inheritance."""
@@ -144,8 +110,8 @@ class MlagMixin(Protocol):
     def mlag_role(self: SharedUtilsProtocol) -> Literal["primary", "secondary"] | None:
         if not self.mlag:
             return None
-        if self.node_group_mlag_is_primary_and_peer_hostname is not None:
-            return "primary" if self.node_group_mlag_is_primary_and_peer_hostname[0] else "secondary"
+        if self.node_group_is_primary_and_peer_hostname is not None:
+            return "primary" if self.node_group_is_primary_and_peer_hostname[0] else "secondary"
 
         if self.switch_facts.mlag_peer:
             return "primary" if natural_sort([self.hostname, self.switch_facts.mlag_peer])[0] == self.hostname else "secondary"
