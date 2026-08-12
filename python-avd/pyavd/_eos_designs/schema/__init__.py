@@ -36369,10 +36369,9 @@ class EosDesigns(EosDesignsRootModel):
                 graceful_restart: GracefulRestart
                 """
                 BGP graceful-restart configuration for this VRF.
-                For VRF default, this setting is generated in the
-                global Router BGP context and takes precedence over `bgp_graceful_restart`
-
-
+                This setting is supported for VRF default, where it
+                is generated in the global Router BGP context and takes precedence over
+                `bgp_graceful_restart`.
                 Subclass of AvdModel.
                 """
                 raw_eos_cli: str | None
@@ -36420,10 +36419,9 @@ class EosDesigns(EosDesignsRootModel):
                                address of the VRF Diagnostic Loopback interface.
                             graceful_restart:
                                BGP graceful-restart configuration for this VRF.
-                               For VRF default, this setting is generated in the
-                               global Router BGP context and takes precedence over `bgp_graceful_restart`
-
-
+                               This setting is supported for VRF default, where it
+                               is generated in the global Router BGP context and takes precedence over
+                               `bgp_graceful_restart`.
                                Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                             structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
@@ -39190,14 +39188,14 @@ class EosDesigns(EosDesignsRootModel):
         on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
         VRF "default" is partially supported under network-services. Currently the supported options for
         "default" vrf are route-target,
-        route-distinguisher settings, structured_config, raw_eos_cli in bgp
-        and SVIs are the only supported interface type.
-        Vlan-aware-bundles are supported as well inside
-        default vrf. OSPF is not supported currently.
+        route-distinguisher settings, structured_config, raw_eos_cli and
+        graceful_restart in bgp and SVIs are the only supported interface type.
+        Vlan-aware-bundles are
+        supported as well inside default vrf. OSPF is not supported currently.
 
 
-        Subclass of AvdIndexedList with `VrfsItem` items.
-        Primary key is `name` (`str`).
+        Subclass of AvdIndexedList
+        with `VrfsItem` items. Primary key is `name` (`str`).
         """
         l2vlans: L2vlans
         """
@@ -39391,14 +39389,14 @@ class EosDesigns(EosDesignsRootModel):
                        on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
                        VRF "default" is partially supported under network-services. Currently the supported options for
                        "default" vrf are route-target,
-                       route-distinguisher settings, structured_config, raw_eos_cli in bgp
-                       and SVIs are the only supported interface type.
-                       Vlan-aware-bundles are supported as well inside
-                       default vrf. OSPF is not supported currently.
+                       route-distinguisher settings, structured_config, raw_eos_cli and
+                       graceful_restart in bgp and SVIs are the only supported interface type.
+                       Vlan-aware-bundles are
+                       supported as well inside default vrf. OSPF is not supported currently.
 
 
-                       Subclass of AvdIndexedList with `VrfsItem` items.
-                       Primary key is `name` (`str`).
+                       Subclass of AvdIndexedList
+                       with `VrfsItem` items. Primary key is `name` (`str`).
                     l2vlans:
                        Define L2 network services organized by VLAN ID.
 
@@ -86561,10 +86559,9 @@ class EosDesigns(EosDesignsRootModel):
                         graceful_restart: GracefulRestart
                         """
                         BGP graceful-restart configuration for this VRF.
-                        For VRF default, this setting is generated in the
-                        global Router BGP context and takes precedence over `bgp_graceful_restart`
-
-
+                        This setting is supported for VRF default, where it
+                        is generated in the global Router BGP context and takes precedence over
+                        `bgp_graceful_restart`.
                         Subclass of AvdModel.
                         """
                         raw_eos_cli: str | None
@@ -86612,10 +86609,9 @@ class EosDesigns(EosDesignsRootModel):
                                        address of the VRF Diagnostic Loopback interface.
                                     graceful_restart:
                                        BGP graceful-restart configuration for this VRF.
-                                       For VRF default, this setting is generated in the
-                                       global Router BGP context and takes precedence over `bgp_graceful_restart`
-
-
+                                       This setting is supported for VRF default, where it
+                                       is generated in the global Router BGP context and takes precedence over
+                                       `bgp_graceful_restart`.
                                        Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                                     structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
@@ -89398,14 +89394,14 @@ class EosDesigns(EosDesignsRootModel):
                 on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
                 VRF "default" is partially supported under network-services. Currently the supported options for
                 "default" vrf are route-target,
-                route-distinguisher settings, structured_config, raw_eos_cli in bgp
-                and SVIs are the only supported interface type.
-                Vlan-aware-bundles are supported as well inside
-                default vrf. OSPF is not supported currently.
+                route-distinguisher settings, structured_config, raw_eos_cli and
+                graceful_restart in bgp and SVIs are the only supported interface type.
+                Vlan-aware-bundles are
+                supported as well inside default vrf. OSPF is not supported currently.
 
 
-                Subclass of AvdIndexedList with `VrfsItem` items.
-                Primary key is `name` (`str`).
+                Subclass of AvdIndexedList
+                with `VrfsItem` items. Primary key is `name` (`str`).
                 """
                 l2vlans: L2vlans
                 """
@@ -89599,14 +89595,14 @@ class EosDesigns(EosDesignsRootModel):
                                on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
                                VRF "default" is partially supported under network-services. Currently the supported options for
                                "default" vrf are route-target,
-                               route-distinguisher settings, structured_config, raw_eos_cli in bgp
-                               and SVIs are the only supported interface type.
-                               Vlan-aware-bundles are supported as well inside
-                               default vrf. OSPF is not supported currently.
+                               route-distinguisher settings, structured_config, raw_eos_cli and
+                               graceful_restart in bgp and SVIs are the only supported interface type.
+                               Vlan-aware-bundles are
+                               supported as well inside default vrf. OSPF is not supported currently.
 
 
-                               Subclass of AvdIndexedList with `VrfsItem` items.
-                               Primary key is `name` (`str`).
+                               Subclass of AvdIndexedList
+                               with `VrfsItem` items. Primary key is `name` (`str`).
                             l2vlans:
                                Define L2 network services organized by VLAN ID.
 
