@@ -83,6 +83,12 @@ router_bgp:
     metadata:
       peer: evpn-overlay-mpls-route-reflectors3-ibgp
     description: evpn-overlay-mpls-route-reflectors3-ibgp_Loopback0
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65233'
+    metadata:
+      peer: evpn-overlay-mpls-route-reflectors-ibgp
+    description: evpn-overlay-mpls-route-reflectors-ibgp_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     metadata:

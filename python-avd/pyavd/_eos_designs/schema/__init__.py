@@ -8300,13 +8300,14 @@ class EosDesigns(EosDesignsRootModel):
             If the
             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
             If a
-            remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-            peering is configured on the local node.
-            The EVPN Route Server still configures the regular EVPN
-            peering back to the local node.
-            If an explicit `ip_address` differs from the EVPN Route Server
-            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-            Server peering.
+            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+            the EVPN Gateway core peering is configured on the local node.
+            Suppression is evaluated
+            independently on each node based on its local EVPN Route Server and client relationships and
+            `evpn_gateway.remote_peers` configuration.
+            If an explicit `ip_address` differs from the regular EVPN
+            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+            peering.
 
 
             Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -8360,13 +8361,14 @@ class EosDesigns(EosDesignsRootModel):
                            If the
                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                            If a
-                           remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                           peering is configured on the local node.
-                           The EVPN Route Server still configures the regular EVPN
-                           peering back to the local node.
-                           If an explicit `ip_address` differs from the EVPN Route Server
-                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                           Server peering.
+                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                           the EVPN Gateway core peering is configured on the local node.
+                           Suppression is evaluated
+                           independently on each node based on its local EVPN Route Server and client relationships and
+                           `evpn_gateway.remote_peers` configuration.
+                           If an explicit `ip_address` differs from the regular EVPN
+                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                           peering.
 
 
                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -13816,13 +13818,14 @@ class EosDesigns(EosDesignsRootModel):
             If the
             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
             If a
-            remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-            peering is configured on the local node.
-            The EVPN Route Server still configures the regular EVPN
-            peering back to the local node.
-            If an explicit `ip_address` differs from the EVPN Route Server
-            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-            Server peering.
+            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+            the EVPN Gateway core peering is configured on the local node.
+            Suppression is evaluated
+            independently on each node based on its local EVPN Route Server and client relationships and
+            `evpn_gateway.remote_peers` configuration.
+            If an explicit `ip_address` differs from the regular EVPN
+            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+            peering.
 
 
             Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -13876,13 +13879,14 @@ class EosDesigns(EosDesignsRootModel):
                            If the
                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                            If a
-                           remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                           peering is configured on the local node.
-                           The EVPN Route Server still configures the regular EVPN
-                           peering back to the local node.
-                           If an explicit `ip_address` differs from the EVPN Route Server
-                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                           Server peering.
+                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                           the EVPN Gateway core peering is configured on the local node.
+                           Suppression is evaluated
+                           independently on each node based on its local EVPN Route Server and client relationships and
+                           `evpn_gateway.remote_peers` configuration.
+                           If an explicit `ip_address` differs from the regular EVPN
+                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                           peering.
 
 
                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -54636,13 +54640,14 @@ class EosDesigns(EosDesignsRootModel):
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                         If a
-                        remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                        peering is configured on the local node.
-                        The EVPN Route Server still configures the regular EVPN
-                        peering back to the local node.
-                        If an explicit `ip_address` differs from the EVPN Route Server
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                        Server peering.
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        If an explicit `ip_address` differs from the regular EVPN
+                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                        peering.
 
 
                         Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -54696,13 +54701,14 @@ class EosDesigns(EosDesignsRootModel):
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                                        If a
-                                       remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                                       peering is configured on the local node.
-                                       The EVPN Route Server still configures the regular EVPN
-                                       peering back to the local node.
-                                       If an explicit `ip_address` differs from the EVPN Route Server
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                                       Server peering.
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       If an explicit `ip_address` differs from the regular EVPN
+                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                                       peering.
 
 
                                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -60129,13 +60135,14 @@ class EosDesigns(EosDesignsRootModel):
                             If the
                             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                             If a
-                            remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                            peering is configured on the local node.
-                            The EVPN Route Server still configures the regular EVPN
-                            peering back to the local node.
-                            If an explicit `ip_address` differs from the EVPN Route Server
-                            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                            Server peering.
+                            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                            the EVPN Gateway core peering is configured on the local node.
+                            Suppression is evaluated
+                            independently on each node based on its local EVPN Route Server and client relationships and
+                            `evpn_gateway.remote_peers` configuration.
+                            If an explicit `ip_address` differs from the regular EVPN
+                            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                            peering.
 
 
                             Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -60189,13 +60196,14 @@ class EosDesigns(EosDesignsRootModel):
                                            If the
                                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                                            If a
-                                           remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                                           peering is configured on the local node.
-                                           The EVPN Route Server still configures the regular EVPN
-                                           peering back to the local node.
-                                           If an explicit `ip_address` differs from the EVPN Route Server
-                                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                                           Server peering.
+                                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                           the EVPN Gateway core peering is configured on the local node.
+                                           Suppression is evaluated
+                                           independently on each node based on its local EVPN Route Server and client relationships and
+                                           `evpn_gateway.remote_peers` configuration.
+                                           If an explicit `ip_address` differs from the regular EVPN
+                                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                                           peering.
 
 
                                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -65577,13 +65585,14 @@ class EosDesigns(EosDesignsRootModel):
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                         If a
-                        remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                        peering is configured on the local node.
-                        The EVPN Route Server still configures the regular EVPN
-                        peering back to the local node.
-                        If an explicit `ip_address` differs from the EVPN Route Server
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                        Server peering.
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        If an explicit `ip_address` differs from the regular EVPN
+                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                        peering.
 
 
                         Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -65637,13 +65646,14 @@ class EosDesigns(EosDesignsRootModel):
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                                        If a
-                                       remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                                       peering is configured on the local node.
-                                       The EVPN Route Server still configures the regular EVPN
-                                       peering back to the local node.
-                                       If an explicit `ip_address` differs from the EVPN Route Server
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                                       Server peering.
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       If an explicit `ip_address` differs from the regular EVPN
+                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                                       peering.
 
 
                                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -71096,13 +71106,14 @@ class EosDesigns(EosDesignsRootModel):
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                         If a
-                        remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                        peering is configured on the local node.
-                        The EVPN Route Server still configures the regular EVPN
-                        peering back to the local node.
-                        If an explicit `ip_address` differs from the EVPN Route Server
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                        Server peering.
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        If an explicit `ip_address` differs from the regular EVPN
+                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                        peering.
 
 
                         Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -71156,13 +71167,14 @@ class EosDesigns(EosDesignsRootModel):
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                                        If a
-                                       remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                                       peering is configured on the local node.
-                                       The EVPN Route Server still configures the regular EVPN
-                                       peering back to the local node.
-                                       If an explicit `ip_address` differs from the EVPN Route Server
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                                       Server peering.
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       If an explicit `ip_address` differs from the regular EVPN
+                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                                       peering.
 
 
                                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -91019,13 +91031,14 @@ class EosDesigns(EosDesignsRootModel):
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                         If a
-                        remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                        peering is configured on the local node.
-                        The EVPN Route Server still configures the regular EVPN
-                        peering back to the local node.
-                        If an explicit `ip_address` differs from the EVPN Route Server
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                        Server peering.
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        If an explicit `ip_address` differs from the regular EVPN
+                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                        peering.
 
 
                         Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -91079,13 +91092,14 @@ class EosDesigns(EosDesignsRootModel):
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                                        If a
-                                       remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                                       peering is configured on the local node.
-                                       The EVPN Route Server still configures the regular EVPN
-                                       peering back to the local node.
-                                       If an explicit `ip_address` differs from the EVPN Route Server
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                                       Server peering.
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       If an explicit `ip_address` differs from the regular EVPN
+                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                                       peering.
 
 
                                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -96512,13 +96526,14 @@ class EosDesigns(EosDesignsRootModel):
                             If the
                             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                             If a
-                            remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                            peering is configured on the local node.
-                            The EVPN Route Server still configures the regular EVPN
-                            peering back to the local node.
-                            If an explicit `ip_address` differs from the EVPN Route Server
-                            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                            Server peering.
+                            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                            the EVPN Gateway core peering is configured on the local node.
+                            Suppression is evaluated
+                            independently on each node based on its local EVPN Route Server and client relationships and
+                            `evpn_gateway.remote_peers` configuration.
+                            If an explicit `ip_address` differs from the regular EVPN
+                            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                            peering.
 
 
                             Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -96572,13 +96587,14 @@ class EosDesigns(EosDesignsRootModel):
                                            If the
                                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                                            If a
-                                           remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                                           peering is configured on the local node.
-                                           The EVPN Route Server still configures the regular EVPN
-                                           peering back to the local node.
-                                           If an explicit `ip_address` differs from the EVPN Route Server
-                                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                                           Server peering.
+                                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                           the EVPN Gateway core peering is configured on the local node.
+                                           Suppression is evaluated
+                                           independently on each node based on its local EVPN Route Server and client relationships and
+                                           `evpn_gateway.remote_peers` configuration.
+                                           If an explicit `ip_address` differs from the regular EVPN
+                                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                                           peering.
 
 
                                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -101960,13 +101976,14 @@ class EosDesigns(EosDesignsRootModel):
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                         If a
-                        remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                        peering is configured on the local node.
-                        The EVPN Route Server still configures the regular EVPN
-                        peering back to the local node.
-                        If an explicit `ip_address` differs from the EVPN Route Server
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                        Server peering.
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        If an explicit `ip_address` differs from the regular EVPN
+                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                        peering.
 
 
                         Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -102020,13 +102037,14 @@ class EosDesigns(EosDesignsRootModel):
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                                        If a
-                                       remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                                       peering is configured on the local node.
-                                       The EVPN Route Server still configures the regular EVPN
-                                       peering back to the local node.
-                                       If an explicit `ip_address` differs from the EVPN Route Server
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                                       Server peering.
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       If an explicit `ip_address` differs from the regular EVPN
+                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                                       peering.
 
 
                                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -107479,13 +107497,14 @@ class EosDesigns(EosDesignsRootModel):
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                         If a
-                        remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                        peering is configured on the local node.
-                        The EVPN Route Server still configures the regular EVPN
-                        peering back to the local node.
-                        If an explicit `ip_address` differs from the EVPN Route Server
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                        Server peering.
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        If an explicit `ip_address` differs from the regular EVPN
+                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                        peering.
 
 
                         Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
@@ -107539,13 +107558,14 @@ class EosDesigns(EosDesignsRootModel):
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                                        If a
-                                       remote peer is also an EVPN Route Server and uses the same IP address, only the EVPN Gateway core
-                                       peering is configured on the local node.
-                                       The EVPN Route Server still configures the regular EVPN
-                                       peering back to the local node.
-                                       If an explicit `ip_address` differs from the EVPN Route Server
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN Route
-                                       Server peering.
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       If an explicit `ip_address` differs from the regular EVPN
+                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
+                                       peering.
 
 
                                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`

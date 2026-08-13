@@ -503,10 +503,7 @@ class RouterBgpMixin(Protocol):
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             for route_server, data in natural_sort(self._evpn_route_servers.items()):
                 # Suppress the regular EVPN neighbor when the EVPN Gateway core neighbor uses the same peering address.
-                if route_server in evpn_gateway_remote_peer_ip_by_hostname and evpn_gateway_remote_peer_ip_by_hostname[route_server] in (
-                    None,
-                    data["ip_address"],
-                ):
+                if evpn_gateway_remote_peer_ip_by_hostname.get(route_server, Undefined) in (None, data["ip_address"]):
                     continue
                 remote_as = data["bgp_as"]
                 remote_ip_address = data["ip_address"]
@@ -539,6 +536,9 @@ class RouterBgpMixin(Protocol):
                 self.set_once_peer_group_evpn_overlay_peers()
 
             for route_client, data in natural_sort(self._evpn_route_clients.items()):
+                # Suppress the regular EVPN neighbor when the EVPN Gateway core neighbor uses the same peering address.
+                if evpn_gateway_remote_peer_ip_by_hostname.get(route_client, Undefined) in (None, data["ip_address"]):
+                    continue
                 neighbor = self._create_neighbor(
                     data["ip_address"],
                     route_client,
@@ -576,10 +576,7 @@ class RouterBgpMixin(Protocol):
             if self.shared_utils.overlay_evpn_vxlan is True:
                 for route_server, data in natural_sort(self._evpn_route_servers.items()):
                     # Suppress the regular EVPN neighbor when the EVPN Gateway core neighbor uses the same peering address.
-                    if route_server in evpn_gateway_remote_peer_ip_by_hostname and evpn_gateway_remote_peer_ip_by_hostname[route_server] in (
-                        None,
-                        data["ip_address"],
-                    ):
+                    if evpn_gateway_remote_peer_ip_by_hostname.get(route_server, Undefined) in (None, data["ip_address"]):
                         continue
                     neighbor = self._create_neighbor(
                         data["ip_address"],
@@ -593,6 +590,9 @@ class RouterBgpMixin(Protocol):
                     self.set_once_peer_group_evpn_overlay_peers()
 
                 for route_client, data in natural_sort(self._evpn_route_clients.items()):
+                    # Suppress the regular EVPN neighbor when the EVPN Gateway core neighbor uses the same peering address.
+                    if evpn_gateway_remote_peer_ip_by_hostname.get(route_client, Undefined) in (None, data["ip_address"]):
+                        continue
                     neighbor = self._create_neighbor(
                         data["ip_address"],
                         route_client,
