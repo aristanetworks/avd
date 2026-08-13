@@ -76,7 +76,7 @@ $defs:
         type: bool
         description: |-
           Log matches against this rule.
-          Mutually exclusive with `copy_captive_portal`.
+          Mutually exclusive with `copy_captive_portal`. `copy_captive_portal` takes precedence.
       icmp_type:
         type: str
         convert_types:
