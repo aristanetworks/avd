@@ -22706,6 +22706,7 @@ class EosDesigns(EosDesignsRootModel):
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
+                "copy_captive_portal": {"type": bool},
                 "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
@@ -22776,8 +22777,19 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
+            copy_captive_portal: bool | None
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            Mutually
+            exclusive with `log`. `copy_captive_portal` takes precedence.
+            """
             log: bool | None
-            """Log matches against this rule."""
+            """
+            Log matches against this rule.
+            Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+            takes precedence.
+            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -22815,6 +22827,7 @@ class EosDesigns(EosDesignsRootModel):
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    copy_captive_portal: bool | UndefinedType | None = Undefined,
                     log: bool | UndefinedType | None = Undefined,
                     icmp_type: str | UndefinedType | None = Undefined,
                     icmp_code: str | UndefinedType | None = Undefined,
@@ -22869,7 +22882,15 @@ class EosDesigns(EosDesignsRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           Mutually
+                           exclusive with `log`. `copy_captive_portal` takes precedence.
+                        log:
+                           Log matches against this rule.
+                           Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+                           takes precedence.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
@@ -23215,6 +23236,7 @@ class EosDesigns(EosDesignsRootModel):
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
+                "copy_captive_portal": {"type": bool},
                 "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
@@ -23281,8 +23303,19 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
+            copy_captive_portal: bool | None
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            Mutually
+            exclusive with `log`. `copy_captive_portal` takes precedence.
+            """
             log: bool | None
-            """Log matches against this rule."""
+            """
+            Log matches against this rule.
+            Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+            takes precedence.
+            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -23319,6 +23352,7 @@ class EosDesigns(EosDesignsRootModel):
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    copy_captive_portal: bool | UndefinedType | None = Undefined,
                     log: bool | UndefinedType | None = Undefined,
                     icmp_type: str | UndefinedType | None = Undefined,
                     icmp_code: str | UndefinedType | None = Undefined,
@@ -23373,7 +23407,15 @@ class EosDesigns(EosDesignsRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           Mutually
+                           exclusive with `log`. `copy_captive_portal` takes precedence.
+                        log:
+                           Log matches against this rule.
+                           Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+                           takes precedence.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
