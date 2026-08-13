@@ -10022,7 +10022,7 @@ ASN Notation: asdot
 | 192.168.255.4 | 65004 | default | - | all | - | - | - | - | - | - | - | - |
 | 192.168.255.11 | - | default | - | - | - | - | - | - | - | - | - | - |
 | 192.168.255.21 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | 1000 (never warn) | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS(interval: 2000, min_rx: 2000, multiplier: 3) | False | - | - | - |
-| 192.168.255.101 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - | - | - | - |
+| 192.168.255.101 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | 100 (warning-limit 90) | - | - | - | - | - | - |
 | 192.168.255.201 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - | - | - | - |
 | 2001:cafe:192:168::4 | 65004 | default | - | all | - | - | - | - | - | - | - | - |
 | 2001:db8::dead:beef:cafe | 65004 | default | - | - | - | - | - | - | - | - | - | - |
@@ -10608,6 +10608,7 @@ router bgp 65101
    neighbor 192.168.255.21 peer-tag in PEER_TAG_IN
    neighbor 192.168.255.21 peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor 192.168.255.101 peer group MPLS-IBGP-PEERS
+   neighbor 192.168.255.101 maximum-accepted-routes 100 warning-limit 90
    neighbor 192.168.255.201 peer group MPLS-IBGP-PEERS
    neighbor 2001:cafe:192:168::4 remote-as 65004
    neighbor 2001:cafe:192:168::4 send-community

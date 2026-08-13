@@ -1387,6 +1387,10 @@ router_bgp:
   neighbors:
     - ip_address: 192.168.255.101
       peer_group: MPLS-IBGP-PEERS
+      maximum_accepted_routes:
+        limit: 100
+        warning_limit:
+          count: 90
     - ip_address: 192.168.255.201
       peer_group: MPLS-IBGP-PEERS
     - ip_address: 192.168.255.4
