@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The primary VLANs '2-3' referenced in a private_vlan definition, do not exist. The primary VLANs must be defined under 'l2vlans' or 'svis'.

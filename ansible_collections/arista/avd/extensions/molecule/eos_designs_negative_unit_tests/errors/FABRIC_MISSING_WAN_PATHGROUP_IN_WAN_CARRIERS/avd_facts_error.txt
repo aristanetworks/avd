@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: WAN path_group NOC defined for a WAN carrier is not in the available path_groups defined in `wan_path_groups` for host 'wan-carriers-path-group-is-missing-in-wan-path-groups'.
