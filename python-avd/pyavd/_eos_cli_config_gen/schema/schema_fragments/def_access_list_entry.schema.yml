@@ -71,7 +71,7 @@ $defs:
         description: |-
           Copy packet to CPU queue for dot1x captive-portal.
           Only supported with deny entries.
-          Mutually exclusive with `log`.
+          Mutually exclusive with `log`. `copy_captive_portal` takes precedence.
       log:
         type: bool
         description: |-
