@@ -6776,6 +6776,13 @@ keys:
                 - lt
                 - neq
                 default: eq
+              copy_captive_portal:
+                type: bool
+                description: 'Copy packet to CPU queue for dot1x captive-portal.
+
+                  Only supported with deny entries.
+
+                  Mutually exclusive with `log`. `copy_captive_portal` takes precedence.'
               vlan_inner:
                 type: bool
                 default: false
@@ -28136,13 +28143,6 @@ $defs:
         items:
           type: str
           description: TCP Flag Name.
-      copy_captive_portal:
-        type: bool
-        description: 'Copy packet to CPU queue for dot1x captive-portal.
-
-          Only supported with deny entries.
-
-          Mutually exclusive with `log`. `copy_captive_portal` takes precedence.'
       log:
         type: bool
         description: 'Log matches against this rule.

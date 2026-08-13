@@ -20,6 +20,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fragments</samp>](## "ip_access_lists.[].entries.[].fragments") | Boolean |  |  |  | Match non-head fragment packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "ip_access_lists.[].entries.[].ttl") | Integer |  |  | Min: 0<br>Max: 255 | TTL value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_match</samp>](## "ip_access_lists.[].entries.[].ttl_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;copy_captive_portal</samp>](## "ip_access_lists.[].entries.[].copy_captive_portal") | Boolean |  |  |  | Copy packet to CPU queue for dot1x captive-portal.<br>Only supported with deny entries.<br>Mutually exclusive with `log`. `copy_captive_portal` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_inner</samp>](## "ip_access_lists.[].entries.[].vlan_inner") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | Render vlan and mask as inner vlan.<br>Both 'inner_vlan_number' and 'inner_vlan_mask' are required when migrating to the new keys.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>inner_vlan_number</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ports_match</samp>](## "ip_access_lists.[].entries.[].source_ports_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code><br>- <code>range</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ports</samp>](## "ip_access_lists.[].entries.[].source_ports") | List, items: String |  |  | Min Length: 1 |  |
@@ -29,7 +30,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ip_access_lists.[].entries.[].destination_ports.[]") | String |  |  |  | TCP/UDP destination port name or number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_flags</samp>](## "ip_access_lists.[].entries.[].tcp_flags") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ip_access_lists.[].entries.[].tcp_flags.[]") | String |  |  |  | TCP Flag Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;copy_captive_portal</samp>](## "ip_access_lists.[].entries.[].copy_captive_portal") | Boolean |  |  |  | Copy packet to CPU queue for dot1x captive-portal.<br>Only supported with deny entries.<br>Mutually exclusive with `log`. `copy_captive_portal` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "ip_access_lists.[].entries.[].log") | Boolean |  |  |  | Log matches against this rule.<br>Mutually exclusive with `copy_captive_portal`. `copy_captive_portal` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_type</samp>](## "ip_access_lists.[].entries.[].icmp_type") | String |  |  |  | Message type name/number for ICMP packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_code</samp>](## "ip_access_lists.[].entries.[].icmp_code") | String |  |  |  | Message code for ICMP packets. |
@@ -86,6 +86,11 @@
             ttl: <int; 0-255>
             ttl_match: <str; "eq" | "gt" | "lt" | "neq"; default="eq">
 
+            # Copy packet to CPU queue for dot1x captive-portal.
+            # Only supported with deny entries.
+            # Mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+            copy_captive_portal: <bool>
+
             # Render vlan and mask as inner vlan.
             # Both 'inner_vlan_number' and 'inner_vlan_mask' are required when migrating to the new keys.
             # This key is deprecated.
@@ -106,11 +111,6 @@
 
                 # TCP Flag Name.
               - <str>
-
-            # Copy packet to CPU queue for dot1x captive-portal.
-            # Only supported with deny entries.
-            # Mutually exclusive with `log`. `copy_captive_portal` takes precedence.
-            copy_captive_portal: <bool>
 
             # Log matches against this rule.
             # Mutually exclusive with `copy_captive_portal`. `copy_captive_portal` takes precedence.
