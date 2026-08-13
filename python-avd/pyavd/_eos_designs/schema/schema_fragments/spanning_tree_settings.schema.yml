@@ -41,7 +41,7 @@ keys:
         type: bool
         description: Enable loopguard by default on all ports.
         default: false
-      edge_port_bpdu_guard_default:
+      edge_port_bpduguard_default:
         type: bool
         description: Enable BPDU Guard on portfast interfaces.
         default: false
