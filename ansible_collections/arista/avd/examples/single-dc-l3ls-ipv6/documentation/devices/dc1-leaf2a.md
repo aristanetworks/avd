@@ -808,16 +808,16 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 2001:db8:0:1::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:0:2::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:2:4::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 2001:db8:2:5::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
-| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF10 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
-| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF11 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
-| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF12 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 2001:db8:0:1::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 2001:db8:0:2::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 2001:db8:2:4::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - |
+| 2001:db8:2:5::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - |
+| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - |
+| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF10 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - |
+| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF11 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - |
+| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF12 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
