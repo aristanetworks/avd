@@ -17308,12 +17308,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Copy packet to CPU queue for dot1x captive-portal.
             Only supported with deny entries.
             Mutually
-            exclusive with `log`.
+            exclusive with `log`. `copy_captive_portal` takes precedence.
             """
             log: bool | None
             """
             Log matches against this rule.
-            Mutually exclusive with `copy_captive_portal`.
+            Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+            takes precedence.
             """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
@@ -17405,10 +17406,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Copy packet to CPU queue for dot1x captive-portal.
                            Only supported with deny entries.
                            Mutually
-                           exclusive with `log`.
+                           exclusive with `log`. `copy_captive_portal` takes precedence.
                         log:
                            Log matches against this rule.
-                           Mutually exclusive with `copy_captive_portal`.
+                           Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+                           takes precedence.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
@@ -20497,12 +20499,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Copy packet to CPU queue for dot1x captive-portal.
             Only supported with deny entries.
             Mutually
-            exclusive with `log`.
+            exclusive with `log`. `copy_captive_portal` takes precedence.
             """
             log: bool | None
             """
             Log matches against this rule.
-            Mutually exclusive with `copy_captive_portal`.
+            Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+            takes precedence.
             """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
@@ -20589,10 +20592,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Copy packet to CPU queue for dot1x captive-portal.
                            Only supported with deny entries.
                            Mutually
-                           exclusive with `log`.
+                           exclusive with `log`. `copy_captive_portal` takes precedence.
                         log:
                            Log matches against this rule.
-                           Mutually exclusive with `copy_captive_portal`.
+                           Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+                           takes precedence.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
