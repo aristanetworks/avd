@@ -67,10 +67,10 @@ ip_access_lists:
     protocol: tcp
     source: any
     destination: any
+    copy_captive_portal: true
     destination_ports_match: eq
     destination_ports:
     - www
-    copy_captive_portal: true
 ip_igmp_snooping:
   globally_enabled: true
 ip_radius:
