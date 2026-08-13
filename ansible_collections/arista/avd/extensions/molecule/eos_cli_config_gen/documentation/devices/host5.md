@@ -9,6 +9,7 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+  - [Router OSPFv3](#router-ospfv3)
   - [Router BGP](#router-bgp)
 - [Multicast](#multicast)
   - [Router Multicast](#router-multicast)
@@ -73,6 +74,7 @@ daemon TerminAttr
 | --- | --------------- |
 | default | False |
 | FUTURE_IPV6_INTERFACES | True (ipv6 interfaces) |
+| IPv6_ROUTING_ENABLED_VRF | - |
 
 #### IP Routing Device Configuration
 
@@ -87,8 +89,76 @@ ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | True |
 | FUTURE_IPV6_INTERFACES | false |
+| IPv6_ROUTING_ENABLED_VRF | true |
+
+#### IPv6 Routing Device Configuration
+
+```eos
+!
+ipv6 unicast-routing
+ipv6 hardware fib optimize prefixes profile internet
+ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
+```
+
+### Router OSPFv3
+
+#### VRF: default
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 2000 |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| ospfv3 leaked match internal | True | - |
+| ospfv3 leaked match external | True | - |
+| ospfv3 leaked match nssa-external | True | - |
+
+##### Address Family IPv6
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 3.3.3.3 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 2000 |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| ospfv3 leaked match internal | True | - |
+| ospfv3 leaked match external | True | - |
+| ospfv3 leaked match nssa-external | True | - |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3
+   address-family ipv4
+      router-id 2.2.2.2
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked match internal
+      redistribute ospfv3 leaked match external
+      redistribute ospfv3 leaked match nssa-external
+   !
+   address-family ipv6
+      router-id 3.3.3.3
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked match internal
+      redistribute ospfv3 leaked match external
+      redistribute ospfv3 leaked match nssa-external
+```
 
 ### Router BGP
 
@@ -147,10 +217,13 @@ router multicast
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | FUTURE_IPV6_INTERFACES | enabled (ipv6 interface) |
+| IPv6_ROUTING_ENABLED_VRF | disabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance FUTURE_IPV6_INTERFACES
+!
+vrf instance IPv6_ROUTING_ENABLED_VRF
 ```

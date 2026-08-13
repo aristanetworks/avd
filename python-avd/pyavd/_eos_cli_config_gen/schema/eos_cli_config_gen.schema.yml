@@ -1830,6 +1830,39 @@ keys:
           Set to false to disable DNS lookups on sFlow/IPFIX flow records.
 
           '
+      custom_cv_options:
+        type: list
+        description: 'TerminAttr CLI options not covered by the schema.
+
+          Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>`
+          when `value` is omitted.
+
+          Options are appended at the end of the TerminAttr exec command line after
+          all other flags.
+
+          '
+        items:
+          type: dict
+          keys:
+            flag:
+              type: str
+              required: true
+              min_length: 1
+              pattern: ^(?!-)(?!.*[\s=]).+$
+              description: 'TerminAttr CLI flag name without the leading dash.
+
+                '
+            value:
+              type: str
+              description: 'Flag value. If omitted, the flag is rendered without a
+                value (e.g. `-someflag`).
+
+                If set, the flag is rendered as `-flag=value`.
+
+                '
+              convert_types:
+              - bool
+              - int
   daemons:
     type: list
     primary_key: name
@@ -2630,6 +2663,26 @@ keys:
           Always render a ''!'' before the ''(no) ip routing'' command section.
 
           Without this the ''!'' is missing when only configuring routing for VRFs.'
+      render_combined_separator_for_ipv6_hardware_and_unicast_routing:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Render a single ''!'' separator for the combined IPv6 routing block when
+          any of these are rendered:
+
+          - ''ipv6 unicast-routing''
+
+          - ''ipv6 unicast-routing vrf <vrf_name>''
+
+          - ''ipv6 hardware fib optimize prefixes profile <profile_name>''
+
+          Also render the ''!'' separator before the VRF IPv6 unicast-routing section
+          even when ''ipv6 unicast-routing'' and ''ipv6 hardware fib optimize prefixes''
+          are not present globally, as long as at least one VRF is configured for
+          IPv6 routing.
+
+          When ''false'', separators are handled by each individual section.'
       new_ip_radius_cli_order:
         type: bool
         default: false
@@ -4348,6 +4401,12 @@ keys:
               - ipv4
               - ipv6
               - layer2
+            management:
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         profile:
           type: str
           description: Interface profile.
@@ -14239,6 +14298,12 @@ keys:
 
                 Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
                 devices.'
+            management:
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".
@@ -23895,6 +23960,193 @@ keys:
               type: str
               description: Multiline EOS CLI rendered directly on the Router OSPF
                 process ID in the final EOS configuration.
+  router_ospfv3:
+    type: dict
+    display_name: Router OSPFv3 Configuration
+    description: 'Mutually exclusive with ''ipv6_router_ospf'' on EOS.
+
+      Use only one style across all VRFs and instances.'
+    keys:
+      router_id:
+        type: str
+        description: 32-bit OSPF router ID as an IP address.
+      passive_interface_default:
+        type: bool
+      auto_cost_reference_bandwidth:
+        type: int
+        convert_types:
+        - str
+        min: 1
+        max: 4294967
+        description: Reference bandwidth in Mbps.
+      address_family_ipv4:
+        type: dict
+        description: 'Address family IPv4 configuration.
+
+          Common configurations defined at the router-level and address-family level
+          are mutually exclusive.
+
+          If both are provided, the address-family level configuration takes precedence.'
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Activate the address family.
+          router_id:
+            type: str
+            description: 32-bit OSPF router ID as an IP address.
+          passive_interface_default:
+            type: bool
+          auto_cost_reference_bandwidth:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967
+            description: Reference bandwidth in Mbps.
+          redistribute:
+            type: dict
+            description: Redistribute routes into OSPFv3.
+            keys:
+              bgp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              connected:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              isis:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  level:
+                    type: str
+                    valid_values:
+                    - level-1
+                    - level-2
+                    - level-1-2
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              ospfv3:
+                type: dict
+                keys:
+                  leaked:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                        description: Redistribute OSPFv3 leaked routes.
+                      match_internal:
+                        type: bool
+                        description: Redistribute internal OSPFv3 leaked routes.
+                      route_map:
+                        type: str
+                  leaked_match_external:
+                    type: dict
+                    description: Redistribute external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                  leaked_match_nssa_external:
+                    type: dict
+                    description: Redistribute NSSA external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+      address_family_ipv6:
+        type: dict
+        description: 'Address family IPv6 configuration.
+
+          Common configurations defined at the router-level and address-family level
+          are mutually exclusive.
+
+          If both are provided, the address-family level configuration takes precedence.'
+        $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4
+        keys:
+          redistribute:
+            type: dict
+            description: Redistribute routes into OSPFv3.
+            keys:
+              dhcp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: 'VRF name.
+
+                VRF ''default'' must be configured directly under ''router_ospfv3''.'
+              pattern: (?!default$).+
+            router_id:
+              type: str
+              description: 32-bit OSPF router ID as an IP address.
+            passive_interface_default:
+              type: bool
+            auto_cost_reference_bandwidth:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4294967
+              description: Reference bandwidth in Mbps.
+            address_family_ipv4:
+              type: dict
+              $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4
+            address_family_ipv6:
+              type: dict
+              $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv6
+            eos_cli:
+              type: str
+              description: Multiline EOS CLI rendered directly on this VRF OSPFv3
+                instance.
+      eos_cli:
+        type: str
+        description: Multiline EOS CLI rendered directly on the default VRF OSPFv3
+          instance.
   router_path_selection:
     type: dict
     description: Dynamic path selection configuration.
@@ -26969,7 +27221,10 @@ keys:
           - int
         ipv6_ospf:
           type: dict
-          description: IPv6 OSPF configuration for the interface.
+          description: 'IPv6 OSPF configuration for the interface. Mutually exclusive
+            with ''ospfv3''. Ignored when ''ospfv3'' is also configured.
+
+            Use only one style throughout the configuration.'
           keys:
             process:
               type: dict
@@ -26989,6 +27244,38 @@ keys:
                   convert_types:
                   - int
                   required: true
+            network_point_to_point:
+              type: bool
+        ospfv3:
+          type: dict
+          description: 'Mutually exclusive with ''ipv6_ospf'' and takes precedence
+            over it.
+
+            Use only one style throughout the configuration.'
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  convert_types:
+                  - int
+                  required: true
+                  description: 'OSPF area ID in IPv4 address or decimal format (range:
+                    0 to 4294967295).'
+            ipv6:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  convert_types:
+                  - int
+                  required: true
+                  description: 'OSPF area ID in IPv4 address or decimal format (range:
+                    0 to 4294967295).'
+            passive_interface:
+              type: bool
+              description: Include interface but without actively running OSPF.
             network_point_to_point:
               type: bool
         ospf_cost:
