@@ -734,6 +734,7 @@ stun:
     - Ethernet1
     - Ethernet2
     ssl_profile: STUN-DTLS
+tcam_profile: null
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT

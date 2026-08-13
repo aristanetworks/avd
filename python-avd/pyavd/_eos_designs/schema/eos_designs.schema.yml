@@ -9380,6 +9380,7 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
+        hardware_tcam: false
         errdisable_causes:
           dot1x:
             detection: false
@@ -9462,6 +9463,7 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
+        hardware_tcam: false
         errdisable_causes:
           dot1x:
             detection: false
@@ -9537,6 +9539,7 @@ keys:
         queue_monitor_length_notify: false
         sflow: false
         hardware_validation: false
+        hardware_tcam: false
         errdisable_causes:
           acl:
             detection: false
@@ -16766,6 +16769,12 @@ $defs:
                 When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware`
                 keys defined for the validation profile applied to the device are
                 ignored.'
+              default: true
+            hardware_tcam:
+              type: bool
+              description: 'Support for hardware TCAM configuration.
+
+                When `false`, all hardware TCAM configuration is omitted.'
               default: true
             errdisable_causes:
               type: dict

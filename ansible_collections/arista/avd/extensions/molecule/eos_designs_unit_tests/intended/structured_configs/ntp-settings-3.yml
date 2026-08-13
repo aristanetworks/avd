@@ -37,6 +37,7 @@ service_routing_protocols_model: multi-agent
 static_routes:
 - prefix: 0.0.0.0/0
   next_hop: 10.254.254.1
+tcam_profile: null
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4092

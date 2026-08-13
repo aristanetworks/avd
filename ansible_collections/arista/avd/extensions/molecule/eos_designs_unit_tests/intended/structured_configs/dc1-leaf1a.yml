@@ -496,6 +496,7 @@ static_routes:
   prefix: 10.3.32.0/24
   interface: Vlan132
   name: VARP
+tcam_profile: null
 transceiver_qsfp_default_mode_4x10: true
 virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone

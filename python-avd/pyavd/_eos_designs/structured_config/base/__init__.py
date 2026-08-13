@@ -363,6 +363,10 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def tcam_profile(self) -> None:
         """tcam_profile set based on platform_settings.tcam_profile fact."""
+        if not self.shared_utils.platform_settings.feature_support.hardware_tcam:
+            self.custom_structured_configs.nested.tcam_profile = EosCliConfigGen.TcamProfile._from_null()
+            return
+
         if tcam_profile := self.shared_utils.platform_settings.tcam_profile:
             self.structured_config.tcam_profile.system = tcam_profile
 

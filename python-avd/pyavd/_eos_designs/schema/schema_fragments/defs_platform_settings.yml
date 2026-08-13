@@ -341,6 +341,12 @@ $defs:
                 Enable hardware validation for the device.
                 When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
               default: true
+            hardware_tcam:
+              type: bool
+              description: |-
+                Support for hardware TCAM configuration.
+                When `false`, all hardware TCAM configuration is omitted.
+              default: true
             errdisable_causes:
               type: dict
               description: |-
