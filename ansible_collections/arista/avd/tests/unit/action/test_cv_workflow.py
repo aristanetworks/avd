@@ -45,6 +45,7 @@ def _make_deploy_result_mock(**overrides: object) -> MagicMock:
     mock.errors = []
     mock.warnings = []
     mock.failed = False
+    mock.change_control = None
     mock.deployed_configs = []
     mock.deployed_static_config_containers = []
     mock.deployed_static_config_configlets = []
@@ -152,6 +153,69 @@ def test_deploy_wraps_exceptions_as_action_fail(
         asyncio.run(module.deploy(validated_args, {}))
 
     assert exc_info.value.__cause__ is original_error
+
+
+def test_deploy_routes_existing_change_control_to_cc_only_mode(action_module: Callable[..., ActionModule]) -> None:
+    """An existing Change Control ID selects Change-Control-only mode."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(
+        device_list=[],
+        change_control={"id": "cc-id", "requested_state": "running", "approval_note": "Approved", "start_note": "Started"},
+    )
+    deploy_result = _make_deploy_result_mock(change_control=MagicMock(changed=True))
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=deploy_result) as deploy_to_cv,
+    ):
+        result = asyncio.run(module.deploy(validated_args, {}))
+
+    deploy_to_cv.assert_called_once()
+    change_control = deploy_to_cv.call_args.kwargs["change_control"]
+    assert change_control.id == "cc-id"
+    assert change_control.requested_state == "running"
+    assert change_control.avd_change_control.approval_note == "Approved"
+    assert change_control.avd_change_control.start_note == "Started"
+    assert result["changed"] is True
+
+
+def test_deploy_existing_change_control_reports_unchanged_for_noop(action_module: Callable[..., ActionModule]) -> None:
+    """CC-only mode reports unchanged when the requested state was already satisfied."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(device_list=[], change_control={"id": "cc-id", "requested_state": "approved"})
+    deploy_result = _make_deploy_result_mock(change_control=MagicMock(changed=False))
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=deploy_result),
+    ):
+        result = asyncio.run(module.deploy(validated_args, {}))
+
+    assert result["changed"] is False
+
+
+def test_deploy_rejects_devices_with_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
+    """An existing Change Control ID cannot be combined with a non-empty device list."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(device_list=["leaf1"], change_control={"id": "cc-id", "requested_state": "approved"})
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        pytest.raises(AnsibleActionFail, match="Change-Control-only mode requires the device list to be empty"),
+    ):
+        asyncio.run(module.deploy(validated_args, {}))
+
+
+def test_deploy_rejects_deleted_state_without_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
+    """The deleted state requires an existing Change Control ID."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(device_list=[], change_control={"requested_state": "deleted"})
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        pytest.raises(AnsibleActionFail, match="The 'deleted' Change Control state requires an existing Change Control ID"),
+    ):
+        asyncio.run(module.deploy(validated_args, {}))
 
 
 # ---------------------------------------------------------------------------

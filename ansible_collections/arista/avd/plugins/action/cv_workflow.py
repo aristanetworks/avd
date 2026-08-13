@@ -122,9 +122,16 @@ ARGUMENT_SPEC = {
     "change_control": {
         "type": "dict",
         "options": {
+            "id": {"type": "str", "required": False},
             "name": {"type": "str", "required": False},
             "description": {"type": "str", "required": False},
-            "requested_state": {"type": "str", "default": "pending approval", "choices": ["pending approval", "approved", "running", "completed"]},
+            "approval_note": {"type": "str", "required": False},
+            "start_note": {"type": "str", "required": False},
+            "requested_state": {
+                "type": "str",
+                "default": "pending approval",
+                "choices": ["pending approval", "approved", "running", "completed", "deleted"],
+            },
         },
     },
     "timeouts": {
@@ -144,6 +151,24 @@ ARGUMENT_SPEC = {
     },
     "return_details": {"type": "bool", "required": False, "default": False},
 }
+
+
+def validate_change_control_only_inputs(work_to_do: bool, device_list: list[str]) -> None:
+    """Validate inputs used to manage an existing Change Control."""
+    if work_to_do:
+        msg = "Change-Control-only mode cannot be combined with configurations, tags, metadata, or a static config manifest"
+        raise AnsibleActionFail(msg)
+
+    if device_list:
+        msg = "Change-Control-only mode requires the device list to be empty"
+        raise AnsibleActionFail(msg)
+
+
+def validate_change_control_requested_state(change_control: CVChangeControl) -> None:
+    """Validate the requested state for a created or existing Change Control."""
+    if change_control.id is None and change_control.requested_state == "deleted":
+        msg = "The 'deleted' Change Control state requires an existing Change Control ID"
+        raise AnsibleActionFail(msg)
 
 
 class ActionModule(ActionBase):
@@ -260,7 +285,16 @@ class ActionModule(ActionBase):
                 ]
             )
 
-            if work_to_do:
+            change_control = CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={})))
+            validate_change_control_requested_state(change_control)
+
+            if change_control.id is not None:
+                validate_change_control_only_inputs(
+                    work_to_do=work_to_do,
+                    device_list=get(validated_args, "device_list", default=[]),
+                )
+                result_object = await deploy_to_cv(cloudvision=cloudvision, change_control=change_control)
+            elif work_to_do:
                 # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
                 workspace_args = get(validated_args, "workspace", default={})
                 if "build_warnings" in workspace_args:
@@ -268,7 +302,7 @@ class ActionModule(ActionBase):
 
                 # Perform deployment of all objects, getting a DeployToCVResult object back.
                 result_object = await deploy_to_cv(
-                    change_control=CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={}))),
+                    change_control=change_control,
                     cloudvision=cloudvision,
                     device_deployments=device_deployments,
                     static_config_manifest=static_config_manifest,
@@ -278,15 +312,15 @@ class ActionModule(ActionBase):
                     timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
                     workspace=CVWorkspace(avd_workspace=AvdWorkspace(**workspace_args)),
                 )
-                # Errors and warnings are converted to JSON compatible strings.
-                result_object.errors = [str(error) for error in result_object.errors]
-                result_object.warnings = [str(warning) for warning in result_object.warnings]
-
                 # Add warnings caught by the logger.
                 result_object.warnings.extend(result.get("warnings", []))
             else:
                 result_object = DeployToCvResult(workspace=None)
                 result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
+
+            # Errors and warnings are converted to JSON compatible strings.
+            result_object.errors = [str(error) for error in result_object.errors]
+            result_object.warnings = [str(warning) for warning in result_object.warnings]
 
             # Add either all return data or only warnings, errors, failed.
             if validated_args["return_details"]:
@@ -303,6 +337,7 @@ class ActionModule(ActionBase):
 
             # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
             change_indicators = [
+                result_object.change_control is not None and result_object.change_control.changed,
                 result_object.deployed_configs,
                 result_object.deployed_static_config_containers,
                 result_object.deployed_static_config_configlets,

@@ -13,8 +13,10 @@ import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
 from pyavd._cv.workflows.models import (
+    AvdChangeControl,
     AvdWorkspace,
     CloudVision,
+    CVChangeControl,
     CVDeployFuture,
     CVDeviceDeployment,
     CVEosConfig,
@@ -34,6 +36,61 @@ from tests.pyavd.cv.mockery import mocked_cvdevices
 
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
+
+
+@pytest.mark.asyncio
+async def test_deploy_to_cv_manages_existing_change_control() -> None:
+    """Test that an existing Change Control is managed without creating a Workspace."""
+    mock_cv_client = AsyncMock()
+    entered_cv_client = AsyncMock()
+    mock_cv_client.__aenter__.return_value = entered_cv_client
+    change_control = CVChangeControl(avd_change_control=AvdChangeControl(id="cc-id", requested_state="approved"))
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_change_control_on_cv", new_callable=AsyncMock) as finalize_change_control,
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            change_control=change_control,
+        )
+
+    finalize_change_control.assert_called_once_with(change_control=change_control, cv_client=entered_cv_client)
+    assert result.workspace is None
+    assert result.change_control is change_control
+
+
+@pytest.mark.asyncio
+async def test_deploy_to_cv_rejects_existing_change_control_with_workspace() -> None:
+    """Test that an existing Change Control cannot be combined with a Workspace."""
+    change_control = CVChangeControl(avd_change_control=AvdChangeControl(id="cc-id", requested_state="approved"))
+
+    with pytest.raises(ValueError, match="cannot be combined with a Workspace or deployment inputs"):
+        await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            change_control=change_control,
+            workspace=CVWorkspace(),
+        )
 
 
 @pytest.mark.asyncio

@@ -13,6 +13,7 @@ from pyavd._cv.api.arista.changecontrol.v1 import (
     ChangeConfig,
     ChangeControl,
     ChangeControlConfig,
+    ChangeControlConfigDeleteRequest,
     ChangeControlConfigServiceStub,
     ChangeControlConfigSetRequest,
     ChangeControlConfigSetResponse,
@@ -111,6 +112,28 @@ class ChangeControlMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
+
+    @GRPCRequestHandler()
+    async def delete_change_control(
+        self: CVClientProtocol,
+        change_control_id: str,
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> ChangeControlKey:
+        """
+        Delete Change Control using arista.changecontrol.v1.ChangeControlConfigService.Delete API.
+
+        Parameters:
+            change_control_id: Unique identifier of the Change Control.
+            timeout: Timeout in seconds.
+
+        Returns:
+            ChangeControlKey object for the deleted Change Control.
+        """
+        request = ChangeControlConfigDeleteRequest(key=ChangeControlKey(id=change_control_id))
+        client = ChangeControlConfigServiceStub(self._channel)
+
+        response = await client.delete(request, metadata=self._metadata, timeout=timeout)
+        return response.key
 
     @GRPCRequestHandler()
     async def approve_change_control(
