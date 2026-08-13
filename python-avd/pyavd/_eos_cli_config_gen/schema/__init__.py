@@ -17232,6 +17232,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "fragments": {"type": bool},
                 "ttl": {"type": int},
                 "ttl_match": {"type": str, "default": "eq"},
+                "log": {"type": bool},
                 "copy_captive_portal": {"type": bool},
                 "vlan_inner": {"type": bool, "default": False},
                 "source_ports_match": {"type": str, "default": "eq"},
@@ -17239,7 +17240,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
-                "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
                 "nexthop_group": {"type": str},
@@ -17285,6 +17285,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """TTL value."""
             ttl_match: TtlMatch
             """Default value: `"eq"`"""
+            log: bool | None
+            """
+            Log matches against this rule.
+            Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+            takes precedence.
+            """
             copy_captive_portal: bool | None
             """
             Copy packet to CPU queue for dot1x captive-portal.
@@ -17310,12 +17316,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
-            log: bool | None
-            """
-            Log matches against this rule.
-            Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
-            takes precedence.
-            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -17347,6 +17347,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     fragments: bool | UndefinedType | None = Undefined,
                     ttl: int | UndefinedType | None = Undefined,
                     ttl_match: TtlMatch | UndefinedType = Undefined,
+                    log: bool | UndefinedType | None = Undefined,
                     copy_captive_portal: bool | UndefinedType | None = Undefined,
                     vlan_inner: bool | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
@@ -17354,7 +17355,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
-                    log: bool | UndefinedType | None = Undefined,
                     icmp_type: str | UndefinedType | None = Undefined,
                     icmp_code: str | UndefinedType | None = Undefined,
                     nexthop_group: str | UndefinedType | None = Undefined,
@@ -17393,6 +17393,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
+                        log:
+                           Log matches against this rule.
+                           Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+                           takes precedence.
                         copy_captive_portal:
                            Copy packet to CPU queue for dot1x captive-portal.
                            Only supported with deny entries.
@@ -17407,10 +17411,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log:
-                           Log matches against this rule.
-                           Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
-                           takes precedence.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
@@ -20494,11 +20494,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
             log: bool | None
-            """
-            Log matches against this rule.
-            Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
-            takes precedence.
-            """
+            """Log matches against this rule."""
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -20579,10 +20575,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log:
-                           Log matches against this rule.
-                           Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
-                           takes precedence.
+                        log: Log matches against this rule.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.

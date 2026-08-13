@@ -68,6 +68,11 @@ keys:
                   - "lt"
                   - "neq"
                 default: "eq"
+              log:
+                type: bool
+                description: |-
+                  Log matches against this rule.
+                  Mutually exclusive with `copy_captive_portal`. `copy_captive_portal` takes precedence.
               copy_captive_portal:
                 type: bool
                 description: |-
