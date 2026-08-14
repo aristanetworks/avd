@@ -30,7 +30,7 @@ def test_get_emits_deprecation_once() -> None:
     # Warn on first get() for another key.
     with pytest.deprecated_call(match="deprecated"):
         assert deprecated_dict.get("type") == "sometype"
-        assert deprecated_dict["interface"] == "Ethernet1"
+        assert deprecated_dict.get("interface") == "Ethernet1"
 
     # No warning on second access - here using __get_item__ for the other key.
     with warnings.catch_warnings():
