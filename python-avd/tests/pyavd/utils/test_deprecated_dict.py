@@ -12,7 +12,7 @@ from pyavd._utils.deprecated_dict import DeprecatedDict
 
 def test_get_emits_deprecation_once() -> None:
     deprecated_dict = DeprecatedDict(
-        {"interface": "Ethernet1", "type": "sometype"},
+        {"interface": "Ethernet1", "type": "sometype", "shutdown": False},
         _deprecated_dict_key="link",
         _new_keys={"interface": "interface", "type": "link_type"},
         _remove_in_version="7.0.0",
@@ -21,6 +21,10 @@ def test_get_emits_deprecation_once() -> None:
     # Warn on first __get_item__ for a key.
     with pytest.deprecated_call(match="deprecated"):
         assert deprecated_dict["type"] == "sometype"
+
+    # Warn on .get() for a key.
+    with pytest.deprecated_call(match="deprecated"):
+        assert deprecated_dict.get("shutdown") == False
 
     # No warning on second access - here using get() for the same key.
     with warnings.catch_warnings():
