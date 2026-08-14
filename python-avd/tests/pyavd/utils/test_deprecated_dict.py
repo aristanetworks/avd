@@ -14,7 +14,7 @@ def test_get_emits_deprecation_once() -> None:
     deprecated_dict = DeprecatedDict(
         {"interface": "Ethernet1", "type": "sometype", "shutdown": False},
         _deprecated_dict_key="link",
-        _new_keys={"interface": "interface", "type": "link_type"},
+        _new_keys={"interface": "interface", "type": "link_type", "shutdown": "enabled"},
         _remove_in_version="7.0.0",
     )
 
