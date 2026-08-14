@@ -98,6 +98,10 @@ router_bgp:
     remote_as: '65991'
     bfd: true
     next_hop_self: true
+    maximum_accepted_routes:
+      limit: 1000
+      warning_limit:
+        count: 100
   - name: MLAG-IPv4-UNDERLAY-PEER
     metadata:
       type: ipv4
