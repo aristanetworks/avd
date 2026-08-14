@@ -10029,7 +10029,7 @@ ASN Notation: asdot
 | 192.168.255.21 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | 1000 (never warn) | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS(interval: 2000, min_rx: 2000, multiplier: 3) | False | - | - | - |
 | 192.168.255.101 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | 100 (warning-limit 90) | 120000 (warning-limit 10 percent) | - | - | - | - | - | - |
 | 192.168.255.201 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | 120000 (warning-limit 11236) | - | - | - | - | - | - |
-| 2001:cafe:192:168::4 | 65004 | default | - | all | - | - | 0 (no limit) | - | - | - | - | - | - |
+| 2001:cafe:192:168::4 | 65004 | default | - | all | - | - | 0 (no limit) (warning-limit 0) | - | - | - | - | - | - |
 | 2001:db8::dead:beef:cafe | 65004 | default | - | - | - | - | - | - | - | - | - | - | - |
 | fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default | - | Inherited from peer group IPV6-UNDERLAY-MLAG | Inherited from peer group IPV6-UNDERLAY-MLAG | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | False | - | - |
@@ -10625,7 +10625,7 @@ router bgp 65101
    neighbor 192.168.255.201 maximum-advertised-routes 120000 warning-limit 11236
    neighbor 2001:cafe:192:168::4 remote-as 65004
    neighbor 2001:cafe:192:168::4 send-community
-   neighbor 2001:cafe:192:168::4 maximum-advertised-routes 0
+   neighbor 2001:cafe:192:168::4 maximum-advertised-routes 0 warning-limit 0
    neighbor 2001:db8::dead:beef:cafe remote-as 65004
    neighbor fe80::b%Vl4094 peer group IPV6-UNDERLAY-MLAG
    no bgp redistribute-internal

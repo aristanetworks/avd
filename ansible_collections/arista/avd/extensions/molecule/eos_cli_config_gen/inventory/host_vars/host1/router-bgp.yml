@@ -1433,6 +1433,7 @@ router_bgp:
       remote_as: 65004
       send_community: all
       maximum_advertised_routes: 0
+      maximum_advertised_routes_warning_limit: 0
     - ip_address: 192.168.42.42
       remote_as: 65004
       next_hop_self: true
