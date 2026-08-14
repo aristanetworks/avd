@@ -283,9 +283,9 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 192.0.2.100 | Inherited from peer group PG-DOC-COVERAGE | default | Inherited from peer group PG-DOC-COVERAGE | - | Inherited from peer group PG-DOC-COVERAGE | Inherited from peer group PG-DOC-COVERAGE | - | Inherited from peer group PG-DOC-COVERAGE | - | - | Inherited from peer group PG-DOC-COVERAGE | Inherited from peer group PG-DOC-COVERAGE | - |
-| 192.0.2.101 | 65046 | default | - | - | 0 (no limit) | 0 (no limit) | - | - | - | - | - | - | - |
-| 192.0.2.102 | 65048 | default | - | - | 200 (warning-limit 100) | 200 (warning-limit 100) | - | - | - | - | - | - | - |
+| 192.0.2.100 | Inherited from peer group PG-DOC-COVERAGE | default | Inherited from peer group PG-DOC-COVERAGE | - | Inherited from peer group PG-DOC-COVERAGE | - | - | Inherited from peer group PG-DOC-COVERAGE | - | - | Inherited from peer group PG-DOC-COVERAGE | Inherited from peer group PG-DOC-COVERAGE | - |
+| 192.0.2.101 | 65046 | default | - | - | 0 (no limit) | - | - | - | - | - | - | - | - |
+| 192.0.2.102 | 65048 | default | - | - | 200 (warning-limit 100) | - | - | - | - | - | - | - | - |
 | 192.0.2.10 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | - | - | True (All) | - | - | - |
 | 192.0.2.11 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | - | - | - | - | - | - |
 | 192.0.2.12 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | - | - | - | - | - | - |
