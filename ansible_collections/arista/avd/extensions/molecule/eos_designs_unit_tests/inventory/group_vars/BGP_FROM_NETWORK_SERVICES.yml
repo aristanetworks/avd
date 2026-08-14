@@ -140,6 +140,10 @@ tenants:
             bfd: true
             maximum_advertised_routes: 1000
             maximum_advertised_routes_warning_limit: 80 percent
+            maximum_accepted_routes:
+              limit: 1000
+              warning_limit:
+                count: 100
   # Tenant for node 11 and 12 with VRF default
   - name: TEST2
     vrfs:
