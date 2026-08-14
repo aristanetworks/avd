@@ -8,6 +8,12 @@ l2leaf:
 dot1x_settings:
   enabled: true
 
+aaa_settings:
+  radius:
+    servers:
+      - host: radius.example.com
+        cleartext_key: super-secret-key
+
 ipv4_standard_acls:
   - name: another-acl
     entries:

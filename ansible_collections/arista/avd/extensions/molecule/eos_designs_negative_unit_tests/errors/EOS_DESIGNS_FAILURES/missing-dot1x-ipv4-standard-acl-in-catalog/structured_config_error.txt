@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: At least one RADIUS server must be defined under `aaa_settings.radius.servers` for 802.1X authentication.
+pyavd._errors.AristaAvdMissingVariableError: 'ipv4_standard_acls[name=missing-acl]' is required but was not found for host 'missing-dot1x-ipv4-standard-acl-in-catalog'.
