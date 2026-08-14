@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'tenants[name=Tenant_X].bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[0].peer_filter or tenants[name=Tenant_X].bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[0].remote_as' is required but was not found.

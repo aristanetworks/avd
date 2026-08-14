@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Setting 'phone_vlan' requires 'mode: trunk phone' to be set on connected endpoint 'OLD_SW-1/7'.

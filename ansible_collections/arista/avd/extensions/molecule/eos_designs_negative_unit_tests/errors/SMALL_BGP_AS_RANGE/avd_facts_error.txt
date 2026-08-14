@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Unable to allocate BGP AS: bgp_as range '65101-65102' is too small (2) for the id '3' for host 'bgp-as-leaf1c'.

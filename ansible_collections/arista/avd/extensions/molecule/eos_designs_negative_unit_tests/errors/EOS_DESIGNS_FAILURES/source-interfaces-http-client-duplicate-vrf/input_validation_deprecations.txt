@@ -1,0 +1,1 @@
+[['mgmt_interface_vrf']]: 'The input data model 'mgmt_interface_vrf' is deprecated and will be removed in AVD version 7.0.0. Use 'mgmt_interface_settings.vrf' instead.'

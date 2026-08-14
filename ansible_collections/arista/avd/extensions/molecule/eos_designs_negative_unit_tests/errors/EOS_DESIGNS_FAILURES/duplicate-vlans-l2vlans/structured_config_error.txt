@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdDuplicateDataError: Found duplicate objects with conflicting data while generating configuration for Vlans. {'id': 1, 'name': 'duplicate_vlan', 'metadata': {'tenants': ['TenantB']}} conflicts with {'id': 1, 'name': 'vlan', 'metadata': {'tenants': ['TenantA']}}.

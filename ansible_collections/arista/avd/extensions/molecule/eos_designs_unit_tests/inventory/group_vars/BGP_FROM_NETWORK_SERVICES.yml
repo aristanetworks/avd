@@ -136,6 +136,10 @@ tenants:
             remote_as: 65991
             next_hop_self: true
             bfd: true
+            maximum_accepted_routes:
+              limit: 1000
+              warning_limit:
+                count: 100
   # Tenant for node 11 and 12 with VRF default
   - name: TEST2
     vrfs:

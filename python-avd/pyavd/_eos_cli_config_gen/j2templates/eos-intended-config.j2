@@ -303,12 +303,8 @@
 {% include 'eos/prefix-lists.j2' %}
 {# IPv6 Prefix-lists #}
 {% include 'eos/ipv6-prefix-lists.j2' %}
-{# IPv6 Unicast Routing #}
-{% include 'eos/ipv6-unicast-routing.j2' %}
-{# eos - IPv6 Hardware #}
-{% include 'eos/ipv6-hardware.j2' %}
-{# eos - IPv6 Unicast Routing VRFs #}
-{% include 'eos/ipv6-unicast-routing-vrfs.j2' %}
+{# IPv6 Unicast Routing/IPv6 Hardware/IPv6 Unicast Routing VRFs #}
+{% include 'eos/ipv6-hardware-and-unicast-routing.j2' %}
 {# IPv6 Neighbors #}
 {% include 'eos/ipv6-neighbors.j2' %}
 {# MAC Access-lists #}
@@ -380,6 +376,8 @@
 {% include 'eos/router-multicast.j2' %}
 {# router ospf configuration #}
 {% include 'eos/router-ospf.j2' %}
+{# router ospfv3 configuration #}
+{% include 'eos/router-ospfv3.j2' %}
 {# ipv6 router ospf configuration #}
 {% include 'eos/ipv6-router-ospf.j2' %}
 {# router pim sparse mode configuration #}

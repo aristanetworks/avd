@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import ipaddress
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -60,7 +61,12 @@ class RouterBgpMixin(Protocol):
         if self.inputs.bgp_graceful_restart.enabled:
             self.structured_config.router_bgp.graceful_restart._update(enabled=True, restart_time=self.inputs.bgp_graceful_restart.restart_time)
 
-        # Add IPv4 neighbors
+        # Add L3 interface and L3 Port-Channel neighbors under the appropriate address family.
         self.structured_config.router_bgp.neighbors.extend(self.shared_utils.l3_bgp_neighbors)
         for neighbor in self.shared_utils.l3_bgp_neighbors:
-            self.structured_config.router_bgp.address_family_ipv4.neighbors.append_new(ip_address=neighbor.ip_address, activate=True)
+            address_family = (
+                self.structured_config.router_bgp.address_family_ipv4
+                if ipaddress.ip_address(neighbor.ip_address).version == 4
+                else self.structured_config.router_bgp.address_family_ipv6
+            )
+            address_family.neighbors.append_new(ip_address=neighbor.ip_address, activate=True)

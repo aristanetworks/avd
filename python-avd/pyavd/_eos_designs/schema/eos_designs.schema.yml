@@ -1852,6 +1852,9 @@ keys:
           flowdns:
             type: bool
             $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/flowdns
+          custom_cv_options:
+            type: list
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/custom_cv_options
       set_source_interfaces:
         type: bool
         description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
@@ -4104,6 +4107,40 @@ keys:
       advertisements are expected to provide the gateway and default route.
 
       '
+  ipv6_prefix_list_catalog:
+    type: list
+    primary_key: name
+    description: 'IPv6 prefix-list catalog.
+
+      Entries are only rendered when explicitly referenced by `ipv6_prefix_list_in`
+      or
+
+      `ipv6_prefix_list_out` under BGP on an L3 interface or L3 Port-Channel.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Prefix-list Name.
+        sequence_numbers:
+          type: list
+          primary_key: sequence
+          required: true
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                required: true
+                description: 'Action as string.
+
+                  Example: "permit 2001:db8::/32 le 128"'
   is_deployed:
     documentation_options:
       table: is-deployed
@@ -9941,6 +9978,12 @@ keys:
           type: str
           valid_values:
           - ipv4
+        management:
+          type: dict
+          keys:
+            drop:
+              type: bool
+              description: Drop PTP management messages.
     default:
     - profile: aes67-r16-2016
       announce:
@@ -10581,6 +10624,10 @@ keys:
       loop_guard_default:
         type: bool
         description: Enable loopguard by default on all ports.
+        default: false
+      edge_port_bpduguard_default:
+        type: bool
+        description: Enable BPDU Guard on portfast interfaces.
         default: false
   ssh_settings:
     type: dict
@@ -15021,8 +15068,8 @@ $defs:
             description: 'PREVIEW: This option is marked as "preview", meaning the
               data models or generated configuration can change at any time.
 
-              Set the OS version and management IP address for the digital twin of
-              the associated node(s).'
+              Set the OS version, management IP address, and management gateway for
+              the digital twin of the associated node(s).'
             type: dict
             keys:
               act_os_version:
@@ -15040,6 +15087,13 @@ $defs:
                   If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip` address
                   is also used for the generated OOB management interface.'
                 format: cidr
+              mgmt_gateway:
+                type: str
+                description: 'Desired OOB management gateway for the Digital Twin.
+
+                  In ACT Digital Twin mode, if the regular `mgmt_ip` is set, this
+                  `digital_twin.mgmt_gateway` address takes precedence over the regular
+                  management gateway for the generated OOB management interface.'
               act_internet_access:
                 type: bool
                 description: 'Specifies if the ACT Digital Twin device is deployed
@@ -15540,14 +15594,17 @@ $defs:
             gateway if `set_default_route` is true and `ip` is an IP address.
         peer_ipv6:
           type: str
-          description: The peer device IPv6 address (no mask). Used for field substitution
-            in `ipv6_acls` entries with the "peer_ipv6" token.
+          description: 'The peer device IPv6 address (no mask). Used for field substitution
+            in `ipv6_acls` entries with the "peer_ipv6" token
+
+            and for creating IPv6 BGP peering if `bgp` is also set.
+
+            IPv6 BGP peering using `peer_ipv6` and `bgp` is not supported when `wan_carrier`
+            is set.'
         bgp:
           type: dict
-          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
-            peering (when `peer_ip` is set).
-
-            IPv6 BGP peering on L3 interfaces is not yet supported.'
+          description: Configure IPv4 and/or IPv6 BGP peering for the interface when
+            `peer_ip` and/or `peer_ipv6` is set.
           keys:
             peer_as:
               type: str
@@ -15573,6 +15630,22 @@ $defs:
                 If not specified, nothing would be advertised.
 
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
+            ipv6_prefix_list_in:
+              type: str
+              description: 'IPv6 prefix list name. Accept routes for only these IPv6
+                prefixes from the peer.
+
+                Only applied when `peer_ipv6` is set; otherwise ignored.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
+            ipv6_prefix_list_out:
+              type: str
+              description: 'IPv6 prefix list name. Advertise routes for only these
+                IPv6 prefixes.
+
+                Only applied when `peer_ipv6` is set; otherwise ignored.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
@@ -15825,14 +15898,17 @@ $defs:
             gateway if `set_default_route` is true and `ip` is an IP address.
         peer_ipv6:
           type: str
-          description: The peer device IPv6 address (no mask). Used for field substitution
-            in `ipv6_acls` entries with the "peer_ipv6" token.
+          description: 'The peer device IPv6 address (no mask). Used for field substitution
+            in `ipv6_acls` entries with the "peer_ipv6" token
+
+            and for creating IPv6 BGP peering if `bgp` is also set.
+
+            IPv6 BGP peering using `peer_ipv6` and `bgp` is not supported when `wan_carrier`
+            is set.'
         bgp:
           type: dict
-          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
-            peering (when `peer_ip` is set).
-
-            IPv6 BGP peering on L3 Port-Channels is not yet supported.'
+          description: Configure IPv4 and/or IPv6 BGP peering for the interface when
+            `peer_ip` and/or `peer_ipv6` is set.
           keys:
             peer_as:
               type: str
@@ -15858,6 +15934,22 @@ $defs:
                 If not specified, nothing would be advertised.
 
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
+            ipv6_prefix_list_in:
+              type: str
+              description: 'Prefix List Name. Accept routes for only these IPv6 prefixes
+                from the peer.
+
+                Only applied when `peer_ipv6` is set; otherwise ignored.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
+            ipv6_prefix_list_out:
+              type: str
+              description: 'Prefix List Name. Advertise routes for only these IPv6
+                prefixes.
+
+                Only applied when `peer_ipv6` is set; otherwise ignored.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
@@ -16365,6 +16457,43 @@ $defs:
         feature_support:
           type: dict
           keys:
+            address_locking:
+              type: dict
+              keys:
+                supported:
+                  type: bool
+                  description: 'Global support for Address Locking feature.
+
+                    The feature will be ignored on platforms where this is false.'
+                  default: true
+                ipv4_enforcement_disabled:
+                  type: bool
+                  description: 'Support for disabling enforcement for locked IPv4
+                    addresses.
+
+                    The feature will be ignored on platforms where this is false.'
+                  default: true
+                ipv6_enforcement_disabled:
+                  type: bool
+                  description: 'Support for disabling enforcement for locked IPv6
+                    addresses.
+
+                    The feature will be ignored on platforms where this is false.'
+                  default: true
+                ipv6_ethernet_interface:
+                  type: bool
+                  description: 'Support for controlling IPv6 Address Locking on the
+                    Ethernet interface level.
+
+                    The feature will be ignored on platforms where this is false.'
+                  default: true
+                ipv6_vlan:
+                  type: bool
+                  description: 'Support for controlling IPv6 Address Locking on the
+                    VLAN level.
+
+                    The feature will be ignored on platforms where this is false.'
+                  default: true
             queue_monitor:
               type: bool
               description: 'Support for LANZ.
