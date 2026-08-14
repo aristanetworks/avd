@@ -24,7 +24,7 @@ def test_get_emits_deprecation_once() -> None:
 
     # Warn on .get() for a key.
     with pytest.deprecated_call(match="deprecated"):
-        assert deprecated_dict.get("shutdown") == False
+        assert deprecated_dict.get("shutdown") is False
 
     # No warning on second access - here using get() for the same key.
     with warnings.catch_warnings():
