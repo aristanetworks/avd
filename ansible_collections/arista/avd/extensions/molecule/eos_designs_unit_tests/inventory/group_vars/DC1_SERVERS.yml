@@ -1,5 +1,12 @@
 ---
 
+ipv4_standard_acls:
+  - name: ACL1
+    entries:
+      - sequence: 10
+        action: permit
+        source: any
+
 port_profiles:
   - profile: TENANT_A_B
     mode: trunk
@@ -133,7 +140,7 @@ port_profiles:
       authentication_failure:
         action: allow
         allow_vlan: 800
-        allow_access_list: ACL1
+        allow_ipv4_access_list: ACL1
       host_mode:
         mode: multi-host
         multi_host_authenticated: true

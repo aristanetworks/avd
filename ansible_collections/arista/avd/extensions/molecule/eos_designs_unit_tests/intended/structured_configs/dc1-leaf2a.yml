@@ -1131,6 +1131,12 @@ spanning_tree:
   mst_instances:
   - id: '0'
     priority: 4096
+standard_access_lists:
+- name: ACL1
+  entries:
+  - sequence: 10
+    action: permit
+    source: any
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
