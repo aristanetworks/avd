@@ -672,9 +672,9 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 172.30.22.21 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
-| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | - | Inherited from peer group OVERLAY-PEERS | - | - | - | - |
-| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | - | Inherited from peer group OVERLAY-PEERS | - | - | - | - |
+| 172.30.22.21 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
+| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | - | - | Inherited from peer group OVERLAY-PEERS | - | - | - | - |
+| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | - | - | Inherited from peer group OVERLAY-PEERS | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 

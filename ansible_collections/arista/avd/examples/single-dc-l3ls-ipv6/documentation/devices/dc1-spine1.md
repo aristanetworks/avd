@@ -397,14 +397,14 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 2001:db8:1:1::1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:1:2::1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:1:3::1 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:1:4::1 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:2:2::2 | 65101 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - |
-| 2001:db8:2:4::2 | 65102 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - |
-| 2001:db8:2:6::2 | 65102 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - |
-| 2001:db8:2::2 | 65101 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - |
+| 2001:db8:1:1::1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 2001:db8:1:2::1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 2001:db8:1:3::1 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 2001:db8:1:4::1 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 2001:db8:2:2::2 | 65101 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
+| 2001:db8:2:4::2 | 65102 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
+| 2001:db8:2:6::2 | 65102 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
+| 2001:db8:2::2 | 65101 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
