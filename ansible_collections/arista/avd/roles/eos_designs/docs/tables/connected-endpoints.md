@@ -93,7 +93,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].link_tracking") | Dictionary |  |  |  | Configure the downstream interfaces of a respective Link Tracking Group.<br>If `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.<br>Else all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].link_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].link_tracking.name") | String |  |  |  | Tracking group name.<br>The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".<br>Optional if default link_tracking settings are configured on the node.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x") | Dictionary |  |  |  | 802.1x |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.port_control") | String |  |  | Valid Values:<br>- <code>auto</code><br>- <code>force-authorized</code><br>- <code>force-unauthorized</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control_force_authorized_phone</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.port_control_force_authorized_phone") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauthentication</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.reauthentication") | Boolean |  |  |  |  |
@@ -103,7 +103,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.authentication_failure") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.authentication_failure.action") | String |  |  | Valid Values:<br>- <code>allow</code><br>- <code>drop</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vlan</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.authentication_failure.allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_access_list</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.authentication_failure.allow_access_list") | String |  |  |  | Name of the standard or extended access list to be applied to unauthenticated traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_ipv4_access_list</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.authentication_failure.allow_ipv4_access_list") | String |  |  |  | Name of the IPv4 standard access list to be applied to unauthenticated traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_mode</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.host_mode") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.host_mode.mode") | String |  |  | Valid Values:<br>- <code>multi-host</code><br>- <code>single-host</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_host_authenticated</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.host_mode.multi_host_authenticated") | Boolean |  |  |  |  |
@@ -298,7 +298,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].link_tracking") | Dictionary |  |  |  | Configure the downstream interfaces of a respective Link Tracking Group.<br>If `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.<br>Else all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].link_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].link_tracking.name") | String |  |  |  | Tracking group name.<br>The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".<br>Optional if default link_tracking settings are configured on the node.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x") | Dictionary |  |  |  | 802.1x |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.port_control") | String |  |  | Valid Values:<br>- <code>auto</code><br>- <code>force-authorized</code><br>- <code>force-unauthorized</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control_force_authorized_phone</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.port_control_force_authorized_phone") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauthentication</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.reauthentication") | Boolean |  |  |  |  |
@@ -308,7 +308,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.authentication_failure") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.authentication_failure.action") | String |  |  | Valid Values:<br>- <code>allow</code><br>- <code>drop</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vlan</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.authentication_failure.allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_access_list</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.authentication_failure.allow_access_list") | String |  |  |  | Name of the standard or extended access list to be applied to unauthenticated traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_ipv4_access_list</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.authentication_failure.allow_ipv4_access_list") | String |  |  |  | Name of the IPv4 standard access list to be applied to unauthenticated traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_mode</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.host_mode") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.host_mode.mode") | String |  |  | Valid Values:<br>- <code>multi-host</code><br>- <code>single-host</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_host_authenticated</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.host_mode.multi_host_authenticated") | Boolean |  |  |  |  |
@@ -503,7 +503,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "connected_endpoints.[].adapters.[].link_tracking") | Dictionary |  |  |  | Configure the downstream interfaces of a respective Link Tracking Group.<br>If `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.<br>Else all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "connected_endpoints.[].adapters.[].link_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "connected_endpoints.[].adapters.[].link_tracking.name") | String |  |  |  | Tracking group name.<br>The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".<br>Optional if default link_tracking settings are configured on the node.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "connected_endpoints.[].adapters.[].dot1x") | Dictionary |  |  |  | 802.1x |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "connected_endpoints.[].adapters.[].dot1x") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control</samp>](## "connected_endpoints.[].adapters.[].dot1x.port_control") | String |  |  | Valid Values:<br>- <code>auto</code><br>- <code>force-authorized</code><br>- <code>force-unauthorized</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control_force_authorized_phone</samp>](## "connected_endpoints.[].adapters.[].dot1x.port_control_force_authorized_phone") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauthentication</samp>](## "connected_endpoints.[].adapters.[].dot1x.reauthentication") | Boolean |  |  |  |  |
@@ -513,7 +513,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure</samp>](## "connected_endpoints.[].adapters.[].dot1x.authentication_failure") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "connected_endpoints.[].adapters.[].dot1x.authentication_failure.action") | String |  |  | Valid Values:<br>- <code>allow</code><br>- <code>drop</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vlan</samp>](## "connected_endpoints.[].adapters.[].dot1x.authentication_failure.allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_access_list</samp>](## "connected_endpoints.[].adapters.[].dot1x.authentication_failure.allow_access_list") | String |  |  |  | Name of the standard or extended access list to be applied to unauthenticated traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_ipv4_access_list</samp>](## "connected_endpoints.[].adapters.[].dot1x.authentication_failure.allow_ipv4_access_list") | String |  |  |  | Name of the IPv4 standard access list to be applied to unauthenticated traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_mode</samp>](## "connected_endpoints.[].adapters.[].dot1x.host_mode") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "connected_endpoints.[].adapters.[].dot1x.host_mode.mode") | String |  |  | Valid Values:<br>- <code>multi-host</code><br>- <code>single-host</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_host_authenticated</samp>](## "connected_endpoints.[].adapters.[].dot1x.host_mode.multi_host_authenticated") | Boolean |  |  |  |  |
@@ -943,8 +943,6 @@
               # The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".
               # Optional if default link_tracking settings are configured on the node.
               name: <str>
-
-            # 802.1x
             dot1x:
               port_control: <str; "auto" | "force-authorized" | "force-unauthorized">
               port_control_force_authorized_phone: <bool>
@@ -958,8 +956,8 @@
                 action: <str; "allow" | "drop">
                 allow_vlan: <int; 1-4094>
 
-                # Name of the standard or extended access list to be applied to unauthenticated traffic.
-                allow_access_list: <str>
+                # Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+                allow_ipv4_access_list: <str>
               host_mode:
                 mode: <str; "multi-host" | "single-host">
                 multi_host_authenticated: <bool>
@@ -1549,8 +1547,6 @@
               # The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".
               # Optional if default link_tracking settings are configured on the node.
               name: <str>
-
-            # 802.1x
             dot1x:
               port_control: <str; "auto" | "force-authorized" | "force-unauthorized">
               port_control_force_authorized_phone: <bool>
@@ -1564,8 +1560,8 @@
                 action: <str; "allow" | "drop">
                 allow_vlan: <int; 1-4094>
 
-                # Name of the standard or extended access list to be applied to unauthenticated traffic.
-                allow_access_list: <str>
+                # Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+                allow_ipv4_access_list: <str>
               host_mode:
                 mode: <str; "multi-host" | "single-host">
                 multi_host_authenticated: <bool>
@@ -2153,8 +2149,6 @@
               # The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".
               # Optional if default link_tracking settings are configured on the node.
               name: <str>
-
-            # 802.1x
             dot1x:
               port_control: <str; "auto" | "force-authorized" | "force-unauthorized">
               port_control_force_authorized_phone: <bool>
@@ -2168,8 +2162,8 @@
                 action: <str; "allow" | "drop">
                 allow_vlan: <int; 1-4094>
 
-                # Name of the standard or extended access list to be applied to unauthenticated traffic.
-                allow_access_list: <str>
+                # Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+                allow_ipv4_access_list: <str>
               host_mode:
                 mode: <str; "multi-host" | "single-host">
                 multi_host_authenticated: <bool>

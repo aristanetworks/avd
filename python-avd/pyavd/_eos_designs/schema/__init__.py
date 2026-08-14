@@ -3097,6 +3097,116 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class Dot1x(AvdModel):
+                """Subclass of AvdModel."""
+
+                PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+                class AuthenticationFailure(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Action: TypeAlias = Literal["allow", "drop"]
+                    _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_access_list": {"type": str}}
+                    action: Action | None
+                    allow_vlan: int | None
+                    allow_ipv4_access_list: str | None
+                    """Name of the IPv4 standard access list to be applied to unauthenticated traffic."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            action: Action | UndefinedType | None = Undefined,
+                            allow_vlan: int | UndefinedType | None = Undefined,
+                            allow_ipv4_access_list: str | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            AuthenticationFailure.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                action: action
+                                allow_vlan: allow_vlan
+                                allow_ipv4_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "port_control": {"type": str},
+                    "port_control_force_authorized_phone": {"type": bool},
+                    "reauthentication": {"type": bool},
+                    "pae": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae},
+                    "authentication_failure": {"type": AuthenticationFailure},
+                    "host_mode": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode},
+                    "mac_based_authentication": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication},
+                    "mac_based_access_list": {"type": bool},
+                    "timeout": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout},
+                    "reauthorization_request_limit": {"type": int},
+                    "unauthorized": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized},
+                    "eapol": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol},
+                    "aaa": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa},
+                }
+                port_control: PortControl | None
+                port_control_force_authorized_phone: bool | None
+                reauthentication: bool | None
+                pae: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae
+                authentication_failure: AuthenticationFailure
+                """Subclass of AvdModel."""
+                host_mode: EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode
+                mac_based_authentication: EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication
+                mac_based_access_list: bool | None
+                """Operate interface in per-mac access-list mode."""
+                timeout: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout
+                reauthorization_request_limit: int | None
+                unauthorized: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized
+                eapol: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol
+                aaa: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        port_control: PortControl | UndefinedType | None = Undefined,
+                        port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                        reauthentication: bool | UndefinedType | None = Undefined,
+                        pae: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae | UndefinedType = Undefined,
+                        authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                        host_mode: EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode | UndefinedType = Undefined,
+                        mac_based_authentication: EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication | UndefinedType = Undefined,
+                        mac_based_access_list: bool | UndefinedType | None = Undefined,
+                        timeout: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout | UndefinedType = Undefined,
+                        reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                        unauthorized: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized | UndefinedType = Undefined,
+                        eapol: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol | UndefinedType = Undefined,
+                        aaa: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Dot1x.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            port_control: port_control
+                            port_control_force_authorized_phone: port_control_force_authorized_phone
+                            reauthentication: reauthentication
+                            pae: pae
+                            authentication_failure: Subclass of AvdModel.
+                            host_mode: host_mode
+                            mac_based_authentication: mac_based_authentication
+                            mac_based_access_list: Operate interface in per-mac access-list mode.
+                            timeout: timeout
+                            reauthorization_request_limit: reauthorization_request_limit
+                            unauthorized: unauthorized
+                            eapol: eapol
+                            aaa: aaa
+
+                        """
+
             class AddressLocking(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -3693,7 +3803,7 @@ class EosDesigns(EosDesignsRootModel):
                 "sflow": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "link_tracking": {"type": LinkTracking},
-                "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                "dot1x": {"type": Dot1x},
                 "address_locking": {"type": AddressLocking},
                 "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                 "storm_control": {"type": StormControl},
@@ -3891,8 +4001,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-            """802.1x"""
+            dot1x: Dot1x
+            """Subclass of AvdModel."""
             address_locking: AddressLocking
             """
             Address locking settings applied on the port.
@@ -3996,7 +4106,7 @@ class EosDesigns(EosDesignsRootModel):
                     sflow: bool | UndefinedType | None = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     link_tracking: LinkTracking | UndefinedType = Undefined,
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                    dot1x: Dot1x | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                     storm_control: StormControl | UndefinedType = Undefined,
@@ -4156,7 +4266,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdModel.
-                        dot1x: 802.1x
+                        dot1x: Subclass of AvdModel.
                         address_locking:
                            Address locking settings applied on the port.
 
@@ -28028,6 +28138,116 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Dot1x(AvdModel):
+            """Subclass of AvdModel."""
+
+            PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+            class AuthenticationFailure(AvdModel):
+                """Subclass of AvdModel."""
+
+                Action: TypeAlias = Literal["allow", "drop"]
+                _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_access_list": {"type": str}}
+                action: Action | None
+                allow_vlan: int | None
+                allow_ipv4_access_list: str | None
+                """Name of the IPv4 standard access list to be applied to unauthenticated traffic."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        action: Action | UndefinedType | None = Undefined,
+                        allow_vlan: int | UndefinedType | None = Undefined,
+                        allow_ipv4_access_list: str | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        AuthenticationFailure.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            action: action
+                            allow_vlan: allow_vlan
+                            allow_ipv4_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "port_control": {"type": str},
+                "port_control_force_authorized_phone": {"type": bool},
+                "reauthentication": {"type": bool},
+                "pae": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae},
+                "authentication_failure": {"type": AuthenticationFailure},
+                "host_mode": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode},
+                "mac_based_authentication": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication},
+                "mac_based_access_list": {"type": bool},
+                "timeout": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout},
+                "reauthorization_request_limit": {"type": int},
+                "unauthorized": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized},
+                "eapol": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol},
+                "aaa": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa},
+            }
+            port_control: PortControl | None
+            port_control_force_authorized_phone: bool | None
+            reauthentication: bool | None
+            pae: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae
+            authentication_failure: AuthenticationFailure
+            """Subclass of AvdModel."""
+            host_mode: EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode
+            mac_based_authentication: EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication
+            mac_based_access_list: bool | None
+            """Operate interface in per-mac access-list mode."""
+            timeout: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout
+            reauthorization_request_limit: int | None
+            unauthorized: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized
+            eapol: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol
+            aaa: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    port_control: PortControl | UndefinedType | None = Undefined,
+                    port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                    reauthentication: bool | UndefinedType | None = Undefined,
+                    pae: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae | UndefinedType = Undefined,
+                    authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                    host_mode: EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode | UndefinedType = Undefined,
+                    mac_based_authentication: EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication | UndefinedType = Undefined,
+                    mac_based_access_list: bool | UndefinedType | None = Undefined,
+                    timeout: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout | UndefinedType = Undefined,
+                    reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                    unauthorized: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized | UndefinedType = Undefined,
+                    eapol: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol | UndefinedType = Undefined,
+                    aaa: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Dot1x.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        port_control: port_control
+                        port_control_force_authorized_phone: port_control_force_authorized_phone
+                        reauthentication: reauthentication
+                        pae: pae
+                        authentication_failure: Subclass of AvdModel.
+                        host_mode: host_mode
+                        mac_based_authentication: mac_based_authentication
+                        mac_based_access_list: Operate interface in per-mac access-list mode.
+                        timeout: timeout
+                        reauthorization_request_limit: reauthorization_request_limit
+                        unauthorized: unauthorized
+                        eapol: eapol
+                        aaa: aaa
+
+                    """
+
         class AddressLocking(AvdModel):
             """Subclass of AvdModel."""
 
@@ -28918,7 +29138,7 @@ class EosDesigns(EosDesignsRootModel):
             "sflow": {"type": bool},
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
-            "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "dot1x": {"type": Dot1x},
             "address_locking": {"type": AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
@@ -29101,8 +29321,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-        """802.1x"""
+        dot1x: Dot1x
+        """Subclass of AvdModel."""
         address_locking: AddressLocking
         """
         Address locking settings applied on the port.
@@ -29210,7 +29430,7 @@ class EosDesigns(EosDesignsRootModel):
                 sflow: bool | UndefinedType | None = Undefined,
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
-                dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                dot1x: Dot1x | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
@@ -29360,7 +29580,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdModel.
-                    dot1x: 802.1x
+                    dot1x: Subclass of AvdModel.
                     address_locking:
                        Address locking settings applied on the port.
 
@@ -45764,6 +45984,116 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Dot1x(AvdModel):
+            """Subclass of AvdModel."""
+
+            PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+            class AuthenticationFailure(AvdModel):
+                """Subclass of AvdModel."""
+
+                Action: TypeAlias = Literal["allow", "drop"]
+                _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_access_list": {"type": str}}
+                action: Action | None
+                allow_vlan: int | None
+                allow_ipv4_access_list: str | None
+                """Name of the IPv4 standard access list to be applied to unauthenticated traffic."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        action: Action | UndefinedType | None = Undefined,
+                        allow_vlan: int | UndefinedType | None = Undefined,
+                        allow_ipv4_access_list: str | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        AuthenticationFailure.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            action: action
+                            allow_vlan: allow_vlan
+                            allow_ipv4_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "port_control": {"type": str},
+                "port_control_force_authorized_phone": {"type": bool},
+                "reauthentication": {"type": bool},
+                "pae": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae},
+                "authentication_failure": {"type": AuthenticationFailure},
+                "host_mode": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode},
+                "mac_based_authentication": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication},
+                "mac_based_access_list": {"type": bool},
+                "timeout": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout},
+                "reauthorization_request_limit": {"type": int},
+                "unauthorized": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized},
+                "eapol": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol},
+                "aaa": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa},
+            }
+            port_control: PortControl | None
+            port_control_force_authorized_phone: bool | None
+            reauthentication: bool | None
+            pae: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae
+            authentication_failure: AuthenticationFailure
+            """Subclass of AvdModel."""
+            host_mode: EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode
+            mac_based_authentication: EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication
+            mac_based_access_list: bool | None
+            """Operate interface in per-mac access-list mode."""
+            timeout: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout
+            reauthorization_request_limit: int | None
+            unauthorized: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized
+            eapol: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol
+            aaa: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    port_control: PortControl | UndefinedType | None = Undefined,
+                    port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                    reauthentication: bool | UndefinedType | None = Undefined,
+                    pae: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae | UndefinedType = Undefined,
+                    authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                    host_mode: EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode | UndefinedType = Undefined,
+                    mac_based_authentication: EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication | UndefinedType = Undefined,
+                    mac_based_access_list: bool | UndefinedType | None = Undefined,
+                    timeout: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout | UndefinedType = Undefined,
+                    reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                    unauthorized: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized | UndefinedType = Undefined,
+                    eapol: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol | UndefinedType = Undefined,
+                    aaa: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Dot1x.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        port_control: port_control
+                        port_control_force_authorized_phone: port_control_force_authorized_phone
+                        reauthentication: reauthentication
+                        pae: pae
+                        authentication_failure: Subclass of AvdModel.
+                        host_mode: host_mode
+                        mac_based_authentication: mac_based_authentication
+                        mac_based_access_list: Operate interface in per-mac access-list mode.
+                        timeout: timeout
+                        reauthorization_request_limit: reauthorization_request_limit
+                        unauthorized: unauthorized
+                        eapol: eapol
+                        aaa: aaa
+
+                    """
+
         class AddressLocking(AvdModel):
             """Subclass of AvdModel."""
 
@@ -46356,7 +46686,7 @@ class EosDesigns(EosDesignsRootModel):
             "sflow": {"type": bool},
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
-            "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "dot1x": {"type": Dot1x},
             "address_locking": {"type": AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
@@ -46501,8 +46831,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-        """802.1x"""
+        dot1x: Dot1x
+        """Subclass of AvdModel."""
         address_locking: AddressLocking
         """
         Address locking settings applied on the port.
@@ -46602,7 +46932,7 @@ class EosDesigns(EosDesignsRootModel):
                 sflow: bool | UndefinedType | None = Undefined,
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
-                dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                dot1x: Dot1x | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
@@ -46717,7 +47047,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdModel.
-                    dot1x: 802.1x
+                    dot1x: Subclass of AvdModel.
                     address_locking:
                        Address locking settings applied on the port.
 
@@ -76558,6 +76888,116 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Dot1x(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+                        class AuthenticationFailure(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Action: TypeAlias = Literal["allow", "drop"]
+                            _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_access_list": {"type": str}}
+                            action: Action | None
+                            allow_vlan: int | None
+                            allow_ipv4_access_list: str | None
+                            """Name of the IPv4 standard access list to be applied to unauthenticated traffic."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    action: Action | UndefinedType | None = Undefined,
+                                    allow_vlan: int | UndefinedType | None = Undefined,
+                                    allow_ipv4_access_list: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    AuthenticationFailure.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        action: action
+                                        allow_vlan: allow_vlan
+                                        allow_ipv4_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "port_control": {"type": str},
+                            "port_control_force_authorized_phone": {"type": bool},
+                            "reauthentication": {"type": bool},
+                            "pae": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae},
+                            "authentication_failure": {"type": AuthenticationFailure},
+                            "host_mode": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode},
+                            "mac_based_authentication": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication},
+                            "mac_based_access_list": {"type": bool},
+                            "timeout": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout},
+                            "reauthorization_request_limit": {"type": int},
+                            "unauthorized": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized},
+                            "eapol": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol},
+                            "aaa": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa},
+                        }
+                        port_control: PortControl | None
+                        port_control_force_authorized_phone: bool | None
+                        reauthentication: bool | None
+                        pae: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae
+                        authentication_failure: AuthenticationFailure
+                        """Subclass of AvdModel."""
+                        host_mode: EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode
+                        mac_based_authentication: EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication
+                        mac_based_access_list: bool | None
+                        """Operate interface in per-mac access-list mode."""
+                        timeout: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout
+                        reauthorization_request_limit: int | None
+                        unauthorized: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized
+                        eapol: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol
+                        aaa: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                port_control: PortControl | UndefinedType | None = Undefined,
+                                port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                                reauthentication: bool | UndefinedType | None = Undefined,
+                                pae: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae | UndefinedType = Undefined,
+                                authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                                host_mode: EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode | UndefinedType = Undefined,
+                                mac_based_authentication: EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication | UndefinedType = Undefined,
+                                mac_based_access_list: bool | UndefinedType | None = Undefined,
+                                timeout: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout | UndefinedType = Undefined,
+                                reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                                unauthorized: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized | UndefinedType = Undefined,
+                                eapol: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol | UndefinedType = Undefined,
+                                aaa: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Dot1x.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    port_control: port_control
+                                    port_control_force_authorized_phone: port_control_force_authorized_phone
+                                    reauthentication: reauthentication
+                                    pae: pae
+                                    authentication_failure: Subclass of AvdModel.
+                                    host_mode: host_mode
+                                    mac_based_authentication: mac_based_authentication
+                                    mac_based_access_list: Operate interface in per-mac access-list mode.
+                                    timeout: timeout
+                                    reauthorization_request_limit: reauthorization_request_limit
+                                    unauthorized: unauthorized
+                                    eapol: eapol
+                                    aaa: aaa
+
+                                """
+
                     class AddressLocking(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -77156,7 +77596,7 @@ class EosDesigns(EosDesignsRootModel):
                         "sflow": {"type": bool},
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
-                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "dot1x": {"type": Dot1x},
                         "address_locking": {"type": AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
@@ -77354,8 +77794,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-                    """802.1x"""
+                    dot1x: Dot1x
+                    """Subclass of AvdModel."""
                     address_locking: AddressLocking
                     """
                     Address locking settings applied on the port.
@@ -77459,7 +77899,7 @@ class EosDesigns(EosDesignsRootModel):
                             sflow: bool | UndefinedType | None = Undefined,
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
-                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            dot1x: Dot1x | UndefinedType = Undefined,
                             address_locking: AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
@@ -77619,7 +78059,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
-                                dot1x: 802.1x
+                                dot1x: Subclass of AvdModel.
                                 address_locking:
                                    Address locking settings applied on the port.
 
@@ -78614,6 +79054,116 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Dot1x(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+                        class AuthenticationFailure(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Action: TypeAlias = Literal["allow", "drop"]
+                            _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_access_list": {"type": str}}
+                            action: Action | None
+                            allow_vlan: int | None
+                            allow_ipv4_access_list: str | None
+                            """Name of the IPv4 standard access list to be applied to unauthenticated traffic."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    action: Action | UndefinedType | None = Undefined,
+                                    allow_vlan: int | UndefinedType | None = Undefined,
+                                    allow_ipv4_access_list: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    AuthenticationFailure.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        action: action
+                                        allow_vlan: allow_vlan
+                                        allow_ipv4_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "port_control": {"type": str},
+                            "port_control_force_authorized_phone": {"type": bool},
+                            "reauthentication": {"type": bool},
+                            "pae": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae},
+                            "authentication_failure": {"type": AuthenticationFailure},
+                            "host_mode": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode},
+                            "mac_based_authentication": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication},
+                            "mac_based_access_list": {"type": bool},
+                            "timeout": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout},
+                            "reauthorization_request_limit": {"type": int},
+                            "unauthorized": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized},
+                            "eapol": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol},
+                            "aaa": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa},
+                        }
+                        port_control: PortControl | None
+                        port_control_force_authorized_phone: bool | None
+                        reauthentication: bool | None
+                        pae: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae
+                        authentication_failure: AuthenticationFailure
+                        """Subclass of AvdModel."""
+                        host_mode: EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode
+                        mac_based_authentication: EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication
+                        mac_based_access_list: bool | None
+                        """Operate interface in per-mac access-list mode."""
+                        timeout: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout
+                        reauthorization_request_limit: int | None
+                        unauthorized: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized
+                        eapol: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol
+                        aaa: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                port_control: PortControl | UndefinedType | None = Undefined,
+                                port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                                reauthentication: bool | UndefinedType | None = Undefined,
+                                pae: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Pae | UndefinedType = Undefined,
+                                authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                                host_mode: EosCliConfigGen.EthernetInterfacesItem.Dot1x.HostMode | UndefinedType = Undefined,
+                                mac_based_authentication: EosCliConfigGen.EthernetInterfacesItem.Dot1x.MacBasedAuthentication | UndefinedType = Undefined,
+                                mac_based_access_list: bool | UndefinedType | None = Undefined,
+                                timeout: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Timeout | UndefinedType = Undefined,
+                                reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                                unauthorized: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Unauthorized | UndefinedType = Undefined,
+                                eapol: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Eapol | UndefinedType = Undefined,
+                                aaa: EosCliConfigGen.EthernetInterfacesItem.Dot1x.Aaa | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Dot1x.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    port_control: port_control
+                                    port_control_force_authorized_phone: port_control_force_authorized_phone
+                                    reauthentication: reauthentication
+                                    pae: pae
+                                    authentication_failure: Subclass of AvdModel.
+                                    host_mode: host_mode
+                                    mac_based_authentication: mac_based_authentication
+                                    mac_based_access_list: Operate interface in per-mac access-list mode.
+                                    timeout: timeout
+                                    reauthorization_request_limit: reauthorization_request_limit
+                                    unauthorized: unauthorized
+                                    eapol: eapol
+                                    aaa: aaa
+
+                                """
+
                     class AddressLocking(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -79212,7 +79762,7 @@ class EosDesigns(EosDesignsRootModel):
                         "sflow": {"type": bool},
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
-                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "dot1x": {"type": Dot1x},
                         "address_locking": {"type": AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
@@ -79410,8 +79960,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-                    """802.1x"""
+                    dot1x: Dot1x
+                    """Subclass of AvdModel."""
                     address_locking: AddressLocking
                     """
                     Address locking settings applied on the port.
@@ -79515,7 +80065,7 @@ class EosDesigns(EosDesignsRootModel):
                             sflow: bool | UndefinedType | None = Undefined,
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
-                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            dot1x: Dot1x | UndefinedType = Undefined,
                             address_locking: AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
@@ -79675,7 +80225,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
-                                dot1x: 802.1x
+                                dot1x: Subclass of AvdModel.
                                 address_locking:
                                    Address locking settings applied on the port.
 
