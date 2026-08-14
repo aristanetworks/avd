@@ -21,7 +21,7 @@
   arista.avd.eos_designs_structured_config:
     tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs_empty_template"
     eos_designs_custom_templates:
-      - template: empty_output.yml.j2
+      - template: false_output.yml.j2
     return_structured_config: true
 
 - name: Set expected_ansible_facts variable
