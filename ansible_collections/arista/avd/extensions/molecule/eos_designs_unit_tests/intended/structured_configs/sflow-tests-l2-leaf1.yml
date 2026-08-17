@@ -72,7 +72,6 @@ static_routes:
   next_hop: 192.168.0.1
 - prefix: 0.0.0.0/0
   next_hop: 10.254.254.1
-tcam_profile: null
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4092

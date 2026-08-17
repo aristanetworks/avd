@@ -81,7 +81,6 @@ router_bgp:
     - name: RR-OVERLAY-PEERS
       activate: false
 service_routing_protocols_model: multi-agent
-tcam_profile: null
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

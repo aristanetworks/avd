@@ -106,7 +106,6 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 192.168.17.1
-tcam_profile: null
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

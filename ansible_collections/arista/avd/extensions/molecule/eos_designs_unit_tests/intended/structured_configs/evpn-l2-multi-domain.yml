@@ -355,7 +355,6 @@ router_bgp:
       connected:
         enabled: true
 service_routing_protocols_model: multi-agent
-tcam_profile: null
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan150

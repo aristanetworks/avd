@@ -214,7 +214,6 @@ spanning_tree:
   - id: '0'
     priority: 4096
   no_spanning_tree_vlan: 4093-4094
-tcam_profile: null
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4093

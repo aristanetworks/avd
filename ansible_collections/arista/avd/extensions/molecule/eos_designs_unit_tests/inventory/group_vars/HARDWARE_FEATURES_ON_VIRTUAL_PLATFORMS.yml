@@ -127,10 +127,13 @@ custom_platform_settings:
       hardware_speed_group: false
       per_interface_l2_mtu: false
       per_interface_l2_mru: false
+      hardware_tcam: false
     management_interface: Management0
     reload_delay:
       mlag: 300
       non_mlag: 330
+    # This will not be configured as `feature_support.hardware_tcam` is disabled.
+    tcam_profile: vxlan-routing
   - platforms:
       - CLOUDEOS
       - CloudEOS

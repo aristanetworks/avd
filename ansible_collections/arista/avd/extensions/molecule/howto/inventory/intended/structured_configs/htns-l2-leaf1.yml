@@ -94,7 +94,6 @@ spanning_tree:
   mst_instances:
   - id: '0'
     priority: 16384
-tcam_profile: null
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

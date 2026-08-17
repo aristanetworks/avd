@@ -776,7 +776,6 @@ stun:
     - name: INTERNET-pf2-Ethernet2
       ip_address: 100.64.200.2
       ssl_profile: STUN-DTLS
-tcam_profile: null
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT

@@ -182,7 +182,6 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
-tcam_profile: null
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
