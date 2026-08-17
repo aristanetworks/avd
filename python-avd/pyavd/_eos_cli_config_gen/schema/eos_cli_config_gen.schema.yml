@@ -17391,8 +17391,8 @@ keys:
               type: str
               convert_types:
               - int
-              description: 'Maximum number of advertised routes after which a warning
-                is issued (0 means never warn) or
+              description: 'Maximum number of advertised routes ("<0-4294967294>")
+                after which a warning is issued (0 means never warn) or
 
                 Percentage of maximum number of routes at which to warn ("<1-100>
                 percent").
@@ -17698,8 +17698,8 @@ keys:
               type: str
               convert_types:
               - int
-              description: 'Maximum number of advertised routes after which a warning
-                is issued (0 means never warn) or
+              description: 'Maximum number of advertised routes ("<0-4294967294>")
+                after which a warning is issued (0 means never warn) or
 
                 Percentage of maximum number of routes at which to warn ("<1-100>
                 percent").
@@ -18639,8 +18639,8 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'Maximum number of advertised routes after which a
-                    warning is issued (0 means never warn) or
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
 
                     Percentage of maximum number of routes at which to warn ("<1-100>
                     percent").
@@ -18724,8 +18724,8 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'Maximum number of advertised routes after which a
-                    warning is issued (0 means never warn) or
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
 
                     Percentage of maximum number of routes at which to warn ("<1-100>
                     percent").
@@ -19098,8 +19098,8 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'Maximum number of advertised routes after which a
-                    warning is issued (0 means never warn) or
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
 
                     Percentage of maximum number of routes at which to warn ("<1-100>
                     percent").
@@ -19226,8 +19226,8 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'Maximum number of advertised routes after which a
-                    warning is issued (0 means never warn) or
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
 
                     Percentage of maximum number of routes at which to warn ("<1-100>
                     percent").
@@ -19764,8 +19764,8 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'Maximum number of advertised routes after which a
-                    warning is issued (0 means never warn) or
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
 
                     Percentage of maximum number of routes at which to warn ("<1-100>
                     percent").
@@ -19840,8 +19840,8 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'Maximum number of advertised routes after which a
-                    warning is issued (0 means never warn) or
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
 
                     Percentage of maximum number of routes at which to warn ("<1-100>
                     percent").

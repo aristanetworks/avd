@@ -593,7 +593,7 @@ keys:
               convert_types:
                 - int
               description: |
-                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                 Percentage of maximum number of routes at which to warn ("<1-100> percent").
       neighbors:
         type: list
@@ -883,7 +883,7 @@ keys:
               convert_types:
                 - int
               description: |
-                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                 Percentage of maximum number of routes at which to warn ("<1-100> percent").
       neighbor_interfaces:
         type: list
@@ -1795,7 +1795,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 maximum_accepted_routes:
                   type: dict
@@ -1875,7 +1875,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 maximum_accepted_routes:
                   type: dict
@@ -2226,7 +2226,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 missing_policy:
                   type: dict
@@ -2343,7 +2343,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 missing_policy:
                   type: dict
@@ -2857,7 +2857,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 maximum_accepted_routes:
                   type: dict
@@ -2929,7 +2929,7 @@ keys:
                   convert_types:
                     - int
                   description: |
-                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 maximum_accepted_routes:
                   type: dict

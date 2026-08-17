@@ -30262,7 +30262,8 @@ class EosDesigns(EosDesignsRootModel):
             """Maximum number of advertised routes (0 means unlimited)."""
             maximum_advertised_routes_warning_limit: str | None
             """
-            Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+            Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+            never warn) or
             Percentage of maximum number of routes at which to warn ("<1-100> percent").
             """
 
@@ -30413,7 +30414,8 @@ class EosDesigns(EosDesignsRootModel):
                         ttl_maximum_hops: Maximum number of hops.
                         maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                         maximum_advertised_routes_warning_limit:
-                           Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                           Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                           never warn) or
                            Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                     """
@@ -37556,7 +37558,8 @@ class EosDesigns(EosDesignsRootModel):
                 """Maximum number of advertised routes (0 means unlimited)."""
                 maximum_advertised_routes_warning_limit: str | None
                 """
-                Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                never warn) or
                 Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 """
 
@@ -37711,7 +37714,8 @@ class EosDesigns(EosDesignsRootModel):
                             ttl_maximum_hops: Maximum number of hops.
                             maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                             maximum_advertised_routes_warning_limit:
-                               Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                               Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                               never warn) or
                                Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                         """
@@ -80847,7 +80851,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Maximum number of advertised routes (0 means unlimited)."""
                     maximum_advertised_routes_warning_limit: str | None
                     """
-                    Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                    Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                    never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
                     """
 
@@ -80998,7 +81003,8 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl_maximum_hops: Maximum number of hops.
                                 maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                                 maximum_advertised_routes_warning_limit:
-                                   Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                                   Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                                   never warn) or
                                    Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                             """
@@ -88180,7 +88186,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Maximum number of advertised routes (0 means unlimited)."""
                         maximum_advertised_routes_warning_limit: str | None
                         """
-                        Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                        Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                        never warn) or
                         Percentage of maximum number of routes at which to warn ("<1-100> percent").
                         """
 
@@ -88335,7 +88342,8 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl_maximum_hops: Maximum number of hops.
                                     maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                                     maximum_advertised_routes_warning_limit:
-                                       Maximum number of advertised routes after which a warning is issued (0 means never warn) or
+                                       Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                                       never warn) or
                                        Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                                 """
