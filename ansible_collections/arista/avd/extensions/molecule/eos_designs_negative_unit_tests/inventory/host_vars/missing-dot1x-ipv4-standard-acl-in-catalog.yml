@@ -27,7 +27,7 @@ network_ports:
     dot1x:
       authentication_failure:
         action: allow
-        allow_ipv4_access_list: missing-acl
+        allow_ipv4_standard_access_list: missing-acl
 
 expected_error_message: >-
   'ipv4_standard_acls[name=missing-acl]' is required but was not found for host 'missing-dot1x-ipv4-standard-acl-in-catalog'.

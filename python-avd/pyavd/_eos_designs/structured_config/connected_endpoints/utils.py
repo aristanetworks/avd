@@ -272,7 +272,7 @@ class UtilsMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         dot1x = adapter.dot1x._cast_as(EosCliConfigGen.EthernetInterfacesItem.Dot1x, ignore_extra_keys=True)
-        if acl_name := adapter.dot1x.authentication_failure.allow_ipv4_access_list:
+        if acl_name := adapter.dot1x.authentication_failure.allow_ipv4_standard_access_list:
             self.structured_config_utils._set_ipv4_standard_acl(acl_name)
             dot1x.authentication_failure.allow_access_list = acl_name
 

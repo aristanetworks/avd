@@ -3106,10 +3106,10 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
 
                     Action: TypeAlias = Literal["allow", "drop"]
-                    _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_access_list": {"type": str}}
+                    _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_standard_access_list": {"type": str}}
                     action: Action | None
                     allow_vlan: int | None
-                    allow_ipv4_access_list: str | None
+                    allow_ipv4_standard_access_list: str | None
                     """Name of the IPv4 standard access list to be applied to unauthenticated traffic."""
 
                     if TYPE_CHECKING:
@@ -3119,7 +3119,7 @@ class EosDesigns(EosDesignsRootModel):
                             *,
                             action: Action | UndefinedType | None = Undefined,
                             allow_vlan: int | UndefinedType | None = Undefined,
-                            allow_ipv4_access_list: str | UndefinedType | None = Undefined,
+                            allow_ipv4_standard_access_list: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             AuthenticationFailure.
@@ -3130,7 +3130,7 @@ class EosDesigns(EosDesignsRootModel):
                             Args:
                                 action: action
                                 allow_vlan: allow_vlan
-                                allow_ipv4_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+                                allow_ipv4_standard_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
 
                             """
 
@@ -28147,10 +28147,10 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
 
                 Action: TypeAlias = Literal["allow", "drop"]
-                _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_access_list": {"type": str}}
+                _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_standard_access_list": {"type": str}}
                 action: Action | None
                 allow_vlan: int | None
-                allow_ipv4_access_list: str | None
+                allow_ipv4_standard_access_list: str | None
                 """Name of the IPv4 standard access list to be applied to unauthenticated traffic."""
 
                 if TYPE_CHECKING:
@@ -28160,7 +28160,7 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         action: Action | UndefinedType | None = Undefined,
                         allow_vlan: int | UndefinedType | None = Undefined,
-                        allow_ipv4_access_list: str | UndefinedType | None = Undefined,
+                        allow_ipv4_standard_access_list: str | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         AuthenticationFailure.
@@ -28171,7 +28171,7 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             action: action
                             allow_vlan: allow_vlan
-                            allow_ipv4_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+                            allow_ipv4_standard_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
 
                         """
 
@@ -46133,10 +46133,10 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
 
                 Action: TypeAlias = Literal["allow", "drop"]
-                _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_access_list": {"type": str}}
+                _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_standard_access_list": {"type": str}}
                 action: Action | None
                 allow_vlan: int | None
-                allow_ipv4_access_list: str | None
+                allow_ipv4_standard_access_list: str | None
                 """Name of the IPv4 standard access list to be applied to unauthenticated traffic."""
 
                 if TYPE_CHECKING:
@@ -46146,7 +46146,7 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         action: Action | UndefinedType | None = Undefined,
                         allow_vlan: int | UndefinedType | None = Undefined,
-                        allow_ipv4_access_list: str | UndefinedType | None = Undefined,
+                        allow_ipv4_standard_access_list: str | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         AuthenticationFailure.
@@ -46157,7 +46157,7 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             action: action
                             allow_vlan: allow_vlan
-                            allow_ipv4_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+                            allow_ipv4_standard_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
 
                         """
 
@@ -77046,10 +77046,10 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             Action: TypeAlias = Literal["allow", "drop"]
-                            _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_access_list": {"type": str}}
+                            _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_standard_access_list": {"type": str}}
                             action: Action | None
                             allow_vlan: int | None
-                            allow_ipv4_access_list: str | None
+                            allow_ipv4_standard_access_list: str | None
                             """Name of the IPv4 standard access list to be applied to unauthenticated traffic."""
 
                             if TYPE_CHECKING:
@@ -77059,7 +77059,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     action: Action | UndefinedType | None = Undefined,
                                     allow_vlan: int | UndefinedType | None = Undefined,
-                                    allow_ipv4_access_list: str | UndefinedType | None = Undefined,
+                                    allow_ipv4_standard_access_list: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     AuthenticationFailure.
@@ -77070,7 +77070,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         action: action
                                         allow_vlan: allow_vlan
-                                        allow_ipv4_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+                                        allow_ipv4_standard_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
 
                                     """
 
@@ -79212,10 +79212,10 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             Action: TypeAlias = Literal["allow", "drop"]
-                            _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_access_list": {"type": str}}
+                            _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_ipv4_standard_access_list": {"type": str}}
                             action: Action | None
                             allow_vlan: int | None
-                            allow_ipv4_access_list: str | None
+                            allow_ipv4_standard_access_list: str | None
                             """Name of the IPv4 standard access list to be applied to unauthenticated traffic."""
 
                             if TYPE_CHECKING:
@@ -79225,7 +79225,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     action: Action | UndefinedType | None = Undefined,
                                     allow_vlan: int | UndefinedType | None = Undefined,
-                                    allow_ipv4_access_list: str | UndefinedType | None = Undefined,
+                                    allow_ipv4_standard_access_list: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     AuthenticationFailure.
@@ -79236,7 +79236,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         action: action
                                         allow_vlan: allow_vlan
-                                        allow_ipv4_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
+                                        allow_ipv4_standard_access_list: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
 
                                     """
 

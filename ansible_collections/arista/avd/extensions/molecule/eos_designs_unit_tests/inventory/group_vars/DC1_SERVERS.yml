@@ -140,7 +140,7 @@ port_profiles:
       authentication_failure:
         action: allow
         allow_vlan: 800
-        allow_ipv4_access_list: ACL1
+        allow_ipv4_standard_access_list: ACL1
       host_mode:
         mode: multi-host
         multi_host_authenticated: true

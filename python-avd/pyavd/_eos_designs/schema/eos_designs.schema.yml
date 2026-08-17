@@ -12166,7 +12166,7 @@ $defs:
                 max: 4094
                 convert_types:
                 - str
-              allow_ipv4_access_list:
+              allow_ipv4_standard_access_list:
                 type: str
                 description: Name of the IPv4 standard access list to be applied to
                   unauthenticated traffic.
