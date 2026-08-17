@@ -42950,7 +42950,8 @@ class EosDesigns(EosDesignsRootModel):
             hardware_tcam: bool
             """
             Support for hardware TCAM configuration.
-            When `false`, all hardware TCAM configuration is omitted.
+            When set to `false`, tcam profiles are not configured on
+            the device.
 
             Default value: `True`
             """
@@ -43109,7 +43110,8 @@ class EosDesigns(EosDesignsRootModel):
                            are ignored.
                         hardware_tcam:
                            Support for hardware TCAM configuration.
-                           When `false`, all hardware TCAM configuration is omitted.
+                           When set to `false`, tcam profiles are not configured on
+                           the device.
                         errdisable_causes:
                            Per-cause support for errdisable detection and recovery.
                            Causes with `detection: false` will
@@ -44808,7 +44810,8 @@ class EosDesigns(EosDesignsRootModel):
             hardware_tcam: bool
             """
             Support for hardware TCAM configuration.
-            When `false`, all hardware TCAM configuration is omitted.
+            When set to `false`, tcam profiles are not configured on
+            the device.
 
             Default value: `True`
             """
@@ -44967,7 +44970,8 @@ class EosDesigns(EosDesignsRootModel):
                            are ignored.
                         hardware_tcam:
                            Support for hardware TCAM configuration.
-                           When `false`, all hardware TCAM configuration is omitted.
+                           When set to `false`, tcam profiles are not configured on
+                           the device.
                         errdisable_causes:
                            Per-cause support for errdisable detection and recovery.
                            Causes with `detection: false` will

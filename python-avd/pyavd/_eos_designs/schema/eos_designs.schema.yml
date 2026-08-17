@@ -16778,7 +16778,7 @@ $defs:
               type: bool
               description: 'Support for hardware TCAM configuration.
 
-                When `false`, all hardware TCAM configuration is omitted.'
+                When set to `false`, tcam profiles are not configured on the device.'
               default: true
             errdisable_causes:
               type: dict
