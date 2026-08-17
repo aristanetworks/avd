@@ -325,6 +325,9 @@ class AvdStructuredConfigBaseProtocol(
         if stp_settings.loop_guard_default:
             self.structured_config.spanning_tree.loop_guard_default = True
 
+        if stp_settings.edge_port_bpduguard_default:
+            self.structured_config.spanning_tree.edge_port.bpduguard_default = True
+
         if spanning_tree_mode is not None:
             self.structured_config.spanning_tree.mode = spanning_tree_mode
             # "rapid-pvst" is not included below. Per vlan spanning-tree priorities are set under network-services.
