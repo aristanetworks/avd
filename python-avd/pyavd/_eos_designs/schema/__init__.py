@@ -29794,6 +29794,71 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class MaximumAcceptedRoutes(AvdModel):
+                """Subclass of AvdModel."""
+
+                class WarningLimit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                    count: int | None
+                    """
+                    Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                    with `percent`. `count` takes precedence.
+                    """
+                    percent: int | None
+                    """
+                    Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                    with `count`. `count` takes precedence.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            WarningLimit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                count:
+                                   Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                   with `percent`. `count` takes precedence.
+                                percent:
+                                   Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                   with `count`. `count` takes precedence.
+
+                            """
+
+                _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                limit: int
+                """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                warning_limit: WarningLimit
+                """
+                Warning threshold for the maximum number of accepted routes.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                        """
+                        MaximumAcceptedRoutes.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                            warning_limit:
+                               Warning threshold for the maximum number of accepted routes.
+
+                               Subclass of AvdModel.
+
+                        """
+
             class MissingPolicy(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -30045,6 +30110,7 @@ class EosDesigns(EosDesignsRootModel):
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
                 "maximum_routes_warning_only": {"type": bool},
+                "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                 "missing_policy": {"type": MissingPolicy},
                 "link_bandwidth": {"type": LinkBandwidth},
                 "allowas_in": {"type": AllowasIn},
@@ -30160,6 +30226,8 @@ class EosDesigns(EosDesignsRootModel):
             maximum number of routes at which to warn ("<1-100> percent").
             """
             maximum_routes_warning_only: bool | None
+            maximum_accepted_routes: MaximumAcceptedRoutes
+            """Subclass of AvdModel."""
             missing_policy: MissingPolicy
             """
             Missing policy configuration for all address-families.
@@ -30225,6 +30293,7 @@ class EosDesigns(EosDesignsRootModel):
                     maximum_routes: int | UndefinedType | None = Undefined,
                     maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                     maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                    maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                     missing_policy: MissingPolicy | UndefinedType = Undefined,
                     link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                     allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -30314,6 +30383,7 @@ class EosDesigns(EosDesignsRootModel):
                            Percentage of
                            maximum number of routes at which to warn ("<1-100> percent").
                         maximum_routes_warning_only: maximum_routes_warning_only
+                        maximum_accepted_routes: Subclass of AvdModel.
                         missing_policy:
                            Missing policy configuration for all address-families.
 
@@ -36999,6 +37069,71 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class MaximumAcceptedRoutes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class WarningLimit(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                        count: int | None
+                        """
+                        Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                        with `percent`. `count` takes precedence.
+                        """
+                        percent: int | None
+                        """
+                        Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                        with `count`. `count` takes precedence.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                WarningLimit.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    count:
+                                       Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                       with `percent`. `count` takes precedence.
+                                    percent:
+                                       Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                       with `count`. `count` takes precedence.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                    limit: int
+                    """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                    warning_limit: WarningLimit
+                    """
+                    Warning threshold for the maximum number of accepted routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                            """
+                            MaximumAcceptedRoutes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                warning_limit:
+                                   Warning threshold for the maximum number of accepted routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
                 class MissingPolicy(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -37250,6 +37385,7 @@ class EosDesigns(EosDesignsRootModel):
                     "maximum_routes": {"type": int},
                     "maximum_routes_warning_limit": {"type": str},
                     "maximum_routes_warning_only": {"type": bool},
+                    "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                     "missing_policy": {"type": MissingPolicy},
                     "link_bandwidth": {"type": LinkBandwidth},
                     "allowas_in": {"type": AllowasIn},
@@ -37369,6 +37505,8 @@ class EosDesigns(EosDesignsRootModel):
                 maximum number of routes at which to warn ("<1-100> percent").
                 """
                 maximum_routes_warning_only: bool | None
+                maximum_accepted_routes: MaximumAcceptedRoutes
+                """Subclass of AvdModel."""
                 missing_policy: MissingPolicy
                 """
                 Missing policy configuration for all address-families.
@@ -37434,6 +37572,7 @@ class EosDesigns(EosDesignsRootModel):
                         maximum_routes: int | UndefinedType | None = Undefined,
                         maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                         maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                        maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                         missing_policy: MissingPolicy | UndefinedType = Undefined,
                         link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                         allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -37527,6 +37666,7 @@ class EosDesigns(EosDesignsRootModel):
                                Percentage of
                                maximum number of routes at which to warn ("<1-100> percent").
                             maximum_routes_warning_only: maximum_routes_warning_only
+                            maximum_accepted_routes: Subclass of AvdModel.
                             missing_policy:
                                Missing policy configuration for all address-families.
 
@@ -48377,6 +48517,7 @@ class EosDesigns(EosDesignsRootModel):
             "priority": {"type": int, "default": 32768},
             "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
             "loop_guard_default": {"type": bool, "default": False},
+            "edge_port_bpduguard_default": {"type": bool, "default": False},
         }
         mode: Mode | None
         """
@@ -48409,6 +48550,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        edge_port_bpduguard_default: bool
+        """
+        Enable BPDU Guard on portfast interfaces.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -48419,6 +48566,7 @@ class EosDesigns(EosDesignsRootModel):
                 priority: int | UndefinedType = Undefined,
                 port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
                 loop_guard_default: bool | UndefinedType = Undefined,
+                edge_port_bpduguard_default: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 SpanningTreeSettings.
@@ -48445,6 +48593,7 @@ class EosDesigns(EosDesignsRootModel):
                        If
                        both are set, the setting under node type settings takes precedence.
                     loop_guard_default: Enable loopguard by default on all ports.
+                    edge_port_bpduguard_default: Enable BPDU Guard on portfast interfaces.
 
                 """
 
@@ -80200,6 +80349,71 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class MaximumAcceptedRoutes(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class WarningLimit(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                            count: int | None
+                            """
+                            Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                            with `percent`. `count` takes precedence.
+                            """
+                            percent: int | None
+                            """
+                            Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                            with `count`. `count` takes precedence.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                    """
+                                    WarningLimit.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        count:
+                                           Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                           with `percent`. `count` takes precedence.
+                                        percent:
+                                           Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                           with `count`. `count` takes precedence.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                        limit: int
+                        """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                        warning_limit: WarningLimit
+                        """
+                        Warning threshold for the maximum number of accepted routes.
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                                """
+                                MaximumAcceptedRoutes.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                    warning_limit:
+                                       Warning threshold for the maximum number of accepted routes.
+
+                                       Subclass of AvdModel.
+
+                                """
+
                     class MissingPolicy(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -80451,6 +80665,7 @@ class EosDesigns(EosDesignsRootModel):
                         "maximum_routes": {"type": int},
                         "maximum_routes_warning_limit": {"type": str},
                         "maximum_routes_warning_only": {"type": bool},
+                        "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                         "missing_policy": {"type": MissingPolicy},
                         "link_bandwidth": {"type": LinkBandwidth},
                         "allowas_in": {"type": AllowasIn},
@@ -80566,6 +80781,8 @@ class EosDesigns(EosDesignsRootModel):
                     maximum number of routes at which to warn ("<1-100> percent").
                     """
                     maximum_routes_warning_only: bool | None
+                    maximum_accepted_routes: MaximumAcceptedRoutes
+                    """Subclass of AvdModel."""
                     missing_policy: MissingPolicy
                     """
                     Missing policy configuration for all address-families.
@@ -80631,6 +80848,7 @@ class EosDesigns(EosDesignsRootModel):
                             maximum_routes: int | UndefinedType | None = Undefined,
                             maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                             maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                            maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                             missing_policy: MissingPolicy | UndefinedType = Undefined,
                             link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                             allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -80720,6 +80938,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Percentage of
                                    maximum number of routes at which to warn ("<1-100> percent").
                                 maximum_routes_warning_only: maximum_routes_warning_only
+                                maximum_accepted_routes: Subclass of AvdModel.
                                 missing_policy:
                                    Missing policy configuration for all address-families.
 
@@ -87438,6 +87657,73 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class MaximumAcceptedRoutes(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class WarningLimit(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                                count: int | None
+                                """
+                                Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                with `percent`. `count` takes precedence.
+                                """
+                                percent: int | None
+                                """
+                                Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                with `count`. `count` takes precedence.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined
+                                    ) -> None:
+                                        """
+                                        WarningLimit.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                               with `percent`. `count` takes precedence.
+                                            percent:
+                                               Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                               with `count`. `count` takes precedence.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                            limit: int
+                            """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                            warning_limit: WarningLimit
+                            """
+                            Warning threshold for the maximum number of accepted routes.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                                    """
+                                    MaximumAcceptedRoutes.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                        warning_limit:
+                                           Warning threshold for the maximum number of accepted routes.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
                         class MissingPolicy(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -87693,6 +87979,7 @@ class EosDesigns(EosDesignsRootModel):
                             "maximum_routes": {"type": int},
                             "maximum_routes_warning_limit": {"type": str},
                             "maximum_routes_warning_only": {"type": bool},
+                            "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                             "missing_policy": {"type": MissingPolicy},
                             "link_bandwidth": {"type": LinkBandwidth},
                             "allowas_in": {"type": AllowasIn},
@@ -87812,6 +88099,8 @@ class EosDesigns(EosDesignsRootModel):
                         maximum number of routes at which to warn ("<1-100> percent").
                         """
                         maximum_routes_warning_only: bool | None
+                        maximum_accepted_routes: MaximumAcceptedRoutes
+                        """Subclass of AvdModel."""
                         missing_policy: MissingPolicy
                         """
                         Missing policy configuration for all address-families.
@@ -87877,6 +88166,7 @@ class EosDesigns(EosDesignsRootModel):
                                 maximum_routes: int | UndefinedType | None = Undefined,
                                 maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                                 maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                                maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                                 missing_policy: MissingPolicy | UndefinedType = Undefined,
                                 link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                                 allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -87970,6 +88260,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Percentage of
                                        maximum number of routes at which to warn ("<1-100> percent").
                                     maximum_routes_warning_only: maximum_routes_warning_only
+                                    maximum_accepted_routes: Subclass of AvdModel.
                                     missing_policy:
                                        Missing policy configuration for all address-families.
 
