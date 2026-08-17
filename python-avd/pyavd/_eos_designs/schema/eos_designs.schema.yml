@@ -10478,14 +10478,14 @@ keys:
           warning: true
           removed: true
           remove_in_version: 6.0.0
-          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
+          new_key: vrfs[name="use_mgmt_interface_vrf"].enable
       enable_inband_mgmt_vrf:
         type: bool
         deprecation:
           warning: true
           removed: true
           remove_in_version: 6.0.0
-          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
+          new_key: vrfs[name="use_inband_mgmt_vrf"].enable
       ipv4_acls:
         type: list
         deprecation:
