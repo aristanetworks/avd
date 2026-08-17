@@ -12720,6 +12720,7 @@ keys:
               deprecation:
                 warning: true
                 removed: true
+                remove_in_version: 6.0.0
                 new_key: ntp.vrf
       vrf:
         type: str
@@ -17253,6 +17254,9 @@ keys:
               - int
             maximum_routes_warning_only:
               type: bool
+            maximum_accepted_routes:
+              type: dict
+              $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
             missing_policy:
               type: dict
               description: Missing policy configuration for all address-families.
@@ -17535,6 +17539,9 @@ keys:
               - int
             maximum_routes_warning_only:
               type: bool
+            maximum_accepted_routes:
+              type: dict
+              $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
             missing_policy:
               type: dict
               description: Missing policy configuration for all address-families.
@@ -18592,6 +18599,9 @@ keys:
                           required: true
                         originate:
                           type: bool
+                maximum_accepted_routes:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
           neighbors:
             type: list
             primary_key: ip_address
@@ -18658,6 +18668,9 @@ keys:
                             capability.
                         originate:
                           type: bool
+                maximum_accepted_routes:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -19679,6 +19692,9 @@ keys:
                     route_map:
                       type: str
                       description: Route-map name.
+                maximum_accepted_routes:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
           neighbors:
             type: list
             primary_key: ip_address
@@ -19736,6 +19752,9 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                maximum_accepted_routes:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -21083,6 +21102,9 @@ keys:
                       '
                   maximum_routes_warning_only:
                     type: bool
+                  maximum_accepted_routes:
+                    type: dict
+                    $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
                   allowas_in:
                     type: dict
                     keys:
@@ -23960,6 +23982,193 @@ keys:
               type: str
               description: Multiline EOS CLI rendered directly on the Router OSPF
                 process ID in the final EOS configuration.
+  router_ospfv3:
+    type: dict
+    display_name: Router OSPFv3 Configuration
+    description: 'Mutually exclusive with ''ipv6_router_ospf'' on EOS.
+
+      Use only one style across all VRFs and instances.'
+    keys:
+      router_id:
+        type: str
+        description: 32-bit OSPF router ID as an IP address.
+      passive_interface_default:
+        type: bool
+      auto_cost_reference_bandwidth:
+        type: int
+        convert_types:
+        - str
+        min: 1
+        max: 4294967
+        description: Reference bandwidth in Mbps.
+      address_family_ipv4:
+        type: dict
+        description: 'Address family IPv4 configuration.
+
+          Common configurations defined at the router-level and address-family level
+          are mutually exclusive.
+
+          If both are provided, the address-family level configuration takes precedence.'
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Activate the address family.
+          router_id:
+            type: str
+            description: 32-bit OSPF router ID as an IP address.
+          passive_interface_default:
+            type: bool
+          auto_cost_reference_bandwidth:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967
+            description: Reference bandwidth in Mbps.
+          redistribute:
+            type: dict
+            description: Redistribute routes into OSPFv3.
+            keys:
+              bgp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              connected:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              isis:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  level:
+                    type: str
+                    valid_values:
+                    - level-1
+                    - level-2
+                    - level-1-2
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              ospfv3:
+                type: dict
+                keys:
+                  leaked:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                        description: Redistribute OSPFv3 leaked routes.
+                      match_internal:
+                        type: bool
+                        description: Redistribute internal OSPFv3 leaked routes.
+                      route_map:
+                        type: str
+                  leaked_match_external:
+                    type: dict
+                    description: Redistribute external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                  leaked_match_nssa_external:
+                    type: dict
+                    description: Redistribute NSSA external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+      address_family_ipv6:
+        type: dict
+        description: 'Address family IPv6 configuration.
+
+          Common configurations defined at the router-level and address-family level
+          are mutually exclusive.
+
+          If both are provided, the address-family level configuration takes precedence.'
+        $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4
+        keys:
+          redistribute:
+            type: dict
+            description: Redistribute routes into OSPFv3.
+            keys:
+              dhcp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: 'VRF name.
+
+                VRF ''default'' must be configured directly under ''router_ospfv3''.'
+              pattern: (?!default$).+
+            router_id:
+              type: str
+              description: 32-bit OSPF router ID as an IP address.
+            passive_interface_default:
+              type: bool
+            auto_cost_reference_bandwidth:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4294967
+              description: Reference bandwidth in Mbps.
+            address_family_ipv4:
+              type: dict
+              $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4
+            address_family_ipv6:
+              type: dict
+              $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv6
+            eos_cli:
+              type: str
+              description: Multiline EOS CLI rendered directly on this VRF OSPFv3
+                instance.
+      eos_cli:
+        type: str
+        description: Multiline EOS CLI rendered directly on the default VRF OSPFv3
+          instance.
   router_path_selection:
     type: dict
     description: Dynamic path selection configuration.
@@ -28098,6 +28307,34 @@ $defs:
         - str
         min: 2
         max: 64
+  maximum_accepted_routes:
+    type: dict
+    keys:
+      limit:
+        type: int
+        description: Maximum number of routes (0 means unlimited) that can be accepted
+          from the BGP neighbor.
+        min: 0
+        max: 4294967294
+        required: true
+      warning_limit:
+        type: dict
+        description: Warning threshold for the maximum number of accepted routes.
+        keys:
+          count:
+            type: int
+            description: Maximum number of routes after which a warning is issued
+              (0 means never warn). Mutually exclusive with `percent`. `count` takes
+              precedence.
+            min: 0
+            max: 4294967294
+          percent:
+            type: int
+            description: Percentage of the maximum number of accepted routes at which
+              a warning is issued. Mutually exclusive with `count`. `count` takes
+              precedence.
+            min: 1
+            max: 100
   subnets:
     type: list
     primary_key: subnet

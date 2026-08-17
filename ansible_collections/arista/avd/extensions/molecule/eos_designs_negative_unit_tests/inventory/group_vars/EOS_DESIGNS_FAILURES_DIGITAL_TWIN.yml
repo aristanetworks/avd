@@ -1,0 +1,4 @@
+---
+# This must be the same value for all devices in the molecule scenario.
+fabric_name: EOS_DESIGNS_FAILURES_DIGITAL_TWIN
+avd_digital_twin_mode: true

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Category 'MISSING-CATEGORY' referenced in the Application Profile 'TEST' is not defined in 'application_classification.categories'.
