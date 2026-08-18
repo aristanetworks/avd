@@ -20,6 +20,7 @@ tenants:
             enabled: false
         svis:
           - id: 10
+            name: TEST_SVI
             enabled: true
 
 expected_error_message: >-

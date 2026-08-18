@@ -142,7 +142,7 @@ class RouterBgpMixin(Protocol):
                     self._set_bgp_listen_ranges(bgp_peer_group, listen_range_bgp_vrf, context)
 
             for vrf in tenant.vrfs:
-                if vrf.name == "default" and vrf.bgp._get_defined_attr("graceful_restart") is not Undefined:
+                if vrf.name == "default" and vrf.bgp.graceful_restart:
                     context = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].bgp.graceful_restart"
                     msg = f"The per-VRF setting '{context}' is not supported for VRF 'default'. Use the global 'bgp_graceful_restart' setting instead."
                     raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
@@ -151,12 +151,11 @@ class RouterBgpMixin(Protocol):
                     continue
 
                 bgp_vrf = EosCliConfigGen.RouterBgp.VrfsItem()
-                if vrf.bgp.graceful_restart.enabled:
+                if vrf.bgp.graceful_restart:
                     bgp_vrf.graceful_restart.enabled = vrf.bgp.graceful_restart.enabled
                     bgp_vrf.graceful_restart.restart_time = vrf.bgp.graceful_restart.restart_time
                 elif vrf.bgp.graceful_restart.enabled is False:
                     bgp_vrf.no_graceful_restart = True
-                    bgp_vrf.graceful_restart.restart_time = vrf.bgp.graceful_restart.restart_time
 
                 if vrf.bgp.raw_eos_cli:
                     bgp_vrf.eos_cli = vrf.bgp.raw_eos_cli

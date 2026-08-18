@@ -1,0 +1,144 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet10
+  description: MLAG_bgp-from-network-services-31_Ethernet10
+  shutdown: false
+  channel_group:
+    id: 10
+    mode: active
+  metadata:
+    peer: bgp-from-network-services-31
+    peer_interface: Ethernet10
+    peer_type: mlag_peer
+hostname: bgp-from-network-services-32
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing_ipv6_interfaces: true
+ipv6_unicast_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.0.255.32/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.1.1.32/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+mlag_configuration:
+  domain_id: BGP_FROM_NETWORK_SERVICES_GROUP4
+  local_interface: Vlan4094
+  peer_address: 10.10.10.60
+  peer_link: Port-Channel10
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+port_channel_interfaces:
+- name: Port-Channel10
+  description: MLAG_bgp-from-network-services-31_Port-Channel10
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
+router_bgp:
+  as: '65001'
+  router_id: 192.0.255.32
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    metadata:
+      type: ipv4
+    remote_as: '65001'
+    description: bgp-from-network-services-31
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 256000
+    route_map_in: RM-MLAG-PEER-IN
+  neighbor_interfaces:
+  - name: Vlan3103
+    remote_as: '65001'
+    metadata:
+      validate_state: false
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    description: bgp-from-network-services-31_Vlan3103
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+  no_spanning_tree_vlan: 4093-4094
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 10.10.10.61/31
+  mtu: 9214
+  no_autostate: true
+- name: Vlan3103
+  description: MLAG_L3_VRF_default
+  shutdown: false
+  vrf: default
+  ipv6_enable: true
+  mtu: 9214
+  metadata:
+    tenants:
+    - TEST4
+    type: underlay_peering
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+- id: 3103
+  name: MLAG_L3_VRF_default
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - TEST4
+vrfs:
+- name: MGMT
+  ip_routing: false

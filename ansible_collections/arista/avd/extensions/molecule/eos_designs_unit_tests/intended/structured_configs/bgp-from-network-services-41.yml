@@ -55,8 +55,8 @@ router_bgp:
   - name: graceful-restart-disabled
     router_id: 192.0.255.41
     graceful_restart:
+      enabled: false
       restart_time: 300
-    no_graceful_restart: true
     redistribute:
       connected:
         enabled: true

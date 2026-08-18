@@ -165,9 +165,6 @@ tenants:
       - name: default
         bgp:
           enabled: true
-          graceful_restart:
-            enabled: false
-            restart_time: 100
         # expect to see metadata in structured config as it is validated by default for VRF default
         validate_bgp_peers: false
         vrf_id: 104
