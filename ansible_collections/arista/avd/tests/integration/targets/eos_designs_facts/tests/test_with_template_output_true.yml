@@ -1,0 +1,33 @@
+---
+- name: Validate eos_designs inputs for template_output test
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs_facts_template_output"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts with template_output true
+  register: result
+  arista.avd.eos_designs_facts:
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs_facts_template_output"
+    template_output: true
+  check_mode: false
+  run_once: true
+
+- name: Load generated eos_designs facts file
+  ansible.builtin.slurp:
+    src: "{{ actual_output_dir }}/tmp_eos_designs_facts_template_output/eos_designs_facts.json"
+  register: dumped_facts
+
+- name: Parse generated eos_designs facts file
+  ansible.builtin.set_fact:
+    parsed_facts: "{{ dumped_facts.content | b64decode | from_json }}"
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - parsed_facts.testhost is defined
+      - parsed_facts.testhost.id == 1
