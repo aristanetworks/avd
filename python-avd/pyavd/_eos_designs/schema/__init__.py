@@ -32596,13 +32596,21 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Name of the IPv6 access-list to be assigned in the ingress direction.
                     The access-list must be
-                    defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                    defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                    resolved from the
+                    IPv6 address set on the SVI.
+                    Deprecated token "interface_ip" is also accepted as an alias for
+                    "interface_ipv6" and will be removed in AVD 7.0.0.
                     """
                     ipv6_acl_out: str | None
                     """
                     Name of the IPv6 access-list to be assigned in the egress direction.
                     The access-list must be defined
-                    under `ipv6_acls` and supports substitution of the field "interface_ip".
+                    under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                    resolved from the IPv6
+                    address set on the SVI.
+                    Deprecated token "interface_ip" is also accepted as an alias for
+                    "interface_ipv6" and will be removed in AVD 7.0.0.
                     """
                     ip_helpers: IpHelpers
                     """
@@ -32857,11 +32865,19 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv6_acl_in:
                                    Name of the IPv6 access-list to be assigned in the ingress direction.
                                    The access-list must be
-                                   defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                   defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                   resolved from the
+                                   IPv6 address set on the SVI.
+                                   Deprecated token "interface_ip" is also accepted as an alias for
+                                   "interface_ipv6" and will be removed in AVD 7.0.0.
                                 ipv6_acl_out:
                                    Name of the IPv6 access-list to be assigned in the egress direction.
                                    The access-list must be defined
-                                   under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                   under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                   resolved from the IPv6
+                                   address set on the SVI.
+                                   Deprecated token "interface_ip" is also accepted as an alias for
+                                   "interface_ipv6" and will be removed in AVD 7.0.0.
                                 ip_helpers:
                                    IP helper for DHCP relay.
 
@@ -34035,13 +34051,21 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Name of the IPv6 access-list to be assigned in the ingress direction.
                 The access-list must be
-                defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                resolved from the
+                IPv6 address set on the SVI.
+                Deprecated token "interface_ip" is also accepted as an alias for
+                "interface_ipv6" and will be removed in AVD 7.0.0.
                 """
                 ipv6_acl_out: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the egress direction.
                 The access-list must be defined
-                under `ipv6_acls` and supports substitution of the field "interface_ip".
+                under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                resolved from the IPv6
+                address set on the SVI.
+                Deprecated token "interface_ip" is also accepted as an alias for
+                "interface_ipv6" and will be removed in AVD 7.0.0.
                 """
                 ip_helpers: IpHelpers
                 """
@@ -34322,11 +34346,19 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
-                               defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                               resolved from the
+                               IPv6 address set on the SVI.
+                               Deprecated token "interface_ip" is also accepted as an alias for
+                               "interface_ipv6" and will be removed in AVD 7.0.0.
                             ipv6_acl_out:
                                Name of the IPv6 access-list to be assigned in the egress direction.
                                The access-list must be defined
-                               under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                               resolved from the IPv6
+                               address set on the SVI.
+                               Deprecated token "interface_ip" is also accepted as an alias for
+                               "interface_ipv6" and will be removed in AVD 7.0.0.
                             ip_helpers:
                                IP helper for DHCP relay.
 
@@ -35047,6 +35079,7 @@ class EosDesigns(EosDesignsRootModel):
                     "mtu": {"type": int},
                     "ipv4_acl_in": {"type": str},
                     "ipv4_acl_out": {"type": str},
+                    "peer_ipv6": {"type": str},
                     "ipv6_acl_in": {"type": str},
                     "ipv6_acl_out": {"type": str},
                     "ospf": {"type": Ospf},
@@ -35108,15 +35141,20 @@ class EosDesigns(EosDesignsRootModel):
                 mtu: int | None
                 ipv4_acl_in: str | None
                 ipv4_acl_out: str | None
+                peer_ipv6: str | None
+                """
+                The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                "peer_ipv6" token.
+                """
                 ipv6_acl_in: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the ingress direction.
                 The access-list must be
                 defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                 resolved from the
-                IPv6 address set on the interface for this node.
-                Deprecated token "interface_ip" is also accepted as
-                an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+                IPv6 address set on the interface for this node, and "peer_ipv6" (resolved from `peer_ipv6`).
+                Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                removed in AVD 7.0.0.
                 """
                 ipv6_acl_out: str | None
                 """
@@ -35124,9 +35162,10 @@ class EosDesigns(EosDesignsRootModel):
                 The access-list must be defined
                 under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                 resolved from the IPv6
-                address set on the interface for this node.
-                Deprecated token "interface_ip" is also accepted as an
-                alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+                address set on the interface for this node, and "peer_ipv6" (resolved from `peer_ipv6`).
+                Deprecated
+                token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD
+                7.0.0.
                 """
                 ospf: Ospf
                 """
@@ -35201,6 +35240,7 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | UndefinedType | None = Undefined,
                         ipv4_acl_in: str | UndefinedType | None = Undefined,
                         ipv4_acl_out: str | UndefinedType | None = Undefined,
+                        peer_ipv6: str | UndefinedType | None = Undefined,
                         ipv6_acl_in: str | UndefinedType | None = Undefined,
                         ipv6_acl_out: str | UndefinedType | None = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
@@ -35254,22 +35294,26 @@ class EosDesigns(EosDesignsRootModel):
                             mtu: mtu
                             ipv4_acl_in: ipv4_acl_in
                             ipv4_acl_out: ipv4_acl_out
+                            peer_ipv6:
+                               The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                               "peer_ipv6" token.
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
                                defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                resolved from the
-                               IPv6 address set on the interface for this node.
-                               Deprecated token "interface_ip" is also accepted as
-                               an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+                               IPv6 address set on the interface for this node, and "peer_ipv6" (resolved from `peer_ipv6`).
+                               Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                               removed in AVD 7.0.0.
                             ipv6_acl_out:
                                Name of the IPv6 access-list to be assigned in the egress direction.
                                The access-list must be defined
                                under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                resolved from the IPv6
-                               address set on the interface for this node.
-                               Deprecated token "interface_ip" is also accepted as an
-                               alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+                               address set on the interface for this node, and "peer_ipv6" (resolved from `peer_ipv6`).
+                               Deprecated
+                               token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD
+                               7.0.0.
                             ospf:
                                OSPF interface configuration.
 
@@ -35811,6 +35855,7 @@ class EosDesigns(EosDesignsRootModel):
                     "mtu": {"type": int},
                     "ipv4_acl_in": {"type": str},
                     "ipv4_acl_out": {"type": str},
+                    "peer_ipv6": {"type": str},
                     "ipv6_acl_in": {"type": str},
                     "ipv6_acl_out": {"type": str},
                     "static_routes": {"type": StaticRoutes},
@@ -35884,15 +35929,20 @@ class EosDesigns(EosDesignsRootModel):
                 """Name of the IPv4 access-list to be assigned in the ingress direction."""
                 ipv4_acl_out: str | None
                 """Name of the IPv4 Access-list to be assigned in the egress direction."""
+                peer_ipv6: str | None
+                """
+                The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                "peer_ipv6" token.
+                """
                 ipv6_acl_in: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the ingress direction.
                 The access-list must be
                 defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                 resolved from the
-                first IPv6 address set on the interface.
-                Token "interface_ip" is also accepted but deprecated and
-                will be removed in AVD 7.0.0.
+                first IPv6 address set on the interface, and "peer_ipv6" (resolved from `peer_ipv6`).
+                Token
+                "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                 """
                 ipv6_acl_out: str | None
                 """
@@ -35900,9 +35950,9 @@ class EosDesigns(EosDesignsRootModel):
                 The access-list must be defined
                 under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                 resolved from the first
-                IPv6 address set on the interface.
-                Token "interface_ip" is also accepted but deprecated and will be
-                removed in AVD 7.0.0.
+                IPv6 address set on the interface, and "peer_ipv6" (resolved from `peer_ipv6`).
+                Token "interface_ip"
+                is also accepted but deprecated and will be removed in AVD 7.0.0.
                 """
                 static_routes: StaticRoutes
                 """
@@ -35956,6 +36006,7 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | UndefinedType | None = Undefined,
                         ipv4_acl_in: str | UndefinedType | None = Undefined,
                         ipv4_acl_out: str | UndefinedType | None = Undefined,
+                        peer_ipv6: str | UndefinedType | None = Undefined,
                         ipv6_acl_in: str | UndefinedType | None = Undefined,
                         ipv6_acl_out: str | UndefinedType | None = Undefined,
                         static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -36008,22 +36059,25 @@ class EosDesigns(EosDesignsRootModel):
                             mtu: MTU can only be set on the parent Port-Channel.
                             ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                             ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
+                            peer_ipv6:
+                               The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                               "peer_ipv6" token.
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
                                defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                resolved from the
-                               first IPv6 address set on the interface.
-                               Token "interface_ip" is also accepted but deprecated and
-                               will be removed in AVD 7.0.0.
+                               first IPv6 address set on the interface, and "peer_ipv6" (resolved from `peer_ipv6`).
+                               Token
+                               "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                             ipv6_acl_out:
                                Name of the IPv6 access-list to be assigned in the egress direction.
                                The access-list must be defined
                                under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                resolved from the first
-                               IPv6 address set on the interface.
-                               Token "interface_ip" is also accepted but deprecated and will be
-                               removed in AVD 7.0.0.
+                               IPv6 address set on the interface, and "peer_ipv6" (resolved from `peer_ipv6`).
+                               Token "interface_ip"
+                               is also accepted but deprecated and will be removed in AVD 7.0.0.
                             static_routes:
                                Static routes to be configured on the device where this Port-channel interface is configured.
                                Subclass of AvdList with `StaticRoutesItem` items.
@@ -49739,13 +49793,21 @@ class EosDesigns(EosDesignsRootModel):
             """
             Name of the IPv6 access-list to be assigned in the ingress direction.
             The access-list must be
-            defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+            defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+            resolved from the
+            IPv6 address set on the SVI.
+            Deprecated token "interface_ip" is also accepted as an alias for
+            "interface_ipv6" and will be removed in AVD 7.0.0.
             """
             ipv6_acl_out: str | None
             """
             Name of the IPv6 access-list to be assigned in the egress direction.
             The access-list must be defined
-            under `ipv6_acls` and supports substitution of the field "interface_ip".
+            under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+            resolved from the IPv6
+            address set on the SVI.
+            Deprecated token "interface_ip" is also accepted as an alias for
+            "interface_ipv6" and will be removed in AVD 7.0.0.
             """
             ip_helpers: IpHelpers
             """
@@ -49993,11 +50055,19 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
-                           defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                           defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                           resolved from the
+                           IPv6 address set on the SVI.
+                           Deprecated token "interface_ip" is also accepted as an alias for
+                           "interface_ipv6" and will be removed in AVD 7.0.0.
                         ipv6_acl_out:
                            Name of the IPv6 access-list to be assigned in the egress direction.
                            The access-list must be defined
-                           under `ipv6_acls` and supports substitution of the field "interface_ip".
+                           under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                           resolved from the IPv6
+                           address set on the SVI.
+                           Deprecated token "interface_ip" is also accepted as an alias for
+                           "interface_ipv6" and will be removed in AVD 7.0.0.
                         ip_helpers:
                            IP helper for DHCP relay.
 
@@ -51137,13 +51207,21 @@ class EosDesigns(EosDesignsRootModel):
         """
         Name of the IPv6 access-list to be assigned in the ingress direction.
         The access-list must be
-        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+        resolved from the
+        IPv6 address set on the SVI.
+        Deprecated token "interface_ip" is also accepted as an alias for
+        "interface_ipv6" and will be removed in AVD 7.0.0.
         """
         ipv6_acl_out: str | None
         """
         Name of the IPv6 access-list to be assigned in the egress direction.
         The access-list must be defined
-        under `ipv6_acls` and supports substitution of the field "interface_ip".
+        under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+        resolved from the IPv6
+        address set on the SVI.
+        Deprecated token "interface_ip" is also accepted as an alias for
+        "interface_ipv6" and will be removed in AVD 7.0.0.
         """
         ip_helpers: IpHelpers
         """
@@ -51405,11 +51483,19 @@ class EosDesigns(EosDesignsRootModel):
                     ipv6_acl_in:
                        Name of the IPv6 access-list to be assigned in the ingress direction.
                        The access-list must be
-                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                       defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                       resolved from the
+                       IPv6 address set on the SVI.
+                       Deprecated token "interface_ip" is also accepted as an alias for
+                       "interface_ipv6" and will be removed in AVD 7.0.0.
                     ipv6_acl_out:
                        Name of the IPv6 access-list to be assigned in the egress direction.
                        The access-list must be defined
-                       under `ipv6_acls` and supports substitution of the field "interface_ip".
+                       under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                       resolved from the IPv6
+                       address set on the SVI.
+                       Deprecated token "interface_ip" is also accepted as an alias for
+                       "interface_ipv6" and will be removed in AVD 7.0.0.
                     ip_helpers:
                        IP helper for DHCP relay.
 
@@ -83176,13 +83262,21 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Name of the IPv6 access-list to be assigned in the ingress direction.
                             The access-list must be
-                            defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                            defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                            resolved from the
+                            IPv6 address set on the SVI.
+                            Deprecated token "interface_ip" is also accepted as an alias for
+                            "interface_ipv6" and will be removed in AVD 7.0.0.
                             """
                             ipv6_acl_out: str | None
                             """
                             Name of the IPv6 access-list to be assigned in the egress direction.
                             The access-list must be defined
-                            under `ipv6_acls` and supports substitution of the field "interface_ip".
+                            under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                            resolved from the IPv6
+                            address set on the SVI.
+                            Deprecated token "interface_ip" is also accepted as an alias for
+                            "interface_ipv6" and will be removed in AVD 7.0.0.
                             """
                             ip_helpers: IpHelpers
                             """
@@ -83437,11 +83531,19 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
-                                           defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                           defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                           resolved from the
+                                           IPv6 address set on the SVI.
+                                           Deprecated token "interface_ip" is also accepted as an alias for
+                                           "interface_ipv6" and will be removed in AVD 7.0.0.
                                         ipv6_acl_out:
                                            Name of the IPv6 access-list to be assigned in the egress direction.
                                            The access-list must be defined
-                                           under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                           under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                           resolved from the IPv6
+                                           address set on the SVI.
+                                           Deprecated token "interface_ip" is also accepted as an alias for
+                                           "interface_ipv6" and will be removed in AVD 7.0.0.
                                         ip_helpers:
                                            IP helper for DHCP relay.
 
@@ -84617,13 +84719,21 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the
+                        IPv6 address set on the SVI.
+                        Deprecated token "interface_ip" is also accepted as an alias for
+                        "interface_ipv6" and will be removed in AVD 7.0.0.
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the IPv6
+                        address set on the SVI.
+                        Deprecated token "interface_ip" is also accepted as an alias for
+                        "interface_ipv6" and will be removed in AVD 7.0.0.
                         """
                         ip_helpers: IpHelpers
                         """
@@ -84904,11 +85014,19 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                       resolved from the
+                                       IPv6 address set on the SVI.
+                                       Deprecated token "interface_ip" is also accepted as an alias for
+                                       "interface_ipv6" and will be removed in AVD 7.0.0.
                                     ipv6_acl_out:
                                        Name of the IPv6 access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                       resolved from the IPv6
+                                       address set on the SVI.
+                                       Deprecated token "interface_ip" is also accepted as an alias for
+                                       "interface_ipv6" and will be removed in AVD 7.0.0.
                                     ip_helpers:
                                        IP helper for DHCP relay.
 
@@ -85633,6 +85751,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "ospf": {"type": Ospf},
@@ -85694,15 +85813,20 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | None
                         ipv4_acl_in: str | None
                         ipv4_acl_out: str | None
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         ipv6_acl_in: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
                         defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                         resolved from the
-                        IPv6 address set on the interface for this node.
-                        Deprecated token "interface_ip" is also accepted as
-                        an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+                        IPv6 address set on the interface for this node, and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                        removed in AVD 7.0.0.
                         """
                         ipv6_acl_out: str | None
                         """
@@ -85710,9 +85834,10 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                         resolved from the IPv6
-                        address set on the interface for this node.
-                        Deprecated token "interface_ip" is also accepted as an
-                        alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+                        address set on the interface for this node, and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Deprecated
+                        token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD
+                        7.0.0.
                         """
                         ospf: Ospf
                         """
@@ -85787,6 +85912,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType | None = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                peer_ipv6: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
@@ -85840,22 +85966,26 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: mtu
                                     ipv4_acl_in: ipv4_acl_in
                                     ipv4_acl_out: ipv4_acl_out
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
                                        defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                        resolved from the
-                                       IPv6 address set on the interface for this node.
-                                       Deprecated token "interface_ip" is also accepted as
-                                       an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+                                       IPv6 address set on the interface for this node, and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                                       removed in AVD 7.0.0.
                                     ipv6_acl_out:
                                        Name of the IPv6 access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                        resolved from the IPv6
-                                       address set on the interface for this node.
-                                       Deprecated token "interface_ip" is also accepted as an
-                                       alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+                                       address set on the interface for this node, and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Deprecated
+                                       token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD
+                                       7.0.0.
                                     ospf:
                                        OSPF interface configuration.
 
@@ -86397,6 +86527,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -86470,15 +86601,20 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the IPv4 access-list to be assigned in the ingress direction."""
                         ipv4_acl_out: str | None
                         """Name of the IPv4 Access-list to be assigned in the egress direction."""
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ipv6" token.
+                        """
                         ipv6_acl_in: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
                         defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                         resolved from the
-                        first IPv6 address set on the interface.
-                        Token "interface_ip" is also accepted but deprecated and
-                        will be removed in AVD 7.0.0.
+                        first IPv6 address set on the interface, and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token
+                        "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         ipv6_acl_out: str | None
                         """
@@ -86486,9 +86622,9 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                         resolved from the first
-                        IPv6 address set on the interface.
-                        Token "interface_ip" is also accepted but deprecated and will be
-                        removed in AVD 7.0.0.
+                        IPv6 address set on the interface, and "peer_ipv6" (resolved from `peer_ipv6`).
+                        Token "interface_ip"
+                        is also accepted but deprecated and will be removed in AVD 7.0.0.
                         """
                         static_routes: StaticRoutes
                         """
@@ -86542,6 +86678,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType | None = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                peer_ipv6: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -86594,22 +86731,25 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: MTU can only be set on the parent Port-Channel.
                                     ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                                     ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ipv6" token.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
                                        defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                        resolved from the
-                                       first IPv6 address set on the interface.
-                                       Token "interface_ip" is also accepted but deprecated and
-                                       will be removed in AVD 7.0.0.
+                                       first IPv6 address set on the interface, and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token
+                                       "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                                     ipv6_acl_out:
                                        Name of the IPv6 access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                        resolved from the first
-                                       IPv6 address set on the interface.
-                                       Token "interface_ip" is also accepted but deprecated and will be
-                                       removed in AVD 7.0.0.
+                                       IPv6 address set on the interface, and "peer_ipv6" (resolved from `peer_ipv6`).
+                                       Token "interface_ip"
+                                       is also accepted but deprecated and will be removed in AVD 7.0.0.
                                     static_routes:
                                        Static routes to be configured on the device where this Port-channel interface is configured.
                                        Subclass of AvdList with `StaticRoutesItem` items.

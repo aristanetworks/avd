@@ -25,13 +25,21 @@ ipv6_acls:
         protocol: ipv6
         source: any
         destination: any
-  # ACL with interface_ip substitution - name will be suffixed with the port-channel name.
+  # ACL with interface_ipv6 substitution - name will be suffixed with the port-channel name.
   - name: out6ACL
     entries:
       - sequence: 10
         action: permit
         protocol: ipv6
-        source: interface_ip
+        source: interface_ipv6
+        destination: any
+  # ACL with peer_ipv6 substitution - name will be suffixed with the port-channel name.
+  - name: peer6ACL
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: peer_ipv6
         destination: any
 
 flow_tracking_settings:
@@ -272,7 +280,7 @@ tenants:
           # IPv6-only in non-default VRF: exercises VRF-level ipv6_routing.
           # This entry alone does NOT trigger global ipv6_unicast_routing (only default-VRF IPv6 interfaces do);
           # the global flag is already enabled in this test by Port-Channel33/44 above.
-          # Also exercises the ipv6_acl_out path with `interface_ip` substitution (name gets suffixed with the port-channel name).
+          # Also exercises the ipv6_acl_out path with `interface_ipv6` substitution (name gets suffixed with the port-channel name).
           - name: Port-Channel2000
             mode: active
             peer: ipv6-cloud-testing
@@ -286,6 +294,30 @@ tenants:
               - name: Ethernet46
                 peer_interface: Ethernet46
                 peer: ipv6-cloud-testing
+          # peer_ipv6 substitution: ACL source "peer_ipv6" token is replaced with the peer's IPv6 address.
+          # ACL name gets suffixed with the port-channel name because substitution occurs.
+          - name: Port-Channel3000
+            mode: active
+            peer: ipv6-peer-cloud
+            peer_port_channel: Po3000
+            enabled: true
+            node: network-services-l3-port-channels
+            ipv6_addresses:
+              - 2001:db8:5::1/64
+            peer_ipv6: "2001:db8:5::2"
+            ipv6_acl_in: peer6ACL
+            member_interfaces:
+              - name: Ethernet47
+                peer_interface: Ethernet47
+                peer: ipv6-peer-cloud
+          # Logic fix: verifies ACL is applied even when no ipv6_addresses is set on the port-channel.
+          - name: Port-Channel3001
+            mode: active
+            enabled: true
+            node: network-services-l3-port-channels
+            ipv6_acl_in: in6ACL
+            member_interfaces:
+              - name: Ethernet48
 
   - name: Subinterface
     mac_vrf_vni_base: 20000

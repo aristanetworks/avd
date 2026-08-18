@@ -6327,6 +6327,11 @@ keys:
                       type: str
                       convert_types:
                       - int
+                    peer_ipv6:
+                      type: str
+                      description: The peer device IPv6 address (no mask). Used for
+                        field substitution in `ipv6_acls` entries with the "peer_ipv6"
+                        token.
                     ipv6_acl_in:
                       description: 'Name of the IPv6 access-list to be assigned in
                         the ingress direction.
@@ -6335,7 +6340,7 @@ keys:
                         substitution of the field "interface_ipv6",
 
                         resolved from the IPv6 address set on the interface for this
-                        node.
+                        node, and "peer_ipv6" (resolved from `peer_ipv6`).
 
                         Deprecated token "interface_ip" is also accepted as an alias
                         for "interface_ipv6" and will be removed in AVD 7.0.0.'
@@ -6350,7 +6355,7 @@ keys:
                         substitution of the field "interface_ipv6",
 
                         resolved from the IPv6 address set on the interface for this
-                        node.
+                        node, and "peer_ipv6" (resolved from `peer_ipv6`).
 
                         Deprecated token "interface_ip" is also accepted as an alias
                         for "interface_ipv6" and will be removed in AVD 7.0.0.'
@@ -6631,6 +6636,11 @@ keys:
                       type: str
                       convert_types:
                       - int
+                    peer_ipv6:
+                      type: str
+                      description: The peer device IPv6 address (no mask). Used for
+                        field substitution in `ipv6_acls` entries with the "peer_ipv6"
+                        token.
                     ipv6_acl_in:
                       description: 'Name of the IPv6 access-list to be assigned in
                         the ingress direction.
@@ -6638,7 +6648,8 @@ keys:
                         The access-list must be defined under `ipv6_acls` and supports
                         substitution of the field "interface_ipv6",
 
-                        resolved from the first IPv6 address set on the interface.
+                        resolved from the first IPv6 address set on the interface,
+                        and "peer_ipv6" (resolved from `peer_ipv6`).
 
                         Token "interface_ip" is also accepted but deprecated and will
                         be removed in AVD 7.0.0.'
@@ -6652,7 +6663,8 @@ keys:
                         The access-list must be defined under `ipv6_acls` and supports
                         substitution of the field "interface_ipv6",
 
-                        resolved from the first IPv6 address set on the interface.
+                        resolved from the first IPv6 address set on the interface,
+                        and "peer_ipv6" (resolved from `peer_ipv6`).
 
                         Token "interface_ip" is also accepted but deprecated and will
                         be removed in AVD 7.0.0.'
@@ -17372,7 +17384,12 @@ $defs:
         description: 'Name of the IPv6 access-list to be assigned in the ingress direction.
 
           The access-list must be defined under `ipv6_acls` and supports substitution
-          of the field "interface_ip".'
+          of the field "interface_ipv6",
+
+          resolved from the IPv6 address set on the SVI.
+
+          Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
+          and will be removed in AVD 7.0.0.'
         type: str
         convert_types:
         - int
@@ -17380,7 +17397,12 @@ $defs:
         description: 'Name of the IPv6 access-list to be assigned in the egress direction.
 
           The access-list must be defined under `ipv6_acls` and supports substitution
-          of the field "interface_ip".'
+          of the field "interface_ipv6",
+
+          resolved from the IPv6 address set on the SVI.
+
+          Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
+          and will be removed in AVD 7.0.0.'
         type: str
         convert_types:
         - int

@@ -9,13 +9,21 @@ ipv6_acls:
         protocol: ipv6
         source: any
         destination: any
-  # ACL with interface_ip substitution - name will be suffixed with the interface name.
+  # ACL with interface_ipv6 substitution - name will be suffixed with the interface name.
   - name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
     entries:
       - sequence: 10
         action: permit
         protocol: ipv6
-        source: interface_ip
+        source: interface_ipv6
+        destination: any
+  # ACL with peer_ipv6 substitution - name will be suffixed with the interface name.
+  - name: TEST-IPV6-ACL-WITH-PEER-IPV6-IN
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: peer_ipv6
         destination: any
 
 type: l3leaf
@@ -56,10 +64,26 @@ tenants:
         vrf_id: 2
         l3_interfaces:
           # IPv6-only in non-default VRF: tests VRF-level ipv6_routing set and ipv6_unicast_routing global flag also set.
-          # Also exercises the ipv6_acl_out path with `interface_ip` substitution (name gets suffixed with the interface name).
+          # Also exercises the ipv6_acl_out path with `interface_ipv6` substitution (name gets suffixed with the interface name).
           - interfaces: [Ethernet12]
             nodes: [network-services-l3-interfaces]
             ipv6_addresses: ["2001:db8:12::1/64"]
             enabled: true
             description: "ipv6-only-non-default-vrf"
             ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+          # peer_ipv6 substitution: ACL source "peer_ipv6" token is replaced with the peer's IPv6 address.
+          # ACL name gets suffixed with the interface name because substitution occurs.
+          - interfaces: [Ethernet13]
+            nodes: [network-services-l3-interfaces]
+            ipv6_addresses: ["2001:db8:13::1/64"]
+            peer_ipv6: "2001:db8:13::2"
+            enabled: true
+            description: "peer-ipv6-acl-test"
+            ipv6_acl_in: TEST-IPV6-ACL-WITH-PEER-IPV6-IN
+          # Logic fix: verifies IPv6 ACL is applied on an IPv4-only interface (no ipv6_addresses).
+          - interfaces: [Ethernet14]
+            nodes: [network-services-l3-interfaces]
+            ip_addresses: ["10.0.14.1/31"]
+            enabled: true
+            description: "ipv6-acl-on-ipv4-only-interface"
+            ipv6_acl_in: TEST-IPV6-ACL-STATIC-IN

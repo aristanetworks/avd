@@ -173,21 +173,31 @@ class PortChannelInterfacesMixin(Protocol):
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
     ) -> None:
         """Set the IPv6-only configuration on a PortChannelInterface from its l3_port_channel."""
-        if not l3_port_channel.ipv6_addresses:
-            return
-        port_channel_interface.ipv6_addresses.extend(l3_port_channel.ipv6_addresses)
-        if vrf.name == "default":
-            self.structured_config.ipv6_unicast_routing = True
-        # Use the first IPv6 address for "interface_ip" substitution in ACLs, matching the IPv4 behavior.
-        ipv6_interface_ip = next(iter(l3_port_channel.ipv6_addresses), None)
-        if ipv6_interface_ip and "/" in ipv6_interface_ip:
-            ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_interface_ip)
+        ipv6_interface_ip = None
+        if l3_port_channel.ipv6_addresses:
+            port_channel_interface.ipv6_addresses.extend(l3_port_channel.ipv6_addresses)
+            if vrf.name == "default":
+                self.structured_config.ipv6_unicast_routing = True
+            # Use the first IPv6 address for "interface_ipv6" substitution in ACLs.
+            ipv6_interface_ip = next(iter(l3_port_channel.ipv6_addresses), None)
+            if ipv6_interface_ip and "/" in ipv6_interface_ip:
+                ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_interface_ip)
         if l3_port_channel.ipv6_acl_in:
-            acl = self.shared_utils.get_ipv6_acl(name=l3_port_channel.ipv6_acl_in, interface_name=l3_port_channel.name, interface_ipv6=ipv6_interface_ip)
+            acl = self.shared_utils.get_ipv6_acl(
+                name=l3_port_channel.ipv6_acl_in,
+                interface_name=l3_port_channel.name,
+                interface_ipv6=ipv6_interface_ip,
+                peer_ipv6=l3_port_channel.peer_ipv6,
+            )
             port_channel_interface.ipv6_access_group_in = acl.name
             self.structured_config_utils._set_ipv6_acl(acl)
         if l3_port_channel.ipv6_acl_out:
-            acl = self.shared_utils.get_ipv6_acl(name=l3_port_channel.ipv6_acl_out, interface_name=l3_port_channel.name, interface_ipv6=ipv6_interface_ip)
+            acl = self.shared_utils.get_ipv6_acl(
+                name=l3_port_channel.ipv6_acl_out,
+                interface_name=l3_port_channel.name,
+                interface_ipv6=ipv6_interface_ip,
+                peer_ipv6=l3_port_channel.peer_ipv6,
+            )
             port_channel_interface.ipv6_access_group_out = acl.name
             self.structured_config_utils._set_ipv6_acl(acl)
 

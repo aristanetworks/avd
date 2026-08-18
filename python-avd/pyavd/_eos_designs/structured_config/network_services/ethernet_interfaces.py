@@ -244,18 +244,28 @@ class EthernetInterfacesMixin(Protocol):
     ) -> None:
         """Set the IPv6-only configuration on an EthernetInterface from the matching l3_interface entry for this node."""
         ipv6_address = l3_interface.ipv6_addresses[node_index] if l3_interface.ipv6_addresses else None
-        if not ipv6_address:
-            return
-        interface.ipv6_addresses.append(ipv6_address)
-        if vrf.name == "default":
-            self.structured_config.ipv6_unicast_routing = True
-        ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_address) if "/" in ipv6_address else ipv6_address
+        ipv6_interface_ip = None
+        if ipv6_address:
+            interface.ipv6_addresses.append(ipv6_address)
+            if vrf.name == "default":
+                self.structured_config.ipv6_unicast_routing = True
+            ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_address) if "/" in ipv6_address else ipv6_address
         if l3_interface.ipv6_acl_in:
-            acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_in, interface_name=interface.name, interface_ipv6=ipv6_interface_ip)
+            acl = self.shared_utils.get_ipv6_acl(
+                name=l3_interface.ipv6_acl_in,
+                interface_name=interface.name,
+                interface_ipv6=ipv6_interface_ip,
+                peer_ipv6=l3_interface.peer_ipv6,
+            )
             interface.ipv6_access_group_in = acl.name
             self.structured_config_utils._set_ipv6_acl(acl)
         if l3_interface.ipv6_acl_out:
-            acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_out, interface_name=interface.name, interface_ipv6=ipv6_interface_ip)
+            acl = self.shared_utils.get_ipv6_acl(
+                name=l3_interface.ipv6_acl_out,
+                interface_name=interface.name,
+                interface_ipv6=ipv6_interface_ip,
+                peer_ipv6=l3_interface.peer_ipv6,
+            )
             interface.ipv6_access_group_out = acl.name
             self.structured_config_utils._set_ipv6_acl(acl)
 

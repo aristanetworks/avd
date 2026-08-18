@@ -144,6 +144,23 @@ ethernet_interfaces:
     peer: ipv6-cloud-testing
     peer_interface: Ethernet46
     peer_type: l3_port_channel_member
+- name: Ethernet47
+  description: ipv6-peer-cloud_Ethernet47
+  shutdown: false
+  channel_group:
+    id: 3000
+    mode: active
+  metadata:
+    peer: ipv6-peer-cloud
+    peer_interface: Ethernet47
+    peer_type: l3_port_channel_member
+- name: Ethernet48
+  shutdown: false
+  channel_group:
+    id: 3001
+    mode: active
+  metadata:
+    peer_type: l3_port_channel_member
 flow_tracking:
   sampled:
     sample: 10000
@@ -201,6 +218,13 @@ ipv6_access_lists:
   entries:
   - protocol: ipv6
     source: 2001:db8:3::1
+    destination: any
+    sequence: 10
+    action: permit
+- name: peer6ACL_Port-Channel3000
+  entries:
+  - protocol: ipv6
+    source: 2001:db8:5::2
     destination: any
     sequence: 10
     action: permit
@@ -416,6 +440,27 @@ port_channel_interfaces:
   metadata:
     peer: ipv6-cloud-testing
     peer_interface: Po2000
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
+- name: Port-Channel3000
+  description: ipv6-peer-cloud_Po3000
+  shutdown: false
+  vrf: TESTING
+  ipv6_addresses:
+  - 2001:db8:5::1/64
+  ipv6_access_group_in: peer6ACL_Port-Channel3000
+  metadata:
+    peer: ipv6-peer-cloud
+    peer_interface: Po3000
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
+- name: Port-Channel3001
+  shutdown: false
+  vrf: TESTING
+  ipv6_access_group_in: in6ACL
+  metadata:
     peer_type: l3_port_channel
   switchport:
     enabled: false
