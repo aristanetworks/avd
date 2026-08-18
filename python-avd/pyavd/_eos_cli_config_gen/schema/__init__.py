@@ -17288,15 +17288,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             log: bool | None
             """
             Log matches against this rule.
-            Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
-            takes precedence.
+            For deny entries, mutually exclusive with `copy_captive_portal`.
+            `copy_captive_portal` takes precedence.
             """
             copy_captive_portal: bool | None
             """
             Copy packet to CPU queue for dot1x captive-portal.
             Only supported with deny entries.
-            Mutually
-            exclusive with `log`. `copy_captive_portal` takes precedence.
+            For deny
+            entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
             """
             vlan_inner: bool
             """
@@ -17395,13 +17395,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         ttl_match: ttl_match
                         log:
                            Log matches against this rule.
-                           Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
-                           takes precedence.
+                           For deny entries, mutually exclusive with `copy_captive_portal`.
+                           `copy_captive_portal` takes precedence.
                         copy_captive_portal:
                            Copy packet to CPU queue for dot1x captive-portal.
                            Only supported with deny entries.
-                           Mutually
-                           exclusive with `log`. `copy_captive_portal` takes precedence.
+                           For deny
+                           entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
                         vlan_inner:
                            Render vlan and mask as inner vlan.
                            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
