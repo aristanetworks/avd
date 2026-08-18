@@ -30,7 +30,7 @@ node_type_keys:
     default_evpn_encapsulation: mpls
   - key: rr
     type: rr
-    mpls_lsr: true
+    # mpls_lsr: true
     default_mpls_overlay_role: server
     default_evpn_role: none
     network_services:

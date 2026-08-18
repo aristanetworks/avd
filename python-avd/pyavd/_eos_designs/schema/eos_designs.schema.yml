@@ -438,6 +438,15 @@ keys:
 
           since this combination is not supported.'
         default: false
+      remove_dependency_of_mpls_lsr_for_mpls_overlay_server:
+        type: bool
+        description: 'Available from AVD 6.5.0.
+
+          Remove the dependency of ''mpls_lsr'' for ''mpls_overlay_role: server''.
+
+          When enabled, AVD will configure ''mpls_overlay_role: server'' without requiring
+          ''mpls_lsr: true''.'
+        default: false
       remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool
         description: 'Available from AVD 6.1.0.

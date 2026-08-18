@@ -1,0 +1,3 @@
+---
+avd_design_future:
+  remove_dependency_of_mpls_lsr_for_mpls_overlay_server: true

@@ -20,6 +20,7 @@
     | [<samp>&nbsp;&nbsp;only_configure_route_map_connected_to_bgp_vrfs_when_used</samp>](## "avd_design_future.only_configure_route_map_connected_to_bgp_vrfs_when_used") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.<br>The route map is skipped when both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,<br>since 'redistribute connected route-map' is not required in that case. |
     | [<samp>&nbsp;&nbsp;raise_for_port_channels_without_members</samp>](## "avd_design_future.raise_for_port_channels_without_members") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if an L3 Port-Channel is configured without any member interfaces. |
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
+    | [<samp>&nbsp;&nbsp;remove_dependency_of_mpls_lsr_for_mpls_overlay_server</samp>](## "avd_design_future.remove_dependency_of_mpls_lsr_for_mpls_overlay_server") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Remove the dependency of 'mpls_lsr' for 'mpls_overlay_role: server'.<br>When enabled, AVD will configure 'mpls_overlay_role: server' without requiring 'mpls_lsr: true'. |
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
 
 === "YAML"
@@ -80,6 +81,11 @@
       # Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
       # since this combination is not supported.
       raise_for_underlay_router_with_uplink_type_port_channel: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # Remove the dependency of 'mpls_lsr' for 'mpls_overlay_role: server'.
+      # When enabled, AVD will configure 'mpls_overlay_role: server' without requiring 'mpls_lsr: true'.
+      remove_dependency_of_mpls_lsr_for_mpls_overlay_server: <bool; default=False>
 
       # Available from AVD 6.1.0.
       # Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
