@@ -67,19 +67,41 @@
         timeout: 10
       register: device_inventory_status_on_cv
       until: >
-        device_inventory_status_on_cv.status == 200 and (device_inventory_status_on_cv.json.result.value.key.deviceId | default('') | length > 0) and
-        (device_inventory_status_on_cv.json.result.value.systemMacAddress | default('') | length > 0)
+        device_inventory_status_on_cv.status == 200 and
+        device_inventory_status_on_cv.content.splitlines() | reject('equalto', '') | list | length > 0
       retries: 10
       delay: 10
       environment:
         https_proxy: >-
           http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
-    - name: "Process raw device_inventory_status_on_cv variables - {{ test_id | upper }}"
+    - name: "Process device inventory response - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.set_fact:
-        device_serial_number: "{{ device_inventory_status_on_cv.json.result.value.key.deviceId }}"
-        device_system_mac_address: "{{ device_inventory_status_on_cv.json.result.value.systemMacAddress }}"
+        device_inventory_results: >-
+          {{ device_inventory_status_on_cv.content.splitlines() | reject('equalto', '') | map('from_json') | list }}
+
+    - name: "Verify device inventory response contains one device - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      ansible.builtin.assert:
+        that:
+          - device_inventory_results | length == 1
+        fail_msg: >-
+          Expected exactly one CloudVision inventory device with hostname '{{ inventory_hostname }}',
+          but found {{ device_inventory_results | length }}.
+
+    - name: "Verify device inventory identity - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      ansible.builtin.assert:
+        that:
+          - device_inventory_results[0].result.value.key.deviceId | default('') | length > 0
+          - device_inventory_results[0].result.value.systemMacAddress | default('') | length > 0
+
+    - name: "Set device inventory variables - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      ansible.builtin.set_fact:
+        device_serial_number: "{{ device_inventory_results[0].result.value.key.deviceId }}"
+        device_system_mac_address: "{{ device_inventory_results[0].result.value.systemMacAddress }}"
 
     - name: "Copy original structured_config files - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
