@@ -201,7 +201,7 @@ class RouterBgpMixin(Protocol):
         if self.shared_utils.overlay_vpn_ipv4:
             self.structured_config.router_bgp.address_family_vpn_ipv4.peer_groups.append_new(name=peer_group_name, activate=True)
             # OOB route-reflectors are not part of the EVPN overlay, so we disable next-hop resolution for them to avoid unnecessary ARP/ND lookups.
-            if not(self.shared_utils.overlay_evpn_mpls or self.shared_utils.overlay_evpn_vxlan):
+            if not (self.shared_utils.overlay_evpn_mpls or self.shared_utils.overlay_evpn_vxlan):
                 self.structured_config.router_bgp.address_family_vpn_ipv4.next_hop.resolution_disabled = True
                 self.structured_config.router_bgp.bgp.route_reflector_preserve_attributes.enabled = True
 
