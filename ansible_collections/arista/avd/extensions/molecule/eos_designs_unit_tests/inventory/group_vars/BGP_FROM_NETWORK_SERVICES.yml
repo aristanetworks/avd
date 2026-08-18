@@ -178,10 +178,6 @@ tenants:
       - name: default
         bgp:
           enabled: true
-          # Graceful restart under VRF default must be generated in the global BGP context.
-          graceful_restart:
-            enabled: true
-            restart_time: 150
         vrf_id: 104
         address_families: []
         bgp_peers:
