@@ -1425,3 +1425,32 @@ port_channel_interfaces:
         boundaries:
           - boundary: ff04::/16
             out: true
+
+  # IPv4 multicast with mixed-case ACL names (camelCase + lowercase) — validates case-insensitive natural_sort
+  - name: Port-Channel325
+    description: Multicast IPv4 mixed-case ACL boundary names
+    switchport:
+      enabled: false
+    ip_address: 100.64.127.43/31
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: MulticastBoundaryAcl
+            out: true
+          - boundary: acl_multicast_boundary
+
+  # IPv6 multicast with mixed-case ACL names (camelCase + lowercase) — validates case-insensitive natural_sort
+  - name: Port-Channel326
+    description: Multicast IPv6 mixed-case ACL boundary names
+    switchport:
+      enabled: false
+    ipv6_address: 2001:db8:326::1/64
+    multicast:
+      ipv6:
+        static: true
+        boundaries:
+          - boundary: MulticastAclIpv6
+            out: true
+          - boundary: acl_ipv6_boundary
+            out: true

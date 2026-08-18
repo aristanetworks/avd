@@ -6643,6 +6643,8 @@ interface Ethernet90
 | Port-Channel323 | IPv4 | - | ACL_NO_STATIC (out) |
 | Port-Channel323 | IPv6 | - | ff04::/16 (out) |
 | Port-Channel324 | IPv6 | True | ACL_IPV6_MULTICAST (out) |
+| Port-Channel325 | IPv4 | True | MulticastBoundaryAcl (out), acl_multicast_boundary |
+| Port-Channel326 | IPv6 | True | MulticastAclIpv6 (out), acl_ipv6_boundary (out) |
 
 ##### VLAN Translations
 
@@ -6713,6 +6715,7 @@ interface Ethernet90
 | Port-Channel320 | Multicast IPv4-only prefix boundaries | - | 100.64.127.40/31 | default | - | - | - | - |
 | Port-Channel322 | Multicast IPv4 boundaries without out flag | - | 100.64.127.41/31 | default | - | - | - | - |
 | Port-Channel323 | Multicast boundaries without static flag | - | 100.64.127.42/31 | default | - | - | - | - |
+| Port-Channel325 | Multicast IPv4 mixed-case ACL boundary names | - | 100.64.127.43/31 | default | - | - | - | - |
 
 ##### IP NAT: Source Static
 
@@ -6757,6 +6760,7 @@ interface Ethernet90
 | Port-Channel302 | Legacy IPv6 address and managed config flag | - | 2001:db8:302::1/64 | default | - | False | - | - | True | - | - | - | - | - |
 | Port-Channel321 | Multicast IPv6-only with out flags | - | 2001:db8:321::1/64 | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel324 | Multicast IPv6 ACL-only boundary | - | 2001:db8:324::1/64 | default | - | - | - | - | - | - | - | - | - | - |
+| Port-Channel326 | Multicast IPv6 mixed-case ACL boundary names | - | 2001:db8:326::1/64 | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel400 | TEST-IPV6-ND-WITHOUT-ADDR | - | - | default | - | - | True | - | True | True | - | - | TEST-V6-IN | TEST-V6-OUT |
 
 ##### VRRP Details
@@ -7569,6 +7573,22 @@ interface Port-Channel324
    no switchport
    ipv6 address 2001:db8:324::1/64
    multicast ipv6 boundary ACL_IPV6_MULTICAST out
+   multicast ipv6 static
+!
+interface Port-Channel325
+   description Multicast IPv4 mixed-case ACL boundary names
+   no switchport
+   ip address 100.64.127.43/31
+   multicast ipv4 boundary MulticastBoundaryAcl out
+   multicast ipv4 boundary acl_multicast_boundary
+   multicast ipv4 static
+!
+interface Port-Channel326
+   description Multicast IPv6 mixed-case ACL boundary names
+   no switchport
+   ipv6 address 2001:db8:326::1/64
+   multicast ipv6 boundary MulticastAclIpv6 out
+   multicast ipv6 boundary acl_ipv6_boundary out
    multicast ipv6 static
 !
 interface Port-Channel333
