@@ -645,7 +645,6 @@ port_channel_interfaces:
         boundaries:
           - boundary: ACL_MULTICAST_OUTBOUND
             out: true
-          - boundary: 224.0.1.0/24
       ipv6:
         static: true
         boundaries:
@@ -1361,7 +1360,7 @@ port_channel_interfaces:
 
   # IPv4-only multicast (no IPv6)
   - name: Port-Channel320
-    description: Multicast IPv4-only with mixed out flags
+    description: Multicast IPv4-only prefix boundaries
     switchport:
       enabled: false
     ip_address: 100.64.127.40/31
@@ -1369,7 +1368,7 @@ port_channel_interfaces:
       ipv4:
         static: true
         boundaries:
-          - boundary: ACL_IPV4_ONLY
+          - boundary: 224.0.0.0/8
             out: true
           - boundary: 224.1.0.0/16
 
@@ -1396,8 +1395,20 @@ port_channel_interfaces:
       ipv4:
         static: true
         boundaries:
-          - boundary: 224.2.0.0/16
           - boundary: ACL_NO_OUT_FLAG
+
+  # IPv6 ACL-only boundary
+  - name: Port-Channel324
+    description: Multicast IPv6 ACL-only boundary
+    switchport:
+      enabled: false
+    ipv6_address: 2001:db8:324::1/64
+    multicast:
+      ipv6:
+        static: true
+        boundaries:
+          - boundary: ACL_IPV6_MULTICAST
+            out: true
 
   # Boundaries defined, static flag undefined
   - name: Port-Channel323

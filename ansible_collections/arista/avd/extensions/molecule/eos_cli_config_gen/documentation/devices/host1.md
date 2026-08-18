@@ -6635,13 +6635,14 @@ interface Ethernet90
 
 | Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
 | --------- | ---------- | --------------------- | -------------------- |
-| Port-Channel99 | IPv4 | True | ACL_MULTICAST_OUTBOUND (out), 224.0.1.0/24 |
+| Port-Channel99 | IPv4 | True | ACL_MULTICAST_OUTBOUND (out) |
 | Port-Channel99 | IPv6 | True | ff00::/8 (out), ff01::/16 (out) |
-| Port-Channel320 | IPv4 | True | ACL_IPV4_ONLY (out), 224.1.0.0/16 |
+| Port-Channel320 | IPv4 | True | 224.0.0.0/8 (out), 224.1.0.0/16 |
 | Port-Channel321 | IPv6 | True | ff02::/16 (out) |
-| Port-Channel322 | IPv4 | True | 224.2.0.0/16, ACL_NO_OUT_FLAG |
+| Port-Channel322 | IPv4 | True | ACL_NO_OUT_FLAG |
 | Port-Channel323 | IPv4 | - | ACL_NO_STATIC (out) |
 | Port-Channel323 | IPv6 | - | ff04::/16 (out) |
+| Port-Channel324 | IPv6 | True | ACL_IPV6_MULTICAST (out) |
 
 ##### VLAN Translations
 
@@ -6709,7 +6710,7 @@ interface Ethernet90
 | Port-Channel137 | Traffic Engineering Interface | - | 100.64.127.4/31 | default | - | - | - | - |
 | Port-Channel138 | Traffic Engineering Interface Defaults | - | 100.64.127.8/31 | default | - | - | - | - |
 | Port-Channel303 | Traffic Engineering Static Delay Coverage | - | 100.64.127.10/31 | default | - | - | - | - |
-| Port-Channel320 | Multicast IPv4-only with mixed out flags | - | 100.64.127.40/31 | default | - | - | - | - |
+| Port-Channel320 | Multicast IPv4-only prefix boundaries | - | 100.64.127.40/31 | default | - | - | - | - |
 | Port-Channel322 | Multicast IPv4 boundaries without out flag | - | 100.64.127.41/31 | default | - | - | - | - |
 | Port-Channel323 | Multicast boundaries without static flag | - | 100.64.127.42/31 | default | - | - | - | - |
 
@@ -6755,6 +6756,7 @@ interface Ethernet90
 | Port-Channel301 | IPv6 ND new structure test | - | 2001:db8:300::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2500, expire: 450, refresh-always | - | - | - |
 | Port-Channel302 | Legacy IPv6 address and managed config flag | - | 2001:db8:302::1/64 | default | - | False | - | - | True | - | - | - | - | - |
 | Port-Channel321 | Multicast IPv6-only with out flags | - | 2001:db8:321::1/64 | default | - | - | - | - | - | - | - | - | - | - |
+| Port-Channel324 | Multicast IPv6 ACL-only boundary | - | 2001:db8:324::1/64 | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel400 | TEST-IPV6-ND-WITHOUT-ADDR | - | - | default | - | - | True | - | True | True | - | - | TEST-V6-IN | TEST-V6-OUT |
 
 ##### VRRP Details
@@ -7086,7 +7088,6 @@ interface Port-Channel99
    pim ipv4 neighbor filter Test_Filter_PortChannel
    pim ipv4 bfd
    multicast ipv4 boundary ACL_MULTICAST_OUTBOUND out
-   multicast ipv4 boundary 224.0.1.0/24
    multicast ipv6 boundary ff00::/8 out
    multicast ipv6 boundary ff01::/16 out
    multicast ipv4 static
@@ -7535,10 +7536,10 @@ interface Port-Channel303
    traffic-engineering min-delay static 7 microseconds
 !
 interface Port-Channel320
-   description Multicast IPv4-only with mixed out flags
+   description Multicast IPv4-only prefix boundaries
    no switchport
    ip address 100.64.127.40/31
-   multicast ipv4 boundary ACL_IPV4_ONLY out
+   multicast ipv4 boundary 224.0.0.0/8 out
    multicast ipv4 boundary 224.1.0.0/16
    multicast ipv4 static
 !
@@ -7553,7 +7554,6 @@ interface Port-Channel322
    description Multicast IPv4 boundaries without out flag
    no switchport
    ip address 100.64.127.41/31
-   multicast ipv4 boundary 224.2.0.0/16
    multicast ipv4 boundary ACL_NO_OUT_FLAG
    multicast ipv4 static
 !
@@ -7563,6 +7563,13 @@ interface Port-Channel323
    ip address 100.64.127.42/31
    multicast ipv4 boundary ACL_NO_STATIC out
    multicast ipv6 boundary ff04::/16 out
+!
+interface Port-Channel324
+   description Multicast IPv6 ACL-only boundary
+   no switchport
+   ipv6 address 2001:db8:324::1/64
+   multicast ipv6 boundary ACL_IPV6_MULTICAST out
+   multicast ipv6 static
 !
 interface Port-Channel333
    description Multiple VRIDs and tracking
