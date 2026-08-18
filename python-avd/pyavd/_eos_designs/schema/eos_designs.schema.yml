@@ -10480,14 +10480,14 @@ keys:
           warning: true
           removed: true
           remove_in_version: 6.0.0
-          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
+          new_key: vrfs[name="use_mgmt_interface_vrf"].enable
       enable_inband_mgmt_vrf:
         type: bool
         deprecation:
           warning: true
           removed: true
           remove_in_version: 6.0.0
-          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
+          new_key: vrfs[name="use_inband_mgmt_vrf"].enable
       ipv4_acls:
         type: list
         deprecation:
@@ -10629,6 +10629,10 @@ keys:
       loop_guard_default:
         type: bool
         description: Enable loopguard by default on all ports.
+        default: false
+      edge_port_bpduguard_default:
+        type: bool
+        description: Enable BPDU Guard on portfast interfaces.
         default: false
   ssh_settings:
     type: dict
