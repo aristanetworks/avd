@@ -20,7 +20,7 @@
   ansible.builtin.assert:
     that:
       - result is failed
-      - expected_error in result.msg
+      - result.msg == expected_error
   vars:
     expected_error: >-
       Error during plugin 'arista.avd.eos_designs_structured_config' execution: Missing validated inputs for host
