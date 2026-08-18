@@ -1,0 +1,20 @@
+---
+- name: Test missing eos_designs facts file
+  ignore_errors: true
+  register: result
+  arista.avd.eos_designs_documentation:
+    structured_config_dir: "{{ actual_output_dir }}"
+    fabric_documentation_file: "{{ actual_output_dir }}/eos_designs_documentation_missing_facts_file.md"
+    topology_csv_file: "{{ actual_output_dir }}/eos_designs_documentation_missing_facts_file_topology.csv"
+    p2p_links_csv_file: "{{ actual_output_dir }}/eos_designs_documentation_missing_facts_file_p2p.csv"
+    tmp_dir: "{{ actual_output_dir }}/tmp_missing_eos_designs_facts_for_documentation"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - >-
+        "Missing AVD eos_designs facts to generate documentation" in result.msg

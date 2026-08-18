@@ -897,6 +897,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-standard-acls.
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-prefix-list-catalog.md
 --8<--
 
+### IPv6 Prefix-List Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv6-prefix-list-catalog.md
+--8<--
+
 ### MAC ACLs Catalog
 
 --8<--

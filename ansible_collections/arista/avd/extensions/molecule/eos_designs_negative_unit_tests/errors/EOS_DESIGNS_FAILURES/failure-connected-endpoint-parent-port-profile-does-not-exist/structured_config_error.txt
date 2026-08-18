@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under port profile 'PROFILE-1' does not exist in `port_profiles`.

@@ -280,6 +280,15 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
    {{ maximum_routes_cli }}
 {%         endif %}
+{%         if peer_group.maximum_accepted_routes is arista.avd.defined %}
+{%             set maximum_accepted_routes_cli = "neighbor " ~ peer_group.name ~ " maximum-accepted-routes " ~ peer_group.maximum_accepted_routes.limit %}
+{%             if peer_group.maximum_accepted_routes.warning_limit.count is arista.avd.defined %}
+{%                 set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ peer_group.maximum_accepted_routes.warning_limit.count %}
+{%             elif peer_group.maximum_accepted_routes.warning_limit.percent is arista.avd.defined %}
+{%                 set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ peer_group.maximum_accepted_routes.warning_limit.percent ~ " percent" %}
+{%             endif %}
+   {{ maximum_accepted_routes_cli }}
+{%         endif %}
 {%         if peer_group.missing_policy is arista.avd.defined %}
 {%             for direction in ['in', 'out'] %}
 {%                 set dir = 'direction_' ~ direction %}
@@ -460,6 +469,15 @@ router bgp {{ router_bgp.as }}
 {%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
 {%             endif %}
    {{ maximum_routes_cli }}
+{%         endif %}
+{%         if neighbor.maximum_accepted_routes is arista.avd.defined %}
+{%             set maximum_accepted_routes_cli = "neighbor " ~ neighbor.ip_address ~ " maximum-accepted-routes " ~ neighbor.maximum_accepted_routes.limit %}
+{%             if neighbor.maximum_accepted_routes.warning_limit.count is arista.avd.defined %}
+{%                 set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ neighbor.maximum_accepted_routes.warning_limit.count %}
+{%             elif neighbor.maximum_accepted_routes.warning_limit.percent is arista.avd.defined %}
+{%                 set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ neighbor.maximum_accepted_routes.warning_limit.percent ~ " percent" %}
+{%             endif %}
+   {{ maximum_accepted_routes_cli }}
 {%         endif %}
 {%         if neighbor.missing_policy is arista.avd.defined %}
 {%             for direction in ['in', 'out'] %}
@@ -1189,6 +1207,15 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
       {{ nexthop_v6_cli }}
 {%             endif %}
+{%             if peer_group.maximum_accepted_routes is arista.avd.defined %}
+{%                 set maximum_accepted_routes_cli = "neighbor " ~ peer_group.name ~ " maximum-accepted-routes " ~ peer_group.maximum_accepted_routes.limit %}
+{%                 if peer_group.maximum_accepted_routes.warning_limit.count is arista.avd.defined %}
+{%                     set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ peer_group.maximum_accepted_routes.warning_limit.count %}
+{%                 elif peer_group.maximum_accepted_routes.warning_limit.percent is arista.avd.defined %}
+{%                     set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ peer_group.maximum_accepted_routes.warning_limit.percent ~ " percent" %}
+{%                 endif %}
+      {{ maximum_accepted_routes_cli }}
+{%             endif %}
 {%             if peer_group.peer_tag_in is arista.avd.defined %}
       neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
 {%             endif %}
@@ -1264,6 +1291,15 @@ router bgp {{ router_bgp.as }}
 {%                 else %}
       no neighbor {{ neighbor.ip_address }} next-hop address-family ipv6
 {%                 endif %}
+{%             endif %}
+{%             if neighbor.maximum_accepted_routes is arista.avd.defined %}
+{%                 set maximum_accepted_routes_cli = "neighbor " ~ neighbor.ip_address ~ " maximum-accepted-routes " ~ neighbor.maximum_accepted_routes.limit %}
+{%                 if neighbor.maximum_accepted_routes.warning_limit.count is arista.avd.defined %}
+{%                     set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ neighbor.maximum_accepted_routes.warning_limit.count %}
+{%                 elif neighbor.maximum_accepted_routes.warning_limit.percent is arista.avd.defined %}
+{%                     set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ neighbor.maximum_accepted_routes.warning_limit.percent ~ " percent" %}
+{%                 endif %}
+      {{ maximum_accepted_routes_cli }}
 {%             endif %}
 {%             if neighbor.peer_tag_in is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
@@ -2030,6 +2066,15 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
 {%                 endif %}
 {%             endif %}
+{%             if peer_group.maximum_accepted_routes is arista.avd.defined %}
+{%                 set maximum_accepted_routes_cli = "neighbor " ~ peer_group.name ~ " maximum-accepted-routes " ~ peer_group.maximum_accepted_routes.limit %}
+{%                 if peer_group.maximum_accepted_routes.warning_limit.count is arista.avd.defined %}
+{%                     set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ peer_group.maximum_accepted_routes.warning_limit.count %}
+{%                 elif peer_group.maximum_accepted_routes.warning_limit.percent is arista.avd.defined %}
+{%                     set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ peer_group.maximum_accepted_routes.warning_limit.percent ~ " percent" %}
+{%                 endif %}
+      {{ maximum_accepted_routes_cli }}
+{%             endif %}
 {%             if peer_group.peer_tag_in is arista.avd.defined %}
       neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
 {%             endif %}
@@ -2094,6 +2139,15 @@ router bgp {{ router_bgp.as }}
       {{ add_path_cli }}
 {%                     endif %}
 {%                 endif %}
+{%             endif %}
+{%             if neighbor.maximum_accepted_routes is arista.avd.defined %}
+{%                 set maximum_accepted_routes_cli = "neighbor " ~ neighbor.ip_address ~ " maximum-accepted-routes " ~ neighbor.maximum_accepted_routes.limit %}
+{%                 if neighbor.maximum_accepted_routes.warning_limit.count is arista.avd.defined %}
+{%                     set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ neighbor.maximum_accepted_routes.warning_limit.count %}
+{%                 elif neighbor.maximum_accepted_routes.warning_limit.percent is arista.avd.defined %}
+{%                     set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ neighbor.maximum_accepted_routes.warning_limit.percent ~ " percent" %}
+{%                 endif %}
+      {{ maximum_accepted_routes_cli }}
 {%             endif %}
 {%             if neighbor.peer_tag_in is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
@@ -3017,6 +3071,15 @@ router bgp {{ router_bgp.as }}
 {%                     set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
 {%                 endif %}
       {{ maximum_routes_cli }}
+{%             endif %}
+{%             if neighbor.maximum_accepted_routes is arista.avd.defined %}
+{%                 set maximum_accepted_routes_cli = "neighbor " ~ neighbor.ip_address ~ " maximum-accepted-routes " ~ neighbor.maximum_accepted_routes.limit %}
+{%                 if neighbor.maximum_accepted_routes.warning_limit.count is arista.avd.defined %}
+{%                     set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ neighbor.maximum_accepted_routes.warning_limit.count %}
+{%                 elif neighbor.maximum_accepted_routes.warning_limit.percent is arista.avd.defined %}
+{%                     set maximum_accepted_routes_cli = maximum_accepted_routes_cli ~ " warning-limit " ~ neighbor.maximum_accepted_routes.warning_limit.percent ~ " percent" %}
+{%                 endif %}
+      {{ maximum_accepted_routes_cli }}
 {%             endif %}
 {%             if neighbor.peer_tag_in is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}

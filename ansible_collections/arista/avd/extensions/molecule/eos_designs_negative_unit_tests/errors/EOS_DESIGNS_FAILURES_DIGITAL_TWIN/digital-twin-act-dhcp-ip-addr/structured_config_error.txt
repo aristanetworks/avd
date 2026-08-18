@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: 'mgmt_ip: dhcp' is not supported for Digital Twin. A static management IP address is required for host 'digital-twin-act-dhcp-ip-addr'.

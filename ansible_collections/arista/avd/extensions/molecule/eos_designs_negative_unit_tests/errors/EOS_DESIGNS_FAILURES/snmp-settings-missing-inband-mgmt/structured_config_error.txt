@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'snmp_settings.local_engineid_ip' is set to 'use_inband_mgmt_interface' but this node is missing configuration for inband management.

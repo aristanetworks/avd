@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: The policy `wan_virtual_topologies.policies[PROD-AUTOVPN-POLICY]` cannot match any traffic but is assigned to a VRF. Make sure at least one path-group present on the device is used in the policy.

@@ -70,7 +70,7 @@ manifest:
     - include requirements.yml
     - exclude galaxy.yml galaxy.yaml MANIFEST.json FILES.json <namespace>-<name>-*.tar.gz
     - recursive-exclude tests/output **
-    - global-exclude /.* /__pycache__ *.pyc *.pyo *.bak *~ *.swp
+    - global-exclude /.* /__pycache__ *.pyc *.pyo *.bak *~ *.swp e2e-test.toml
     # Adding dotfiles
     - include examples/cv-pathfinder/.vault
     - include tests/integration/targets/vars_global_vars/zz_global_vars/.03.yml
