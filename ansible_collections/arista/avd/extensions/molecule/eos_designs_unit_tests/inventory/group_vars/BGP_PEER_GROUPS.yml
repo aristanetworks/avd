@@ -69,6 +69,8 @@ bgp_peer_groups:
       description: Description for evpn_overlay_peers via structured_config
   evpn_overlay_core:
     bfd: false
+    # Test re-keying the core password on a regular iBGP EVPN neighbor whose remote node uses a same-address core peering.
+    password: "7PAWRjxv8U6PaK1vvQ5mK/7YOTeJ7b4J"
     # Custom structured config added under router_bgp.peer_groups.<name> in the final structured config.
     structured_config:
       description: Description for evpn_overlay_core via structured_config
@@ -104,6 +106,19 @@ l3leaf:
     uplink_interfaces: [Ethernet1]
     uplink_switches: [bgp-peer-groups-3]
     uplink_ipv4_pool: 192.168.252.0/24
+  nodes:
+    - name: bgp-peer-groups-ibgp-vxlan-client
+      id: 107
+      evpn_route_servers: [bgp-peer-groups-ibgp-vxlan-server]
+      evpn_gateway:
+        remote_peers:
+          # Test a same-address core peering from an iBGP VXLAN client to its EVPN Route Server.
+          - hostname: bgp-peer-groups-ibgp-vxlan-server
+      uplink_switch_interfaces: [Ethernet7]
+    - name: bgp-peer-groups-ibgp-vxlan-server
+      id: 108
+      evpn_role: server
+      uplink_switch_interfaces: [Ethernet8]
   node_groups:
     - group: mlag
       nodes:

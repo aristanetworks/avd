@@ -172,6 +172,8 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "downlink_switches.[]") | String |  |  |  |  |
     | [<samp>evpn_route_server_clients</samp>](## "evpn_route_server_clients") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "evpn_route_server_clients.[]") | String |  |  |  |  |
+    | [<samp>evpn_gateway_remote_peer_clients</samp>](## "evpn_gateway_remote_peer_clients") | List, items: String |  |  |  | Hostnames of devices configured with this node as an EVPN Gateway remote peer using this node's regular overlay peering address. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "evpn_gateway_remote_peer_clients.[]") | String |  |  |  |  |
     | [<samp>mpls_route_reflector_clients</samp>](## "mpls_route_reflector_clients") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mpls_route_reflector_clients.[]") | String |  |  |  |  |
 
@@ -461,6 +463,10 @@
     downlink_switches:
       - <str>
     evpn_route_server_clients:
+      - <str>
+
+    # Hostnames of devices configured with this node as an EVPN Gateway remote peer using this node's regular overlay peering address.
+    evpn_gateway_remote_peer_clients:
       - <str>
     mpls_route_reflector_clients:
       - <str>

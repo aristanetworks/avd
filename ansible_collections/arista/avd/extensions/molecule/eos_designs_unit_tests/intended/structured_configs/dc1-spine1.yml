@@ -364,6 +364,7 @@ router_bgp:
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 15
+    password: 7PAWRjxv8U6PaK1vvQ5mK/7YOTeJ7b4J
     send_community: all
     maximum_routes: 0
   neighbors:
@@ -495,12 +496,14 @@ router_bgp:
     metadata:
       peer: dc1-bl1a
     description: dc1-bl1a
+    password: dIQCp90PglkFmdZB0Z8P2w/sw5NKHCbC
   - ip_address: 192.168.255.15
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65105'
     metadata:
       peer: dc1-bl1b
     description: dc1-bl1b
+    password: dIQCp90PglkFmdZB0Z8P2w/sw5NKHCbC
   - ip_address: 192.168.255.16
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65106'

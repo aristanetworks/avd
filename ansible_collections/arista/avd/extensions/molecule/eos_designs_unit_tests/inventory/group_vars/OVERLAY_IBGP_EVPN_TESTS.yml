@@ -4,6 +4,11 @@ fabric_evpn_encapsulation: mpls
 overlay_routing_protocol: ibgp
 evpn_overlay_bgp_rtc: true
 
+bgp_peer_groups:
+  evpn_overlay_core:
+    # Test re-keying the core password on a regular iBGP EVPN neighbor whose remote node uses a same-address core peering.
+    password: "7PAWRjxv8U6PaK1vvQ5mK/7YOTeJ7b4J"
+
 l3leaf:
   defaults:
     loopback_ipv4_pool: 192.168.255.0/24

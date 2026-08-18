@@ -11,6 +11,7 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdDeprecationWarning
 from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
+from pyavd._utils.password_utils import bgp_decrypt, bgp_encrypt
 from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import natural_sort
 
@@ -517,6 +518,7 @@ class RouterBgpMixin(Protocol):
                     remote_as=data["bgp_as"],
                     overlay_peering_interface=data.get("overlay_peering_interface"),
                 )
+                self._set_regular_evpn_neighbor_core_password(neighbor, route_server)
                 if self.inputs.evpn_prevent_readvertise_to_server:
                     match self.inputs.evpn_prevent_readvertise_to_server_mode:
                         case "source_peer_asn" | "as_path_acl":
@@ -546,6 +548,7 @@ class RouterBgpMixin(Protocol):
                     remote_as=data["bgp_as"],
                     overlay_peering_interface=data.get("overlay_peering_interface"),
                 )
+                self._set_regular_evpn_neighbor_core_password(neighbor, route_client)
                 neighbors.append(neighbor)
 
                 # Create peer-group
@@ -584,6 +587,7 @@ class RouterBgpMixin(Protocol):
                         self.inputs.bgp_peer_groups.evpn_overlay_peers.name,
                         overlay_peering_interface=data.get("overlay_peering_interface"),
                     )
+                    self._set_regular_evpn_neighbor_core_password(neighbor, route_server)
                     neighbors.append(neighbor)
 
                     # Create peer-group
@@ -599,6 +603,7 @@ class RouterBgpMixin(Protocol):
                         self.inputs.bgp_peer_groups.evpn_overlay_peers.name,
                         overlay_peering_interface=data.get("overlay_peering_interface"),
                     )
+                    self._set_regular_evpn_neighbor_core_password(neighbor, route_client)
                     neighbors.append(neighbor)
 
                     # Create peer-group
@@ -691,6 +696,26 @@ class RouterBgpMixin(Protocol):
 
             # Create peer-group
             self.set_once_peer_group_evpn_overlay_core()
+
+    def _set_regular_evpn_neighbor_core_password(
+        self: AvdStructuredConfigOverlayProtocol, neighbor: EosCliConfigGen.RouterBgp.NeighborsItem, peer_name: str
+    ) -> None:
+        """Use the EVPN Gateway core password when the peer uses a same-address core peering towards this node."""
+        if peer_name not in self.facts.evpn_gateway_remote_peer_clients:
+            return
+
+        evpn_overlay_core = self.inputs.bgp_peer_groups.evpn_overlay_core
+        if password := self.shared_utils.get_bgp_password(evpn_overlay_core):
+            neighbor.password = bgp_encrypt(bgp_decrypt(password, evpn_overlay_core.name), neighbor.ip_address)
+            return
+
+        if self.shared_utils.get_bgp_password(self.inputs.bgp_peer_groups.evpn_overlay_peers) is not None:
+            msg = (
+                f"EVPN peer '{peer_name}' uses a same-address CORE session towards this node, while this node returns a regular PEERS session. "
+                "Since PEERS uses authentication, configure 'bgp_peer_groups.evpn_overlay_core.password'. "
+                "AVD will apply it to the returning PEERS neighbor."
+            )
+            raise AristaAvdInvalidInputsError(msg)
 
     def _set_ipvpn_gateway_remote_peers(self: AvdStructuredConfigOverlayProtocol) -> None:
         if not self.shared_utils.overlay_ipvpn_gateway:
