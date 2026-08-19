@@ -57,6 +57,7 @@ router_bgp:
     graceful_restart:
       enabled: false
       restart_time: 300
+    no_graceful_restart: true
     redistribute:
       connected:
         enabled: true
