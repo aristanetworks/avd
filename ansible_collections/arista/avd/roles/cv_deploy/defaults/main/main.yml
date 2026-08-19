@@ -110,7 +110,6 @@ cv_run_change_control: false
 
 # Set the requested state of the created or existing Change Control.
 # Accepted values: "pending approval", "approved", "running" or "completed".
-# "deleted" is also accepted when cv_change_control_id is set.
 # cv_change_control_requested_state: <str>
 
 # Remove any tags on the devices and interfaces not specified by AVD.

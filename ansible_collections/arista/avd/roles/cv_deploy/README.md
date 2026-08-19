@@ -345,7 +345,6 @@ The optional settings below provide direct control over Workspace and Change Con
 
 # Set the requested state of the created or existing Change Control.
 # Accepted values: "pending approval", "approved", "running" or "completed".
-# "deleted" is also accepted when cv_change_control_id is set.
 # cv_change_control_requested_state: <str>
 
 # Set the ID of an existing Change Control to manage without performing a deployment.
@@ -360,22 +359,9 @@ The optional settings below provide direct control over Workspace and Change Con
 
 **`cv_change_control_id`**
 
-Setting `cv_change_control_id` enables Change-Control-only mode. In this mode, `cv_devices` must be empty and no configurations, tags, metadata, or static config manifest may be supplied. Otherwise, the role fails before making any changes to CloudVision. The existing Change Control is moved forward to `cv_change_control_requested_state`. If the Change Control has already progressed beyond the requested state, the role fails because `cv_deploy` currently supports forward Change Control state transitions only.
+Setting `cv_change_control_id` enables Change-Control-only mode. In this mode, `cv_devices` must be empty and no configurations, tags, metadata, or static config manifest may be supplied. Otherwise, the role fails before making any changes to CloudVision. The existing Change Control is managed according to `cv_change_control_requested_state`. CloudVision determines whether the requested operation is valid for the current Change Control state or not.
 
 In both the regular deployment and Change-Control-only modes, `cv_change_control_name` and `cv_change_control_description` update the Change Control. `cv_change_control_approval_note` and `cv_change_control_start_note` control the notes used when the workflow performs the corresponding state transitions.
-
-In Change-Control-only mode, the requested state is considered reached for the following CloudVision state and approval combinations:
-
-| Requested state | Matching CloudVision state |
-| ---------------- | -------------------------- |
-| `pending approval` | `NOT_STARTED` or `UNSPECIFIED`, and unapproved |
-| `approved` | `NOT_STARTED` or `UNSPECIFIED`, and approved |
-| `running` | `RUNNING` |
-| `completed` | `COMPLETED`, with or without an execution error |
-| `deleted` | The Change Control does not exist after deletion |
-
-A scheduled Change Control does not satisfy a request for the `running` state, and this transition is not supported.
-If a Change Control does not exist when `deleted` is requested, the operation succeeds without reporting a change.
 
 **`cv_workspace_id`**
 

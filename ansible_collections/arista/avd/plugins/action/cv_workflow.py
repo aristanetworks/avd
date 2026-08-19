@@ -130,7 +130,7 @@ ARGUMENT_SPEC = {
             "requested_state": {
                 "type": "str",
                 "default": "pending approval",
-                "choices": ["pending approval", "approved", "running", "completed", "deleted"],
+                "choices": ["pending approval", "approved", "running", "completed"],
             },
         },
     },
@@ -161,13 +161,6 @@ def validate_change_control_only_inputs(work_to_do: bool, device_list: list[str]
 
     if device_list:
         msg = "Change-Control-only mode requires the device list to be empty"
-        raise AnsibleActionFail(msg)
-
-
-def validate_change_control_requested_state(change_control: CVChangeControl) -> None:
-    """Validate the requested state for a created or existing Change Control."""
-    if change_control.id is None and change_control.requested_state == "deleted":
-        msg = "The 'deleted' Change Control state requires an existing Change Control ID"
         raise AnsibleActionFail(msg)
 
 
@@ -286,7 +279,6 @@ class ActionModule(ActionBase):
             )
 
             change_control = CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={})))
-            validate_change_control_requested_state(change_control)
 
             if change_control.id is not None:
                 validate_change_control_only_inputs(

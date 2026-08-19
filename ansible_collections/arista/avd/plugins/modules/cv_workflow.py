@@ -222,10 +222,9 @@ options:
           - `approved`: Approve the Change Control but do not start.
           - `running`: Approve and start the Change Control. Do not wait for the Change Control to be completed or failed.
           - `completed`: Approve and start the Change Control. Wait for the Change Control to be completed.
-          - `deleted`: Delete an existing Change Control identified by `id`. Only supported when it is not running or completed.
         type: str
         default: pending approval
-        choices: ["pending approval", "approved", "running", "completed", "deleted"]
+        choices: ["pending approval", "approved", "running", "completed"]
   timeouts:
     description: Timeouts for long running operations. May need to be adjusted for large inventories.
     type: dict

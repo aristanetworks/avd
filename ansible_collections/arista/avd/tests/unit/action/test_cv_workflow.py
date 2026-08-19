@@ -206,18 +206,6 @@ def test_deploy_rejects_devices_with_existing_change_control(action_module: Call
         asyncio.run(module.deploy(validated_args, {}))
 
 
-def test_deploy_rejects_deleted_state_without_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
-    """The deleted state requires an existing Change Control ID."""
-    module = action_module(ActionModule)
-    validated_args = _make_validated_args(device_list=[], change_control={"requested_state": "deleted"})
-
-    with (
-        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
-        pytest.raises(AnsibleActionFail, match="The 'deleted' Change Control state requires an existing Change Control ID"),
-    ):
-        asyncio.run(module.deploy(validated_args, {}))
-
-
 # ---------------------------------------------------------------------------
 # load_structured_config() — logging tests
 # ---------------------------------------------------------------------------

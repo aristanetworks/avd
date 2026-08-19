@@ -17,7 +17,6 @@ def mock_cv_client() -> MagicMock:
     # Patch all required async methods with AsyncMock
     client.get_change_control = AsyncMock()
     client.set_change_control = AsyncMock()
-    client.delete_change_control = AsyncMock()
     client.approve_change_control = AsyncMock()
     client.start_change_control = AsyncMock()
     client.wait_for_change_control_state = AsyncMock()
