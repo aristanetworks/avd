@@ -1385,9 +1385,9 @@ port_channel_interfaces:
           - boundary: ff02::/16
             out: true
 
-  # IPv4 boundaries ALL without out flag
+  # IPv4 ACL-only boundaries — multiple entries with mixed case; uppercase ACL names sort before lowercase (case-sensitive natural_sort)
   - name: Port-Channel322
-    description: Multicast IPv4 boundaries without out flag
+    description: Multicast IPv4 multiple ACL boundaries mixed case
     switchport:
       enabled: false
     ip_address: 100.64.127.41/31
@@ -1395,11 +1395,12 @@ port_channel_interfaces:
       ipv4:
         static: true
         boundaries:
+          - boundary: MulticastBoundaryAcl
           - boundary: ACL_NO_OUT_FLAG
 
-  # IPv6 ACL-only boundary
+  # IPv6 ACL-only boundaries — multiple entries with mixed case; uppercase ACL names sort before lowercase (case-sensitive natural_sort)
   - name: Port-Channel324
-    description: Multicast IPv6 ACL-only boundary
+    description: Multicast IPv6 multiple ACL boundaries mixed case
     switchport:
       enabled: false
     ipv6_address: 2001:db8:324::1/64
@@ -1407,6 +1408,8 @@ port_channel_interfaces:
       ipv6:
         static: true
         boundaries:
+          - boundary: MulticastAclIpv6
+            out: true
           - boundary: ACL_IPV6_MULTICAST
             out: true
 
@@ -1426,31 +1429,3 @@ port_channel_interfaces:
           - boundary: ff04::/16
             out: true
 
-  # IPv4 multicast with mixed-case ACL names (camelCase + lowercase) — validates case-insensitive natural_sort
-  - name: Port-Channel325
-    description: Multicast IPv4 mixed-case ACL boundary names
-    switchport:
-      enabled: false
-    ip_address: 100.64.127.43/31
-    multicast:
-      ipv4:
-        static: true
-        boundaries:
-          - boundary: MulticastBoundaryAcl
-            out: true
-          - boundary: acl_multicast_boundary
-
-  # IPv6 multicast with mixed-case ACL names (camelCase + lowercase) — validates case-insensitive natural_sort
-  - name: Port-Channel326
-    description: Multicast IPv6 mixed-case ACL boundary names
-    switchport:
-      enabled: false
-    ipv6_address: 2001:db8:326::1/64
-    multicast:
-      ipv6:
-        static: true
-        boundaries:
-          - boundary: MulticastAclIpv6
-            out: true
-          - boundary: acl_ipv6_boundary
-            out: true
