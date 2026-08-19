@@ -169,6 +169,21 @@ async def test_finalize_scheduled_defers_start_decision_to_cloudvision(mock_cv_c
 
 
 @pytest.mark.asyncio
+async def test_finalize_scheduled_to_completed_defers_start_decision_to_cloudvision(mock_cv_client: MagicMock) -> None:
+    """Test that CloudVision decides whether a scheduled Change Control can be started before waiting for completion."""
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="completed"))
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=ChangeControlStatus.SCHEDULED, approved=True)
+    mock_cv_client.wait_for_change_control_state.return_value = create_grpc_change_control(status=ChangeControlStatus.COMPLETED, approved=True)
+
+    await finalize_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.start_change_control.assert_called_once_with(change_control_id="cc_id_1", description="Automatically started by AVD")
+    mock_cv_client.wait_for_change_control_state.assert_called_once_with(cc_id="cc_id_1", state="completed")
+    assert local_cc.state == "completed"
+    assert local_cc.changed is True
+
+
+@pytest.mark.asyncio
 async def test_finalize_completed_failure_defers_start_decision_to_cloudvision(mock_cv_client: MagicMock) -> None:
     """Test that CloudVision decides whether a completed failed Change Control can be started."""
     local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="running"))

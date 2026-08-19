@@ -89,17 +89,13 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
         change_control.state = get_change_control_state(cv_change_control=cv_change_control, is_change_control_only=is_change_control_only)
         LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
-    # TODO: Add support for canceling and deleting a Change Control.
+    # TODO: Add support for stopping, unscheduling, unapproving, and deleting a Change Control
     # If requested state is "pending approval" we are done.
     if change_control.requested_state == "pending approval":
         return
 
-    # Return when the requested operation is already satisfied in Change-Control-only mode.
-    if is_change_control_only and (
-        (change_control.requested_state == "approved" and cv_change_control.approve.value)
-        or (change_control.requested_state == "running" and cv_change_control.status == ChangeControlStatus.RUNNING)
-        or (change_control.requested_state == "completed" and cv_change_control.status == ChangeControlStatus.COMPLETED)
-    ):
+    # Do not restart a completed Change Control in Change-Control-only mode
+    if is_change_control_only and change_control.requested_state == "completed" and cv_change_control.status == ChangeControlStatus.COMPLETED:
         return
 
     # For all other requested states we first need to approve.
@@ -117,11 +113,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     if change_control.requested_state == "approved":
         return
 
-    start_required = (
-        not is_change_control_only
-        or change_control.requested_state == "running"
-        or cv_change_control.status not in {ChangeControlStatus.RUNNING, ChangeControlStatus.SCHEDULED}
-    )
+    start_required = not is_change_control_only or cv_change_control.status != ChangeControlStatus.RUNNING
     if start_required:
         await cv_client.start_change_control(change_control_id=change_control.id, description=change_control.avd_change_control.start_note)
         change_control.state = "running"
