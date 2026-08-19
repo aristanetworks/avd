@@ -1,1 +1,0 @@
-pyavd._errors.AristaAvdMissingVariableError: 'ipv4_standard_acls[name=missing-acl]' is required but was not found for host 'missing-dot1x-ipv4-standard-acl-in-catalog'.

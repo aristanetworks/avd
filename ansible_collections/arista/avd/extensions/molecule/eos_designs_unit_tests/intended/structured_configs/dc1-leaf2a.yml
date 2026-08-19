@@ -425,6 +425,13 @@ hardware:
     serdes: 25G
 hostname: dc1-leaf2a
 ip_access_lists:
+- name: ACL1
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   entries:
   - sequence: 15
@@ -458,6 +465,14 @@ ip_radius:
     source_interface: Management99
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ipv6_access_lists:
+- name: ACL1
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ipv6
+    source: any
+    destination: any
 ipv6_static_routes:
 - vrf: Tenant_D_OP_Zone
   prefix: ::/0
@@ -1131,12 +1146,6 @@ spanning_tree:
   mst_instances:
   - id: '0'
     priority: 4096
-standard_access_lists:
-- name: ACL1
-  entries:
-  - sequence: 10
-    action: permit
-    source: any
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

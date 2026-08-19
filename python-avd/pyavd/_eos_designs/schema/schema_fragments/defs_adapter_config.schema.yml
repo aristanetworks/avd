@@ -190,58 +190,17 @@ $defs:
               Optional if default link_tracking settings are configured on the node.
       dot1x:
         type: dict
+        $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x"
         keys:
-          port_control:
-            type: str
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/port_control
-          port_control_force_authorized_phone:
-            type: bool
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/port_control_force_authorized_phone
-          reauthentication:
-            type: bool
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/reauthentication
-          pae:
-            type: dict
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/pae
           authentication_failure:
             type: dict
+            $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/authentication_failure"
             keys:
-              action:
+              allow_access_list:
                 type: str
-                valid_values: ["allow", "drop"]
-              allow_vlan:
-                type: int
-                min: 1
-                max: 4094
-                convert_types:
-                  - str
-              allow_ipv4_standard_access_list:
-                type: str
-                description: Name of the IPv4 standard access list to be applied to unauthenticated traffic.
-          host_mode:
-            type: dict
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/host_mode
-          mac_based_authentication:
-            type: dict
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/mac_based_authentication
-          mac_based_access_list:
-            type: bool
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/mac_based_access_list
-          timeout:
-            type: dict
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/timeout
-          reauthorization_request_limit:
-            type: int
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/reauthorization_request_limit
-          unauthorized:
-            type: dict
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/unauthorized
-          eapol:
-            type: dict
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/eapol
-          aaa:
-            type: dict
-            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/aaa
+                description: |-
+                  Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                  The access list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
       address_locking:
         type: dict
         description: Address locking settings applied on the port.
