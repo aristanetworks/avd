@@ -731,10 +731,10 @@ ip routing vrf VRF12
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| VRF10 | false |
-| VRF11 | true |
-| VRF12 | true |
+| MGMT | False |
+| VRF10 | False |
+| VRF11 | True |
+| VRF12 | True |
 
 #### IPv6 Routing Device Configuration
 
