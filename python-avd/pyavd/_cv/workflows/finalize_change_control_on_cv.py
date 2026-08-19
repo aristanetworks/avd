@@ -35,18 +35,23 @@ CHANGE_CONTROL_ONLY_STATUS_TO_FINAL_STATE_MAP = {
 CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP = {True: "approved", False: None}
 
 
+def get_change_control_only_state(status: ChangeControlStatus, *, approved: bool, has_error: bool) -> str:
+    """Return the current state of an existing Change Control."""
+    if status == ChangeControlStatus.UNSPECIFIED:
+        return CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[approved] or "pending approval"
+    # Case of failed Change Control execution
+    if status == ChangeControlStatus.COMPLETED and has_error:
+        return "failed"
+    return CHANGE_CONTROL_ONLY_STATUS_TO_FINAL_STATE_MAP[status] or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[approved] or "pending approval"
+
+
 def get_change_control_state(cv_change_control: ChangeControl, *, is_change_control_only: bool) -> str:
     """Return the current Change Control state."""
     if is_change_control_only:
-        if cv_change_control.status == ChangeControlStatus.UNSPECIFIED:
-            return CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[cv_change_control.approve.value] or "pending approval"
-        # Case of failed Change Control execution
-        if cv_change_control.status == ChangeControlStatus.COMPLETED and cv_change_control.error is not None:
-            return "failed"
-        return (
-            CHANGE_CONTROL_ONLY_STATUS_TO_FINAL_STATE_MAP[cv_change_control.status]
-            or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[cv_change_control.approve.value]
-            or "pending approval"
+        return get_change_control_only_state(
+            cv_change_control.status,
+            approved=cv_change_control.approve.value,
+            has_error=cv_change_control.error is not None,
         )
 
     return (
@@ -90,7 +95,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
         LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     # TODO: Add support for stopping, unscheduling, unapproving, and deleting a Change Control
-    # If requested state is "pending approval" we are done.
+    # If requested state is "pending approval" we are done
     if change_control.requested_state == "pending approval":
         return
 
@@ -105,7 +110,14 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
             timestamp=cv_change_control.change.time,
             description=change_control.avd_change_control.approval_note,
         )
-        change_control.state = "approved"
+        if is_change_control_only:
+            change_control.state = get_change_control_only_state(
+                cv_change_control.status,
+                approved=True,
+                has_error=cv_change_control.error is not None,
+            )
+        else:
+            change_control.state = "approved"
         change_control.changed = True
         LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 

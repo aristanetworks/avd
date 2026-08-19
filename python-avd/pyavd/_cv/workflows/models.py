@@ -92,7 +92,7 @@ class AvdChangeControl:
     name: str | None = None
     description: str | None = None
     change_control_template: AvdChangeControlTemplate | None = None
-    requested_state: Literal["pending approval", "approved", "running", "completed"] = "pending approval"
+    requested_state: Literal["pending approval", "approved", "running", "completed", "deleted"] = "pending approval"
     """
     The requested state for the Change Control.
 
@@ -100,6 +100,7 @@ class AvdChangeControl:
     - `"approved"`: Approve the Change Control but do not start.
     - `"running"`: Approve and start the Change Control. Do not wait for the Change Control to be completed or failed.
     - `"completed"`: Approve and start the Change Control. Wait for the Change Control to be completed.
+    - `"deleted"`: Create and delete the Change Control. Used for dry-run where no changes will be committed to the network.
     """
     approval_note: str = "Automatic approval by AVD"
     """Note used when approving the Change Control."""
@@ -111,7 +112,7 @@ class AvdChangeControl:
 class CVChangeControl:
     avd_change_control: AvdChangeControl = field(default_factory=AvdChangeControl)
     id: str | None = None
-    state: Literal["pending approval", "approved", "scheduled", "running", "completed", "failed"] | None = None
+    state: Literal["pending approval", "approved", "scheduled", "running", "completed", "deleted", "failed"] | None = None
     name: str | None = None
     description: str | None = None
     changed: bool = False
@@ -135,7 +136,7 @@ class CVChangeControl:
         return self.avd_change_control.change_control_template
 
     @property
-    def requested_state(self) -> Literal["pending approval", "approved", "running", "completed"]:
+    def requested_state(self) -> Literal["pending approval", "approved", "running", "completed", "deleted"]:
         return self.avd_change_control.requested_state
 
     def get_result(self) -> dict[str, Any]:
