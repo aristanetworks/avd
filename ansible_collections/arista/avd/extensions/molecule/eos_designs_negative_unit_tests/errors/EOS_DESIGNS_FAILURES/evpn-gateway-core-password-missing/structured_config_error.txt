@@ -1,1 +1,0 @@
-pyavd._errors.AristaAvdInvalidInputsError: EVPN peer 'evpn-gateway-core-password-missing-peer' uses a same-address CORE session towards this node, while this node returns a regular PEERS session. Since PEERS uses authentication, configure 'bgp_peer_groups.evpn_overlay_core.password'. AVD will apply it to the returning PEERS neighbor.

@@ -421,11 +421,6 @@ keys:
     type: list
     items:
       type: str
-  evpn_gateway_remote_peer_clients:
-    type: list
-    description: Hostnames of devices configured with this node as an EVPN Gateway remote peer using this node's regular overlay peering address.
-    items:
-      type: str
   mpls_route_reflector_clients:
     type: list
     items:

@@ -396,7 +396,6 @@ router_bgp:
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 15
-    password: 7PAWRjxv8U6PaK1vvQ5mK/7YOTeJ7b4J
     send_community: all
     maximum_routes: 0
   - name: Tenant_C_BGP_PEER_GROUP_RESTRICTED
