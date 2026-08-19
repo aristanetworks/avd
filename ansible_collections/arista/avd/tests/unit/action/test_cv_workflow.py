@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from ansible.errors import AnsibleActionFail
 
-from ansible_collections.arista.avd.plugins.action.cv_workflow import ActionModule, validate_change_control_only_inputs
+from ansible_collections.arista.avd.plugins.action.cv_workflow import ARGUMENT_SPEC, ActionModule, validate_change_control_only_inputs
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -178,6 +178,24 @@ def test_deploy_routes_existing_change_control_to_cc_only_mode(action_module: Ca
     assert change_control.avd_change_control.start_note == "Started"
     assert result["warnings"] == ["Logger warning"]
     assert result["changed"] is True
+
+
+def test_validate_argument_spec_materializes_change_control_note_defaults(action_module: Callable[..., ActionModule]) -> None:
+    """Change Control note defaults are materialized when the Change Control dictionary is provided."""
+    module = action_module(
+        ActionModule,
+        task_args={
+            "configuration_dir": "/configs",
+            "cv_servers": ["cv.example.com"],
+            "change_control": {"id": "cc-id"},
+        },
+    )
+
+    _validation_result, validated_args = module.validate_argument_spec(ARGUMENT_SPEC)
+    change_control = validated_args["change_control"]
+
+    assert change_control["approval_note"] == "Automatic approval by AVD"
+    assert change_control["start_note"] == "Automatically started by AVD"
 
 
 def test_deploy_existing_change_control_reports_unchanged_for_noop(action_module: Callable[..., ActionModule]) -> None:

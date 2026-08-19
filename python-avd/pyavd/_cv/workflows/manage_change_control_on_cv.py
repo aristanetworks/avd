@@ -27,7 +27,7 @@ CHANGE_CONTROL_STATUS_TO_STATE_MAP: dict[ChangeControlStatus, CVChangeControlSta
 }
 
 
-def get_change_control_state(cv_change_control: ChangeControl, *, approved: bool | None = None) -> CVChangeControlState:
+def get_managed_change_control_state(cv_change_control: ChangeControl, *, approved: bool | None = None) -> CVChangeControlState:
     """Return the current state of an existing Change Control."""
     if approved is None:
         approved = cv_change_control.approve.value
@@ -47,7 +47,7 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
     change_control.changed = False
 
     cv_change_control, change_control.changed = await update_change_control_details_on_cv(change_control, cv_client)
-    change_control.state = get_change_control_state(cv_change_control)
+    change_control.state = get_managed_change_control_state(cv_change_control)
     LOGGER.info("manage_change_control_on_cv: %s", change_control)
 
     # TODO: Add support for stopping, unscheduling, unapproving, and deleting a Change Control
@@ -56,6 +56,8 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
 
     # Do not restart a completed Change Control when the requested state is "completed"
     if change_control.requested_state == "completed" and cv_change_control.status == ChangeControlStatus.COMPLETED:
+        if cv_change_control.error is not None:
+            LOGGER.warning("Change Control '%s' is already completed with errors and will not be run again: %s", change_control.id, cv_change_control.error)
         return
 
     if not cv_change_control.approve.value:
@@ -64,7 +66,7 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
             timestamp=cv_change_control.change.time,
             description=change_control.avd_change_control.approval_note,
         )
-        change_control.state = get_change_control_state(cv_change_control, approved=True)
+        change_control.state = get_managed_change_control_state(cv_change_control, approved=True)
         change_control.changed = True
         LOGGER.info("manage_change_control_on_cv: %s", change_control)
 

@@ -48,6 +48,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     """
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
+    # Preserve legacy deployment behavior by not tracking Change Control detail updates here
     cv_change_control, _ = await update_change_control_details_on_cv(change_control, cv_client)
     change_control.state = get_change_control_state(cv_change_control=cv_change_control)
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
