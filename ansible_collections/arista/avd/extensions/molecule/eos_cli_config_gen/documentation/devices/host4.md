@@ -126,7 +126,7 @@ ip routing vrf FUTURE_IPV4
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| FUTURE_IPV4 | false |
+| FUTURE_IPV4 | False |
 
 ### Router OSPF
 
