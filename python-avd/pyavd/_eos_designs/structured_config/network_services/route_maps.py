@@ -92,10 +92,15 @@ class RouteMapsMixin(Protocol):
         Filter MLAG peer subnets for redistribute connected for overlay VRFs.
         """
         route_maps_item = EosCliConfigGen.RouteMapsItem(name="RM-CONN-2-BGP-VRFS")
+        prefix_list_match = (
+            "ipv6 address prefix-list PL-MLAG-PEER-VRFS"
+            if self.shared_utils.underlay_ipv6_numbered
+            else "ip address prefix-list PL-MLAG-PEER-VRFS"
+        )
         route_maps_item.sequence_numbers.append_new(
             sequence=10,
             type="deny",
-            match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-MLAG-PEER-VRFS"]),
+            match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match([prefix_list_match]),
         )
         route_maps_item.sequence_numbers.append_new(
             sequence=20,
