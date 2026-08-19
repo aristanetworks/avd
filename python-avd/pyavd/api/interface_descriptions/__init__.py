@@ -201,9 +201,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     _new_keys={
                         "interface": "interface",
                         "peer": "peer",
-                        "channel_group_id": "port_channel_id",
+                        "channel_group_id": "channel_group_id",
                         "peer_channel_group_id": "peer_channel_group_id",
-                        "channel_description": "port_channel_description",
+                        "channel_description": "channel_description",
                         "peer_node_group": "peer_node_group",
                         "wan_carrier": "wan_carrier",
                         "wan_circuit_id": "wan_circuit_id",
