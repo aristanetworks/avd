@@ -60,6 +60,10 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
             LOGGER.warning("Change Control '%s' is already completed with errors and will not be run again: %s", change_control.id, cv_change_control.error)
         return
 
+    if change_control.requested_state == "running" and cv_change_control.status == ChangeControlStatus.COMPLETED:
+        msg = f"Change Control '{change_control.id}' is already completed and cannot be started."
+        raise CVChangeControlFailed(msg)
+
     if not cv_change_control.approve.value:
         await cv_client.approve_change_control(
             change_control_id=change_control.id,
@@ -86,7 +90,7 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
     if cv_change_control.error is not None:
         change_control.state = "failed"
         LOGGER.info("manage_change_control_on_cv: %s", change_control)
-        msg = f"Change control failed during execution {change_control.id}: {cv_change_control.error}"
+        msg = f"Change Control failed during execution {change_control.id}: {cv_change_control.error}"
         raise CVChangeControlFailed(msg)
 
     change_control.state = "completed"

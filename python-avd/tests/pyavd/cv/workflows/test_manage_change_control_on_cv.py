@@ -6,6 +6,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControlStatus
+from pyavd._cv.client.exceptions import CVChangeControlFailed
 from pyavd._cv.workflows.manage_change_control_on_cv import get_managed_change_control_state, manage_change_control_on_cv
 from pyavd._cv.workflows.models import AvdChangeControl, CVChangeControl
 
@@ -131,6 +132,22 @@ async def test_manage_scheduled_to_completed_defers_start_decision_to_cloudvisio
 
 
 @pytest.mark.asyncio
+async def test_manage_already_running_to_completed_waits_for_completion(mock_cv_client: MagicMock) -> None:
+    """Test waiting for an already-running Change Control to complete."""
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="completed"))
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=ChangeControlStatus.RUNNING, approved=True)
+    mock_cv_client.wait_for_change_control_state.return_value = create_grpc_change_control(status=ChangeControlStatus.COMPLETED, approved=True)
+
+    await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.start_change_control.assert_not_called()
+    mock_cv_client.wait_for_change_control_state.assert_called_once_with(cc_id="cc_id_1", state="completed")
+    assert local_cc.state == "completed"
+    assert local_cc.changed is False
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("status", "expected_state"),
     [
@@ -174,6 +191,25 @@ async def test_manage_completed_failure_is_not_run_again(mock_cv_client: MagicMo
     assert local_cc.state == "failed"
     assert local_cc.changed is False
     assert "is already completed with errors and will not be run again: Previous execution failed" in caplog.text
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("error", [None, "Previous execution failed"], ids=["successful", "failed"])
+async def test_manage_completed_change_control_cannot_be_started(mock_cv_client: MagicMock, error: str | None) -> None:
+    """Test that a completed Change Control cannot be started again."""
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="running"))
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(
+        status=ChangeControlStatus.COMPLETED,
+        approved=True,
+        error=error,
+    )
+
+    with pytest.raises(CVChangeControlFailed, match="Change Control 'cc_id_1' is already completed and cannot be started"):
+        await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.start_change_control.assert_not_called()
+    assert local_cc.state == ("failed" if error is not None else "completed")
+    assert local_cc.changed is False
 
 
 @pytest.mark.asyncio
