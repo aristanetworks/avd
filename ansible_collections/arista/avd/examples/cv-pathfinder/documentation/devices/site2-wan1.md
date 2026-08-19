@@ -592,9 +592,9 @@ ip routing vrf RED
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| BLUE | false |
-| MGMT | false |
-| RED | false |
+| BLUE | False |
+| MGMT | False |
+| RED | False |
 
 ### Static Routes
 

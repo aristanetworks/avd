@@ -574,8 +574,8 @@ ip routing vrf New_VRF
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| New_VRF | false |
+| MGMT | False |
+| New_VRF | False |
 
 ### Static Routes
 
