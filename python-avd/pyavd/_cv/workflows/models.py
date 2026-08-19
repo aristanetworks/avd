@@ -22,6 +22,8 @@ AVD_ENTITY_PREFIX = "avd_"
 
 LOGGER = getLogger(__name__)
 
+CVChangeControlState = Literal["pending approval", "approved", "scheduled", "running", "completed", "deleted", "failed"]
+
 
 @dataclass
 class CVGRPCKeepalives:
@@ -112,7 +114,7 @@ class AvdChangeControl:
 class CVChangeControl:
     avd_change_control: AvdChangeControl = field(default_factory=AvdChangeControl)
     id: str | None = None
-    state: Literal["pending approval", "approved", "scheduled", "running", "completed", "deleted", "failed"] | None = None
+    state: CVChangeControlState | None = None
     name: str | None = None
     description: str | None = None
     changed: bool = False

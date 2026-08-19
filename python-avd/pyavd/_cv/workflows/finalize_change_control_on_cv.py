@@ -9,6 +9,8 @@ from typing import TYPE_CHECKING
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
 from pyavd._cv.client.exceptions import CVChangeControlFailed
 
+from .utils import update_change_control_details_on_cv
+
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
 
@@ -16,17 +18,8 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 
-# TODO: AVD 7.0.0 - Remove this legacy map and use unified state handling for all Change Controls.
 CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP = {
     ChangeControlStatus.COMPLETED: "completed",
-    ChangeControlStatus.RUNNING: "running",
-    ChangeControlStatus.SCHEDULED: "scheduled",
-    ChangeControlStatus.UNSPECIFIED: None,
-}
-
-CHANGE_CONTROL_ONLY_STATUS_TO_FINAL_STATE_MAP = {
-    ChangeControlStatus.COMPLETED: "completed",
-    ChangeControlStatus.NOT_STARTED: None,
     ChangeControlStatus.RUNNING: "running",
     ChangeControlStatus.SCHEDULED: "scheduled",
     ChangeControlStatus.UNSPECIFIED: None,
@@ -35,25 +28,8 @@ CHANGE_CONTROL_ONLY_STATUS_TO_FINAL_STATE_MAP = {
 CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP = {True: "approved", False: None}
 
 
-def get_change_control_only_state(status: ChangeControlStatus, *, approved: bool, has_error: bool) -> str:
-    """Return the current state of an existing Change Control."""
-    if status == ChangeControlStatus.UNSPECIFIED:
-        return CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[approved] or "pending approval"
-    # Case of failed Change Control execution
-    if status == ChangeControlStatus.COMPLETED and has_error:
-        return "failed"
-    return CHANGE_CONTROL_ONLY_STATUS_TO_FINAL_STATE_MAP[status] or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[approved] or "pending approval"
-
-
-def get_change_control_state(cv_change_control: ChangeControl, *, is_change_control_only: bool) -> str:
+def get_change_control_state(cv_change_control: ChangeControl) -> str:
     """Return the current Change Control state."""
-    if is_change_control_only:
-        return get_change_control_only_state(
-            cv_change_control.status,
-            approved=cv_change_control.approve.value,
-            has_error=cv_change_control.error is not None,
-        )
-
     return (
         CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP[cv_change_control.status]
         or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[cv_change_control.approve.value]
@@ -63,61 +39,32 @@ def get_change_control_state(cv_change_control: ChangeControl, *, is_change_cont
     )
 
 
-async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_client: CVClient, *, is_change_control_only: bool = False) -> None:
+async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_client: CVClient) -> None:
     """
     Update and finalize a Change Control on CloudVision from the given result.CVChangeControl object.
 
     Depending on the requested state the Change Control will be left pending approval, approved, running, or completed.
     In-place update the CVChangeControl object.
-    Set `is_change_control_only` when managing a Change Control supplied by ID without a deployment.
     """
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
     change_control.changed = False
 
-    cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
+    cv_change_control = await update_change_control_details_on_cv(change_control, cv_client)
+    change_control.state = get_change_control_state(cv_change_control=cv_change_control)
+    LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
-    # Update missing fields on our local model with data from the CloudVision object.
-    change_control.state = get_change_control_state(cv_change_control=cv_change_control, is_change_control_only=is_change_control_only)
-    if change_control.name is None:
-        change_control.name = cv_change_control.change.name
-    if change_control.description is None:
-        change_control.description = cv_change_control.change.notes
-
-    # TODO: Add CC template
-
-    # Update the change control with name, description etc from our local object if needed.
-    if change_control.name != cv_change_control.change.name or change_control.description != cv_change_control.change.notes:
-        await cv_client.set_change_control(change_control_id=change_control.id, name=change_control.name, description=change_control.description)
-        change_control.changed = True
-        # Update the local copy to get the exact "last updated" timestamp needed for approval.
-        cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
-        change_control.state = get_change_control_state(cv_change_control=cv_change_control, is_change_control_only=is_change_control_only)
-        LOGGER.info("finalize_change_control_on_cv: %s", change_control)
-
-    # TODO: Add support for stopping, unscheduling, unapproving, and deleting a Change Control
     # If requested state is "pending approval" we are done
     if change_control.requested_state == "pending approval":
         return
 
-    # Do not restart a completed Change Control in Change-Control-only mode
-    if is_change_control_only and change_control.requested_state == "completed" and cv_change_control.status == ChangeControlStatus.COMPLETED:
-        return
-
     # For all other requested states we first need to approve.
-    if (is_change_control_only and not cv_change_control.approve.value) or (not is_change_control_only and change_control.state != "approved"):
+    if change_control.state != "approved":
         await cv_client.approve_change_control(
             change_control_id=change_control.id,
             timestamp=cv_change_control.change.time,
             description=change_control.avd_change_control.approval_note,
         )
-        if is_change_control_only:
-            change_control.state = get_change_control_only_state(
-                cv_change_control.status,
-                approved=True,
-                has_error=cv_change_control.error is not None,
-            )
-        else:
-            change_control.state = "approved"
+        change_control.state = "approved"
         change_control.changed = True
         LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
@@ -125,12 +72,10 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     if change_control.requested_state == "approved":
         return
 
-    start_required = not is_change_control_only or cv_change_control.status != ChangeControlStatus.RUNNING
-    if start_required:
-        await cv_client.start_change_control(change_control_id=change_control.id, description=change_control.avd_change_control.start_note)
-        change_control.state = "running"
-        change_control.changed = True
-        LOGGER.info("finalize_change_control_on_cv: %s", change_control)
+    await cv_client.start_change_control(change_control_id=change_control.id, description=change_control.avd_change_control.start_note)
+    change_control.state = "running"
+    change_control.changed = True
+    LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     # If requested state is "running" we are done.
     if change_control.requested_state == "running":

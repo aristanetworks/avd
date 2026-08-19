@@ -48,7 +48,7 @@ async def test_deploy_to_cv_manages_existing_change_control() -> None:
 
     with (
         patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
-        patch("pyavd._cv.workflows.deploy_to_cv.finalize_change_control_on_cv", new_callable=AsyncMock) as finalize_change_control,
+        patch("pyavd._cv.workflows.deploy_to_cv.manage_change_control_on_cv", new_callable=AsyncMock) as manage_change_control,
     ):
         result = await deploy_to_cv(
             cloudvision=CloudVision(
@@ -65,7 +65,7 @@ async def test_deploy_to_cv_manages_existing_change_control() -> None:
             change_control=change_control,
         )
 
-    finalize_change_control.assert_called_once_with(change_control=change_control, cv_client=entered_cv_client, is_change_control_only=True)
+    manage_change_control.assert_called_once_with(change_control=change_control, cv_client=entered_cv_client)
     assert result.workspace is None
     assert result.change_control is change_control
 

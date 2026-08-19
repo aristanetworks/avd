@@ -17,6 +17,7 @@ from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
 from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
 from .finalize_workspace_on_cv import finalize_workspace_on_cv
+from .manage_change_control_on_cv import manage_change_control_on_cv
 from .models import (
     CloudVision,
     CVChangeControl,
@@ -158,7 +159,7 @@ async def deploy_to_cv(
             grpc_channel_configuration=cloudvision.grpc_channel_configuration,
         ) as cv_client:
             if change_control_only:
-                await finalize_change_control_on_cv(change_control=result.change_control, cv_client=cv_client, is_change_control_only=True)
+                await manage_change_control_on_cv(change_control=result.change_control, cv_client=cv_client)
                 return result
 
             # Create workspace
