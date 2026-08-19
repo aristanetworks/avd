@@ -18389,7 +18389,7 @@ class EosDesigns(EosDesignsRootModel):
         class Fabric(AvdModel):
             """Subclass of AvdModel."""
 
-            class ActCvSettings(AvdModel):
+            class CvSettings(AvdModel):
                 """Subclass of AvdModel."""
 
                 class Cvaas(AvdModel):
@@ -18916,7 +18916,7 @@ class EosDesigns(EosDesignsRootModel):
                         set_source_interfaces: bool | UndefinedType = Undefined,
                     ) -> None:
                         """
-                        ActCvSettings.
+                        CvSettings.
 
 
                         Subclass of AvdModel.
@@ -18949,7 +18949,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_password": {"type": str, "default": "cvp123!"},
                 "act_internet_access": {"type": bool, "default": False},
                 "act_ensure_eapi_access": {"type": bool, "default": False},
-                "act_cv_settings": {"type": ActCvSettings},
+                "cv_settings": {"type": CvSettings},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -18989,11 +18989,11 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
-            act_cv_settings: ActCvSettings
+            cv_settings: CvSettings
             """
-            CloudVision settings for ACT Digital Twin deployment.
-            When set, overrides `cv_settings` for devices
-            in ACT Digital Twin mode.
+            CloudVision settings for Digital Twin deployment.
+            When set, overrides the global `cv_settings` for
+            devices in Digital Twin mode.
 
             Subclass of AvdModel.
             """
@@ -19008,7 +19008,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_password: str | UndefinedType = Undefined,
                     act_internet_access: bool | UndefinedType = Undefined,
                     act_ensure_eapi_access: bool | UndefinedType = Undefined,
-                    act_cv_settings: ActCvSettings | UndefinedType = Undefined,
+                    cv_settings: CvSettings | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -19036,10 +19036,10 @@ class EosDesigns(EosDesignsRootModel):
                            default VRF and preserving this connectivity.
                            This setting is only applicable to ACT `veos` and
                            `cloudeos` node types.
-                        act_cv_settings:
-                           CloudVision settings for ACT Digital Twin deployment.
-                           When set, overrides `cv_settings` for devices
-                           in ACT Digital Twin mode.
+                        cv_settings:
+                           CloudVision settings for Digital Twin deployment.
+                           When set, overrides the global `cv_settings` for
+                           devices in Digital Twin mode.
 
                            Subclass of AvdModel.
 

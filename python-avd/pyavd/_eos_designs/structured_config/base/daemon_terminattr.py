@@ -32,9 +32,9 @@ class DaemonTerminattrMixin(Protocol):
 
         cv_settings = self.inputs.cv_settings
 
-        # In ACT Digital Twin mode, act_cv_settings overrides cv_settings entirely.
-        if self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.act_cv_settings:
-            cv_settings = self.inputs.digital_twin.fabric.act_cv_settings._cast_as(EosDesigns.CvSettings)
+        # In Digital Twin mode, digital_twin.fabric.cv_settings overrides the global cv_settings.
+        if self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.cv_settings:
+            cv_settings = self.inputs.digital_twin.fabric.cv_settings._cast_as(EosDesigns.CvSettings)
 
         if not cv_settings:
             self._validate_missing_cv_settings(first_tracker_exported_to_cloudvision)

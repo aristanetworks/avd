@@ -135,7 +135,7 @@ service routing protocols model multi-agent
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| INBAND_MGMT | False |
+| INBAND_MGMT | - |
 | MGMT | False |
 
 #### IP Routing Device Configuration
@@ -151,8 +151,8 @@ no ip routing vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| INBAND_MGMT | False |
-| MGMT | False |
+| INBAND_MGMT | false |
+| MGMT | false |
 
 ## Multicast
 

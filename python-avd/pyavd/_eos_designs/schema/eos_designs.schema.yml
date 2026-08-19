@@ -2343,12 +2343,13 @@ keys:
 
               This setting is only applicable to ACT `veos` and `cloudeos` node types.'
             default: false
-          act_cv_settings:
+          cv_settings:
             type: dict
             $ref: eos_designs#/keys/cv_settings
-            description: 'CloudVision settings for ACT Digital Twin deployment.
+            description: 'CloudVision settings for Digital Twin deployment.
 
-              When set, overrides `cv_settings` for devices in ACT Digital Twin mode.'
+              When set, overrides the global `cv_settings` for devices in Digital
+              Twin mode.'
       use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false
