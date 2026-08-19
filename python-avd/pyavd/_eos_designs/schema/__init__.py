@@ -8305,13 +8305,12 @@ class EosDesigns(EosDesignsRootModel):
             Suppression is evaluated
             independently on each node based on its local EVPN Route Server and client relationships and
             `evpn_gateway.remote_peers` configuration.
-            If an explicit `ip_address` differs from the regular EVPN
-            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-            peering.
-
-
-            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-            (`str`).
+            When one node uses an EVPN Gateway core peering and the
+            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+            both sides use the same password.
+            If an explicit `ip_address` differs from the regular EVPN peering
+            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -8366,13 +8365,12 @@ class EosDesigns(EosDesignsRootModel):
                            Suppression is evaluated
                            independently on each node based on its local EVPN Route Server and client relationships and
                            `evpn_gateway.remote_peers` configuration.
-                           If an explicit `ip_address` differs from the regular EVPN
-                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                           peering.
-
-
-                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                           (`str`).
+                           When one node uses an EVPN Gateway core peering and the
+                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                           both sides use the same password.
+                           If an explicit `ip_address` differs from the regular EVPN peering
+                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -13823,13 +13821,12 @@ class EosDesigns(EosDesignsRootModel):
             Suppression is evaluated
             independently on each node based on its local EVPN Route Server and client relationships and
             `evpn_gateway.remote_peers` configuration.
-            If an explicit `ip_address` differs from the regular EVPN
-            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-            peering.
-
-
-            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-            (`str`).
+            When one node uses an EVPN Gateway core peering and the
+            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+            both sides use the same password.
+            If an explicit `ip_address` differs from the regular EVPN peering
+            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -13884,13 +13881,12 @@ class EosDesigns(EosDesignsRootModel):
                            Suppression is evaluated
                            independently on each node based on its local EVPN Route Server and client relationships and
                            `evpn_gateway.remote_peers` configuration.
-                           If an explicit `ip_address` differs from the regular EVPN
-                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                           peering.
-
-
-                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                           (`str`).
+                           When one node uses an EVPN Gateway core peering and the
+                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                           both sides use the same password.
+                           If an explicit `ip_address` differs from the regular EVPN peering
+                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -54794,13 +54790,12 @@ class EosDesigns(EosDesignsRootModel):
                         Suppression is evaluated
                         independently on each node based on its local EVPN Route Server and client relationships and
                         `evpn_gateway.remote_peers` configuration.
-                        If an explicit `ip_address` differs from the regular EVPN
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -54855,13 +54850,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Suppression is evaluated
                                        independently on each node based on its local EVPN Route Server and client relationships and
                                        `evpn_gateway.remote_peers` configuration.
-                                       If an explicit `ip_address` differs from the regular EVPN
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -60289,13 +60283,12 @@ class EosDesigns(EosDesignsRootModel):
                             Suppression is evaluated
                             independently on each node based on its local EVPN Route Server and client relationships and
                             `evpn_gateway.remote_peers` configuration.
-                            If an explicit `ip_address` differs from the regular EVPN
-                            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                            peering.
-
-
-                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                            (`str`).
+                            When one node uses an EVPN Gateway core peering and the
+                            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                            both sides use the same password.
+                            If an explicit `ip_address` differs from the regular EVPN peering
+                            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -60350,13 +60343,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Suppression is evaluated
                                            independently on each node based on its local EVPN Route Server and client relationships and
                                            `evpn_gateway.remote_peers` configuration.
-                                           If an explicit `ip_address` differs from the regular EVPN
-                                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                                           peering.
-
-
-                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                           (`str`).
+                                           When one node uses an EVPN Gateway core peering and the
+                                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                           both sides use the same password.
+                                           If an explicit `ip_address` differs from the regular EVPN peering
+                                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -65739,13 +65731,12 @@ class EosDesigns(EosDesignsRootModel):
                         Suppression is evaluated
                         independently on each node based on its local EVPN Route Server and client relationships and
                         `evpn_gateway.remote_peers` configuration.
-                        If an explicit `ip_address` differs from the regular EVPN
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -65800,13 +65791,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Suppression is evaluated
                                        independently on each node based on its local EVPN Route Server and client relationships and
                                        `evpn_gateway.remote_peers` configuration.
-                                       If an explicit `ip_address` differs from the regular EVPN
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -71260,13 +71250,12 @@ class EosDesigns(EosDesignsRootModel):
                         Suppression is evaluated
                         independently on each node based on its local EVPN Route Server and client relationships and
                         `evpn_gateway.remote_peers` configuration.
-                        If an explicit `ip_address` differs from the regular EVPN
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -71321,13 +71310,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Suppression is evaluated
                                        independently on each node based on its local EVPN Route Server and client relationships and
                                        `evpn_gateway.remote_peers` configuration.
-                                       If an explicit `ip_address` differs from the regular EVPN
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -91327,13 +91315,12 @@ class EosDesigns(EosDesignsRootModel):
                         Suppression is evaluated
                         independently on each node based on its local EVPN Route Server and client relationships and
                         `evpn_gateway.remote_peers` configuration.
-                        If an explicit `ip_address` differs from the regular EVPN
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -91388,13 +91375,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Suppression is evaluated
                                        independently on each node based on its local EVPN Route Server and client relationships and
                                        `evpn_gateway.remote_peers` configuration.
-                                       If an explicit `ip_address` differs from the regular EVPN
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -96822,13 +96808,12 @@ class EosDesigns(EosDesignsRootModel):
                             Suppression is evaluated
                             independently on each node based on its local EVPN Route Server and client relationships and
                             `evpn_gateway.remote_peers` configuration.
-                            If an explicit `ip_address` differs from the regular EVPN
-                            peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                            peering.
-
-
-                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                            (`str`).
+                            When one node uses an EVPN Gateway core peering and the
+                            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                            both sides use the same password.
+                            If an explicit `ip_address` differs from the regular EVPN peering
+                            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -96883,13 +96868,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Suppression is evaluated
                                            independently on each node based on its local EVPN Route Server and client relationships and
                                            `evpn_gateway.remote_peers` configuration.
-                                           If an explicit `ip_address` differs from the regular EVPN
-                                           peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                                           peering.
-
-
-                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                           (`str`).
+                                           When one node uses an EVPN Gateway core peering and the
+                                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                           both sides use the same password.
+                                           If an explicit `ip_address` differs from the regular EVPN peering
+                                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -102272,13 +102256,12 @@ class EosDesigns(EosDesignsRootModel):
                         Suppression is evaluated
                         independently on each node based on its local EVPN Route Server and client relationships and
                         `evpn_gateway.remote_peers` configuration.
-                        If an explicit `ip_address` differs from the regular EVPN
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -102333,13 +102316,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Suppression is evaluated
                                        independently on each node based on its local EVPN Route Server and client relationships and
                                        `evpn_gateway.remote_peers` configuration.
-                                       If an explicit `ip_address` differs from the regular EVPN
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -107793,13 +107775,12 @@ class EosDesigns(EosDesignsRootModel):
                         Suppression is evaluated
                         independently on each node based on its local EVPN Route Server and client relationships and
                         `evpn_gateway.remote_peers` configuration.
-                        If an explicit `ip_address` differs from the regular EVPN
-                        peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -107854,13 +107835,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Suppression is evaluated
                                        independently on each node based on its local EVPN Route Server and client relationships and
                                        `evpn_gateway.remote_peers` configuration.
-                                       If an explicit `ip_address` differs from the regular EVPN
-                                       peering address, the EVPN Gateway core peering is configured in addition to the regular EVPN
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
