@@ -985,6 +985,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
+            "allow_mlag_in_shared_node_groups": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
@@ -1032,6 +1033,14 @@ class EosDesigns(EosDesignsRootModel):
         allowed' on both ends
         and on all 'uplink_switches' even when available VLANs differ between the
         'uplink_switches'.
+
+        Default value: `False`
+        """
+        allow_mlag_in_shared_node_groups: bool
+        """
+        Available from AVD 6.5.0.
+        Allow MLAG pairing for exactly two nodes with `mlag: true` inside a
+        node_group containing more than two nodes.
 
         Default value: `False`
         """
@@ -1114,6 +1123,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
+                allow_mlag_in_shared_node_groups: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
@@ -1151,6 +1161,10 @@ class EosDesigns(EosDesignsRootModel):
                        allowed' on both ends
                        and on all 'uplink_switches' even when available VLANs differ between the
                        'uplink_switches'.
+                    allow_mlag_in_shared_node_groups:
+                       Available from AVD 6.5.0.
+                       Allow MLAG pairing for exactly two nodes with `mlag: true` inside a
+                       node_group containing more than two nodes.
                     fix_radius_server_group_tls:
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global
@@ -11563,7 +11577,16 @@ class EosDesigns(EosDesignsRootModel):
         """
         mlag: bool
         """
-        Enable / Disable auto MLAG, when two nodes are defined in node group.
+        Enable / Disable auto MLAG for nodes in a node group.
+        When using shared node groups with
+        `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+          the order of `node_groups[].nodes`
+        determines MLAG role assignment for the two nodes with effective `mlag: true`;
+          nodes with
+        effective `mlag: false` are ignored:
+          - The first node is the MLAG primary.
+          - The second node is
+        the MLAG secondary.
 
         Default value: `True`
         """
@@ -12512,7 +12535,17 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of
                        AvdModel.
-                    mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                    mlag:
+                       Enable / Disable auto MLAG for nodes in a node group.
+                       When using shared node groups with
+                       `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                         the order of `node_groups[].nodes`
+                       determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                         nodes with
+                       effective `mlag: false` are ignored:
+                         - The first node is the MLAG primary.
+                         - The second node is
+                       the MLAG secondary.
                     mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
                     mlag_ibgp_origin_incomplete:
                        Set origin of routes received from MLAG iBGP peer to incomplete.
@@ -17088,7 +17121,16 @@ class EosDesigns(EosDesignsRootModel):
         """
         mlag: bool
         """
-        Enable / Disable auto MLAG, when two nodes are defined in node group.
+        Enable / Disable auto MLAG for nodes in a node group.
+        When using shared node groups with
+        `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+          the order of `node_groups[].nodes`
+        determines MLAG role assignment for the two nodes with effective `mlag: true`;
+          nodes with
+        effective `mlag: false` are ignored:
+          - The first node is the MLAG primary.
+          - The second node is
+        the MLAG secondary.
 
         Default value: `True`
         """
@@ -18046,7 +18088,17 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of
                        AvdModel.
-                    mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                    mlag:
+                       Enable / Disable auto MLAG for nodes in a node group.
+                       When using shared node groups with
+                       `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                         the order of `node_groups[].nodes`
+                       determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                         nodes with
+                       effective `mlag: false` are ignored:
+                         - The first node is the MLAG primary.
+                         - The second node is
+                       the MLAG secondary.
                     mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
                     mlag_ibgp_origin_incomplete:
                        Set origin of routes received from MLAG iBGP peer to incomplete.
@@ -58030,7 +58082,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag: bool
                     """
-                    Enable / Disable auto MLAG, when two nodes are defined in node group.
+                    Enable / Disable auto MLAG for nodes in a node group.
+                    When using shared node groups with
+                    `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                      the order of `node_groups[].nodes`
+                    determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                      nodes with
+                    effective `mlag: false` are ignored:
+                      - The first node is the MLAG primary.
+                      - The second node is
+                    the MLAG secondary.
 
                     Default value: `True`
                     """
@@ -58962,7 +59023,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of
                                    AvdModel.
-                                mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                                mlag:
+                                   Enable / Disable auto MLAG for nodes in a node group.
+                                   When using shared node groups with
+                                   `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                                     the order of `node_groups[].nodes`
+                                   determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                                     nodes with
+                                   effective `mlag: false` are ignored:
+                                     - The first node is the MLAG primary.
+                                     - The second node is
+                                   the MLAG secondary.
                                 mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
                                 mlag_ibgp_origin_incomplete:
                                    Set origin of routes received from MLAG iBGP peer to incomplete.
@@ -63542,7 +63613,16 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mlag: bool
                         """
-                        Enable / Disable auto MLAG, when two nodes are defined in node group.
+                        Enable / Disable auto MLAG for nodes in a node group.
+                        When using shared node groups with
+                        `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                          the order of `node_groups[].nodes`
+                        determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                          nodes with
+                        effective `mlag: false` are ignored:
+                          - The first node is the MLAG primary.
+                          - The second node is
+                        the MLAG secondary.
 
                         Default value: `True`
                         """
@@ -64483,7 +64563,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of
                                        AvdModel.
-                                    mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                                    mlag:
+                                       Enable / Disable auto MLAG for nodes in a node group.
+                                       When using shared node groups with
+                                       `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                                         the order of `node_groups[].nodes`
+                                       determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                                         nodes with
+                                       effective `mlag: false` are ignored:
+                                         - The first node is the MLAG primary.
+                                         - The second node is
+                                       the MLAG secondary.
                                     mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
                                     mlag_ibgp_origin_incomplete:
                                        Set origin of routes received from MLAG iBGP peer to incomplete.
@@ -68982,7 +69072,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag: bool
                     """
-                    Enable / Disable auto MLAG, when two nodes are defined in node group.
+                    Enable / Disable auto MLAG for nodes in a node group.
+                    When using shared node groups with
+                    `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                      the order of `node_groups[].nodes`
+                    determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                      nodes with
+                    effective `mlag: false` are ignored:
+                      - The first node is the MLAG primary.
+                      - The second node is
+                    the MLAG secondary.
 
                     Default value: `True`
                     """
@@ -69925,7 +70024,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of
                                    AvdModel.
-                                mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                                mlag:
+                                   Enable / Disable auto MLAG for nodes in a node group.
+                                   When using shared node groups with
+                                   `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                                     the order of `node_groups[].nodes`
+                                   determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                                     nodes with
+                                   effective `mlag: false` are ignored:
+                                     - The first node is the MLAG primary.
+                                     - The second node is
+                                   the MLAG secondary.
                                 mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
                                 mlag_ibgp_origin_incomplete:
                                    Set origin of routes received from MLAG iBGP peer to incomplete.
@@ -74496,7 +74605,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag: bool
                     """
-                    Enable / Disable auto MLAG, when two nodes are defined in node group.
+                    Enable / Disable auto MLAG for nodes in a node group.
+                    When using shared node groups with
+                    `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                      the order of `node_groups[].nodes`
+                    determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                      nodes with
+                    effective `mlag: false` are ignored:
+                      - The first node is the MLAG primary.
+                      - The second node is
+                    the MLAG secondary.
 
                     Default value: `True`
                     """
@@ -75437,7 +75555,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of
                                    AvdModel.
-                                mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                                mlag:
+                                   Enable / Disable auto MLAG for nodes in a node group.
+                                   When using shared node groups with
+                                   `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                                     the order of `node_groups[].nodes`
+                                   determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                                     nodes with
+                                   effective `mlag: false` are ignored:
+                                     - The first node is the MLAG primary.
+                                     - The second node is
+                                   the MLAG secondary.
                                 mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
                                 mlag_ibgp_origin_incomplete:
                                    Set origin of routes received from MLAG iBGP peer to incomplete.
@@ -94547,7 +94675,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag: bool
                     """
-                    Enable / Disable auto MLAG, when two nodes are defined in node group.
+                    Enable / Disable auto MLAG for nodes in a node group.
+                    When using shared node groups with
+                    `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                      the order of `node_groups[].nodes`
+                    determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                      nodes with
+                    effective `mlag: false` are ignored:
+                      - The first node is the MLAG primary.
+                      - The second node is
+                    the MLAG secondary.
 
                     Default value: `True`
                     """
@@ -95479,7 +95616,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of
                                    AvdModel.
-                                mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                                mlag:
+                                   Enable / Disable auto MLAG for nodes in a node group.
+                                   When using shared node groups with
+                                   `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                                     the order of `node_groups[].nodes`
+                                   determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                                     nodes with
+                                   effective `mlag: false` are ignored:
+                                     - The first node is the MLAG primary.
+                                     - The second node is
+                                   the MLAG secondary.
                                 mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
                                 mlag_ibgp_origin_incomplete:
                                    Set origin of routes received from MLAG iBGP peer to incomplete.
@@ -100059,7 +100206,16 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mlag: bool
                         """
-                        Enable / Disable auto MLAG, when two nodes are defined in node group.
+                        Enable / Disable auto MLAG for nodes in a node group.
+                        When using shared node groups with
+                        `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                          the order of `node_groups[].nodes`
+                        determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                          nodes with
+                        effective `mlag: false` are ignored:
+                          - The first node is the MLAG primary.
+                          - The second node is
+                        the MLAG secondary.
 
                         Default value: `True`
                         """
@@ -101000,7 +101156,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of
                                        AvdModel.
-                                    mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                                    mlag:
+                                       Enable / Disable auto MLAG for nodes in a node group.
+                                       When using shared node groups with
+                                       `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                                         the order of `node_groups[].nodes`
+                                       determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                                         nodes with
+                                       effective `mlag: false` are ignored:
+                                         - The first node is the MLAG primary.
+                                         - The second node is
+                                       the MLAG secondary.
                                     mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
                                     mlag_ibgp_origin_incomplete:
                                        Set origin of routes received from MLAG iBGP peer to incomplete.
@@ -105499,7 +105665,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag: bool
                     """
-                    Enable / Disable auto MLAG, when two nodes are defined in node group.
+                    Enable / Disable auto MLAG for nodes in a node group.
+                    When using shared node groups with
+                    `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                      the order of `node_groups[].nodes`
+                    determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                      nodes with
+                    effective `mlag: false` are ignored:
+                      - The first node is the MLAG primary.
+                      - The second node is
+                    the MLAG secondary.
 
                     Default value: `True`
                     """
@@ -106442,7 +106617,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of
                                    AvdModel.
-                                mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                                mlag:
+                                   Enable / Disable auto MLAG for nodes in a node group.
+                                   When using shared node groups with
+                                   `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                                     the order of `node_groups[].nodes`
+                                   determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                                     nodes with
+                                   effective `mlag: false` are ignored:
+                                     - The first node is the MLAG primary.
+                                     - The second node is
+                                   the MLAG secondary.
                                 mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
                                 mlag_ibgp_origin_incomplete:
                                    Set origin of routes received from MLAG iBGP peer to incomplete.
@@ -111013,7 +111198,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag: bool
                     """
-                    Enable / Disable auto MLAG, when two nodes are defined in node group.
+                    Enable / Disable auto MLAG for nodes in a node group.
+                    When using shared node groups with
+                    `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                      the order of `node_groups[].nodes`
+                    determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                      nodes with
+                    effective `mlag: false` are ignored:
+                      - The first node is the MLAG primary.
+                      - The second node is
+                    the MLAG secondary.
 
                     Default value: `True`
                     """
@@ -111954,7 +112148,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of
                                    AvdModel.
-                                mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                                mlag:
+                                   Enable / Disable auto MLAG for nodes in a node group.
+                                   When using shared node groups with
+                                   `avd_design_future.allow_mlag_in_shared_node_groups: true`,
+                                     the order of `node_groups[].nodes`
+                                   determines MLAG role assignment for the two nodes with effective `mlag: true`;
+                                     nodes with
+                                   effective `mlag: false` are ignored:
+                                     - The first node is the MLAG primary.
+                                     - The second node is
+                                   the MLAG secondary.
                                 mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
                                 mlag_ibgp_origin_incomplete:
                                    Set origin of routes received from MLAG iBGP peer to incomplete.

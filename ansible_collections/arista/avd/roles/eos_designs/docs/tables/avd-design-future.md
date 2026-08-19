@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_inband_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `inband_mgmt_vrf` for IPv6 inband management. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
+    | [<samp>&nbsp;&nbsp;allow_mlag_in_shared_node_groups</samp>](## "avd_design_future.allow_mlag_in_shared_node_groups") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Allow MLAG pairing for exactly two nodes with `mlag: true` inside a node_group containing more than two nodes. |
     | [<samp>&nbsp;&nbsp;fix_radius_server_group_tls</samp>](## "avd_design_future.fix_radius_server_group_tls") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
     | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
@@ -48,6 +49,10 @@
       # Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
       # and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
       consistent_uplink_vlans: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # Allow MLAG pairing for exactly two nodes with `mlag: true` inside a node_group containing more than two nodes.
+      allow_mlag_in_shared_node_groups: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations.

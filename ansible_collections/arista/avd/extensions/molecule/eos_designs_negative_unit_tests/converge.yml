@@ -119,6 +119,14 @@
     - name: Run failure scenario Test
       ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
+- name: Converge Negative tests for 'eos_designs_facts' - mlag-shared-node-groups-1
+  hosts: mlag-shared-node-groups-1
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
 - name: Converge Negative tests for 'eos_designs_facts' - mlag-odd-id-oddodd1
   hosts: mlag-odd-id-oddodd1
   gather_facts: false

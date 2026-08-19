@@ -8,7 +8,7 @@ from re import findall
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get_ip_from_ip_prefix
+from pyavd._utils import Undefined, UndefinedType, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
@@ -29,7 +29,13 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag(self: SharedUtilsProtocol) -> bool:
-        if not self.node_type_key_data.mlag_support or not self.node_config.mlag:
+        if not self.node_type_key_data.mlag_support:
+            return False
+
+        if self.node_group_config is not None and len(self.node_group_config.nodes) > 2 and self.inputs.avd_design_future.allow_mlag_in_shared_node_groups:
+            return self.node_group_is_primary_and_peer_hostname is not None
+
+        if not self.node_config.mlag:
             return False
 
         # Node groups used for mlag peer.
@@ -38,6 +44,26 @@ class MlagMixin(Protocol):
 
         # devices[].mlag_group used for mlag peer.
         return bool(self.device_config and self.device_config.mlag_group)
+
+    def _node_group_member_has_mlag_enabled(self: SharedUtilsProtocol, hostname: str) -> bool:
+        """Return whether the given node_group member has effective 'mlag: true' after inheritance."""
+        # This condition is already checked before calling this method, it is kept here only to make pyright happy.
+        if self.node_group_config is None or self.node_type_config is None:
+            return False
+
+        node_config = self.node_type_config.nodes.get(hostname, default=Undefined)
+        node_mlag = None if isinstance(node_config, UndefinedType) else node_config._get("mlag")
+
+        default_member_mlag = True
+        member_mlag = default(
+            node_mlag,
+            self.node_group_config.nodes[hostname]._get("mlag"),
+            self.node_group_config._get("mlag"),
+            self.node_type_config.defaults._get("mlag"),
+            default_member_mlag,
+        )
+
+        return member_mlag is True
 
     @cached_property
     def group(self: SharedUtilsProtocol) -> str | None:

@@ -1,0 +1,44 @@
+---
+# Test fallback from node to l2leaf.defaults.mlag in shared node_groups.
+type: l2leaf
+
+avd_design_future:
+  allow_mlag_in_shared_node_groups: true
+
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_interfaces: []
+    uplink_switches: []
+    mlag_interfaces: [Ethernet50, Ethernet51]
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 8192
+    mlag: true
+  node_groups:
+    - group: MLAG_SHARED_NODE_GROUPS_DEFAULTS_FALLBACK
+      nodes:
+        - name: mlag-shared-node-groups-defaults-1
+          id: 1
+          mgmt_ip: 192.168.202.211/24
+        - name: mlag-shared-node-groups-defaults-2
+          id: 2
+          mgmt_ip: 192.168.202.212/24
+        - name: mlag-shared-node-groups-defaults-3
+          id: 3
+          mgmt_ip: 192.168.202.213/24
+          mlag: false
+          uplink_interfaces: [Ethernet41, Ethernet42]
+          uplink_switches: [mlag-shared-node-groups-defaults-2, mlag-shared-node-groups-defaults-4]
+          uplink_switch_interfaces: [Ethernet52, Ethernet51]
+          uplink_type: l2-ethernet
+          cv_tags_topology_type: member-leaf
+        - name: mlag-shared-node-groups-defaults-4
+          id: 4
+          mgmt_ip: 192.168.202.214/24
+          mlag: false
+          uplink_interfaces: [Ethernet41, Ethernet42]
+          uplink_switches: [mlag-shared-node-groups-defaults-1, mlag-shared-node-groups-defaults-3]
+          uplink_switch_interfaces: [Ethernet52, Ethernet51]
+          uplink_type: l2-ethernet
+          cv_tags_topology_type: member-leaf

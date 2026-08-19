@@ -42,6 +42,12 @@ keys:
           Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
           and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
         default: false
+      allow_mlag_in_shared_node_groups:
+        type: bool
+        description: |-
+          Available from AVD 6.5.0.
+          Allow MLAG pairing for exactly two nodes with `mlag: true` inside a node_group containing more than two nodes.
+        default: false
       fix_radius_server_group_tls:
         type: bool
         default: false

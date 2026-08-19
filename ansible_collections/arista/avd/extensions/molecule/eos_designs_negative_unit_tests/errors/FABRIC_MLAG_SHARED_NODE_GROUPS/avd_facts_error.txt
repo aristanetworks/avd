@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Node group 'MLAG_SHARED_NODE_GROUPS' has 3 nodes with 'mlag: true' (['mlag-shared-node-groups-1', 'mlag-shared-node-groups-2', 'mlag-shared-node-groups-3']). Exactly two MLAG-enabled nodes are supported in a shared node group when 'avd_design_future.allow_mlag_in_shared_node_groups' is true.
