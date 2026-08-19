@@ -153,17 +153,6 @@ ARGUMENT_SPEC = {
 }
 
 
-def validate_change_control_only_inputs(work_to_do: bool, device_list: list[str]) -> None:
-    """Validate inputs used to manage an existing Change Control."""
-    if work_to_do:
-        msg = "Change-Control-only mode cannot be combined with configurations, tags, metadata, or a static config manifest"
-        raise AnsibleActionFail(msg)
-
-    if device_list:
-        msg = "Change-Control-only mode requires the device list to be empty"
-        raise AnsibleActionFail(msg)
-
-
 class ActionModule(ActionBase):
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         self._supports_check_mode = False
@@ -281,11 +270,12 @@ class ActionModule(ActionBase):
             change_control = CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={})))
 
             if change_control.id is not None:
-                validate_change_control_only_inputs(
-                    work_to_do=work_to_do,
-                    device_list=get(validated_args, "device_list", default=[]),
+                result_object = await deploy_to_cv(
+                    cloudvision=cloudvision,
+                    change_control=change_control,
+                    device_deployments=device_deployments,
+                    static_config_manifest=static_config_manifest,
                 )
-                result_object = await deploy_to_cv(cloudvision=cloudvision, change_control=change_control)
             elif work_to_do:
                 # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
                 workspace_args = get(validated_args, "workspace", default={})

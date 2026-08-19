@@ -121,9 +121,11 @@ async def deploy_to_cv(
     """
     LOGGER.info("deploy_to_cv:")
     change_control_only = change_control is not None and change_control.id is not None
-    if change_control_only and any((workspace, device_deployments, static_config_manifest, studio_inputs)):
-        msg = "An existing Change Control cannot be combined with a Workspace or deployment inputs."
-        raise ValueError(msg)
+    if change_control_only:
+        static_config_manifest_has_content = bool(static_config_manifest and (static_config_manifest.containers or static_config_manifest.configlets))
+        if any((workspace, device_deployments, static_config_manifest_has_content, studio_inputs)):
+            msg = "Change-Control-only mode cannot be combined with a Workspace or deployment inputs."
+            raise ValueError(msg)
 
     result = DeployToCvResult(workspace=None if change_control_only else workspace or CVWorkspace(), change_control=change_control)
     if device_deployments is None:

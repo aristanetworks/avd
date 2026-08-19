@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from ansible.errors import AnsibleActionFail
 
-from ansible_collections.arista.avd.plugins.action.cv_workflow import ARGUMENT_SPEC, ActionModule, validate_change_control_only_inputs
+from ansible_collections.arista.avd.plugins.action.cv_workflow import ARGUMENT_SPEC, ActionModule
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -198,10 +198,14 @@ def test_validate_argument_spec_materializes_change_control_note_defaults(action
     assert change_control["start_note"] == "Automatically started by AVD"
 
 
-def test_deploy_existing_change_control_reports_unchanged_for_noop(action_module: Callable[..., ActionModule]) -> None:
-    """CC-only mode reports unchanged when the requested state was already satisfied."""
+def test_deploy_existing_change_control_with_empty_manifest_reports_unchanged_for_noop(action_module: Callable[..., ActionModule]) -> None:
+    """CC-only mode ignores the empty static config manifest supplied by the role."""
     module = action_module(ActionModule)
-    validated_args = _make_validated_args(device_list=[], change_control={"id": "cc-id", "requested_state": "approved"})
+    validated_args = _make_validated_args(
+        device_list=[],
+        change_control={"id": "cc-id", "requested_state": "approved"},
+        static_config_manifest={"preserve_existing_containers": False},
+    )
     deploy_result = _make_deploy_result_mock(change_control=MagicMock(changed=False))
 
     with (
@@ -213,22 +217,33 @@ def test_deploy_existing_change_control_reports_unchanged_for_noop(action_module
     assert result["changed"] is False
 
 
-def test_deploy_rejects_devices_with_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
-    """An existing Change Control ID cannot be combined with a non-empty device list."""
+def test_deploy_rejects_device_deployments_with_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
+    """An existing Change Control ID cannot be combined with device deployments."""
     module = action_module(ActionModule)
     validated_args = _make_validated_args(device_list=["leaf1"], change_control={"id": "cc-id", "requested_state": "approved"})
 
     with (
-        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
-        pytest.raises(AnsibleActionFail, match="Change-Control-only mode requires the device list to be empty"),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[MagicMock()]),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], [])),
+        pytest.raises(AnsibleActionFail, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
     ):
         asyncio.run(module.deploy(validated_args, {}))
 
 
-def test_validate_change_control_only_inputs_rejects_deployment_inputs() -> None:
-    """Change-Control-only mode cannot be combined with deployment inputs."""
-    with pytest.raises(AnsibleActionFail, match="cannot be combined with configurations, tags, metadata, or a static config manifest"):
-        validate_change_control_only_inputs(work_to_do=True, device_list=[])
+def test_deploy_rejects_static_config_manifest_with_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
+    """An existing Change Control ID cannot be combined with a non-empty static config manifest."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(
+        device_list=[],
+        change_control={"id": "cc-id", "requested_state": "approved"},
+        static_config_manifest={"configlets": [{"name": "configlet", "file": "/configs/configlet.cfg"}]},
+    )
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        pytest.raises(AnsibleActionFail, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
+    ):
+        asyncio.run(module.deploy(validated_args, {}))
 
 
 # ---------------------------------------------------------------------------

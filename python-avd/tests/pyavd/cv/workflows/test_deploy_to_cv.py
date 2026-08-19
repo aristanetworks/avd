@@ -14,6 +14,7 @@ import pytest
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
 from pyavd._cv.workflows.models import (
     AvdChangeControl,
+    AvdManifest,
     AvdWorkspace,
     CloudVision,
     CVChangeControl,
@@ -40,7 +41,7 @@ if TYPE_CHECKING:
 
 @pytest.mark.asyncio
 async def test_deploy_to_cv_manages_existing_change_control() -> None:
-    """Test that an existing Change Control is managed without creating a Workspace."""
+    """Test that an existing Change Control is managed with the empty static config manifest supplied by the role."""
     mock_cv_client = AsyncMock()
     entered_cv_client = AsyncMock()
     mock_cv_client.__aenter__.return_value = entered_cv_client
@@ -63,6 +64,7 @@ async def test_deploy_to_cv_manages_existing_change_control() -> None:
                 proxy_password=None,
             ),
             change_control=change_control,
+            static_config_manifest=AvdManifest(),
         )
 
     manage_change_control.assert_called_once_with(change_control=change_control, cv_client=entered_cv_client)
@@ -75,7 +77,7 @@ async def test_deploy_to_cv_rejects_existing_change_control_with_workspace() -> 
     """Test that an existing Change Control cannot be combined with a Workspace."""
     change_control = CVChangeControl(avd_change_control=AvdChangeControl(id="cc-id", requested_state="approved"))
 
-    with pytest.raises(ValueError, match="cannot be combined with a Workspace or deployment inputs"):
+    with pytest.raises(ValueError, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"):
         await deploy_to_cv(
             cloudvision=CloudVision(
                 servers="www.arista.io",
