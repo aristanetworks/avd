@@ -44,7 +44,7 @@ async def test_deploy_to_cv_manages_existing_change_control() -> None:
     mock_cv_client = AsyncMock()
     entered_cv_client = AsyncMock()
     mock_cv_client.__aenter__.return_value = entered_cv_client
-    change_control = CVChangeControl(avd_change_control=AvdChangeControl(id="cc-id", requested_state="approved"))
+    change_control = CVChangeControl(avd_change_control=AvdChangeControl(requested_state="approved"), id="cc-id")
 
     with (
         patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
@@ -65,7 +65,7 @@ async def test_deploy_to_cv_manages_existing_change_control() -> None:
             change_control=change_control,
         )
 
-    finalize_change_control.assert_called_once_with(change_control=change_control, cv_client=entered_cv_client)
+    finalize_change_control.assert_called_once_with(change_control=change_control, cv_client=entered_cv_client, is_change_control_only=True)
     assert result.workspace is None
     assert result.change_control is change_control
 

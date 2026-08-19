@@ -63,16 +63,16 @@ def get_change_control_state(cv_change_control: ChangeControl, *, is_change_cont
     )
 
 
-async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_client: CVClient) -> None:
+async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_client: CVClient, *, is_change_control_only: bool = False) -> None:
     """
     Update and finalize a Change Control on CloudVision from the given result.CVChangeControl object.
 
     Depending on the requested state the Change Control will be left pending approval, approved, running, or completed.
     In-place update the CVChangeControl object.
+    Set `is_change_control_only` when managing a Change Control supplied by ID without a deployment.
     """
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
     change_control.changed = False
-    is_change_control_only = change_control.avd_change_control.id is not None
 
     cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
 

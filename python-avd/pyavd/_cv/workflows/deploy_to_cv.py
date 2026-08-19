@@ -158,7 +158,7 @@ async def deploy_to_cv(
             grpc_channel_configuration=cloudvision.grpc_channel_configuration,
         ) as cv_client:
             if change_control_only:
-                await finalize_change_control_on_cv(change_control=result.change_control, cv_client=cv_client)
+                await finalize_change_control_on_cv(change_control=result.change_control, cv_client=cv_client, is_change_control_only=True)
                 return result
 
             # Create workspace

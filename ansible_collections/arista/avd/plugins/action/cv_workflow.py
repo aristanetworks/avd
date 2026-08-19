@@ -304,11 +304,12 @@ class ActionModule(ActionBase):
                     timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
                     workspace=CVWorkspace(avd_workspace=AvdWorkspace(**workspace_args)),
                 )
-                # Add warnings caught by the logger.
-                result_object.warnings.extend(result.get("warnings", []))
             else:
                 result_object = DeployToCvResult(workspace=None)
                 result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
+
+            # Add warnings caught by the logger.
+            result_object.warnings.extend(result.get("warnings", []))
 
             # Errors and warnings are converted to JSON compatible strings.
             result_object.errors = [str(error) for error in result_object.errors]

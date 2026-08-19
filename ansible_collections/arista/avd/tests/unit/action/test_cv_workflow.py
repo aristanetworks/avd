@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from ansible.errors import AnsibleActionFail
 
-from ansible_collections.arista.avd.plugins.action.cv_workflow import ActionModule
+from ansible_collections.arista.avd.plugins.action.cv_workflow import ActionModule, validate_change_control_only_inputs
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -168,7 +168,7 @@ def test_deploy_routes_existing_change_control_to_cc_only_mode(action_module: Ca
         patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
         patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=deploy_result) as deploy_to_cv,
     ):
-        result = asyncio.run(module.deploy(validated_args, {}))
+        result = asyncio.run(module.deploy(validated_args, {"warnings": ["Logger warning"]}))
 
     deploy_to_cv.assert_called_once()
     change_control = deploy_to_cv.call_args.kwargs["change_control"]
@@ -176,6 +176,7 @@ def test_deploy_routes_existing_change_control_to_cc_only_mode(action_module: Ca
     assert change_control.requested_state == "running"
     assert change_control.avd_change_control.approval_note == "Approved"
     assert change_control.avd_change_control.start_note == "Started"
+    assert result["warnings"] == ["Logger warning"]
     assert result["changed"] is True
 
 
@@ -204,6 +205,12 @@ def test_deploy_rejects_devices_with_existing_change_control(action_module: Call
         pytest.raises(AnsibleActionFail, match="Change-Control-only mode requires the device list to be empty"),
     ):
         asyncio.run(module.deploy(validated_args, {}))
+
+
+def test_validate_change_control_only_inputs_rejects_deployment_inputs() -> None:
+    """Change-Control-only mode cannot be combined with deployment inputs."""
+    with pytest.raises(AnsibleActionFail, match="cannot be combined with configurations, tags, metadata, or a static config manifest"):
+        validate_change_control_only_inputs(work_to_do=True, device_list=[])
 
 
 # ---------------------------------------------------------------------------
