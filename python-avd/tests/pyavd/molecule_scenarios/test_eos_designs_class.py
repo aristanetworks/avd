@@ -55,3 +55,9 @@ def test_eos_designs_custom_structured_configuration(prefix: str | None, expecte
         assert isinstance(entry, EosDesigns._CustomStructuredConfigurationsItem)
 
     assert repr(loaded_model._custom_structured_configurations) == repr(expected_data)
+
+
+def test_eos_designs_from_dict_does_not_normalize_dynamic_keys() -> None:
+    loaded_model = EosDesigns._from_dict({"fabric_name": "test", "type": "l3leaf", "l3leaf": {"defaults": {}}})
+
+    assert "_dynamic_keys" not in loaded_model._as_dict()

@@ -14,6 +14,7 @@ from ansible.parsing.dataloader import DataLoader
 from ansible.vars.manager import VariableManager
 from yaml import CSafeLoader, load
 
+from pyavd import validate_inputs
 from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils import get
@@ -166,7 +167,13 @@ class MoleculeScenario:
     def avd_facts(self) -> dict[str, EosDesignsFacts]:
         """The AVD facts calculated from the full Ansible inventory in the molecule scenario."""
         all_hostvars = {host.name: deepcopy(host.hostvars) for host in self.hosts}
-        all_inputs = {hostname: EosDesigns._from_dict(hostvars) for hostname, hostvars in all_hostvars.items()}
+        all_inputs = {}
+        for hostname, hostvars in all_hostvars.items():
+            validated_data_result = validate_inputs(hostvars)
+            if validated_data_result.validated_data is None:
+                msg = f"Input validation failed for test host '{hostname}': {validated_data_result.validation_result.violations}"
+                raise AssertionError(msg)
+            all_inputs[hostname] = EosDesigns._from_dict(validated_data_result.validated_data)
         return get_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=self.pool_manager, digital_twin=self.digital_twin)
 
     @cached_property

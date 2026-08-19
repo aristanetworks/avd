@@ -440,26 +440,29 @@ class SrcGenRootDict(SrcGenDict):
         if self.schema.dynamic_keys:
             """
             Build a data model like this:
-            dynamic_keys:
-              _dynamic_key_maps:
-                - dynamic_keys_path: "node_type_keys.key"
-                  model_key: "node_type_keys"
-              node_type_keys:
+            _dynamic_keys:
+              node_types:
                 - key: "l2leaf"
+                  source: "node_types"
                   value: NodeTypeKeysKey
-            }
             """
             dyn_classes = []
             dyn_fields = []
-            _dynamic_key_maps = []
             for dynamic_keys_path, childschema in self.schema.dynamic_keys.items():
-                # dynamic_key_type will be "node_type_keys", "connected_endpoints_keys" or "network_services_keys"
+                dynamic_key_type, dynamic_key_sources = {
+                    "connected_endpoints_keys.key": (
+                        "connected_endpoints",
+                        ("connected_endpoints", "custom_connected_endpoints"),
+                    ),
+                    "network_services_keys.name": ("network_services", ("network_services",)),
+                    "node_type_keys.key": ("node_types", ("node_types", "custom_node_types")),
+                }.get(dynamic_keys_path, (None, ()))
+                if dynamic_key_type is None:
+                    continue
                 if not childschema.display_name:
                     msg = "Schemas for dynamic_keys *must* have 'display_name' set."
                     raise ValueError(msg)
-                dynamic_key_type = childschema.display_name.replace(" ", "_").lower()
                 dynamic_key_model_name = generate_class_name(f"dynamic_{dynamic_key_type}")
-                _dynamic_key_maps.append({"dynamic_keys_path": dynamic_keys_path, "model_key": dynamic_key_type})
                 fieldsrc = childschema._generate_class_src(class_name=generate_class_name(dynamic_key_type))
                 fieldsrc_list = [
                     FieldSrc(
@@ -468,7 +471,14 @@ class SrcGenRootDict(SrcGenDict):
                         type_hints=[FieldTypeHintSrc(field_type="str")],
                         description="Key used as dynamic key",
                         optional=False,
-                    )
+                    ),
+                    FieldSrc(
+                        name="source",
+                        field_type="str",
+                        type_hints=[FieldTypeHintSrc(field_type="Literal[" + ", ".join(f'"{source}"' for source in dynamic_key_sources) + "]")],
+                        description="Dynamic key source",
+                        optional=False,
+                    ),
                 ]
 
                 # Overriding the details from the autocreated field. This way we can reuse the field definition with types and type hints
@@ -502,21 +512,11 @@ class SrcGenRootDict(SrcGenDict):
                         description=f"Collection of dynamic '{dynamic_key_type}'.",
                     )
                 )
-            class_vars = [
-                ClassVarSrc(
-                    name="_dynamic_key_maps",
-                    type_hint=FieldTypeHintSrc(field_type="tuple", list_item_type="dict, ..."),
-                    description="Internal tuple of mappings from dynamic_keys_path to model_key.",
-                    value=str(tuple(_dynamic_key_maps)),
-                )
-            ]
-
             classes.append(
                 ModelSrc(
                     name="_DynamicKeys",
                     classes=dyn_classes,
                     fields=dyn_fields,
-                    class_vars=class_vars,
                     description="Data models for dynamic keys.",
                 )
             )

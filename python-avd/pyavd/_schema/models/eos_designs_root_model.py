@@ -8,9 +8,6 @@ from collections.abc import Iterator, Mapping
 from typing import TYPE_CHECKING, TypeVar
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._schema.store import create_store
-from pyavd._schema.utils import get_instance_with_defaults
-from pyavd._utils import get_all
 
 from .avd_list import AvdList
 from .avd_model import AvdModel
@@ -32,12 +29,10 @@ class EosDesignsRootModel(AvdModel):
         """
         Returns a new instance loaded with the data from the given dict.
 
-        The EosDesignsRootModel is special because it will also load "dynamic keys" like `node_type_keys` and `network_services_keys` and
-        `connected_endpoints_keys`. Those models will be parsed and all mentioned keys will be searched for in the input and loaded into the
-        corresponding model under `_dynamic_keys`.
+        The EosDesignsRootModel is special because it will load `custom_structured_configuration_prefix` and search for any keys prefixed with those.
+        Found keys will be loaded into the `_custom_structured_configurations` model.
 
-        Furthermore the EosDesignsRootModel will also load `custom_structured_configuration_prefix` and search for any keys prefixed with those. Found keys
-        will be loaded into the `_custom_structured_configurations` model.
+        Dynamic keys are normalized under `_dynamic_keys` by input validation before loading this model.
 
         Args:
             data: A mapping containing the EosDesigns input data to be loaded.
@@ -50,11 +45,11 @@ class EosDesignsRootModel(AvdModel):
             msg = f"Expecting 'data' as a 'Mapping' when loading data into '{cls.__name__}'. Got '{type(data)}"
             raise TypeError(msg)
 
-        root_data = {"_dynamic_keys": cls._get_dynamic_keys(data)}
-        if load_custom_structured_config:
-            root_data["_custom_structured_configurations"] = cls._CustomStructuredConfigurations(cls._get_csc_items(data))
+        if not load_custom_structured_config:
+            return super()._from_dict(data)
 
-        return super()._from_dict(ChainMap(root_data, data))
+        custom_structured_configurations = cls._CustomStructuredConfigurations(cls._get_csc_items(data))
+        return super()._from_dict(ChainMap({"_custom_structured_configurations": custom_structured_configurations}, data))
 
     @classmethod
     def _get_csc_items(cls, data: Mapping) -> Iterator[EosDesigns._CustomStructuredConfigurationsItem]:
@@ -79,40 +74,3 @@ class EosDesignsRootModel(AvdModel):
             prefix_length = len(prefix)
             for key in matching_keys:
                 yield cls._CustomStructuredConfigurationsItem(key=key, value=EosCliConfigGen._from_dict({key[prefix_length:]: data[key]}))
-
-    @classmethod
-    def _get_dynamic_keys(cls, data: Mapping) -> EosDesigns._DynamicKeys:
-        """
-        Returns the DynamicKeys object which holds a list for each dynamic key.
-
-        The lists contain an entry for each dynamic key found in the inputs and the content of that key conforming to the schema.
-
-        The corresponding data models are auto created by the conversion from schemas, which also sets "_dynamic_key_maps" on the class:
-        ```python
-        _dynamic_key_maps: list[dict] = [{"dynamic_keys_path": "connected_endpoints_keys.key", "model_key": "connected_endpoints_keys"}, ...]
-        ```
-
-        Here we parse "_dynamic_key_maps" and for entry  find all values for the dynamic_keys_path (ex "node_type_keys.key") in the input data
-        to identify all dynamic keys (ex "l3leaf", "spine" ...)
-        """
-        schema = create_store(load_from_yaml=False)["eos_designs"]
-
-        dynamic_keys_dict = {}
-
-        for dynamic_key_map in cls._DynamicKeys._dynamic_key_maps:
-            dynamic_keys_path: str = dynamic_key_map["dynamic_keys_path"]
-            model_key_list: list = dynamic_keys_dict.setdefault(dynamic_key_map["model_key"], [])
-
-            # TODO: Improve the fetch of default. We need to store the default value somewhere, since this is executed before __init__ of EosDesigns.
-            data_with_default = get_instance_with_defaults(data, dynamic_keys_path, schema)
-            dynamic_keys = get_all(data_with_default, dynamic_keys_path)
-            for dynamic_key in dynamic_keys:
-                # dynamic_key is one key like "l3leaf".
-                if (value := data.get(dynamic_key)) is None:
-                    # Do not add missing key or None.
-                    continue
-
-                model_key_list.append({"key": dynamic_key, "value": value})
-
-        # TODO: Just create to proper data models instead of using coerce type.
-        return cls._DynamicKeys._from_dict(dynamic_keys_dict)

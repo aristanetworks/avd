@@ -5,6 +5,32 @@
 from pyavd_utils.validation import Configuration
 
 from pyavd import validate_inputs
+from pyavd.api.schemas import AVDDesign
+
+
+def test_validate_inputs_normalizes_dynamic_keys_before_model_loading() -> None:
+    inputs = {
+        "fabric_name": "TEST-FABRIC",
+        "custom_node_type_keys": [{"key": "l3leaf", "type": "l3leaf"}],
+        "custom_connected_endpoints_keys": [{"key": "servers", "type": "server"}],
+        "l3leaf": {"defaults": {}},
+        "servers": [],
+        "tenants": [],
+    }
+
+    result = validate_inputs(inputs)
+
+    assert result.validation_result.violations == []
+    assert result.validated_data is not None
+    assert all(key not in result.validated_data for key in ("l3leaf", "servers", "tenants"))
+    assert set(result.validated_data["_dynamic_keys"]) == {"connected_endpoints", "network_services", "node_types"}
+    avd_design = AVDDesign._from_dict(result.validated_data)
+    assert "l3leaf" in avd_design._dynamic_keys.node_types
+    assert "servers" in avd_design._dynamic_keys.connected_endpoints
+    assert "tenants" in avd_design._dynamic_keys.network_services
+    assert avd_design._dynamic_keys.node_types["l3leaf"].source == "custom_node_types"
+    assert avd_design._dynamic_keys.connected_endpoints["servers"].source == "custom_connected_endpoints"
+    assert avd_design._dynamic_keys.network_services["tenants"].source == "network_services"
 
 
 def test_validate_inputs_with_eos_cli_config_gen_keys() -> None:

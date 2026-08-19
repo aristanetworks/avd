@@ -26,12 +26,9 @@ class NodeConfigMixin(Protocol):
         """
         The object representing the `<node_type_key like l3leaf, spine etc>:` containing the `defaults`, `nodes`, `node_groups` etc.
 
-        The relevant dynamic key is found in self.inputs._dynamic_keys which is populated by the _from_dict() loader on the EosDesigns class.
+        The relevant dynamic key is found in self.inputs._dynamic_keys which is populated by input validation.
         """
         node_type_key = self.node_type_key_data.key
-
-        if node_type_key in self.inputs._dynamic_keys.custom_node_types:
-            return self.inputs._dynamic_keys.custom_node_types[node_type_key].value._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes)
 
         if node_type_key in self.inputs._dynamic_keys.node_types:
             return self.inputs._dynamic_keys.node_types[node_type_key].value

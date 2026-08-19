@@ -23,16 +23,27 @@ create_store(load_from_yaml=False)
 DUMMYDIR = "mydir"
 """ Files will be mocked throughout. This will be the fake directory under which the data folder holding the pool files will be created. """
 
-TESTHOST1 = {"inventory_hostname": "testhost1", "fabric_name": "pool_manager_tests", "type": "l2leaf", "l2leaf": {"defaults": {}}}
-TESTHOST2 = {"inventory_hostname": "testhost2", "fabric_name": "pool_manager_tests", "type": "l2leaf", "l2leaf": {"defaults": {}}}
-TESTHOST3 = {"inventory_hostname": "testhost3", "fabric_name": "pool_manager_tests", "type": "l2leaf", "pod_name": "POD1", "l2leaf": {"defaults": {}}}
+NORMALIZED_DYNAMIC_KEYS = {
+    "connected_endpoints": [],
+    "network_services": [],
+    "node_types": [{"key": "l2leaf", "source": "node_types", "value": {"defaults": {}}}],
+}
+TESTHOST1 = {"inventory_hostname": "testhost1", "fabric_name": "pool_manager_tests", "type": "l2leaf", "_dynamic_keys": NORMALIZED_DYNAMIC_KEYS}
+TESTHOST2 = {"inventory_hostname": "testhost2", "fabric_name": "pool_manager_tests", "type": "l2leaf", "_dynamic_keys": NORMALIZED_DYNAMIC_KEYS}
+TESTHOST3 = {
+    "inventory_hostname": "testhost3",
+    "fabric_name": "pool_manager_tests",
+    "type": "l2leaf",
+    "pod_name": "POD1",
+    "_dynamic_keys": NORMALIZED_DYNAMIC_KEYS,
+}
 TESTHOST4 = {
     "inventory_hostname": "testhost4",
     "fabric_name": "pool_manager_tests",
     "type": "l2leaf",
     "pod_name": "POD1",
     "dc_name": "DC1",
-    "l2leaf": {"defaults": {}},
+    "_dynamic_keys": NORMALIZED_DYNAMIC_KEYS,
 }
 
 

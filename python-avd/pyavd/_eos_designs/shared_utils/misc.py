@@ -564,23 +564,24 @@ class MiscMixin(Protocol):
         if self.inputs.connected_endpoints:
             dyn_connected_endpoints_item = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem(
                 key="connected_endpoints",
+                source="connected_endpoints",
                 value=self.inputs.connected_endpoints._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints),
             )
             dyn_connected_endpoints_item._internal_data.description = None
             dyn_connected_endpoints_item._internal_data.type = None
             all_connected_endpoints.append(dyn_connected_endpoints_item)
 
-        for dyn_connected_endpoints in self.inputs._dynamic_keys.custom_connected_endpoints:
-            dyn_connected_endpoints_item = dyn_connected_endpoints._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem)
-            dyn_connected_endpoints_item._internal_data.description = self.inputs.custom_connected_endpoints_keys[dyn_connected_endpoints.key].description
-            dyn_connected_endpoints_item._internal_data.type = self.inputs.custom_connected_endpoints_keys[dyn_connected_endpoints.key].type
-            all_connected_endpoints.append(dyn_connected_endpoints_item)
-
         for dyn_connected_endpoints in self.inputs._dynamic_keys.connected_endpoints:
-            if dyn_connected_endpoints.key not in all_connected_endpoints:
-                dyn_connected_endpoints._internal_data.description = self.inputs.connected_endpoints_keys[dyn_connected_endpoints.key].description
-                dyn_connected_endpoints._internal_data.type = self.inputs.connected_endpoints_keys[dyn_connected_endpoints.key].type
-                all_connected_endpoints.append(dyn_connected_endpoints)
+            if dyn_connected_endpoints.source == "custom_connected_endpoints":
+                descriptors = self.inputs.custom_connected_endpoints_keys
+            elif dyn_connected_endpoints.source == "connected_endpoints":
+                descriptors = self.inputs.connected_endpoints_keys
+            else:
+                msg = f"Unexpected dynamic connected endpoints source '{dyn_connected_endpoints.source}' for key '{dyn_connected_endpoints.key}'."
+                raise NotImplementedError(msg)
+            dyn_connected_endpoints._internal_data.description = descriptors[dyn_connected_endpoints.key].description
+            dyn_connected_endpoints._internal_data.type = descriptors[dyn_connected_endpoints.key].type
+            all_connected_endpoints.append(dyn_connected_endpoints)
 
         return all_connected_endpoints
 
