@@ -731,10 +731,10 @@ ip routing vrf VRF12
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| VRF10 | false |
-| VRF11 | true |
-| VRF12 | true |
+| MGMT | False |
+| VRF10 | False |
+| VRF11 | True |
+| VRF12 | True |
 
 #### IPv6 Routing Device Configuration
 
@@ -808,16 +808,16 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 2001:db8:0:1::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:0:2::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:2:2::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 2001:db8:2:3::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 2001:db8:4::1 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
-| 2001:db8:4::1 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF10 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
-| 2001:db8:4::1 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF11 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
-| 2001:db8:4::1 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF12 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 2001:db8:0:1::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 2001:db8:0:2::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 2001:db8:2:2::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - |
+| 2001:db8:2:3::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - |
+| 2001:db8:4::1 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - |
+| 2001:db8:4::1 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF10 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - |
+| 2001:db8:4::1 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF11 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - |
+| 2001:db8:4::1 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF12 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
