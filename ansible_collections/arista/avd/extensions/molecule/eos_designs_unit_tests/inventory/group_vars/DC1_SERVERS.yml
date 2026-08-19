@@ -1,23 +1,5 @@
 ---
 
-ipv4_acls:
-  - name: ACL1
-    entries:
-      - sequence: 10
-        action: permit
-        protocol: ip
-        source: any
-        destination: any
-
-ipv6_acls:
-  - name: ACL1
-    entries:
-      - sequence: 10
-        action: permit
-        protocol: ipv6
-        source: any
-        destination: any
-
 port_profiles:
   - profile: TENANT_A_B
     mode: trunk
