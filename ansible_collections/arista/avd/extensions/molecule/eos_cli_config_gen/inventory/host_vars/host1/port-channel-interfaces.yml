@@ -1428,4 +1428,3 @@ port_channel_interfaces:
         boundaries:
           - boundary: ff04::/16
             out: true
-
