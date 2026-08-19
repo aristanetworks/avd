@@ -157,7 +157,7 @@ interface Port-Channel2
 | MGMT | False |
 | TENANT_A | True |
 | TENANT_B | True (ipv6 interfaces) |
-| TENANT_C | - |
+| TENANT_C | False |
 
 #### IP Routing Device Configuration
 
@@ -175,10 +175,10 @@ ip routing ipv6 interfaces vrf TENANT_B
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| TENANT_A | false |
-| TENANT_B | false |
-| TENANT_C | true |
+| MGMT | False |
+| TENANT_A | False |
+| TENANT_B | False |
+| TENANT_C | True |
 
 #### IPv6 Routing Device Configuration
 
