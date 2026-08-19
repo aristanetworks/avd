@@ -46,7 +46,7 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
     LOGGER.info("manage_change_control_on_cv: %s", change_control)
     change_control.changed = False
 
-    cv_change_control = await update_change_control_details_on_cv(change_control, cv_client)
+    cv_change_control, change_control.changed = await update_change_control_details_on_cv(change_control, cv_client)
     change_control.state = get_change_control_state(cv_change_control)
     LOGGER.info("manage_change_control_on_cv: %s", change_control)
 

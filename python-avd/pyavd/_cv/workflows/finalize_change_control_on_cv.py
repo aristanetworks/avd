@@ -47,9 +47,8 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     In-place update the CVChangeControl object.
     """
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
-    change_control.changed = False
 
-    cv_change_control = await update_change_control_details_on_cv(change_control, cv_client)
+    cv_change_control, _ = await update_change_control_details_on_cv(change_control, cv_client)
     change_control.state = get_change_control_state(cv_change_control=cv_change_control)
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
@@ -65,7 +64,6 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
             description=change_control.avd_change_control.approval_note,
         )
         change_control.state = "approved"
-        change_control.changed = True
         LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     # If requested state is "approved" we are done.
@@ -74,7 +72,6 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
 
     await cv_client.start_change_control(change_control_id=change_control.id, description=change_control.avd_change_control.start_note)
     change_control.state = "running"
-    change_control.changed = True
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     # If requested state is "running" we are done.

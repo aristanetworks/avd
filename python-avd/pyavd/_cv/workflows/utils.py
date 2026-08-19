@@ -14,9 +14,10 @@ if TYPE_CHECKING:
     from .models import CVChangeControl, CVDeviceDeployment, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
 
 
-async def update_change_control_details_on_cv(change_control: CVChangeControl, cv_client: CVClient) -> ChangeControl:
-    """Update Change Control details when needed and return the current CloudVision object."""
+async def update_change_control_details_on_cv(change_control: CVChangeControl, cv_client: CVClient) -> tuple[ChangeControl, bool]:
+    """Update Change Control details when needed and return the current CloudVision object and change status."""
     cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
+    changed = False
 
     if change_control.name is None:
         change_control.name = cv_change_control.change.name
@@ -27,11 +28,11 @@ async def update_change_control_details_on_cv(change_control: CVChangeControl, c
 
     if change_control.name != cv_change_control.change.name or change_control.description != cv_change_control.change.notes:
         await cv_client.set_change_control(change_control_id=change_control.id, name=change_control.name, description=change_control.description)
-        change_control.changed = True
+        changed = True
         # Update the local copy to get the exact "last updated" timestamp needed for approval.
         cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
 
-    return cv_change_control
+    return cv_change_control, changed
 
 
 def extract_from_device_deployments(
