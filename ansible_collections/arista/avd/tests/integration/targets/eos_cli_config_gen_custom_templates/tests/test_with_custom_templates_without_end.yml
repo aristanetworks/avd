@@ -58,4 +58,3 @@
       - result.changed == true
       - "'Output from custom_template1.j2 END' in (rendered_config.content | b64decode)"
       - "'\nend\n' not in (rendered_config.content | b64decode)"
-

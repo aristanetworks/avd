@@ -29,4 +29,3 @@
     that:
       - result is success
       - result.changed == true
-

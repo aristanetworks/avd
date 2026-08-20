@@ -19,4 +19,3 @@
     expected_error: >-
       Error during plugin 'arista.avd.eos_cli_config_gen' execution: Missing the validated structured config for host 'testhost'.
       Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred.
-
