@@ -659,9 +659,9 @@ ip routing vrf VRF11
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| VRF10 | false |
-| VRF11 | false |
+| MGMT | False |
+| VRF10 | False |
+| VRF11 | False |
 
 ### Static Routes
 
