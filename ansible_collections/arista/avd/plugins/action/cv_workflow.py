@@ -77,7 +77,7 @@ ARGUMENT_SPEC = {
             "permit_without_calls": {"type": "bool", "required": False, "default": False},
         },
     },
-    # TODO: Make configuration_dir optional for users using the manifest to push device configs.
+    # TODO: Make configuration_dir optional for Change-Control-only and static config manifest workflows.
     "configuration_dir": {"type": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": False},
     "structured_config_suffix": {"type": "str", "default": "yml"},
