@@ -3,6 +3,8 @@ aaa_root:
 address_locking:
   dhcp_servers_ipv4:
   - 1.1.1.1
+  dhcp_server_interfaces:
+  - Ethernet1
   local_interface: Vlan100
 config_end: true
 enable_password:

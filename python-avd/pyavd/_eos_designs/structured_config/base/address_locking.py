@@ -34,6 +34,7 @@ class AddressLockingMixin(Protocol):
             del locked_address.ipv6_enforcement_disabled
 
         self.structured_config.address_locking._update(
+            dhcp_server_interfaces=address_locking_settings.dhcp_server_interfaces._cast_as(EosCliConfigGen.AddressLocking.DhcpServerInterfaces),
             dhcp_servers_ipv4=address_locking_settings.dhcp_servers_ipv4._cast_as(EosCliConfigGen.AddressLocking.DhcpServersIpv4),
             local_interface=local_interface,
             locked_address=locked_address,
