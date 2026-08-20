@@ -8,8 +8,10 @@ Only covering variants not already handled in e2e-test-avd,
 and just testing that we don't raise.
 """
 
+import json
+
 from pyavd import get_avd_facts, get_device_structured_config
-from pyavd.api.schemas import AVDDesign
+from pyavd.api.schemas import AVDDesign, ConsolidatedAVDDesign
 
 INPUTS = {
     "testhost1": {"fabric_name": "FABRIC", "devices": [{"name": "testhost1", "type": "l2leaf"}]},
@@ -33,3 +35,13 @@ def test_get_avd_facts_get_device_structured_config_models() -> None:
     for hostname, model in models.items():
         structured_config = get_device_structured_config(hostname, model, avd_facts, hostvars=INPUTS[hostname])
         assert structured_config.hostname == hostname
+
+
+def test_consolidated_avd_design_json_round_trip() -> None:
+    consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", INPUTS["testhost1"])
+    dumped_inputs = consolidated_inputs._dump()
+
+    loaded_inputs = ConsolidatedAVDDesign._from_dict(json.loads(json.dumps(dumped_inputs)))
+
+    assert isinstance(loaded_inputs, ConsolidatedAVDDesign)
+    assert loaded_inputs._dump() == dumped_inputs

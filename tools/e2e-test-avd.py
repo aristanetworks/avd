@@ -54,7 +54,7 @@ if typing.TYPE_CHECKING:
     from typing_extensions import Self
 
     from pyavd._utils.avd_templar import AVDTemplar
-    from pyavd.api.schemas import AVDDesign
+    from pyavd.api.schemas import AVDDesign, ConsolidatedAVDDesign
 
     class DataclassInstance(typing.Protocol):
         __dataclass_fields__: typing.ClassVar[dict[str, typing.Any]]
@@ -509,8 +509,8 @@ class AvdV6Build:
     _avd_facts_shm_info: SharedMemoryMetadata | None
     """Shared memory metadata for avd_facts (created in common_build_stage, used by workers)."""
     _finalizer: weakref.finalize | None
-    _loaded_avd_designs: dict[str, AVDDesign]
-    """Map of device -> AVDDesign object. Created in common_build_stage, passed to workers."""
+    _loaded_avd_designs: dict[str, ConsolidatedAVDDesign]
+    """Map of device -> ConsolidatedAVDDesign object. Created in common_build_stage, passed to workers."""
     _validated_inputs_dict: dict[str, dict]
     """Map of device -> validated inputs as dict. Created in common_build_stage, passed to workers."""
     _validated_inputs_json: dict[str, str]
@@ -644,7 +644,7 @@ class AvdV6Build:
         )
 
         if self.config.avd_design:
-            # Clear loaded AVDDesign objects and dicts - no longer needed
+            # Clear loaded ConsolidatedAVDDesign objects and dicts - no longer needed
             self._loaded_avd_designs.clear()
             self._validated_inputs_dict.clear()
 
@@ -656,11 +656,16 @@ class AvdV6Build:
         """
         from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
         from pyavd.api.pool_manager import PoolManager
-        from pyavd.api.schemas import AVDDesign
+        from pyavd.api.schemas import ConsolidatedAVDDesign
 
-        for device_name, validated_inputs_dict in self._validated_inputs_dict.items():
-            # Parse JSON and create AVDDesign object
-            self._loaded_avd_designs[device_name] = AVDDesign._from_dict(validated_inputs_dict)
+        try:
+            for device_name, validated_inputs_dict in self._validated_inputs_dict.items():
+                # Parse JSON and create ConsolidatedAVDDesign object
+                # TODO: This could benefit from multiprocessing until we move it to Rust.
+                self._loaded_avd_designs[device_name] = ConsolidatedAVDDesign._from_avd_design(device_name, validated_inputs_dict)
+        except Exception as e:
+            dump_exception(e, self.config, "avd_facts")
+            return False
 
         # Clear validated JSON strings - no longer needed
         self._validated_inputs_json.clear()
@@ -836,7 +841,7 @@ def validate_inputs_for_one_device(device: str, device_avd_inputs: dict, config:
 
 def build_validate_and_render_for_one_device(
     device: str,
-    device_avd_validated_inputs: AVDDesign | None,
+    device_avd_validated_inputs: ConsolidatedAVDDesign | None,
     device_avd_validated_inputs_dict: dict,
     avd_facts_metadata: SharedMemoryMetadata,
     config: FabricConfig,
@@ -869,7 +874,7 @@ def build_validate_and_render_for_one_device(
         from pyavd import validate_structured_config
         from pyavd._eos_designs.structured_config import get_structured_config
 
-        device_avd_validated_inputs = typing.cast("AVDDesign", device_avd_validated_inputs)
+        device_avd_validated_inputs = typing.cast("ConsolidatedAVDDesign", device_avd_validated_inputs)
 
         # Load (and cache) avd_facts from shared memory in this worker.
         avd_facts = _load_avd_facts_from_shm(avd_facts_metadata.name, avd_facts_metadata.size)

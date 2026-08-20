@@ -72,7 +72,7 @@ class CvTopology(Protocol):
         if self.cv_topology is None:
             return node_config
 
-        level = self.get_cv_topology_level(self.type)
+        level = self.get_cv_topology_level(self.inputs._type)
         for interface in self.cv_topology.interfaces._natural_sorted():
             if interface.name.startswith("Management"):
                 # Only set the first management interface we find.
