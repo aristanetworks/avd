@@ -111,7 +111,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - ipv6 address prefix-list PL-MLAG-PEER-VRFS
+    - ip address prefix-list PL-MLAG-PEER-VRFS
   - sequence: 20
     type: permit
 router_bfd:
