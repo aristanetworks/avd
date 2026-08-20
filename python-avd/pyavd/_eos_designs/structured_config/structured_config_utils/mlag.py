@@ -45,9 +45,7 @@ class MlagMixin(Protocol):
         """
         bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
         self.set_mlag_peer_group(bgp_peer_group)
-        address_family_ipv4_peer_groups = self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(
-            name=bgp_peer_group.name, activate=True
-        )
+        address_family_ipv4_peer_groups = self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
         if self.inputs.underlay_rfc5549 or self.shared_utils.underlay_ipv6_numbered:
             address_family_ipv4_peer_groups.next_hop.address_family_ipv6._update(enabled=True, originate=True)
         if self.shared_utils.underlay_ipv6:
