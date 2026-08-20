@@ -1,0 +1,61 @@
+---
+- name: Ensure temporary structured config directory for no-end scenario is absent
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/structured_config_no_end"
+    state: absent
+
+- name: Ensure temporary structured config directory for no-end scenario exists
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/structured_config_no_end"
+    state: directory
+    mode: "0775"
+
+- name: Copy structured config to no-end scenario directory
+  ansible.builtin.copy:
+    src: "{{ structured_config_dir }}/testhost.yml"
+    dest: "{{ actual_output_dir }}/structured_config_no_end/testhost.yml"
+    mode: "0664"
+
+- name: Set config_end to false for no-end scenario
+  ansible.builtin.replace:
+    path: "{{ actual_output_dir }}/structured_config_no_end/testhost.yml"
+    regexp: '^config_end: true$'
+    replace: 'config_end: false'
+
+- name: Validate eos_cli_config_gen inputs for no-end scenario
+  arista.avd.validate_inputs:
+    schema_name: eos_config
+    input_dir: "{{ actual_output_dir }}/structured_config_no_end"
+    input_suffix: yml
+    read_from_input_dir: true
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_no_end"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Remove previous no-end output directory
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/eos_cli_config_gen_no_end_outputs"
+    state: absent
+
+- name: Test eos_cli_config_gen with custom templates and no end marker
+  register: result
+  arista.avd.eos_cli_config_gen:
+    config_filename: "{{ actual_output_dir }}/eos_cli_config_gen_no_end_outputs/testhost.cfg"
+    documentation_filename: "{{ actual_output_dir }}/eos_cli_config_gen_no_end_outputs/testhost.md"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_no_end"
+  delegate_to: localhost
+
+- name: Load generated no-end configuration
+  ansible.builtin.slurp:
+    src: "{{ actual_output_dir }}/eos_cli_config_gen_no_end_outputs/testhost.cfg"
+  register: rendered_config
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.changed == true
+      - "'Output from custom_template1.j2 END' in (rendered_config.content | b64decode)"
+      - "'\nend\n' not in (rendered_config.content | b64decode)"
+

@@ -1,0 +1,22 @@
+---
+- name: Test eos_cli_config_gen with missing structured config
+  ignore_errors: true
+  register: result
+  arista.avd.eos_cli_config_gen:
+    config_filename: "{{ actual_output_dir }}/eos_cli_config_gen_missing_structured_config/testhost.cfg"
+    generate_device_doc: false
+    tmp_dir: "{{ actual_output_dir }}/tmp_missing_structured_config"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == expected_error
+  vars:
+    expected_error: >-
+      Error during plugin 'arista.avd.eos_cli_config_gen' execution: Missing the validated structured config for host 'testhost'.
+      Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred.
+

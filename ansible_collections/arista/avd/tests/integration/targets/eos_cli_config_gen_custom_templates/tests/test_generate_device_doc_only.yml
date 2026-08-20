@@ -1,0 +1,32 @@
+---
+- name: Validate eos_cli_config_gen inputs for device-doc-only test
+  arista.avd.validate_inputs:
+    schema_name: eos_config
+    input_dir: "{{ structured_config_dir }}"
+    input_suffix: yml
+    read_from_input_dir: true
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_doc_only"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Remove previous documentation output file
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/eos_cli_config_gen_doc_only/testhost.md"
+    state: absent
+
+- name: Test eos_cli_config_gen with generate_device_config disabled
+  register: result
+  arista.avd.eos_cli_config_gen:
+    generate_device_config: false
+    generate_device_doc: true
+    documentation_filename: "{{ actual_output_dir }}/eos_cli_config_gen_doc_only/testhost.md"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_doc_only"
+  delegate_to: localhost
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.changed == true
+
