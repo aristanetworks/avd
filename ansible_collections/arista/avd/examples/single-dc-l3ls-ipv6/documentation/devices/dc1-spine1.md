@@ -332,7 +332,7 @@ no ip routing vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | False |
+| MGMT | false |
 
 #### IPv6 Routing Device Configuration
 

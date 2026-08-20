@@ -731,10 +731,10 @@ ip routing vrf VRF12
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | False |
-| VRF10 | False |
-| VRF11 | True |
-| VRF12 | True |
+| MGMT | false |
+| VRF10 | false |
+| VRF11 | true |
+| VRF12 | true |
 
 #### IPv6 Routing Device Configuration
 
@@ -936,6 +936,8 @@ router bgp 65101
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
+      neighbor MLAG-IPv6-UNDERLAY-PEER activate
+      neighbor MLAG-IPv6-UNDERLAY-PEER next-hop address-family ipv6 originate
    !
    address-family ipv6
       neighbor IPv6-UNDERLAY-PEERS activate
@@ -1047,7 +1049,7 @@ ipv6 prefix-list PL-MLAG-PEER-VRFS
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | ip address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
+| 10 | deny | ipv6 address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
@@ -1064,7 +1066,7 @@ route-map RM-CONN-2-BGP permit 30
    match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 !
 route-map RM-CONN-2-BGP-VRFS deny 10
-   match ip address prefix-list PL-MLAG-PEER-VRFS
+   match ipv6 address prefix-list PL-MLAG-PEER-VRFS
 !
 route-map RM-CONN-2-BGP-VRFS permit 20
 !
