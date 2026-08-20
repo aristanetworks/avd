@@ -53,6 +53,11 @@
     tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_no_custom"
   delegate_to: localhost
 
+- name: Load regenerated configuration
+  ansible.builtin.slurp:
+    src: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.cfg"
+  register: regenerated_config
+
 - name: Validate result
   ansible.builtin.assert:
     that:
@@ -62,3 +67,4 @@
       - result_second.changed == false
       - result_third is success
       - result_third.changed == true
+      - "'! integration tamper marker' not in (regenerated_config.content | b64decode)"
