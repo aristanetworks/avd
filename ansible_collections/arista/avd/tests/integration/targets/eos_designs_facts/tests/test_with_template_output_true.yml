@@ -2,7 +2,8 @@
 - name: Test template_output behavior with inline Jinja value on ansible-core < 2.19
   when: ansible_version.major == 2 and ansible_version.minor < 19
   vars:
-    _inline_jinja_value: "{{'{{ switch.type }}'}}"
+    _inline_rendered_value: "l2leaf"
+    _inline_jinja_value: "{{'{{ _inline_rendered_value }}'}}"
     l2leaf:
       nodes:
         - name: testhost
@@ -46,4 +47,4 @@
     - name: Validate inline Jinja is resolved
       ansible.builtin.assert:
         that:
-          - parsed_facts.testhost.mgmt_interface == parsed_facts.testhost.type
+          - parsed_facts.testhost.mgmt_interface == _inline_rendered_value

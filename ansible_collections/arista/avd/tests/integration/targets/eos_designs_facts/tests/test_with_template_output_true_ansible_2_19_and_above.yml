@@ -2,7 +2,8 @@
 - name: Test template_output ignored behavior with inline Jinja value on ansible-core >= 2.19
   when: ansible_version.major > 2 or (ansible_version.major == 2 and ansible_version.minor >= 19)
   vars:
-    _inline_jinja_value: "{{'{{ switch.type }}'}}"
+    _inline_rendered_value: "l2leaf"
+    _inline_jinja_value: "{{'{{ _inline_rendered_value }}'}}"
     l2leaf:
       nodes:
         - name: testhost
