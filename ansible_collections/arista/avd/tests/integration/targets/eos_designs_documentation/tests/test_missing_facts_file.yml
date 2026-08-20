@@ -16,5 +16,9 @@
   ansible.builtin.assert:
     that:
       - result is failed
-      - >-
-        "Missing AVD eos_designs facts to generate documentation" in result.msg
+      - result.msg == expected_error
+  vars:
+    expected_error: >-
+      Error during plugin 'arista.avd.eos_designs_documentation' execution: Missing AVD eos_designs facts to generate documentation
+      ({{ actual_output_dir }}/tmp_missing_eos_designs_facts_for_documentation/eos_designs_facts.json).
+      Ensure the 'arista.avd.eos_designs_facts' task ran successfully.

@@ -583,8 +583,8 @@ ip routing vrf Tenant_B_OP_Zone
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| Tenant_B_OP_Zone | false |
+| MGMT | False |
+| Tenant_B_OP_Zone | False |
 
 ### Static Routes
 
