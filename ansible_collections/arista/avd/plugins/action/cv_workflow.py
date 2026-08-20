@@ -270,11 +270,15 @@ class ActionModule(ActionBase):
             change_control = CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={})))
 
             if change_control.id is not None:
+                workspace_id = get(validated_args, "workspace.id")
+                workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id)) if workspace_id is not None else None
+
                 result_object = await deploy_to_cv(
                     cloudvision=cloudvision,
                     change_control=change_control,
                     device_deployments=device_deployments,
                     static_config_manifest=static_config_manifest,
+                    workspace=workspace,
                 )
             elif work_to_do:
                 # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.

@@ -161,6 +161,11 @@ def test_deploy_routes_existing_change_control_to_cc_only_mode(action_module: Ca
     validated_args = _make_validated_args(
         device_list=[],
         change_control={"id": "cc-id", "requested_state": "running", "approval_note": "Approved", "start_note": "Started"},
+        workspace={
+            "requested_state": "submitted",
+            "force": False,
+            "build_warnings": {"enabled": True, "suppress_patterns": [], "suppress_portfast": False},
+        },
     )
     deploy_result = _make_deploy_result_mock(change_control=MagicMock(changed=True))
 
@@ -176,6 +181,7 @@ def test_deploy_routes_existing_change_control_to_cc_only_mode(action_module: Ca
     assert change_control.requested_state == "running"
     assert change_control.avd_change_control.approval_note == "Approved"
     assert change_control.avd_change_control.start_note == "Started"
+    assert deploy_to_cv.call_args.kwargs["workspace"] is None
     assert result["warnings"] == ["Logger warning"]
     assert result["changed"] is True
 
@@ -225,6 +231,22 @@ def test_deploy_rejects_device_deployments_with_existing_change_control(action_m
     with (
         patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[MagicMock()]),
         patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], [])),
+        pytest.raises(AnsibleActionFail, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
+    ):
+        asyncio.run(module.deploy(validated_args, {}))
+
+
+def test_deploy_rejects_workspace_id_with_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
+    """An existing Change Control ID cannot be combined with an existing Workspace ID."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(
+        device_list=[],
+        change_control={"id": "cc-id", "requested_state": "approved"},
+        workspace={"id": "workspace-id", "requested_state": "submitted"},
+    )
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
         pytest.raises(AnsibleActionFail, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
     ):
         asyncio.run(module.deploy(validated_args, {}))

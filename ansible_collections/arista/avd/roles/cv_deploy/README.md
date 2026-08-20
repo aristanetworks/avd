@@ -359,7 +359,7 @@ The optional settings below provide direct control over Workspace and Change Con
 
 **`cv_change_control_id`**
 
-Setting `cv_change_control_id` enables Change-Control-only mode. This mode only manages the existing Change Control. It cannot deploy configurations, tags, metadata, or Static Configuration Studio content in the same run. Set `cv_devices: []` and leave `cv_static_config_manifest` empty. If any deployment content is found, the role fails before making changes to CloudVision. The existing Change Control is managed according to `cv_change_control_requested_state`. CloudVision determines whether the requested operation is valid for the current Change Control state or not.
+Setting `cv_change_control_id` enables Change-Control-only mode. This mode only manages the existing Change Control. It cannot be combined with `cv_workspace_id` and cannot deploy configurations, tags, metadata, or Static Configuration Studio content in the same run. Set `cv_devices: []` and leave `cv_static_config_manifest` empty. If any deployment content is found, the role fails before making changes to CloudVision. The existing Change Control is managed according to `cv_change_control_requested_state`. CloudVision determines whether the requested operation is valid for the current Change Control state or not.
 
 Setting `cv_change_control_requested_state` to `pending approval` prevents the workflow from approving or starting the Change Control. It currently does not unapprove an existing approved Change Control (such Change Control remains approved).
 
