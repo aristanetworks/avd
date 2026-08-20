@@ -1041,7 +1041,8 @@ class EosDesigns(EosDesignsRootModel):
         Available from AVD 6.4.0.
         Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
         ipv6 address prefix-list`
-        instead of `match ip` when using `underlay_ipv6_numbered`.
+        instead of `match ip address prefix-list` when using
+        `underlay_ipv6_numbered`.
 
         Default value: `False`
         """
@@ -1166,7 +1167,8 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.4.0.
                        Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
                        ipv6 address prefix-list`
-                       instead of `match ip` when using `underlay_ipv6_numbered`.
+                       instead of `match ip address prefix-list` when using
+                       `underlay_ipv6_numbered`.
                     fix_radius_server_group_tls:
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global
