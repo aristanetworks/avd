@@ -93,9 +93,7 @@ class RouteMapsMixin(Protocol):
         """
         route_maps_item = EosCliConfigGen.RouteMapsItem(name="RM-CONN-2-BGP-VRFS")
         prefix_list_match = (
-            "ipv6 address prefix-list PL-MLAG-PEER-VRFS"
-            if self.shared_utils.underlay_ipv6_numbered
-            else "ip address prefix-list PL-MLAG-PEER-VRFS"
+            "ipv6 address prefix-list PL-MLAG-PEER-VRFS" if self.shared_utils.underlay_ipv6_numbered else "ip address prefix-list PL-MLAG-PEER-VRFS"
         )
         route_maps_item.sequence_numbers.append_new(
             sequence=10,
