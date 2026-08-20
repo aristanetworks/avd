@@ -26,6 +26,7 @@ class NodeTypeMixin(Protocol):
     def type(self: SharedUtilsProtocol) -> str:
         """Type fact set based on the type variable or default_node_type."""
         return self.inputs._type
+
     @cached_property
     def connected_endpoints(self: SharedUtilsProtocol) -> bool:
         """

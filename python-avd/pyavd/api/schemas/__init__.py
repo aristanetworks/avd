@@ -6,4 +6,4 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen as EOSConfig
 from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
 from pyavd._eos_designs.schema import EosDesigns as AVDDesign
 
-__all__ = ["AVDDesign", "ConsolidatedAVDDesign", "CVDeploy", "EOSConfig"]
+__all__ = ["AVDDesign", "CVDeploy", "ConsolidatedAVDDesign", "EOSConfig"]
