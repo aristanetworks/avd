@@ -164,7 +164,9 @@ class RouterPathSelectionMixin(Protocol):
             interface_input = self.shared_utils.wan_interfaces[interface_name]
             if interface_input.receive_bandwidth or interface_input.transmit_bandwidth:
                 if "." in interface_name:
-                    schema_key = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}]"
+                    schema_key = (
+                        f"{self.shared_utils.inputs._node_type_keys_item.key}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}]"
+                    )
                     msg = f"Fields 'receive_bandwidth' and 'transmit_bandwidth' configured on {schema_key} are not supported for subinterfaces."
                     raise AristaAvdError(msg)
                 self.structured_config.router_path_selection.interfaces.append_new(

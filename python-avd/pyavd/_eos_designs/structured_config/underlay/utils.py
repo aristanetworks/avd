@@ -164,7 +164,7 @@ class UtilsMixin(Protocol):
         # IP address or IPv6 address is required for subinterfaces, but optional for main Ethernet interfaces or Port-Channels
         # as we may define subinterfaces in other modules.
         if is_subinterface and not (l3_generic_interface.ip_address or l3_generic_interface.ipv6_addresses):
-            msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
+            msg = f"{self.inputs._node_type_keys_item.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
             msg += f"[name={l3_generic_interface.name}].ip_address or [name={l3_generic_interface.name}].ipv6_addresses"
             raise AristaAvdMissingVariableError(msg)
 

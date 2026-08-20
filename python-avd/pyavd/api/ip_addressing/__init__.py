@@ -52,7 +52,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
     def mlag_ibgp_peering_ip_primary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """Return IP for L3 Peerings in VRFs for MLAG Primary."""
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ibgp_peering_ip_primary:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.mlag_ibgp_peering_ip_primary:
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -64,7 +64,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
     def mlag_ibgp_peering_ip_secondary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """Return IP for L3 Peerings in VRFs for MLAG Secondary."""
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ibgp_peering_ip_secondary:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.mlag_ibgp_peering_ip_secondary:
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -89,7 +89,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         Default pool is "mlag_peer_ipv4_pool"
         """
         if self.shared_utils.node_config.mlag_peer_address_family == "ipv6":
-            if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ip_primary:
+            if template_path := self.inputs._node_type_keys_item.ip_addressing.mlag_ip_primary:
                 return self._template(
                     template_path,
                     mlag_primary_id=self._mlag_primary_id,
@@ -99,7 +99,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
             return self._mlag_ip(self._mlag_peer_ipv6_pool, 0, self.shared_utils.node_config.mlag_peer_address_family)
 
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ip_primary:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.mlag_ip_primary:
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -116,7 +116,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         Default pool is "mlag_peer_ipv4_pool"
         """
         if self.shared_utils.node_config.mlag_peer_address_family == "ipv6":
-            if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ip_secondary:
+            if template_path := self.inputs._node_type_keys_item.ip_addressing.mlag_ip_secondary:
                 return self._template(
                     template_path,
                     mlag_primary_id=self._mlag_primary_id,
@@ -126,7 +126,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
             return self._mlag_ip(self._mlag_peer_ipv6_pool, 1, self.shared_utils.node_config.mlag_peer_address_family)
 
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ip_secondary:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.mlag_ip_secondary:
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -142,7 +142,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         Default pool is "mlag_peer_l3_ipv4_pool"
         """
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_l3_ip_primary:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.mlag_l3_ip_primary:
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -166,7 +166,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         Default pool is "mlag_peer_l3_ipv4_pool"
         """
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_l3_ip_secondary:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.mlag_l3_ip_secondary:
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -187,7 +187,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
     def p2p_uplinks_ip(self, uplink_switch_index: int) -> str:
         """Return Child IP for P2P Uplinks."""
         uplink_switch_index = int(uplink_switch_index)
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.p2p_uplinks_ip:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.p2p_uplinks_ip:
             return self._template(
                 template_path,
                 uplink_switch_index=uplink_switch_index,
@@ -215,7 +215,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
     def p2p_uplinks_peer_ip(self, uplink_switch_index: int) -> str:
         """Return Parent IP for P2P Uplinks."""
         uplink_switch_index = int(uplink_switch_index)
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.p2p_uplinks_peer_ip:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.p2p_uplinks_peer_ip:
             return self._template(
                 template_path,
                 uplink_switch_index=uplink_switch_index,
@@ -301,7 +301,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         loopback_pool = self._loopback_ipv4_pool if not self.shared_utils.underlay_ipv6_numbered else self._router_id_pool
 
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.router_id:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.router_id:
             return self._template(
                 template_path,
                 switch_id=self._id,
@@ -333,7 +333,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if self._vtep_loopback_ipv4_address:
             return self._vtep_loopback_ipv4_address
 
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.vtep_ip_mlag:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.vtep_ip_mlag:
             return self._template(
                 template_path,
                 switch_id=self._id,
@@ -371,7 +371,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if self._vtep_loopback_ipv4_address:
             return self._vtep_loopback_ipv4_address
 
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.vtep_ip:
+        if template_path := self.inputs._node_type_keys_item.ip_addressing.vtep_ip:
             return self._template(
                 template_path,
                 switch_id=self._id,

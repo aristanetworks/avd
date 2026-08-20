@@ -109,7 +109,7 @@ class PortChannelInterfacesMixin(Protocol):
                     )
                     if not l3_port_channel.ip_address and not l3_port_channel.ipv6_addresses:
                         msg = (
-                            f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels"
+                            f"{self.inputs._node_type_keys_item.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels"
                             f"[name={l3_port_channel.name}].ip_address or ipv6_addresses"
                         )
                         raise AristaAvdMissingVariableError(msg)

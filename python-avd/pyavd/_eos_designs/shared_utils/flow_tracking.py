@@ -51,7 +51,7 @@ class FlowTrackingMixin(Protocol):
 
     @cached_property
     def flow_tracking_type(self: SharedUtilsProtocol) -> Literal["sampled", "hardware"]:
-        default_flow_tracker_type = self.node_type_key_data.default_flow_tracker_type
+        default_flow_tracker_type = self.inputs._node_type_keys_item.default_flow_tracker_type
         return self.node_config.flow_tracker_type or default_flow_tracker_type
 
     def get_flow_tracker(

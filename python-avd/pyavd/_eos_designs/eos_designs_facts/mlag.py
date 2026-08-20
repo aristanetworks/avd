@@ -37,7 +37,7 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.node_group_is_primary_and_peer_hostname:
             return self.shared_utils.node_group_is_primary_and_peer_hostname[1]
 
-        if self.shared_utils.device_config and (mlag_group := self.shared_utils.device_config.mlag_group):
+        if mlag_group := self.inputs._device_mlag_group:
             mlag_group_members = self._mlag_groups[mlag_group]
             if (length := len(mlag_group_members)) != 2:
                 msg = (

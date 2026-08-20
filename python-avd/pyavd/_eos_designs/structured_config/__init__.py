@@ -26,8 +26,8 @@ from .underlay import AvdStructuredConfigUnderlay
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
+    from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-    from pyavd._eos_designs.schema import EosDesigns
     from pyavd._utils import AVDTemplar
 
     from .structured_config_generator import StructuredConfigGenerator
@@ -64,7 +64,7 @@ The order is important, since later modules can overwrite or read config created
 def get_structured_config(
     *,
     hostname: str,
-    inputs: EosDesigns,
+    inputs: ConsolidatedAVDDesign,
     all_facts: Mapping[str, EosDesignsFacts],
     hostvars: MutableMapping | None = None,
     templar: AVDTemplar | None = None,
@@ -77,7 +77,7 @@ def get_structured_config(
         hostname:
             The hostname of the device.
         inputs:
-            Validated inputs loaded into an instance of the EosDesigns class.
+            Validated inputs loaded into an instance of the ConsolidatedAVDDesign class.
         all_facts:
             Map of all devices and their facts.
         hostvars:

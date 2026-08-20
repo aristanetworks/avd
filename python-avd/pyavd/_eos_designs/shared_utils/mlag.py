@@ -29,24 +29,12 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag(self: SharedUtilsProtocol) -> bool:
-        if not self.node_type_key_data.mlag_support or not self.node_config.mlag:
-            return False
-
-        # Node groups used for mlag peer.
-        if self.node_group_is_primary_and_peer_hostname:
-            return True
-
-        # devices[].mlag_group used for mlag peer.
-        return bool(self.device_config and self.device_config.mlag_group)
+        return self.inputs._mlag
 
     @cached_property
     def group(self: SharedUtilsProtocol) -> str | None:
         """Group set to "node_group" name or None."""
-        if self.node_group_config is not None:
-            return self.node_group_config.group
-        if self.device_config is not None:
-            return self.device_config.mlag_group
-        return None
+        return self.inputs._group
 
     @cached_property
     def mlag_interfaces(self: SharedUtilsProtocol) -> list[str]:

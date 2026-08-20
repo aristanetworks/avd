@@ -18,8 +18,8 @@ if TYPE_CHECKING:
 
     from typing_extensions import Self
 
+    from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-    from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
     from pyavd._eos_designs.structured_config.structured_config_utils import StructuredConfigUtils
 
@@ -166,7 +166,7 @@ class StructuredConfigGenerator(AvdFacts, RunOnceMethodStateHelper, StructuredCo
     def __init__(
         self,
         hostvars: MutableMapping,
-        inputs: EosDesigns,
+        inputs: ConsolidatedAVDDesign,
         facts: EosDesignsFacts,
         shared_utils: SharedUtilsProtocol,
         structured_config: EosCliConfigGen,

@@ -31,7 +31,7 @@ class WanMixin(Protocol):
         if self.underlay_router is False:
             return None
 
-        default_wan_role = self.node_type_key_data.default_wan_role
+        default_wan_role = self.inputs._node_type_keys_item.default_wan_role
         wan_role = self.node_config.wan_role or default_wan_role
         if wan_role is not None and not self.platform_settings.feature_support.wan:
             msg = f"The WAN features are not compatible with the '{self.node_config.platform}' platform"
@@ -622,8 +622,8 @@ class WanMixin(Protocol):
         if not gateway:
             return False
 
-        if self.node_group_config and len(self.node_group_config.nodes) != 1:
-            msg = f"WAN gateway is supported only on sites with a single WAN router, configured: {len(self.node_group_config.nodes)}"
+        if self.inputs._node_group_length > 1:
+            msg = f"WAN gateway is supported only on sites with a single WAN router, configured: {self.inputs._node_group_length}"
             raise AristaAvdError(msg)
 
         return gateway

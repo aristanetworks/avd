@@ -93,6 +93,7 @@ def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[
 
     with (
         patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(MagicMock(), mock_validated_path)),
+        patch(f"{MODULE_PATH}.get_consolidated_path", return_value=MagicMock()),
         pytest.raises(
             FileNotFoundError,
             match=(

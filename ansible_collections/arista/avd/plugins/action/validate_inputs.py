@@ -20,6 +20,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AVDFileHandler,
     AVDVaultHandler,
     build_result_message,
+    get_consolidated_path,
     get_tmp_paths,
     get_workers,
     parse_validation_result,
@@ -33,6 +34,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from pyavd._schema.models.constants import CV_DEPLOY_INPUT_KEYS, EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
     from pyavd._utils.filtered_map_view import FilteredMapView
+    from pyavd.api.schemas import ConsolidatedAVDDesign
 
 try:
     from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
@@ -40,6 +42,7 @@ try:
     from pyavd._schema.models.constants import CV_DEPLOY_INPUT_KEYS, EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
     from pyavd._utils.filtered_map_view import FilteredMapView
+    from pyavd.api.schemas import ConsolidatedAVDDesign
 
     HAS_PYAVD = True
 except ImportError:
@@ -191,6 +194,7 @@ class ActionModule(AVDActionPlugin):
         hosts_to_process = self._get_hosts_to_process(task_vars, plugin_args.schema_name, plugin_args.device_list)
         mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
         templated_path, validated_path = get_tmp_paths(tmp_dir=plugin_args.tmp_dir, clean=True)
+        consolidated_path = get_consolidated_path(tmp_dir=plugin_args.tmp_dir, clean=True) if plugin_args.schema_name == "avd_design" else None
 
         # Create Vault and file handlers.
         vault_handler = AVDVaultHandler(self._loader, vault_id=plugin_args.vault_id)
@@ -243,6 +247,7 @@ class ActionModule(AVDActionPlugin):
                 input_path=validation_input_path,
                 input_suffix=validation_input_suffix,
                 output_path=validated_path,
+                consolidated_output_path=consolidated_path,
                 schema_name=plugin_args.schema_name,
                 fail_on_missing_input_files=plugin_args.fail_on_missing_input_files,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
@@ -398,6 +403,7 @@ class ActionModule(AVDActionPlugin):
         fail_on_validation_errors: bool,
         configuration: Configuration | None,
         file_handler: AVDFileHandler,
+        consolidated_output_path: Path | None = None,
     ) -> None:
         """
         Run Phase 2: Validation.
@@ -413,6 +419,7 @@ class ActionModule(AVDActionPlugin):
             input_path: Directory containing input files (templated or user-provided).
             input_suffix: File suffix for input files (json, yml, yaml).
             output_path: Directory where validated JSON files will be written.
+            consolidated_output_path: Directory where consolidated AVD Design inputs will be written.
             schema_name: Schema to validate against.
             fail_on_missing_input_files: Whether to fail the task if the input file is missing.
             fail_on_validation_errors: Whether to fail the task on validation errors.
@@ -432,6 +439,7 @@ class ActionModule(AVDActionPlugin):
             input_path=input_path,
             input_suffix=input_suffix,
             output_path=output_path,
+            consolidated_output_path=consolidated_output_path,
             schema_name=schema_name,
             configuration=configuration,
             file_handler=file_handler,
@@ -523,6 +531,7 @@ def _validate_host_worker(
     configuration: Configuration | None,
     file_handler: AVDFileHandler,
     fail_on_missing_input_files: bool,
+    consolidated_output_path: Path | None = None,
 ) -> ValidateWorkerResult:
     """
     Phase 2 multithreading worker: Validate input data for a host.
@@ -535,6 +544,7 @@ def _validate_host_worker(
         input_path: Directory containing the input file.
         input_suffix: File suffix for the input file (json, yml, yaml).
         output_path: Directory path where the validated JSON file will be written.
+        consolidated_output_path: Directory path for consolidated AVD Design data, or None.
         schema_name: Schema to validate against.
         configuration: Configuration for validation or None.
         file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
@@ -569,9 +579,18 @@ def _validate_host_worker(
 
         output_file = None
         if validated_data:
+            consolidated_data = None
+            if consolidated_output_path is not None:
+                consolidated_inputs = ConsolidatedAVDDesign._from_avd_design(hostname, json.loads(validated_data))
+                consolidated_data = json.dumps(consolidated_inputs._dump(), separators=(",", ":"))
+
             output_file_path = output_path / f"{hostname}.json"
             file_handler.write_file(output_file_path, validated_data.encode("utf-8"))
             output_file = str(output_file_path)
+
+            if consolidated_data is not None and consolidated_output_path is not None:
+                consolidated_output_file_path = consolidated_output_path / f"{hostname}.json"
+                file_handler.write_file(consolidated_output_file_path, consolidated_data.encode("utf-8"))
 
         return ValidateWorkerSuccess(hostname=hostname, validation_result=validation_result, output_file=output_file)
 

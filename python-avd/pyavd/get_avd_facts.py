@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
     from ._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from .api.pool_manager import PoolManager
-    from .api.schemas import AVDDesign
+    from .api.schemas import AVDDesign, ConsolidatedAVDDesign
 
 
 def get_avd_facts(
-    all_inputs: Mapping[str, AVDDesign | Mapping],
+    all_inputs: Mapping[str, AVDDesign | Mapping | ConsolidatedAVDDesign],
     all_hostvars: Mapping[str, MutableMapping] | None = None,
     pool_manager: PoolManager | None = None,
     digital_twin: bool = False,
@@ -46,5 +46,9 @@ def get_avd_facts(
         The full dict must be given as argument to `pyavd.get_device_structured_config`.
     """
     from ._eos_designs.eos_designs_facts.get_facts import get_facts  # noqa: PLC0415
+    from .api.schemas import ConsolidatedAVDDesign  # noqa: PLC0415
 
-    return get_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, digital_twin=digital_twin)
+    # Normalize all inputs to ConsolidatedAVDDesign
+    all_consolidated_inputs = {device_name: ConsolidatedAVDDesign._from_avd_design(device_name, inputs) for device_name, inputs in all_inputs.items()}
+
+    return get_facts(all_inputs=all_consolidated_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, digital_twin=digital_twin)

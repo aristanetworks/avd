@@ -9,13 +9,13 @@ from typing import TYPE_CHECKING, Any, Protocol
 if TYPE_CHECKING:
     from collections.abc import MutableMapping
 
-    from pyavd._eos_designs.schema import EosDesigns
+    from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
 
 class AvdFactsProtocol(Protocol):
     _hostvars: MutableMapping
-    inputs: EosDesigns
+    inputs: ConsolidatedAVDDesign
     shared_utils: SharedUtilsProtocol
 
     @classmethod
@@ -59,7 +59,7 @@ class AvdFactsProtocol(Protocol):
 
 
 class AvdFacts(AvdFactsProtocol):
-    def __init__(self, hostvars: MutableMapping, inputs: EosDesigns, shared_utils: SharedUtilsProtocol) -> None:
+    def __init__(self, hostvars: MutableMapping, inputs: ConsolidatedAVDDesign, shared_utils: SharedUtilsProtocol) -> None:
         self._hostvars = hostvars
         self.inputs = inputs
         self.shared_utils = shared_utils

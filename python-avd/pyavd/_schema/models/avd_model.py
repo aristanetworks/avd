@@ -396,6 +396,8 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
         Unset fields are ignored when evaluating compatibility.
 
         Useful when inheriting from profiles.
+
+        TODO: carry over _skipped_keys if we want to keep that. Also consider carrying over internal state.
         """
         cls = type(self)
         if not issubclass(new_type, AvdModel):

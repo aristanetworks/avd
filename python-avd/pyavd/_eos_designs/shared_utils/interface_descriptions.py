@@ -28,13 +28,13 @@ class InterfaceDescriptionsMixin(Protocol):
 
         Return an instance of the class defined by `templates.interface_descriptions.python_class_name` as cached_property.
         """
-        module_path = self.node_type_key_data.interface_descriptions.python_module
+        module_path = self.inputs._node_type_keys_item.interface_descriptions.python_module
         if module_path is None:
             return AvdInterfaceDescriptions(hostvars=self.hostvars, inputs=self.inputs, shared_utils=self)
 
         cls: type[AvdInterfaceDescriptions] = load_python_class(
             module_path,
-            self.node_type_key_data.interface_descriptions.python_class_name,
+            self.inputs._node_type_keys_item.interface_descriptions.python_class_name,
             AvdInterfaceDescriptions,
         )
 
