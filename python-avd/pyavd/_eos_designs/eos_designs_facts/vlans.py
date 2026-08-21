@@ -271,20 +271,10 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         if not self.shared_utils.any_network_services:
             return frozenset()
 
-        tenant_filter = set(self.shared_utils.node_config.filter.tenants)
-        accepted_tenants = chain(
-            (
-                tenant
-                for network_services_key in self.inputs._dynamic_keys.network_services
-                for tenant in network_services_key.value
-                if tenant_filter.intersection((tenant.name, "all"))
-            ),
-            (tenant for tenant in self.inputs.network_services if tenant_filter.intersection((tenant.name, "all"))),
-        )
-
         return frozenset(
             vlan_id
-            for tenant in accepted_tenants
+            for network_services_group in self.inputs._network_services
+            for tenant in network_services_group.tenants
             for vlan_id in chain(
                 (svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi)),
                 (l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan)),
@@ -354,9 +344,6 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         | EosDesigns.NetworkServicesItem.VrfsItem.SvisItem
         | EosDesigns.NetworkServicesItem.L2vlansItem,
     ) -> bool:
-        if "all" not in self.shared_utils.filter_tags and not set(vlan.tags).intersection(self.shared_utils.filter_tags):
-            return False
-
         if not self.shared_utils.node_config.filter.only_vlans_in_use:
             # Nothing else to filter
             return True
