@@ -32,7 +32,7 @@ class NodeMixin(Protocol):
         if device_profile_name := default(device_config.profile, self.inputs.device_profile):
             if not (device_profile := self.inputs.device_profiles.get(device_profile_name)):
                 msg = f"The Device Profile '{device_profile_name}' applied for the device '{self.device_name}' does not exist under `device_profiles`."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.device_name)
 
             device_config._deepinherit(device_profile._cast_as(AVDDesign.DevicesItem, ignore_extra_keys=True))
 
@@ -87,7 +87,7 @@ class NodeMixin(Protocol):
 
         # This should never happen, as it should be caught during validation.
         msg = f"Could not find the given type '{self.type}' in node_type_keys or custom_node_type_keys."
-        raise AristaAvdInvalidInputsError(msg)
+        raise AristaAvdInvalidInputsError(msg, host=self.device_name)
 
     def set_node_type_keys_item(self: AVDDesignConsolidatorProtocol) -> None:
         """Set the relevant node_type_keys item."""

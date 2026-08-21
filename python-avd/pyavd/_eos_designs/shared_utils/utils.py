@@ -81,7 +81,7 @@ class UtilsMixin(Protocol):
             raise AristaAvdError(msg) from e
 
     def get_merged_individual_adapter_settings(
-        self: SharedUtilsProtocol, adapter_or_network_port_settings: ADAPTER_SETTINGS
+        self: SharedUtilsProtocol, adapter_or_network_port_settings: ADAPTER_SETTINGS, context: str | None = None
     ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem | None:
         if not adapter_or_network_port_settings.port_channel.mode or adapter_or_network_port_settings.port_channel.lacp_fallback.mode != "individual":
             return None
@@ -89,7 +89,8 @@ class UtilsMixin(Protocol):
         individual_adapter = adapter_or_network_port_settings.port_channel.lacp_fallback.individual._cast_as(
             EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem
         )
-        individual_adapter._internal_data.context = f"{adapter_or_network_port_settings._internal_data.context}.port_channel.lacp_fallback.individual"
+        adapter_context = context if context is not None else adapter_or_network_port_settings._internal_data.context
+        individual_adapter._internal_data.context = f"{adapter_context}.port_channel.lacp_fallback.individual"
         return individual_adapter
 
     def match_regexes(self: SharedUtilsProtocol, regexes: Iterable[str], value: str) -> bool:

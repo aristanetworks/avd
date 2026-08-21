@@ -87,6 +87,55 @@ def test_connected_endpoints_are_consolidated_and_pruned() -> None:
     assert loaded_inputs._dump() == consolidated_inputs._dump()
 
 
+def test_network_port_context_is_restored_after_json_round_trip() -> None:
+    inputs = {
+        "fabric_name": "FABRIC",
+        "devices": [{"name": "testhost1", "type": "l2leaf"}],
+        "network_ports": [
+            {
+                "switches": ["testhost1"],
+                "switch_ports": ["Ethernet1-2"],
+                "mode": "trunk",
+                "vlans": "10",
+                "port_channel": {
+                    "mode": "active",
+                    "lacp_fallback": {"mode": "individual", "individual": {"mode": "access", "vlans": "20"}},
+                },
+            }
+        ],
+        "network_services": [{"name": "TEST", "l2vlans": [{"id": 10}, {"id": 20}]}],
+    }
+    consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", inputs)
+    loaded_inputs = ConsolidatedAVDDesign._from_dict(json.loads(json.dumps(consolidated_inputs._dump())))
+
+    facts = get_avd_facts({"testhost1": loaded_inputs}, None)
+
+    assert facts["testhost1"].vlans == "10,20"
+
+
+def test_unsupported_connected_endpoints_and_network_services_are_not_consolidated() -> None:
+    inputs = {
+        "fabric_name": "FABRIC",
+        "custom_node_type_keys": [{"key": "custom", "type": "custom"}],
+        "devices": [{"name": "testhost1", "type": "custom"}],
+        "port_profiles": [{"profile": "UNUSED"}],
+        "connected_endpoints": [{"name": "server1", "adapters": [{"profile": "MISSING"}]}],
+        "network_ports": [{"profile": "MISSING"}],
+        "network_services": [{"name": "UNUSED", "l2vlans": [{"id": 10}]}],
+    }
+
+    consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", inputs)
+
+    assert not consolidated_inputs.consolidated.connected_endpoints
+    assert not consolidated_inputs.consolidated.network_ports
+    assert not consolidated_inputs.consolidated.port_profile_names
+    assert not consolidated_inputs.consolidated.network_services
+    assert "connected_endpoints" not in consolidated_inputs.inputs.__dict__
+    assert "network_ports" not in consolidated_inputs.inputs.__dict__
+    assert "port_profiles" not in consolidated_inputs.inputs.__dict__
+    assert "network_services" not in consolidated_inputs.inputs.__dict__
+
+
 def test_network_services_are_consolidated_filtered_and_pruned() -> None:
     inputs = {
         "fabric_name": "FABRIC",

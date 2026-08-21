@@ -119,7 +119,8 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
             adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(network_port)
             vlans.update(adapter_vlans)
             trunk_groups.update(adapter_trunk_groups)
-            if individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(network_port):
+            network_port_context = f"network_ports[{network_port._source_index}]"
+            if individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(network_port, network_port_context):
                 individual_vlans, individual_trunk_groups = self._parse_adapter_settings(individual_adapter_settings)
                 vlans.update(individual_vlans)
                 trunk_groups.update(individual_trunk_groups)

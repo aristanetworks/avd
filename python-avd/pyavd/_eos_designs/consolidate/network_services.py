@@ -19,6 +19,11 @@ class NetworkServicesMixin(Protocol):
     def set_network_services(self: AVDDesignConsolidatorProtocol) -> None:
         """Set tenant- and tag-filtered network-services groups for this device."""
         consolidated_groups = ConsolidatedNetworkServices()
+        network_services = self.node_type_keys_item.network_services
+        if not (network_services.l1 or network_services.l2 or network_services.l3):
+            self.consolidated.network_services = consolidated_groups
+            return
+
         tenant_filter = set(self.node_config.filter.tenants)
         filter_tags = set(self.node_config.filter.tags)
         if self.group is not None:
