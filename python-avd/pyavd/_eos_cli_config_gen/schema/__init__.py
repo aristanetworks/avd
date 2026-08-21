@@ -5993,7 +5993,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             start_limit_infinite: bool | None
             """Set captive-portal start limit to infinite."""
             access_list_ipv4: str | None
-            """Standard access-list name."""
+            """Extended access-list name."""
 
             if TYPE_CHECKING:
 
@@ -6020,7 +6020,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                              - https: https://<hostname>[:<port>]
                         ssl_profile: ssl_profile
                         start_limit_infinite: Set captive-portal start limit to infinite.
-                        access_list_ipv4: Standard access-list name.
+                        access_list_ipv4: Extended access-list name.
 
                     """
 
@@ -17232,14 +17232,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "fragments": {"type": bool},
                 "ttl": {"type": int},
                 "ttl_match": {"type": str, "default": "eq"},
+                "log": {"type": bool},
+                "copy_captive_portal": {"type": bool},
                 "vlan_inner": {"type": bool, "default": False},
                 "source_ports_match": {"type": str, "default": "eq"},
                 "source_ports": {"type": SourcePorts},
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
-                "copy_captive_portal": {"type": bool},
-                "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
                 "nexthop_group": {"type": str},
@@ -17285,6 +17285,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """TTL value."""
             ttl_match: TtlMatch
             """Default value: `"eq"`"""
+            log: bool | None
+            """
+            Log matches against this rule.
+            For deny entries, mutually exclusive with `copy_captive_portal`.
+            `copy_captive_portal` takes precedence.
+            """
+            copy_captive_portal: bool | None
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            For deny
+            entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+            """
             vlan_inner: bool
             """
             Render vlan and mask as inner vlan.
@@ -17303,19 +17316,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
-            copy_captive_portal: bool | None
-            """
-            Copy packet to CPU queue for dot1x captive-portal.
-            Only supported with deny entries.
-            Mutually
-            exclusive with `log`. `copy_captive_portal` takes precedence.
-            """
-            log: bool | None
-            """
-            Log matches against this rule.
-            Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
-            takes precedence.
-            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -17347,14 +17347,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     fragments: bool | UndefinedType | None = Undefined,
                     ttl: int | UndefinedType | None = Undefined,
                     ttl_match: TtlMatch | UndefinedType = Undefined,
+                    log: bool | UndefinedType | None = Undefined,
+                    copy_captive_portal: bool | UndefinedType | None = Undefined,
                     vlan_inner: bool | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
-                    copy_captive_portal: bool | UndefinedType | None = Undefined,
-                    log: bool | UndefinedType | None = Undefined,
                     icmp_type: str | UndefinedType | None = Undefined,
                     icmp_code: str | UndefinedType | None = Undefined,
                     nexthop_group: str | UndefinedType | None = Undefined,
@@ -17393,6 +17393,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
+                        log:
+                           Log matches against this rule.
+                           For deny entries, mutually exclusive with `copy_captive_portal`.
+                           `copy_captive_portal` takes precedence.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           For deny
+                           entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
                         vlan_inner:
                            Render vlan and mask as inner vlan.
                            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
@@ -17402,15 +17411,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        copy_captive_portal:
-                           Copy packet to CPU queue for dot1x captive-portal.
-                           Only supported with deny entries.
-                           Mutually
-                           exclusive with `log`. `copy_captive_portal` takes precedence.
-                        log:
-                           Log matches against this rule.
-                           Mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
-                           takes precedence.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
