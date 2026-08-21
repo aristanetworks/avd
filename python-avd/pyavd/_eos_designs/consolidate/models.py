@@ -81,3 +81,23 @@ class ConsolidatedPortProfileNames(AvdList[ConsolidatedPortProfileName]):
 
 
 ConsolidatedPortProfileNames._item_type = ConsolidatedPortProfileName
+
+
+class ConsolidatedNetworkServicesItem(AvdModel):
+    """Device-local network-services tenants retaining their source key."""
+
+    _fields: ClassVar[dict] = {
+        "key": {"type": str},
+        "tenants": {"type": AVDDesign._DynamicKeys.DynamicNetworkServicesItem.NetworkServices},
+    }
+    key: str
+    tenants: AVDDesign._DynamicKeys.DynamicNetworkServicesItem.NetworkServices
+
+
+class ConsolidatedNetworkServices(AvdIndexedList[str, ConsolidatedNetworkServicesItem]):
+    """Device-local network-services groups indexed by their source key."""
+
+    _primary_key: ClassVar[str] = "key"
+
+
+ConsolidatedNetworkServices._item_type = ConsolidatedNetworkServicesItem

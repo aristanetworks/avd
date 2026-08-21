@@ -87,6 +87,93 @@ def test_connected_endpoints_are_consolidated_and_pruned() -> None:
     assert loaded_inputs._dump() == consolidated_inputs._dump()
 
 
+def test_network_services_are_consolidated_filtered_and_pruned() -> None:
+    inputs = {
+        "fabric_name": "FABRIC",
+        "_root_custom_data": {"raw": "discarded"},
+        "devices": [
+            {
+                "name": "testhost1",
+                "type": "l2leaf",
+                "filter": {"tenants": ["ACCEPTED"], "tags": ["accepted_tag"]},
+            }
+        ],
+        "network_services": [
+            {
+                "name": "ACCEPTED",
+                "_tenant_custom_data": {"future": "retained"},
+                "l2vlans": [
+                    {"id": 11, "tags": ["accepted_tag"]},
+                    {"id": 12, "tags": ["rejected_tag"]},
+                ],
+            }
+        ],
+        "network_services_keys": [{"name": "services_a"}, {"name": "services_b"}],
+        "services_a": [
+            {
+                "name": "ACCEPTED",
+                "vrfs": [
+                    {
+                        "name": "BLUE",
+                        "svis": [
+                            {"id": 21, "name": "accepted_svi", "tags": ["accepted_tag"]},
+                            {"id": 22, "name": "rejected_svi", "tags": ["rejected_tag"]},
+                        ],
+                    }
+                ],
+            }
+        ],
+        "services_b": [{"name": "REJECTED", "l2vlans": [{"id": 31}]}],
+    }
+
+    consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", inputs)
+
+    assert list(consolidated_inputs._network_services.keys()) == ["network_services", "services_a"]
+    assert [vlan.id for vlan in consolidated_inputs._network_services["network_services"].tenants["ACCEPTED"].l2vlans] == [11]
+    assert [svi.id for svi in consolidated_inputs._network_services["services_a"].tenants["ACCEPTED"].vrfs["BLUE"].svis] == [21]
+    assert "network_services" not in consolidated_inputs.__dict__
+    assert "network_services_keys" not in consolidated_inputs.__dict__
+    assert "network_services" not in consolidated_inputs._dynamic_keys.__dict__
+    assert consolidated_inputs._custom_data == {}
+    assert consolidated_inputs._network_services["network_services"].tenants["ACCEPTED"]._custom_data == {"_tenant_custom_data": {"future": "retained"}}
+
+    loaded_inputs = ConsolidatedAVDDesign._from_dict(json.loads(json.dumps(consolidated_inputs._dump())))
+    assert loaded_inputs._dump() == consolidated_inputs._dump()
+    assert loaded_inputs._network_services["network_services"].tenants["ACCEPTED"]._custom_data == {"_tenant_custom_data": {"future": "retained"}}
+
+
+def test_consolidated_network_services_are_used_by_facts() -> None:
+    inputs = {
+        "leaf1": {
+            "fabric_name": "FABRIC",
+            "devices": [{"name": "leaf1", "type": "l2leaf", "filter": {"tags": ["accepted_tag"]}}],
+            "network_services_keys": [{"name": "services"}],
+            "services": [
+                {
+                    "name": "TEST",
+                    "l2vlans": [
+                        {"id": 11, "tags": ["accepted_tag"]},
+                        {"id": 12, "tags": ["rejected_tag"]},
+                    ],
+                    "vrfs": [
+                        {
+                            "name": "BLUE",
+                            "svis": [
+                                {"id": 21, "name": "accepted_svi", "tags": ["accepted_tag"]},
+                                {"id": 22, "name": "rejected_svi", "tags": ["rejected_tag"]},
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+    }
+
+    facts = get_avd_facts(inputs, None)["leaf1"]
+
+    assert facts.vlans == "11,21"
+
+
 def test_network_port_platform_candidates_are_included_in_endpoint_vlan_facts() -> None:
     """
     Document the current conservative facts behavior for network-port platform selectors.

@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from pyavd._eos_designs.schema import EosDesigns as AVDDesign
 from pyavd._schema.models.eos_designs_root_model import EosDesignsRootModel
 
-from .models import ConsolidatedConnectedEndpointGroups, ConsolidatedNetworkPorts, ConsolidatedPortProfileNames
+from .models import ConsolidatedConnectedEndpointGroups, ConsolidatedNetworkPorts, ConsolidatedNetworkServices, ConsolidatedPortProfileNames
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -30,6 +30,7 @@ class ConsolidatedAVDDesign(AVDDesign):
     _connected_endpoints: ConsolidatedConnectedEndpointGroups
     _network_ports: ConsolidatedNetworkPorts
     _port_profile_names: ConsolidatedPortProfileNames
+    _network_services: ConsolidatedNetworkServices
 
     _consolidated_property_names = (
         "_type",
@@ -43,6 +44,7 @@ class ConsolidatedAVDDesign(AVDDesign):
         "_connected_endpoints",
         "_network_ports",
         "_port_profile_names",
+        "_network_services",
     )
 
     @classmethod
@@ -67,9 +69,10 @@ class ConsolidatedAVDDesign(AVDDesign):
         instance._connected_endpoints = ConsolidatedConnectedEndpointGroups._from_list(data["_connected_endpoints"])
         instance._network_ports = ConsolidatedNetworkPorts._from_list(data["_network_ports"])
         instance._port_profile_names = ConsolidatedPortProfileNames._from_list(data["_port_profile_names"])
+        instance._network_services = ConsolidatedNetworkServices._from_list(data["_network_services"])
 
-        for property_name in cls._consolidated_property_names:
-            instance._custom_data.pop(property_name, None)
+        # Consolidated root models do not retain arbitrary custom data. Nested models retain theirs.
+        instance._custom_data.clear()
 
         return instance
 
@@ -89,6 +92,7 @@ class ConsolidatedAVDDesign(AVDDesign):
                 "_connected_endpoints": self._connected_endpoints._dump(include_default_values=include_default_values),
                 "_network_ports": self._network_ports._dump(include_default_values=include_default_values),
                 "_port_profile_names": self._port_profile_names._dump(include_default_values=include_default_values),
+                "_network_services": self._network_services._dump(include_default_values=include_default_values),
             }
         )
         return data

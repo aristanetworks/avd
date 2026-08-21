@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from .connected_endpoints import ConnectedEndpointsMixin
 from .model import ConsolidatedAVDDesign
+from .network_services import NetworkServicesMixin
 from .node import NodeMixin
 
 if TYPE_CHECKING:
@@ -14,7 +15,7 @@ if TYPE_CHECKING:
     from pyavd._schema.models.avd_model import AvdModel
 
 
-class AVDDesignConsolidatorProtocol(ConnectedEndpointsMixin, NodeMixin, Protocol):
+class AVDDesignConsolidatorProtocol(ConnectedEndpointsMixin, NetworkServicesMixin, NodeMixin, Protocol):
     """Protocol for mixins contributing to AVD design consolidation."""
 
     device_name: str
@@ -49,11 +50,14 @@ class AVDDesignConsolidator(AVDDesignConsolidatorProtocol):
         self.set_node_config()
         self.set_mlag()
         self.set_group()
+        self.set_network_services()
         self.set_port_profile_names()
         self.set_connected_endpoints()
         self.set_network_ports()
         self.prune_connected_endpoint_inputs()
+        self.prune_network_services_inputs()
         self.prune_node_inputs()
+        self.consolidated_design._custom_data.clear()
         return self.consolidated_design
 
 
