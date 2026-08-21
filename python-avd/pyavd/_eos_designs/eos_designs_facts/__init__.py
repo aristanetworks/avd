@@ -22,7 +22,7 @@ from .wan import WanMixin
 if TYPE_CHECKING:
     from collections.abc import MutableMapping
 
-    from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
+    from pyavd._eos_designs.consolidate import PrunedAVDDesign
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
 
@@ -60,7 +60,7 @@ class EosDesignsFactsGeneratorProtocol(
 
         switch.type fact set based on type variable
         """
-        return self.inputs._type
+        return self.consolidated.type
 
     @remove_cached_property_type
     @cached_property
@@ -315,7 +315,7 @@ class EosDesignsFactsGeneratorProtocol(
         """
         return EosDesignsFactsProtocol.PortProfileNames(
             EosDesignsFactsProtocol.PortProfileNamesItem(profile=profile.profile, parent_profile=profile.parent_profile)
-            for profile in self.inputs._port_profile_names
+            for profile in self.consolidated.port_profile_names
         )
 
     def _populate_downlink_switches_on_peers(self) -> None:
@@ -392,7 +392,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
     def __init__(
         self,
         hostvars: MutableMapping,
-        inputs: ConsolidatedAVDDesign,
+        inputs: PrunedAVDDesign,
         peer_generators: dict[str, EosDesignsFactsGenerator],
         shared_utils: SharedUtilsProtocol,
         mlag_groups: dict[str, set[str]],
@@ -408,7 +408,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
 
     def update_mlag_groups(self) -> None:
         """Update the shared dict of MLAG groups. Used to deduct the MLAG pairs from the mlag_group set on each device."""
-        if mlag_group := self.inputs._device_mlag_group:
+        if mlag_group := self.consolidated.device_mlag_group:
             self._mlag_groups.setdefault(mlag_group, set()).add(self.shared_utils.hostname)
 
     def cross_pollinate(self) -> None:

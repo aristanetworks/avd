@@ -11,6 +11,8 @@ from pyavd._eos_designs.schema import EosDesigns as AVDDesign
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default
 
+from .models import ConsolidatedNodeGroup
+
 if TYPE_CHECKING:
     from .consolidator import AVDDesignConsolidatorProtocol
 
@@ -21,21 +23,21 @@ class NodeMixin(Protocol):
     @cached_property
     def device_config(self: AVDDesignConsolidatorProtocol) -> AVDDesign.DevicesItem | None:
         """Return this device's config with device profiles inherited."""
-        if self.device_name not in self.consolidated_design.devices and not self.consolidated_design.device_profile:
+        if self.device_name not in self.inputs.devices and not self.inputs.device_profile:
             return None
 
-        if (device_config := self.consolidated_design.devices.get(self.device_name, None)) is None:
+        if (device_config := self.inputs.devices.get(self.device_name, None)) is None:
             device_config = AVDDesign.DevicesItem()
 
-        if device_profile_name := default(device_config.profile, self.consolidated_design.device_profile):
-            if not (device_profile := self.consolidated_design.device_profiles.get(device_profile_name)):
+        if device_profile_name := default(device_config.profile, self.inputs.device_profile):
+            if not (device_profile := self.inputs.device_profiles.get(device_profile_name)):
                 msg = f"The Device Profile '{device_profile_name}' applied for the device '{self.device_name}' does not exist under `device_profiles`."
                 raise AristaAvdInvalidInputsError(msg)
 
             device_config._deepinherit(device_profile._cast_as(AVDDesign.DevicesItem, ignore_extra_keys=True))
 
             if device_profile.parent_profile:
-                if not (parent_profile := self.consolidated_design.device_profiles.get(device_profile.parent_profile)):
+                if not (parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
                     msg = (
                         f"Device Profile '{device_profile.parent_profile}' applied as 'parent_profile' on the profile '{device_profile.name}' "
                         "does not exist under 'device_profiles'."
@@ -49,7 +51,7 @@ class NodeMixin(Protocol):
     @cached_property
     def device_config_from_profile_only(self: AVDDesignConsolidatorProtocol) -> bool:
         """Return whether device_config was created exclusively from the root device_profile."""
-        return self.device_config is not None and self.device_name not in self.consolidated_design.devices
+        return self.device_config is not None and self.device_name not in self.inputs.devices
 
     @cached_property
     def type(self: AVDDesignConsolidatorProtocol) -> str:
@@ -57,10 +59,10 @@ class NodeMixin(Protocol):
         if self.device_config is not None and self.device_config.type is not None:
             return self.device_config.type
 
-        if self.consolidated_design.type is not None:
-            return self.consolidated_design.type
+        if self.inputs.type is not None:
+            return self.inputs.type
 
-        for default_node_type in self.consolidated_design.default_node_types:
+        for default_node_type in self.inputs.default_node_types:
             for hostname_regex in default_node_type.match_hostnames:
                 if search(f"^{hostname_regex}$", self.device_name):
                     return default_node_type.node_type
@@ -70,16 +72,16 @@ class NodeMixin(Protocol):
 
     def set_type(self: AVDDesignConsolidatorProtocol) -> None:
         """Set the consolidated device type."""
-        self.consolidated_design._type = self.type
+        self.consolidated.type = self.type
 
     @cached_property
     def node_type_keys_item(self: AVDDesignConsolidatorProtocol) -> AVDDesign.NodeTypeKeysItem:
         """Resolve the node_type_keys item matching the device type."""
-        for node_type_key in self.consolidated_design.custom_node_type_keys:
+        for node_type_key in self.inputs.custom_node_type_keys:
             if node_type_key.type == self.type:
                 return node_type_key._cast_as(AVDDesign.NodeTypeKeysItem)
 
-        for node_type_key in self.consolidated_design.node_type_keys:
+        for node_type_key in self.inputs.node_type_keys:
             if node_type_key.type == self.type:
                 return node_type_key
 
@@ -89,18 +91,18 @@ class NodeMixin(Protocol):
 
     def set_node_type_keys_item(self: AVDDesignConsolidatorProtocol) -> None:
         """Set the relevant node_type_keys item."""
-        self.consolidated_design._node_type_keys_item = self.node_type_keys_item
+        self.consolidated.node_type_keys_item = self.node_type_keys_item
 
     @cached_property
     def node_type_config(self: AVDDesignConsolidatorProtocol) -> AVDDesign._DynamicKeys.DynamicNodeTypesItem.NodeTypes | None:
         """Return the node type model selected by node_type_keys_item."""
         node_type_key = self.node_type_keys_item.key
 
-        if node_type_key in self.consolidated_design._dynamic_keys.custom_node_types:
-            return self.consolidated_design._dynamic_keys.custom_node_types[node_type_key].value._cast_as(AVDDesign._DynamicKeys.DynamicNodeTypesItem.NodeTypes)
+        if node_type_key in self.inputs._dynamic_keys.custom_node_types:
+            return self.inputs._dynamic_keys.custom_node_types[node_type_key].value._cast_as(AVDDesign._DynamicKeys.DynamicNodeTypesItem.NodeTypes)
 
-        if node_type_key in self.consolidated_design._dynamic_keys.node_types:
-            return self.consolidated_design._dynamic_keys.node_types[node_type_key].value
+        if node_type_key in self.inputs._dynamic_keys.node_types:
+            return self.inputs._dynamic_keys.node_types[node_type_key].value
 
         return None
 
@@ -132,8 +134,10 @@ class NodeMixin(Protocol):
 
     def set_node_group_primary_and_peer(self: AVDDesignConsolidatorProtocol) -> None:
         """Set node group position, peer, and length."""
-        self.consolidated_design._node_group_primary_and_peer = self.node_group_primary_and_peer
-        self.consolidated_design._node_group_length = len(self.node_group_config.nodes) if self.node_group_config is not None else 0
+        if self.node_group_primary_and_peer is not None:
+            is_primary, peer = self.node_group_primary_and_peer
+            self.consolidated.node_group = ConsolidatedNodeGroup(is_primary=is_primary, peer=peer)
+        self.consolidated.node_group_length = len(self.node_group_config.nodes) if self.node_group_config is not None else 0
 
     @cached_property
     def node_config(self: AVDDesignConsolidatorProtocol) -> AVDDesign._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem:
@@ -190,7 +194,7 @@ class NodeMixin(Protocol):
 
     def set_node_config(self: AVDDesignConsolidatorProtocol) -> None:
         """Set the fully inherited node configuration."""
-        self.consolidated_design._node_config = self.node_config
+        self.consolidated.node_config = self.node_config
 
     @cached_property
     def device_mlag_group(self: AVDDesignConsolidatorProtocol) -> str | None:
@@ -210,8 +214,8 @@ class NodeMixin(Protocol):
 
     def set_mlag(self: AVDDesignConsolidatorProtocol) -> None:
         """Set consolidated MLAG properties."""
-        self.consolidated_design._mlag = self.mlag
-        self.consolidated_design._device_mlag_group = self.device_mlag_group
+        self.consolidated.mlag = self.mlag
+        self.consolidated.device_mlag_group = self.device_mlag_group
 
     @cached_property
     def group(self: AVDDesignConsolidatorProtocol) -> str | None:
@@ -224,12 +228,12 @@ class NodeMixin(Protocol):
 
     def set_group(self: AVDDesignConsolidatorProtocol) -> None:
         """Set the consolidated group."""
-        self.consolidated_design._group = self.group
+        self.consolidated.group = self.group
 
     def prune_node_inputs(self: AVDDesignConsolidatorProtocol) -> None:
         """Remove node input models consumed during consolidation."""
         self._unset_avd_model(
-            self.consolidated_design,
+            self.inputs,
             ("devices", "device_profiles", "device_profile", "default_node_types", "type", "node_type_keys"),
         )
-        self._unset_avd_model(self.consolidated_design._dynamic_keys, ("custom_node_types", "node_types"))
+        self._unset_avd_model(self.inputs._dynamic_keys, ("custom_node_types", "node_types"))

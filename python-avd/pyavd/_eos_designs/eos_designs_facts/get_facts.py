@@ -82,7 +82,7 @@ def get_facts(
 
 def _create_generator_instance(
     hostname: str,
-    inputs: ConsolidatedAVDDesign,
+    artifact: ConsolidatedAVDDesign,
     hostvars: MutableMapping,
     templar: AVDTemplar | None,
     pool_manager: PoolManager | None,
@@ -91,10 +91,12 @@ def _create_generator_instance(
     mlag_groups: dict[str, set[str]],
 ) -> EosDesignsFactsGenerator:
     """Initialize SharedUtils and EosDesignsFactsGenerator and return the instance of the generator."""
+    inputs = artifact.inputs
     shared_utils = SharedUtils(
         hostname=hostname,
         hostvars=hostvars,
         inputs=inputs,
+        consolidated=artifact.consolidated,
         templar=templar,
         peer_facts=peer_facts_generators,
         pool_manager=pool_manager,

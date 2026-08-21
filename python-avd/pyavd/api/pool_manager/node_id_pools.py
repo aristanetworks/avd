@@ -31,7 +31,7 @@ class NodeIdPoolCollection(PoolCollection[int]):
             fabric_name=shared_utils.fabric_name,
             dc_name=shared_utils.inputs.dc_name,
             pod_name=shared_utils.inputs.pod_name,
-            type=shared_utils.inputs._type,
+            type=shared_utils.consolidated.type,
             rack=shared_utils.node_config.rack,
         )
 

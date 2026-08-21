@@ -115,7 +115,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         # Use all switch-matched candidates here, including platform-only entries. Facts only need a conservative
         # superset of endpoint VLANs, while the exact effective-platform filter is applied during structured config.
-        for network_port in self.inputs._network_ports:
+        for network_port in self.consolidated.network_ports:
             adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(network_port)
             vlans.update(adapter_vlans)
             trunk_groups.update(adapter_trunk_groups)
@@ -273,7 +273,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         candidate_vlans = (
             vlan
-            for network_services_group in self.inputs._network_services
+            for network_services_group in self.consolidated.network_services
             for tenant in network_services_group.tenants
             for vlan in chain(
                 (svi for vrf in tenant.vrfs for svi in vrf.svis),

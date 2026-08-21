@@ -423,7 +423,7 @@ class AvdStructuredConfigBaseProtocol(
             msg = f"'id' is not set on '{self.shared_utils.hostname}' to set LACP port ID ranges"
             raise AristaAvdInvalidInputsError(msg)
 
-        node_group_length = max(self.inputs._node_group_length, 1)
+        node_group_length = max(self.consolidated.node_group_length, 1)
 
         begin = 1 + (((switch_id - 1) % node_group_length) * lacp_port_id_range.size) + lacp_port_id_range.offset
         end = (((switch_id - 1) % node_group_length + 1) * lacp_port_id_range.size) + lacp_port_id_range.offset

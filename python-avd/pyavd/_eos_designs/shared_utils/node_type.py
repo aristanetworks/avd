@@ -25,7 +25,7 @@ class NodeTypeMixin(Protocol):
     @property
     def type(self: SharedUtilsProtocol) -> str:
         """Type fact set based on the type variable or default_node_type."""
-        return self.inputs._type
+        return self.consolidated.type
 
     @cached_property
     def connected_endpoints(self: SharedUtilsProtocol) -> bool:
@@ -35,7 +35,7 @@ class NodeTypeMixin(Protocol):
         connected_endpoints set based on
         node_type_keys.<node_type_key>.connected_endpoints.
         """
-        return self.inputs._node_type_keys_item.connected_endpoints
+        return self.consolidated.node_type_keys_item.connected_endpoints
 
     @cached_property
     def underlay_router(self: SharedUtilsProtocol) -> bool:
@@ -45,7 +45,7 @@ class NodeTypeMixin(Protocol):
         underlay_router set based on
         node_type_keys.<node_type_key>.underlay_router.
         """
-        return self.inputs._node_type_keys_item.underlay_router
+        return self.consolidated.node_type_keys_item.underlay_router
 
     @cached_property
     def uplink_type(self: SharedUtilsProtocol) -> EosDesigns.NodeTypeKeysItem.UplinkType:
@@ -54,7 +54,7 @@ class NodeTypeMixin(Protocol):
 
         uplink_type set based on <node_type_key>.nodes.[].uplink_type and node_type_keys.<node_type_key>.uplink_type.
         """
-        return default(self.node_config.uplink_type, self.inputs._node_type_keys_item.uplink_type)
+        return default(self.node_config.uplink_type, self.consolidated.node_type_keys_item.uplink_type)
 
     @cached_property
     def network_services_l1(self: SharedUtilsProtocol) -> bool:
@@ -63,7 +63,7 @@ class NodeTypeMixin(Protocol):
 
         network_services_l1 set based on node_type_keys.<node_type_key>.network_services.l1.
         """
-        return self.inputs._node_type_keys_item.network_services.l1
+        return self.consolidated.node_type_keys_item.network_services.l1
 
     @cached_property
     def network_services_l2(self: SharedUtilsProtocol) -> bool:
@@ -72,7 +72,7 @@ class NodeTypeMixin(Protocol):
 
         network_services_l2 set based on node_type_keys.<node_type_key>.network_services.l2.
         """
-        return self.inputs._node_type_keys_item.network_services.l2
+        return self.consolidated.node_type_keys_item.network_services.l2
 
     @cached_property
     def network_services_l3(self: SharedUtilsProtocol) -> bool:
@@ -85,7 +85,7 @@ class NodeTypeMixin(Protocol):
         # network_services_l3 override based on evpn_services_l2_only
         if self.vtep and self.node_config.evpn_services_l2_only:
             return False
-        return self.inputs._node_type_keys_item.network_services.l3
+        return self.consolidated.node_type_keys_item.network_services.l3
 
     @cached_property
     def network_services_l2_as_subint(self: SharedUtilsProtocol) -> bool:
@@ -110,7 +110,7 @@ class NodeTypeMixin(Protocol):
         mpls_lsr set based on
         node_type_keys.<node_type_key>.mpls_lsr.
         """
-        return self.inputs._node_type_keys_item.mpls_lsr
+        return self.consolidated.node_type_keys_item.mpls_lsr
 
     @cached_property
     def vtep(self: SharedUtilsProtocol) -> bool:
@@ -121,12 +121,12 @@ class NodeTypeMixin(Protocol):
         <node_type_key>.nodes.[].vtep and
         node_type_keys.<node_type_key>.vtep.
         """
-        return default(self.node_config.vtep, self.inputs._node_type_keys_item.vtep)
+        return default(self.node_config.vtep, self.consolidated.node_type_keys_item.vtep)
 
     @cached_property
     def hint_type(self: SharedUtilsProtocol) -> str | None:
         """Type hint fact set based on type variable."""
-        return default(self.node_config.cv_tags_topology_type, self.inputs.cv_tags_topology_type, self.inputs._node_type_keys_item.cv_tags_topology_type)
+        return default(self.node_config.cv_tags_topology_type, self.inputs.cv_tags_topology_type, self.consolidated.node_type_keys_item.cv_tags_topology_type)
 
     @cached_property
     def campus_hint_type(self: SharedUtilsProtocol) -> str | None:

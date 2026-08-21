@@ -25,9 +25,9 @@ class NetworkServicesMixin(Protocol):
             filter_tags.add(self.group)
 
         source_groups: list[tuple[str, AVDDesign._DynamicKeys.DynamicNetworkServicesItem.NetworkServices]] = []
-        if self.consolidated_design.network_services:
+        if self.inputs.network_services:
             root_tenants = AVDDesign.NetworkServices(
-                tenant for tenant in self.consolidated_design.network_services if "all" in tenant_filter or tenant.name in tenant_filter
+                tenant for tenant in self.inputs.network_services if "all" in tenant_filter or tenant.name in tenant_filter
             )._cast_as(AVDDesign._DynamicKeys.DynamicNetworkServicesItem.NetworkServices)
             source_groups.append(("network_services", root_tenants))
         source_groups.extend(
@@ -37,7 +37,7 @@ class NetworkServicesMixin(Protocol):
                     tenant for tenant in source_group.value if "all" in tenant_filter or tenant.name in tenant_filter
                 ),
             )
-            for source_group in self.consolidated_design._dynamic_keys.network_services
+            for source_group in self.inputs._dynamic_keys.network_services
         )
 
         for source_key, source_tenants in source_groups:
@@ -51,9 +51,9 @@ class NetworkServicesMixin(Protocol):
             if tenants:
                 consolidated_groups.append(ConsolidatedNetworkServicesItem(key=source_key, tenants=tenants))
 
-        self.consolidated_design._network_services = consolidated_groups
+        self.consolidated.network_services = consolidated_groups
 
     def prune_network_services_inputs(self: AVDDesignConsolidatorProtocol) -> None:
         """Remove network-services inputs replaced by the consolidated groups."""
-        self._unset_avd_model(self.consolidated_design, ("network_services", "network_services_keys"))
-        self._unset_avd_model(self.consolidated_design._dynamic_keys, ("network_services",))
+        self._unset_avd_model(self.inputs, ("network_services", "network_services_keys"))
+        self._unset_avd_model(self.inputs._dynamic_keys, ("network_services",))

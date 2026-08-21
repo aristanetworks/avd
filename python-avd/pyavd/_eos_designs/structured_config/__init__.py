@@ -95,8 +95,19 @@ def get_structured_config(
     if hostvars is None:
         hostvars = {}
 
+    artifact = inputs
+    pruned_inputs = artifact.inputs
+
     # Initialize SharedUtils class to be passed to each python_module below.
-    shared_utils = SharedUtils(hostname=hostname, hostvars=hostvars, inputs=inputs, peer_facts=all_facts, templar=templar, digital_twin=digital_twin)
+    shared_utils = SharedUtils(
+        hostname=hostname,
+        hostvars=hostvars,
+        inputs=pruned_inputs,
+        consolidated=artifact.consolidated,
+        peer_facts=all_facts,
+        templar=templar,
+        digital_twin=digital_twin,
+    )
 
     # Single structured config instance which will be in-place updated by each structured config generator.
     structured_config = EosCliConfigGen()
@@ -107,17 +118,17 @@ def get_structured_config(
     # "nested" is one instance of structured config merged onto during parsing of various models supporting a "structured_config" option.
     # We need these variants because the order of application is important (root first, then nested).
     #
-    custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(inputs.custom_structured_configuration_list_merge)
+    custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(pruned_inputs.custom_structured_configuration_list_merge)
 
     # Create a single shared structured config utils instance for all structured config classes.
     structured_config_utils = StructuredConfigUtils(
-        structured_config=structured_config, inputs=inputs, shared_utils=shared_utils, custom_structured_configs=custom_structured_configs
+        structured_config=structured_config, inputs=pruned_inputs, shared_utils=shared_utils, custom_structured_configs=custom_structured_configs
     )
 
     for cls in AVD_STRUCTURED_CONFIG_CLASSES:
         eos_designs_module = cls(
             hostvars=hostvars,
-            inputs=inputs,
+            inputs=pruned_inputs,
             facts=all_facts[hostname],
             shared_utils=shared_utils,
             structured_config=structured_config,

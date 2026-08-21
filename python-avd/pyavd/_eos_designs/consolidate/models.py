@@ -101,3 +101,43 @@ class ConsolidatedNetworkServices(AvdIndexedList[str, ConsolidatedNetworkService
 
 
 ConsolidatedNetworkServices._item_type = ConsolidatedNetworkServicesItem
+
+
+class ConsolidatedNodeGroup(AvdModel):
+    """Position and peer for a device in a two-device node group."""
+
+    _fields: ClassVar[dict] = {"is_primary": {"type": bool}, "peer": {"type": str}}
+    is_primary: bool
+    peer: str
+
+
+class ConsolidatedData(AvdModel):
+    """Device-local data derived while consolidating AVD Design inputs."""
+
+    _fields: ClassVar[dict] = {
+        "type": {"type": str},
+        "node_type_keys_item": {"type": AVDDesign.NodeTypeKeysItem},
+        "node_config": {"type": AVDDesign._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem},
+        "node_group": {"type": ConsolidatedNodeGroup},
+        "mlag": {"type": bool},
+        "device_mlag_group": {"type": str},
+        "group": {"type": str},
+        "node_group_length": {"type": int},
+        "connected_endpoints": {"type": ConsolidatedConnectedEndpointGroups},
+        "network_ports": {"type": ConsolidatedNetworkPorts},
+        "port_profile_names": {"type": ConsolidatedPortProfileNames},
+        "network_services": {"type": ConsolidatedNetworkServices},
+    }
+
+    type: str
+    node_type_keys_item: AVDDesign.NodeTypeKeysItem
+    node_config: AVDDesign._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem
+    node_group: ConsolidatedNodeGroup
+    mlag: bool
+    device_mlag_group: str | None
+    group: str | None
+    node_group_length: int
+    connected_endpoints: ConsolidatedConnectedEndpointGroups
+    network_ports: ConsolidatedNetworkPorts
+    port_profile_names: ConsolidatedPortProfileNames
+    network_services: ConsolidatedNetworkServices

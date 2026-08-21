@@ -562,7 +562,7 @@ class MiscMixin(Protocol):
         self: SharedUtilsProtocol,
     ) -> ConsolidatedConnectedEndpointGroups:
         """Return device-local consolidated connected endpoint groups."""
-        return self.inputs._connected_endpoints
+        return self.consolidated.connected_endpoints
 
     def get_ipsec_key(self: SharedUtilsProtocol, cleartext_key: str, profile_name: str) -> str:
         """

@@ -41,7 +41,7 @@ class FilteredTenantsMixin(Protocol):
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices()
 
         filtered_tenants = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices()
-        for network_services_group in self.inputs._network_services:
+        for network_services_group in self.consolidated.network_services:
             for original_tenant in network_services_group.tenants:
                 tenant = original_tenant._deepcopy()
                 tenant._internal_data.context = network_services_group.key

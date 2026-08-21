@@ -29,12 +29,12 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag(self: SharedUtilsProtocol) -> bool:
-        return self.inputs._mlag
+        return self.consolidated.mlag
 
     @cached_property
     def group(self: SharedUtilsProtocol) -> str | None:
         """Group set to "node_group" name or None."""
-        return self.inputs._group
+        return self.consolidated.group
 
     @cached_property
     def mlag_interfaces(self: SharedUtilsProtocol) -> list[str]:
