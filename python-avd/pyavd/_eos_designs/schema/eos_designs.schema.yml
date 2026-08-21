@@ -12150,8 +12150,11 @@ $defs:
                 description: 'Name of the IPv4 and/or IPv6 extended access list to
                   apply to unauthenticated traffic.
 
-                  The access list must be defined under `ipv4_acls` and/or `ipv6_acls`
-                  catalog.'
+                  The access list must be defined under the `ipv4_acls` and/or `ipv6_acls`
+                  catalog.
+
+                  On EOS, the access list is only applied when `dot1x.mac_based_access_list`
+                  is enabled on the interface.'
       address_locking:
         type: dict
         description: Address locking settings applied on the port.

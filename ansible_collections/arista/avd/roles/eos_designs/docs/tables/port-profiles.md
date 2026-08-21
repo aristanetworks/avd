@@ -75,7 +75,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "port_profiles.[].link_tracking.name") | String |  |  |  | Tracking group name.<br>The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".<br>Optional if default link_tracking settings are configured on the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "port_profiles.[].dot1x") | Dictionary |  |  |  | 802.1x |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure</samp>](## "port_profiles.[].dot1x.authentication_failure") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_access_list</samp>](## "port_profiles.[].dot1x.authentication_failure.allow_access_list") | String |  |  |  | Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.<br>The access list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_access_list</samp>](## "port_profiles.[].dot1x.authentication_failure.allow_access_list") | String |  |  |  | Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.<br>The access list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.<br>On EOS, the access list is only applied when `dot1x.mac_based_access_list` is enabled on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "port_profiles.[].dot1x.authentication_failure.action") | String |  |  | Valid Values:<br>- <code>allow</code><br>- <code>drop</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vlan</samp>](## "port_profiles.[].dot1x.authentication_failure.allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control</samp>](## "port_profiles.[].dot1x.port_control") | String |  |  | Valid Values:<br>- <code>auto</code><br>- <code>force-authorized</code><br>- <code>force-unauthorized</code> |  |
@@ -438,7 +438,8 @@
           authentication_failure:
 
             # Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
-            # The access list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+            # The access list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+            # On EOS, the access list is only applied when `dot1x.mac_based_access_list` is enabled on the interface.
             allow_access_list: <str>
             action: <str; "allow" | "drop">
             allow_vlan: <int; 1-4094>

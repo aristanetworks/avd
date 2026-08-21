@@ -3109,7 +3109,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                     The access
-                    list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+                    list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                    On EOS, the access list is
+                    only applied when `dot1x.mac_based_access_list` is enabled on the interface.
                     """
                     action: Action | None
                     allow_vlan: int | None
@@ -3133,7 +3135,9 @@ class EosDesigns(EosDesignsRootModel):
                                 allow_access_list:
                                    Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                                    The access
-                                   list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+                                   list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                                   On EOS, the access list is
+                                   only applied when `dot1x.mac_based_access_list` is enabled on the interface.
                                 action: action
                                 allow_vlan: allow_vlan
 
@@ -28546,7 +28550,9 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                 The access
-                list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+                list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                On EOS, the access list is
+                only applied when `dot1x.mac_based_access_list` is enabled on the interface.
                 """
                 action: Action | None
                 allow_vlan: int | None
@@ -28570,7 +28576,9 @@ class EosDesigns(EosDesignsRootModel):
                             allow_access_list:
                                Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                                The access
-                               list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+                               list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                               On EOS, the access list is
+                               only applied when `dot1x.mac_based_access_list` is enabled on the interface.
                             action: action
                             allow_vlan: allow_vlan
 
@@ -46923,7 +46931,9 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                 The access
-                list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+                list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                On EOS, the access list is
+                only applied when `dot1x.mac_based_access_list` is enabled on the interface.
                 """
                 action: Action | None
                 allow_vlan: int | None
@@ -46947,7 +46957,9 @@ class EosDesigns(EosDesignsRootModel):
                             allow_access_list:
                                Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                                The access
-                               list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+                               list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                               On EOS, the access list is
+                               only applied when `dot1x.mac_based_access_list` is enabled on the interface.
                             action: action
                             allow_vlan: allow_vlan
 
@@ -78227,7 +78239,9 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                             The access
-                            list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+                            list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                            On EOS, the access list is
+                            only applied when `dot1x.mac_based_access_list` is enabled on the interface.
                             """
                             action: Action | None
                             allow_vlan: int | None
@@ -78251,7 +78265,9 @@ class EosDesigns(EosDesignsRootModel):
                                         allow_access_list:
                                            Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                                            The access
-                                           list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+                                           list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                                           On EOS, the access list is
+                                           only applied when `dot1x.mac_based_access_list` is enabled on the interface.
                                         action: action
                                         allow_vlan: allow_vlan
 
@@ -80794,7 +80810,9 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                             The access
-                            list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+                            list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                            On EOS, the access list is
+                            only applied when `dot1x.mac_based_access_list` is enabled on the interface.
                             """
                             action: Action | None
                             allow_vlan: int | None
@@ -80818,7 +80836,9 @@ class EosDesigns(EosDesignsRootModel):
                                         allow_access_list:
                                            Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                                            The access
-                                           list must be defined under `ipv4_acls` and/or `ipv6_acls` catalog.
+                                           list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                                           On EOS, the access list is
+                                           only applied when `dot1x.mac_based_access_list` is enabled on the interface.
                                         action: action
                                         allow_vlan: allow_vlan
 

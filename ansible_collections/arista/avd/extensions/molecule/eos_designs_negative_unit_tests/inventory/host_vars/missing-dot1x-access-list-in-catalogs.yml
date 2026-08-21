@@ -36,6 +36,7 @@ network_ports:
   - switches: [missing-dot1x-access-list-in-catalogs]
     switch_ports: [Ethernet1]
     dot1x:
+      mac_based_access_list: true
       authentication_failure:
         action: allow
         allow_access_list: missing-acl

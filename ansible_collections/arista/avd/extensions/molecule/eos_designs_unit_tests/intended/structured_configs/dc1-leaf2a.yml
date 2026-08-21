@@ -374,6 +374,7 @@ ethernet_interfaces:
       multi_host_authenticated: true
     mac_based_authentication:
       enabled: true
+    mac_based_access_list: true
     timeout:
       reauth_period: server
       tx_period: 3
@@ -401,6 +402,7 @@ ethernet_interfaces:
       multi_host_authenticated: true
     mac_based_authentication:
       enabled: true
+    mac_based_access_list: true
     timeout:
       reauth_period: server
       tx_period: 3
