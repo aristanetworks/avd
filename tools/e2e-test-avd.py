@@ -613,33 +613,14 @@ class AvdV6Build:
                 yield False
 
     def consolidation_stage(self) -> Generator[bool, None, None]:
-        """
-        Use multiprocessing to consolidate input variables for all devices.
-
-        Yield a bool signalling success for each device.
-        """
-        validated_devices = list(self._validated_inputs_dict.keys())
-        try:
-            results = self.context.executor.map(
-                consolidate_inputs_for_one_device,
-                validated_devices,
-                (self._validated_inputs_dict[device] for device in validated_devices),
-                repeat(self.config),
-                # Each task transfers a full validated design and returns a full consolidated model. Batching these
-                # objects increases peak worker memory significantly, especially when Python is running under coverage.
-                chunksize=1,
-            )
-            for result in results:
-                if result.consolidated_inputs is None:
-                    yield False
-                    continue
-
-                self._loaded_avd_designs[result.device_id] = result.consolidated_inputs
+        """Consolidate input variables serially in the main process."""
+        for device, validated_inputs in self._validated_inputs_dict.items():
+            try:
+                self._loaded_avd_designs[device] = ConsolidatedAVDDesign._from_avd_design(device, validated_inputs)
                 yield True
-        except Exception as e:
-            # Process-pool failures cannot necessarily be attributed to a device.
-            dump_exception(e, self.config, "consolidation")
-            yield False
+            except Exception as e:  # noqa: PERF203  # Errors must be reported separately for every device.
+                dump_exception(e, self.config, "consolidation", device)
+                yield False
 
     def device_build_stage(
         self,
@@ -844,28 +825,6 @@ def validate_inputs_for_one_device(device: str, device_avd_inputs: dict, config:
         dump_violations(pyavd_utils_validated_data_result.validation_result.violations, config, "input_validation", device)
 
     return DevicePyAVDUtilsValidatedDataResult(device, pyavd_utils_validated_data_result)
-
-
-def consolidate_inputs_for_one_device(
-    device: str,
-    device_avd_validated_inputs_dict: dict,
-    config: FabricConfig,
-) -> DeviceConsolidationResult:
-    """
-    Consolidate input variables for one device and return the model through process-pool IPC.
-
-    Args:
-        device: Device name.
-        device_avd_validated_inputs_dict: Dict with validated inputs (hostvars)
-        config: Fabric configuration used for error output.
-    """
-    try:
-        consolidated_inputs = ConsolidatedAVDDesign._from_avd_design(device, device_avd_validated_inputs_dict)
-    except Exception as e:
-        dump_exception(e, config, "consolidation", device)
-        return DeviceConsolidationResult(device)
-
-    return DeviceConsolidationResult(device, consolidated_inputs)
 
 
 def build_validate_and_render_for_one_device(
@@ -1078,12 +1037,6 @@ def _load_avd_facts_from_shm(shm_name: str, shm_size: int) -> dict[str, typing.A
 class DevicePyAVDUtilsValidatedDataResult:
     device_id: str
     pyavd_utils_validated_data_result: pyavd_utils.validation.ValidatedDataResult
-
-
-@dataclasses.dataclass(frozen=True, slots=True)
-class DeviceConsolidationResult:
-    device_id: str
-    consolidated_inputs: ConsolidatedAVDDesign | None = None
 
 
 ### Shared memory objects and helpers
