@@ -25,6 +25,7 @@ class AddressLockingMixin(Protocol):
         if not (address_locking_settings := self.inputs.address_locking_settings) or not feature_support.address_locking.supported:
             return
 
+        # TODO: AVD 7.0 - Remove the schema default and only resolve `local_interface` when it is explicitly configured.
         local_interface = self.shared_utils.get_local_interface(address_locking_settings.local_interface)
 
         locked_address = address_locking_settings.locked_address._cast_as(EosCliConfigGen.AddressLocking.LockedAddress)

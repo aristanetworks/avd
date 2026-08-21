@@ -10,7 +10,7 @@
     | [<samp>address_locking</samp>](## "address_locking") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dhcp_servers_ipv4</samp>](## "address_locking.dhcp_servers_ipv4") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "address_locking.dhcp_servers_ipv4.[]") | String |  |  |  | DHCP server IPv4 address. |
-    | [<samp>&nbsp;&nbsp;dhcp_server_interfaces</samp>](## "address_locking.dhcp_server_interfaces") | List, items: String |  |  |  | The list of interfaces connected to the DHCP server.<br>Requires EOS version 4.36 or later. |
+    | [<samp>&nbsp;&nbsp;dhcp_server_interfaces</samp>](## "address_locking.dhcp_server_interfaces") | List, items: String |  |  |  | The list of interfaces connected to the DHCP server.<br>When both `local_interface` and `dhcp_server_interfaces` are configured, EOS prioritizes `local_interface`.<br>Requires EOS version 4.36 or later. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "address_locking.dhcp_server_interfaces.[]") | String |  |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;disabled</samp>](## "address_locking.disabled") | Boolean |  |  |  | Disable IP locking on configured ports. |
     | [<samp>&nbsp;&nbsp;leases</samp>](## "address_locking.leases") | List, items: Dictionary |  |  |  |  |
@@ -32,6 +32,7 @@
         - <str>
 
       # The list of interfaces connected to the DHCP server.
+      # When both `local_interface` and `dhcp_server_interfaces` are configured, EOS prioritizes `local_interface`.
       # Requires EOS version 4.36 or later.
       dhcp_server_interfaces:
 
