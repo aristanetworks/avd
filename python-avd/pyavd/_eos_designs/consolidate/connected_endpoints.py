@@ -56,13 +56,13 @@ class ConnectedEndpointsMixin(Protocol):
 
         if profile_name not in self.inputs.port_profiles:
             msg = f"Profile '{profile_name}' applied under '{context}' does not exist in `port_profiles`."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.device_name)
 
         port_profile = self.inputs.port_profiles[profile_name]._deepcopy()
         if port_profile.parent_profile:
             if port_profile.parent_profile not in self.inputs.port_profiles:
                 msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.device_name)
 
             port_profile._deepinherit(self.inputs.port_profiles[port_profile.parent_profile])
 
@@ -74,48 +74,56 @@ class ConnectedEndpointsMixin(Protocol):
     def get_merged_adapter_settings(
         self: AVDDesignConsolidatorProtocol,
         adapter_or_network_port_settings: Adapter,
+        context: str,
     ) -> Adapter: ...
 
     @overload
     def get_merged_adapter_settings(
         self: AVDDesignConsolidatorProtocol,
         adapter_or_network_port_settings: RootAdapter,
+        context: str,
     ) -> RootAdapter: ...
 
     @overload
     def get_merged_adapter_settings(
         self: AVDDesignConsolidatorProtocol,
         adapter_or_network_port_settings: AVDDesign.NetworkPortsItem,
+        context: str,
     ) -> AVDDesign.NetworkPortsItem: ...
 
-    def get_merged_adapter_settings(self: AVDDesignConsolidatorProtocol, adapter_or_network_port_settings: AdapterOrNetworkPort) -> AdapterOrNetworkPort:
+    def get_merged_adapter_settings(
+        self: AVDDesignConsolidatorProtocol, adapter_or_network_port_settings: AdapterOrNetworkPort, context: str
+    ) -> AdapterOrNetworkPort:
         """Return copied adapter or network-port settings with the referenced port profile inherited."""
         merged_settings = adapter_or_network_port_settings._deepcopy()
         if (profile_name := merged_settings.profile) is None:
             return merged_settings
 
-        port_profile = self.get_merged_port_profile(profile_name, merged_settings._internal_data.context)
+        port_profile = self.get_merged_port_profile(profile_name, context)
         if isinstance(merged_settings, AVDDesign.NetworkPortsItem) and port_profile.port_channel._get("subinterfaces"):
             msg = f"'port_profiles[profile={profile_name}].port_channel.subinterfaces' is not supported since this profile is referenced under a network_port."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.device_name)
 
         merged_settings._deepinherit(cast("Any", port_profile._cast_as(type(merged_settings))))
         return merged_settings
 
-    def resolve_individual_adapter_settings(self: AVDDesignConsolidatorProtocol, adapter: AdapterOrNetworkPort) -> None:
+    def resolve_individual_adapter_settings(self: AVDDesignConsolidatorProtocol, adapter: AdapterOrNetworkPort, context: str) -> None:
         """Resolve a nested LACP individual-fallback profile in-place on the copied adapter."""
         if not adapter.port_channel.mode or adapter.port_channel.lacp_fallback.mode != "individual":
             return
 
         individual = adapter.port_channel.lacp_fallback.individual
         individual_adapter = individual._cast_as(AVDDesign._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem)
-        individual_adapter._internal_data.context = f"{adapter._internal_data.context}.port_channel.lacp_fallback.individual"
-        merged_individual_adapter = self.get_merged_adapter_settings(individual_adapter)
+        individual_context = f"{context}.port_channel.lacp_fallback.individual"
+        merged_individual_adapter = self.get_merged_adapter_settings(individual_adapter, individual_context)
         adapter.port_channel.lacp_fallback.individual = cast("Any", merged_individual_adapter)
 
     def set_connected_endpoints(self: AVDDesignConsolidatorProtocol) -> None:
         """Set profile-resolved connected endpoints containing adapters relevant to this device."""
         consolidated_groups = ConsolidatedConnectedEndpointGroups()
+        if not self.node_type_keys_item.connected_endpoints:
+            self.consolidated.connected_endpoints = consolidated_groups
+            return
 
         for source_group in self._connected_endpoint_source_groups:
             endpoints = ConsolidatedConnectedEndpoints()
@@ -123,8 +131,8 @@ class ConnectedEndpointsMixin(Protocol):
                 adapters = AVDDesign._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.Adapters()
                 adapter_indices = []
                 for adapter_index, adapter in enumerate(connected_endpoint.adapters):
-                    adapter._internal_data.context = f"{source_group.key}[name={connected_endpoint.name}].adapters[{adapter_index}]"
-                    adapter_settings = self.get_merged_adapter_settings(adapter)
+                    adapter_context = f"{source_group.key}[name={connected_endpoint.name}].adapters[{adapter_index}]"
+                    adapter_settings = self.get_merged_adapter_settings(adapter, adapter_context)
                     if not adapter_settings.switches or self.device_name not in adapter_settings.switches:
                         continue
 
@@ -137,14 +145,14 @@ class ConnectedEndpointsMixin(Protocol):
                             f" connected_endpoint '{connected_endpoint.name}' under '{source_group.key}'."
                             " Notice that some or all of these variables could be inherited from 'port_profiles'"
                         )
-                        raise AristaAvdError(msg)
+                        raise AristaAvdError(msg, host=self.device_name)
 
                     consolidated_adapter_settings = (
                         adapter_settings
                         if isinstance(adapter_settings, AVDDesign._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem)
                         else adapter_settings._cast_as(AVDDesign._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem)
                     )
-                    self.resolve_individual_adapter_settings(consolidated_adapter_settings)
+                    self.resolve_individual_adapter_settings(consolidated_adapter_settings, adapter_context)
                     adapters.append(consolidated_adapter_settings)
                     adapter_indices.append(adapter_index)
 
@@ -218,9 +226,13 @@ class ConnectedEndpointsMixin(Protocol):
         CV topology or digital-twin substitution, neither of which is available during this consolidation phase.
         """
         network_ports = ConsolidatedNetworkPorts()
+        if not self.node_type_keys_item.connected_endpoints:
+            self.consolidated.network_ports = network_ports
+            return
+
         for source_index, network_port in enumerate(self.inputs.network_ports):
-            network_port._internal_data.context = f"network_ports[{source_index}]"
-            network_port_settings = self.get_merged_adapter_settings(network_port)
+            network_port_context = f"network_ports[{source_index}]"
+            network_port_settings = self.get_merged_adapter_settings(network_port, network_port_context)
 
             if not network_port_settings.switches and not network_port_settings.platforms:
                 continue
@@ -229,13 +241,17 @@ class ConnectedEndpointsMixin(Protocol):
 
             consolidated_network_port = network_port_settings._cast_as(ConsolidatedNetworkPort)
             consolidated_network_port._source_index = source_index
-            self.resolve_individual_adapter_settings(consolidated_network_port)
+            self.resolve_individual_adapter_settings(consolidated_network_port, network_port_context)
             network_ports.append(consolidated_network_port)
 
         self.consolidated.network_ports = network_ports
 
     def set_port_profile_names(self: AVDDesignConsolidatorProtocol) -> None:
         """Set minimal port-profile metadata required by fabric documentation."""
+        if not self.node_type_keys_item.connected_endpoints:
+            self.consolidated.port_profile_names = ConsolidatedPortProfileNames()
+            return
+
         self.consolidated.port_profile_names = ConsolidatedPortProfileNames(
             ConsolidatedPortProfileName(profile=profile.profile, parent_profile=profile.parent_profile) for profile in self.inputs.port_profiles
         )

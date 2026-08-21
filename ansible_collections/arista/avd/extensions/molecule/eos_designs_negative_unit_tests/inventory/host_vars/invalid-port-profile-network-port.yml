@@ -1,5 +1,7 @@
 type: l2leaf
 
+fabric_name: INVALID_PORT_PROFILE_NETWORK_PORT
+
 port_profiles:
   - profile: common
     mode: access
