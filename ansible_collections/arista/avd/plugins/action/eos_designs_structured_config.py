@@ -93,14 +93,14 @@ class ActionModule(AVDActionPlugin):
 
         output = structured_config._as_dict()
 
-        # We use ChainMap to avoid copying large amounts of data around, mapping in
-        #  - output (containing structured_config at this point)
-        #  - templated, converted and validated version of all other vars
-        # Any var assignments will end up in output, so all other objects are protected.
-        template_vars = ChainMap(output, host_hostvars)
+        template_vars: ChainMap[str, Any] | None = None
 
         # eos_designs_custom_templates can contain a list of jinja templates to run after PyAVD
         if eos_designs_custom_templates:
+            # The Ansible Jinja engine only accepts concrete dicts as ChainMap layers.
+            # Materialize the lazy hostvars only when a Jinja rendering path is enabled.
+            template_vars = ChainMap(output, dict(host_hostvars))
+
             # Load output schema used by merger on output of custom templates
             output_schema = AvdSchema(schema_id="eos_cli_config_gen")
 
@@ -138,6 +138,8 @@ class ActionModule(AVDActionPlugin):
         # If the argument 'template_output' is set, run the output data through another jinja2 rendering.
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
         if template_output:
+            if template_vars is None:
+                template_vars = ChainMap(output, dict(host_hostvars))
             with self._templar.set_temporary_context(available_variables=template_vars):
                 output = self._templar.template(output, fail_on_undefined=False)
 

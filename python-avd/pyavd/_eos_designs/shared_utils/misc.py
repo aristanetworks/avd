@@ -8,16 +8,18 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default
-from pyavd._utils.password_utils.password import simple_7_encrypt
+from pyavd._utils.password_utils.password import simple_7_encrypt  # pyright: ignore[reportAttributeAccessIssue]
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+
+    from pyavd._eos_designs.consolidate.models import ConsolidatedConnectedEndpointGroups
+    from pyavd._eos_designs.schema import EosDesigns
 
     from . import SharedUtilsProtocol
 
@@ -558,31 +560,9 @@ class MiscMixin(Protocol):
     @cached_property
     def all_connected_endpoints(
         self: SharedUtilsProtocol,
-    ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpoints:
-        """Emit the complete list of connected_endpoints and custom_connected_endpoints, prioritizing custom_connected_endpoints."""
-        all_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpoints()
-        if self.inputs.connected_endpoints:
-            dyn_connected_endpoints_item = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem(
-                key="connected_endpoints",
-                value=self.inputs.connected_endpoints._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints),
-            )
-            dyn_connected_endpoints_item._internal_data.description = None
-            dyn_connected_endpoints_item._internal_data.type = None
-            all_connected_endpoints.append(dyn_connected_endpoints_item)
-
-        for dyn_connected_endpoints in self.inputs._dynamic_keys.custom_connected_endpoints:
-            dyn_connected_endpoints_item = dyn_connected_endpoints._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem)
-            dyn_connected_endpoints_item._internal_data.description = self.inputs.custom_connected_endpoints_keys[dyn_connected_endpoints.key].description
-            dyn_connected_endpoints_item._internal_data.type = self.inputs.custom_connected_endpoints_keys[dyn_connected_endpoints.key].type
-            all_connected_endpoints.append(dyn_connected_endpoints_item)
-
-        for dyn_connected_endpoints in self.inputs._dynamic_keys.connected_endpoints:
-            if dyn_connected_endpoints.key not in all_connected_endpoints:
-                dyn_connected_endpoints._internal_data.description = self.inputs.connected_endpoints_keys[dyn_connected_endpoints.key].description
-                dyn_connected_endpoints._internal_data.type = self.inputs.connected_endpoints_keys[dyn_connected_endpoints.key].type
-                all_connected_endpoints.append(dyn_connected_endpoints)
-
-        return all_connected_endpoints
+    ) -> ConsolidatedConnectedEndpointGroups:
+        """Return device-local consolidated connected endpoint groups."""
+        return self.inputs._connected_endpoints
 
     def get_ipsec_key(self: SharedUtilsProtocol, cleartext_key: str, profile_name: str) -> str:
         """

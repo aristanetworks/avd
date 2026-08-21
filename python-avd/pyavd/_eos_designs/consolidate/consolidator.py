@@ -1,0 +1,62 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Protocol
+
+from .connected_endpoints import ConnectedEndpointsMixin
+from .model import ConsolidatedAVDDesign
+from .node import NodeMixin
+
+if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns as AVDDesign
+    from pyavd._schema.models.avd_model import AvdModel
+
+
+class AVDDesignConsolidatorProtocol(ConnectedEndpointsMixin, NodeMixin, Protocol):
+    """Protocol for mixins contributing to AVD design consolidation."""
+
+    device_name: str
+    consolidated_design: ConsolidatedAVDDesign
+
+    @staticmethod
+    def _unset_avd_model(avd_model: AvdModel, attributes: tuple[str, ...]) -> None: ...
+
+
+class AVDDesignConsolidator(AVDDesignConsolidatorProtocol):
+    """Consolidate device-specific AVD design inputs."""
+
+    def __init__(self, device_name: str, avd_design: AVDDesign) -> None:
+        self.device_name = device_name
+        self.consolidated_design = avd_design._cast_as(ConsolidatedAVDDesign)
+
+    @staticmethod
+    def _unset_avd_model(avd_model: AvdModel, attributes: tuple[str, ...]) -> None:
+        for attribute in attributes:
+            if attribute in avd_model.__dict__:
+                delattr(avd_model, attribute)
+
+    def consolidate(self) -> ConsolidatedAVDDesign:
+        """
+        Consolidate an AVD Design instance and return as ConsolidatedAVDDesign.
+
+        Warning: The given avd_design is mutated in-place and should not be used afterwards.
+        """
+        self.set_type()
+        self.set_node_type_keys_item()
+        self.set_node_group_primary_and_peer()
+        self.set_node_config()
+        self.set_mlag()
+        self.set_group()
+        self.set_port_profile_names()
+        self.set_connected_endpoints()
+        self.set_network_ports()
+        self.prune_connected_endpoint_inputs()
+        self.prune_node_inputs()
+        return self.consolidated_design
+
+
+def consolidate_avd_design(device_name: str, avd_design: AVDDesign) -> ConsolidatedAVDDesign:
+    """Consolidate the AVD design for one device."""
+    return AVDDesignConsolidator(device_name, avd_design).consolidate()

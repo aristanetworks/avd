@@ -11,7 +11,7 @@ from unittest import mock
 import pytest
 from yaml import safe_dump
 
-from pyavd._eos_designs.schema import EosDesigns
+from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
 from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._schema.store import create_store
 from pyavd.api.pool_manager import PoolManager
@@ -249,7 +249,13 @@ def test_avdpoolmanager_pool(
             requested_id = requested_ids[index] if requested_ids else None
             _hostvars = hostvars.copy()
             hostname = _hostvars.pop("inventory_hostname")
-            shared_utils = SharedUtils(hostname=hostname, hostvars=_hostvars, inputs=EosDesigns._from_dict(hostvars), templar=object(), peer_facts={})
+            shared_utils = SharedUtils(
+                hostname=hostname,
+                hostvars=_hostvars,
+                inputs=ConsolidatedAVDDesign._from_avd_design(hostname, hostvars),
+                templar=object(),
+                peer_facts={},
+            )
             # Get the id of the host from hostvars. If not, a new data set will be created.
             assert pool_manager.get_assignment("node_id_pools", shared_utils, requested_id) == expected_ids[index]
 
@@ -420,7 +426,13 @@ def test_avdpoolmanager_upgrade_old_data() -> None:
         # Initialize pool_manager and feed to shared_utils.
         pool_manager = PoolManager(Path(DUMMYDIR))
 
-        shared_utils = SharedUtils(hostname=hostname, hostvars=hostvars, inputs=EosDesigns._from_dict(hostvars), templar=None, peer_facts={})
+        shared_utils = SharedUtils(
+            hostname=hostname,
+            hostvars=hostvars,
+            inputs=ConsolidatedAVDDesign._from_avd_design(hostname, hostvars),
+            templar=None,
+            peer_facts={},
+        )
         # Get the id of the host from hostvars. If not, a new data set will be created.
         assert pool_manager.get_assignment("node_id_pools", shared_utils) == 123
 

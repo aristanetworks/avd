@@ -97,11 +97,24 @@ class ValidateWorkerSkipped:
     """Reason why the validation was skipped."""
 
 
+@dataclass(frozen=True, slots=True)
+class ConsolidateWorkerSuccess:
+    """Result returned when a worker successfully consolidates AVD Design inputs for a host."""
+
+    hostname: str
+    """Hostname that was processed."""
+    output_file: str
+    """Path to the consolidated JSON file."""
+
+
 TemplateWorkerResult = TemplateWorkerSuccess | WorkerFailure
 """Result type from Phase 1 (templating hostvars and writing to file)."""
 
 ValidateWorkerResult = ValidateWorkerSuccess | ValidateWorkerSkipped | WorkerFailure
 """Result type from Phase 2 (validating data and writing to file)."""
+
+ConsolidateWorkerResult = ConsolidateWorkerSuccess | WorkerFailure
+"""Result type from Phase 3 (consolidating AVD Design inputs and writing to file)."""
 
 
 PLUGIN_NAME = "arista.avd.validate_inputs"
@@ -241,19 +254,29 @@ class ActionModule(AVDActionPlugin):
 
         # Phase 2: Run the validation phase on the input_dir files or the templated_path files.
         if hosts_to_validate:
-            self._run_validation_phase(
+            hosts_to_consolidate = self._run_validation_phase(
                 hostnames=hosts_to_validate,
                 workers=mt_workers,
                 input_path=validation_input_path,
                 input_suffix=validation_input_suffix,
                 output_path=validated_path,
-                consolidated_output_path=consolidated_path,
                 schema_name=plugin_args.schema_name,
                 fail_on_missing_input_files=plugin_args.fail_on_missing_input_files,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
                 configuration=plugin_args.validation_configuration,
                 file_handler=file_handler,
             )
+
+            # Phase 3: Consolidate AVD Design inputs using multiprocessing since this work is Python/GIL-bound.
+            if consolidated_path is not None and hosts_to_consolidate:
+                self._run_consolidation_phase(
+                    hostnames=hosts_to_consolidate,
+                    workers=mp_workers,
+                    batch_size=plugin_args.batch_size,
+                    input_path=validated_path,
+                    output_path=consolidated_path,
+                    file_handler=file_handler,
+                )
 
         if self.crashed_hosts:
             msg = f"Unexpected errors occurred while processing {len(self.crashed_hosts)} host(s): {', '.join(sorted(self.crashed_hosts))}."
@@ -403,8 +426,7 @@ class ActionModule(AVDActionPlugin):
         fail_on_validation_errors: bool,
         configuration: Configuration | None,
         file_handler: AVDFileHandler,
-        consolidated_output_path: Path | None = None,
-    ) -> None:
+    ) -> list[str]:
         """
         Run Phase 2: Validation.
 
@@ -419,7 +441,6 @@ class ActionModule(AVDActionPlugin):
             input_path: Directory containing input files (templated or user-provided).
             input_suffix: File suffix for input files (json, yml, yaml).
             output_path: Directory where validated JSON files will be written.
-            consolidated_output_path: Directory where consolidated AVD Design inputs will be written.
             schema_name: Schema to validate against.
             fail_on_missing_input_files: Whether to fail the task if the input file is missing.
             fail_on_validation_errors: Whether to fail the task on validation errors.
@@ -430,6 +451,7 @@ class ActionModule(AVDActionPlugin):
         start_time = perf_counter()
 
         data_validation_errors = 0
+        validated_hosts: list[str] = []
 
         init_store()
 
@@ -439,7 +461,6 @@ class ActionModule(AVDActionPlugin):
             input_path=input_path,
             input_suffix=input_suffix,
             output_path=output_path,
-            consolidated_output_path=consolidated_output_path,
             schema_name=schema_name,
             configuration=configuration,
             file_handler=file_handler,
@@ -460,6 +481,8 @@ class ActionModule(AVDActionPlugin):
                     continue
 
                 host_errors = parse_validation_result(validation_result=result.validation_result, hostname=result.hostname, ansible_display=display)
+                if result.output_file:
+                    validated_hosts.append(result.hostname)
 
                 if host_errors:
                     data_validation_errors += host_errors
@@ -478,6 +501,36 @@ class ActionModule(AVDActionPlugin):
             self.result["msg"] = msg
 
         self.logger.info("Validation of inputs completed in %.2fs", perf_counter() - start_time)
+        return validated_hosts
+
+    def _run_consolidation_phase(
+        self,
+        hostnames: list[str],
+        workers: int,
+        batch_size: int,
+        input_path: Path,
+        output_path: Path,
+        file_handler: AVDFileHandler,
+    ) -> None:
+        """Consolidate validated AVD Design inputs in separate processes."""
+        self.logger.info("Consolidating AVD Design inputs...")
+        start_time = perf_counter()
+
+        worker_func = partial(_consolidate_host_worker, input_path=input_path, output_path=output_path, file_handler=file_handler)
+        ctx = get_context("fork")
+
+        with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
+            results = pool.map(worker_func, hostnames, chunksize=batch_size)
+
+            for result in results:
+                if isinstance(result, WorkerFailure):
+                    self.crashed_hosts.add(result.hostname)
+                    self.logger.error("%s: %s", result.hostname, result.error)
+                    continue
+
+                self.logger.debug("Consolidated AVD Design inputs for host %s saved to %s", result.hostname, result.output_file)
+
+        self.logger.info("Consolidation of AVD Design inputs completed in %.2fs", perf_counter() - start_time)
 
 
 def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_NAME, file_handler: AVDFileHandler) -> TemplateWorkerResult:
@@ -531,7 +584,6 @@ def _validate_host_worker(
     configuration: Configuration | None,
     file_handler: AVDFileHandler,
     fail_on_missing_input_files: bool,
-    consolidated_output_path: Path | None = None,
 ) -> ValidateWorkerResult:
     """
     Phase 2 multithreading worker: Validate input data for a host.
@@ -544,7 +596,6 @@ def _validate_host_worker(
         input_path: Directory containing the input file.
         input_suffix: File suffix for the input file (json, yml, yaml).
         output_path: Directory path where the validated JSON file will be written.
-        consolidated_output_path: Directory path for consolidated AVD Design data, or None.
         schema_name: Schema to validate against.
         configuration: Configuration for validation or None.
         file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
@@ -579,20 +630,24 @@ def _validate_host_worker(
 
         output_file = None
         if validated_data:
-            consolidated_data = None
-            if consolidated_output_path is not None:
-                consolidated_inputs = ConsolidatedAVDDesign._from_avd_design(hostname, json.loads(validated_data))
-                consolidated_data = json.dumps(consolidated_inputs._dump(), separators=(",", ":"))
-
             output_file_path = output_path / f"{hostname}.json"
             file_handler.write_file(output_file_path, validated_data.encode("utf-8"))
             output_file = str(output_file_path)
-
-            if consolidated_data is not None and consolidated_output_path is not None:
-                consolidated_output_file_path = consolidated_output_path / f"{hostname}.json"
-                file_handler.write_file(consolidated_output_file_path, consolidated_data.encode("utf-8"))
 
         return ValidateWorkerSuccess(hostname=hostname, validation_result=validation_result, output_file=output_file)
 
     except Exception as e:
         return WorkerFailure(hostname=hostname, error=f"Unexpected error in validation worker thread: {e}")
+
+
+def _consolidate_host_worker(hostname: str, input_path: Path, output_path: Path, file_handler: AVDFileHandler) -> ConsolidateWorkerResult:
+    """Load validated AVD Design inputs, consolidate them for one host, and write the result."""
+    try:
+        validated_data = file_handler.load_json(input_path / f"{hostname}.json")
+        consolidated_inputs = ConsolidatedAVDDesign._from_avd_design(hostname, validated_data)
+        consolidated_data = json.dumps(consolidated_inputs._dump(), separators=(",", ":")).encode("utf-8")
+        output_file_path = output_path / f"{hostname}.json"
+        file_handler.write_file(output_file_path, consolidated_data)
+        return ConsolidateWorkerSuccess(hostname=hostname, output_file=str(output_file_path))
+    except Exception as e:
+        return WorkerFailure(hostname=hostname, error=f"Unexpected error in consolidation worker process: {e}")

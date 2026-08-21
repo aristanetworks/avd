@@ -32,7 +32,7 @@ class AvdInterfaceDescriptions(AvdFacts):
     """
 
     def _template(self, template_path: str, **kwargs: Any) -> str:
-        template_vars = ChainMap(kwargs, self._hostvars)
+        template_vars = ChainMap(kwargs, self._get_hostvars_for_template())
         return self.shared_utils.template_var(template_path, template_vars)
 
     def underlay_ethernet_interface(self, data: InterfaceDescriptionData) -> str:

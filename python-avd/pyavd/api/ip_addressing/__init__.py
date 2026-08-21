@@ -25,7 +25,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         return get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
 
     def _template(self, template_path: str, **kwargs: Any) -> str:
-        template_vars = ChainMap(kwargs, self._hostvars)
+        template_vars = ChainMap(kwargs, self._get_hostvars_for_template())
         return self.shared_utils.template_var(template_path, template_vars)
 
     def _mlag_ip(self, pool: str, ip_offset: int, address_family: str = "ipv4") -> str:

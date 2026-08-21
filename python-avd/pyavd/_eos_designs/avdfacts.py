@@ -15,8 +15,11 @@ if TYPE_CHECKING:
 
 class AvdFactsProtocol(Protocol):
     _hostvars: MutableMapping
+    _hostvars_for_template: dict[str, Any] | None
     inputs: ConsolidatedAVDDesign
     shared_utils: SharedUtilsProtocol
+
+    def _get_hostvars_for_template(self) -> dict[str, Any]: ...
 
     @classmethod
     def _keys(cls) -> list[str]:
@@ -61,6 +64,13 @@ class AvdFactsProtocol(Protocol):
 class AvdFacts(AvdFactsProtocol):
     def __init__(self, hostvars: MutableMapping, inputs: ConsolidatedAVDDesign, shared_utils: SharedUtilsProtocol) -> None:
         self._hostvars = hostvars
+        self._hostvars_for_template = None
         self.inputs = inputs
         self.shared_utils = shared_utils
         super().__init__()
+
+    def _get_hostvars_for_template(self) -> dict[str, Any]:
+        """Return hostvars as the concrete dictionary required by the Ansible Jinja engine."""
+        if self._hostvars_for_template is None:
+            self._hostvars_for_template = self._hostvars if type(self._hostvars) is dict else dict(self._hostvars)
+        return self._hostvars_for_template
