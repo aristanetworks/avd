@@ -37675,15 +37675,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class BoundariesItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
+                    _fields: ClassVar[dict] = {"boundary": {"type": str}}
                     boundary: str
                     """ACL name or multicast IP subnet."""
-                    out: bool
-                    """IPv6 boundaries always include out direction."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, boundary: str | UndefinedType = Undefined, out: bool | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, boundary: str | UndefinedType = Undefined) -> None:
                             """
                             BoundariesItem.
 
@@ -37692,7 +37690,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 boundary: ACL name or multicast IP subnet.
-                                out: IPv6 boundaries always include out direction.
 
                             """
 

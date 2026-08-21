@@ -649,9 +649,7 @@ port_channel_interfaces:
         static: true
         boundaries:
           - boundary: ff00::/8
-            out: true
           - boundary: ff01::/16
-            out: true
     ip_proxy_arp: true
     logging:
       event:
@@ -1324,6 +1322,15 @@ port_channel_interfaces:
           valid_lifetime: 400
           preferred_lifetime: 200
           no_autoconfig_flag: true
+    # Multicast boundaries without static flag — ACL (IPv4) + CIDR prefix (IPv6)
+    multicast:
+      ipv4:
+        boundaries:
+          - boundary: ACL_NO_STATIC
+            out: true
+      ipv6:
+        boundaries:
+          - boundary: ff04::/16
 
   - name: Port-Channel302
     description: Legacy IPv6 address and managed config flag
@@ -1332,6 +1339,18 @@ port_channel_interfaces:
       - 2001:db8:302::1/64
     ipv6_nd:
       managed_config_flag: true
+    # Multicast ACL boundaries with mixed case — validates case-sensitive natural_sort (uppercase before lowercase)
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: MulticastBoundaryAcl
+          - boundary: ACL_NO_OUT_FLAG
+      ipv6:
+        static: true
+        boundaries:
+          - boundary: ACL_IPV6_MULTICAST
+          - boundary: MulticastAclIpv6
 
   # Validates that ipv6_nd / ipv6_access_group trigger IPv6 table inclusion without an IPv6 address.
   - name: Port-Channel400
@@ -1357,13 +1376,7 @@ port_channel_interfaces:
       min_delay_static:
         number: 7
         unit: microseconds
-
-  # IPv4-only multicast (no IPv6)
-  - name: Port-Channel320
-    description: Multicast IPv4-only prefix boundaries
-    switchport:
-      enabled: false
-    ip_address: 100.64.127.40/31
+    # Multicast CIDR prefix boundaries — IPv4 multi-entry (mixed out flags) + IPv6 single entry
     multicast:
       ipv4:
         static: true
@@ -1371,60 +1384,7 @@ port_channel_interfaces:
           - boundary: 224.0.0.0/8
             out: true
           - boundary: 224.1.0.0/16
-
-  # IPv6-only multicast (no IPv4)
-  - name: Port-Channel321
-    description: Multicast IPv6-only with out flags
-    switchport:
-      enabled: false
-    ipv6_address: 2001:db8:321::1/64
-    multicast:
       ipv6:
         static: true
         boundaries:
           - boundary: ff02::/16
-            out: true
-
-  # IPv4 ACL-only boundaries — multiple entries with mixed case; uppercase ACL names sort before lowercase (case-sensitive natural_sort)
-  - name: Port-Channel322
-    description: Multicast IPv4 multiple ACL boundaries mixed case
-    switchport:
-      enabled: false
-    ip_address: 100.64.127.41/31
-    multicast:
-      ipv4:
-        static: true
-        boundaries:
-          - boundary: MulticastBoundaryAcl
-          - boundary: ACL_NO_OUT_FLAG
-
-  # IPv6 ACL-only boundaries — multiple entries with mixed case; uppercase ACL names sort before lowercase (case-sensitive natural_sort)
-  - name: Port-Channel324
-    description: Multicast IPv6 multiple ACL boundaries mixed case
-    switchport:
-      enabled: false
-    ipv6_address: 2001:db8:324::1/64
-    multicast:
-      ipv6:
-        static: true
-        boundaries:
-          - boundary: MulticastAclIpv6
-            out: true
-          - boundary: ACL_IPV6_MULTICAST
-            out: true
-
-  # Boundaries defined, static flag undefined
-  - name: Port-Channel323
-    description: Multicast boundaries without static flag
-    switchport:
-      enabled: false
-    ip_address: 100.64.127.42/31
-    multicast:
-      ipv4:
-        boundaries:
-          - boundary: ACL_NO_STATIC
-            out: true
-      ipv6:
-        boundaries:
-          - boundary: ff04::/16
-            out: true

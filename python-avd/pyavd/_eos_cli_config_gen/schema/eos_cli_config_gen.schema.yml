@@ -14499,10 +14499,6 @@ keys:
                         type: str
                         required: true
                         description: ACL name or multicast IP subnet.
-                      out:
-                        type: bool
-                        required: true
-                        description: IPv6 boundaries always include out direction.
                 static:
                   type: bool
         service_profile:
