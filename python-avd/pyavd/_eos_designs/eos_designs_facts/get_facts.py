@@ -12,7 +12,7 @@ from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
-    from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
+    from pyavd._eos_designs.consolidate.model import ConsolidatedAVDDesign
     from pyavd._utils import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
 

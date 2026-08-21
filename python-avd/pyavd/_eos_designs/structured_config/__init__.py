@@ -26,7 +26,7 @@ from .underlay import AvdStructuredConfigUnderlay
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
-    from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
+    from pyavd._eos_designs.consolidate.model import ConsolidatedAVDDesign
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils import AVDTemplar
 

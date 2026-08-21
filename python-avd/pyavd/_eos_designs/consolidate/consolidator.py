@@ -6,7 +6,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from .connected_endpoints import ConnectedEndpointsMixin
-from .model import ConsolidatedAVDDesign, PrunedAVDDesign
 from .models import ConsolidatedData
 from .network_services import NetworkServicesMixin
 from .node import NodeMixin
@@ -20,7 +19,7 @@ class AVDDesignConsolidatorProtocol(ConnectedEndpointsMixin, NetworkServicesMixi
     """Protocol for mixins contributing to AVD design consolidation."""
 
     device_name: str
-    inputs: PrunedAVDDesign
+    inputs: AVDDesign
     consolidated: ConsolidatedData
 
     @staticmethod
@@ -32,7 +31,7 @@ class AVDDesignConsolidator(AVDDesignConsolidatorProtocol):
 
     def __init__(self, device_name: str, avd_design: AVDDesign) -> None:
         self.device_name = device_name
-        self.inputs = avd_design._cast_as(PrunedAVDDesign)
+        self.inputs = avd_design
         self.consolidated = ConsolidatedData()
 
     @staticmethod
@@ -41,9 +40,9 @@ class AVDDesignConsolidator(AVDDesignConsolidatorProtocol):
             if attribute in avd_model.__dict__:
                 delattr(avd_model, attribute)
 
-    def consolidate(self) -> ConsolidatedAVDDesign:
+    def consolidate(self) -> ConsolidatedData:
         """
-        Consolidate an AVD Design instance and return as ConsolidatedAVDDesign.
+        Consolidate an AVD Design instance and return the device-local consolidated data.
 
         Warning: The given avd_design is mutated in-place and should not be used afterwards.
         """
@@ -61,9 +60,9 @@ class AVDDesignConsolidator(AVDDesignConsolidatorProtocol):
         self.prune_network_services_inputs()
         self.prune_node_inputs()
         self.inputs._custom_data.clear()
-        return ConsolidatedAVDDesign(inputs=self.inputs, consolidated=self.consolidated)
+        return self.consolidated
 
 
-def consolidate_avd_design(device_name: str, avd_design: AVDDesign) -> ConsolidatedAVDDesign:
+def consolidate_avd_design(device_name: str, avd_design: AVDDesign) -> ConsolidatedData:
     """Consolidate the AVD design for one device."""
     return AVDDesignConsolidator(device_name, avd_design).consolidate()

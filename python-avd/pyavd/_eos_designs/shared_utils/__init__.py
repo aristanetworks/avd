@@ -30,7 +30,8 @@ from .wan import WanMixin
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
-    from pyavd._eos_designs.consolidate import ConsolidatedData, PrunedAVDDesign
+    from pyavd._eos_designs.consolidate.model import PrunedAVDDesign
+    from pyavd._eos_designs.consolidate.models import ConsolidatedData
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
     from pyavd._utils import AVDTemplar
     from pyavd.api.pool_manager import PoolManager

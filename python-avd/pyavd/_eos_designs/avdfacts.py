@@ -9,7 +9,8 @@ from typing import TYPE_CHECKING, Any, Protocol
 if TYPE_CHECKING:
     from collections.abc import MutableMapping
 
-    from pyavd._eos_designs.consolidate import ConsolidatedData, PrunedAVDDesign
+    from pyavd._eos_designs.consolidate.model import PrunedAVDDesign
+    from pyavd._eos_designs.consolidate.models import ConsolidatedData
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
 

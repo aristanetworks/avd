@@ -22,7 +22,7 @@ from .wan import WanMixin
 if TYPE_CHECKING:
     from collections.abc import MutableMapping
 
-    from pyavd._eos_designs.consolidate import PrunedAVDDesign
+    from pyavd._eos_designs.consolidate.model import PrunedAVDDesign
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
 
