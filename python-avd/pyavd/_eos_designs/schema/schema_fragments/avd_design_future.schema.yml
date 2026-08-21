@@ -88,7 +88,7 @@ keys:
           Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
           since this combination is not supported.
         default: false
-      remove_dependency_of_mpls_lsr_for_mpls_overlay_server:
+      remove_mpls_lsr_dependency_for_mpls_overlay_role_server:
         type: bool
         description: |-
           Available from AVD 6.5.0.
