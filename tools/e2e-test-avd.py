@@ -515,8 +515,6 @@ class AvdV6Build:
     """Map of device -> ConsolidatedAVDDesign object. Created in consolidation_stage, passed to workers."""
     _validated_inputs_dict: dict[str, dict]
     """Map of device -> validated inputs as dict. Created in validation_stage, passed to workers."""
-    _validated_inputs_json: dict[str, str]
-    """Map of device -> validated JSON string. Created during validation."""
 
     def __init__(
         self,
@@ -535,7 +533,6 @@ class AvdV6Build:
         self.config = config
         self.context = context
         self.devices = devices
-        self._validated_inputs_json = {}  # Store validated JSON strings in main process
         self._validated_inputs_dict = {}  # Store validated inputs as dicts in main process
         self._avd_facts_shm_info = None
         self._loaded_avd_designs = {}
@@ -609,8 +606,6 @@ class AvdV6Build:
             )
             for result in results:
                 if result.pyavd_utils_validated_data_result.validated_data is not None:
-                    # Validation succeeded - store JSON in main process dict
-                    self._validated_inputs_json[result.device_id] = result.pyavd_utils_validated_data_result.validated_data
                     self._validated_inputs_dict[result.device_id] = json.loads(result.pyavd_utils_validated_data_result.validated_data)
                     yield True
                     continue
@@ -630,7 +625,9 @@ class AvdV6Build:
                 validated_devices,
                 (self._validated_inputs_dict[device] for device in validated_devices),
                 repeat(self.config),
-                chunksize=self._chunk_size(),
+                # Each task transfers a full validated design and returns a full consolidated model. Batching these
+                # objects increases peak worker memory significantly, especially when Python is running under coverage.
+                chunksize=1,
             )
             for result in results:
                 if result.consolidated_inputs is None:
@@ -683,9 +680,6 @@ class AvdV6Build:
 
         Uses consolidated designs created during consolidation_stage.
         """
-        # Clear validated JSON strings - no longer needed
-        self._validated_inputs_json.clear()
-
         pool_manager = PoolManager(self.config.full_output_dir)
         # Get avd_facts from PyAVD
         try:
