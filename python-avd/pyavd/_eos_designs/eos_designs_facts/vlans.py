@@ -271,15 +271,19 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         if not self.shared_utils.any_network_services:
             return frozenset()
 
-        return frozenset(
-            vlan_id
+        candidate_vlans = (
+            vlan
             for network_services_group in self.inputs._network_services
             for tenant in network_services_group.tenants
-            for vlan_id in chain(
-                (svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi)),
-                (l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan)),
+            for vlan in chain(
+                (svi for vrf in tenant.vrfs for svi in vrf.svis),
+                tenant.l2vlans,
             )
         )
+        if not self.shared_utils.node_config.filter.only_vlans_in_use:
+            return frozenset(vlan.id for vlan in candidate_vlans)
+
+        return frozenset(vlan.id for vlan in candidate_vlans if self._is_vlan_in_use(vlan))
 
     @cached_property
     def _available_vlans(self: EosDesignsFactsGeneratorProtocol) -> frozenset[int]:
@@ -337,17 +341,11 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         return frozenset(available_vlans)
 
-    def _is_accepted_vlan(
+    def _is_vlan_in_use(
         self: EosDesignsFactsGeneratorProtocol,
         vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
-        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
-        | EosDesigns.NetworkServicesItem.VrfsItem.SvisItem
-        | EosDesigns.NetworkServicesItem.L2vlansItem,
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
     ) -> bool:
-        if not self.shared_utils.node_config.filter.only_vlans_in_use:
-            # Nothing else to filter
-            return True
-
         # Check if vlan is in use
         if vlan.id in self._endpoint_vlans:
             return True
