@@ -11,7 +11,7 @@ from unittest import mock
 import pytest
 from yaml import safe_dump
 
-from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
+from pyavd._eos_designs.consolidate.model import ConsolidatedAVDDesign
 from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._schema.store import create_store
 from pyavd.api.pool_manager import PoolManager

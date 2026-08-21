@@ -14,7 +14,7 @@ from ansible.parsing.dataloader import DataLoader
 from ansible.vars.manager import VariableManager
 from yaml import CSafeLoader, load
 
-from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
+from pyavd._eos_designs.consolidate.model import ConsolidatedAVDDesign
 from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils.get import get

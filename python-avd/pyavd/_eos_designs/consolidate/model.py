@@ -19,6 +19,7 @@ class PrunedAVDDesign(AVDDesign):
     """AVD Design inputs already normalized and pruned during consolidation."""
 
     @classmethod
+    # pylint: disable-next=arguments-differ
     def _from_dict(cls, data: Mapping) -> PrunedAVDDesign:  # pyright: ignore[reportIncompatibleMethodOverride]
         """Load inputs without repeating dynamic-key and custom-structured-configuration preprocessing."""
         return super(EosDesignsRootModel, cls)._from_dict(data)
@@ -46,4 +47,6 @@ class ConsolidatedAVDDesign(AvdModel):
         if not isinstance(avd_design, AVDDesign):
             avd_design = AVDDesign._from_dict(avd_design)
 
-        return consolidate_avd_design(device_name, avd_design)
+        inputs = avd_design._cast_as(PrunedAVDDesign)
+        consolidated = consolidate_avd_design(device_name, inputs)
+        return cls(inputs=inputs, consolidated=consolidated)

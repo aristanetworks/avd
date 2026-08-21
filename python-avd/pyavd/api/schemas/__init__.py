@@ -10,12 +10,12 @@ __all__ = ["AVDDesign", "CVDeploy", "ConsolidatedAVDDesign", "EOSConfig"]
 if TYPE_CHECKING:
     from pyavd._cv.schema import CvDeploy as CVDeploy  # noqa: F401
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen as EOSConfig  # noqa: F401
-    from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign  # noqa: F401
+    from pyavd._eos_designs.consolidate.model import ConsolidatedAVDDesign  # noqa: F401
     from pyavd._eos_designs.schema import EosDesigns as AVDDesign  # noqa: F401
 
 _LAZY_IMPORTS: LazyImports = {
     "AVDDesign": ("pyavd._eos_designs.schema", "EosDesigns"),
-    "ConsolidatedAVDDesign": ("pyavd._eos_designs.consolidate", "ConsolidatedAVDDesign"),
+    "ConsolidatedAVDDesign": ("pyavd._eos_designs.consolidate.model", "ConsolidatedAVDDesign"),
     "CVDeploy": ("pyavd._cv.schema", "CvDeploy"),
     "EOSConfig": ("pyavd._eos_cli_config_gen.schema", "EosCliConfigGen"),
 }
