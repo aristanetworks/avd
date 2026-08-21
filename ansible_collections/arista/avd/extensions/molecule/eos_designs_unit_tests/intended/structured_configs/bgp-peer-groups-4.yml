@@ -31,6 +31,8 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+    route_reflector_preserve_attributes:
+      enabled: true
   peer_groups:
   - name: RR-OVERLAY-PEERS
     metadata:
@@ -55,6 +57,8 @@ router_bgp:
     peer_groups:
     - name: RR-OVERLAY-PEERS
       activate: true
+    next_hop:
+      resolution_disabled: true
 router_isis:
   instance: CORE
   net: 49.0001.1921.6825.0001.00

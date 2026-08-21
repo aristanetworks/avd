@@ -438,14 +438,16 @@ keys:
 
           since this combination is not supported.'
         default: false
-      remove_dependency_of_mpls_lsr_for_mpls_overlay_server:
+      remove_mpls_lsr_dependency_for_mpls_overlay_role_server:
         type: bool
         description: 'Available from AVD 6.5.0.
 
-          Remove the dependency of ''mpls_lsr'' for ''mpls_overlay_role: server''.
+          For iBGP Route Reflectors using `mpls_overlay_role: server` with `mpls_lsr:
+          false`,
 
-          When enabled, AVD will configure ''mpls_overlay_role: server'' without requiring
-          ''mpls_lsr: true''.'
+          configure `bgp route-reflector preserve-attributes` and
+
+          `next-hop resolution disabled` under enabled EVPN and/or VPN address families.'
         default: false
       remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool

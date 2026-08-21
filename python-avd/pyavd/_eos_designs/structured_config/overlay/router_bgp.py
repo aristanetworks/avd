@@ -35,6 +35,9 @@ class RouterBgpMixin(Protocol):
 
         if self.shared_utils.overlay_dpath:
             self.structured_config.router_bgp.bgp.bestpath.d_path = True
+        if self._is_mpls_overlay_server_without_lsr():
+            self.structured_config.router_bgp.bgp.route_reflector_preserve_attributes.enabled = True
+
         self._set_bgp_cluster_id()
         self._set_bgp_listen_ranges()
         self._set_address_family_evpn()
@@ -200,10 +203,6 @@ class RouterBgpMixin(Protocol):
         # IPv4 VPN Address Family
         if self.shared_utils.overlay_vpn_ipv4:
             self.structured_config.router_bgp.address_family_vpn_ipv4.peer_groups.append_new(name=peer_group_name, activate=True)
-            # OOB route-reflectors are not part of the EVPN overlay, so we disable next-hop resolution for them to avoid unnecessary ARP/ND lookups.
-            if not (self.shared_utils.overlay_evpn_mpls or self.shared_utils.overlay_evpn_vxlan):
-                self.structured_config.router_bgp.address_family_vpn_ipv4.next_hop.resolution_disabled = True
-                self.structured_config.router_bgp.bgp.route_reflector_preserve_attributes.enabled = True
 
         # IPv6 VPN Address Family
         if self.shared_utils.overlay_vpn_ipv6:
@@ -428,7 +427,7 @@ class RouterBgpMixin(Protocol):
         if self.shared_utils.overlay_dpath:
             self.structured_config.router_bgp.address_family_evpn.domain_identifier = self.shared_utils.node_config.ipvpn_gateway.evpn_domain_id
 
-        if self.shared_utils.is_wan_server:
+        if self.shared_utils.is_wan_server or (self._is_mpls_overlay_server_without_lsr() and self.shared_utils.overlay_evpn_mpls):
             self.structured_config.router_bgp.address_family_evpn.next_hop.resolution_disabled = True
 
         # Activitating HA iBGP session for WAN HA
@@ -470,6 +469,9 @@ class RouterBgpMixin(Protocol):
 
         if self.shared_utils.overlay_dpath:
             af_vpn.domain_identifier = self.shared_utils.node_config.ipvpn_gateway.ipvpn_domain_id
+
+        if self._is_mpls_overlay_server_without_lsr():
+            af_vpn.next_hop.resolution_disabled = True
 
     def _create_neighbor(
         self: AvdStructuredConfigOverlayProtocol,

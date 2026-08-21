@@ -442,7 +442,6 @@ ASN Notation: asplain
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | maximum-paths 4 |
-| bgp route-reflector preserve-attributes |
 
 #### Router BGP Peer Groups
 
@@ -467,8 +466,6 @@ ASN Notation: asplain
 
 #### Router BGP VPN-IPv4 Address Family
 
-- Next-hop resolution is **disabled**
-
 ##### VPN-IPv4 Peer Groups
 
 | Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
@@ -490,7 +487,6 @@ router bgp 65001
    router-id 10.255.1.3
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   bgp route-reflector preserve-attributes
    maximum-paths 4
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65001
@@ -510,7 +506,6 @@ router bgp 65001
    address-family vpn-ipv4
       neighbor MPLS-OVERLAY-PEERS activate
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
-      next-hop resolution disabled
    !
    vrf C1_VRF1
       rd 10.255.1.3:10
