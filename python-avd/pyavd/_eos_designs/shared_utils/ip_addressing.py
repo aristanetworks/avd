@@ -91,13 +91,13 @@ class IpAddressingMixin(Protocol):
 
         Return an instance of the class defined by `templates.ip_addressing.python_class_name` as cached_property.
         """
-        module_path = self.inputs._node_type_keys_item.ip_addressing.python_module
+        module_path = self.consolidated.node_type_keys_item.ip_addressing.python_module
         if module_path is None:
             return AvdIpAddressing(hostvars=self.hostvars, inputs=self.inputs, shared_utils=self)
 
         cls: type[AvdIpAddressing] = load_python_class(
             module_path,
-            self.inputs._node_type_keys_item.ip_addressing.python_class_name,
+            self.consolidated.node_type_keys_item.ip_addressing.python_class_name,
             AvdIpAddressing,
         )
 

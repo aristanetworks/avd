@@ -30,7 +30,7 @@ from .wan import WanMixin
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
-    from pyavd._eos_designs.consolidate import ConsolidatedAVDDesign
+    from pyavd._eos_designs.consolidate import ConsolidatedData, PrunedAVDDesign
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._utils.avd_templar import AVDTemplar
@@ -65,7 +65,8 @@ class SharedUtilsProtocol(
 
     hostname: str
     hostvars: MutableMapping
-    inputs: ConsolidatedAVDDesign
+    inputs: PrunedAVDDesign
+    consolidated: ConsolidatedData
     templar: AVDTemplar | None
     peer_facts: Mapping[str, EosDesignsFactsProtocol]
     pool_manager: PoolManager | None
@@ -89,7 +90,8 @@ class SharedUtils(SharedUtilsProtocol):
         self,
         hostname: str,
         hostvars: MutableMapping,
-        inputs: ConsolidatedAVDDesign,
+        inputs: PrunedAVDDesign,
+        consolidated: ConsolidatedData,
         templar: AVDTemplar | None,
         peer_facts: Mapping[str, EosDesignsFactsProtocol],
         pool_manager: PoolManager | None = None,
@@ -98,6 +100,7 @@ class SharedUtils(SharedUtilsProtocol):
         self.hostname = hostname
         self.hostvars = hostvars
         self.inputs = inputs
+        self.consolidated = consolidated
         self.templar = templar
         self.peer_facts = peer_facts
         self.pool_manager = pool_manager

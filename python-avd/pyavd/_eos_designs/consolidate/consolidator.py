@@ -6,7 +6,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from .connected_endpoints import ConnectedEndpointsMixin
-from .model import ConsolidatedAVDDesign
+from .model import ConsolidatedAVDDesign, PrunedAVDDesign
+from .models import ConsolidatedData
 from .network_services import NetworkServicesMixin
 from .node import NodeMixin
 
@@ -19,7 +20,8 @@ class AVDDesignConsolidatorProtocol(ConnectedEndpointsMixin, NetworkServicesMixi
     """Protocol for mixins contributing to AVD design consolidation."""
 
     device_name: str
-    consolidated_design: ConsolidatedAVDDesign
+    inputs: PrunedAVDDesign
+    consolidated: ConsolidatedData
 
     @staticmethod
     def _unset_avd_model(avd_model: AvdModel, attributes: tuple[str, ...]) -> None: ...
@@ -30,7 +32,8 @@ class AVDDesignConsolidator(AVDDesignConsolidatorProtocol):
 
     def __init__(self, device_name: str, avd_design: AVDDesign) -> None:
         self.device_name = device_name
-        self.consolidated_design = avd_design._cast_as(ConsolidatedAVDDesign)
+        self.inputs = avd_design._cast_as(PrunedAVDDesign)
+        self.consolidated = ConsolidatedData()
 
     @staticmethod
     def _unset_avd_model(avd_model: AvdModel, attributes: tuple[str, ...]) -> None:
@@ -57,8 +60,8 @@ class AVDDesignConsolidator(AVDDesignConsolidatorProtocol):
         self.prune_connected_endpoint_inputs()
         self.prune_network_services_inputs()
         self.prune_node_inputs()
-        self.consolidated_design._custom_data.clear()
-        return self.consolidated_design
+        self.inputs._custom_data.clear()
+        return ConsolidatedAVDDesign(inputs=self.inputs, consolidated=self.consolidated)
 
 
 def consolidate_avd_design(device_name: str, avd_design: AVDDesign) -> ConsolidatedAVDDesign:

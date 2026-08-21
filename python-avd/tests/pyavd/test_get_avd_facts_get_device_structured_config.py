@@ -70,18 +70,18 @@ def test_connected_endpoints_are_consolidated_and_pruned() -> None:
 
     consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", inputs)
 
-    assert len(consolidated_inputs._connected_endpoints) == 1
-    connected_endpoint = consolidated_inputs._connected_endpoints["connected_endpoints"].value["server1"]
+    assert len(consolidated_inputs.consolidated.connected_endpoints) == 1
+    connected_endpoint = consolidated_inputs.consolidated.connected_endpoints["connected_endpoints"].value["server1"]
     assert connected_endpoint._adapter_indices == [1]
     assert connected_endpoint.adapters[0].mode == "access"
     assert connected_endpoint.adapters[0].vlans == "10"
-    assert [network_port._source_index for network_port in consolidated_inputs._network_ports] == [1, 2]
-    assert consolidated_inputs._network_ports[0].mode == "access"
-    assert [(profile.profile, profile.parent_profile) for profile in consolidated_inputs._port_profile_names] == [("ACCESS_10", None)]
+    assert [network_port._source_index for network_port in consolidated_inputs.consolidated.network_ports] == [1, 2]
+    assert consolidated_inputs.consolidated.network_ports[0].mode == "access"
+    assert [(profile.profile, profile.parent_profile) for profile in consolidated_inputs.consolidated.port_profile_names] == [("ACCESS_10", None)]
 
-    assert "connected_endpoints" not in consolidated_inputs.__dict__
-    assert "network_ports" not in consolidated_inputs.__dict__
-    assert "port_profiles" not in consolidated_inputs.__dict__
+    assert "connected_endpoints" not in consolidated_inputs.inputs.__dict__
+    assert "network_ports" not in consolidated_inputs.inputs.__dict__
+    assert "port_profiles" not in consolidated_inputs.inputs.__dict__
 
     loaded_inputs = ConsolidatedAVDDesign._from_dict(json.loads(json.dumps(consolidated_inputs._dump())))
     assert loaded_inputs._dump() == consolidated_inputs._dump()
@@ -128,18 +128,20 @@ def test_network_services_are_consolidated_filtered_and_pruned() -> None:
 
     consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", inputs)
 
-    assert list(consolidated_inputs._network_services.keys()) == ["network_services", "services_a"]
-    assert [vlan.id for vlan in consolidated_inputs._network_services["network_services"].tenants["ACCEPTED"].l2vlans] == [11]
-    assert [svi.id for svi in consolidated_inputs._network_services["services_a"].tenants["ACCEPTED"].vrfs["BLUE"].svis] == [21]
-    assert "network_services" not in consolidated_inputs.__dict__
-    assert "network_services_keys" not in consolidated_inputs.__dict__
-    assert "network_services" not in consolidated_inputs._dynamic_keys.__dict__
-    assert consolidated_inputs._custom_data == {}
-    assert consolidated_inputs._network_services["network_services"].tenants["ACCEPTED"]._custom_data == {"_tenant_custom_data": {"future": "retained"}}
+    assert list(consolidated_inputs.consolidated.network_services.keys()) == ["network_services", "services_a"]
+    assert [vlan.id for vlan in consolidated_inputs.consolidated.network_services["network_services"].tenants["ACCEPTED"].l2vlans] == [11]
+    assert [svi.id for svi in consolidated_inputs.consolidated.network_services["services_a"].tenants["ACCEPTED"].vrfs["BLUE"].svis] == [21]
+    assert "network_services" not in consolidated_inputs.inputs.__dict__
+    assert "network_services_keys" not in consolidated_inputs.inputs.__dict__
+    assert "network_services" not in consolidated_inputs.inputs._dynamic_keys.__dict__
+    assert consolidated_inputs.inputs._custom_data == {}
+    assert consolidated_inputs.consolidated.network_services["network_services"].tenants["ACCEPTED"]._custom_data == {
+        "_tenant_custom_data": {"future": "retained"}
+    }
 
     loaded_inputs = ConsolidatedAVDDesign._from_dict(json.loads(json.dumps(consolidated_inputs._dump())))
     assert loaded_inputs._dump() == consolidated_inputs._dump()
-    assert loaded_inputs._network_services["network_services"].tenants["ACCEPTED"]._custom_data == {"_tenant_custom_data": {"future": "retained"}}
+    assert loaded_inputs.consolidated.network_services["network_services"].tenants["ACCEPTED"]._custom_data == {"_tenant_custom_data": {"future": "retained"}}
 
 
 def test_consolidated_network_services_are_used_by_facts() -> None:

@@ -38,7 +38,7 @@ class PtpMixin(Protocol):
         if not self.shared_utils.ptp_enabled:
             return
         default_ptp_domain = self.inputs.ptp_settings.domain
-        default_ptp_priority1 = self.inputs._node_type_keys_item.default_ptp_priority1
+        default_ptp_priority1 = self.consolidated.node_type_keys_item.default_ptp_priority1
         default_clock_identity = None
 
         priority1 = default(self.shared_utils.node_config.ptp.priority1, default_ptp_priority1)

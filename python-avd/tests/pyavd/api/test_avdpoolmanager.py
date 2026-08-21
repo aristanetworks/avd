@@ -249,10 +249,12 @@ def test_avdpoolmanager_pool(
             requested_id = requested_ids[index] if requested_ids else None
             _hostvars = hostvars.copy()
             hostname = _hostvars.pop("inventory_hostname")
+            artifact = ConsolidatedAVDDesign._from_avd_design(hostname, hostvars)
             shared_utils = SharedUtils(
                 hostname=hostname,
                 hostvars=_hostvars,
-                inputs=ConsolidatedAVDDesign._from_avd_design(hostname, hostvars),
+                inputs=artifact.inputs,
+                consolidated=artifact.consolidated,
                 templar=object(),
                 peer_facts={},
             )
@@ -426,10 +428,12 @@ def test_avdpoolmanager_upgrade_old_data() -> None:
         # Initialize pool_manager and feed to shared_utils.
         pool_manager = PoolManager(Path(DUMMYDIR))
 
+        artifact = ConsolidatedAVDDesign._from_avd_design(hostname, hostvars)
         shared_utils = SharedUtils(
             hostname=hostname,
             hostvars=hostvars,
-            inputs=ConsolidatedAVDDesign._from_avd_design(hostname, hostvars),
+            inputs=artifact.inputs,
+            consolidated=artifact.consolidated,
             templar=None,
             peer_facts={},
         )

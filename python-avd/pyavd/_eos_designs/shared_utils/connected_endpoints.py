@@ -26,7 +26,7 @@ class ConnectedEndpointsMixin(Protocol):
     ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints:
         """Return the consolidated connected endpoints for this device as one flat list."""
         filtered_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints()
-        for connected_endpoints_group in self.inputs._connected_endpoints:
+        for connected_endpoints_group in self.consolidated.connected_endpoints:
             for connected_endpoint in connected_endpoints_group.value:
                 connected_endpoint._internal_data.context = connected_endpoints_group.key
                 for adapter_index, adapter in zip(connected_endpoint._adapter_indices, connected_endpoint.adapters, strict=True):
@@ -39,7 +39,7 @@ class ConnectedEndpointsMixin(Protocol):
     def filtered_network_ports(self: SharedUtilsProtocol) -> EosDesigns.NetworkPorts:
         """Apply the deferred effective-platform filter to consolidated network-port candidates."""
         filtered_network_ports = EosDesigns.NetworkPorts()
-        for network_port in self.inputs._network_ports:
+        for network_port in self.consolidated.network_ports:
             network_port._internal_data.context = f"network_ports[{network_port._source_index}]"
             if network_port.platforms and (not self.platform or not self.match_regexes(network_port.platforms, self.platform)):
                 continue

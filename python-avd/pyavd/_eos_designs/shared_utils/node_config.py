@@ -22,7 +22,7 @@ class NodeConfigMixin(Protocol):
     @property
     def node_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem:
         """NodesItem object containing the fully inherited node config."""
-        return self.inputs._node_config
+        return self.consolidated.node_config
 
     @property
     def node_group_is_primary_and_peer_hostname(self: SharedUtilsProtocol) -> tuple[bool, str] | None:
@@ -33,4 +33,7 @@ class NodeConfigMixin(Protocol):
         Returns True, <peer> if this device is the first one in the node_group.
         Returns False, <peer> if this device is the second one in the node_group.
         """
-        return self.inputs._node_group_primary_and_peer
+        node_group = self.consolidated._get("node_group")
+        if node_group is None:
+            return None
+        return node_group.is_primary, node_group.peer

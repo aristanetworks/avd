@@ -54,17 +54,17 @@ class ConnectedEndpointsMixin(Protocol):
         if profile_name in self.resolved_port_profiles:
             return self.resolved_port_profiles[profile_name]
 
-        if profile_name not in self.consolidated_design.port_profiles:
+        if profile_name not in self.inputs.port_profiles:
             msg = f"Profile '{profile_name}' applied under '{context}' does not exist in `port_profiles`."
             raise AristaAvdInvalidInputsError(msg)
 
-        port_profile = self.consolidated_design.port_profiles[profile_name]._deepcopy()
+        port_profile = self.inputs.port_profiles[profile_name]._deepcopy()
         if port_profile.parent_profile:
-            if port_profile.parent_profile not in self.consolidated_design.port_profiles:
+            if port_profile.parent_profile not in self.inputs.port_profiles:
                 msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
                 raise AristaAvdInvalidInputsError(msg)
 
-            port_profile._deepinherit(self.consolidated_design.port_profiles[port_profile.parent_profile])
+            port_profile._deepinherit(self.inputs.port_profiles[port_profile.parent_profile])
 
         delattr(port_profile, "parent_profile")
         self.resolved_port_profiles[profile_name] = port_profile
@@ -168,37 +168,37 @@ class ConnectedEndpointsMixin(Protocol):
                     )
                 )
 
-        self.consolidated_design._connected_endpoints = consolidated_groups
+        self.consolidated.connected_endpoints = consolidated_groups
 
     @cached_property
     def _connected_endpoint_source_groups(self: AVDDesignConsolidatorProtocol) -> list[ConnectedEndpointSourceGroup]:
         """Combine all connected endpoint inputs while preserving custom-key precedence."""
         source_groups = []
-        if self.consolidated_design.connected_endpoints:
+        if self.inputs.connected_endpoints:
             source_groups.append(
                 ConnectedEndpointSourceGroup(
                     key="connected_endpoints",
                     type=None,
                     description=None,
-                    value=self.consolidated_design.connected_endpoints,
+                    value=self.inputs.connected_endpoints,
                 )
             )
 
-        for dynamic_group in self.consolidated_design._dynamic_keys.custom_connected_endpoints:
-            key_data = self.consolidated_design.custom_connected_endpoints_keys[dynamic_group.key]
+        for dynamic_group in self.inputs._dynamic_keys.custom_connected_endpoints:
+            key_data = self.inputs.custom_connected_endpoints_keys[dynamic_group.key]
             source_groups.append(
                 ConnectedEndpointSourceGroup(
                     key=dynamic_group.key,
                     type=key_data.type,
                     description=key_data.description,
-                    value=dynamic_group.value,
+                    value=dynamic_group.value._cast_as(AVDDesign._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints),
                 )
             )
 
-        for dynamic_group in self.consolidated_design._dynamic_keys.connected_endpoints:
+        for dynamic_group in self.inputs._dynamic_keys.connected_endpoints:
             if any(dynamic_group.key == source_group.key for source_group in source_groups):
                 continue
-            key_data = self.consolidated_design.connected_endpoints_keys[dynamic_group.key]
+            key_data = self.inputs.connected_endpoints_keys[dynamic_group.key]
             source_groups.append(
                 ConnectedEndpointSourceGroup(
                     key=dynamic_group.key,
@@ -218,7 +218,7 @@ class ConnectedEndpointsMixin(Protocol):
         CV topology or digital-twin substitution, neither of which is available during this consolidation phase.
         """
         network_ports = ConsolidatedNetworkPorts()
-        for source_index, network_port in enumerate(self.consolidated_design.network_ports):
+        for source_index, network_port in enumerate(self.inputs.network_ports):
             network_port._internal_data.context = f"network_ports[{source_index}]"
             network_port_settings = self.get_merged_adapter_settings(network_port)
 
@@ -232,18 +232,18 @@ class ConnectedEndpointsMixin(Protocol):
             self.resolve_individual_adapter_settings(consolidated_network_port)
             network_ports.append(consolidated_network_port)
 
-        self.consolidated_design._network_ports = network_ports
+        self.consolidated.network_ports = network_ports
 
     def set_port_profile_names(self: AVDDesignConsolidatorProtocol) -> None:
         """Set minimal port-profile metadata required by fabric documentation."""
-        self.consolidated_design._port_profile_names = ConsolidatedPortProfileNames(
-            ConsolidatedPortProfileName(profile=profile.profile, parent_profile=profile.parent_profile) for profile in self.consolidated_design.port_profiles
+        self.consolidated.port_profile_names = ConsolidatedPortProfileNames(
+            ConsolidatedPortProfileName(profile=profile.profile, parent_profile=profile.parent_profile) for profile in self.inputs.port_profiles
         )
 
     def prune_connected_endpoint_inputs(self: AVDDesignConsolidatorProtocol) -> None:
         """Remove connected endpoint inputs and profiles replaced by consolidated models."""
         self._unset_avd_model(
-            self.consolidated_design,
+            self.inputs,
             ("connected_endpoints", "connected_endpoints_keys", "custom_connected_endpoints_keys", "network_ports", "port_profiles"),
         )
-        self._unset_avd_model(self.consolidated_design._dynamic_keys, ("connected_endpoints", "custom_connected_endpoints"))
+        self._unset_avd_model(self.inputs._dynamic_keys, ("connected_endpoints", "custom_connected_endpoints"))
