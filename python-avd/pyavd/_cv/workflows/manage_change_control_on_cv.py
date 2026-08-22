@@ -44,6 +44,11 @@ def get_managed_change_control_state(cv_change_control: ChangeControl, *, approv
 async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client: CVClient) -> None:
     """Manage an existing Change Control on CloudVision and update the CVChangeControl object in place."""
     LOGGER.info("manage_change_control_on_cv: %s", change_control)
+
+    if change_control.requested_state == "deleted":
+        msg = "The 'deleted' requested state is not supported for an existing Change Control."
+        raise ValueError(msg)
+
     change_control.changed = False
 
     cv_change_control, change_control.changed = await update_change_control_details_on_cv(change_control, cv_client)

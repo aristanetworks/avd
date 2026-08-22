@@ -72,6 +72,19 @@ async def test_manage_pending_approval(mock_cv_client: MagicMock) -> None:
 
 
 @pytest.mark.asyncio
+async def test_manage_rejects_deleted_before_updating_change_control(mock_cv_client: MagicMock) -> None:
+    """Test that deleting an existing Change Control is rejected before calling CloudVision."""
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="deleted"))
+
+    with pytest.raises(ValueError, match="The 'deleted' requested state is not supported for an existing Change Control"):
+        await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.get_change_control.assert_not_called()
+    mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.start_change_control.assert_not_called()
+
+
+@pytest.mark.asyncio
 async def test_manage_not_started_to_completed(mock_cv_client: MagicMock) -> None:
     """Test approving, starting, and waiting for an unapproved Change Control to complete."""
     local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="completed"))
