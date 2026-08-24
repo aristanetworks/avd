@@ -18,7 +18,6 @@ keys:
         type: list
         description: |-
           The list of interfaces connected to the DHCP server.
-          When both `local_interface` and `dhcp_server_interfaces` are configured, EOS prioritizes `local_interface`.
           Requires EOS version 4.36 or later.
         items:
           type: str
