@@ -223,7 +223,7 @@ class ActionModule(AVDActionPlugin):
             set_worker_context(ActionPluginVars(self))
             hosts_to_validate = self._run_templating_phase(
                 hostnames=hosts_to_process,
-                mp_workers=mp_workers,
+                workers=mp_workers,
                 batch_size=plugin_args.batch_size,
                 output_path=templated_path,
                 schema_name=plugin_args.schema_name,
