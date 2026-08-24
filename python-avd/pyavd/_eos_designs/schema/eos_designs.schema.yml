@@ -384,6 +384,15 @@ keys:
           and on all ''uplink_switches'' even when available VLANs differ between
           the ''uplink_switches''.'
         default: false
+      fix_match_ipv6_prefix_list_on_mlag_route_map:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
+          ipv6 address prefix-list`
+
+          instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`.'
       fix_radius_server_group_tls:
         type: bool
         default: false
@@ -2667,6 +2676,11 @@ keys:
             type: bool
             required: true
             description: Enable the Web Authentication feature.
+          ipv4_acl:
+            type: str
+            description: 'Extended IPv4 ACL name.
+
+              This ACL must be present in `ipv4_acls` catalog.'
           url:
             type: str
             pattern: https?://[^\s/:]+(:\d+)?
@@ -7135,6 +7149,30 @@ keys:
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic
                       Loopback interface.'
                     default: main_router_id
+                  graceful_restart:
+                    type: dict
+                    description: 'BGP graceful-restart configuration for this VRF.
+
+                      This setting is not supported for VRF default. Use `bgp_graceful_restart`
+                      instead.
+
+                      '
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                        description: 'Enable or disable BGP graceful-restart for this
+                          VRF.
+
+                          '
+                      restart_time:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 3600
+                        default: 300
+                        description: Restart time in seconds.
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF
