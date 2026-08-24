@@ -10,12 +10,12 @@
     tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
 
 - vars:
-    error_msg: >-
+    expected_error: >-
       1 error found during schema validation of input variables.
   assert:
     that:
       - result.failed == True
-      - result.msg == error_msg
+      - result.msg == expected_error
 
 - name: Test with invalid inputs without failing
   ignore_errors: false
@@ -28,9 +28,9 @@
     fail_on_validation_errors: false
 
 - vars:
-    error_msg: >-
+    expected_error: >-
       1 error found during schema validation of input variables.
   assert:
     that:
       - result.failed == False
-      - result.msg == error_msg
+      - result.msg == expected_error
