@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol
@@ -25,8 +26,12 @@ class AddressLockingMixin(Protocol):
         if not (address_locking_settings := self.inputs.address_locking_settings) or not feature_support.address_locking.supported:
             return
 
-        # TODO: AVD 7.0 - Remove the schema default and only resolve `local_interface` when it is explicitly configured.
-        local_interface = self.shared_utils.get_local_interface(address_locking_settings.local_interface)
+        dhcp_server_interfaces = address_locking_settings.dhcp_server_interfaces
+        if address_locking_settings.local_interface and dhcp_server_interfaces:
+            msg = "'address_locking_settings.local_interface' and 'address_locking_settings.dhcp_server_interfaces' are mutually exclusive."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        local_interface = None if dhcp_server_interfaces else self.shared_utils.get_local_interface(address_locking_settings.local_interface)
 
         locked_address = address_locking_settings.locked_address._cast_as(EosCliConfigGen.AddressLocking.LockedAddress)
         if not feature_support.address_locking.ipv4_enforcement_disabled:
@@ -35,7 +40,7 @@ class AddressLockingMixin(Protocol):
             del locked_address.ipv6_enforcement_disabled
 
         self.structured_config.address_locking._update(
-            dhcp_server_interfaces=address_locking_settings.dhcp_server_interfaces._cast_as(EosCliConfigGen.AddressLocking.DhcpServerInterfaces),
+            dhcp_server_interfaces=dhcp_server_interfaces._cast_as(EosCliConfigGen.AddressLocking.DhcpServerInterfaces),
             dhcp_servers_ipv4=address_locking_settings.dhcp_servers_ipv4._cast_as(EosCliConfigGen.AddressLocking.DhcpServersIpv4),
             local_interface=local_interface,
             locked_address=locked_address,

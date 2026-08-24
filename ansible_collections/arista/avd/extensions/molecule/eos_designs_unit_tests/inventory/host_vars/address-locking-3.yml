@@ -15,11 +15,9 @@ l3leaf:
       inband_mgmt_interface: Vlan100
 
 address_locking_settings:
-  dhcp_server_interfaces:
-    - Ethernet1
   dhcp_servers_ipv4:
     - 1.1.1.1
-   # Testing use_inband_mgmt_interface
+  # Testing use_inband_mgmt_interface
   local_interface: use_inband_mgmt_interface
 
 tenants:

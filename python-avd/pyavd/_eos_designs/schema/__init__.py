@@ -819,15 +819,15 @@ class EosDesigns(EosDesignsRootModel):
     class AddressLockingSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        class DhcpServersIpv4(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
-
-        DhcpServersIpv4._item_type = str
-
         class DhcpServerInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         DhcpServerInterfaces._item_type = str
+
+        class DhcpServersIpv4(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServersIpv4._item_type = str
 
         class LeasesItem(AvdModel):
             """Subclass of AvdModel."""
@@ -896,14 +896,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
-            "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
-            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "local_interface": {"type": str},
             "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
+            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "locked_address": {"type": LockedAddress},
         }
-        local_interface: str
+        local_interface: str | None
         """
         The value will be interpreted according to these rules:
           - `use_mgmt_interface` will configure the
@@ -914,21 +914,22 @@ class EosDesigns(EosDesignsRootModel):
         configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
         of `default_mgmt_method`.
           - Any other string will be used directly as the local interface.
-
-        Default value: `"use_default_mgmt_method_interface"`
+        This
+        setting is mutually exclusive with `dhcp_server_interfaces`.
+        When neither `local_interface` nor
+        `dhcp_server_interfaces` is set, `local_interface` defaults to `use_default_mgmt_method_interface`.
         """
-        dhcp_servers_ipv4: DhcpServersIpv4
-        """Subclass of AvdList with `str` items."""
         dhcp_server_interfaces: DhcpServerInterfaces
         """
         The list of interfaces connected to the DHCP server.
-        When both `local_interface` and
-        `dhcp_server_interfaces` are configured, EOS prioritizes `local_interface`.
-        Requires EOS version
-        4.36 or later.
+        This setting is mutually exclusive with
+        `local_interface`.
+        Requires EOS version 4.36 or later.
 
         Subclass of AvdList with `str` items.
         """
+        dhcp_servers_ipv4: DhcpServersIpv4
+        """Subclass of AvdList with `str` items."""
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
@@ -941,9 +942,9 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                local_interface: str | UndefinedType = Undefined,
-                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                local_interface: str | UndefinedType | None = Undefined,
                 dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
+                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
                 disabled: bool | UndefinedType | None = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
@@ -965,15 +966,18 @@ class EosDesigns(EosDesignsRootModel):
                        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
-                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                       This
+                       setting is mutually exclusive with `dhcp_server_interfaces`.
+                       When neither `local_interface` nor
+                       `dhcp_server_interfaces` is set, `local_interface` defaults to `use_default_mgmt_method_interface`.
                     dhcp_server_interfaces:
                        The list of interfaces connected to the DHCP server.
-                       When both `local_interface` and
-                       `dhcp_server_interfaces` are configured, EOS prioritizes `local_interface`.
-                       Requires EOS version
-                       4.36 or later.
+                       This setting is mutually exclusive with
+                       `local_interface`.
+                       Requires EOS version 4.36 or later.
 
                        Subclass of AvdList with `str` items.
+                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.

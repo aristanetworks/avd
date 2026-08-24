@@ -299,14 +299,25 @@ keys:
     keys:
       local_interface:
         type: str
-        default: use_default_mgmt_method_interface
         description: "The value will be interpreted according to these rules:\n  -
           `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.\n
           \ - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface`
           as the local interface.\n  - `use_default_mgmt_method_interface` will configure
           `mgmt_interface` or `inband_mgmt_interface` as the local interface depending
           on the value of `default_mgmt_method`.\n  - Any other string will be used
-          directly as the local interface."
+          directly as the local interface.\nThis setting is mutually exclusive with
+          `dhcp_server_interfaces`.\nWhen neither `local_interface` nor `dhcp_server_interfaces`
+          is set, `local_interface` defaults to `use_default_mgmt_method_interface`."
+      dhcp_server_interfaces:
+        type: list
+        description: 'The list of interfaces connected to the DHCP server.
+
+          This setting is mutually exclusive with `local_interface`.
+
+          Requires EOS version 4.36 or later.'
+        items:
+          type: str
+          description: Interface name.
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition

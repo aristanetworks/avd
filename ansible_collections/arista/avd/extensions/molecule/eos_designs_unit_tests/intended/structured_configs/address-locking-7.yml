@@ -1,13 +1,12 @@
 aaa_root:
   disabled: true
 address_locking:
-  dhcp_servers_ipv4:
-  - 1.1.1.1
-  local_interface: Vlan100
+  disabled: true
+  local_interface: Management1
 config_end: true
 enable_password:
   disabled: true
-hostname: address-locking-3
+hostname: address-locking-7
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -21,6 +20,13 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.109/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 1.1.10.10
+  type: oob
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -57,17 +63,6 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  vlans:
-  - id: 101
-    metadata:
-      tenants:
-      - TENANT1
-    rd: 192.168.255.109:10101
-    route_targets:
-      both:
-      - 10101:10101
-    redistribute_routes:
-    - learned
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
@@ -75,24 +70,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-vlans:
-- id: 101
-  name: test-address-locking-3
-  address_locking:
-    address_family:
-      ipv4: true
-  metadata:
-    tenants:
-    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: address-locking-3_VTEP
+    description: address-locking-7_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
-      vlans:
-      - id: 101
-        vni: 10101

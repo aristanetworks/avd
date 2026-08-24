@@ -1,13 +1,13 @@
 aaa_root:
   disabled: true
 address_locking:
-  dhcp_servers_ipv4:
-  - 1.1.1.1
-  local_interface: Vlan100
+  dhcp_server_interfaces:
+  - Ethernet1
+  disabled: true
 config_end: true
 enable_password:
   disabled: true
-hostname: address-locking-3
+hostname: address-locking-8
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -57,17 +57,6 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  vlans:
-  - id: 101
-    metadata:
-      tenants:
-      - TENANT1
-    rd: 192.168.255.109:10101
-    route_targets:
-      both:
-      - 10101:10101
-    redistribute_routes:
-    - learned
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
@@ -75,24 +64,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-vlans:
-- id: 101
-  name: test-address-locking-3
-  address_locking:
-    address_family:
-      ipv4: true
-  metadata:
-    tenants:
-    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: address-locking-3_VTEP
+    description: address-locking-8_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
-      vlans:
-      - id: 101
-        vni: 10101
