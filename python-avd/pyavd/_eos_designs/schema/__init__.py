@@ -112564,6 +112564,7 @@ class EosDesigns(EosDesignsRootModel):
         "eos_designs_return_structured_config": {"type": bool, "default": False},
         "eos_designs_tmp_dir": {"type": str},
         "eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
+        "eos_designs_validate_inputs_template_with_multiprocessing": {"type": bool, "default": True},
         "errdisable_settings": {"type": ErrdisableSettings},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
@@ -114447,6 +114448,16 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `10`
     """
+    eos_designs_validate_inputs_template_with_multiprocessing: bool
+    """
+    Use Multiprocessing for variable templating.
+    Disable this when templating of input variables invokes
+    code that uses locks or background threads.
+    Forked worker processes may inherit locked state,
+    potentially causing deadlocks.
+
+    Default value: `True`
+    """
     errdisable_settings: ErrdisableSettings
     """
     Errdisable settings for the device.
@@ -115987,6 +115998,7 @@ class EosDesigns(EosDesignsRootModel):
             eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             eos_designs_tmp_dir: str | UndefinedType | None = Undefined,
             eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
+            eos_designs_validate_inputs_template_with_multiprocessing: bool | UndefinedType = Undefined,
             errdisable_settings: ErrdisableSettings | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
@@ -116665,6 +116677,12 @@ class EosDesigns(EosDesignsRootModel):
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
+                eos_designs_validate_inputs_template_with_multiprocessing:
+                   Use Multiprocessing for variable templating.
+                   Disable this when templating of input variables invokes
+                   code that uses locks or background threads.
+                   Forked worker processes may inherit locked state,
+                   potentially causing deadlocks.
                 errdisable_settings:
                    Errdisable settings for the device.
                    Causes are filtered based on platform feature support defined in
