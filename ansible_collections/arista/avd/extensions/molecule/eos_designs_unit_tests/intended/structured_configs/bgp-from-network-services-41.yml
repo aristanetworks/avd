@@ -26,6 +26,9 @@ metadata:
 router_bgp:
   as: '65001'
   router_id: 192.0.255.41
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   maximum_paths:
     paths: 4
   updates:
