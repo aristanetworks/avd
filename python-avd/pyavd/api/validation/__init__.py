@@ -5,9 +5,9 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
-from pyavd._lazy_import import LazyImports, get_lazy_attr, get_lazy_dir
+from pyavd._lazy_import import LazyImports, install_lazy_imports
 
 if TYPE_CHECKING:
     from pyavd_utils.validation import ValidatedDataResult as _ValidatedDataResult
@@ -31,14 +31,6 @@ class ValidatedDataResult:
         )
 
 
-__all__ = ["ValidatedDataResult", "ValidationResult"]
-
 _LAZY_IMPORTS: LazyImports = {"ValidationResult": ("pyavd_utils.validation", "ValidationResult")}
 
-
-def __getattr__(name: str) -> Any:
-    return get_lazy_attr(name, _LAZY_IMPORTS, globals())
-
-
-def __dir__() -> list[str]:
-    return get_lazy_dir(_LAZY_IMPORTS, globals())
+install_lazy_imports(_LAZY_IMPORTS, globals(), additional_exports=("ValidatedDataResult",))
