@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus, WorkspaceBuildDetails, WorkspaceState
 from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
-from pyavd._utils import get_v2
+from pyavd._utils.get import get_v2
 
 from .constants import EOS_CLI_WARNINGS
 from .models import (

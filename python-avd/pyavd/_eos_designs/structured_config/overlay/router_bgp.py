@@ -10,8 +10,11 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdDeprecationWarning
-from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.run_once import run_once_method
+from pyavd._utils.strip_empties import strip_empties_from_dict
+from pyavd._utils.undefined import Undefined
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:

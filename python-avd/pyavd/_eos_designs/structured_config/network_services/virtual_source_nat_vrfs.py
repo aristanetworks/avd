@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._utils import get_ip_from_ip_prefix
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol

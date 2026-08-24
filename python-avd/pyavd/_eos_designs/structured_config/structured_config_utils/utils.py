@@ -7,8 +7,8 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdMissingVariableError
-from pyavd._utils import Undefined, UndefinedType
 from pyavd._utils.run_once import run_once_method
+from pyavd._utils.undefined import Undefined, UndefinedType
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
