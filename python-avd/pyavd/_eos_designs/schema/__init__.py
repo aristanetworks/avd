@@ -117180,16 +117180,20 @@ class EosDesigns(EosDesignsRootModel):
     """
     IPv4 extended access-lists supporting substitution on certain fields.
     These access-lists can be
-    referenced under node settings `l3_interfaces`, and will only be configured on devices where they
-    are in use.
+    referenced under node settings `l3_interfaces`, or using
+    `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+    network ports, and port
+    profiles. They will only be configured on devices where they are in use.
 
-    The substitution is useful when assigning the same access-list on multiple interfaces,
-    but where certain fields require unique values like the "interface_ip" or "peer_ip".
-    When using
-    substitution, the interface name will be appended to the ACL name.
+    The substitution is useful
+    when assigning the same access-list on multiple interfaces,
+    but where certain fields require unique
+    values like the "interface_ip" or "peer_ip".
+    When using substitution, the interface name will be
+    appended to the ACL name.
 
-    Subclass of AvdIndexedList with
-    `Ipv4AclsItem` items. Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is
+    `name` (`str`).
     """
     ipv4_prefix_list_catalog: Ipv4PrefixListCatalog
     """
@@ -117220,38 +117224,40 @@ class EosDesigns(EosDesignsRootModel):
     These access-lists can be
     referenced using `ipv6_acl_in` / `ipv6_acl_out` under network services `svis`, or under node type
     `l3_interfaces` and `l3_port_channels`,
-    and will only be configured on devices where they are in
-    use.
+    or using `dot1x.authentication_failure.allow_access_list`
+    under connected endpoints, network ports, and port profiles.
+    They will only be configured on devices
+    where they are in use.
 
-    The substitution is useful when assigning the same access-list on multiple interfaces where
-    certain fields require unique values.
-    When using substitution, the interface name will be appended
-    to the ACL name.
+    The substitution is useful when assigning the same access-list on multiple
+    interfaces where certain fields require unique values.
+    When using substitution, the interface name
+    will be appended to the ACL name.
 
-    The "interface_ipv6" substitution field is resolved per interface type:
-    - For
-    SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used
-    as a fallback.
-    - For L3 interfaces and L3 port-channels: resolved from the first entry of
-    `ipv6_addresses`.
-    If the required field is not set, the substitution will fail with an error.
+    The "interface_ipv6" substitution field is resolved per interface
+    type:
+    - For SVIs: resolved from `ipv6_address`. If not set, the first entry of
+    `ipv6_address_virtuals` is used as a fallback.
+    - For L3 interfaces and L3 port-channels: resolved
+    from the first entry of `ipv6_addresses`.
+    If the required field is not set, the substitution will
+    fail with an error.
 
-    The
-    "peer_ipv6" substitution field is resolved per interface type:
-    - For SVIs: not supported.
-    Substitution will fail with an error if used.
-    - For network services L3 interfaces and L3 port-
-    channels: not supported. Substitution will fail with an error if used.
-    - For node type L3 interfaces
-    and L3 port-channels: resolved from `peer_ipv6`.
-    If `peer_ipv6` is not set on the interface, the
-    substitution will fail with an error.
+    The "peer_ipv6" substitution field is resolved per interface type:
+    - For SVIs:
+    not supported. Substitution will fail with an error if used.
+    - For network services L3 interfaces
+    and L3 port-channels: not supported. Substitution will fail with an error if used.
+    - For node type
+    L3 interfaces and L3 port-channels: resolved from `peer_ipv6`.
+    If `peer_ipv6` is not set on the
+    interface, the substitution will fail with an error.
 
-    Note: The "interface_ip" token is deprecated and will be
-    removed in AVD 7.0.0. Use "interface_ipv6" instead.
+    Note: The "interface_ip" token is deprecated
+    and will be removed in AVD 7.0.0. Use "interface_ipv6" instead.
 
-    Subclass of AvdIndexedList with `Ipv6AclsItem`
-    items. Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with
+    `Ipv6AclsItem` items. Primary key is `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
@@ -119326,16 +119332,20 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acls:
                    IPv4 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
-                   referenced under node settings `l3_interfaces`, and will only be configured on devices where they
-                   are in use.
+                   referenced under node settings `l3_interfaces`, or using
+                   `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+                   network ports, and port
+                   profiles. They will only be configured on devices where they are in use.
 
-                   The substitution is useful when assigning the same access-list on multiple interfaces,
-                   but where certain fields require unique values like the "interface_ip" or "peer_ip".
-                   When using
-                   substitution, the interface name will be appended to the ACL name.
+                   The substitution is useful
+                   when assigning the same access-list on multiple interfaces,
+                   but where certain fields require unique
+                   values like the "interface_ip" or "peer_ip".
+                   When using substitution, the interface name will be
+                   appended to the ACL name.
 
-                   Subclass of AvdIndexedList with
-                   `Ipv4AclsItem` items. Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is
+                   `name` (`str`).
                 ipv4_prefix_list_catalog:
                    IPv4 prefix-list catalog.
                    Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in
@@ -119360,38 +119370,40 @@ class EosDesigns(EosDesignsRootModel):
                    These access-lists can be
                    referenced using `ipv6_acl_in` / `ipv6_acl_out` under network services `svis`, or under node type
                    `l3_interfaces` and `l3_port_channels`,
-                   and will only be configured on devices where they are in
-                   use.
+                   or using `dot1x.authentication_failure.allow_access_list`
+                   under connected endpoints, network ports, and port profiles.
+                   They will only be configured on devices
+                   where they are in use.
 
-                   The substitution is useful when assigning the same access-list on multiple interfaces where
-                   certain fields require unique values.
-                   When using substitution, the interface name will be appended
-                   to the ACL name.
+                   The substitution is useful when assigning the same access-list on multiple
+                   interfaces where certain fields require unique values.
+                   When using substitution, the interface name
+                   will be appended to the ACL name.
 
-                   The "interface_ipv6" substitution field is resolved per interface type:
-                   - For
-                   SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used
-                   as a fallback.
-                   - For L3 interfaces and L3 port-channels: resolved from the first entry of
-                   `ipv6_addresses`.
-                   If the required field is not set, the substitution will fail with an error.
+                   The "interface_ipv6" substitution field is resolved per interface
+                   type:
+                   - For SVIs: resolved from `ipv6_address`. If not set, the first entry of
+                   `ipv6_address_virtuals` is used as a fallback.
+                   - For L3 interfaces and L3 port-channels: resolved
+                   from the first entry of `ipv6_addresses`.
+                   If the required field is not set, the substitution will
+                   fail with an error.
 
-                   The
-                   "peer_ipv6" substitution field is resolved per interface type:
-                   - For SVIs: not supported.
-                   Substitution will fail with an error if used.
-                   - For network services L3 interfaces and L3 port-
-                   channels: not supported. Substitution will fail with an error if used.
-                   - For node type L3 interfaces
-                   and L3 port-channels: resolved from `peer_ipv6`.
-                   If `peer_ipv6` is not set on the interface, the
-                   substitution will fail with an error.
+                   The "peer_ipv6" substitution field is resolved per interface type:
+                   - For SVIs:
+                   not supported. Substitution will fail with an error if used.
+                   - For network services L3 interfaces
+                   and L3 port-channels: not supported. Substitution will fail with an error if used.
+                   - For node type
+                   L3 interfaces and L3 port-channels: resolved from `peer_ipv6`.
+                   If `peer_ipv6` is not set on the
+                   interface, the substitution will fail with an error.
 
-                   Note: The "interface_ip" token is deprecated and will be
-                   removed in AVD 7.0.0. Use "interface_ipv6" instead.
+                   Note: The "interface_ip" token is deprecated
+                   and will be removed in AVD 7.0.0. Use "interface_ipv6" instead.
 
-                   Subclass of AvdIndexedList with `Ipv6AclsItem`
-                   items. Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with
+                   `Ipv6AclsItem` items. Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.
