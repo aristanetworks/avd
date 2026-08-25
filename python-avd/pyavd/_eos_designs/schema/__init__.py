@@ -914,16 +914,16 @@ class EosDesigns(EosDesignsRootModel):
         configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
         of `default_mgmt_method`.
           - Any other string will be used directly as the local interface.
-        This
-        setting is mutually exclusive with `dhcp_server_interfaces`.
+        When
+        `local_interface` is set, `dhcp_server_interfaces` is ignored.
         When neither `local_interface` nor
         `dhcp_server_interfaces` is set, `local_interface` defaults to `use_default_mgmt_method_interface`.
         """
         dhcp_server_interfaces: DhcpServerInterfaces
         """
         The list of interfaces connected to the DHCP server.
-        This setting is mutually exclusive with
-        `local_interface`.
+        This setting is ignored when `local_interface`
+        is set.
         Requires EOS version 4.36 or later.
 
         Subclass of AvdList with `str` items.
@@ -966,14 +966,14 @@ class EosDesigns(EosDesignsRootModel):
                        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
-                       This
-                       setting is mutually exclusive with `dhcp_server_interfaces`.
+                       When
+                       `local_interface` is set, `dhcp_server_interfaces` is ignored.
                        When neither `local_interface` nor
                        `dhcp_server_interfaces` is set, `local_interface` defaults to `use_default_mgmt_method_interface`.
                     dhcp_server_interfaces:
                        The list of interfaces connected to the DHCP server.
-                       This setting is mutually exclusive with
-                       `local_interface`.
+                       This setting is ignored when `local_interface`
+                       is set.
                        Requires EOS version 4.36 or later.
 
                        Subclass of AvdList with `str` items.

@@ -1,1 +1,0 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'address_locking_settings.local_interface' and 'address_locking_settings.dhcp_server_interfaces' are mutually exclusive.
