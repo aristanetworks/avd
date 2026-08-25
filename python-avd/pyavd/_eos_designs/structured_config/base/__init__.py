@@ -83,17 +83,17 @@ class AvdStructuredConfigBaseProtocol(
         if self.shared_utils.oob_mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
             return
 
-        if self.shared_utils.mgmt_gateway is None:
+        if self.shared_utils.oob_mgmt_gateway is None:
             return
 
         if self.inputs.mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.mgmt_destination_networks:
                 self.structured_config.static_routes.append_new(
-                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway
+                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.oob_mgmt_gateway
                 )
         else:
             self.structured_config.static_routes.append_new(
-                vrf=self.shared_utils.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway
+                vrf=self.shared_utils.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.oob_mgmt_gateway
             )
 
     @structured_config_contributor
@@ -325,6 +325,9 @@ class AvdStructuredConfigBaseProtocol(
         if stp_settings.loop_guard_default:
             self.structured_config.spanning_tree.loop_guard_default = True
 
+        if stp_settings.edge_port_bpduguard_default:
+            self.structured_config.spanning_tree.edge_port.bpduguard_default = True
+
         if spanning_tree_mode is not None:
             self.structured_config.spanning_tree.mode = spanning_tree_mode
             # "rapid-pvst" is not included below. Per vlan spanning-tree priorities are set under network-services.
@@ -481,6 +484,7 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def prefix_lists(self) -> None:
         self.structured_config.prefix_lists.extend(self.shared_utils.l3_bgp_prefix_lists)
+        self.structured_config.ipv6_prefix_lists.extend(self.shared_utils.l3_bgp_ipv6_prefix_lists)
 
     @structured_config_contributor
     def route_maps(self) -> None:

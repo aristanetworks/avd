@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Unable to perform substitution of the value 'peer_ip' defined under 'ipv4_acls[name=TEST-IPV4-ACL-WITH-IP-FIELDS-IN].entries[1].source', since no substitution value was found for interface 'Ethernet1'. Make sure to set the appropriate fields on the interface.

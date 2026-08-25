@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'virtual_router_mac_address' must be set for node 'missing-virtual-router-mac-address' when using 'ip_address_virtual' under 'svis'.

@@ -84,6 +84,7 @@ tenants:
             # This will render enabled: True in structured config
             default_originate:
               always: true
+            route_reflector_client: true
           - ip_address: 11.11.1.2
             peer_group: MYPEERGROUP
             nodes: [bgp-from-network-services-1]
@@ -129,11 +130,16 @@ tenants:
             # This will not render enabled: True in structured config
             default_originate:
               always: true
+            route_reflector_client: true
         bgp_peer_groups:
           - name: VALIDATE_BGP_PEERS
             remote_as: 65991
             next_hop_self: true
             bfd: true
+            maximum_accepted_routes:
+              limit: 1000
+              warning_limit:
+                count: 100
   # Tenant for node 11 and 12 with VRF default
   - name: TEST2
     vrfs:
@@ -175,3 +181,25 @@ tenants:
           - ip_address: 10.10.41.42
             peer_group: VALIDATE_BGP_PEERS
             nodes: [bgp-from-network-services-41]
+      - name: graceful-restart-enabled
+        vrf_id: 105
+        address_families: []
+        bgp:
+          enabled: true
+          graceful_restart:
+            enabled: true
+            restart_time: 120
+      - name: graceful-restart-default_restart_time
+        vrf_id: 106
+        address_families: []
+        bgp:
+          enabled: true
+          graceful_restart:
+            enabled: true
+      - name: graceful-restart-disabled
+        vrf_id: 107
+        address_families: []
+        bgp:
+          enabled: true
+          graceful_restart:
+            enabled: false

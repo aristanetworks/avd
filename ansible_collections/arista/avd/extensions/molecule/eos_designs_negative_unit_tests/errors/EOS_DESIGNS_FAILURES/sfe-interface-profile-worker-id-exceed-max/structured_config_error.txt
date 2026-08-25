@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Worker id '17' specified under 'rx_queue.workers' for interface 'Ethernet1/19' equals or exceeds maximum supported '16' for this platform.

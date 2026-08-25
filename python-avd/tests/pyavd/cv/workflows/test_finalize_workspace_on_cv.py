@@ -265,8 +265,10 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
     """
     warnings: list[Any] = []
     exception_patterns = [
-        "Failed to submit workspace ws-cbf7c7ea-a57c-481d-b96b-97c12856395e: Response\\(status=ResponseStatus.FAIL, "
-        "message='Unknown exception faced', code=ResponseCode.UNSPECIFIED\\)"
+        (
+            "Failed to submit workspace ws-cbf7c7ea-a57c-481d-b96b-97c12856395e: Response\\(status=ResponseStatus.FAIL, "
+            "message='Unknown exception faced', code=ResponseCode.UNSPECIFIED\\)"
+        )
     ]
     cv_workspace = CVWorkspace(
         avd_workspace=AvdWorkspace(

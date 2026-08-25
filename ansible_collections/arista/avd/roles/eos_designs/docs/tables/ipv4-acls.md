@@ -28,7 +28,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv4_acls.[].entries.[].destination_ports.[]") | String |  |  |  | TCP/UDP destination port name or number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_flags</samp>](## "ipv4_acls.[].entries.[].tcp_flags") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv4_acls.[].entries.[].tcp_flags.[]") | String |  |  |  | TCP Flag Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "ipv4_acls.[].entries.[].log") | Boolean |  |  |  | Log matches against this rule. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;copy_captive_portal</samp>](## "ipv4_acls.[].entries.[].copy_captive_portal") | Boolean |  |  |  | Copy packet to CPU queue for dot1x captive-portal.<br>Only supported with deny entries.<br>For deny entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "ipv4_acls.[].entries.[].log") | Boolean |  |  |  | Log matches against this rule.<br>For deny entries, mutually exclusive with `copy_captive_portal`. `copy_captive_portal` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_type</samp>](## "ipv4_acls.[].entries.[].icmp_type") | String |  |  |  | Message type name/number for ICMP packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_code</samp>](## "ipv4_acls.[].entries.[].icmp_code") | String |  |  |  | Message code for ICMP packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nexthop_group</samp>](## "ipv4_acls.[].entries.[].nexthop_group") | String |  |  |  | nexthop-group name. |
@@ -114,7 +115,13 @@
                 # TCP Flag Name.
               - <str>
 
+            # Copy packet to CPU queue for dot1x captive-portal.
+            # Only supported with deny entries.
+            # For deny entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+            copy_captive_portal: <bool>
+
             # Log matches against this rule.
+            # For deny entries, mutually exclusive with `copy_captive_portal`. `copy_captive_portal` takes precedence.
             log: <bool>
 
             # Message type name/number for ICMP packets.

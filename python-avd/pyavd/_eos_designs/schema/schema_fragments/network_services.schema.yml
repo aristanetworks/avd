@@ -1013,16 +1013,18 @@ keys:
                     ipv6_acl_in:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the ingress direction.
-                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                        The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the IPv6 address set on the interface for this node.
+                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                       type: str
                       convert_types:
                         - int
                     ipv6_acl_out:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the egress direction.
-                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                        The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the IPv6 address set on the interface for this node.
+                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                       type: str
                       convert_types:
                         - int
@@ -1270,16 +1272,18 @@ keys:
                     ipv6_acl_in:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the ingress direction.
-                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                        The "interface_ip" substitution field is resolved from the first IPv6 address set on the interface.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the first IPv6 address set on the interface.
+                        Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                       type: str
                       convert_types:
                         - int
                     ipv6_acl_out:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the egress direction.
-                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                        The "interface_ip" substitution field is resolved from the first IPv6 address set on the interface.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from the first IPv6 address set on the interface.
+                        Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                       type: str
                       convert_types:
                         - int
@@ -1640,6 +1644,9 @@ keys:
                     bfd_timers:
                       type: dict
                       $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/neighbors/items/keys/bfd_timers"
+                    route_reflector_client:
+                      type: bool
+                      description: Configure the peer as a route-reflector-client.
                     shutdown:
                       type: bool
               bgp:
@@ -1662,6 +1669,25 @@ keys:
                       - "none" will not configure a BGP Router ID for this VRF. EOS will use the main BGP Router ID.
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
                     default: main_router_id
+                  graceful_restart:
+                    type: dict
+                    description: |
+                      BGP graceful-restart configuration for this VRF.
+                      This setting is not supported for VRF default. Use `bgp_graceful_restart` instead.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                        description: |
+                          Enable or disable BGP graceful-restart for this VRF.
+                      restart_time:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 1
+                        max: 3600
+                        default: 300
+                        description: Restart time in seconds.
                   raw_eos_cli:
                     type: str
                     description: |
