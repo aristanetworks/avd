@@ -3115,6 +3115,509 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class Dot1x(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AuthenticationFailure(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Action: TypeAlias = Literal["allow", "drop"]
+                    _fields: ClassVar[dict] = {"allow_access_list": {"type": str}, "action": {"type": str}, "allow_vlan": {"type": int}}
+                    allow_access_list: str | None
+                    """
+                    Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                    The access
+                    list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                    On EOS, the access list is
+                    only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                    """
+                    action: Action | None
+                    allow_vlan: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            allow_access_list: str | UndefinedType | None = Undefined,
+                            action: Action | UndefinedType | None = Undefined,
+                            allow_vlan: int | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            AuthenticationFailure.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                allow_access_list:
+                                   Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                                   The access
+                                   list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                                   On EOS, the access list is
+                                   only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                                action: action
+                                allow_vlan: allow_vlan
+
+                            """
+
+                PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+                class Pae(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Mode: TypeAlias = Literal["authenticator", "supplicant"]
+                    _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                    mode: Mode | None
+                    supplicant_profile: str | None
+                    """Supplicant profile name."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined
+                        ) -> None:
+                            """
+                            Pae.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mode: mode
+                                supplicant_profile: Supplicant profile name.
+
+                            """
+
+                class HostMode(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Mode: TypeAlias = Literal["multi-host", "single-host"]
+                    _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
+                    mode: Mode | None
+                    multi_host_authenticated: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                        ) -> None:
+                            """
+                            HostMode.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mode: mode
+                                multi_host_authenticated: multi_host_authenticated
+
+                            """
+
+                class MacBasedAuthentication(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "host_mode_common": {"type": bool}}
+                    enabled: bool | None
+                    always: bool | None
+                    host_mode_common: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType | None = Undefined,
+                            always: bool | UndefinedType | None = Undefined,
+                            host_mode_common: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            MacBasedAuthentication.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                always: always
+                                host_mode_common: host_mode_common
+
+                            """
+
+                class Timeout(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "idle_host": {"type": int},
+                        "quiet_period": {"type": int},
+                        "reauth_period": {"type": str},
+                        "reauth_timeout_ignore": {"type": bool},
+                        "tx_period": {"type": int},
+                    }
+                    idle_host: int | None
+                    quiet_period: int | None
+                    reauth_period: str | None
+                    """Value can be 60-4294967295 or 'server'."""
+                    reauth_timeout_ignore: bool | None
+                    tx_period: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            idle_host: int | UndefinedType | None = Undefined,
+                            quiet_period: int | UndefinedType | None = Undefined,
+                            reauth_period: str | UndefinedType | None = Undefined,
+                            reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
+                            tx_period: int | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Timeout.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                idle_host: idle_host
+                                quiet_period: quiet_period
+                                reauth_period: Value can be 60-4294967295 or 'server'.
+                                reauth_timeout_ignore: reauth_timeout_ignore
+                                tx_period: tx_period
+
+                            """
+
+                class Unauthorized(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"access_vlan_membership_egress": {"type": bool}, "native_vlan_membership_egress": {"type": bool}}
+                    access_vlan_membership_egress: bool | None
+                    native_vlan_membership_egress: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                            native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Unauthorized.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                access_vlan_membership_egress: access_vlan_membership_egress
+                                native_vlan_membership_egress: native_vlan_membership_egress
+
+                            """
+
+                class Eapol(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class AuthenticationFailureFallbackMba(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "timeout": {"type": int}}
+                        enabled: bool | None
+                        timeout: int | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                AuthenticationFailureFallbackMba.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    timeout: timeout
+
+                                """
+
+                    _fields: ClassVar[dict] = {"disabled": {"type": bool}, "authentication_failure_fallback_mba": {"type": AuthenticationFailureFallbackMba}}
+                    disabled: bool | None
+                    authentication_failure_fallback_mba: AuthenticationFailureFallbackMba
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            disabled: bool | UndefinedType | None = Undefined,
+                            authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Eapol.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                disabled: disabled
+                                authentication_failure_fallback_mba: Subclass of AvdModel.
+
+                            """
+
+                class Aaa(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Unresponsive(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        EapResponse: TypeAlias = Literal["success", "disabled"]
+
+                        class Action(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class CachedResultsTimeout(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                                _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                                time_duration: int
+                                """
+                                Enable caching for a specific duration -
+                                <1-10000>      duration in days
+                                <1-14400000>   duration in
+                                minutes
+                                <1-240000>     duration in hours
+                                <1-864000000>  duration in seconds
+                                """
+                                time_duration_unit: TimeDurationUnit
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        time_duration: int | UndefinedType = Undefined,
+                                        time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        CachedResultsTimeout.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            time_duration:
+                                               Enable caching for a specific duration -
+                                               <1-10000>      duration in days
+                                               <1-14400000>   duration in
+                                               minutes
+                                               <1-240000>     duration in hours
+                                               <1-864000000>  duration in seconds
+                                            time_duration_unit: time_duration_unit
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "traffic_allow_access_list": {"type": str},
+                                "apply_alternate": {"type": bool},
+                                "traffic_allow_vlan": {"type": int},
+                                "apply_cached_results": {"type": bool},
+                                "cached_results_timeout": {"type": CachedResultsTimeout},
+                                "traffic_allow": {"type": bool},
+                            }
+                            traffic_allow_access_list: str | None
+                            """Name of standard access-list to apply when AAA times out."""
+                            apply_alternate: bool | None
+                            """
+                            Apply alternate action if primary action fails.
+                            e.g. aaa unresponsive action apply cached-results
+                            else traffic allow
+                            """
+                            traffic_allow_vlan: int | None
+                            apply_cached_results: bool | None
+                            """Use results from a previous AAA response."""
+                            cached_results_timeout: CachedResultsTimeout
+                            """Subclass of AvdModel."""
+                            traffic_allow: bool | None
+                            """Set action for supplicant traffic when AAA times out."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                    apply_alternate: bool | UndefinedType | None = Undefined,
+                                    traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                    apply_cached_results: bool | UndefinedType | None = Undefined,
+                                    cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                    traffic_allow: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Action.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
+                                        apply_alternate:
+                                           Apply alternate action if primary action fails.
+                                           e.g. aaa unresponsive action apply cached-results
+                                           else traffic allow
+                                        traffic_allow_vlan: traffic_allow_vlan
+                                        apply_cached_results: Use results from a previous AAA response.
+                                        cached_results_timeout: Subclass of AvdModel.
+                                        traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "eap_response": {"type": str},
+                            "action": {"type": Action},
+                            "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                        }
+                        eap_response: EapResponse | None
+                        """EAP response to send. EOS default is `success`."""
+                        action: Action
+                        """
+                        Set action for supplicant when AAA times out.
+
+                        Subclass of AvdModel.
+                        """
+                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                        """Set action for supplicant when AAA times out."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                eap_response: EapResponse | UndefinedType | None = Undefined,
+                                action: Action | UndefinedType = Undefined,
+                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Unresponsive.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    eap_response: EAP response to send. EOS default is `success`.
+                                    action:
+                                       Set action for supplicant when AAA times out.
+
+                                       Subclass of AvdModel.
+                                    phone_action: Set action for supplicant when AAA times out.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                    unresponsive: Unresponsive
+                    """
+                    Configure AAA timeout options.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                            """
+                            Aaa.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                unresponsive:
+                                   Configure AAA timeout options.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "authentication_failure": {"type": AuthenticationFailure},
+                    "port_control": {"type": str},
+                    "port_control_force_authorized_phone": {"type": bool},
+                    "reauthentication": {"type": bool},
+                    "pae": {"type": Pae},
+                    "host_mode": {"type": HostMode},
+                    "mac_based_authentication": {"type": MacBasedAuthentication},
+                    "mac_based_access_list": {"type": bool},
+                    "timeout": {"type": Timeout},
+                    "reauthorization_request_limit": {"type": int},
+                    "unauthorized": {"type": Unauthorized},
+                    "eapol": {"type": Eapol},
+                    "aaa": {"type": Aaa},
+                }
+                authentication_failure: AuthenticationFailure
+                """Subclass of AvdModel."""
+                port_control: PortControl | None
+                port_control_force_authorized_phone: bool | None
+                reauthentication: bool | None
+                pae: Pae
+                """Subclass of AvdModel."""
+                host_mode: HostMode
+                """Subclass of AvdModel."""
+                mac_based_authentication: MacBasedAuthentication
+                """Subclass of AvdModel."""
+                mac_based_access_list: bool | None
+                """Operate interface in per-mac access-list mode."""
+                timeout: Timeout
+                """Subclass of AvdModel."""
+                reauthorization_request_limit: int | None
+                unauthorized: Unauthorized
+                """Subclass of AvdModel."""
+                eapol: Eapol
+                """Subclass of AvdModel."""
+                aaa: Aaa
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                        port_control: PortControl | UndefinedType | None = Undefined,
+                        port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                        reauthentication: bool | UndefinedType | None = Undefined,
+                        pae: Pae | UndefinedType = Undefined,
+                        host_mode: HostMode | UndefinedType = Undefined,
+                        mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                        mac_based_access_list: bool | UndefinedType | None = Undefined,
+                        timeout: Timeout | UndefinedType = Undefined,
+                        reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                        unauthorized: Unauthorized | UndefinedType = Undefined,
+                        eapol: Eapol | UndefinedType = Undefined,
+                        aaa: Aaa | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Dot1x.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            authentication_failure: Subclass of AvdModel.
+                            port_control: port_control
+                            port_control_force_authorized_phone: port_control_force_authorized_phone
+                            reauthentication: reauthentication
+                            pae: Subclass of AvdModel.
+                            host_mode: Subclass of AvdModel.
+                            mac_based_authentication: Subclass of AvdModel.
+                            mac_based_access_list: Operate interface in per-mac access-list mode.
+                            timeout: Subclass of AvdModel.
+                            reauthorization_request_limit: reauthorization_request_limit
+                            unauthorized: Subclass of AvdModel.
+                            eapol: Subclass of AvdModel.
+                            aaa: Subclass of AvdModel.
+
+                        """
+
             class AddressLocking(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -3711,7 +4214,7 @@ class EosDesigns(EosDesignsRootModel):
                 "sflow": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "link_tracking": {"type": LinkTracking},
-                "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                "dot1x": {"type": Dot1x},
                 "address_locking": {"type": AddressLocking},
                 "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                 "storm_control": {"type": StormControl},
@@ -3909,8 +4412,12 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-            """802.1x"""
+            dot1x: Dot1x
+            """
+            802.1x
+
+            Subclass of AvdModel.
+            """
             address_locking: AddressLocking
             """
             Address locking settings applied on the port.
@@ -4014,7 +4521,7 @@ class EosDesigns(EosDesignsRootModel):
                     sflow: bool | UndefinedType | None = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     link_tracking: LinkTracking | UndefinedType = Undefined,
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                    dot1x: Dot1x | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                     storm_control: StormControl | UndefinedType = Undefined,
@@ -4174,7 +4681,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdModel.
-                        dot1x: 802.1x
+                        dot1x:
+                           802.1x
+
+                           Subclass of AvdModel.
                         address_locking:
                            Address locking settings applied on the port.
 
@@ -28107,6 +28617,504 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Dot1x(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AuthenticationFailure(AvdModel):
+                """Subclass of AvdModel."""
+
+                Action: TypeAlias = Literal["allow", "drop"]
+                _fields: ClassVar[dict] = {"allow_access_list": {"type": str}, "action": {"type": str}, "allow_vlan": {"type": int}}
+                allow_access_list: str | None
+                """
+                Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                The access
+                list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                On EOS, the access list is
+                only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                """
+                action: Action | None
+                allow_vlan: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        allow_access_list: str | UndefinedType | None = Undefined,
+                        action: Action | UndefinedType | None = Undefined,
+                        allow_vlan: int | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        AuthenticationFailure.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            allow_access_list:
+                               Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                               The access
+                               list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                               On EOS, the access list is
+                               only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                            action: action
+                            allow_vlan: allow_vlan
+
+                        """
+
+            PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+            class Pae(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["authenticator", "supplicant"]
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                mode: Mode | None
+                supplicant_profile: str | None
+                """Supplicant profile name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        Pae.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: mode
+                            supplicant_profile: Supplicant profile name.
+
+                        """
+
+            class HostMode(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["multi-host", "single-host"]
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
+                mode: Mode | None
+                multi_host_authenticated: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        HostMode.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: mode
+                            multi_host_authenticated: multi_host_authenticated
+
+                        """
+
+            class MacBasedAuthentication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "host_mode_common": {"type": bool}}
+                enabled: bool | None
+                always: bool | None
+                host_mode_common: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType | None = Undefined,
+                        always: bool | UndefinedType | None = Undefined,
+                        host_mode_common: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        MacBasedAuthentication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            always: always
+                            host_mode_common: host_mode_common
+
+                        """
+
+            class Timeout(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "idle_host": {"type": int},
+                    "quiet_period": {"type": int},
+                    "reauth_period": {"type": str},
+                    "reauth_timeout_ignore": {"type": bool},
+                    "tx_period": {"type": int},
+                }
+                idle_host: int | None
+                quiet_period: int | None
+                reauth_period: str | None
+                """Value can be 60-4294967295 or 'server'."""
+                reauth_timeout_ignore: bool | None
+                tx_period: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        idle_host: int | UndefinedType | None = Undefined,
+                        quiet_period: int | UndefinedType | None = Undefined,
+                        reauth_period: str | UndefinedType | None = Undefined,
+                        reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
+                        tx_period: int | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Timeout.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            idle_host: idle_host
+                            quiet_period: quiet_period
+                            reauth_period: Value can be 60-4294967295 or 'server'.
+                            reauth_timeout_ignore: reauth_timeout_ignore
+                            tx_period: tx_period
+
+                        """
+
+            class Unauthorized(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"access_vlan_membership_egress": {"type": bool}, "native_vlan_membership_egress": {"type": bool}}
+                access_vlan_membership_egress: bool | None
+                native_vlan_membership_egress: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                        native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Unauthorized.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            access_vlan_membership_egress: access_vlan_membership_egress
+                            native_vlan_membership_egress: native_vlan_membership_egress
+
+                        """
+
+            class Eapol(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AuthenticationFailureFallbackMba(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "timeout": {"type": int}}
+                    enabled: bool | None
+                    timeout: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            AuthenticationFailureFallbackMba.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                timeout: timeout
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "authentication_failure_fallback_mba": {"type": AuthenticationFailureFallbackMba}}
+                disabled: bool | None
+                authentication_failure_fallback_mba: AuthenticationFailureFallbackMba
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        disabled: bool | UndefinedType | None = Undefined,
+                        authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Eapol.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: disabled
+                            authentication_failure_fallback_mba: Subclass of AvdModel.
+
+                        """
+
+            class Aaa(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Unresponsive(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    EapResponse: TypeAlias = Literal["success", "disabled"]
+
+                    class Action(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class CachedResultsTimeout(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                            _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                            time_duration: int
+                            """
+                            Enable caching for a specific duration -
+                            <1-10000>      duration in days
+                            <1-14400000>   duration in
+                            minutes
+                            <1-240000>     duration in hours
+                            <1-864000000>  duration in seconds
+                            """
+                            time_duration_unit: TimeDurationUnit
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, time_duration: int | UndefinedType = Undefined, time_duration_unit: TimeDurationUnit | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    CachedResultsTimeout.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        time_duration:
+                                           Enable caching for a specific duration -
+                                           <1-10000>      duration in days
+                                           <1-14400000>   duration in
+                                           minutes
+                                           <1-240000>     duration in hours
+                                           <1-864000000>  duration in seconds
+                                        time_duration_unit: time_duration_unit
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "traffic_allow_access_list": {"type": str},
+                            "apply_alternate": {"type": bool},
+                            "traffic_allow_vlan": {"type": int},
+                            "apply_cached_results": {"type": bool},
+                            "cached_results_timeout": {"type": CachedResultsTimeout},
+                            "traffic_allow": {"type": bool},
+                        }
+                        traffic_allow_access_list: str | None
+                        """Name of standard access-list to apply when AAA times out."""
+                        apply_alternate: bool | None
+                        """
+                        Apply alternate action if primary action fails.
+                        e.g. aaa unresponsive action apply cached-results
+                        else traffic allow
+                        """
+                        traffic_allow_vlan: int | None
+                        apply_cached_results: bool | None
+                        """Use results from a previous AAA response."""
+                        cached_results_timeout: CachedResultsTimeout
+                        """Subclass of AvdModel."""
+                        traffic_allow: bool | None
+                        """Set action for supplicant traffic when AAA times out."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                apply_alternate: bool | UndefinedType | None = Undefined,
+                                traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                apply_cached_results: bool | UndefinedType | None = Undefined,
+                                cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                traffic_allow: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Action.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
+                                    apply_alternate:
+                                       Apply alternate action if primary action fails.
+                                       e.g. aaa unresponsive action apply cached-results
+                                       else traffic allow
+                                    traffic_allow_vlan: traffic_allow_vlan
+                                    apply_cached_results: Use results from a previous AAA response.
+                                    cached_results_timeout: Subclass of AvdModel.
+                                    traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "eap_response": {"type": str},
+                        "action": {"type": Action},
+                        "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                    }
+                    eap_response: EapResponse | None
+                    """EAP response to send. EOS default is `success`."""
+                    action: Action
+                    """
+                    Set action for supplicant when AAA times out.
+
+                    Subclass of AvdModel.
+                    """
+                    phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                    """Set action for supplicant when AAA times out."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            eap_response: EapResponse | UndefinedType | None = Undefined,
+                            action: Action | UndefinedType = Undefined,
+                            phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Unresponsive.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                eap_response: EAP response to send. EOS default is `success`.
+                                action:
+                                   Set action for supplicant when AAA times out.
+
+                                   Subclass of AvdModel.
+                                phone_action: Set action for supplicant when AAA times out.
+
+                            """
+
+                _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                unresponsive: Unresponsive
+                """
+                Configure AAA timeout options.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                        """
+                        Aaa.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            unresponsive:
+                               Configure AAA timeout options.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "authentication_failure": {"type": AuthenticationFailure},
+                "port_control": {"type": str},
+                "port_control_force_authorized_phone": {"type": bool},
+                "reauthentication": {"type": bool},
+                "pae": {"type": Pae},
+                "host_mode": {"type": HostMode},
+                "mac_based_authentication": {"type": MacBasedAuthentication},
+                "mac_based_access_list": {"type": bool},
+                "timeout": {"type": Timeout},
+                "reauthorization_request_limit": {"type": int},
+                "unauthorized": {"type": Unauthorized},
+                "eapol": {"type": Eapol},
+                "aaa": {"type": Aaa},
+            }
+            authentication_failure: AuthenticationFailure
+            """Subclass of AvdModel."""
+            port_control: PortControl | None
+            port_control_force_authorized_phone: bool | None
+            reauthentication: bool | None
+            pae: Pae
+            """Subclass of AvdModel."""
+            host_mode: HostMode
+            """Subclass of AvdModel."""
+            mac_based_authentication: MacBasedAuthentication
+            """Subclass of AvdModel."""
+            mac_based_access_list: bool | None
+            """Operate interface in per-mac access-list mode."""
+            timeout: Timeout
+            """Subclass of AvdModel."""
+            reauthorization_request_limit: int | None
+            unauthorized: Unauthorized
+            """Subclass of AvdModel."""
+            eapol: Eapol
+            """Subclass of AvdModel."""
+            aaa: Aaa
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                    port_control: PortControl | UndefinedType | None = Undefined,
+                    port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                    reauthentication: bool | UndefinedType | None = Undefined,
+                    pae: Pae | UndefinedType = Undefined,
+                    host_mode: HostMode | UndefinedType = Undefined,
+                    mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                    mac_based_access_list: bool | UndefinedType | None = Undefined,
+                    timeout: Timeout | UndefinedType = Undefined,
+                    reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                    unauthorized: Unauthorized | UndefinedType = Undefined,
+                    eapol: Eapol | UndefinedType = Undefined,
+                    aaa: Aaa | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Dot1x.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        authentication_failure: Subclass of AvdModel.
+                        port_control: port_control
+                        port_control_force_authorized_phone: port_control_force_authorized_phone
+                        reauthentication: reauthentication
+                        pae: Subclass of AvdModel.
+                        host_mode: Subclass of AvdModel.
+                        mac_based_authentication: Subclass of AvdModel.
+                        mac_based_access_list: Operate interface in per-mac access-list mode.
+                        timeout: Subclass of AvdModel.
+                        reauthorization_request_limit: reauthorization_request_limit
+                        unauthorized: Subclass of AvdModel.
+                        eapol: Subclass of AvdModel.
+                        aaa: Subclass of AvdModel.
+
+                    """
+
         class AddressLocking(AvdModel):
             """Subclass of AvdModel."""
 
@@ -28997,7 +30005,7 @@ class EosDesigns(EosDesignsRootModel):
             "sflow": {"type": bool},
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
-            "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "dot1x": {"type": Dot1x},
             "address_locking": {"type": AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
@@ -29180,8 +30188,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-        """802.1x"""
+        dot1x: Dot1x
+        """
+        802.1x
+
+        Subclass of AvdModel.
+        """
         address_locking: AddressLocking
         """
         Address locking settings applied on the port.
@@ -29289,7 +30301,7 @@ class EosDesigns(EosDesignsRootModel):
                 sflow: bool | UndefinedType | None = Undefined,
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
-                dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                dot1x: Dot1x | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
@@ -29439,7 +30451,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdModel.
-                    dot1x: 802.1x
+                    dot1x:
+                       802.1x
+
+                       Subclass of AvdModel.
                     address_locking:
                        Address locking settings applied on the port.
 
@@ -46029,6 +47044,504 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Dot1x(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AuthenticationFailure(AvdModel):
+                """Subclass of AvdModel."""
+
+                Action: TypeAlias = Literal["allow", "drop"]
+                _fields: ClassVar[dict] = {"allow_access_list": {"type": str}, "action": {"type": str}, "allow_vlan": {"type": int}}
+                allow_access_list: str | None
+                """
+                Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                The access
+                list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                On EOS, the access list is
+                only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                """
+                action: Action | None
+                allow_vlan: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        allow_access_list: str | UndefinedType | None = Undefined,
+                        action: Action | UndefinedType | None = Undefined,
+                        allow_vlan: int | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        AuthenticationFailure.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            allow_access_list:
+                               Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                               The access
+                               list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                               On EOS, the access list is
+                               only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                            action: action
+                            allow_vlan: allow_vlan
+
+                        """
+
+            PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+            class Pae(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["authenticator", "supplicant"]
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                mode: Mode | None
+                supplicant_profile: str | None
+                """Supplicant profile name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        Pae.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: mode
+                            supplicant_profile: Supplicant profile name.
+
+                        """
+
+            class HostMode(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["multi-host", "single-host"]
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
+                mode: Mode | None
+                multi_host_authenticated: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        HostMode.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: mode
+                            multi_host_authenticated: multi_host_authenticated
+
+                        """
+
+            class MacBasedAuthentication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "host_mode_common": {"type": bool}}
+                enabled: bool | None
+                always: bool | None
+                host_mode_common: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType | None = Undefined,
+                        always: bool | UndefinedType | None = Undefined,
+                        host_mode_common: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        MacBasedAuthentication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            always: always
+                            host_mode_common: host_mode_common
+
+                        """
+
+            class Timeout(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "idle_host": {"type": int},
+                    "quiet_period": {"type": int},
+                    "reauth_period": {"type": str},
+                    "reauth_timeout_ignore": {"type": bool},
+                    "tx_period": {"type": int},
+                }
+                idle_host: int | None
+                quiet_period: int | None
+                reauth_period: str | None
+                """Value can be 60-4294967295 or 'server'."""
+                reauth_timeout_ignore: bool | None
+                tx_period: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        idle_host: int | UndefinedType | None = Undefined,
+                        quiet_period: int | UndefinedType | None = Undefined,
+                        reauth_period: str | UndefinedType | None = Undefined,
+                        reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
+                        tx_period: int | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Timeout.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            idle_host: idle_host
+                            quiet_period: quiet_period
+                            reauth_period: Value can be 60-4294967295 or 'server'.
+                            reauth_timeout_ignore: reauth_timeout_ignore
+                            tx_period: tx_period
+
+                        """
+
+            class Unauthorized(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"access_vlan_membership_egress": {"type": bool}, "native_vlan_membership_egress": {"type": bool}}
+                access_vlan_membership_egress: bool | None
+                native_vlan_membership_egress: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                        native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Unauthorized.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            access_vlan_membership_egress: access_vlan_membership_egress
+                            native_vlan_membership_egress: native_vlan_membership_egress
+
+                        """
+
+            class Eapol(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AuthenticationFailureFallbackMba(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "timeout": {"type": int}}
+                    enabled: bool | None
+                    timeout: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            AuthenticationFailureFallbackMba.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                timeout: timeout
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "authentication_failure_fallback_mba": {"type": AuthenticationFailureFallbackMba}}
+                disabled: bool | None
+                authentication_failure_fallback_mba: AuthenticationFailureFallbackMba
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        disabled: bool | UndefinedType | None = Undefined,
+                        authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Eapol.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: disabled
+                            authentication_failure_fallback_mba: Subclass of AvdModel.
+
+                        """
+
+            class Aaa(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Unresponsive(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    EapResponse: TypeAlias = Literal["success", "disabled"]
+
+                    class Action(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class CachedResultsTimeout(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                            _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                            time_duration: int
+                            """
+                            Enable caching for a specific duration -
+                            <1-10000>      duration in days
+                            <1-14400000>   duration in
+                            minutes
+                            <1-240000>     duration in hours
+                            <1-864000000>  duration in seconds
+                            """
+                            time_duration_unit: TimeDurationUnit
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, time_duration: int | UndefinedType = Undefined, time_duration_unit: TimeDurationUnit | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    CachedResultsTimeout.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        time_duration:
+                                           Enable caching for a specific duration -
+                                           <1-10000>      duration in days
+                                           <1-14400000>   duration in
+                                           minutes
+                                           <1-240000>     duration in hours
+                                           <1-864000000>  duration in seconds
+                                        time_duration_unit: time_duration_unit
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "traffic_allow_access_list": {"type": str},
+                            "apply_alternate": {"type": bool},
+                            "traffic_allow_vlan": {"type": int},
+                            "apply_cached_results": {"type": bool},
+                            "cached_results_timeout": {"type": CachedResultsTimeout},
+                            "traffic_allow": {"type": bool},
+                        }
+                        traffic_allow_access_list: str | None
+                        """Name of standard access-list to apply when AAA times out."""
+                        apply_alternate: bool | None
+                        """
+                        Apply alternate action if primary action fails.
+                        e.g. aaa unresponsive action apply cached-results
+                        else traffic allow
+                        """
+                        traffic_allow_vlan: int | None
+                        apply_cached_results: bool | None
+                        """Use results from a previous AAA response."""
+                        cached_results_timeout: CachedResultsTimeout
+                        """Subclass of AvdModel."""
+                        traffic_allow: bool | None
+                        """Set action for supplicant traffic when AAA times out."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                apply_alternate: bool | UndefinedType | None = Undefined,
+                                traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                apply_cached_results: bool | UndefinedType | None = Undefined,
+                                cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                traffic_allow: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Action.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
+                                    apply_alternate:
+                                       Apply alternate action if primary action fails.
+                                       e.g. aaa unresponsive action apply cached-results
+                                       else traffic allow
+                                    traffic_allow_vlan: traffic_allow_vlan
+                                    apply_cached_results: Use results from a previous AAA response.
+                                    cached_results_timeout: Subclass of AvdModel.
+                                    traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "eap_response": {"type": str},
+                        "action": {"type": Action},
+                        "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                    }
+                    eap_response: EapResponse | None
+                    """EAP response to send. EOS default is `success`."""
+                    action: Action
+                    """
+                    Set action for supplicant when AAA times out.
+
+                    Subclass of AvdModel.
+                    """
+                    phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                    """Set action for supplicant when AAA times out."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            eap_response: EapResponse | UndefinedType | None = Undefined,
+                            action: Action | UndefinedType = Undefined,
+                            phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Unresponsive.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                eap_response: EAP response to send. EOS default is `success`.
+                                action:
+                                   Set action for supplicant when AAA times out.
+
+                                   Subclass of AvdModel.
+                                phone_action: Set action for supplicant when AAA times out.
+
+                            """
+
+                _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                unresponsive: Unresponsive
+                """
+                Configure AAA timeout options.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                        """
+                        Aaa.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            unresponsive:
+                               Configure AAA timeout options.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "authentication_failure": {"type": AuthenticationFailure},
+                "port_control": {"type": str},
+                "port_control_force_authorized_phone": {"type": bool},
+                "reauthentication": {"type": bool},
+                "pae": {"type": Pae},
+                "host_mode": {"type": HostMode},
+                "mac_based_authentication": {"type": MacBasedAuthentication},
+                "mac_based_access_list": {"type": bool},
+                "timeout": {"type": Timeout},
+                "reauthorization_request_limit": {"type": int},
+                "unauthorized": {"type": Unauthorized},
+                "eapol": {"type": Eapol},
+                "aaa": {"type": Aaa},
+            }
+            authentication_failure: AuthenticationFailure
+            """Subclass of AvdModel."""
+            port_control: PortControl | None
+            port_control_force_authorized_phone: bool | None
+            reauthentication: bool | None
+            pae: Pae
+            """Subclass of AvdModel."""
+            host_mode: HostMode
+            """Subclass of AvdModel."""
+            mac_based_authentication: MacBasedAuthentication
+            """Subclass of AvdModel."""
+            mac_based_access_list: bool | None
+            """Operate interface in per-mac access-list mode."""
+            timeout: Timeout
+            """Subclass of AvdModel."""
+            reauthorization_request_limit: int | None
+            unauthorized: Unauthorized
+            """Subclass of AvdModel."""
+            eapol: Eapol
+            """Subclass of AvdModel."""
+            aaa: Aaa
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                    port_control: PortControl | UndefinedType | None = Undefined,
+                    port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                    reauthentication: bool | UndefinedType | None = Undefined,
+                    pae: Pae | UndefinedType = Undefined,
+                    host_mode: HostMode | UndefinedType = Undefined,
+                    mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                    mac_based_access_list: bool | UndefinedType | None = Undefined,
+                    timeout: Timeout | UndefinedType = Undefined,
+                    reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                    unauthorized: Unauthorized | UndefinedType = Undefined,
+                    eapol: Eapol | UndefinedType = Undefined,
+                    aaa: Aaa | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Dot1x.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        authentication_failure: Subclass of AvdModel.
+                        port_control: port_control
+                        port_control_force_authorized_phone: port_control_force_authorized_phone
+                        reauthentication: reauthentication
+                        pae: Subclass of AvdModel.
+                        host_mode: Subclass of AvdModel.
+                        mac_based_authentication: Subclass of AvdModel.
+                        mac_based_access_list: Operate interface in per-mac access-list mode.
+                        timeout: Subclass of AvdModel.
+                        reauthorization_request_limit: reauthorization_request_limit
+                        unauthorized: Subclass of AvdModel.
+                        eapol: Subclass of AvdModel.
+                        aaa: Subclass of AvdModel.
+
+                    """
+
         class AddressLocking(AvdModel):
             """Subclass of AvdModel."""
 
@@ -46621,7 +48134,7 @@ class EosDesigns(EosDesignsRootModel):
             "sflow": {"type": bool},
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
-            "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "dot1x": {"type": Dot1x},
             "address_locking": {"type": AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
@@ -46766,8 +48279,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-        """802.1x"""
+        dot1x: Dot1x
+        """
+        802.1x
+
+        Subclass of AvdModel.
+        """
         address_locking: AddressLocking
         """
         Address locking settings applied on the port.
@@ -46867,7 +48384,7 @@ class EosDesigns(EosDesignsRootModel):
                 sflow: bool | UndefinedType | None = Undefined,
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
-                dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                dot1x: Dot1x | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
@@ -46982,7 +48499,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdModel.
-                    dot1x: 802.1x
+                    dot1x:
+                       802.1x
+
+                       Subclass of AvdModel.
                     address_locking:
                        Address locking settings applied on the port.
 
@@ -76840,6 +78360,514 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Dot1x(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class AuthenticationFailure(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Action: TypeAlias = Literal["allow", "drop"]
+                            _fields: ClassVar[dict] = {"allow_access_list": {"type": str}, "action": {"type": str}, "allow_vlan": {"type": int}}
+                            allow_access_list: str | None
+                            """
+                            Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                            The access
+                            list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                            On EOS, the access list is
+                            only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                            """
+                            action: Action | None
+                            allow_vlan: int | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    allow_access_list: str | UndefinedType | None = Undefined,
+                                    action: Action | UndefinedType | None = Undefined,
+                                    allow_vlan: int | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    AuthenticationFailure.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        allow_access_list:
+                                           Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                                           The access
+                                           list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                                           On EOS, the access list is
+                                           only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                                        action: action
+                                        allow_vlan: allow_vlan
+
+                                    """
+
+                        PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+                        class Pae(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["authenticator", "supplicant"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                            mode: Mode | None
+                            supplicant_profile: str | None
+                            """Supplicant profile name."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    Pae.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: mode
+                                        supplicant_profile: Supplicant profile name.
+
+                                    """
+
+                        class HostMode(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["multi-host", "single-host"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
+                            mode: Mode | None
+                            multi_host_authenticated: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    HostMode.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: mode
+                                        multi_host_authenticated: multi_host_authenticated
+
+                                    """
+
+                        class MacBasedAuthentication(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "host_mode_common": {"type": bool}}
+                            enabled: bool | None
+                            always: bool | None
+                            host_mode_common: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType | None = Undefined,
+                                    always: bool | UndefinedType | None = Undefined,
+                                    host_mode_common: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    MacBasedAuthentication.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        always: always
+                                        host_mode_common: host_mode_common
+
+                                    """
+
+                        class Timeout(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "idle_host": {"type": int},
+                                "quiet_period": {"type": int},
+                                "reauth_period": {"type": str},
+                                "reauth_timeout_ignore": {"type": bool},
+                                "tx_period": {"type": int},
+                            }
+                            idle_host: int | None
+                            quiet_period: int | None
+                            reauth_period: str | None
+                            """Value can be 60-4294967295 or 'server'."""
+                            reauth_timeout_ignore: bool | None
+                            tx_period: int | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    idle_host: int | UndefinedType | None = Undefined,
+                                    quiet_period: int | UndefinedType | None = Undefined,
+                                    reauth_period: str | UndefinedType | None = Undefined,
+                                    reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
+                                    tx_period: int | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Timeout.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        idle_host: idle_host
+                                        quiet_period: quiet_period
+                                        reauth_period: Value can be 60-4294967295 or 'server'.
+                                        reauth_timeout_ignore: reauth_timeout_ignore
+                                        tx_period: tx_period
+
+                                    """
+
+                        class Unauthorized(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"access_vlan_membership_egress": {"type": bool}, "native_vlan_membership_egress": {"type": bool}}
+                            access_vlan_membership_egress: bool | None
+                            native_vlan_membership_egress: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                                    native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Unauthorized.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        access_vlan_membership_egress: access_vlan_membership_egress
+                                        native_vlan_membership_egress: native_vlan_membership_egress
+
+                                    """
+
+                        class Eapol(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class AuthenticationFailureFallbackMba(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "timeout": {"type": int}}
+                                enabled: bool | None
+                                timeout: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined
+                                    ) -> None:
+                                        """
+                                        AuthenticationFailureFallbackMba.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            timeout: timeout
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "disabled": {"type": bool},
+                                "authentication_failure_fallback_mba": {"type": AuthenticationFailureFallbackMba},
+                            }
+                            disabled: bool | None
+                            authentication_failure_fallback_mba: AuthenticationFailureFallbackMba
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    disabled: bool | UndefinedType | None = Undefined,
+                                    authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Eapol.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        disabled: disabled
+                                        authentication_failure_fallback_mba: Subclass of AvdModel.
+
+                                    """
+
+                        class Aaa(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Unresponsive(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                EapResponse: TypeAlias = Literal["success", "disabled"]
+
+                                class Action(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    class CachedResultsTimeout(AvdModel):
+                                        """Subclass of AvdModel."""
+
+                                        TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                                        _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                                        time_duration: int
+                                        """
+                                        Enable caching for a specific duration -
+                                        <1-10000>      duration in days
+                                        <1-14400000>   duration in
+                                        minutes
+                                        <1-240000>     duration in hours
+                                        <1-864000000>  duration in seconds
+                                        """
+                                        time_duration_unit: TimeDurationUnit
+
+                                        if TYPE_CHECKING:
+
+                                            def __init__(
+                                                self,
+                                                *,
+                                                time_duration: int | UndefinedType = Undefined,
+                                                time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
+                                            ) -> None:
+                                                """
+                                                CachedResultsTimeout.
+
+
+                                                Subclass of AvdModel.
+
+                                                Args:
+                                                    time_duration:
+                                                       Enable caching for a specific duration -
+                                                       <1-10000>      duration in days
+                                                       <1-14400000>   duration in
+                                                       minutes
+                                                       <1-240000>     duration in hours
+                                                       <1-864000000>  duration in seconds
+                                                    time_duration_unit: time_duration_unit
+
+                                                """
+
+                                    _fields: ClassVar[dict] = {
+                                        "traffic_allow_access_list": {"type": str},
+                                        "apply_alternate": {"type": bool},
+                                        "traffic_allow_vlan": {"type": int},
+                                        "apply_cached_results": {"type": bool},
+                                        "cached_results_timeout": {"type": CachedResultsTimeout},
+                                        "traffic_allow": {"type": bool},
+                                    }
+                                    traffic_allow_access_list: str | None
+                                    """Name of standard access-list to apply when AAA times out."""
+                                    apply_alternate: bool | None
+                                    """
+                                    Apply alternate action if primary action fails.
+                                    e.g. aaa unresponsive action apply cached-results
+                                    else traffic allow
+                                    """
+                                    traffic_allow_vlan: int | None
+                                    apply_cached_results: bool | None
+                                    """Use results from a previous AAA response."""
+                                    cached_results_timeout: CachedResultsTimeout
+                                    """Subclass of AvdModel."""
+                                    traffic_allow: bool | None
+                                    """Set action for supplicant traffic when AAA times out."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                            apply_alternate: bool | UndefinedType | None = Undefined,
+                                            traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                            apply_cached_results: bool | UndefinedType | None = Undefined,
+                                            cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                            traffic_allow: bool | UndefinedType | None = Undefined,
+                                        ) -> None:
+                                            """
+                                            Action.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
+                                                apply_alternate:
+                                                   Apply alternate action if primary action fails.
+                                                   e.g. aaa unresponsive action apply cached-results
+                                                   else traffic allow
+                                                traffic_allow_vlan: traffic_allow_vlan
+                                                apply_cached_results: Use results from a previous AAA response.
+                                                cached_results_timeout: Subclass of AvdModel.
+                                                traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "eap_response": {"type": str},
+                                    "action": {"type": Action},
+                                    "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                                }
+                                eap_response: EapResponse | None
+                                """EAP response to send. EOS default is `success`."""
+                                action: Action
+                                """
+                                Set action for supplicant when AAA times out.
+
+                                Subclass of AvdModel.
+                                """
+                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                                """Set action for supplicant when AAA times out."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        eap_response: EapResponse | UndefinedType | None = Undefined,
+                                        action: Action | UndefinedType = Undefined,
+                                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Unresponsive.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            eap_response: EAP response to send. EOS default is `success`.
+                                            action:
+                                               Set action for supplicant when AAA times out.
+
+                                               Subclass of AvdModel.
+                                            phone_action: Set action for supplicant when AAA times out.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                            unresponsive: Unresponsive
+                            """
+                            Configure AAA timeout options.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                                    """
+                                    Aaa.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unresponsive:
+                                           Configure AAA timeout options.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "authentication_failure": {"type": AuthenticationFailure},
+                            "port_control": {"type": str},
+                            "port_control_force_authorized_phone": {"type": bool},
+                            "reauthentication": {"type": bool},
+                            "pae": {"type": Pae},
+                            "host_mode": {"type": HostMode},
+                            "mac_based_authentication": {"type": MacBasedAuthentication},
+                            "mac_based_access_list": {"type": bool},
+                            "timeout": {"type": Timeout},
+                            "reauthorization_request_limit": {"type": int},
+                            "unauthorized": {"type": Unauthorized},
+                            "eapol": {"type": Eapol},
+                            "aaa": {"type": Aaa},
+                        }
+                        authentication_failure: AuthenticationFailure
+                        """Subclass of AvdModel."""
+                        port_control: PortControl | None
+                        port_control_force_authorized_phone: bool | None
+                        reauthentication: bool | None
+                        pae: Pae
+                        """Subclass of AvdModel."""
+                        host_mode: HostMode
+                        """Subclass of AvdModel."""
+                        mac_based_authentication: MacBasedAuthentication
+                        """Subclass of AvdModel."""
+                        mac_based_access_list: bool | None
+                        """Operate interface in per-mac access-list mode."""
+                        timeout: Timeout
+                        """Subclass of AvdModel."""
+                        reauthorization_request_limit: int | None
+                        unauthorized: Unauthorized
+                        """Subclass of AvdModel."""
+                        eapol: Eapol
+                        """Subclass of AvdModel."""
+                        aaa: Aaa
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                                port_control: PortControl | UndefinedType | None = Undefined,
+                                port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                                reauthentication: bool | UndefinedType | None = Undefined,
+                                pae: Pae | UndefinedType = Undefined,
+                                host_mode: HostMode | UndefinedType = Undefined,
+                                mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                                mac_based_access_list: bool | UndefinedType | None = Undefined,
+                                timeout: Timeout | UndefinedType = Undefined,
+                                reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                                unauthorized: Unauthorized | UndefinedType = Undefined,
+                                eapol: Eapol | UndefinedType = Undefined,
+                                aaa: Aaa | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Dot1x.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    authentication_failure: Subclass of AvdModel.
+                                    port_control: port_control
+                                    port_control_force_authorized_phone: port_control_force_authorized_phone
+                                    reauthentication: reauthentication
+                                    pae: Subclass of AvdModel.
+                                    host_mode: Subclass of AvdModel.
+                                    mac_based_authentication: Subclass of AvdModel.
+                                    mac_based_access_list: Operate interface in per-mac access-list mode.
+                                    timeout: Subclass of AvdModel.
+                                    reauthorization_request_limit: reauthorization_request_limit
+                                    unauthorized: Subclass of AvdModel.
+                                    eapol: Subclass of AvdModel.
+                                    aaa: Subclass of AvdModel.
+
+                                """
+
                     class AddressLocking(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -77438,7 +79466,7 @@ class EosDesigns(EosDesignsRootModel):
                         "sflow": {"type": bool},
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
-                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "dot1x": {"type": Dot1x},
                         "address_locking": {"type": AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
@@ -77636,8 +79664,12 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-                    """802.1x"""
+                    dot1x: Dot1x
+                    """
+                    802.1x
+
+                    Subclass of AvdModel.
+                    """
                     address_locking: AddressLocking
                     """
                     Address locking settings applied on the port.
@@ -77741,7 +79773,7 @@ class EosDesigns(EosDesignsRootModel):
                             sflow: bool | UndefinedType | None = Undefined,
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
-                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            dot1x: Dot1x | UndefinedType = Undefined,
                             address_locking: AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
@@ -77901,7 +79933,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
-                                dot1x: 802.1x
+                                dot1x:
+                                   802.1x
+
+                                   Subclass of AvdModel.
                                 address_locking:
                                    Address locking settings applied on the port.
 
@@ -78896,6 +80931,514 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Dot1x(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class AuthenticationFailure(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Action: TypeAlias = Literal["allow", "drop"]
+                            _fields: ClassVar[dict] = {"allow_access_list": {"type": str}, "action": {"type": str}, "allow_vlan": {"type": int}}
+                            allow_access_list: str | None
+                            """
+                            Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                            The access
+                            list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                            On EOS, the access list is
+                            only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                            """
+                            action: Action | None
+                            allow_vlan: int | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    allow_access_list: str | UndefinedType | None = Undefined,
+                                    action: Action | UndefinedType | None = Undefined,
+                                    allow_vlan: int | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    AuthenticationFailure.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        allow_access_list:
+                                           Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                                           The access
+                                           list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                                           On EOS, the access list is
+                                           only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                                        action: action
+                                        allow_vlan: allow_vlan
+
+                                    """
+
+                        PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+                        class Pae(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["authenticator", "supplicant"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                            mode: Mode | None
+                            supplicant_profile: str | None
+                            """Supplicant profile name."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    Pae.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: mode
+                                        supplicant_profile: Supplicant profile name.
+
+                                    """
+
+                        class HostMode(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["multi-host", "single-host"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
+                            mode: Mode | None
+                            multi_host_authenticated: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    HostMode.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: mode
+                                        multi_host_authenticated: multi_host_authenticated
+
+                                    """
+
+                        class MacBasedAuthentication(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "host_mode_common": {"type": bool}}
+                            enabled: bool | None
+                            always: bool | None
+                            host_mode_common: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType | None = Undefined,
+                                    always: bool | UndefinedType | None = Undefined,
+                                    host_mode_common: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    MacBasedAuthentication.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        always: always
+                                        host_mode_common: host_mode_common
+
+                                    """
+
+                        class Timeout(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "idle_host": {"type": int},
+                                "quiet_period": {"type": int},
+                                "reauth_period": {"type": str},
+                                "reauth_timeout_ignore": {"type": bool},
+                                "tx_period": {"type": int},
+                            }
+                            idle_host: int | None
+                            quiet_period: int | None
+                            reauth_period: str | None
+                            """Value can be 60-4294967295 or 'server'."""
+                            reauth_timeout_ignore: bool | None
+                            tx_period: int | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    idle_host: int | UndefinedType | None = Undefined,
+                                    quiet_period: int | UndefinedType | None = Undefined,
+                                    reauth_period: str | UndefinedType | None = Undefined,
+                                    reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
+                                    tx_period: int | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Timeout.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        idle_host: idle_host
+                                        quiet_period: quiet_period
+                                        reauth_period: Value can be 60-4294967295 or 'server'.
+                                        reauth_timeout_ignore: reauth_timeout_ignore
+                                        tx_period: tx_period
+
+                                    """
+
+                        class Unauthorized(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"access_vlan_membership_egress": {"type": bool}, "native_vlan_membership_egress": {"type": bool}}
+                            access_vlan_membership_egress: bool | None
+                            native_vlan_membership_egress: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                                    native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Unauthorized.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        access_vlan_membership_egress: access_vlan_membership_egress
+                                        native_vlan_membership_egress: native_vlan_membership_egress
+
+                                    """
+
+                        class Eapol(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class AuthenticationFailureFallbackMba(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "timeout": {"type": int}}
+                                enabled: bool | None
+                                timeout: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined
+                                    ) -> None:
+                                        """
+                                        AuthenticationFailureFallbackMba.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            timeout: timeout
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "disabled": {"type": bool},
+                                "authentication_failure_fallback_mba": {"type": AuthenticationFailureFallbackMba},
+                            }
+                            disabled: bool | None
+                            authentication_failure_fallback_mba: AuthenticationFailureFallbackMba
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    disabled: bool | UndefinedType | None = Undefined,
+                                    authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Eapol.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        disabled: disabled
+                                        authentication_failure_fallback_mba: Subclass of AvdModel.
+
+                                    """
+
+                        class Aaa(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Unresponsive(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                EapResponse: TypeAlias = Literal["success", "disabled"]
+
+                                class Action(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    class CachedResultsTimeout(AvdModel):
+                                        """Subclass of AvdModel."""
+
+                                        TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                                        _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                                        time_duration: int
+                                        """
+                                        Enable caching for a specific duration -
+                                        <1-10000>      duration in days
+                                        <1-14400000>   duration in
+                                        minutes
+                                        <1-240000>     duration in hours
+                                        <1-864000000>  duration in seconds
+                                        """
+                                        time_duration_unit: TimeDurationUnit
+
+                                        if TYPE_CHECKING:
+
+                                            def __init__(
+                                                self,
+                                                *,
+                                                time_duration: int | UndefinedType = Undefined,
+                                                time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
+                                            ) -> None:
+                                                """
+                                                CachedResultsTimeout.
+
+
+                                                Subclass of AvdModel.
+
+                                                Args:
+                                                    time_duration:
+                                                       Enable caching for a specific duration -
+                                                       <1-10000>      duration in days
+                                                       <1-14400000>   duration in
+                                                       minutes
+                                                       <1-240000>     duration in hours
+                                                       <1-864000000>  duration in seconds
+                                                    time_duration_unit: time_duration_unit
+
+                                                """
+
+                                    _fields: ClassVar[dict] = {
+                                        "traffic_allow_access_list": {"type": str},
+                                        "apply_alternate": {"type": bool},
+                                        "traffic_allow_vlan": {"type": int},
+                                        "apply_cached_results": {"type": bool},
+                                        "cached_results_timeout": {"type": CachedResultsTimeout},
+                                        "traffic_allow": {"type": bool},
+                                    }
+                                    traffic_allow_access_list: str | None
+                                    """Name of standard access-list to apply when AAA times out."""
+                                    apply_alternate: bool | None
+                                    """
+                                    Apply alternate action if primary action fails.
+                                    e.g. aaa unresponsive action apply cached-results
+                                    else traffic allow
+                                    """
+                                    traffic_allow_vlan: int | None
+                                    apply_cached_results: bool | None
+                                    """Use results from a previous AAA response."""
+                                    cached_results_timeout: CachedResultsTimeout
+                                    """Subclass of AvdModel."""
+                                    traffic_allow: bool | None
+                                    """Set action for supplicant traffic when AAA times out."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                            apply_alternate: bool | UndefinedType | None = Undefined,
+                                            traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                            apply_cached_results: bool | UndefinedType | None = Undefined,
+                                            cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                            traffic_allow: bool | UndefinedType | None = Undefined,
+                                        ) -> None:
+                                            """
+                                            Action.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
+                                                apply_alternate:
+                                                   Apply alternate action if primary action fails.
+                                                   e.g. aaa unresponsive action apply cached-results
+                                                   else traffic allow
+                                                traffic_allow_vlan: traffic_allow_vlan
+                                                apply_cached_results: Use results from a previous AAA response.
+                                                cached_results_timeout: Subclass of AvdModel.
+                                                traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "eap_response": {"type": str},
+                                    "action": {"type": Action},
+                                    "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                                }
+                                eap_response: EapResponse | None
+                                """EAP response to send. EOS default is `success`."""
+                                action: Action
+                                """
+                                Set action for supplicant when AAA times out.
+
+                                Subclass of AvdModel.
+                                """
+                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                                """Set action for supplicant when AAA times out."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        eap_response: EapResponse | UndefinedType | None = Undefined,
+                                        action: Action | UndefinedType = Undefined,
+                                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Unresponsive.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            eap_response: EAP response to send. EOS default is `success`.
+                                            action:
+                                               Set action for supplicant when AAA times out.
+
+                                               Subclass of AvdModel.
+                                            phone_action: Set action for supplicant when AAA times out.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                            unresponsive: Unresponsive
+                            """
+                            Configure AAA timeout options.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                                    """
+                                    Aaa.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unresponsive:
+                                           Configure AAA timeout options.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "authentication_failure": {"type": AuthenticationFailure},
+                            "port_control": {"type": str},
+                            "port_control_force_authorized_phone": {"type": bool},
+                            "reauthentication": {"type": bool},
+                            "pae": {"type": Pae},
+                            "host_mode": {"type": HostMode},
+                            "mac_based_authentication": {"type": MacBasedAuthentication},
+                            "mac_based_access_list": {"type": bool},
+                            "timeout": {"type": Timeout},
+                            "reauthorization_request_limit": {"type": int},
+                            "unauthorized": {"type": Unauthorized},
+                            "eapol": {"type": Eapol},
+                            "aaa": {"type": Aaa},
+                        }
+                        authentication_failure: AuthenticationFailure
+                        """Subclass of AvdModel."""
+                        port_control: PortControl | None
+                        port_control_force_authorized_phone: bool | None
+                        reauthentication: bool | None
+                        pae: Pae
+                        """Subclass of AvdModel."""
+                        host_mode: HostMode
+                        """Subclass of AvdModel."""
+                        mac_based_authentication: MacBasedAuthentication
+                        """Subclass of AvdModel."""
+                        mac_based_access_list: bool | None
+                        """Operate interface in per-mac access-list mode."""
+                        timeout: Timeout
+                        """Subclass of AvdModel."""
+                        reauthorization_request_limit: int | None
+                        unauthorized: Unauthorized
+                        """Subclass of AvdModel."""
+                        eapol: Eapol
+                        """Subclass of AvdModel."""
+                        aaa: Aaa
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                                port_control: PortControl | UndefinedType | None = Undefined,
+                                port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                                reauthentication: bool | UndefinedType | None = Undefined,
+                                pae: Pae | UndefinedType = Undefined,
+                                host_mode: HostMode | UndefinedType = Undefined,
+                                mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                                mac_based_access_list: bool | UndefinedType | None = Undefined,
+                                timeout: Timeout | UndefinedType = Undefined,
+                                reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                                unauthorized: Unauthorized | UndefinedType = Undefined,
+                                eapol: Eapol | UndefinedType = Undefined,
+                                aaa: Aaa | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Dot1x.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    authentication_failure: Subclass of AvdModel.
+                                    port_control: port_control
+                                    port_control_force_authorized_phone: port_control_force_authorized_phone
+                                    reauthentication: reauthentication
+                                    pae: Subclass of AvdModel.
+                                    host_mode: Subclass of AvdModel.
+                                    mac_based_authentication: Subclass of AvdModel.
+                                    mac_based_access_list: Operate interface in per-mac access-list mode.
+                                    timeout: Subclass of AvdModel.
+                                    reauthorization_request_limit: reauthorization_request_limit
+                                    unauthorized: Subclass of AvdModel.
+                                    eapol: Subclass of AvdModel.
+                                    aaa: Subclass of AvdModel.
+
+                                """
+
                     class AddressLocking(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -79494,7 +82037,7 @@ class EosDesigns(EosDesignsRootModel):
                         "sflow": {"type": bool},
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
-                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "dot1x": {"type": Dot1x},
                         "address_locking": {"type": AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
@@ -79692,8 +82235,12 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-                    """802.1x"""
+                    dot1x: Dot1x
+                    """
+                    802.1x
+
+                    Subclass of AvdModel.
+                    """
                     address_locking: AddressLocking
                     """
                     Address locking settings applied on the port.
@@ -79797,7 +82344,7 @@ class EosDesigns(EosDesignsRootModel):
                             sflow: bool | UndefinedType | None = Undefined,
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
-                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            dot1x: Dot1x | UndefinedType = Undefined,
                             address_locking: AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
@@ -79957,7 +82504,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
-                                dot1x: 802.1x
+                                dot1x:
+                                   802.1x
+
+                                   Subclass of AvdModel.
                                 address_locking:
                                    Address locking settings applied on the port.
 
@@ -114828,16 +117378,20 @@ class EosDesigns(EosDesignsRootModel):
     """
     IPv4 extended access-lists supporting substitution on certain fields.
     These access-lists can be
-    referenced under node settings `l3_interfaces`, and will only be configured on devices where they
-    are in use.
+    referenced under node settings `l3_interfaces`, or using
+    `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+    network ports, and port
+    profiles. They will only be configured on devices where they are in use.
 
-    The substitution is useful when assigning the same access-list on multiple interfaces,
-    but where certain fields require unique values like the "interface_ip" or "peer_ip".
-    When using
-    substitution, the interface name will be appended to the ACL name.
+    The substitution is useful
+    when assigning the same access-list on multiple interfaces,
+    but where certain fields require unique
+    values like the "interface_ip" or "peer_ip".
+    When using substitution, the interface name will be
+    appended to the ACL name.
 
-    Subclass of AvdIndexedList with
-    `Ipv4AclsItem` items. Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is
+    `name` (`str`).
     """
     ipv4_prefix_list_catalog: Ipv4PrefixListCatalog
     """
@@ -114868,38 +117422,40 @@ class EosDesigns(EosDesignsRootModel):
     These access-lists can be
     referenced using `ipv6_acl_in` / `ipv6_acl_out` under network services `svis`, or under node type
     `l3_interfaces` and `l3_port_channels`,
-    and will only be configured on devices where they are in
-    use.
+    or using `dot1x.authentication_failure.allow_access_list`
+    under connected endpoints, network ports, and port profiles.
+    They will only be configured on devices
+    where they are in use.
 
-    The substitution is useful when assigning the same access-list on multiple interfaces where
-    certain fields require unique values.
-    When using substitution, the interface name will be appended
-    to the ACL name.
+    The substitution is useful when assigning the same access-list on multiple
+    interfaces where certain fields require unique values.
+    When using substitution, the interface name
+    will be appended to the ACL name.
 
-    The "interface_ipv6" substitution field is resolved per interface type:
-    - For
-    SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used
-    as a fallback.
-    - For L3 interfaces and L3 port-channels: resolved from the first entry of
-    `ipv6_addresses`.
-    If the required field is not set, the substitution will fail with an error.
+    The "interface_ipv6" substitution field is resolved per interface
+    type:
+    - For SVIs: resolved from `ipv6_address`. If not set, the first entry of
+    `ipv6_address_virtuals` is used as a fallback.
+    - For L3 interfaces and L3 port-channels: resolved
+    from the first entry of `ipv6_addresses`.
+    If the required field is not set, the substitution will
+    fail with an error.
 
-    The
-    "peer_ipv6" substitution field is resolved per interface type:
-    - For SVIs: not supported.
-    Substitution will fail with an error if used.
-    - For network services L3 interfaces and L3 port-
-    channels: not supported. Substitution will fail with an error if used.
-    - For node type L3 interfaces
-    and L3 port-channels: resolved from `peer_ipv6`.
-    If `peer_ipv6` is not set on the interface, the
-    substitution will fail with an error.
+    The "peer_ipv6" substitution field is resolved per interface type:
+    - For SVIs:
+    not supported. Substitution will fail with an error if used.
+    - For network services L3 interfaces
+    and L3 port-channels: not supported. Substitution will fail with an error if used.
+    - For node type
+    L3 interfaces and L3 port-channels: resolved from `peer_ipv6`.
+    If `peer_ipv6` is not set on the
+    interface, the substitution will fail with an error.
 
-    Note: The "interface_ip" token is deprecated and will be
-    removed in AVD 7.0.0. Use "interface_ipv6" instead.
+    Note: The "interface_ip" token is deprecated
+    and will be removed in AVD 7.0.0. Use "interface_ipv6" instead.
 
-    Subclass of AvdIndexedList with `Ipv6AclsItem`
-    items. Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with
+    `Ipv6AclsItem` items. Primary key is `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
@@ -116981,16 +119537,20 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acls:
                    IPv4 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
-                   referenced under node settings `l3_interfaces`, and will only be configured on devices where they
-                   are in use.
+                   referenced under node settings `l3_interfaces`, or using
+                   `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+                   network ports, and port
+                   profiles. They will only be configured on devices where they are in use.
 
-                   The substitution is useful when assigning the same access-list on multiple interfaces,
-                   but where certain fields require unique values like the "interface_ip" or "peer_ip".
-                   When using
-                   substitution, the interface name will be appended to the ACL name.
+                   The substitution is useful
+                   when assigning the same access-list on multiple interfaces,
+                   but where certain fields require unique
+                   values like the "interface_ip" or "peer_ip".
+                   When using substitution, the interface name will be
+                   appended to the ACL name.
 
-                   Subclass of AvdIndexedList with
-                   `Ipv4AclsItem` items. Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is
+                   `name` (`str`).
                 ipv4_prefix_list_catalog:
                    IPv4 prefix-list catalog.
                    Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in
@@ -117015,38 +119575,40 @@ class EosDesigns(EosDesignsRootModel):
                    These access-lists can be
                    referenced using `ipv6_acl_in` / `ipv6_acl_out` under network services `svis`, or under node type
                    `l3_interfaces` and `l3_port_channels`,
-                   and will only be configured on devices where they are in
-                   use.
+                   or using `dot1x.authentication_failure.allow_access_list`
+                   under connected endpoints, network ports, and port profiles.
+                   They will only be configured on devices
+                   where they are in use.
 
-                   The substitution is useful when assigning the same access-list on multiple interfaces where
-                   certain fields require unique values.
-                   When using substitution, the interface name will be appended
-                   to the ACL name.
+                   The substitution is useful when assigning the same access-list on multiple
+                   interfaces where certain fields require unique values.
+                   When using substitution, the interface name
+                   will be appended to the ACL name.
 
-                   The "interface_ipv6" substitution field is resolved per interface type:
-                   - For
-                   SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used
-                   as a fallback.
-                   - For L3 interfaces and L3 port-channels: resolved from the first entry of
-                   `ipv6_addresses`.
-                   If the required field is not set, the substitution will fail with an error.
+                   The "interface_ipv6" substitution field is resolved per interface
+                   type:
+                   - For SVIs: resolved from `ipv6_address`. If not set, the first entry of
+                   `ipv6_address_virtuals` is used as a fallback.
+                   - For L3 interfaces and L3 port-channels: resolved
+                   from the first entry of `ipv6_addresses`.
+                   If the required field is not set, the substitution will
+                   fail with an error.
 
-                   The
-                   "peer_ipv6" substitution field is resolved per interface type:
-                   - For SVIs: not supported.
-                   Substitution will fail with an error if used.
-                   - For network services L3 interfaces and L3 port-
-                   channels: not supported. Substitution will fail with an error if used.
-                   - For node type L3 interfaces
-                   and L3 port-channels: resolved from `peer_ipv6`.
-                   If `peer_ipv6` is not set on the interface, the
-                   substitution will fail with an error.
+                   The "peer_ipv6" substitution field is resolved per interface type:
+                   - For SVIs:
+                   not supported. Substitution will fail with an error if used.
+                   - For network services L3 interfaces
+                   and L3 port-channels: not supported. Substitution will fail with an error if used.
+                   - For node type
+                   L3 interfaces and L3 port-channels: resolved from `peer_ipv6`.
+                   If `peer_ipv6` is not set on the
+                   interface, the substitution will fail with an error.
 
-                   Note: The "interface_ip" token is deprecated and will be
-                   removed in AVD 7.0.0. Use "interface_ipv6" instead.
+                   Note: The "interface_ip" token is deprecated
+                   and will be removed in AVD 7.0.0. Use "interface_ipv6" instead.
 
-                   Subclass of AvdIndexedList with `Ipv6AclsItem`
-                   items. Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with
+                   `Ipv6AclsItem` items. Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.

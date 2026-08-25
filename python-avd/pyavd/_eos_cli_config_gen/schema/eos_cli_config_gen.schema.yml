@@ -4545,6 +4545,12 @@ keys:
                   max: 4094
                   convert_types:
                   - str
+                allow_access_list:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Name of the IPv4/IPv6 standard/extended access list
+                    to be applied to unauthenticated traffic.
             host_mode:
               type: dict
               keys:
