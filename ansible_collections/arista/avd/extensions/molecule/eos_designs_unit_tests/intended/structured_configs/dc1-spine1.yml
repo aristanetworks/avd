@@ -599,6 +599,7 @@ router_bgp:
     metadata:
       peer: dc1-leaf1a
     description: dc1-leaf1a
+    password: kOhRpwk9ntubU34C5v9pnw==
   - ip_address: 192.168.42.44
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65102'
@@ -611,6 +612,7 @@ router_bgp:
     metadata:
       peer: dc1-leaf2b
     description: dc1-leaf2b
+    password: HghkdQ0sw7AtuM2SiimoYg==
   redistribute:
     connected:
       enabled: true

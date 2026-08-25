@@ -450,6 +450,7 @@ router_bgp:
     metadata:
       peer: dc1-spine1
     description: dc1-spine1
+    password: 5B0XC3gLnsY/sTjyPTZ8og==
   - ip_address: 192.168.42.41
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65001'
@@ -462,6 +463,7 @@ router_bgp:
     metadata:
       peer: dc1-spine3
     description: dc1-spine3
+    password: FD1BuYF9U5DLXObFCDeVjw==
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65001'
