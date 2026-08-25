@@ -283,7 +283,6 @@ class UtilsMixin(Protocol):
             if not acl_found:
                 msg = f"ipv4_acls[name={acl_name}] or ipv6_acls[name={acl_name}]"
                 raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
-            dot1x.authentication_failure.allow_access_list = acl_name
 
         return dot1x
 
