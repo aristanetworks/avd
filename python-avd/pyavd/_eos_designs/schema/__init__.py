@@ -985,6 +985,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
+            "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
@@ -1032,6 +1033,16 @@ class EosDesigns(EosDesignsRootModel):
         allowed' on both ends
         and on all 'uplink_switches' even when available VLANs differ between the
         'uplink_switches'.
+
+        Default value: `False`
+        """
+        fix_match_ipv6_prefix_list_on_mlag_route_map: bool
+        """
+        Available from AVD 6.4.0.
+        Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
+        ipv6 address prefix-list`
+        instead of `match ip address prefix-list` when using
+        `underlay_ipv6_numbered`.
 
         Default value: `False`
         """
@@ -1114,6 +1125,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
+                fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
@@ -1151,6 +1163,12 @@ class EosDesigns(EosDesignsRootModel):
                        allowed' on both ends
                        and on all 'uplink_switches' even when available VLANs differ between the
                        'uplink_switches'.
+                    fix_match_ipv6_prefix_list_on_mlag_route_map:
+                       Available from AVD 6.4.0.
+                       Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
+                       ipv6 address prefix-list`
+                       instead of `match ip address prefix-list` when using
+                       `underlay_ipv6_numbered`.
                     fix_radius_server_group_tls:
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global
@@ -19307,9 +19325,20 @@ class EosDesigns(EosDesignsRootModel):
         class WebAuthentication(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "url": {"type": str}, "ssl_profile": {"type": str}, "start_limit_infinite": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "ipv4_acl": {"type": str},
+                "url": {"type": str},
+                "ssl_profile": {"type": str},
+                "start_limit_infinite": {"type": bool},
+            }
             enabled: bool
             """Enable the Web Authentication feature."""
+            ipv4_acl: str | None
+            """
+            Extended IPv4 ACL name.
+            This ACL must be present in `ipv4_acls` catalog.
+            """
             url: str | None
             """
             Static captive portal URL used when the RADIUS server does not provide one during the authentication
@@ -19338,6 +19367,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
+                    ipv4_acl: str | UndefinedType | None = Undefined,
                     url: str | UndefinedType | None = Undefined,
                     ssl_profile: str | UndefinedType | None = Undefined,
                     start_limit_infinite: bool | UndefinedType | None = Undefined,
@@ -19350,6 +19380,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: Enable the Web Authentication feature.
+                        ipv4_acl:
+                           Extended IPv4 ACL name.
+                           This ACL must be present in `ipv4_acls` catalog.
                         url:
                            Static captive portal URL used when the RADIUS server does not provide one during the authentication
                            workflow.
@@ -22840,13 +22873,14 @@ class EosDesigns(EosDesignsRootModel):
                 "fragments": {"type": bool},
                 "ttl": {"type": int},
                 "ttl_match": {"type": str, "default": "eq"},
+                "log": {"type": bool},
+                "copy_captive_portal": {"type": bool},
                 "vlan_inner": {"type": bool, "default": False},
                 "source_ports_match": {"type": str, "default": "eq"},
                 "source_ports": {"type": SourcePorts},
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
-                "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
                 "nexthop_group": {"type": str},
@@ -22898,6 +22932,19 @@ class EosDesigns(EosDesignsRootModel):
             """TTL value."""
             ttl_match: TtlMatch
             """Default value: `"eq"`"""
+            log: bool | None
+            """
+            Log matches against this rule.
+            For deny entries, mutually exclusive with `copy_captive_portal`.
+            `copy_captive_portal` takes precedence.
+            """
+            copy_captive_portal: bool | None
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            For deny
+            entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+            """
             vlan_inner: bool
             """
             Render vlan and mask as inner vlan.
@@ -22916,8 +22963,6 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
-            log: bool | None
-            """Log matches against this rule."""
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -22949,13 +22994,14 @@ class EosDesigns(EosDesignsRootModel):
                     fragments: bool | UndefinedType | None = Undefined,
                     ttl: int | UndefinedType | None = Undefined,
                     ttl_match: TtlMatch | UndefinedType = Undefined,
+                    log: bool | UndefinedType | None = Undefined,
+                    copy_captive_portal: bool | UndefinedType | None = Undefined,
                     vlan_inner: bool | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
-                    log: bool | UndefinedType | None = Undefined,
                     icmp_type: str | UndefinedType | None = Undefined,
                     icmp_code: str | UndefinedType | None = Undefined,
                     nexthop_group: str | UndefinedType | None = Undefined,
@@ -23000,6 +23046,15 @@ class EosDesigns(EosDesignsRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
+                        log:
+                           Log matches against this rule.
+                           For deny entries, mutually exclusive with `copy_captive_portal`.
+                           `copy_captive_portal` takes precedence.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           For deny
+                           entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
                         vlan_inner:
                            Render vlan and mask as inner vlan.
                            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
@@ -23009,7 +23064,6 @@ class EosDesigns(EosDesignsRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
@@ -36616,9 +36670,38 @@ class EosDesigns(EosDesignsRootModel):
             class Bgp(AvdModel):
                 """Subclass of AvdModel."""
 
+                class GracefulRestart(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "restart_time": {"type": int, "default": 300}}
+                    enabled: bool
+                    """Enable or disable BGP graceful-restart for this VRF."""
+                    restart_time: int
+                    """
+                    Restart time in seconds.
+
+                    Default value: `300`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, restart_time: int | UndefinedType = Undefined) -> None:
+                            """
+                            GracefulRestart.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Enable or disable BGP graceful-restart for this VRF.
+                                restart_time: Restart time in seconds.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
                     "router_id": {"type": str, "default": "main_router_id"},
+                    "graceful_restart": {"type": GracefulRestart},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.RouterBgp.VrfsItem},
                 }
@@ -36648,6 +36731,15 @@ class EosDesigns(EosDesignsRootModel):
 
                 Default value: `"main_router_id"`
                 """
+                graceful_restart: GracefulRestart
+                """
+                BGP graceful-restart configuration for this VRF.
+                This setting is not supported for VRF default. Use
+                `bgp_graceful_restart` instead.
+
+
+                Subclass of AvdModel.
+                """
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                 structured_config: EosCliConfigGen.RouterBgp.VrfsItem
@@ -36660,6 +36752,7 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         enabled: bool | UndefinedType | None = Undefined,
                         router_id: str | UndefinedType = Undefined,
+                        graceful_restart: GracefulRestart | UndefinedType = Undefined,
                         raw_eos_cli: str | UndefinedType | None = Undefined,
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem | UndefinedType = Undefined,
                     ) -> None:
@@ -36690,6 +36783,13 @@ class EosDesigns(EosDesignsRootModel):
                                Router ID for this VRF. EOS will use the main BGP Router ID.
                                - "diagnostic_loopback" will use the IP
                                address of the VRF Diagnostic Loopback interface.
+                            graceful_restart:
+                               BGP graceful-restart configuration for this VRF.
+                               This setting is not supported for VRF default. Use
+                               `bgp_graceful_restart` instead.
+
+
+                               Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                             structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
 
@@ -87210,9 +87310,38 @@ class EosDesigns(EosDesignsRootModel):
                     class Bgp(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class GracefulRestart(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "restart_time": {"type": int, "default": 300}}
+                            enabled: bool
+                            """Enable or disable BGP graceful-restart for this VRF."""
+                            restart_time: int
+                            """
+                            Restart time in seconds.
+
+                            Default value: `300`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, restart_time: int | UndefinedType = Undefined) -> None:
+                                    """
+                                    GracefulRestart.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Enable or disable BGP graceful-restart for this VRF.
+                                        restart_time: Restart time in seconds.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "router_id": {"type": str, "default": "main_router_id"},
+                            "graceful_restart": {"type": GracefulRestart},
                             "raw_eos_cli": {"type": str},
                             "structured_config": {"type": EosCliConfigGen.RouterBgp.VrfsItem},
                         }
@@ -87242,6 +87371,15 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `"main_router_id"`
                         """
+                        graceful_restart: GracefulRestart
+                        """
+                        BGP graceful-restart configuration for this VRF.
+                        This setting is not supported for VRF default. Use
+                        `bgp_graceful_restart` instead.
+
+
+                        Subclass of AvdModel.
+                        """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem
@@ -87254,6 +87392,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 enabled: bool | UndefinedType | None = Undefined,
                                 router_id: str | UndefinedType = Undefined,
+                                graceful_restart: GracefulRestart | UndefinedType = Undefined,
                                 raw_eos_cli: str | UndefinedType | None = Undefined,
                                 structured_config: EosCliConfigGen.RouterBgp.VrfsItem | UndefinedType = Undefined,
                             ) -> None:
@@ -87284,6 +87423,13 @@ class EosDesigns(EosDesignsRootModel):
                                        Router ID for this VRF. EOS will use the main BGP Router ID.
                                        - "diagnostic_loopback" will use the IP
                                        address of the VRF Diagnostic Loopback interface.
+                                    graceful_restart:
+                                       BGP graceful-restart configuration for this VRF.
+                                       This setting is not supported for VRF default. Use
+                                       `bgp_graceful_restart` instead.
+
+
+                                       Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                                     structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
 

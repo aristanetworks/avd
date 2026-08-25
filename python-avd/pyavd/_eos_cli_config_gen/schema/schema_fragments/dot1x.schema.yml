@@ -230,7 +230,7 @@ keys:
             description: Set captive-portal start limit to infinite.
           access_list_ipv4:
             type: str
-            description: Standard access-list name.
+            description: Extended access-list name.
       supplicant:
         type: dict
         keys:
