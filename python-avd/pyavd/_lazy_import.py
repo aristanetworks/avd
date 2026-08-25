@@ -32,9 +32,18 @@ def get_lazy_attr(name: str, lazy_imports: LazyImports, namespace: dict[str, Any
         value = getattr(import_module(module_name), attribute_name)
     except Exception as error:
         package_name = namespace.get("__name__", "<unknown>")
+        note = f"Lazy export '{package_name}.{name}' maps to attribute '{attribute_name}' in module '{module_name}'."
+        if isinstance(error, AttributeError):
+            # AttributeError makes `from package import name` fall back to a same-named submodule, potentially returning the module instead.
+            import_error = ImportError(str(error))
+            # TODO: Call import_error.add_note directly once support for Python 3.10 is removed.
+            if callable(add_note := getattr(import_error, "add_note", None)):
+                add_note(note)
+            raise import_error from error
+
         # TODO: Call error.add_note directly once support for Python 3.10 is removed.
         if callable(add_note := getattr(error, "add_note", None)):
-            add_note(f"Lazy export '{package_name}.{name}' maps to attribute '{attribute_name}' in module '{module_name}'.")
+            add_note(note)
         raise
 
     namespace[name] = value
@@ -71,6 +80,11 @@ def install_lazy_imports(lazy_imports: LazyImports, namespace: dict[str, Any], a
     ``additional_exports`` are existing package attributes that should be
     included in ``__all__`` but are not lazy. Lazy mappings are expected to
     resolve to functions, classes, or other non-module attributes.
+
+    Exceptions raised while importing the target module are preserved. A missing
+    target attribute is raised as ``ImportError`` with the original
+    ``AttributeError`` chained as its cause, preventing Python's from-import
+    machinery from silently falling back to a same-named submodule.
 
     This runtime setup is invisible to static type checkers. Package initializers
     must still declare their lazy exports under ``TYPE_CHECKING`` so consumers
