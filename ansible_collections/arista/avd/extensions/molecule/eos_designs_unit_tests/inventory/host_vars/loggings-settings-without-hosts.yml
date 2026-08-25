@@ -1,5 +1,4 @@
 ---
-# Test case for minimal monitor_layer1 configuration
 type: l3leaf
 l3leaf:
   defaults:
@@ -7,12 +6,15 @@ l3leaf:
     loopback_ipv4_offset: 8
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     virtual_router_mac_address: 00:dc:00:00:00:0a
-    mgmt_ip: 1.1.10.53
+    mgmt_ip: 1.1.10.15
   nodes:
-    - name: monitor-layer1-minimal
-      id: 153
-      bgp_as: 153
+    - name: loggings-settings-without-hosts
+      id: 15
+      bgp_as: 15
 
 logging_settings:
-  monitor_layer1:
-    enabled: true
+  console: errors
+  monitor: disabled
+  buffered:
+    size: 1000000
+    level: warnings
