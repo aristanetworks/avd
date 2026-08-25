@@ -8317,15 +8317,18 @@ class EosDesigns(EosDesignsRootModel):
             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
             If the
             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-            Hostnames
-            configured here cannot also be configured under `evpn_route_servers` on the same node.
-            If a remote
-            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-            peering.
-
-
-            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-            (`str`).
+            If a
+            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+            the EVPN Gateway core peering is configured on the local node.
+            Suppression is evaluated
+            independently on each node based on its local EVPN Route Server and client relationships and
+            `evpn_gateway.remote_peers` configuration.
+            When one node uses an EVPN Gateway core peering and the
+            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+            both sides use the same password.
+            If an explicit `ip_address` differs from the regular EVPN peering
+            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -8374,15 +8377,18 @@ class EosDesigns(EosDesignsRootModel):
                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                            If the
                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                           Hostnames
-                           configured here cannot also be configured under `evpn_route_servers` on the same node.
-                           If a remote
-                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                           peering.
-
-
-                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                           (`str`).
+                           If a
+                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                           the EVPN Gateway core peering is configured on the local node.
+                           Suppression is evaluated
+                           independently on each node based on its local EVPN Route Server and client relationships and
+                           `evpn_gateway.remote_peers` configuration.
+                           When one node uses an EVPN Gateway core peering and the
+                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                           both sides use the same password.
+                           If an explicit `ip_address` differs from the regular EVPN peering
+                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -11527,8 +11533,6 @@ class EosDesigns(EosDesignsRootModel):
         evpn_route_servers: EvpnRouteServers
         """
         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-        Hostnames configured here cannot also
-        be configured under `evpn_gateway.remote_peers` on the same node.
 
 
         Subclass of AvdList with `str`
@@ -12490,8 +12494,6 @@ class EosDesigns(EosDesignsRootModel):
                        Default is set in node_type definition from node_type_keys.
                     evpn_route_servers:
                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                       Hostnames configured here cannot also
-                       be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                        Subclass of AvdList with `str`
@@ -13831,15 +13833,18 @@ class EosDesigns(EosDesignsRootModel):
             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
             If the
             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-            Hostnames
-            configured here cannot also be configured under `evpn_route_servers` on the same node.
-            If a remote
-            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-            peering.
-
-
-            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-            (`str`).
+            If a
+            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+            the EVPN Gateway core peering is configured on the local node.
+            Suppression is evaluated
+            independently on each node based on its local EVPN Route Server and client relationships and
+            `evpn_gateway.remote_peers` configuration.
+            When one node uses an EVPN Gateway core peering and the
+            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+            both sides use the same password.
+            If an explicit `ip_address` differs from the regular EVPN peering
+            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -13888,15 +13893,18 @@ class EosDesigns(EosDesignsRootModel):
                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                            If the
                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                           Hostnames
-                           configured here cannot also be configured under `evpn_route_servers` on the same node.
-                           If a remote
-                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                           peering.
-
-
-                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                           (`str`).
+                           If a
+                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                           the EVPN Gateway core peering is configured on the local node.
+                           Suppression is evaluated
+                           independently on each node based on its local EVPN Route Server and client relationships and
+                           `evpn_gateway.remote_peers` configuration.
+                           When one node uses an EVPN Gateway core peering and the
+                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                           both sides use the same password.
+                           If an explicit `ip_address` differs from the regular EVPN peering
+                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -17052,8 +17060,6 @@ class EosDesigns(EosDesignsRootModel):
         evpn_route_servers: EvpnRouteServers
         """
         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-        Hostnames configured here cannot also
-        be configured under `evpn_gateway.remote_peers` on the same node.
 
 
         Subclass of AvdList with `str`
@@ -18024,8 +18030,6 @@ class EosDesigns(EosDesignsRootModel):
                        Default is set in node_type definition from node_type_keys.
                     evpn_route_servers:
                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                       Hostnames configured here cannot also
-                       be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                        Subclass of AvdList with `str`
@@ -54901,15 +54905,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -54958,15 +54965,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -58097,8 +58107,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -59043,8 +59051,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -60392,15 +60398,18 @@ class EosDesigns(EosDesignsRootModel):
                             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                             If the
                             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                            Hostnames
-                            configured here cannot also be configured under `evpn_route_servers` on the same node.
-                            If a remote
-                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                            peering.
-
-
-                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                            (`str`).
+                            If a
+                            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                            the EVPN Gateway core peering is configured on the local node.
+                            Suppression is evaluated
+                            independently on each node based on its local EVPN Route Server and client relationships and
+                            `evpn_gateway.remote_peers` configuration.
+                            When one node uses an EVPN Gateway core peering and the
+                            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                            both sides use the same password.
+                            If an explicit `ip_address` differs from the regular EVPN peering
+                            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -60449,15 +60458,18 @@ class EosDesigns(EosDesignsRootModel):
                                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                            If the
                                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                           Hostnames
-                                           configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                           If a remote
-                                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                           peering.
-
-
-                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                           (`str`).
+                                           If a
+                                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                           the EVPN Gateway core peering is configured on the local node.
+                                           Suppression is evaluated
+                                           independently on each node based on its local EVPN Route Server and client relationships and
+                                           `evpn_gateway.remote_peers` configuration.
+                                           When one node uses an EVPN Gateway core peering and the
+                                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                           both sides use the same password.
+                                           If an explicit `ip_address` differs from the regular EVPN peering
+                                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -63609,8 +63621,6 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_route_servers: EvpnRouteServers
                         """
                         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                        Hostnames configured here cannot also
-                        be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                         Subclass of AvdList with `str`
@@ -64564,8 +64574,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Default is set in node_type definition from node_type_keys.
                                     evpn_route_servers:
                                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                       Hostnames configured here cannot also
-                                       be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                        Subclass of AvdList with `str`
@@ -65838,15 +65846,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -65895,15 +65906,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -69049,8 +69063,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -70006,8 +70018,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -71355,15 +71365,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -71412,15 +71425,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -74563,8 +74579,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -75518,8 +75532,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -91464,15 +91476,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -91521,15 +91536,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -94660,8 +94678,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -95606,8 +95622,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -96955,15 +96969,18 @@ class EosDesigns(EosDesignsRootModel):
                             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                             If the
                             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                            Hostnames
-                            configured here cannot also be configured under `evpn_route_servers` on the same node.
-                            If a remote
-                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                            peering.
-
-
-                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                            (`str`).
+                            If a
+                            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                            the EVPN Gateway core peering is configured on the local node.
+                            Suppression is evaluated
+                            independently on each node based on its local EVPN Route Server and client relationships and
+                            `evpn_gateway.remote_peers` configuration.
+                            When one node uses an EVPN Gateway core peering and the
+                            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                            both sides use the same password.
+                            If an explicit `ip_address` differs from the regular EVPN peering
+                            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -97012,15 +97029,18 @@ class EosDesigns(EosDesignsRootModel):
                                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                            If the
                                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                           Hostnames
-                                           configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                           If a remote
-                                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                           peering.
-
-
-                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                           (`str`).
+                                           If a
+                                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                           the EVPN Gateway core peering is configured on the local node.
+                                           Suppression is evaluated
+                                           independently on each node based on its local EVPN Route Server and client relationships and
+                                           `evpn_gateway.remote_peers` configuration.
+                                           When one node uses an EVPN Gateway core peering and the
+                                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                           both sides use the same password.
+                                           If an explicit `ip_address` differs from the regular EVPN peering
+                                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -100172,8 +100192,6 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_route_servers: EvpnRouteServers
                         """
                         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                        Hostnames configured here cannot also
-                        be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                         Subclass of AvdList with `str`
@@ -101127,8 +101145,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Default is set in node_type definition from node_type_keys.
                                     evpn_route_servers:
                                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                       Hostnames configured here cannot also
-                                       be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                        Subclass of AvdList with `str`
@@ -102401,15 +102417,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -102458,15 +102477,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -105612,8 +105634,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -106569,8 +106589,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -107918,15 +107936,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -107975,15 +107996,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -111126,8 +111150,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -112081,8 +112103,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`

@@ -13738,9 +13738,6 @@ $defs:
               table: node-type-bgp-configuration
             description: 'List of nodes acting as EVPN Route-Servers / Route-Reflectors.
 
-              Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers`
-              on the same node.
-
               '
             type: list
             items:
@@ -13865,11 +13862,21 @@ $defs:
                   If the peer''s hostname can not be found in the inventory, ip_address
                   and bgp_as must be defined.
 
-                  Hostnames configured here cannot also be configured under `evpn_route_servers`
-                  on the same node.
+                  If a remote peer is also an EVPN Route Server or Route Server client
+                  and uses the same IP address, only the EVPN Gateway core peering
+                  is configured on the local node.
 
-                  If a remote peer is also an uplink switch, AVD treats the EVPN peering
-                  to that peer as an EVPN Gateway core peering.
+                  Suppression is evaluated independently on each node based on its
+                  local EVPN Route Server and client relationships and `evpn_gateway.remote_peers`
+                  configuration.
+
+                  When one node uses an EVPN Gateway core peering and the other uses
+                  a regular EVPN peering, AVD does not synchronize BGP passwords.
+                  The user must ensure that both sides use the same password.
+
+                  If an explicit `ip_address` differs from the regular EVPN peering
+                  address, the EVPN Gateway core peering is configured in addition
+                  to the regular EVPN peering.
 
                   '
                 type: list

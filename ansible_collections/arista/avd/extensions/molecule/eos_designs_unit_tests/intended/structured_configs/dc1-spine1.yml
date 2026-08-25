@@ -358,6 +358,14 @@ router_bgp:
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
+  - name: EVPN-OVERLAY-CORE
+    metadata:
+      type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 15
+    send_community: all
+    maximum_routes: 0
   neighbors:
   - ip_address: 172.31.254.1
     peer_group: UNDERLAY-PEERS
@@ -481,6 +489,12 @@ router_bgp:
     metadata:
       peer: mlag-ospf-l3leaf1b
     description: mlag-ospf-l3leaf1b_Ethernet1
+  - ip_address: 192.168.255.14
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65104'
+    metadata:
+      peer: dc1-bl1a
+    description: dc1-bl1a
   - ip_address: 192.168.255.15
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65105'
@@ -511,24 +525,12 @@ router_bgp:
     metadata:
       peer: dc1-cl1b
     description: dc1-cl1b
-  - ip_address: 192.168.42.42
-    peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '65101'
-    metadata:
-      peer: dc1-leaf1a
-    description: dc1-leaf1a
   - ip_address: 192.168.255.10
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
     metadata:
       peer: dc1-leaf2a
     description: dc1-leaf2a
-  - ip_address: 192.168.255.11
-    peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '65102'
-    metadata:
-      peer: dc1-leaf2b
-    description: dc1-leaf2b
   - ip_address: 192.168.255.12
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
@@ -591,6 +593,26 @@ router_bgp:
     metadata:
       peer: mlag-ospf-l3leaf1b
     description: mlag-ospf-l3leaf1b
+  - ip_address: 192.168.42.42
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65101'
+    metadata:
+      peer: dc1-leaf1a
+    description: dc1-leaf1a
+    password: kOhRpwk9ntubU34C5v9pnw==
+  - ip_address: 192.168.42.44
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65102'
+    metadata:
+      peer: dc1-leaf2a
+    description: dc1-leaf2a
+  - ip_address: 192.168.255.11
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65102'
+    metadata:
+      peer: dc1-leaf2b
+    description: dc1-leaf2b
+    password: HghkdQ0sw7AtuM2SiimoYg==
   redistribute:
     connected:
       enabled: true
@@ -599,11 +621,16 @@ router_bgp:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-CORE
+      activate: true
+      domain_remote: true
   address_family_ipv4:
     peer_groups:
     - name: UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: EVPN-OVERLAY-CORE
       activate: false
 service_routing_protocols_model: multi-agent
 snmp_server:
