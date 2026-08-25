@@ -13088,6 +13088,7 @@ ipv6 access-list TEST2
    counters per-entry
    5 permit ipv6 2001:db8::/64 any
    10 deny ipv6 2001:db8::/32 any
+   20 deny ipv6 2001:db9::/32 any copy captive-portal
 !
 ipv6 access-list TEST3
    5 deny ipv6 2001:db8:1000::/64 any
