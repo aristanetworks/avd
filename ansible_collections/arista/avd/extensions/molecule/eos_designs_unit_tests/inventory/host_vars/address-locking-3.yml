@@ -15,7 +15,7 @@ l3leaf:
       inband_mgmt_interface: Vlan100
 
 address_locking_settings:
-  # Testing that dhcp_server_interfaces is ignored when local_interface is set
+  # Testing that dhcp_server_interfaces is ignored without the future knob when local_interface is set
   dhcp_server_interfaces:
     - Ethernet1
   dhcp_servers_ipv4:

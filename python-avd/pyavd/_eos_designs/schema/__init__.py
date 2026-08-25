@@ -915,16 +915,18 @@ class EosDesigns(EosDesignsRootModel):
         of `default_mgmt_method`.
           - Any other string will be used directly as the local interface.
         When
-        `local_interface` is set, `dhcp_server_interfaces` is ignored.
-        When neither `local_interface` nor
-        `dhcp_server_interfaces` is set, `local_interface` defaults to `use_default_mgmt_method_interface`.
+        `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
+        exclusive with `dhcp_server_interfaces`.
         """
         dhcp_server_interfaces: DhcpServerInterfaces
         """
         The list of interfaces connected to the DHCP server.
-        This setting is ignored when `local_interface`
-        is set.
-        Requires EOS version 4.36 or later.
+        Requires
+        `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
+        ignored.
+        When enabled, this setting is mutually exclusive with `local_interface`.
+        Requires EOS
+        version 4.36 or later.
 
         Subclass of AvdList with `str` items.
         """
@@ -967,14 +969,16 @@ class EosDesigns(EosDesignsRootModel):
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
                        When
-                       `local_interface` is set, `dhcp_server_interfaces` is ignored.
-                       When neither `local_interface` nor
-                       `dhcp_server_interfaces` is set, `local_interface` defaults to `use_default_mgmt_method_interface`.
+                       `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
+                       exclusive with `dhcp_server_interfaces`.
                     dhcp_server_interfaces:
                        The list of interfaces connected to the DHCP server.
-                       This setting is ignored when `local_interface`
-                       is set.
-                       Requires EOS version 4.36 or later.
+                       Requires
+                       `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
+                       ignored.
+                       When enabled, this setting is mutually exclusive with `local_interface`.
+                       Requires EOS
+                       version 4.36 or later.
 
                        Subclass of AvdList with `str` items.
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
@@ -993,6 +997,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
+            "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
@@ -1041,6 +1046,16 @@ class EosDesigns(EosDesignsRootModel):
         allowed' on both ends
         and on all 'uplink_switches' even when available VLANs differ between the
         'uplink_switches'.
+
+        Default value: `False`
+        """
+        fix_address_locking_dhcp_server_interfaces: bool
+        """
+        Available from AVD 6.4.0.
+        Fix support for `address_locking_settings.dhcp_server_interfaces`.
+        When
+        enabled, `address_locking_settings.dhcp_server_interfaces` and
+        `address_locking_settings.local_interface` are mutually exclusive.
 
         Default value: `False`
         """
@@ -1133,6 +1148,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
+                fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
@@ -1171,6 +1187,12 @@ class EosDesigns(EosDesignsRootModel):
                        allowed' on both ends
                        and on all 'uplink_switches' even when available VLANs differ between the
                        'uplink_switches'.
+                    fix_address_locking_dhcp_server_interfaces:
+                       Available from AVD 6.4.0.
+                       Fix support for `address_locking_settings.dhcp_server_interfaces`.
+                       When
+                       enabled, `address_locking_settings.dhcp_server_interfaces` and
+                       `address_locking_settings.local_interface` are mutually exclusive.
                     fix_match_ipv6_prefix_list_on_mlag_route_map:
                        Available from AVD 6.4.0.
                        Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
