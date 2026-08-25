@@ -1,8 +1,28 @@
 ---
+- name: Create structured-config directory for no-TOC test
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/structured_config_no_toc"
+    state: directory
+    mode: "0775"
+
+- name: Copy structured config for no-TOC test
+  ansible.builtin.copy:
+    src: "{{ structured_config_dir }}/testhost.yml"
+    dest: "{{ actual_output_dir }}/structured_config_no_toc/testhost.yml"
+    mode: "0664"
+
+- name: Disable documentation TOC in structured config for this test
+  ansible.builtin.blockinfile:
+    path: "{{ actual_output_dir }}/structured_config_no_toc/testhost.yml"
+    marker: "# {mark} no_toc_for_test"
+    block: |
+      eos_cli_config_gen_documentation:
+        toc: false
+
 - name: Validate eos_cli_config_gen inputs for no-custom-template test
   arista.avd.validate_inputs:
     schema_name: eos_config
-    input_dir: "{{ structured_config_dir }}"
+    input_dir: "{{ actual_output_dir }}/structured_config_no_toc"
     input_suffix: yml
     read_from_input_dir: true
     tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_no_custom"
