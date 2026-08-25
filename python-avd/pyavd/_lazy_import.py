@@ -28,7 +28,15 @@ def get_lazy_attr(name: str, lazy_imports: LazyImports, namespace: dict[str, Any
     except KeyError as error:
         raise AttributeError(name) from error
 
-    value = getattr(import_module(module_name), attribute_name)
+    try:
+        value = getattr(import_module(module_name), attribute_name)
+    except Exception as error:
+        package_name = namespace.get("__name__", "<unknown>")
+        # TODO: Call error.add_note directly once support for Python 3.10 is removed.
+        if callable(add_note := getattr(error, "add_note", None)):
+            add_note(f"Lazy export '{package_name}.{name}' maps to attribute '{attribute_name}' in module '{module_name}'.")
+        raise
+
     namespace[name] = value
     return value
 
