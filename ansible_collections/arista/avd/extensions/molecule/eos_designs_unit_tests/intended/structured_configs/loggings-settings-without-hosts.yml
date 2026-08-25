@@ -3,32 +3,36 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: monitor-layer1-minimal
+hostname: loggings-settings-without-hosts
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+logging:
+  console: errors
+  monitor: disabled
+  buffered:
+    size: 1000000
+    level: warnings
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.161/32
+  ip_address: 192.168.255.23/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.254.161/32
+  ip_address: 192.168.254.23/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 1.1.10.53
+  ip_address: 1.1.10.15
   type: oob
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-monitor_layer1:
-  enabled: true
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -49,8 +53,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '153'
-  router_id: 192.168.255.161
+  as: '15'
+  router_id: 192.168.255.23
   maximum_paths:
     paths: 4
   updates:
@@ -74,7 +78,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: monitor-layer1-minimal_VTEP
+    description: loggings-settings-without-hosts_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
