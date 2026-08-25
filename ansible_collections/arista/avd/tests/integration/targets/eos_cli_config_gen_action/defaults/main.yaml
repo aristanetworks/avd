@@ -2,11 +2,11 @@
 avd_ignore_requirements: true
 testcase: '*'
 collection_path: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATH') }}/ansible_collections/arista/avd/tests"
-inv_dir: "{{ collection_path }}/inventory/eos_cli_config_gen"
+inv_dir: "{{ collection_path }}/inventory/eos_cli_config_gen_action"
 structured_config_dir: "{{ inv_dir }}/structured_config"
 expected_output_dir: "{{ inv_dir }}/expected_output"
 actual_output_dir: "{{ collection_path }}/output"
-relative_custom_templates_dir: "targets/eos_cli_config_gen/custom_templates"
+relative_custom_templates_dir: "targets/eos_cli_config_gen_action/custom_templates"
 
 fabric_name: testgroup
 type: l2leaf

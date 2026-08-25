@@ -58,6 +58,11 @@
     src: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.cfg"
   register: regenerated_config
 
+- name: Load regenerated documentation
+  ansible.builtin.slurp:
+    src: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.md"
+  register: regenerated_doc
+
 - name: Validate result
   ansible.builtin.assert:
     that:
@@ -68,3 +73,5 @@
       - result_third is success
       - result_third.changed == true
       - "'! integration tamper marker' not in (regenerated_config.content | b64decode)"
+      - "'## Table of Contents' not in (regenerated_doc.content | b64decode)"
+      - "'## Custom Templates' not in (regenerated_doc.content | b64decode)"
