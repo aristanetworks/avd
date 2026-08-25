@@ -1238,7 +1238,9 @@ interface {{ ethernet_interface.name }}
    dot1x pae {{ ethernet_interface.dot1x.pae.mode }} {{ ethernet_interface.dot1x.pae.supplicant_profile }}
 {%         endif %}
 {%         if ethernet_interface.dot1x.authentication_failure is arista.avd.defined %}
-{%             if ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('allow') %}
+{%             if ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('allow') and
+                (ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined or
+                ethernet_interface.dot1x.authentication_failure.allow_access_list is arista.avd.defined) %}
 {%                 set dot1x_auth_failure_allow_cli = "dot1x authentication failure action traffic allow" %}
 {%                 if ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
 {%                     set dot1x_auth_failure_allow_cli = dot1x_auth_failure_allow_cli ~ " vlan " ~ ethernet_interface.dot1x.authentication_failure.allow_vlan %}
