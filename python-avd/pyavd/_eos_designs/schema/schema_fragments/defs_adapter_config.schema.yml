@@ -198,6 +198,8 @@ $defs:
             keys:
               allow_access_list:
                 type: str
+                convert_types:
+                  - int
                 description: |-
                   Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                   The access list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
