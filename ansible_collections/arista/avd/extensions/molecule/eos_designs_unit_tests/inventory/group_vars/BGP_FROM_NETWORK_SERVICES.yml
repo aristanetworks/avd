@@ -181,3 +181,25 @@ tenants:
           - ip_address: 10.10.41.42
             peer_group: VALIDATE_BGP_PEERS
             nodes: [bgp-from-network-services-41]
+      - name: graceful-restart-enabled
+        vrf_id: 105
+        address_families: []
+        bgp:
+          enabled: true
+          graceful_restart:
+            enabled: true
+            restart_time: 120
+      - name: graceful-restart-default_restart_time
+        vrf_id: 106
+        address_families: []
+        bgp:
+          enabled: true
+          graceful_restart:
+            enabled: true
+      - name: graceful-restart-disabled
+        vrf_id: 107
+        address_families: []
+        bgp:
+          enabled: true
+          graceful_restart:
+            enabled: false

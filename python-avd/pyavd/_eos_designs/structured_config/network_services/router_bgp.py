@@ -145,7 +145,19 @@ class RouterBgpMixin(Protocol):
                 if not self.shared_utils.bgp_enabled_for_vrf(vrf):
                     continue
 
+                if vrf.name == "default" and vrf.bgp.graceful_restart:
+                    context = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].bgp.graceful_restart"
+                    msg = f"The per-VRF setting '{context}' is not supported for VRF 'default'. Use the global 'bgp_graceful_restart' setting instead."
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
                 bgp_vrf = EosCliConfigGen.RouterBgp.VrfsItem()
+                if vrf.bgp.graceful_restart:
+                    if vrf.bgp.graceful_restart.enabled is False:
+                        bgp_vrf.no_graceful_restart = True
+                    else:
+                        bgp_vrf.graceful_restart.enabled = vrf.bgp.graceful_restart.enabled
+                        bgp_vrf.graceful_restart.restart_time = vrf.bgp.graceful_restart.restart_time
+
                 if vrf.bgp.raw_eos_cli:
                     bgp_vrf.eos_cli = vrf.bgp.raw_eos_cli
 
