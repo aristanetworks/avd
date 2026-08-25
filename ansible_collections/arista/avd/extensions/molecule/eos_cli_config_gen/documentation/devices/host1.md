@@ -8685,16 +8685,16 @@ ip virtual-router mac-address mlag-peer
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True (ipv6 interfaces) |
-| BLAH | - |
-| defauls | - |
-| defaulu | - |
+| BLAH | False |
+| defauls | False |
+| defaulu | False |
 | MGMT | False |
 | TENANT_A_PROJECT01 | True |
 | TENANT_A_PROJECT02 | True |
 | TEST1 | True |
 | TEST2 | True (ipv6 interfaces) |
 | TEST3 | True |
-| TEST4 | - |
+| TEST4 | False |
 
 #### IP Routing Device Configuration
 
@@ -8719,17 +8719,17 @@ ip routing vrf TEST3
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| BLAH | false |
-| defauls | false |
-| default | true |
-| defaulu | false |
-| MGMT | false |
-| TENANT_A_PROJECT01 | false |
-| TENANT_A_PROJECT02 | false |
-| TEST1 | true |
-| TEST2 | false |
-| TEST3 | false |
-| TEST4 | false |
+| BLAH | False |
+| defauls | False |
+| default | True |
+| defaulu | False |
+| MGMT | False |
+| TENANT_A_PROJECT01 | False |
+| TENANT_A_PROJECT02 | False |
+| TEST1 | True |
+| TEST2 | False |
+| TEST3 | False |
+| TEST4 | False |
 
 #### IPv6 Routing Device Configuration
 
@@ -12984,6 +12984,9 @@ ip access-list standard ACL-SSH-VRF
 ip access-list ACL_NO_SEQUENCE
    remark test acl without sequence numbers
    deny udp any any log
+   deny tcp any any copy captive-portal
+   permit udp any any log
+   deny tcp any any
    permit icmp any any 3 4 ttl eq 40
    permit icmp any any unreachable ttl gt 3
    permit ip any any fragments dscp 46

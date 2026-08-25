@@ -875,13 +875,13 @@ ip routing vrf Tenant_C_OP_Zone
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| Tenant_A_APP_Zone | false |
-| Tenant_A_DB_Zone | false |
-| Tenant_A_OP_Zone | false |
-| Tenant_A_WEB_Zone | false |
-| Tenant_B_OP_Zone | false |
-| Tenant_C_OP_Zone | false |
+| MGMT | False |
+| Tenant_A_APP_Zone | False |
+| Tenant_A_DB_Zone | False |
+| Tenant_A_OP_Zone | False |
+| Tenant_A_WEB_Zone | False |
+| Tenant_B_OP_Zone | False |
+| Tenant_C_OP_Zone | False |
 
 ### Static Routes
 

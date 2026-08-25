@@ -576,9 +576,9 @@ ip routing vrf TENANT_B_WAN
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| TENANT_B_INTRA | false |
-| TENANT_B_WAN | false |
+| MGMT | False |
+| TENANT_B_INTRA | False |
+| TENANT_B_WAN | False |
 
 #### IPv6 Routing Device Configuration
 

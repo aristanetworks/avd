@@ -521,10 +521,10 @@ ip routing vrf Tenant_C_WAN_Zone
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| Tenant_A_WAN_Zone | false |
-| Tenant_B_WAN_Zone | false |
-| Tenant_C_WAN_Zone | false |
+| MGMT | False |
+| Tenant_A_WAN_Zone | False |
+| Tenant_B_WAN_Zone | False |
+| Tenant_C_WAN_Zone | False |
 
 #### IPv6 Routing Device Configuration
 

@@ -545,8 +545,8 @@ ip routing vrf VRF_A
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| VRF_A | false |
+| MGMT | False |
+| VRF_A | False |
 
 ### Static Routes
 

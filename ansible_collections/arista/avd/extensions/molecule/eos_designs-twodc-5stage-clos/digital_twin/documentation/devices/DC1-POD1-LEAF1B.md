@@ -501,11 +501,11 @@ ip routing vrf vrf_with_loopbacks_from_pod_pools
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| Common_VRF | false |
-| MGMT | false |
-| vrf_with_loopbacks_dc1_pod1_only | false |
-| vrf_with_loopbacks_from_overlapping_pool | false |
-| vrf_with_loopbacks_from_pod_pools | false |
+| Common_VRF | False |
+| MGMT | False |
+| vrf_with_loopbacks_dc1_pod1_only | False |
+| vrf_with_loopbacks_from_overlapping_pool | False |
+| vrf_with_loopbacks_from_pod_pools | False |
 
 ### Static Routes
 

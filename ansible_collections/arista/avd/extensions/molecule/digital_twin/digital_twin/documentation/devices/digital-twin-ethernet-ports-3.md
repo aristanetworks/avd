@@ -277,8 +277,8 @@ ip routing vrf TENANT_A_VRF_A
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| TENANT_A_VRF_A | false |
+| MGMT | False |
+| TENANT_A_VRF_A | False |
 
 ### Router BGP
 

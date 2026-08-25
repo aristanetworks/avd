@@ -333,9 +333,9 @@ no ip routing vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| C1_VRF1 | false |
-| C2_VRF1 | false |
-| MGMT | false |
+| C1_VRF1 | False |
+| C2_VRF1 | False |
+| MGMT | False |
 
 ### Static Routes
 
