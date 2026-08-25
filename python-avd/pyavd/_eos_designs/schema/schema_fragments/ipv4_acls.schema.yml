@@ -11,11 +11,24 @@ keys:
     primary_key: name
     description: |-
       IPv4 extended access-lists supporting substitution on certain fields.
-      These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.
+      These access-lists can be referenced using `ipv4_acl_in` / `ipv4_acl_out` under network services `svis`, `l3_interfaces`, or under node type `l3_interfaces` and `l3_port_channels`,
+      and will only be configured on devices where they are in use.
 
-      The substitution is useful when assigning the same access-list on multiple interfaces,
-      but where certain fields require unique values like the "interface_ip" or "peer_ip".
+      The substitution is useful when assigning the same access-list on multiple interfaces where certain fields require unique values.
       When using substitution, the interface name will be appended to the ACL name.
+
+      The "interface_ip" substitution field is resolved per interface type:
+      - For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
+      - For network services L3 interfaces: resolved from the node's entry in `ip_addresses`.
+      - For network services L3 port-channels: resolved from `ip_address`.
+      - For node type L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp", the resolved DHCP address is used instead.
+      If the required field is not set, the substitution will fail with an error.
+
+      The "peer_ip" substitution field is resolved per interface type:
+      - For SVIs: not supported. Substitution will fail with an error if used.
+      - For network services L3 interfaces and L3 port-channels: not supported. Substitution will fail with an error if used.
+      - For node type L3 interfaces and L3 port-channels: resolved from `peer_ip`.
+      If `peer_ip` is not set on the interface, the substitution will fail with an error.
     items:
       $ref: "eos_cli_config_gen#/keys/ip_access_lists/items"
       type: dict
@@ -34,14 +47,14 @@ keys:
               source:
                 type: str
                 description: |-
-                  This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+                  This field supports substitution of the fields "interface_ip" and "peer_ip". "peer_ip" is only supported for node type L3 interfaces and L3 port-channels; it is not supported for SVIs or network services L3 interfaces and L3 port-channels.
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".
                   "<ip>" without a mask means host.
                   Required except for remarks.
               destination:
                 type: str
                 description: |-
-                  This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+                  This field supports substitution of the fields "interface_ip" and "peer_ip". "peer_ip" is only supported for node type L3 interfaces and L3 port-channels, it is not supported for SVIs or network services L3 interfaces and L3 port-channels.
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".
                   "<ip>" without a mask means host.
                   Required except for remarks.
