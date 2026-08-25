@@ -14493,12 +14493,8 @@ keys:
                 boundaries:
                   type: list
                   items:
-                    type: dict
-                    keys:
-                      boundary:
-                        type: str
-                        required: true
-                        description: ACL name or multicast IP subnet.
+                    type: str
+                    description: ACL name or multicast IP subnet.
                 static:
                   type: bool
         service_profile:

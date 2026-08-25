@@ -37672,35 +37672,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv6(AvdModel):
                 """Subclass of AvdModel."""
 
-                class BoundariesItem(AvdModel):
-                    """Subclass of AvdModel."""
+                class Boundaries(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
 
-                    _fields: ClassVar[dict] = {"boundary": {"type": str}}
-                    boundary: str
-                    """ACL name or multicast IP subnet."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, boundary: str | UndefinedType = Undefined) -> None:
-                            """
-                            BoundariesItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                boundary: ACL name or multicast IP subnet.
-
-                            """
-
-                class Boundaries(AvdList[BoundariesItem]):
-                    """Subclass of AvdList with `BoundariesItem` items."""
-
-                Boundaries._item_type = BoundariesItem
+                Boundaries._item_type = str
 
                 _fields: ClassVar[dict] = {"boundaries": {"type": Boundaries}, "static": {"type": bool}}
                 boundaries: Boundaries
-                """Subclass of AvdList with `BoundariesItem` items."""
+                """Subclass of AvdList with `str` items."""
                 static: bool | None
 
                 if TYPE_CHECKING:
@@ -37713,7 +37692,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            boundaries: Subclass of AvdList with `BoundariesItem` items.
+                            boundaries: Subclass of AvdList with `str` items.
                             static: static
 
                         """

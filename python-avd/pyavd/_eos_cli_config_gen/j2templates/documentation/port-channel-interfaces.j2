@@ -162,7 +162,7 @@
 {%                 if multicast_interface.multicast.ipv6.boundaries is arista.avd.defined %}
 {%                     set boundaries_list = [] %}
 {%                     for boundary in multicast_interface.multicast.ipv6.boundaries %}
-{%                         do boundaries_list.append(boundary.boundary ~ ' (out)') %}
+{%                         do boundaries_list.append(boundary ~ ' (out)') %}
 {%                     endfor %}
 {%                     set boundaries = boundaries_list | join(', ') %}
 {%                 else %}
