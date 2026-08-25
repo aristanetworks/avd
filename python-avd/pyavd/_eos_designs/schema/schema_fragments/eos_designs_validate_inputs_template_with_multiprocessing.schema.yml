@@ -1,0 +1,18 @@
+---
+# Copyright (c) 2024-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  eos_designs_validate_inputs_template_with_multiprocessing:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: |-
+      Use Multiprocessing for variable templating.
+      Disable this when templating of input variables invokes code that uses locks or background threads.
+      Forked worker processes may inherit locked state, potentially causing deadlocks.

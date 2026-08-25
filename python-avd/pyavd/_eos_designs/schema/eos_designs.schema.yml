@@ -2833,6 +2833,17 @@ keys:
 
       Depending on your inventory size and the available resources, you may want to
       adjust this number.'
+  eos_designs_validate_inputs_template_with_multiprocessing:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: 'Use Multiprocessing for variable templating.
+
+      Disable this when templating of input variables invokes code that uses locks
+      or background threads.
+
+      Forked worker processes may inherit locked state, potentially causing deadlocks.'
   errdisable_settings:
     type: dict
     documentation_options:
@@ -4334,7 +4345,6 @@ keys:
         default: false
       hosts:
         type: list
-        required: true
         min_length: 1
         items:
           type: dict
