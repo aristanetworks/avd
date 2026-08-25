@@ -1,3 +1,4 @@
 ---
 avd_design_future:
   remove_mpls_lsr_dependency_for_mpls_overlay_role_server: true
+  remove_redundant_ipv4_unicast_for_peer_groups: true
