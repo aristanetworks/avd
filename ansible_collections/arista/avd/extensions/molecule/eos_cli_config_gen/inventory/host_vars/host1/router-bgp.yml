@@ -304,6 +304,8 @@ router_bgp:
         interval: 2000
         min_rx: 2000
         multiplier: 3
+      maximum_advertised_routes: 120000
+      maximum_advertised_routes_warning_limit: 0
     - name: WELCOME_ROUTERS
       metadata:
         type: ipv4

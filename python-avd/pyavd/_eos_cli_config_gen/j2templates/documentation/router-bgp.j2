@@ -274,7 +274,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                     set value = peer_group.maximum_advertised_routes %}
 {%                 endif %}
 {%                 if peer_group.maximum_advertised_routes_warning_limit is arista.avd.defined %}
-{%                     if peer_group.maximum_advertised_routes_warning_limit == 0 %}
+{%                     if peer_group.maximum_advertised_routes_warning_limit == "0" %}
 {%                         set value = value ~ " (never warn)" %}
 {%                     else %}
 {%                         set value = value ~ " (warning-limit " ~ peer_group.maximum_advertised_routes_warning_limit ~ ")" %}
@@ -425,7 +425,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                     set maximum_advertised_routes_value = neighbor.maximum_advertised_routes %}
 {%                 endif %}
 {%                 if neighbor.maximum_advertised_routes_warning_limit is arista.avd.defined %}
-{%                     if neighbor.maximum_advertised_routes_warning_limit == 0 %}
+{%                     if neighbor.maximum_advertised_routes_warning_limit == "0" %}
 {%                         set maximum_advertised_routes_value = maximum_advertised_routes_value ~ " (never warn)" %}
 {%                     else %}
 {%                         set maximum_advertised_routes_value = maximum_advertised_routes_value ~ " (warning-limit " ~ neighbor.maximum_advertised_routes_warning_limit ~ ")" %}
