@@ -5,6 +5,7 @@
 import re
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
+from dataclasses import fields
 from logging import DEBUG
 from pathlib import Path
 from typing import Any
@@ -808,78 +809,59 @@ class TestDeployToCvResult:
         assert result["removed_interface_tags"][0]["value"] == "old_val"
         assert result["removed_interface_tags"][0]["device"] is None
 
-    def test_rebuild_for_workspace_synchronization_preserves_fields(self, caplog: pytest.LogCaptureFixture) -> None:
-        """Tests that rebuild returns a new result preserving warnings, workspace, and change_control, with errors and all deployment lists empty."""
-        avd_ws = AvdWorkspace(name="ws-name", id="ws-id")
-        avd_cc = AvdChangeControl(name="avd-cc-name", description="avd-cc-desc")
+    def test_reset(self, caplog: pytest.LogCaptureFixture) -> None:
+        """Tests that reset defaults all current or future attempt fields while preserving persistent fields."""
         device = CVDevice(avd_device=AvdDevice(hostname="leaf1"))
-        ws = CVWorkspace(
-            avd_workspace=avd_ws,
+        workspace = CVWorkspace(
+            avd_workspace=AvdWorkspace(name="ws-name", id="ws-id"),
             state="submit failed",
             build_id="b1",
             device_build_results=[CVWorkspaceDeviceBuildResult(device=device, config_validation=CVWorkspaceBuildConfigValidationResult())],
             synchronization_required=True,
         )
-        cc = CVChangeControl(avd_change_control=avd_cc)
-        original = DeployToCvResult(
-            workspace=ws,
-            change_control=cc,
-            errors=["some-error"],
-            warnings=["warn1"],
-            deployed_configs=[CVEosConfig(file="f.cfg", device=device)],
-            skipped_device_tags=[CVDeviceTag(label="rack", value="R1")],
-            removed_configs=["old.cfg"],
-        )
+        change_control = CVChangeControl(avd_change_control=AvdChangeControl(name="avd-cc-name", description="avd-cc-desc"))
+        warnings = ["warn1"]
+        preserved_field_names = {"warnings", "workspace", "change_control"}
+        container = AvdContainer(name="container", tag_query="device:*")
+        configlet = AvdConfiglet(name="configlet", file="configlet.cfg")
+        device_tag = CVDeviceTag(label="device-tag", value="value", device=device)
+        interface_tag = CVInterfaceTag(label="interface-tag", value="value", device=device, interface="Ethernet1")
+        eos_config = CVEosConfig(file="leaf1.cfg", device=device)
+        studio_inputs = CVStudioInputs(studio_id="studio-id", inputs={"key": "value"})
+        cv_pathfinder_metadata = CVPathfinderMetadata(metadata={"role": "pathfinder"}, device=device)
+        attempt_values: dict[str, Any] = {
+            "failed": True,
+            "errors": [CVManifestError("error")],
+            "deployed_configs": [eos_config],
+            "deployed_static_config_containers": [container],
+            "deployed_static_config_configlets": [configlet],
+            "deployed_device_tags": [device_tag],
+            "deployed_interface_tags": [interface_tag],
+            "deployed_studio_inputs": [studio_inputs],
+            "deployed_cv_pathfinder_metadata": [cv_pathfinder_metadata],
+            "skipped_configs": [eos_config],
+            "skipped_static_config_containers": [container],
+            "skipped_device_tags": [device_tag],
+            "skipped_interface_tags": [interface_tag],
+            "skipped_cv_pathfinder_metadata": [cv_pathfinder_metadata],
+            "removed_configs": ["config-id"],
+            "removed_static_config_containers": ["container-id"],
+            "removed_static_config_configlets": ["configlet-id"],
+            "removed_device_tags": [device_tag],
+            "removed_interface_tags": [interface_tag],
+        }
+        resettable_field_names = {dataclass_field.name for dataclass_field in fields(DeployToCvResult) if dataclass_field.name not in preserved_field_names}
+        # Guard to catch newly-added fields of the DeployToCvResult dataclass
+        assert set(attempt_values) == resettable_field_names
+        result = DeployToCvResult(warnings=warnings, workspace=workspace, change_control=change_control, **attempt_values)
 
         with caplog.at_level(DEBUG):
-            new_result = original.rebuild_for_workspace_synchronization()
+            result.reset()
 
-        assert new_result is not original
-        assert new_result.workspace is ws
-        assert new_result.change_control is cc
-        assert new_result.warnings is original.warnings
-        assert new_result.failed is False
-        assert not new_result.errors
-        assert not new_result.deployed_configs
-        assert not new_result.skipped_device_tags
-        assert not new_result.removed_configs
-        assert any(re.search(r"rebuild_for_workspace_synchronization.*ws-name.*ws-id", str(r.message)) for r in caplog.records)
-        assert ws.state == "pending"
-        assert ws.build_id is None
-        assert ws.synchronization_required is False
-
-    def test_rebuild_for_workspace_synchronization_clears_device_build_results(self) -> None:
-        """Tests that workspace.device_build_results is cleared in-place so the next build starts fresh."""
-        device = CVDevice(avd_device=AvdDevice(hostname="leaf1"))
-        ws = CVWorkspace(
-            avd_workspace=AvdWorkspace(name="ws", id="ws-id"),
-            device_build_results=[CVWorkspaceDeviceBuildResult(device=device, config_validation=CVWorkspaceBuildConfigValidationResult())],
-        )
-        result = DeployToCvResult(workspace=ws, errors=[], warnings=[])
-
-        result.rebuild_for_workspace_synchronization()
-
-        assert not ws.device_build_results
-
-    def test_rebuild_for_workspace_synchronization_resets_workspace_state_and_build_id(self) -> None:
-        """Tests that workspace.state is reset to 'pending' and build_id to None after rebuild."""
-        ws = CVWorkspace(
-            avd_workspace=AvdWorkspace(name="ws", id="ws-id"),
-            state="build failed",
-            build_id="build-id",
-        )
-        result = DeployToCvResult(workspace=ws, errors=[], warnings=[])
-
-        result.rebuild_for_workspace_synchronization()
-
-        assert ws.state == "pending"
-        assert ws.build_id is None
-
-    def test_rebuild_for_workspace_synchronization_none_change_control(self) -> None:
-        """Tests that rebuild works when change_control is None and the new result also has change_control=None."""
-        ws = CVWorkspace(avd_workspace=AvdWorkspace(name="ws", id="ws-id"))
-        result = DeployToCvResult(workspace=ws, errors=[], warnings=[])
-
-        new_result = result.rebuild_for_workspace_synchronization()
-
-        assert new_result.change_control is None
+        expected_result = DeployToCvResult(warnings=warnings, workspace=workspace, change_control=change_control)
+        for dataclass_field in fields(DeployToCvResult):
+            assert getattr(result, dataclass_field.name) == getattr(expected_result, dataclass_field.name)
+        assert result.warnings is warnings
+        assert result.workspace is workspace
+        assert result.change_control is change_control
+        assert any(re.search(r"DeployToCvResult.reset.*ws-name.*ws-id", str(record.message)) for record in caplog.records)

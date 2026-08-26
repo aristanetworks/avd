@@ -299,7 +299,7 @@ async def deploy_to_cv(
 
             for workspace_sync_attempt in range(result.workspace.max_sync_retries + 1):
                 if workspace_sync_attempt > 0:
-                    result = result.rebuild_for_workspace_synchronization()
+                    result.reset()
 
                 # Track where warnings from this attempt start so they can be discarded if the Workspace requires synchronization.
                 loop_warnings_start = len(result.warnings)

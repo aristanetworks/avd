@@ -404,27 +404,44 @@ class DeployToCvResult:
         """Return a representation of this object for the Ansible module result."""
         return {f.name: get_result(getattr(self, f.name)) for f in fields(self)}
 
-    def rebuild_for_workspace_synchronization(self) -> DeployToCvResult:
+    def reset(self) -> None:
         """
-        Rebuild DeployToCvResult instance due to the CloudVision runtime requirement to synchronize Workspace.
+        Reset mutable state before replaying deployment after Workspace synchronization.
 
-        Warnings of the parent instance are kept to persist items populated outside of the retry loop (device validation, etc.).
-        Errors are not retained as any error sets `result.failed=True` and causes immediate Workspace abandonment.
-        Workspace mutable state is reset to flush the state collected during the last build or submit attempt.
-
-        Returns: New instance of the DeployToCvResult.
+        Warnings are retained to preserve items populated outside the retry loop, such as device validation warnings.
+        Errors are not retained since any error sets `failed=True` and causes immediate Workspace abandonment.
+        The existing Workspace and Change Control object references are retained.
+        Workspace attempt-specific state is cleared by calling `CVWorkspace.reset()`, while Change Control state is left unchanged.
+        All deployment results computed against the outdated CloudVision mainline are cleared.
         """
         LOGGER.debug(
-            "rebuild_for_workspace_synchronization: Resetting all mutable state computed for Workspace %s (%s) against an outdated CloudVision mainline.",
+            "DeployToCvResult.reset: Resetting all mutable state computed for Workspace %s (%s) against an outdated CloudVision mainline.",
             self.workspace.name,
             self.workspace.id,
         )
+        self.failed = False
+        self.errors.clear()
+        for attempt_results in (
+            self.deployed_configs,
+            self.deployed_static_config_containers,
+            self.deployed_static_config_configlets,
+            self.deployed_device_tags,
+            self.deployed_interface_tags,
+            self.deployed_studio_inputs,
+            self.deployed_cv_pathfinder_metadata,
+            self.skipped_configs,
+            self.skipped_static_config_containers,
+            self.skipped_device_tags,
+            self.skipped_interface_tags,
+            self.skipped_cv_pathfinder_metadata,
+            self.removed_configs,
+            self.removed_static_config_containers,
+            self.removed_static_config_configlets,
+            self.removed_device_tags,
+            self.removed_interface_tags,
+        ):
+            attempt_results.clear()
         self.workspace.reset()
-        return DeployToCvResult(
-            warnings=self.warnings,
-            workspace=self.workspace,
-            change_control=self.change_control,
-        )
 
 
 @dataclass(frozen=True)

@@ -194,7 +194,7 @@ options:
             type: bool
             default: false
       max_sync_retries:
-        description: Maximum number of retry attempts to synchronize Workspace.
+        description: Maximum number of retry attempts to synchronize Workspace. Requires CloudVision 2026.2.0 or later.
         type: int
         default: 5
   change_control:
