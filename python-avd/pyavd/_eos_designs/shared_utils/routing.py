@@ -92,7 +92,7 @@ class RoutingMixin(Protocol):
     def isis_instance_name(self: SharedUtilsProtocol) -> str | None:
         if self.underlay_router and self.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
             default_isis_instance_name = (
-                "CORE" if (self.mpls_lsr or self.inputs.avd_design_future.remove_mpls_lsr_dependency_for_mpls_overlay_role_server) else "EVPN_UNDERLAY"
+                "CORE" if (self.mpls_lsr or self._is_mpls_overlay_server_without_lsr) else "EVPN_UNDERLAY"
             )
             return self.inputs.underlay_isis_instance_name or default_isis_instance_name
         # This point cannot be reached because the function won't be called if either of the conditions in the if-block is not satisfied.

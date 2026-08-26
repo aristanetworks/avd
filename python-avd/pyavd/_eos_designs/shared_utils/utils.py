@@ -326,3 +326,12 @@ class UtilsMixin(Protocol):
             case "use_inband_mgmt_interface":
                 return self.inband_mgmt_interface
         return input_interface
+
+    @cached_property
+    def _is_mpls_overlay_server_without_lsr(self: SharedUtilsProtocol) -> bool:
+        return (
+            self.inputs.avd_design_future.remove_mpls_lsr_dependency_for_mpls_overlay_role_server
+            and self.overlay_routing_protocol == "ibgp"
+            and self.mpls_overlay_role == "server"
+            and not self.mpls_lsr
+        )

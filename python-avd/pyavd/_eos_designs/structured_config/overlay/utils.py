@@ -160,11 +160,3 @@ class UtilsMixin(Protocol):
     @cached_property
     def _disable_ipv4_unicast_for_peer_groups(self: AvdStructuredConfigOverlayProtocol) -> bool:
         return not self.inputs.avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups or self.inputs.bgp_default_ipv4_unicast
-
-    def _is_mpls_overlay_server_without_lsr(self: AvdStructuredConfigOverlayProtocol) -> bool:
-        return (
-            self.inputs.avd_design_future.remove_mpls_lsr_dependency_for_mpls_overlay_role_server
-            and self.shared_utils.overlay_routing_protocol == "ibgp"
-            and self.shared_utils.mpls_overlay_role == "server"
-            and not self.shared_utils.mpls_lsr
-        )
