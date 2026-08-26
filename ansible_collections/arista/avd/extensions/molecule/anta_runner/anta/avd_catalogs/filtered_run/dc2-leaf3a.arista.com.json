@@ -376,6 +376,8 @@
             "dc2-leaf3a.arista.com"
           ]
         },
+        "minimum_established_time": null,
+        "check_tcp_queues": true,
         "bgp_peers": [
           {
             "peer_address": "10.255.128.11",

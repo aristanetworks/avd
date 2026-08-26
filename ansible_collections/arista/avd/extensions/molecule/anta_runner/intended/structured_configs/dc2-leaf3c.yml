@@ -30,6 +30,9 @@ metadata:
   interfaces:
     errdisable:
       only_avd_interfaces: true
+  bgp:
+    check_tcp_queues: false
+    minimum_established_time: 10000
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: mstp
