@@ -1,0 +1,45 @@
+---
+fabric_name: FABRIC_MLAG_INCONSISTENT_ROLES
+underlay_routing_protocol: isis
+
+type: l2leaf
+
+l2leaf:
+  defaults:
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+  node_groups:
+    - group: mlag-inconsistent-roles-peer-view
+      nodes:
+        - name: mlag-inconsistent-roles2
+          id: 42
+          mgmt_ip: 192.168.201.242/24
+          uplink_switch_interfaces: [Ethernet52]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+        - name: mlag-inconsistent-roles3
+          id: 43
+          mgmt_ip: 192.168.201.243/24
+          uplink_switch_interfaces: [Ethernet53]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+    - group: mlag-inconsistent-roles-local-view
+      nodes:
+        - name: mlag-inconsistent-roles1
+          id: 41
+          mgmt_ip: 192.168.201.241/24
+          uplink_switch_interfaces: [Ethernet51]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+        - name: mlag-inconsistent-roles2
+          id: 42
+          mgmt_ip: 192.168.201.242/24
+          uplink_switch_interfaces: [Ethernet52]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+
+expected_error_message: >-
+  Inconsistent MLAG roles with MLAG peer 'mlag-inconsistent-roles2'.
+  Both devices resolve to 'primary'. Exactly one device must be primary and the other secondary for host 'mlag-inconsistent-roles1'.

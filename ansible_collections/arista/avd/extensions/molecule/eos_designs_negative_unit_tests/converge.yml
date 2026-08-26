@@ -175,6 +175,38 @@
     - name: Run failure scenario Test
       ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
+- name: Converge Negative tests for 'eos_designs_facts' - mlag-inconsistent-roles1
+  hosts: mlag-inconsistent-roles1
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for 'eos_designs_facts' - mlag-interfaces-count-mismatch1
+  hosts: mlag-interfaces-count-mismatch1
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for 'eos_designs_facts' - mlag-l3-enablement-mismatch1
+  hosts: mlag-l3-enablement-mismatch1
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for 'eos_designs_facts' - mlag-l3-vlan-mismatch1
+  hosts: mlag-l3-vlan-mismatch1
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
 - name: Converge Negative tests for 'eos_designs_facts' - mlag-peer-missing-local-info1
   hosts: mlag-peer-missing-local-info1
   gather_facts: false

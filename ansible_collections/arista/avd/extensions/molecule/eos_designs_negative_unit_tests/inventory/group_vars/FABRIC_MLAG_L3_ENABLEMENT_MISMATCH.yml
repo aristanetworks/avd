@@ -1,0 +1,69 @@
+---
+fabric_name: FABRIC_MLAG_L3_ENABLEMENT_MISMATCH
+underlay_routing_protocol: isis
+
+# Use custom node_type_keys to intentionally make the MLAG peers disagree on underlay_router,
+# which drives the mlag_l3_enabled mismatch check.
+node_type_keys:
+  - key: mlag-l3-enabled-node-type
+    type: mlag-l3-enabled-node-type
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: false
+    vtep: false
+    underlay_router: true
+    uplink_type: p2p
+  - key: mlag-l3-disabled-node-type
+    type: mlag-l3-disabled-node-type
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: false
+    vtep: false
+    underlay_router: false
+    uplink_type: p2p
+
+devices:
+  - name: mlag-l3-enablement-mismatch1
+    type: mlag-l3-enabled-node-type
+    mlag: true
+    mlag_group: mlag-l3-enablement-mismatch
+    id: 71
+    bgp_as: 65161
+    platform: vEOS-LAB
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_l3_ipv4_pool: 10.10.254.0/24
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    mgmt_ip: 192.168.201.271/24
+    uplink_switch_interfaces: [Ethernet81]
+    mlag_interfaces: [Ethernet5, Ethernet6]
+  - name: mlag-l3-enablement-mismatch2
+    type: mlag-l3-disabled-node-type
+    mlag: true
+    mlag_group: mlag-l3-enablement-mismatch
+    id: 72
+    bgp_as: 65161
+    platform: vEOS-LAB
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_l3_ipv4_pool: 10.10.254.0/24
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    mgmt_ip: 192.168.201.272/24
+    uplink_switch_interfaces: [Ethernet82]
+    mlag_interfaces: [Ethernet5, Ethernet6]
+
+expected_error_message: >-
+  Inconsistent MLAG L3 enablement with MLAG peer 'mlag-l3-enablement-mismatch2'.
+  Local 'mlag_l3_enabled' is 'True' while peer is 'False' for host 'mlag-l3-enablement-mismatch1'.

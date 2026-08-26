@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: MLAG L3 peering is not properly configured for MLAG peer 'mlag-l3-enablement-mismatch2' for host 'mlag-l3-enablement-mismatch1'.

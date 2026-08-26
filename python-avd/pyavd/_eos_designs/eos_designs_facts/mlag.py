@@ -79,10 +79,18 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
             msg = f"Inconsistent number of 'mlag_interfaces' defined for MLAG peer '{peer_hostname}'"
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
-        if mlag_local_info.mlag_l3_enabled != peer_mlag_info.mlag_l3_enabled or (
-            mlag_local_info.mlag_l3_enabled and (mlag_local_info.mlag_l3_vlan != peer_mlag_info.mlag_l3_vlan)
-        ):
-            msg = f"MLAG L3 peering is not properly configured for MLAG peer '{peer_hostname}'"
+        if mlag_local_info.mlag_l3_enabled != peer_mlag_info.mlag_l3_enabled:
+            msg = (
+                f"Inconsistent MLAG L3 enablement with MLAG peer '{peer_hostname}'. "
+                f"Local 'mlag_l3_enabled' is '{mlag_local_info.mlag_l3_enabled}' while peer is '{peer_mlag_info.mlag_l3_enabled}'"
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if mlag_local_info.mlag_l3_enabled and mlag_local_info.mlag_l3_vlan != peer_mlag_info.mlag_l3_vlan:
+            msg = (
+                f"Inconsistent MLAG L3 VLAN with MLAG peer '{peer_hostname}'. "
+                f"Local 'mlag_peer_l3_vlan' resolves to '{mlag_local_info.mlag_l3_vlan}' while peer resolves to '{peer_mlag_info.mlag_l3_vlan}'"
+            )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         peer = EosDesignsFactsProtocol.Mlag.Peer(
