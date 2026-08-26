@@ -80,7 +80,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan</samp>](## "platform_settings.[].feature_support.wan") | Boolean |  | `True` |  | Support for Arista WAN features.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "platform_settings.[].feature_support.ptp") | Boolean |  | `True` |  | Support for Precision Time Protocol (PTP).<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_validation</samp>](## "platform_settings.[].feature_support.hardware_validation") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_tcam</samp>](## "platform_settings.[].feature_support.hardware_tcam") | Boolean |  | `True` |  | Support for hardware TCAM configuration.<br>When set to `false`, tcam profiles are not configured on the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errdisable_causes</samp>](## "platform_settings.[].feature_support.errdisable_causes") | Dictionary |  |  |  | Per-cause support for errdisable detection and recovery.<br>Causes with `detection: false` will suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.<br>Causes with `recovery: false` will suppress recovery for that cause even if enabled in `errdisable_settings.causes.<cause>.recovery`.<br>The supported causes depends on the EOS version and the hardware platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "platform_settings.[].feature_support.errdisable_causes.acl") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.acl.detection") | Boolean |  | `True` |  |  |
@@ -369,10 +368,6 @@
           # Enable hardware validation for the device.
           # When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
           hardware_validation: <bool; default=True>
-
-          # Support for hardware TCAM configuration.
-          # When set to `false`, tcam profiles are not configured on the device.
-          hardware_tcam: <bool; default=True>
 
           # Per-cause support for errdisable detection and recovery.
           # Causes with `detection: false` will suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
@@ -1649,7 +1644,6 @@
             evpn_gateway_rd_rt_rewrite: true
             sflow_subinterfaces: false
             hardware_validation: false
-            hardware_tcam: false
             errdisable_causes:
               dot1x:
                 detection: false
@@ -1732,7 +1726,6 @@
             evpn_gateway_rd_rt_rewrite: true
             sflow_subinterfaces: false
             hardware_validation: false
-            hardware_tcam: false
             errdisable_causes:
               dot1x:
                 detection: false
@@ -1808,7 +1801,6 @@
             queue_monitor_length_notify: false
             sflow: false
             hardware_validation: false
-            hardware_tcam: false
             errdisable_causes:
               acl:
                 detection: false

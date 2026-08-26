@@ -1181,7 +1181,6 @@ keys:
           evpn_gateway_rd_rt_rewrite: true
           sflow_subinterfaces: false
           hardware_validation: false
-          hardware_tcam: false
           errdisable_causes:
             dot1x:
               detection: false
@@ -1264,7 +1263,6 @@ keys:
           evpn_gateway_rd_rt_rewrite: true
           sflow_subinterfaces: false
           hardware_validation: false
-          hardware_tcam: false
           errdisable_causes:
             dot1x:
               detection: false
@@ -1340,7 +1338,6 @@ keys:
           queue_monitor_length_notify: false
           sflow: false
           hardware_validation: false
-          hardware_tcam: false
           errdisable_causes:
             acl:
               detection: false
