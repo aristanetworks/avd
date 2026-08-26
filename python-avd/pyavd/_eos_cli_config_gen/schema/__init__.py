@@ -37625,7 +37625,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
                     boundary: str
-                    """ACL name or multicast IP subnet."""
+                    """Standard ACL name or multicast IP subnet."""
                     out: bool | None
                     """Multicast boundary direction - outbound."""
 
@@ -37639,7 +37639,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: ACL name or multicast IP subnet.
+                                boundary: Standard ACL name or multicast IP subnet.
                                 out: Multicast boundary direction - outbound.
 
                             """

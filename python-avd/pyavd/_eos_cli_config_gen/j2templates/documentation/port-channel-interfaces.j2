@@ -129,7 +129,7 @@
 {# Multicast Routing #}
 {%     set multicast_interfaces = [] %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if port_channel_interface.multicast is arista.avd.defined %}
+{%         if port_channel_interface.multicast.ipv4 is arista.avd.defined or port_channel_interface.multicast.ipv6 is arista.avd.defined  %}
 {%             do multicast_interfaces.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}

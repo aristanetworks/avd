@@ -302,7 +302,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "port_channel_interfaces.[].multicast") | Dictionary |  |  |  | Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "port_channel_interfaces.[].multicast.ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boundaries</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;boundary</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries.[].boundary") | String | Required |  |  | ACL name or multicast IP subnet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;boundary</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries.[].boundary") | String | Required |  |  | Standard ACL name or multicast IP subnet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries.[].out") | Boolean |  |  |  | Multicast boundary direction - outbound. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "port_channel_interfaces.[].multicast.ipv4.static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "port_channel_interfaces.[].multicast.ipv6") | Dictionary |  |  |  |  |
@@ -1152,7 +1152,7 @@
           ipv4:
             boundaries:
 
-                # ACL name or multicast IP subnet.
+                # Standard ACL name or multicast IP subnet.
               - boundary: <str; required>
 
                 # Multicast boundary direction - outbound.

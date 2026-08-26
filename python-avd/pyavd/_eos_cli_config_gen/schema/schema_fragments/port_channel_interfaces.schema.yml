@@ -834,7 +834,7 @@ keys:
                       boundary:
                         type: str
                         required: true
-                        description: ACL name or multicast IP subnet.
+                        description: Standard ACL name or multicast IP subnet.
                       out:
                         type: bool
                         description: Multicast boundary direction - outbound.
