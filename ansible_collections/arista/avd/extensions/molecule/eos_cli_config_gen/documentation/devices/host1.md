@@ -5935,11 +5935,13 @@ interface Ethernet35
 interface Ethernet36
    description DOT1X Testing - host-mode single-host
    switchport
+   dot1x authentication failure action traffic allow vlan 100 access-list ACL1
    dot1x host-mode single-host
 !
 interface Ethernet37
    description DOT1X Testing - host-mode multi-host
    switchport
+   dot1x authentication failure action traffic allow access-list Test_ACL
    dot1x host-mode multi-host
 !
 interface Ethernet38
@@ -12760,8 +12762,8 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Ethernet33 | authenticator | - | - | - | - | - | - | - | - |
 | Ethernet34 | - | - | - | - | - | allow vlan 800 | - | - | - |
 | Ethernet35 | - | - | - | - | - | drop | - | - | - |
-| Ethernet36 | - | - | - | - | - | - | single-host | - | - |
-| Ethernet37 | - | - | - | - | - | - | multi-host | - | - |
+| Ethernet36 | - | - | - | - | - | allow vlan 100 access-list ACL1 | single-host | - | - |
+| Ethernet37 | - | - | - | - | - | allow access-list Test_ACL | multi-host | - | - |
 | Ethernet38 | - | - | - | - | - | - | multi-host | - | - |
 | Ethernet39 | - | - | - | - | - | - | - | True | - |
 | Ethernet40 | - | - | - | - | - | - | - | True | - |

@@ -11336,13 +11336,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 Action: TypeAlias = Literal["allow", "drop"]
-                _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}}
+                _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_access_list": {"type": str}}
                 action: Action | None
                 allow_vlan: int | None
+                allow_access_list: str | None
+                """Name of the IPv4/IPv6 standard/extended access list to be applied to unauthenticated traffic."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, action: Action | UndefinedType | None = Undefined, allow_vlan: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        action: Action | UndefinedType | None = Undefined,
+                        allow_vlan: int | UndefinedType | None = Undefined,
+                        allow_access_list: str | UndefinedType | None = Undefined,
+                    ) -> None:
                         """
                         AuthenticationFailure.
 
@@ -11352,6 +11360,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             action: action
                             allow_vlan: allow_vlan
+                            allow_access_list: Name of the IPv4/IPv6 standard/extended access list to be applied to unauthenticated traffic.
 
                         """
 
