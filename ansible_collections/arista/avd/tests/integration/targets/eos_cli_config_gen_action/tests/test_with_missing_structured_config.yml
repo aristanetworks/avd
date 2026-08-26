@@ -1,4 +1,11 @@
 ---
+- name: Remove tmp dir for missing structured config test
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/tmp_missing_structured_config"
+    state: absent
+  delegate_to: localhost
+  run_once: true
+
 - name: Test eos_cli_config_gen with missing structured config
   ignore_errors: true
   register: result
