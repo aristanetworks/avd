@@ -11,7 +11,8 @@ keys:
     primary_key: name
     description: |-
       IPv4 extended access-lists supporting substitution on certain fields.
-      These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.
+      These access-lists can be referenced under node settings `l3_interfaces`, or using `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+      network ports, and port profiles. They will only be configured on devices where they are in use.
 
       The substitution is useful when assigning the same access-list on multiple interfaces,
       but where certain fields require unique values like the "interface_ip" or "peer_ip".

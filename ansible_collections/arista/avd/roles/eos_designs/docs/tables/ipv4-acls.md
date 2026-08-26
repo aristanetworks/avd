@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv4_acls</samp>](## "ipv4_acls") | List, items: Dictionary |  |  |  | IPv4 extended access-lists supporting substitution on certain fields.<br>These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.<br><br>The substitution is useful when assigning the same access-list on multiple interfaces,<br>but where certain fields require unique values like the "interface_ip" or "peer_ip".<br>When using substitution, the interface name will be appended to the ACL name. |
+    | [<samp>ipv4_acls</samp>](## "ipv4_acls") | List, items: Dictionary |  |  |  | IPv4 extended access-lists supporting substitution on certain fields.<br>These access-lists can be referenced under node settings `l3_interfaces`, or using `dot1x.authentication_failure.allow_access_list` under connected endpoints,<br>network ports, and port profiles. They will only be configured on devices where they are in use.<br><br>The substitution is useful when assigning the same access-list on multiple interfaces,<br>but where certain fields require unique values like the "interface_ip" or "peer_ip".<br>When using substitution, the interface name will be appended to the ACL name. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv4_acls.[].name") | String | Required, Unique |  |  | Access-list name.<br>When using substitution for any fields, the interface name will be appended to the ACL name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ipv4_acls.[].entries") | List, items: Dictionary | Required |  |  | ACL Entries. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "ipv4_acls.[].entries.[].source") | String |  |  |  | This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.<br>Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".<br>"<ip>" without a mask means host.<br>Required except for remarks. |
@@ -28,7 +28,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv4_acls.[].entries.[].destination_ports.[]") | String |  |  |  | TCP/UDP destination port name or number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_flags</samp>](## "ipv4_acls.[].entries.[].tcp_flags") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv4_acls.[].entries.[].tcp_flags.[]") | String |  |  |  | TCP Flag Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "ipv4_acls.[].entries.[].log") | Boolean |  |  |  | Log matches against this rule. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;copy_captive_portal</samp>](## "ipv4_acls.[].entries.[].copy_captive_portal") | Boolean |  |  |  | Copy packet to CPU queue for dot1x captive-portal.<br>Only supported with deny entries.<br>For deny entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "ipv4_acls.[].entries.[].log") | Boolean |  |  |  | Log matches against this rule.<br>For deny entries, mutually exclusive with `copy_captive_portal`. `copy_captive_portal` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_type</samp>](## "ipv4_acls.[].entries.[].icmp_type") | String |  |  |  | Message type name/number for ICMP packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_code</samp>](## "ipv4_acls.[].entries.[].icmp_code") | String |  |  |  | Message code for ICMP packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nexthop_group</samp>](## "ipv4_acls.[].entries.[].nexthop_group") | String |  |  |  | nexthop-group name. |
@@ -45,7 +46,8 @@
 
     ```yaml
     # IPv4 extended access-lists supporting substitution on certain fields.
-    # These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.
+    # These access-lists can be referenced under node settings `l3_interfaces`, or using `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+    # network ports, and port profiles. They will only be configured on devices where they are in use.
     #
     # The substitution is useful when assigning the same access-list on multiple interfaces,
     # but where certain fields require unique values like the "interface_ip" or "peer_ip".
@@ -114,7 +116,13 @@
                 # TCP Flag Name.
               - <str>
 
+            # Copy packet to CPU queue for dot1x captive-portal.
+            # Only supported with deny entries.
+            # For deny entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+            copy_captive_portal: <bool>
+
             # Log matches against this rule.
+            # For deny entries, mutually exclusive with `copy_captive_portal`. `copy_captive_portal` takes precedence.
             log: <bool>
 
             # Message type name/number for ICMP packets.

@@ -5935,11 +5935,13 @@ interface Ethernet35
 interface Ethernet36
    description DOT1X Testing - host-mode single-host
    switchport
+   dot1x authentication failure action traffic allow vlan 100 access-list ACL1
    dot1x host-mode single-host
 !
 interface Ethernet37
    description DOT1X Testing - host-mode multi-host
    switchport
+   dot1x authentication failure action traffic allow access-list Test_ACL
    dot1x host-mode multi-host
 !
 interface Ethernet38
@@ -8685,16 +8687,16 @@ ip virtual-router mac-address mlag-peer
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True (ipv6 interfaces) |
-| BLAH | - |
-| defauls | - |
-| defaulu | - |
+| BLAH | False |
+| defauls | False |
+| defaulu | False |
 | MGMT | False |
 | TENANT_A_PROJECT01 | True |
 | TENANT_A_PROJECT02 | True |
 | TEST1 | True |
 | TEST2 | True (ipv6 interfaces) |
 | TEST3 | True |
-| TEST4 | - |
+| TEST4 | False |
 
 #### IP Routing Device Configuration
 
@@ -8719,17 +8721,17 @@ ip routing vrf TEST3
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| BLAH | false |
-| defauls | false |
-| default | true |
-| defaulu | false |
-| MGMT | false |
-| TENANT_A_PROJECT01 | false |
-| TENANT_A_PROJECT02 | false |
-| TEST1 | true |
-| TEST2 | false |
-| TEST3 | false |
-| TEST4 | false |
+| BLAH | False |
+| defauls | False |
+| default | True |
+| defaulu | False |
+| MGMT | False |
+| TENANT_A_PROJECT01 | False |
+| TENANT_A_PROJECT02 | False |
+| TEST1 | True |
+| TEST2 | False |
+| TEST3 | False |
+| TEST4 | False |
 
 #### IPv6 Routing Device Configuration
 
@@ -12760,8 +12762,8 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Ethernet33 | authenticator | - | - | - | - | - | - | - | - |
 | Ethernet34 | - | - | - | - | - | allow vlan 800 | - | - | - |
 | Ethernet35 | - | - | - | - | - | drop | - | - | - |
-| Ethernet36 | - | - | - | - | - | - | single-host | - | - |
-| Ethernet37 | - | - | - | - | - | - | multi-host | - | - |
+| Ethernet36 | - | - | - | - | - | allow vlan 100 access-list ACL1 | single-host | - | - |
+| Ethernet37 | - | - | - | - | - | allow access-list Test_ACL | multi-host | - | - |
 | Ethernet38 | - | - | - | - | - | - | multi-host | - | - |
 | Ethernet39 | - | - | - | - | - | - | - | True | - |
 | Ethernet40 | - | - | - | - | - | - | - | True | - |
@@ -12956,6 +12958,9 @@ ip access-list standard ACL-SSH-VRF
 ip access-list ACL_NO_SEQUENCE
    remark test acl without sequence numbers
    deny udp any any log
+   deny tcp any any copy captive-portal
+   permit udp any any log
+   deny tcp any any
    permit icmp any any 3 4 ttl eq 40
    permit icmp any any unreachable ttl gt 3
    permit ip any any fragments dscp 46
@@ -13085,6 +13090,7 @@ ipv6 access-list TEST2
    counters per-entry
    5 permit ipv6 2001:db8::/64 any
    10 deny ipv6 2001:db8::/32 any
+   20 deny ipv6 2001:db9::/32 any copy captive-portal
 !
 ipv6 access-list TEST3
    5 deny ipv6 2001:db8:1000::/64 any
