@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: MLAG L3 peering is not properly configured for MLAG peer 'mlag-l3-vlan-mismatch2' for host 'mlag-l3-vlan-mismatch1'.
+pyavd._errors.AristaAvdInvalidInputsError: Inconsistent MLAG L3 VLAN with MLAG peer 'mlag-l3-vlan-mismatch2'. Local 'mlag_peer_l3_vlan' resolves to 'None' while peer resolves to '4093' for host 'mlag-l3-vlan-mismatch1'.
