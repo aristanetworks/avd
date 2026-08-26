@@ -8,7 +8,7 @@ from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.get import get_v2
 from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 from pyavd._utils.undefined import Undefined, UndefinedType
@@ -273,7 +273,20 @@ class UtilsMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg)
 
-        return adapter.dot1x
+        dot1x = adapter.dot1x._cast_as(EosCliConfigGen.EthernetInterfacesItem.Dot1x, ignore_extra_keys=True)
+        if acl_name := adapter.dot1x.authentication_failure.allow_access_list:
+            acl_found = False
+            if acl_name in self.inputs.ipv4_acls:
+                self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[acl_name])
+                acl_found = True
+            if acl_name in self.inputs.ipv6_acls:
+                self.structured_config_utils._set_ipv6_acl(self.inputs.ipv6_acls[acl_name])
+                acl_found = True
+            if not acl_found:
+                msg = f"ipv4_acls[name={acl_name}] or ipv6_acls[name={acl_name}]"
+                raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+
+        return dot1x
 
     def _get_adapter_l2_mru(
         self: AvdStructuredConfigConnectedEndpointsProtocol,
