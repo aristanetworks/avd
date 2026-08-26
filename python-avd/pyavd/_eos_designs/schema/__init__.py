@@ -114915,7 +114915,7 @@ class EosDesigns(EosDesignsRootModel):
     -
     For network services L3 port-channels: resolved from `ip_address`.
     - For node type L3 interfaces and
-    L3 port-channels: resolved from `ip_address`. If set to "dhcp", the resolved DHCP address is used
+    L3 port-channels: resolved from `ip_address`. If set to "dhcp", the value of `dhcp_ip` is used
     instead.
     If the required field is not set, the substitution will fail with an error.
 
@@ -117085,7 +117085,7 @@ class EosDesigns(EosDesignsRootModel):
                    -
                    For network services L3 port-channels: resolved from `ip_address`.
                    - For node type L3 interfaces and
-                   L3 port-channels: resolved from `ip_address`. If set to "dhcp", the resolved DHCP address is used
+                   L3 port-channels: resolved from `ip_address`. If set to "dhcp", the value of `dhcp_ip` is used
                    instead.
                    If the required field is not set, the substitution will fail with an error.
 

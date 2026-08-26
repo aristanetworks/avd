@@ -21,7 +21,7 @@ keys:
       - For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
       - For network services L3 interfaces: resolved from the node's entry in `ip_addresses`.
       - For network services L3 port-channels: resolved from `ip_address`.
-      - For node type L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp", the resolved DHCP address is used instead.
+      - For node type L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp", the value of `dhcp_ip` is used instead.
       If the required field is not set, the substitution will fail with an error.
 
       The "peer_ip" substitution field is resolved per interface type:
