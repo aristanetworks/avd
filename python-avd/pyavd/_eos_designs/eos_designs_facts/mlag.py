@@ -47,11 +47,31 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if (peer_mlag_info := peer_facts_generator._mlag_local_info) is None:
-            msg = f"MLAG is not properly configured for MLAG peer '{peer_hostname}'"
+            msg = (
+                f"Could not determine MLAG local information for MLAG peer '{peer_hostname}'. "
+                "Ensure the peer has MLAG enabled and is part of a valid two-node MLAG pair"
+            )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
-        if mlag_local_info.primary == peer_mlag_info.primary or peer_facts_generator.mlag_peer != self.shared_utils.hostname:
-            msg = f"MLAG is not properly configured for MLAG peer '{peer_hostname}'"
+        if mlag_local_info.primary == peer_mlag_info.primary:
+            role = "primary" if mlag_local_info.primary else "secondary"
+            msg = (
+                f"Inconsistent MLAG roles with MLAG peer '{peer_hostname}'. "
+                f"Both devices resolve to '{role}'. Exactly one device must be primary and the other secondary"
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if (peer_mlag_peer := peer_facts_generator.mlag_peer) != self.shared_utils.hostname:
+            if peer_mlag_peer is None:
+                msg = (
+                    f"MLAG peer relationship is not reciprocal for MLAG peer '{peer_hostname}'. "
+                    f"The peer does not resolve an MLAG peer but should point to '{self.shared_utils.hostname}'"
+                )
+            else:
+                msg = (
+                    f"MLAG peer relationship is not reciprocal for MLAG peer '{peer_hostname}'. "
+                    f"The peer points to '{peer_mlag_peer}' instead of '{self.shared_utils.hostname}'"
+                )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         peer_mlag_interfaces = peer_facts_generator._mlag_interfaces
