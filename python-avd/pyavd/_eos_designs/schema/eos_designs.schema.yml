@@ -384,6 +384,15 @@ keys:
           and on all ''uplink_switches'' even when available VLANs differ between
           the ''uplink_switches''.'
         default: false
+      fix_match_ipv6_prefix_list_on_mlag_route_map:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
+          ipv6 address prefix-list`
+
+          instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`.'
       fix_radius_server_group_tls:
         type: bool
         default: false
@@ -2678,6 +2687,11 @@ keys:
             type: bool
             required: true
             description: Enable the Web Authentication feature.
+          ipv4_acl:
+            type: str
+            description: 'Extended IPv4 ACL name.
+
+              This ACL must be present in `ipv4_acls` catalog.'
           url:
             type: str
             pattern: https?://[^\s/:]+(:\d+)?
@@ -2819,6 +2833,17 @@ keys:
 
       Depending on your inventory size and the available resources, you may want to
       adjust this number.'
+  eos_designs_validate_inputs_template_with_multiprocessing:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: 'Use Multiprocessing for variable templating.
+
+      Disable this when templating of input variables invokes code that uses locks
+      or background threads.
+
+      Forked worker processes may inherit locked state, potentially causing deadlocks.'
   errdisable_settings:
     type: dict
     documentation_options:
@@ -3825,8 +3850,11 @@ keys:
     primary_key: name
     description: 'IPv4 extended access-lists supporting substitution on certain fields.
 
-      These access-lists can be referenced under node settings `l3_interfaces`, and
-      will only be configured on devices where they are in use.
+      These access-lists can be referenced under node settings `l3_interfaces`, or
+      using `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+
+      network ports, and port profiles. They will only be configured on devices where
+      they are in use.
 
 
       The substitution is useful when assigning the same access-list on multiple interfaces,
@@ -4003,7 +4031,10 @@ keys:
       These access-lists can be referenced using `ipv6_acl_in` / `ipv6_acl_out` under
       network services `svis`, or under node type `l3_interfaces` and `l3_port_channels`,
 
-      and will only be configured on devices where they are in use.
+      or using `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+      network ports, and port profiles.
+
+      They will only be configured on devices where they are in use.
 
 
       The substitution is useful when assigning the same access-list on multiple interfaces
@@ -4320,7 +4351,6 @@ keys:
         default: false
       hosts:
         type: list
-        required: true
         min_length: 1
         items:
           type: dict
@@ -7140,6 +7170,30 @@ keys:
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic
                       Loopback interface.'
                     default: main_router_id
+                  graceful_restart:
+                    type: dict
+                    description: 'BGP graceful-restart configuration for this VRF.
+
+                      This setting is not supported for VRF default. Use `bgp_graceful_restart`
+                      instead.
+
+                      '
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                        description: 'Enable or disable BGP graceful-restart for this
+                          VRF.
+
+                          '
+                      restart_time:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 3600
+                        default: 300
+                        description: Restart time in seconds.
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF
@@ -12151,6 +12205,23 @@ $defs:
       dot1x:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
+        keys:
+          authentication_failure:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/authentication_failure
+            keys:
+              allow_access_list:
+                type: str
+                convert_types:
+                - int
+                description: 'Name of the IPv4 and/or IPv6 extended access list to
+                  apply to unauthenticated traffic.
+
+                  The access list must be defined under the `ipv4_acls` and/or `ipv6_acls`
+                  catalog.
+
+                  On EOS, the access list is only applied when `dot1x.mac_based_access_list`
+                  is enabled on the interface.'
       address_locking:
         type: dict
         description: Address locking settings applied on the port.
@@ -13701,9 +13772,6 @@ $defs:
               table: node-type-bgp-configuration
             description: 'List of nodes acting as EVPN Route-Servers / Route-Reflectors.
 
-              Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers`
-              on the same node.
-
               '
             type: list
             items:
@@ -13828,11 +13896,21 @@ $defs:
                   If the peer''s hostname can not be found in the inventory, ip_address
                   and bgp_as must be defined.
 
-                  Hostnames configured here cannot also be configured under `evpn_route_servers`
-                  on the same node.
+                  If a remote peer is also an EVPN Route Server or Route Server client
+                  and uses the same IP address, only the EVPN Gateway core peering
+                  is configured on the local node.
 
-                  If a remote peer is also an uplink switch, AVD treats the EVPN peering
-                  to that peer as an EVPN Gateway core peering.
+                  Suppression is evaluated independently on each node based on its
+                  local EVPN Route Server and client relationships and `evpn_gateway.remote_peers`
+                  configuration.
+
+                  When one node uses an EVPN Gateway core peering and the other uses
+                  a regular EVPN peering, AVD does not synchronize BGP passwords.
+                  The user must ensure that both sides use the same password.
+
+                  If an explicit `ip_address` differs from the regular EVPN peering
+                  address, the EVPN Gateway core peering is configured in addition
+                  to the regular EVPN peering.
 
                   '
                 type: list

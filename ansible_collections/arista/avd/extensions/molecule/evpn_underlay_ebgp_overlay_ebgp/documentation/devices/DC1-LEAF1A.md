@@ -564,9 +564,9 @@ ip routing vrf Tenant_A_WEB_Zone
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| Tenant_A_APP_Zone | false |
-| Tenant_A_WEB_Zone | false |
+| MGMT | False |
+| Tenant_A_APP_Zone | False |
+| Tenant_A_WEB_Zone | False |
 
 ### Static Routes
 
