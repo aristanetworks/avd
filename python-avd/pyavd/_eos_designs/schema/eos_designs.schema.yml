@@ -2822,6 +2822,17 @@ keys:
 
       Depending on your inventory size and the available resources, you may want to
       adjust this number.'
+  eos_designs_validate_inputs_template_with_multiprocessing:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: 'Use Multiprocessing for variable templating.
+
+      Disable this when templating of input variables invokes code that uses locks
+      or background threads.
+
+      Forked worker processes may inherit locked state, potentially causing deadlocks.'
   errdisable_settings:
     type: dict
     documentation_options:
@@ -3828,45 +3839,18 @@ keys:
     primary_key: name
     description: 'IPv4 extended access-lists supporting substitution on certain fields.
 
-      These access-lists can be referenced using `ipv4_acl_in` / `ipv4_acl_out` under
-      network services `svis`, `l3_interfaces`, or under node type `l3_interfaces`
-      and `l3_port_channels`,
+      These access-lists can be referenced under node settings `l3_interfaces`, or
+      using `dot1x.authentication_failure.allow_access_list` under connected endpoints,
 
-      and will only be configured on devices where they are in use.
-
-
-      The substitution is useful when assigning the same access-list on multiple interfaces
-      where certain fields require unique values.
-
-      When using substitution, the interface name will be appended to the ACL name.
+      network ports, and port profiles. They will only be configured on devices where
+      they are in use.
 
 
-      The "interface_ip" substitution field is resolved per interface type:
+      The substitution is useful when assigning the same access-list on multiple interfaces,
 
-      - For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is
-      used as a fallback.
+      but where certain fields require unique values like the "interface_ip" or "peer_ip".
 
-      - For network services L3 interfaces: resolved from the node''s entry in `ip_addresses`.
-
-      - For network services L3 port-channels: resolved from `ip_address`.
-
-      - For node type L3 interfaces and L3 port-channels: resolved from `ip_address`.
-      If set to "dhcp", the value of `dhcp_ip` is used instead.
-
-      If the required field is not set, the substitution will fail with an error.
-
-
-      The "peer_ip" substitution field is resolved per interface type:
-
-      - For SVIs: not supported. Substitution will fail with an error if used.
-
-      - For network services L3 interfaces and L3 port-channels: not supported. Substitution
-      will fail with an error if used.
-
-      - For node type L3 interfaces and L3 port-channels: resolved from `peer_ip`.
-
-      If `peer_ip` is not set on the interface, the substitution will fail with an
-      error.'
+      When using substitution, the interface name will be appended to the ACL name.'
     items:
       $ref: eos_cli_config_gen#/keys/ip_access_lists/items
       type: dict
@@ -3886,9 +3870,7 @@ keys:
               source:
                 type: str
                 description: 'This field supports substitution of the fields "interface_ip"
-                  and "peer_ip". "peer_ip" is only supported for node type L3 interfaces
-                  and L3 port-channels; it is not supported for SVIs or network services
-                  L3 interfaces and L3 port-channels.
+                  for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
 
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>"
                   or "<ip>".
@@ -3899,9 +3881,7 @@ keys:
               destination:
                 type: str
                 description: 'This field supports substitution of the fields "interface_ip"
-                  and "peer_ip". "peer_ip" is only supported for node type L3 interfaces
-                  and L3 port-channels, it is not supported for SVIs or network services
-                  L3 interfaces and L3 port-channels.
+                  for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
 
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>"
                   or "<ip>".
@@ -4040,7 +4020,10 @@ keys:
       These access-lists can be referenced using `ipv6_acl_in` / `ipv6_acl_out` under
       network services `svis`, or under node type `l3_interfaces` and `l3_port_channels`,
 
-      and will only be configured on devices where they are in use.
+      or using `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+      network ports, and port profiles.
+
+      They will only be configured on devices where they are in use.
 
 
       The substitution is useful when assigning the same access-list on multiple interfaces
@@ -12211,6 +12194,23 @@ $defs:
       dot1x:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
+        keys:
+          authentication_failure:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/authentication_failure
+            keys:
+              allow_access_list:
+                type: str
+                convert_types:
+                - int
+                description: 'Name of the IPv4 and/or IPv6 extended access list to
+                  apply to unauthenticated traffic.
+
+                  The access list must be defined under the `ipv4_acls` and/or `ipv6_acls`
+                  catalog.
+
+                  On EOS, the access list is only applied when `dot1x.mac_based_access_list`
+                  is enabled on the interface.'
       address_locking:
         type: dict
         description: Address locking settings applied on the port.
@@ -13761,9 +13761,6 @@ $defs:
               table: node-type-bgp-configuration
             description: 'List of nodes acting as EVPN Route-Servers / Route-Reflectors.
 
-              Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers`
-              on the same node.
-
               '
             type: list
             items:
@@ -13888,11 +13885,21 @@ $defs:
                   If the peer''s hostname can not be found in the inventory, ip_address
                   and bgp_as must be defined.
 
-                  Hostnames configured here cannot also be configured under `evpn_route_servers`
-                  on the same node.
+                  If a remote peer is also an EVPN Route Server or Route Server client
+                  and uses the same IP address, only the EVPN Gateway core peering
+                  is configured on the local node.
 
-                  If a remote peer is also an uplink switch, AVD treats the EVPN peering
-                  to that peer as an EVPN Gateway core peering.
+                  Suppression is evaluated independently on each node based on its
+                  local EVPN Route Server and client relationships and `evpn_gateway.remote_peers`
+                  configuration.
+
+                  When one node uses an EVPN Gateway core peering and the other uses
+                  a regular EVPN peering, AVD does not synchronize BGP passwords.
+                  The user must ensure that both sides use the same password.
+
+                  If an explicit `ip_address` differs from the regular EVPN peering
+                  address, the EVPN Gateway core peering is configured in addition
+                  to the regular EVPN peering.
 
                   '
                 type: list
@@ -17443,12 +17450,7 @@ $defs:
         description: 'Name of the IPv6 access-list to be assigned in the ingress direction.
 
           The access-list must be defined under `ipv6_acls` and supports substitution
-          of the field "interface_ipv6",
-
-          resolved from the IPv6 address set on the SVI.
-
-          Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
-          and will be removed in AVD 7.0.0.'
+          of the field "interface_ip".'
         type: str
         convert_types:
         - int
@@ -17456,12 +17458,7 @@ $defs:
         description: 'Name of the IPv6 access-list to be assigned in the egress direction.
 
           The access-list must be defined under `ipv6_acls` and supports substitution
-          of the field "interface_ipv6",
-
-          resolved from the IPv6 address set on the SVI.
-
-          Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
-          and will be removed in AVD 7.0.0.'
+          of the field "interface_ip".'
         type: str
         convert_types:
         - int

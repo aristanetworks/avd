@@ -12,7 +12,8 @@ keys:
     description: |-
       IPv4 extended access-lists supporting substitution on certain fields.
       These access-lists can be referenced using `ipv4_acl_in` / `ipv4_acl_out` under network services `svis`, `l3_interfaces`, or under node type `l3_interfaces` and `l3_port_channels`,
-      and will only be configured on devices where they are in use.
+      or using `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port profiles.
+      They will only be configured on devices where they are in use.
 
       The substitution is useful when assigning the same access-list on multiple interfaces where certain fields require unique values.
       When using substitution, the interface name will be appended to the ACL name.

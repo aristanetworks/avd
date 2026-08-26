@@ -4545,6 +4545,12 @@ keys:
                   max: 4094
                   convert_types:
                   - str
+                allow_access_list:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Name of the IPv4/IPv6 standard/extended access list
+                    to be applied to unauthenticated traffic.
             host_mode:
               type: dict
               keys:
@@ -17383,6 +17389,22 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
+            maximum_advertised_routes:
+              type: int
+              description: Maximum number of advertised routes (0 means unlimited).
+              min: 0
+              max: 4294967294
+            maximum_advertised_routes_warning_limit:
+              type: str
+              convert_types:
+              - int
+              description: 'Maximum number of advertised routes ("<0-4294967294>")
+                after which a warning is issued (0 means never warn) or
+
+                Percentage of maximum number of routes at which to warn ("<1-100>
+                percent").
+
+                '
       neighbors:
         type: list
         primary_key: ip_address
@@ -17674,6 +17696,22 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
+            maximum_advertised_routes:
+              type: int
+              description: Maximum number of advertised routes (0 means unlimited).
+              min: 0
+              max: 4294967294
+            maximum_advertised_routes_warning_limit:
+              type: str
+              convert_types:
+              - int
+              description: 'Maximum number of advertised routes ("<0-4294967294>")
+                after which a warning is issued (0 means never warn) or
+
+                Percentage of maximum number of routes at which to warn ("<1-100>
+                percent").
+
+                '
       neighbor_interfaces:
         type: list
         primary_key: name
@@ -18599,6 +18637,22 @@ keys:
                           required: true
                         originate:
                           type: bool
+                maximum_advertised_routes:
+                  type: int
+                  description: Maximum number of advertised routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                maximum_advertised_routes_warning_limit:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
+
+                    Percentage of maximum number of routes at which to warn ("<1-100>
+                    percent").
+
+                    '
                 maximum_accepted_routes:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
@@ -18668,6 +18722,22 @@ keys:
                             capability.
                         originate:
                           type: bool
+                maximum_advertised_routes:
+                  type: int
+                  description: Maximum number of advertised routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                maximum_advertised_routes_warning_limit:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
+
+                    Percentage of maximum number of routes at which to warn ("<1-100>
+                    percent").
+
+                    '
                 maximum_accepted_routes:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
@@ -19026,7 +19096,7 @@ keys:
                       type: str
                 maximum_advertised_routes:
                   type: int
-                  description: Maximum number of routes (0 means unlimited).
+                  description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
                   convert_types:
@@ -19035,8 +19105,8 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'Maximum number of routes after which a warning is
-                    issued (0 means never warn) or
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
 
                     Percentage of maximum number of routes at which to warn ("<1-100>
                     percent").
@@ -19154,7 +19224,7 @@ keys:
                       type: str
                 maximum_advertised_routes:
                   type: int
-                  description: Maximum number of routes (0 means unlimited).
+                  description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
                   convert_types:
@@ -19163,8 +19233,8 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'Maximum number of routes after which a warning is
-                    issued (0 means never warn) or
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
 
                     Percentage of maximum number of routes at which to warn ("<1-100>
                     percent").
@@ -19692,6 +19762,22 @@ keys:
                     route_map:
                       type: str
                       description: Route-map name.
+                maximum_advertised_routes:
+                  type: int
+                  description: Maximum number of advertised routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                maximum_advertised_routes_warning_limit:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
+
+                    Percentage of maximum number of routes at which to warn ("<1-100>
+                    percent").
+
+                    '
                 maximum_accepted_routes:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
@@ -19752,6 +19838,22 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                maximum_advertised_routes:
+                  type: int
+                  description: Maximum number of advertised routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                maximum_advertised_routes_warning_limit:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
+
+                    Percentage of maximum number of routes at which to warn ("<1-100>
+                    percent").
+
+                    '
                 maximum_accepted_routes:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
