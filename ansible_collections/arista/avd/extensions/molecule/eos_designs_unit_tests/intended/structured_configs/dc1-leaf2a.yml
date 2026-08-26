@@ -368,11 +368,13 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 800
+      allow_access_list: ACL1
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
     mac_based_authentication:
       enabled: true
+    mac_based_access_list: true
     timeout:
       reauth_period: server
       tx_period: 3
@@ -394,11 +396,13 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 800
+      allow_access_list: ACL1
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
     mac_based_authentication:
       enabled: true
+    mac_based_access_list: true
     timeout:
       reauth_period: server
       tx_period: 3
@@ -437,6 +441,13 @@ ip_access_lists:
     protocol: ip
     source: 10.1.10.1
     destination: any
+- name: ACL1
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -456,6 +467,14 @@ ip_radius:
     source_interface: Management99
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ipv6_access_lists:
+- name: ACL1
+  entries:
+  - protocol: ipv6
+    source: any
+    destination: any
+    sequence: 10
+    action: permit
 ipv6_static_routes:
 - vrf: Tenant_D_OP_Zone
   prefix: ::/0
