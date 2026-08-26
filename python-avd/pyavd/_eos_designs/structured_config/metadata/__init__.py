@@ -53,6 +53,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
             self.structured_config.metadata.exclude_as_extra_fabric_validation_target = resolved_profile.exclude_as_extra_fabric_validation_target
         if resolved_profile.interfaces.errdisable.only_avd_interfaces:
             self.structured_config.metadata.interfaces.errdisable.only_avd_interfaces = True
+        self.structured_config.metadata.bgp = resolved_profile.bgp._cast_as(EosCliConfigGen.Metadata.Bgp, ignore_extra_keys=True)
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):

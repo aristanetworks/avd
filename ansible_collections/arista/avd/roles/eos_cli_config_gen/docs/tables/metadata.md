@@ -148,6 +148,9 @@
     | [<samp>&nbsp;&nbsp;interfaces</samp>](## "metadata.interfaces") | Dictionary |  |  |  | Interface validation settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;errdisable</samp>](## "metadata.interfaces.errdisable") | Dictionary |  |  |  | Settings for the VerifyInterfaceErrDisabled test. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_avd_interfaces</samp>](## "metadata.interfaces.errdisable.only_avd_interfaces") | Boolean |  | `False` |  | Only validate interfaces defined in the AVD structured configuration for errdisabled state. |
+    | [<samp>&nbsp;&nbsp;bgp</samp>](## "metadata.bgp") | Dictionary |  |  |  | Validation settings for BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;check_tcp_queues</samp>](## "metadata.bgp.check_tcp_queues") | Boolean |  | `True` |  | Flag to check if the TCP session queues are empty for all BGP peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;minimum_established_time</samp>](## "metadata.bgp.minimum_established_time") | Integer |  |  |  | Minimum established time (seconds) for all BGP sessions. |
 
 === "YAML"
 
@@ -363,6 +366,15 @@
 
           # Only validate interfaces defined in the AVD structured configuration for errdisabled state.
           only_avd_interfaces: <bool; default=False>
+
+      # Validation settings for BGP.
+      bgp:
+
+        # Flag to check if the TCP session queues are empty for all BGP peers.
+        check_tcp_queues: <bool; default=True>
+
+        # Minimum established time (seconds) for all BGP sessions.
+        minimum_established_time: <int>
     ```
 
     1. Default Value
