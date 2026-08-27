@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import tempfile
 from contextlib import nullcontext as does_not_raise
-from logging import DEBUG
+from logging import DEBUG, getLogger
 from os import environ
 from typing import TYPE_CHECKING, Literal
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -18,6 +18,7 @@ from pyavd._cv.client import CVClient
 from pyavd._cv.client.constants import DEFAULT_API_TIMEOUT
 from pyavd._cv.client.exceptions import CVResourceNotFound, CVWorkspaceSubmitFailedInactiveDevices, CVWorkspaceSynchronizationAttemptsExhausted
 from pyavd._cv.client.models import CVTagAssignment
+from pyavd._cv.client.versioning import CvVersion
 from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, deploy_to_cv
 from pyavd._cv.workflows.models import (
     AvdDevice,
@@ -43,6 +44,8 @@ from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
 )
 from tests.pyavd.cv.mockery import mocked_cvdevices
+
+LOGGER = getLogger(__name__)
 
 if TYPE_CHECKING:
     from pyavd._cv.api.arista.workspace.v1 import Response, Workspace, WorkspaceConfig
@@ -598,6 +601,14 @@ def workspace_sync_run_id() -> str:
             True,
             id="CVAAS_STG",
         ),
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_ONPREM_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_ONPREM_SERVER", default=""),
+            },
+            False,
+            id="CV_ONPREM",
+        ),
     ],
 )
 @pytest.mark.parametrize(
@@ -615,7 +626,9 @@ async def test_workspace_synchronization_during_build_and_submit(
     """
     Test Workspace synchronization during build and submit against a live CloudVision tenant.
 
-    - Submit and verify baseline tag values for the inactive test device.
+    - Skip targets running a CloudVision version older than 2026.2.0.
+    - Select the first preferred device present in the target inventory, or the first inventory device as fallback.
+    - Submit and verify baseline tag values for the selected test device.
     - Deploy tags through a forced Workspace while injecting configured mainline changes.
     - Verify build-time synchronization performs build, rebase, and rebuild.
       - Initial CloudVision state observed by ``deploy_to_cv``: ``NeedsBuild=True``, ``NeedsRebase=False``.
@@ -635,7 +648,7 @@ async def test_workspace_synchronization_during_build_and_submit(
     - Verify the API responses, event sequence, and final tag values.
     - Restore and verify the baseline tag values.
     """
-    live_test_device = "avd-ci-core1"
+    preferred_live_test_devices = ("avd-ci-core1", "avd-ci-leaf1", "dc1-leaf1a")
     tag_labels = (
         "avd-live-ws-sync-test",
         "avd-live-ws-sync-pre-build-change",
@@ -652,6 +665,28 @@ async def test_workspace_synchronization_during_build_and_submit(
         proxy_username=None,
         proxy_password=None,
     )
+
+    async def _select_live_test_device() -> str:
+        """Skip unsupported CloudVision versions and select a preferred inventory device or the first returned device."""
+        async with CVClient(servers=targeted_cv["cv_server"], token=targeted_cv["cv_access_token"], verify_certs=verify_certs) as cv_client:
+            cv_version = cv_client._cv_version
+            assert cv_version is not None, f"Failed to determine the CloudVision version on {targeted_cv['cv_server']}"
+            if cv_version < CvVersion("2026.2.0"):
+                pytest.skip(f"Workspace synchronization requires CloudVision 2026.2.0 or later. Server {targeted_cv['cv_server']} is running {cv_version}")
+            inventory_devices = await cv_client.get_inventory_devices()
+
+        assert inventory_devices, f"No devices were returned from the CloudVision inventory on {targeted_cv['cv_server']}"
+        inventory_hostnames = {device.hostname for device in inventory_devices}
+        if preferred_device := next((device for device in preferred_live_test_devices if device in inventory_hostnames), None):
+            LOGGER.debug("Selected preferred live-test device '%s' for CloudVision server '%s'", preferred_device, targeted_cv["cv_server"])
+            return preferred_device
+
+        fallback_device = inventory_devices[0].hostname
+        assert fallback_device is not None, f"The first inventory device on {targeted_cv['cv_server']} has no hostname"
+        LOGGER.debug("Selected fallback live-test device '%s' for CloudVision server '%s'", fallback_device, targeted_cv["cv_server"])
+        return fallback_device
+
+    live_test_device = await _select_live_test_device()
     workspace_api_trace: list[tuple[str, str, str, object | None]] = []
     # Correlate each WUT request ID with the operation that produced it.
     wut_request_operations: dict[str, Literal["build", "rebase", "submit"]] = {}
