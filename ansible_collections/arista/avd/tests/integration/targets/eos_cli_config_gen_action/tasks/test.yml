@@ -9,6 +9,13 @@
   ansible.builtin.set_fact:
     test_items: "{{ test_cases.files | map(attribute='path') | list }}"
 
+- name: Validate discovered test cases
+  ansible.builtin.assert:
+    that:
+      - test_items | length > 0
+    fail_msg: >-
+      No integration test files were discovered for pattern '{{ testcase }}.yml' under '{{ role_path }}/tests/'.
+
 - name: Run test cases
   ansible.builtin.include_tasks: '{{ test_case_to_run }}'
   with_items: '{{ test_items }}'
