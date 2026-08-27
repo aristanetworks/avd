@@ -1,0 +1,15 @@
+---
+- name: Test avd_ignore_requirements=true overrides requirement failures
+  register: result
+  arista.avd.verify_requirements:
+    requirements:
+      - "non-existent-avd-test-package>=1.0"
+    avd_ignore_requirements: true
+  check_mode: false
+  run_once: true
+
+- name: Validate result is not failed due to avd_ignore_requirements
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.failed == false
