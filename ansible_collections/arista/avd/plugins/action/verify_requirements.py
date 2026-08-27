@@ -416,7 +416,7 @@ class ActionModule(AVDActionPlugin):
             raise TypeError(msg)
 
         running_ansible_version = task_vars["ansible_version"]["string"]
-        running_collection_name = task_vars["ansible_collection_name"]
+        running_collection_name = task_vars.get("ansible_collection_name") or "arista.avd"
 
         self.result["failed"] = False
 

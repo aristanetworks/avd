@@ -1,0 +1,15 @@
+---
+- name: Test with valid Python requirements (package found and version matches)
+  register: result
+  arista.avd.verify_requirements:
+    requirements:
+      - "Jinja2>=2.9"
+    avd_ignore_requirements: true
+  check_mode: false
+  run_once: true
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.failed == false

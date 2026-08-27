@@ -1,0 +1,16 @@
+---
+- name: Test with missing requirements argument
+  ignore_errors: true
+  register: result
+  arista.avd.verify_requirements:
+  check_mode: false
+  run_once: true
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == expected_error
+  vars:
+    expected_error: >-
+      Error during plugin 'arista.avd.verify_requirements' execution: The argument 'requirements' must be set

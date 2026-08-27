@@ -1,0 +1,17 @@
+---
+- name: Test with mismatched Python package version
+  ignore_errors: true
+  register: result
+  arista.avd.verify_requirements:
+    requirements:
+      - "Jinja2==0.0.1"
+  check_mode: false
+  run_once: true
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == expected_error
+  vars:
+    expected_error: "If it is a false positive, set 'avd_ignore_requirements=True'."
