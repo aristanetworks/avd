@@ -18,4 +18,7 @@
       - result is failed
       - result.msg == expected_error
   vars:
-    expected_error: "Error during plugin 'arista.avd.validate_inputs' execution: Invalid/missing 'fabric_name' variable. All hosts in the play must have the same 'fabric_name' value which must point to an Ansible Group containing the hosts.play_hosts: ['testhost']"
+    expected_error: >-
+      Error during plugin 'arista.avd.validate_inputs' execution: Invalid/missing 'fabric_name' variable.
+      All hosts in the play must have the same 'fabric_name' value which must point to an Ansible Group
+      containing the hosts.play_hosts: ['testhost']
