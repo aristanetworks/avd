@@ -11,7 +11,7 @@ keys:
     primary_key: name
     description: |-
       IPv4 extended access-lists supporting substitution on certain fields.
-      These access-lists can be referenced using `ipv4_acl_in` / `ipv4_acl_out` under network services `svis`, `l3_interfaces`, or under node type `l3_interfaces` and `l3_port_channels`,
+      These access-lists can be referenced using `ipv4_acl_in` / `ipv4_acl_out` under network services `svis`, `l3_interfaces`, `l3_port_channels`, or under node type `l3_interfaces` and `l3_port_channels`,
       or using `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port profiles.
       They will only be configured on devices where they are in use.
 
@@ -22,7 +22,7 @@ keys:
       - For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
       - For network services L3 interfaces: resolved from the node's entry in `ip_addresses`.
       - For network services L3 port-channels: resolved from `ip_address`.
-      - For node type L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp", the value of `dhcp_ip` is used instead.
+      - For node type L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
       If the required field is not set, the substitution will fail with an error.
 
       The "peer_ip" substitution field is resolved per interface type:
