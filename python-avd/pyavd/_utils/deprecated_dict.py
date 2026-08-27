@@ -22,7 +22,7 @@ class DeprecatedDict(dict):
         self._remove_in_version = _remove_in_version
         super().__init__(*args, **kwargs)
 
-    def _warn(self, key: Any) -> None:
+    def _warn(self, key: str) -> None:
         if key in self._done or key not in self._new_keys:
             return
 
