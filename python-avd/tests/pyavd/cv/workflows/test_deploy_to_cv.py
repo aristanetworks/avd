@@ -571,6 +571,12 @@ async def test_deploy_to_cv_workspace_sync_exhausted(max_sync_retries: int) -> N
     assert mock_rebase.call_count == max_sync_retries
 
 
+@pytest.fixture(scope="session")
+def workspace_sync_run_id() -> str:
+    """Return one unique ID shared by all Workspace synchronization live-test destinations in the pytest session."""
+    return uuid4().hex[:4]
+
+
 @pytest.mark.asyncio
 @pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy tests are skipped.")
 @pytest.mark.parametrize(
@@ -600,7 +606,11 @@ async def test_deploy_to_cv_workspace_sync_exhausted(max_sync_retries: int) -> N
 )
 @pytest.mark.filterwarnings("ignore:Unverified HTTPS request is being made to host")
 async def test_workspace_synchronization_during_build_and_submit(
-    targeted_cv: dict[str, str], verify_certs: bool, pre_build_change_count: int, pre_submit_change_count: int
+    targeted_cv: dict[str, str],
+    verify_certs: bool,
+    pre_build_change_count: int,
+    pre_submit_change_count: int,
+    workspace_sync_run_id: str,
 ) -> None:
     """
     Test Workspace synchronization during build and submit against a live CloudVision tenant.
@@ -694,10 +704,9 @@ async def test_workspace_synchronization_during_build_and_submit(
             }
         return {(assignment.label, assignment.value) for assignment in assignments if assignment.label in tag_labels and assignment.device_id == device_id}
 
-    run_id = uuid4().hex[:4]
-    baseline_workspace_id = f"ws-avd-live-sync-baseline-{run_id}"
-    test_workspace_id = f"ws-avd-live-sync-test-{run_id}"
-    cleanup_workspace_id = f"ws-avd-live-sync-cleanup-{run_id}"
+    baseline_workspace_id = f"ws-avd-live-sync-baseline-{workspace_sync_run_id}"
+    test_workspace_id = f"ws-avd-live-sync-test-{workspace_sync_run_id}"
+    cleanup_workspace_id = f"ws-avd-live-sync-cleanup-{workspace_sync_run_id}"
     baseline_device_id: str | None = None
     test_tag = {tag_labels[0]: "test"}
     # Track the WUT (Workspace Under Test) lifecycle to verify synchronization during both build and submit.
@@ -711,8 +720,8 @@ async def test_workspace_synchronization_during_build_and_submit(
         attempt = injected_change_counts[phase]
         tag_label = tag_labels[1] if phase == "build" else tag_labels[2]
         change_result = await _deploy_device_tags(
-            workspace_id=f"ws-avd-live-sync-pre-{phase}-change-{attempt}-{run_id}",
-            workspace_name=f"AVD live WS sync pre-{phase} change {attempt} {run_id}",
+            workspace_id=f"ws-avd-live-sync-pre-{phase}-change-{attempt}-{workspace_sync_run_id}",
+            workspace_name=f"AVD live WS sync pre-{phase} change {attempt} {workspace_sync_run_id}",
             tags={tag_label: f"attempt-{attempt}"},
             requested_state="submitted",
         )
@@ -793,7 +802,7 @@ async def test_workspace_synchronization_during_build_and_submit(
             # Enforce correct initial state for the test (device is associated with cleanup tags)
             baseline_result = await _deploy_device_tags(
                 workspace_id=baseline_workspace_id,
-                workspace_name=f"AVD live WS sync baseline {run_id}",
+                workspace_name=f"AVD live WS sync baseline {workspace_sync_run_id}",
                 tags=dict.fromkeys(tag_labels, "cleanup"),
                 requested_state="submitted",
             )
@@ -808,7 +817,7 @@ async def test_workspace_synchronization_during_build_and_submit(
 
             submitted_result = await _deploy_device_tags(
                 workspace_id=test_workspace_id,
-                workspace_name=f"AVD live WS sync test {run_id}",
+                workspace_name=f"AVD live WS sync test {workspace_sync_run_id}",
                 tags=test_tag,
                 requested_state="submitted",
                 max_sync_retries=pre_build_change_count + pre_submit_change_count,
@@ -862,7 +871,7 @@ async def test_workspace_synchronization_during_build_and_submit(
         if any(injected_change_counts.values()):
             cleanup_result = await _deploy_device_tags(
                 workspace_id=cleanup_workspace_id,
-                workspace_name=f"AVD live WS sync cleanup {run_id}",
+                workspace_name=f"AVD live WS sync cleanup {workspace_sync_run_id}",
                 tags=dict.fromkeys(tag_labels, "cleanup"),
                 requested_state="submitted",
             )
