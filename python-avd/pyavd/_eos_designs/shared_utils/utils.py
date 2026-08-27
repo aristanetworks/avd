@@ -329,6 +329,7 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def _is_mpls_overlay_server_without_lsr(self: SharedUtilsProtocol) -> bool:
+        """Check if the device acts as OOB route-reflector without involved in data-plane MPLS LSR role."""
         return (
             self.inputs.avd_design_future.remove_mpls_lsr_dependency_for_mpls_overlay_role_server
             and self.overlay_routing_protocol == "ibgp"
