@@ -558,6 +558,7 @@ jobs:
         working-directory: ansible_collections/arista/avd
         run: |
           ansible-test integration --coverage --requirements -vv ${{ matrix.integration_args }}
+          ansible-test coverage report --show-missing
           ansible-test coverage xml
           mv tests/output/reports/coverage.xml "./integration-coverage-${{ matrix.ansible_version }}.xml"
       - name: Upload coverage from ansible-test integration

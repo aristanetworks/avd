@@ -210,6 +210,10 @@ options:
             description: Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports.
             type: bool
             default: false
+      max_sync_retries:
+        description: Maximum number of retry attempts to synchronize Workspace. Requires CloudVision 2026.2.0 or later.
+        type: int
+        default: 5
   change_control:
     description: CloudVision Change Control to create for the deployment.
     type: dict
@@ -337,6 +341,7 @@ EXAMPLES = r"""
             # enabled: true
             suppress_patterns: [".*/32 IPv4 address is not configured on the interface.*"]
             # suppress_portfast: false
+          # max_sync_retries: 5
         change_control:
         #   name:
         #   description:

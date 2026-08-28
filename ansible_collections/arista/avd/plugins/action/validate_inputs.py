@@ -28,6 +28,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 
 # Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
 if TYPE_CHECKING:  # pragma: no cover
+    from collections.abc import Iterator
+
     from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
     from pyavd._schema.models.constants import CV_DEPLOY_INPUT_KEYS, EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
@@ -123,6 +125,7 @@ ARGUMENT_SPEC = {
     "fail_on_validation_errors": {"type": "bool", "default": False},
     "validation_configuration": {"type": "dict", "options": {"warn_eos_config_keys": {"type": "bool"}}},
     "vault_id": {"type": "str"},
+    "template_with_multiprocessing": {"type": "bool", "default": True},
 }
 
 REQUIRED_IF = [
@@ -145,6 +148,7 @@ class ResolvedPluginArgs:
     fail_on_validation_errors: bool
     validation_configuration: Configuration | None
     vault_id: str | None
+    template_with_multiprocessing: bool
 
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
@@ -189,7 +193,7 @@ class ActionModule(AVDActionPlugin):
 
         plugin_args = self._get_plugin_args()
         hosts_to_process = self._get_hosts_to_process(task_vars, plugin_args.schema_name, plugin_args.device_list)
-        mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
+        mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"], plugin_args.template_with_multiprocessing)
         templated_path, validated_path = get_tmp_paths(tmp_dir=plugin_args.tmp_dir, clean=True)
 
         # Create Vault and file handlers.
@@ -350,11 +354,10 @@ class ActionModule(AVDActionPlugin):
         Run Phase 1: Templating.
 
         Resolves Ansible hostvars for each host and writes them as JSON files.
-        Uses multiprocessing for parallel execution across hosts.
 
         Args:
             hostnames: List of hostnames to process.
-            workers: Number of multiprocessing workers to use.
+            workers: Number of multiprocessing workers to use. 0 for no multiprocessing.
             batch_size: Number of hosts to process per child process.
             output_path: Directory path where templated JSON files will be written.
             schema_name: Schema name used for filtering hostvars.
@@ -365,25 +368,33 @@ class ActionModule(AVDActionPlugin):
         """
         self.logger.info("Templating hostvars...")
         start_time = perf_counter()
-        successful_hosts = []
 
         # Partial to inject arguments into the worker.
         worker_func = partial(_template_host_worker, output_path=output_path, schema_name=schema_name, file_handler=file_handler)
-        ctx = get_context("fork")
 
-        with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
-            results = pool.map(worker_func, hostnames, chunksize=batch_size)
-
-            for result in results:
-                if isinstance(result, WorkerFailure):
-                    self.crashed_hosts.add(result.hostname)
-                    self.logger.error("%s: %s", result.hostname, result.error)
-                    continue
-
-                self.logger.debug("Templated data for host %s saved to %s", result.hostname, result.output_file)
-                successful_hosts.append(result.hostname)
+        if not workers:
+            results = map(worker_func, hostnames)
+            successful_hosts = self._process_templating_results(results)
+        else:
+            ctx = get_context("fork")
+            with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
+                results = pool.map(worker_func, hostnames, chunksize=batch_size)
+                successful_hosts = self._process_templating_results(results)
 
         self.logger.info("Templating of hostvars completed in %.2fs", perf_counter() - start_time)
+        return successful_hosts
+
+    def _process_templating_results(self, results: Iterator[TemplateWorkerResult]) -> list[str]:
+        successful_hosts = []
+        for result in results:
+            if isinstance(result, WorkerFailure):
+                self.crashed_hosts.add(result.hostname)
+                self.logger.error("%s: %s", result.hostname, result.error)
+                continue
+
+            self.logger.debug("Templated data for host %s saved to %s", result.hostname, result.output_file)
+            successful_hosts.append(result.hostname)
+
         return successful_hosts
 
     def _run_validation_phase(
