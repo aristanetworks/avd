@@ -876,7 +876,10 @@ async def test_workspace_synchronization_during_build_and_submit(
         # Build after each pre-build chamge + final build + build after each pre-submit build
         assert len(build_responses) == pre_build_change_count + 1 + pre_submit_change_count, workspace_api_trace
         # Attempt to build WS requiring SYNC returns `response.status == ResponseStatus.SUCCESS` and `workspace.needs_rebase == True`
-        assert all(response.status == ResponseStatus.SUCCESS for response, _workspace in build_responses), workspace_api_trace
+        assert all(response.status == ResponseStatus.SUCCESS and response.code == ResponseCode.UNSPECIFIED for response, _workspace in build_responses), (
+            workspace_api_trace
+        )
+        assert all(workspace.needs_build is False for _response, workspace in build_responses), workspace_api_trace
         assert [workspace.needs_rebase for _response, workspace in build_responses] == [True] * pre_build_change_count + [False] * (
             pre_submit_change_count + 1
         ), workspace_api_trace
@@ -884,17 +887,31 @@ async def test_workspace_synchronization_during_build_and_submit(
         rebase_responses = wut_terminal_responses["rebase"]
         # Rebase after each pre-build change and each pre-submit change
         assert len(rebase_responses) == pre_build_change_count + pre_submit_change_count, workspace_api_trace
-        assert all(response.status == ResponseStatus.SUCCESS for response, _workspace in rebase_responses), workspace_api_trace
+        assert all(
+            response.status == ResponseStatus.SUCCESS
+            and response.code == ResponseCode.UNSPECIFIED
+            and workspace.needs_build is True
+            and workspace.needs_rebase is False
+            for response, workspace in rebase_responses
+        ), workspace_api_trace
 
         submit_responses = wut_terminal_responses["submit"]
         # Submit per every pre-submit change + final submit
         assert len(submit_responses) == 1 + pre_submit_change_count, workspace_api_trace
         # Attempt to submit WS requiring SYNC returns `response.status == ResponseStatus.FAIL`` and `response.code == ResponseCode.SYNCHRONIZATION_REQUIRED`
         assert all(
-            response.status == ResponseStatus.FAIL and response.code == ResponseCode.SYNCHRONIZATION_REQUIRED for response, _workspace in submit_responses[:-1]
+            response.status == ResponseStatus.FAIL
+            and response.code == ResponseCode.SYNCHRONIZATION_REQUIRED
+            and workspace.needs_build is False
+            and workspace.needs_rebase is True
+            for response, workspace in submit_responses[:-1]
         ), workspace_api_trace
         # Final submit simply returns SUCCESS
-        assert submit_responses[-1][0].status == ResponseStatus.SUCCESS, workspace_api_trace
+        final_submit_response, final_submit_workspace = submit_responses[-1]
+        assert final_submit_response.status == ResponseStatus.SUCCESS, workspace_api_trace
+        assert final_submit_response.code == ResponseCode.UNSPECIFIED, workspace_api_trace
+        assert final_submit_workspace.needs_build is False, workspace_api_trace
+        assert final_submit_workspace.needs_rebase is False, workspace_api_trace
 
         expected_tag_values = {
             (tag_labels[0], "test"),
