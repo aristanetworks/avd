@@ -40237,8 +40237,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         multicast: Multicast
         """
-        Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination
-        of both.
+        Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+        both.
 
         Subclass of AvdModel.
         """
@@ -40476,8 +40476,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     mac_access_group_out: MAC access list name.
                     pim: Subclass of AvdModel.
                     multicast:
-                       Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination
-                       of both.
+                       Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+                       both.
 
                        Subclass of AvdModel.
                     service_profile: QOS profile.

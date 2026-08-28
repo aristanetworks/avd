@@ -6643,6 +6643,8 @@ interface Ethernet90
 | Port-Channel302 | IPv6 | True | ACL_IPV6_MULTICAST (out), MulticastAclIpv6 (out) |
 | Port-Channel303 | IPv4 | True | 224.0.0.0/8 (out), 224.1.0.0/16 |
 | Port-Channel303 | IPv6 | True | ff02::/16 (out) |
+| Port-Channel400 | IPv4 | True | - |
+| Port-Channel400 | IPv6 | True | - |
 
 ##### VLAN Translations
 
@@ -7572,6 +7574,8 @@ interface Port-Channel400
    ipv6 nd other-config-flag
    ipv6 access-group TEST-V6-IN in
    ipv6 access-group TEST-V6-OUT out
+   multicast ipv4 static
+   multicast ipv6 static
 !
 interface Port-Channel667
    description Multiple VRIDs

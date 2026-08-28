@@ -1362,6 +1362,11 @@ port_channel_interfaces:
       other_config_flag: true
     ipv6_access_group_in: TEST-V6-IN
     ipv6_access_group_out: TEST-V6-OUT
+    multicast:
+      ipv4:
+        static: true
+      ipv6:
+        static: true
 
   - name: Port-Channel303
     description: Traffic Engineering Static Delay Coverage
