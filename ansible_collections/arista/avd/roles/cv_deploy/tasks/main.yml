@@ -62,6 +62,7 @@
             enabled: "{{ cv_workspace_build_warnings_enabled }}"
             suppress_patterns: "{{ cv_workspace_build_warnings_suppress_patterns }}"
             suppress_portfast: "{{ cv_workspace_build_warnings_suppress_portfast }}"
+          max_sync_retries: "{{ cv_workspace_max_sync_retries }}"
         change_control:
           id: "{{ cv_change_control_id | arista.avd.default }}"
           name: "{{ cv_change_control_name | arista.avd.default }}"

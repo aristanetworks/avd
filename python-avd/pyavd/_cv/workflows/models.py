@@ -307,18 +307,34 @@ class AvdWorkspace:
     """ Force submit the workspace even if some devices are not actively streaming to CloudVision."""
     build_warnings: AvdWorkspaceBuildWarningsConfig = field(default_factory=AvdWorkspaceBuildWarningsConfig)
     """Configuration settings to control fetching and exposing Workspace build warnings."""
+    max_sync_retries: int = 5
+    """Maximum number of retry attempts to synchronize Workspace."""
+
+    def __post_init__(self) -> None:
+        if self.max_sync_retries < 0:
+            msg = f"max_sync_retries must be a non-negative integer, got {self.max_sync_retries}."
+            raise ValueError(msg)
 
 
 @dataclass
 class CVWorkspace:
     avd_workspace: AvdWorkspace = field(default_factory=AvdWorkspace)
-    state: Literal["pending", "built", "submitted", "build failed", "submit failed", "abandoned", "deleted"] | None = None
+    state: Literal["pending", "built", "submitted", "build failed", "submit failed", "synchronization failed", "abandoned", "deleted"] | None = None
     """The current state of the Workspace."""
     change_control_id: str | None = None
     build_id: str | None = None
     """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt."""
     device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
     """Details of per-device Workspace build results."""
+    synchronization_required: bool = False
+    """
+    CloudVision Workspace requires synchronize/rebase before submission.
+
+    Is set to True if any of the following conditions are met:
+    - Workspace.needs_rebase == True after building a Workspace
+    - Workspace.responses.values[<request_id>].status == ResponseStatus.FAIL
+        and Workspace.responses.values[<request_id>].code == ResponseCode.SYNCHRONIZATION_REQUIRED
+    """
 
     @property
     def name(self) -> str:
@@ -343,6 +359,17 @@ class CVWorkspace:
     @property
     def build_warnings(self) -> AvdWorkspaceBuildWarningsConfig:
         return self.avd_workspace.build_warnings
+
+    @property
+    def max_sync_retries(self) -> int:
+        return self.avd_workspace.max_sync_retries
+
+    def reset(self) -> None:
+        """Reset mutable state before replaying deployment after synchronization."""
+        self.device_build_results.clear()
+        self.state = "pending"
+        self.build_id = None
+        self.synchronization_required = False
 
     def get_result(self) -> dict[str, Any]:
         """Return a representation of this object for the Ansible module result."""
@@ -388,6 +415,45 @@ class DeployToCvResult:
     def get_result(self) -> dict[str, Any]:
         """Return a representation of this object for the Ansible module result."""
         return {f.name: get_result(getattr(self, f.name)) for f in fields(self)}
+
+    def reset(self) -> None:
+        """
+        Reset mutable state before replaying deployment after Workspace synchronization.
+
+        Warnings are retained to preserve items populated outside the retry loop, such as device validation warnings.
+        Errors are not retained since any error sets `failed=True` and causes immediate Workspace abandonment.
+        The existing Workspace and Change Control object references are retained.
+        Workspace attempt-specific state is cleared by calling `CVWorkspace.reset()`, while Change Control state is left unchanged.
+        All deployment results computed against the outdated CloudVision mainline are cleared.
+        """
+        LOGGER.debug(
+            "DeployToCvResult.reset: Resetting all mutable state computed for Workspace %s (%s) against an outdated CloudVision mainline.",
+            self.workspace.name,
+            self.workspace.id,
+        )
+        self.failed = False
+        self.errors.clear()
+        for attempt_results in (
+            self.deployed_configs,
+            self.deployed_static_config_containers,
+            self.deployed_static_config_configlets,
+            self.deployed_device_tags,
+            self.deployed_interface_tags,
+            self.deployed_studio_inputs,
+            self.deployed_cv_pathfinder_metadata,
+            self.skipped_configs,
+            self.skipped_static_config_containers,
+            self.skipped_device_tags,
+            self.skipped_interface_tags,
+            self.skipped_cv_pathfinder_metadata,
+            self.removed_configs,
+            self.removed_static_config_containers,
+            self.removed_static_config_configlets,
+            self.removed_device_tags,
+            self.removed_interface_tags,
+        ):
+            attempt_results.clear()
+        self.workspace.reset()
 
 
 @dataclass(frozen=True)

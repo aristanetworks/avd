@@ -7,11 +7,12 @@ import tempfile
 from contextlib import nullcontext as does_not_raise
 from logging import DEBUG
 from typing import TYPE_CHECKING
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
+from pyavd._cv.client.exceptions import CVResourceNotFound, CVWorkspaceSubmitFailedInactiveDevices, CVWorkspaceSynchronizationAttemptsExhausted
+from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, deploy_to_cv
 from pyavd._cv.workflows.models import (
     AvdChangeControl,
     AvdManifest,
@@ -24,6 +25,7 @@ from pyavd._cv.workflows.models import (
     CVGRPCChannelConfiguration,
     CVGRPCKeepalives,
     CVWorkspace,
+    DeployToCvResult,
 )
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
@@ -254,6 +256,40 @@ async def test_deploy_to_cv(
 
 
 @pytest.mark.asyncio
+async def test_deploy_to_cv_abandons_workspace_when_device_is_missing() -> None:
+    """Test that a missing-device failure abandons the Workspace."""
+    mock_cv_client = AsyncMock()
+    mock_cv_client.__aenter__.return_value = mock_cv_client
+    error = CVResourceNotFound("Missing devices on CloudVision")
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_device_inputs"),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock(side_effect=error)),
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="",
+                token=None,
+                username=None,
+                password=None,
+                verify_certs=False,
+                proxy_host=None,
+                proxy_port=8080,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(id="test-workspace")),
+        )
+
+    assert result.failed
+    assert result.errors == [error]
+    assert result.workspace.state == "abandoned"
+    mock_cv_client.abandon_workspace.assert_called_once_with(workspace_id="test-workspace")
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("grpc_channel_configuration"),
     [
@@ -328,3 +364,259 @@ async def test_deploy_to_cv_deploy_future_use_system_certs(
     mocked_cv_client_cls.assert_called_once()
     _, kwargs = mocked_cv_client_cls.call_args
     assert kwargs.get("use_system_certs") == expected_use_system_certs
+
+
+@pytest.mark.asyncio
+async def test_finalize_change_control_created_by_workspace(mock_cv_client: MagicMock) -> None:
+    """Tests that _finalize_change_control finalizes the Change Control created by the Workspace."""
+    result = DeployToCvResult(workspace=CVWorkspace(change_control_id="cc-123"))
+
+    mock_finalize = AsyncMock()
+    with patch("pyavd._cv.workflows.deploy_to_cv.finalize_change_control_on_cv", mock_finalize):
+        await _finalize_change_control(result, mock_cv_client)
+
+    assert result.change_control is not None
+    assert result.change_control.id == "cc-123"
+    mock_finalize.assert_called_once_with(change_control=result.change_control, cv_client=mock_cv_client)
+
+
+@pytest.mark.asyncio
+async def test_deploy_to_cv_workspace_sync_retry() -> None:
+    """Tests that deploy_to_cv rebuilds the result and replays deployment steps when workspace synchronization is required."""
+    mock_cv_client = AsyncMock()
+    mock_execute = AsyncMock()
+    finalize_workspace_on_cv_call_count = 0
+
+    def _finalize_workspace_on_cv(workspace: CVWorkspace, **_kwargs: object) -> None:
+        """Set workspace.synchronization_required to True at first call only."""
+        # Refer finalize_workspace_on_cv_call_count variable in test_deploy_to_cv_workspace_sync_retry's scope
+        nonlocal finalize_workspace_on_cv_call_count
+        finalize_workspace_on_cv_call_count += 1
+        if finalize_workspace_on_cv_call_count == 1:
+            workspace.synchronization_required = True
+
+    def _rebase_workspace_on_cv(workspace: CVWorkspace, **_kwargs: object) -> None:
+        workspace.synchronization_required = False
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_device_inputs"),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", mock_execute),
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", AsyncMock(side_effect=_finalize_workspace_on_cv)) as mock_finalize,
+        patch("pyavd._cv.workflows.deploy_to_cv.rebase_workspace_on_cv", AsyncMock(side_effect=_rebase_workspace_on_cv)) as mock_rebase,
+        patch("pyavd._cv.workflows.deploy_to_cv._finalize_change_control", AsyncMock()),
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="",
+                token=None,
+                username=None,
+                password=None,
+                verify_certs=False,
+                proxy_host=None,
+                proxy_port=8080,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(max_sync_retries=1)),
+        )
+
+    assert not result.failed
+    assert mock_finalize.call_count == 2
+    assert mock_rebase.call_count == 1
+    assert mock_execute.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_deploy_to_cv_attempt_warnings_retained_on_success() -> None:
+    """Tests that warnings from a synchronized attempt are discarded while earlier and final-attempt warnings are retained."""
+    mock_cv_client = AsyncMock()
+    finalize_workspace_on_cv_call_count = 0
+
+    def _verify_devices_on_cv(warnings: list, **_kwargs: object) -> None:
+        warnings.append("verification-warning")
+
+    def _finalize_workspace_on_cv(workspace: CVWorkspace, warnings: list, **_kwargs: object) -> None:
+        """Append warning at each call and set workspace.synchronization_required to True (only at first call)."""
+        # Refer finalize_workspace_on_cv_call_count variable in test_deploy_to_cv_workspace_sync_retry's scope
+        nonlocal finalize_workspace_on_cv_call_count
+        finalize_workspace_on_cv_call_count += 1
+        warnings.append("build-warning")
+        if finalize_workspace_on_cv_call_count == 1:
+            workspace.synchronization_required = True
+
+    def _rebase_workspace_on_cv(workspace: CVWorkspace, **_kwargs: object) -> None:
+        workspace.synchronization_required = False
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_device_inputs"),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock(side_effect=_verify_devices_on_cv)),
+        patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", AsyncMock(side_effect=_finalize_workspace_on_cv)),
+        patch("pyavd._cv.workflows.deploy_to_cv.rebase_workspace_on_cv", AsyncMock(side_effect=_rebase_workspace_on_cv)),
+        patch("pyavd._cv.workflows.deploy_to_cv._finalize_change_control", AsyncMock()),
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="",
+                token=None,
+                username=None,
+                password=None,
+                verify_certs=False,
+                proxy_host=None,
+                proxy_port=8080,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(max_sync_retries=1)),
+        )
+
+    # finalize_workspace_on_cv runs twice (once per attempt) but the first attempt's warning is discarded on sync.
+    assert result.warnings == ["verification-warning", "build-warning"]
+
+
+@pytest.mark.asyncio
+async def test_deploy_to_cv_attempt_warnings_from_execute_steps_not_duplicated_on_retry() -> None:
+    """Tests that deployment-step warnings from a synchronized attempt are discarded before retrying."""
+    mock_cv_client = AsyncMock()
+    finalize_workspace_on_cv_call_count = 0
+
+    def _execute_deployment_steps(result: DeployToCvResult, **_kwargs: object) -> None:
+        result.warnings.append("deploy-step-warning")
+
+    def _finalize_workspace_on_cv(workspace: CVWorkspace, **_kwargs: object) -> None:
+        """Set workspace.synchronization_required to True at first call only."""
+        # Refer finalize_workspace_on_cv_call_count variable in test_deploy_to_cv_workspace_sync_retry's scope
+        nonlocal finalize_workspace_on_cv_call_count
+        finalize_workspace_on_cv_call_count += 1
+        if finalize_workspace_on_cv_call_count == 1:
+            workspace.synchronization_required = True
+
+    def _rebase_workspace_on_cv(workspace: CVWorkspace, **_kwargs: object) -> None:
+        workspace.synchronization_required = False
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_device_inputs"),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", AsyncMock(side_effect=_execute_deployment_steps)),
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", AsyncMock(side_effect=_finalize_workspace_on_cv)),
+        patch("pyavd._cv.workflows.deploy_to_cv.rebase_workspace_on_cv", AsyncMock(side_effect=_rebase_workspace_on_cv)),
+        patch("pyavd._cv.workflows.deploy_to_cv._finalize_change_control", AsyncMock()),
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="",
+                token=None,
+                username=None,
+                password=None,
+                verify_certs=False,
+                proxy_host=None,
+                proxy_port=8080,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(max_sync_retries=1)),
+        )
+
+    # _execute_deployment_steps runs twice. First attempt's warning is expected to be flushed.
+    assert result.warnings == ["deploy-step-warning"]
+
+
+@pytest.mark.asyncio
+async def test_deploy_to_cv_attempt_warnings_retained_when_finalize_raises() -> None:
+    """Tests that warnings from the finalization attempt are retained when finalization raises."""
+    mock_cv_client = AsyncMock()
+
+    def _finalize_workspace_on_cv(warnings: list, **_kwargs: object) -> None:
+        warnings.append("finalize-warning")
+        msg = "finalize-error"
+        raise CVWorkspaceSubmitFailedInactiveDevices(msg)
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_device_inputs"),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", AsyncMock(side_effect=_finalize_workspace_on_cv)),
+        patch("pyavd._cv.workflows.deploy_to_cv._finalize_change_control", AsyncMock()) as mock_finalize_change_control,
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="",
+                token=None,
+                username=None,
+                password=None,
+                verify_certs=False,
+                proxy_host=None,
+                proxy_port=8080,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(),
+        )
+
+    assert result.failed
+    assert result.warnings == ["finalize-warning"]
+    assert len(result.errors) == 1
+    assert isinstance(result.errors[0], CVWorkspaceSubmitFailedInactiveDevices)
+    mock_finalize_change_control.assert_not_called()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "max_sync_retries",
+    [
+        pytest.param(0, id="ZERO_RETRIES"),
+        pytest.param(5, id="FIVE_RETRIES"),
+    ],
+)
+async def test_deploy_to_cv_workspace_sync_exhausted(max_sync_retries: int) -> None:
+    """Tests that when sync retries are exhausted, deploy_to_cv returns with failed=True and CVWorkspaceSynchronizationAttemptsExhausted in errors."""
+    mock_cv_client = AsyncMock()
+
+    def _finalize_workspace_on_cv(workspace: CVWorkspace, warnings: list, **_kwargs: object) -> None:
+        warnings.append("sync-required-warning")
+        workspace.synchronization_required = True
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_device_inputs"),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", AsyncMock(side_effect=_finalize_workspace_on_cv)) as mock_finalize,
+        patch("pyavd._cv.workflows.deploy_to_cv.rebase_workspace_on_cv", AsyncMock()) as mock_rebase,
+        patch("pyavd._cv.workflows.deploy_to_cv._finalize_change_control", AsyncMock()),
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="",
+                token=None,
+                username=None,
+                password=None,
+                verify_certs=False,
+                proxy_host=None,
+                proxy_port=8080,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(id="ws-test-id", name="test-workspace", max_sync_retries=max_sync_retries)),
+        )
+
+    assert result.failed
+    assert len(result.errors) == 1
+    assert isinstance(result.errors[0], CVWorkspaceSynchronizationAttemptsExhausted)
+    exc = result.errors[0]
+    assert exc.max_sync_retries == max_sync_retries
+    assert exc.workspace_name == "test-workspace"
+    assert exc.workspace_id == "ws-test-id"
+    assert result.warnings == ["sync-required-warning"]
+    assert mock_finalize.call_count == max_sync_retries + 1
+    assert mock_rebase.call_count == max_sync_retries
