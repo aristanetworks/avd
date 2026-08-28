@@ -4770,7 +4770,7 @@ releases:
           list entries by @gmuloc in https://github.com/aristanetworks/avd/pull/7257'
         - 'Fix(eos_designs): Fix new_key in snmp_settings and add remove_in_version
           in ntp by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/7342'
-        - 'Fix(eos_designs): Fix the default originate not rendered properley for
+        - 'Fix(eos_designs): Fix the default originate not rendered properly for
           bgp peers in VRF default under network_services by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/7268'
         - 'Fix(eos_designs): Process address_locking_settings.dhcp_server_interfaces
           by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/7363'
@@ -4780,7 +4780,7 @@ releases:
           @gmuloc in https://github.com/aristanetworks/avd/pull/7270'
         - 'Fix(eos_designs): Use match ipv6 for PL-MLAG-PEER-VRFS when underlay is
           IPv6 numbered by @perimore in https://github.com/aristanetworks/avd/pull/7356'
-        - 'Fix(plugins): Update anta_workflow to use use_defaults in ARGUMENT_SPEC
+        - 'Fix(plugins): Update anta_workflow to use apply_defaults in ARGUMENT_SPEC
           by @vitthalmagadum in https://github.com/aristanetworks/avd/pull/7252'
       minor_changes:
         - 'Bump(requirements): Bump anta from 1.8.0 to 1.9.0 in the prod group across

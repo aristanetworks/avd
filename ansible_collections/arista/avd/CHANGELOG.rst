@@ -82,12 +82,12 @@ Bugfixes
 - Fix(eos_cli_config_gen): ipv6_unicast_routing_exclamation_tracker by @ccsnw in https://github.com/aristanetworks/avd/pull/7139
 - Fix(eos_designs)!: Ensure consistent ordering of PL-SVI-VRF-DEFAULT prefix list entries by @gmuloc in https://github.com/aristanetworks/avd/pull/7257
 - Fix(eos_designs): Fix new_key in snmp_settings and add remove_in_version in ntp by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/7342
-- Fix(eos_designs): Fix the default originate not rendered properley for bgp peers in VRF default under network_services by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/7268
+- Fix(eos_designs): Fix the default originate not rendered properly for bgp peers in VRF default under network_services by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/7268
 - Fix(eos_designs): Process address_locking_settings.dhcp_server_interfaces by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/7363
 - Fix(eos_designs): Stop rendering incorrect configuration for PIM RP addresses for VRF default in network services by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/7278
 - Fix(eos_designs): Treat uplink EVPN gateway peers as core peers only by @gmuloc in https://github.com/aristanetworks/avd/pull/7270
 - Fix(eos_designs): Use match ipv6 for PL-MLAG-PEER-VRFS when underlay is IPv6 numbered by @perimore in https://github.com/aristanetworks/avd/pull/7356
-- Fix(plugins): Update anta_workflow to use use_defaults in ARGUMENT_SPEC by @vitthalmagadum in https://github.com/aristanetworks/avd/pull/7252
+- Fix(plugins): Update anta_workflow to use apply_defaults in ARGUMENT_SPEC by @vitthalmagadum in https://github.com/aristanetworks/avd/pull/7252
 
 v6.3.0
 ======

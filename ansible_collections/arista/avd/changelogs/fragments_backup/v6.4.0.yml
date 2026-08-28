@@ -29,7 +29,7 @@ bugfixes:
   - |-
    Fix(eos_designs): Treat uplink EVPN gateway peers as core peers only by @gmuloc in https://github.com/aristanetworks/avd/pull/7270
   - |-
-   Fix(eos_designs): Fix the default originate not rendered properley for bgp peers in VRF default under network_services by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/7268
+   Fix(eos_designs): Fix the default originate not rendered properly for bgp peers in VRF default under network_services by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/7268
   - |-
    Fix(eos_designs): Stop rendering incorrect configuration for PIM RP addresses for VRF default in network services by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/7278
   - |-
@@ -40,7 +40,7 @@ bugfixes:
    Fix(eos_designs): Process address_locking_settings.dhcp_server_interfaces by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/7363
 ### Other Fixed issues
   - |-
-   Fix(plugins): Update anta_workflow to use use_defaults in ARGUMENT_SPEC by @vitthalmagadum in https://github.com/aristanetworks/avd/pull/7252
+   Fix(plugins): Update anta_workflow to use apply_defaults in ARGUMENT_SPEC by @vitthalmagadum in https://github.com/aristanetworks/avd/pull/7252
 minor_changes:
 ### Documentation
   - |-
