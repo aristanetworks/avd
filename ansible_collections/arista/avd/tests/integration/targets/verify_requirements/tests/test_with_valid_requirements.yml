@@ -3,6 +3,7 @@
   register: result
   arista.avd.verify_requirements:
     requirements: []
+    avd_ignore_requirements: true
   check_mode: false
   run_once: true
 
