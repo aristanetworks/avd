@@ -447,7 +447,8 @@ def test__validate_python_requirements_multiple_dists_one_valid() -> None:
 
 
 def test__validate_python_requirements_multiple_dists_none_valid() -> None:
-    """Verify that when multiple distributions exist but none match, the requirement is logged as mismatched.
+    """
+    Verify that when multiple distributions exist but none match, the requirement is logged as mismatched.
 
     NOTE: _check_requirement returns True even in this case (falls through to the final 'return True')
     because the mismatched-multiple-dists branch has no explicit 'return False'.
@@ -761,8 +762,6 @@ def test_main_avd_ignore_requirements_string_true_is_normalized(action_module: "
 
 def test__validate_ansible_version_with_no_requires_ansible() -> None:
     """Verify _validate_ansible_version passes when requires_ansible is absent from collection metadata."""
-    from ansible.utils.collection_loader._collection_finder import _get_collection_metadata  # noqa: PLC0415
-
     info: dict = {}
     with patch(f"{MODULE_PATH}._get_collection_metadata", return_value={}):
         ret = _validate_ansible_version("arista.avd", "2.16.0", info)
