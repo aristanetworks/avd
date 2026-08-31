@@ -1,8 +1,0 @@
----
-- name: Initialize collection context for subsequent tests
-  ignore_errors: true
-  arista.avd.verify_requirements:
-    requirements: []
-    avd_ignore_requirements: true
-  check_mode: false
-  run_once: true
