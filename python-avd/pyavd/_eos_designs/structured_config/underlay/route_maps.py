@@ -77,7 +77,7 @@ class RouteMapsMixin(Protocol):
             # Create the prefix-list.
             self.set_once_prefix_list_wan_ha_prefixes()
 
-        if subnets := self._underlay_subnets()[0]:
+        if subnets := self._underlay_subnets[0]:
             sequence_numbers.append_new(
                 sequence=70,
                 type="permit",

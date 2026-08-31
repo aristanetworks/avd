@@ -369,6 +369,7 @@ class UtilsMixin(Protocol):
         """Return a list of P2P underlay links."""
         return [link for link in self._underlay_links if link.type == "underlay_p2p"]
 
+    @cached_property
     def _underlay_subnets(self: AvdStructuredConfigUnderlayProtocol) -> tuple[list[str], EosCliConfigGen.DhcpServersItem.Ipv4Subnets]:
         """
         Returns tuple of list of peer IPv4 subnets and dhcp subnets for downstream p2p interfaces.

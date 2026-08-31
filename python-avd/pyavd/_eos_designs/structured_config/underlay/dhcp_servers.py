@@ -28,7 +28,7 @@ class DhcpServersMixin(Protocol):
         """Set structured config for dhcp_server."""
         dhcp_server = EosCliConfigGen.DhcpServersItem()
         # Set subnets for DHCP server
-        dhcp_server.ipv4_subnets = self._underlay_subnets()[1]
+        dhcp_server.ipv4_subnets = self._underlay_subnets[1]
         if len(dhcp_server.ipv4_subnets) == 0:
             return
         dhcp_server.vrf = "default"
