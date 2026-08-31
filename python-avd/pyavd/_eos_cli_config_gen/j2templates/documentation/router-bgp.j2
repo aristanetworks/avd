@@ -77,10 +77,10 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | update wait-install |
 {%         endif %}
 {%         if router_bgp.bgp.convergence.time is arista.avd.defined %}
-| bgp convergence time | {{ router_bgp.bgp.convergence.time }}
+| bgp convergence time {{ router_bgp.bgp.convergence.time }} |
 {%         endif %}
 {%         if router_bgp.bgp.convergence.slow_peer_time is arista.avd.defined %}
-| bgp convergence slow-peer time | {{ router_bgp.bgp.convergence.slow_peer_time }}
+| bgp convergence slow-peer time {{ router_bgp.bgp.convergence.slow_peer_time }} |
 {%         endif %}
 {%         if router_bgp.bgp.default.ipv4_unicast is arista.avd.defined(true) %}
 | bgp default ipv4-unicast |

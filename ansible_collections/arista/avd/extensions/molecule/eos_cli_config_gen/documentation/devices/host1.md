@@ -9689,8 +9689,8 @@ ASN Notation: asdot
 | bgp additional-paths send ecmp limit 30 |
 | update wait-for-convergence |
 | update wait-install |
-| bgp convergence time | 400
-| bgp convergence slow-peer time | 500
+| bgp convergence time 400 |
+| bgp convergence slow-peer time 500 |
 | bgp default ipv4-unicast |
 | bgp default ipv4-unicast transport ipv6 |
 | no bgp redistribute-internal |
