@@ -6,29 +6,20 @@ import logging
 from importlib.metadata import PackageNotFoundError
 from itertools import repeat
 from pathlib import Path
-from typing import TYPE_CHECKING, NamedTuple
-from unittest.mock import MagicMock, patch
+from typing import NamedTuple
+from unittest.mock import patch
 
 import pytest
-from ansible.errors import AnsibleActionFail
 
 from ansible_collections.arista.avd.plugins.action.verify_requirements import (
     MIN_PYTHON_SUPPORTED_VERSION,
-    ActionModule,
     _get_collection_version,
-    _get_git_command_output,
     _get_running_collection_version,
     _validate_ansible_collections,
     _validate_ansible_version,
     _validate_python_requirements,
     _validate_python_version,
-    check_running_from_source,
 )
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
-
-MODULE_PATH = "ansible_collections.arista.avd.plugins.action.verify_requirements"
 
 
 class VersionInfo(NamedTuple):
