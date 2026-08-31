@@ -819,15 +819,15 @@ class EosDesigns(EosDesignsRootModel):
     class AddressLockingSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        class DhcpServersIpv4(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
-
-        DhcpServersIpv4._item_type = str
-
         class DhcpServerInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         DhcpServerInterfaces._item_type = str
+
+        class DhcpServersIpv4(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServersIpv4._item_type = str
 
         class LeasesItem(AvdModel):
             """Subclass of AvdModel."""
@@ -896,14 +896,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
-            "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
-            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "local_interface": {"type": str},
             "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
+            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "locked_address": {"type": LockedAddress},
         }
-        local_interface: str
+        local_interface: str | None
         """
         The value will be interpreted according to these rules:
           - `use_mgmt_interface` will configure the
@@ -914,19 +914,24 @@ class EosDesigns(EosDesignsRootModel):
         configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
         of `default_mgmt_method`.
           - Any other string will be used directly as the local interface.
-
-        Default value: `"use_default_mgmt_method_interface"`
+        When
+        `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
+        exclusive with `dhcp_server_interfaces`.
         """
-        dhcp_servers_ipv4: DhcpServersIpv4
-        """Subclass of AvdList with `str` items."""
         dhcp_server_interfaces: DhcpServerInterfaces
         """
         The list of interfaces connected to the DHCP server.
-        Requires EOS version 4.36 or later.
+        Requires
+        `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
+        ignored.
+        When enabled, this setting is mutually exclusive with `local_interface`.
+        Requires EOS
+        version 4.36 or later.
 
-        Subclass
-        of AvdList with `str` items.
+        Subclass of AvdList with `str` items.
         """
+        dhcp_servers_ipv4: DhcpServersIpv4
+        """Subclass of AvdList with `str` items."""
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
@@ -939,9 +944,9 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                local_interface: str | UndefinedType = Undefined,
-                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                local_interface: str | UndefinedType | None = Undefined,
                 dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
+                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
                 disabled: bool | UndefinedType | None = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
@@ -963,13 +968,20 @@ class EosDesigns(EosDesignsRootModel):
                        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
-                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                       When
+                       `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
+                       exclusive with `dhcp_server_interfaces`.
                     dhcp_server_interfaces:
                        The list of interfaces connected to the DHCP server.
-                       Requires EOS version 4.36 or later.
+                       Requires
+                       `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
+                       ignored.
+                       When enabled, this setting is mutually exclusive with `local_interface`.
+                       Requires EOS
+                       version 4.36 or later.
 
-                       Subclass
-                       of AvdList with `str` items.
+                       Subclass of AvdList with `str` items.
+                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.
@@ -985,6 +997,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
+            "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
@@ -1033,6 +1046,16 @@ class EosDesigns(EosDesignsRootModel):
         allowed' on both ends
         and on all 'uplink_switches' even when available VLANs differ between the
         'uplink_switches'.
+
+        Default value: `False`
+        """
+        fix_address_locking_dhcp_server_interfaces: bool
+        """
+        Available from AVD 6.4.0.
+        Fix support for `address_locking_settings.dhcp_server_interfaces`.
+        When
+        enabled, `address_locking_settings.dhcp_server_interfaces` and
+        `address_locking_settings.local_interface` are mutually exclusive.
 
         Default value: `False`
         """
@@ -1125,6 +1148,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
+                fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
@@ -1163,6 +1187,12 @@ class EosDesigns(EosDesignsRootModel):
                        allowed' on both ends
                        and on all 'uplink_switches' even when available VLANs differ between the
                        'uplink_switches'.
+                    fix_address_locking_dhcp_server_interfaces:
+                       Available from AVD 6.4.0.
+                       Fix support for `address_locking_settings.dhcp_server_interfaces`.
+                       When
+                       enabled, `address_locking_settings.dhcp_server_interfaces` and
+                       `address_locking_settings.local_interface` are mutually exclusive.
                     fix_match_ipv6_prefix_list_on_mlag_route_map:
                        Available from AVD 6.4.0.
                        Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
