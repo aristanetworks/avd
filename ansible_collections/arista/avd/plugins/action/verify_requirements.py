@@ -34,7 +34,7 @@ try:
     from packaging.specifiers import SpecifierSet
 
     HAS_PACKAGING = True
-except ImportError:
+except ImportError:  # pragma: no cover
     HAS_PACKAGING = False
 
 LOGGER = getLogger("ansible_collections.arista.avd")
@@ -224,7 +224,7 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
         LOGGER.error("Ansible Version running %s - Requirement is %s", running_version, str(specifiers_set))
         return False
     # Keeping this for next deprecation - set the value of deprecation_specifiers_set when needed and adjust message
-    if not deprecation_specifiers_set.contains(running_version):
+    if not deprecation_specifiers_set.contains(running_version):  # pragma: no cover
         msg = (
             f"You are currently running ansible-core {running_version}. The next minor release of AVD after November 6th 2023 will drop support for"
             " ansible-core<2.14. Python 3.8 support will be dropped at the same time as ansible-core>=2.14 does not support it. See the following link"
