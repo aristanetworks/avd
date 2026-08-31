@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ipaddress import ip_network
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -78,20 +77,7 @@ class RouteMapsMixin(Protocol):
             # Create the prefix-list.
             self.set_once_prefix_list_wan_ha_prefixes()
 
-        subnets = []
-        for peer in self._avd_peers:
-            peer_facts = self.shared_utils.get_peer_facts(peer)
-            for uplink in peer_facts.uplinks:
-                if (
-                    uplink.peer == self.shared_utils.hostname
-                    and uplink.type == "underlay_p2p"
-                    and uplink.ip_address
-                    and "unnumbered" not in uplink.ip_address.lower()
-                    and peer_facts.inband_ztp
-                ):
-                    subnet = str(ip_network(f"{uplink.ip_address}/{uplink.prefix_length}", strict=False))
-                    subnets.append(subnet)
-        if subnets:
+        if subnets := self._underlay_subnets()[0]:
             sequence_numbers.append_new(
                 sequence=70,
                 type="permit",
