@@ -42,6 +42,13 @@ keys:
           Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
           and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
         default: false
+      fix_address_locking_dhcp_server_interfaces:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.4.0.
+          Fix support for `address_locking_settings.dhcp_server_interfaces`.
+          When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive.
       fix_match_ipv6_prefix_list_on_mlag_route_map:
         type: bool
         default: false

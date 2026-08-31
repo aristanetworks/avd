@@ -68,17 +68,6 @@ keys:
                   - "lt"
                   - "neq"
                 default: "eq"
-              log:
-                type: bool
-                description: |-
-                  Log matches against this rule.
-                  For deny entries, mutually exclusive with `copy_captive_portal`. `copy_captive_portal` takes precedence.
-              copy_captive_portal:
-                type: bool
-                description: |-
-                  Copy packet to CPU queue for dot1x captive-portal.
-                  Only supported with deny entries.
-                  For deny entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
               vlan_inner:
                 type: bool
                 default: false
