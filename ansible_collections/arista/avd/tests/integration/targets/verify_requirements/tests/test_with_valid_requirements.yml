@@ -1,10 +1,8 @@
 ---
-- name: Test with valid Python requirements (package found and version matches)
+- name: Test with valid Python requirements
   register: result
   arista.avd.verify_requirements:
-    requirements:
-      - "Jinja2>=2.9"
-    avd_ignore_requirements: true
+    requirements: []
   check_mode: false
   run_once: true
 

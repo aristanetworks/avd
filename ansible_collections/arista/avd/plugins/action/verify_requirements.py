@@ -377,8 +377,11 @@ def check_running_from_source() -> bool:
         return False
 
     # if running from source, path to pyavd and schema_tools has already been prepended to Python Path
-    from schema_tools.check_schemas import check_schemas, rebuild_schemas  # noqa: PLC0415
-    from schema_tools.compile_templates import check_templates, recompile_templates  # noqa: PLC0415
+    try:
+        from schema_tools.check_schemas import check_schemas, rebuild_schemas  # noqa: PLC0415
+        from schema_tools.compile_templates import check_templates, recompile_templates  # noqa: PLC0415
+    except ImportError:
+        return False
 
     # We always want Ansible to display the following messages in color, regardless of the verbosity level
     if schemas_recompiled := check_schemas():
