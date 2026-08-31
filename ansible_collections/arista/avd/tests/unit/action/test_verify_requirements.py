@@ -19,6 +19,7 @@ from ansible_collections.arista.avd.plugins.action.verify_requirements import (
     _validate_ansible_version,
     _validate_python_requirements,
     _validate_python_version,
+    check_running_from_source,
 )
 
 
@@ -358,3 +359,54 @@ def test__get_running_collection_version_not_running_from_source_skips_git(tmp_p
     assert result == {"collection": {"name": "dummy", "path": str(customer_repo_path / "collections/ansible_collections"), "version": "42.0.0"}}
     patched__get_git_command_output.assert_not_called()
     assert "AVD is not running from source, returning collection version" in caplog.text
+
+
+def test_check_running_from_source_not_from_source() -> None:
+    """Verify that check_running_from_source returns False when not running from source."""
+    with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=False):
+        assert check_running_from_source() is False
+
+
+def test_check_running_from_source_import_error() -> None:
+    """Verify that check_running_from_source returns False when schema_tools cannot be imported."""
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=True),
+        patch.dict("sys.modules", {"schema_tools.check_schemas": None, "schema_tools.compile_templates": None}),
+    ):
+        assert check_running_from_source() is False
+
+
+def test_check_running_from_source_no_rebuild() -> None:
+    """Verify that check_running_from_source returns False when no schemas or templates need rebuilding."""
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=True),
+        patch("schema_tools.check_schemas.check_schemas", return_value=False),
+        patch("schema_tools.check_schemas.rebuild_schemas"),
+        patch("schema_tools.compile_templates.check_templates", return_value=False),
+        patch("schema_tools.compile_templates.recompile_templates"),
+    ):
+        assert check_running_from_source() is False
+
+
+def test_check_running_from_source_schema_rebuild() -> None:
+    """Verify that check_running_from_source returns True and rebuilds schemas when schemas changed."""
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=True),
+        patch("schema_tools.check_schemas.check_schemas", return_value=True),
+        patch("schema_tools.check_schemas.rebuild_schemas"),
+        patch("schema_tools.compile_templates.check_templates", return_value=False),
+        patch("schema_tools.compile_templates.recompile_templates"),
+    ):
+        assert check_running_from_source() is True
+
+
+def test_check_running_from_source_template_rebuild() -> None:
+    """Verify that check_running_from_source returns True and recompiles templates when templates changed."""
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=True),
+        patch("schema_tools.check_schemas.check_schemas", return_value=False),
+        patch("schema_tools.check_schemas.rebuild_schemas"),
+        patch("schema_tools.compile_templates.check_templates", return_value=True),
+        patch("schema_tools.compile_templates.recompile_templates"),
+    ):
+        assert check_running_from_source() is True
