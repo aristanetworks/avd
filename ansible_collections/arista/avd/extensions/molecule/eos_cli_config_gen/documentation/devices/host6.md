@@ -369,7 +369,6 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send limit 6 |
 
-
 #### Router BGP IPv4 Labeled Unicast
 
 ##### General Settings

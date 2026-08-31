@@ -257,7 +257,6 @@ ASN Notation: asplain
 | graceful-restart-helper long-lived |
 | bgp additional-paths send any |
 
-
 #### Router BGP Peer Groups
 
 ##### PG-DOC-COVERAGE

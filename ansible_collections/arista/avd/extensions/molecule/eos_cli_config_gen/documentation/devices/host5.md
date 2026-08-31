@@ -174,7 +174,6 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send backup |
 
-
 #### Router BGP EVPN Address Family
 
 - Next-hop-unchanged is explicitly configured (default behaviour)
