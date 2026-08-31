@@ -7951,6 +7951,12 @@ interface Tunnel7
 | --------- | ----------- | --------- | -------- | ------- |
 | Vlan50 | ACL1 | POOL1 | 0 | - |
 
+##### IP NAT: Interfaces configured via profile
+
+| Interface | Profile |
+| --------- | ------- |
+| Vlan50 | PROFILE1 |
+
 ##### IPv6
 
 | Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
@@ -8116,6 +8122,7 @@ interface Vlan50
    ip nat source static 3.0.0.1 4.0.0.1
    ip nat destination dynamic access-list ACL1 pool POOL1
    ip nat source dynamic access-list ACL2 pool POOL2
+   ip nat service-profile PROFILE1
    isis authentication mode text rx-disabled level-2
    isis authentication key 0 password level-2
 !
