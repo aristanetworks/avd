@@ -1612,7 +1612,6 @@ ASN Notation: asplain
 | no graceful-restart-helper |
 | no bgp additional-paths receive |
 | no bgp additional-paths send |
-
 | no bgp default ipv4-unicast |
 | no bgp default ipv4-unicast transport ipv6 |
 | bgp route-reflector preserve-attributes |

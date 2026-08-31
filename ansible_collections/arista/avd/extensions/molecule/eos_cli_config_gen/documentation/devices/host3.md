@@ -476,7 +476,6 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send ecmp |
 
-
 #### Router BGP Device Configuration
 
 ```eos
