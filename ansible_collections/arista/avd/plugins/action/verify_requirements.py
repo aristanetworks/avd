@@ -34,7 +34,7 @@ try:
     from packaging.specifiers import SpecifierSet
 
     HAS_PACKAGING = True
-except ImportError:  # pragma: no cover
+except ImportError:
     HAS_PACKAGING = False
 
 LOGGER = getLogger("ansible_collections.arista.avd")
@@ -224,7 +224,7 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
         LOGGER.error("Ansible Version running %s - Requirement is %s", running_version, str(specifiers_set))
         return False
     # Keeping this for next deprecation - set the value of deprecation_specifiers_set when needed and adjust message
-    if not deprecation_specifiers_set.contains(running_version):  # pragma: no cover
+    if not deprecation_specifiers_set.contains(running_version):
         msg = (
             f"You are currently running ansible-core {running_version}. The next minor release of AVD after November 6th 2023 will drop support for"
             " ansible-core<2.14. Python 3.8 support will be dropped at the same time as ansible-core>=2.14 does not support it. See the following link"
@@ -377,11 +377,8 @@ def check_running_from_source() -> bool:
         return False
 
     # if running from source, path to pyavd and schema_tools has already been prepended to Python Path
-    try:
-        from schema_tools.check_schemas import check_schemas, rebuild_schemas  # noqa: PLC0415
-        from schema_tools.compile_templates import check_templates, recompile_templates  # noqa: PLC0415
-    except ImportError:
-        return False
+    from schema_tools.check_schemas import check_schemas, rebuild_schemas  # noqa: PLC0415
+    from schema_tools.compile_templates import check_templates, recompile_templates  # noqa: PLC0415
 
     # We always want Ansible to display the following messages in color, regardless of the verbosity level
     if schemas_recompiled := check_schemas():
@@ -419,7 +416,7 @@ class ActionModule(AVDActionPlugin):
             raise TypeError(msg)
 
         running_ansible_version = task_vars["ansible_version"]["string"]
-        running_collection_name = task_vars.get("ansible_collection_name") or "arista.avd"
+        running_collection_name = task_vars["ansible_collection_name"]
 
         self.result["failed"] = False
 
