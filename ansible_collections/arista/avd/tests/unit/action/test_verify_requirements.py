@@ -7,7 +7,7 @@ from importlib.metadata import PackageNotFoundError
 from itertools import repeat
 from pathlib import Path
 from typing import NamedTuple
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -378,35 +378,38 @@ def test_check_running_from_source_import_error() -> None:
 
 def test_check_running_from_source_no_rebuild() -> None:
     """Verify that check_running_from_source returns False when no schemas or templates need rebuilding."""
+    mock_check_schemas_mod = MagicMock()
+    mock_check_schemas_mod.check_schemas.return_value = False
+    mock_compile_templates_mod = MagicMock()
+    mock_compile_templates_mod.check_templates.return_value = False
     with (
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=True),
-        patch("schema_tools.check_schemas.check_schemas", return_value=False),
-        patch("schema_tools.check_schemas.rebuild_schemas"),
-        patch("schema_tools.compile_templates.check_templates", return_value=False),
-        patch("schema_tools.compile_templates.recompile_templates"),
+        patch.dict("sys.modules", {"schema_tools.check_schemas": mock_check_schemas_mod, "schema_tools.compile_templates": mock_compile_templates_mod}),
     ):
         assert check_running_from_source() is False
 
 
 def test_check_running_from_source_schema_rebuild() -> None:
     """Verify that check_running_from_source returns True and rebuilds schemas when schemas changed."""
+    mock_check_schemas_mod = MagicMock()
+    mock_check_schemas_mod.check_schemas.return_value = True
+    mock_compile_templates_mod = MagicMock()
+    mock_compile_templates_mod.check_templates.return_value = False
     with (
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=True),
-        patch("schema_tools.check_schemas.check_schemas", return_value=True),
-        patch("schema_tools.check_schemas.rebuild_schemas"),
-        patch("schema_tools.compile_templates.check_templates", return_value=False),
-        patch("schema_tools.compile_templates.recompile_templates"),
+        patch.dict("sys.modules", {"schema_tools.check_schemas": mock_check_schemas_mod, "schema_tools.compile_templates": mock_compile_templates_mod}),
     ):
         assert check_running_from_source() is True
 
 
 def test_check_running_from_source_template_rebuild() -> None:
     """Verify that check_running_from_source returns True and recompiles templates when templates changed."""
+    mock_check_schemas_mod = MagicMock()
+    mock_check_schemas_mod.check_schemas.return_value = False
+    mock_compile_templates_mod = MagicMock()
+    mock_compile_templates_mod.check_templates.return_value = True
     with (
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", new=True),
-        patch("schema_tools.check_schemas.check_schemas", return_value=False),
-        patch("schema_tools.check_schemas.rebuild_schemas"),
-        patch("schema_tools.compile_templates.check_templates", return_value=True),
-        patch("schema_tools.compile_templates.recompile_templates"),
+        patch.dict("sys.modules", {"schema_tools.check_schemas": mock_check_schemas_mod, "schema_tools.compile_templates": mock_compile_templates_mod}),
     ):
         assert check_running_from_source() is True
