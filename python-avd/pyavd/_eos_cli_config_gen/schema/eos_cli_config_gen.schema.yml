@@ -16994,6 +16994,26 @@ keys:
       bgp:
         type: dict
         keys:
+          convergence:
+            type: dict
+            keys:
+              slow_peer_time:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 3600
+                description: Maximum amount of time to wait in seconds before declaring
+                  initial BGP convergence for peers that do not establish session
+                  within a reasonable time.
+              time:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 3600
+                description: Maximum amount of time to wait in seconds before declaring
+                  initial BGP convergence.
           default:
             type: dict
             keys:
