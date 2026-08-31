@@ -26,7 +26,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errdisable</samp>](## "validation_profiles.[].interfaces.errdisable") | Dictionary |  |  |  | Settings for the VerifyInterfaceErrDisabled test. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_avd_interfaces</samp>](## "validation_profiles.[].interfaces.errdisable.only_avd_interfaces") | Boolean |  | `False` |  | Only validate interfaces defined in the AVD structured configuration for errdisabled state. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "validation_profiles.[].bgp") | Dictionary |  |  |  | Validation settings for BGP. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check_tcp_queues</samp>](## "validation_profiles.[].bgp.check_tcp_queues") | Boolean |  | `True` |  | Flag to check if the TCP session queues are empty for all BGP peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check_tcp_queues</samp>](## "validation_profiles.[].bgp.check_tcp_queues") | Boolean |  |  |  | Flag to check if the TCP session queues are empty for all BGP peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimum_established_time</samp>](## "validation_profiles.[].bgp.minimum_established_time") | Integer |  |  |  | Minimum established time (seconds) for all BGP sessions. |
 
 === "YAML"
@@ -89,7 +89,7 @@
         bgp:
 
           # Flag to check if the TCP session queues are empty for all BGP peers.
-          check_tcp_queues: <bool; default=True>
+          check_tcp_queues: <bool>
 
           # Minimum established time (seconds) for all BGP sessions.
           minimum_established_time: <int>

@@ -342,8 +342,6 @@
             "dc1-spine1"
           ]
         },
-        "minimum_established_time": null,
-        "check_tcp_queues": true,
         "bgp_peers": [
           {
             "peer_address": "10.33.0.5",

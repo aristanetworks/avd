@@ -62,8 +62,16 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory[VerifyBGPPeerSession
             self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
+        bgp_metadata = self.structured_config.metadata.bgp
+        input_kwargs = {}
+
+        if bgp_metadata.check_tcp_queues is False:
+            input_kwargs["check_tcp_queues"] = False
+
+        if (est_time := bgp_metadata.minimum_established_time) is not None:
+            input_kwargs["minimum_established_time"] = est_time
+
         yield VerifyBGPPeerSession.Input(
             bgp_peers=bgp_peers,
-            check_tcp_queues=self.structured_config.metadata.bgp.check_tcp_queues,
-            minimum_established_time=self.structured_config.metadata.bgp.minimum_established_time,
+            **input_kwargs,
         )

@@ -488,7 +488,6 @@ keys:
           check_tcp_queues:
             type: bool
             description: Flag to check if the TCP session queues are empty for all BGP peers.
-            default: true
           minimum_established_time:
             type: int
             convert_types: [str]

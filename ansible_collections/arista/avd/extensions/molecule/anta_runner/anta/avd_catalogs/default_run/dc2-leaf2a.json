@@ -359,8 +359,6 @@
             "dc2-leaf2a"
           ]
         },
-        "minimum_established_time": null,
-        "check_tcp_queues": true,
         "bgp_peers": [
           {
             "peer_address": "10.255.0.5",

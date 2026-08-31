@@ -29583,20 +29583,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Bgp(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"check_tcp_queues": {"type": bool, "default": True}, "minimum_established_time": {"type": int}}
-            check_tcp_queues: bool
-            """
-            Flag to check if the TCP session queues are empty for all BGP peers.
-
-            Default value: `True`
-            """
+            _fields: ClassVar[dict] = {"check_tcp_queues": {"type": bool}, "minimum_established_time": {"type": int}}
+            check_tcp_queues: bool | None
+            """Flag to check if the TCP session queues are empty for all BGP peers."""
             minimum_established_time: int | None
             """Minimum established time (seconds) for all BGP sessions."""
 
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, check_tcp_queues: bool | UndefinedType = Undefined, minimum_established_time: int | UndefinedType | None = Undefined
+                    self, *, check_tcp_queues: bool | UndefinedType | None = Undefined, minimum_established_time: int | UndefinedType | None = Undefined
                 ) -> None:
                     """
                     Bgp.
