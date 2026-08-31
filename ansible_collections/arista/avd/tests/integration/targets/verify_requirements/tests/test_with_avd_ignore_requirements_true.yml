@@ -7,6 +7,8 @@
     avd_ignore_requirements: true
   check_mode: false
   run_once: true
+  vars:
+    ansible_collection_name: "arista.avd"
 
 - name: Validate result is not failed due to avd_ignore_requirements
   ansible.builtin.assert:
