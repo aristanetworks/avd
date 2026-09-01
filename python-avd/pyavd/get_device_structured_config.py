@@ -9,11 +9,15 @@ if TYPE_CHECKING:
     from collections.abc import MutableMapping
 
     from ._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-    from .api.schemas import AVDDesign, EOSConfig
+    from .api.schemas import AVDDesign, ConsolidatedAVDDesign, EOSConfig
 
 
 def get_device_structured_config(
-    hostname: str, inputs: AVDDesign | dict, avd_facts: dict[str, EosDesignsFacts], hostvars: MutableMapping | None = None, digital_twin: bool = False
+    hostname: str,
+    inputs: AVDDesign | dict | ConsolidatedAVDDesign,
+    avd_facts: dict[str, EosDesignsFacts],
+    hostvars: MutableMapping | None = None,
+    digital_twin: bool = False,
 ) -> EOSConfig:
     """
     Build and return the AVD structured configuration for one device.
@@ -35,14 +39,14 @@ def get_device_structured_config(
         Device structured configuration as an instance of EOSConfig.
     """
     from ._eos_designs.structured_config import get_structured_config  # noqa: PLC0415
-    from .api.schemas import AVDDesign  # noqa: PLC0415
+    from .api.schemas import ConsolidatedAVDDesign  # noqa: PLC0415
 
-    if not isinstance(inputs, AVDDesign):
-        inputs = AVDDesign._from_dict(inputs)
+    # Normalize to ConsolidatedAVDDesign
+    consolidated_inputs = ConsolidatedAVDDesign._from_avd_design(hostname, inputs)
 
     return get_structured_config(
         hostname=hostname,
-        inputs=inputs,
+        inputs=consolidated_inputs,
         all_facts=avd_facts,
         hostvars=hostvars,
         templar=None,

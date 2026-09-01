@@ -6,7 +6,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 from typing import TYPE_CHECKING
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
 
 import pytest
 
@@ -14,9 +14,11 @@ from ansible_collections.arista.avd.plugins.action import validate_inputs as vi_
 from ansible_collections.arista.avd.plugins.action.validate_inputs import (
     PLUGIN_NAME,
     ActionModule,
+    ConsolidateWorkerSuccess,
     ValidateWorkerSkipped,
     ValidateWorkerSuccess,
     WorkerFailure,
+    _consolidate_host_worker,
     _template_host_worker,
     _validate_host_worker,
     get_worker_hostvars,
@@ -111,9 +113,10 @@ def test_main_logs_vault_status_at_info_level(
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
         patch.object(module, "_get_plugin_args", return_value=_make_plugin_args()),
         patch.object(module, "_get_hosts_to_process", return_value=[]),
-        patch.object(module, "_run_validation_phase"),
+        patch.object(module, "_run_validation_phase", return_value=[]),
         patch(f"{MODULE_PATH}.get_workers", return_value=(1, 1)),
         patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(Path("/avd/templated"), Path("/avd/validated"))),
+        patch(f"{MODULE_PATH}.get_consolidated_path", return_value=Path("/avd/consolidated")),
         patch(f"{MODULE_PATH}.AVDVaultHandler", return_value=vault_handler),
         patch(f"{MODULE_PATH}.AVDFileHandler"),
         caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
@@ -134,9 +137,10 @@ def test_main_logs_starting_execution_summary(
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
         patch.object(module, "_get_plugin_args", return_value=_make_plugin_args(batch_size=7)),
         patch.object(module, "_get_hosts_to_process", return_value=["host1", "host2", "host3"]),
-        patch.object(module, "_run_validation_phase"),
+        patch.object(module, "_run_validation_phase", return_value=[]),
         patch(f"{MODULE_PATH}.get_workers", return_value=(4, 8)),
         patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(Path("/avd/templated"), Path("/avd/validated"))),
+        patch(f"{MODULE_PATH}.get_consolidated_path", return_value=Path("/avd/consolidated")),
         patch(f"{MODULE_PATH}.AVDVaultHandler"),
         patch(f"{MODULE_PATH}.AVDFileHandler"),
         caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
@@ -173,9 +177,10 @@ def test_main_logs_input_source(
         ),
         patch.object(module, "_get_hosts_to_process", return_value=["host1"]),
         patch.object(module, "_run_templating_phase", return_value=["host1"]),
-        patch.object(module, "_run_validation_phase"),
+        patch.object(module, "_run_validation_phase", return_value=[]),
         patch(f"{MODULE_PATH}.get_workers", return_value=(1, 1)),
         patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(Path("/avd/templated"), Path("/avd/validated"))),
+        patch(f"{MODULE_PATH}.get_consolidated_path", return_value=Path("/avd/consolidated")),
         patch(f"{MODULE_PATH}.AVDVaultHandler"),
         patch(f"{MODULE_PATH}.AVDFileHandler"),
         patch(f"{MODULE_PATH}.ActionPluginVars"),
@@ -222,6 +227,43 @@ def test_run_templating_phase_logs_mixed_results(
     assert "Templating of hostvars completed in 1.23s" in info_messages
     assert "host1: boom" in error_messages
     assert "Templated data for host host2 saved to /output/host2.json" in debug_messages
+    assert module.crashed_hosts == {"host1"}
+
+
+def test_run_consolidation_phase_logs_mixed_results(
+    action_module: Callable[..., ActionModule],
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Drive the consolidation loop with one failure and one success and assert every log line in one pass."""
+    module = action_module(ActionModule)
+    module.crashed_hosts = set()
+
+    failure = WorkerFailure(hostname="host1", error="boom")
+    success = ConsolidateWorkerSuccess(hostname="host2", output_file="/output/host2.json")
+
+    with (
+        patch(f"{MODULE_PATH}.ProcessPoolExecutor", return_value=_make_pool_mock([failure, success])),
+        patch(f"{MODULE_PATH}.get_context"),
+        patch(f"{MODULE_PATH}.perf_counter", side_effect=[100.0, 101.23]),
+        caplog.at_level(logging.DEBUG, logger=AVD_LOGGER_NAME),
+    ):
+        module._run_consolidation_phase(
+            hostnames=["host1", "host2"],
+            workers=1,
+            batch_size=1,
+            input_path=Path("/input"),
+            output_path=Path("/output"),
+            file_handler=MagicMock(),
+        )
+
+    info_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.INFO]
+    error_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.ERROR]
+    debug_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.DEBUG]
+
+    assert "Consolidating AVD Design inputs..." in info_messages
+    assert "Consolidation of AVD Design inputs completed in 1.23s" in info_messages
+    assert "host1: boom" in error_messages
+    assert "Consolidated AVD Design inputs for host host2 saved to /output/host2.json" in debug_messages
     assert module.crashed_hosts == {"host1"}
 
 
@@ -322,6 +364,7 @@ def test_main_raises_runtime_error_when_hosts_crashed(action_module: Callable[..
         patch.object(module, "_run_validation_phase", side_effect=fake_validation),
         patch(f"{MODULE_PATH}.get_workers", return_value=(1, 1)),
         patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(Path("/avd/templated"), Path("/avd/validated"))),
+        patch(f"{MODULE_PATH}.get_consolidated_path", return_value=Path("/avd/consolidated")),
         patch(f"{MODULE_PATH}.AVDVaultHandler"),
         patch(f"{MODULE_PATH}.AVDFileHandler"),
         pytest.raises(RuntimeError, match=r"Unexpected errors occurred while processing 2 host\(s\): host1, host2\."),
@@ -381,6 +424,61 @@ def test_validate_host_worker_returns_skipped_when_input_missing_and_fail_flag_f
     assert isinstance(result, ValidateWorkerSkipped)
     assert result.hostname == "host1"
     assert result.reason == f"No input file: {missing_file}"
+
+
+def test_validation_and_consolidation_workers_write_separate_avd_design_data(tmp_path: Path) -> None:
+    """Successful AVD Design validation writes separate template and model-loading artifacts."""
+    input_file = tmp_path / "host1.json"
+    input_file.touch()
+    input_path = MagicMock()
+    input_path.__truediv__.return_value = input_file
+    validated_output_path = MagicMock()
+    consolidated_output_path = MagicMock()
+    validated_file = MagicMock()
+    consolidated_file = MagicMock()
+    validated_output_path.__truediv__.return_value = validated_file
+    consolidated_output_path.__truediv__.return_value = consolidated_file
+    validation_result = MagicMock()
+    file_handler = MagicMock()
+    file_handler.read_file.return_value = b'{"l3leaf": {}}'
+    file_handler.load_json.return_value = {"l3leaf": {}}
+    validated_data_result = MagicMock(
+        validated_data='{"l3leaf":{}}',
+        validation_result=validation_result,
+    )
+    consolidated_model = MagicMock()
+    consolidated_model._dump.return_value = {"_type": "l3leaf"}
+
+    with (
+        patch(f"{MODULE_PATH}.get_validated_data", return_value=validated_data_result),
+        patch(
+            f"{MODULE_PATH}.ConsolidatedAVDDesign._from_avd_design",
+            return_value=consolidated_model,
+        ) as from_avd_design,
+    ):
+        result = _validate_host_worker(
+            hostname="host1",
+            input_path=input_path,
+            input_suffix="json",
+            output_path=validated_output_path,
+            schema_name="avd_design",
+            configuration=None,
+            file_handler=file_handler,
+            fail_on_missing_input_files=True,
+        )
+        _consolidate_host_worker(
+            hostname="host1",
+            input_path=validated_output_path,
+            output_path=consolidated_output_path,
+            file_handler=file_handler,
+        )
+
+    assert result == ValidateWorkerSuccess(hostname="host1", validation_result=validation_result, output_file=str(validated_file))
+    assert file_handler.write_file.call_args_list == [
+        call(validated_file, b'{"l3leaf":{}}'),
+        call(consolidated_file, b'{"_type":"l3leaf"}'),
+    ]
+    from_avd_design.assert_called_once_with("host1", {"l3leaf": {}})
 
 
 def test_run_validation_phase_sets_failed_when_validation_errors_and_fail_flag_true(

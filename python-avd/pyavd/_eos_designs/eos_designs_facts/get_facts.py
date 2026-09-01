@@ -12,15 +12,15 @@ from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
+    from pyavd._eos_designs.consolidate.model import ConsolidatedAVDDesign
     from pyavd._utils import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
-    from pyavd.api.schemas import AVDDesign
 
     from .schema import EosDesignsFacts
 
 
 def get_facts(
-    all_inputs: Mapping[str, AVDDesign | Mapping],
+    all_inputs: Mapping[str, ConsolidatedAVDDesign],
     all_hostvars: Mapping[str, MutableMapping[str, Any]] | None = None,
     templar: AVDTemplar | None = None,
     pool_manager: PoolManager | None = None,
@@ -42,8 +42,6 @@ def get_facts(
     Returns:
         EosDesignsFacts instances for each device.
     """
-    from pyavd.api.schemas import AVDDesign  # noqa: PLC0415
-
     peer_facts_generators: dict[str, EosDesignsFactsGenerator] = {}
     """Placeholder for generators. Referenced in the generators themselves as well as in shared_utils to be able to resolve facts for peers."""
 
@@ -59,12 +57,8 @@ def get_facts(
     for hostname in all_inputs:
         hostvars = all_hostvars.get(hostname, {})
 
-        inputs = all_inputs[hostname]
-        if not isinstance(inputs, AVDDesign):
-            inputs = AVDDesign._from_dict(inputs)
-
         peer_facts_generators[hostname] = _create_generator_instance(
-            hostname, inputs, hostvars, templar, pool_manager, digital_twin, peer_facts_generators, mlag_groups
+            hostname, all_inputs[hostname], hostvars, templar, pool_manager, digital_twin, peer_facts_generators, mlag_groups
         )
 
     for generator in peer_facts_generators.values():
@@ -88,7 +82,7 @@ def get_facts(
 
 def _create_generator_instance(
     hostname: str,
-    inputs: AVDDesign,
+    artifact: ConsolidatedAVDDesign,
     hostvars: MutableMapping,
     templar: AVDTemplar | None,
     pool_manager: PoolManager | None,
@@ -97,10 +91,12 @@ def _create_generator_instance(
     mlag_groups: dict[str, set[str]],
 ) -> EosDesignsFactsGenerator:
     """Initialize SharedUtils and EosDesignsFactsGenerator and return the instance of the generator."""
+    inputs = artifact.inputs
     shared_utils = SharedUtils(
         hostname=hostname,
         hostvars=hostvars,
         inputs=inputs,
+        consolidated=artifact.consolidated,
         templar=templar,
         peer_facts=peer_facts_generators,
         pool_manager=pool_manager,

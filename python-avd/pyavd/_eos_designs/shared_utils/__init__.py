@@ -5,11 +5,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._eos_designs.schema import EosDesigns
-
 from .connected_endpoints import ConnectedEndpointsMixin
 from .cv_topology import CvTopology
-from .device_config import DeviceConfigMixin
 from .filtered_tenants import FilteredTenantsMixin
 from .flow_tracking import FlowTrackingMixin
 from .inband_management import InbandManagementMixin
@@ -22,7 +19,6 @@ from .misc import MiscMixin
 from .mlag import MlagMixin
 from .node_config import NodeConfigMixin
 from .node_type import NodeTypeMixin
-from .node_type_keys import NodeTypeKeysMixin
 from .overlay import OverlayMixin
 from .platform_mixin import PlatformMixin
 from .ptp import PtpMixin
@@ -34,15 +30,15 @@ from .wan import WanMixin
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
+    from pyavd._eos_designs.consolidate.model import PrunedAVDDesign
+    from pyavd._eos_designs.consolidate.models import ConsolidatedData
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
-    from pyavd._eos_designs.schema import EosDesigns
     from pyavd._utils import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
 
 
 class SharedUtilsProtocol(
     ConnectedEndpointsMixin,
-    DeviceConfigMixin,
     FilteredTenantsMixin,
     InbandManagementMixin,
     InterfaceDescriptionsMixin,
@@ -55,7 +51,6 @@ class SharedUtilsProtocol(
     MiscMixin,
     NodeConfigMixin,
     NodeTypeMixin,
-    NodeTypeKeysMixin,
     OverlayMixin,
     PlatformMixin,
     PtpMixin,
@@ -70,7 +65,8 @@ class SharedUtilsProtocol(
 
     hostname: str
     hostvars: MutableMapping
-    inputs: EosDesigns
+    inputs: PrunedAVDDesign
+    consolidated: ConsolidatedData
     templar: AVDTemplar | None
     peer_facts: Mapping[str, EosDesignsFactsProtocol]
     pool_manager: PoolManager | None
@@ -94,7 +90,8 @@ class SharedUtils(SharedUtilsProtocol):
         self,
         hostname: str,
         hostvars: MutableMapping,
-        inputs: EosDesigns,
+        inputs: PrunedAVDDesign,
+        consolidated: ConsolidatedData,
         templar: AVDTemplar | None,
         peer_facts: Mapping[str, EosDesignsFactsProtocol],
         pool_manager: PoolManager | None = None,
@@ -103,6 +100,7 @@ class SharedUtils(SharedUtilsProtocol):
         self.hostname = hostname
         self.hostvars = hostvars
         self.inputs = inputs
+        self.consolidated = consolidated
         self.templar = templar
         self.peer_facts = peer_facts
         self.pool_manager = pool_manager

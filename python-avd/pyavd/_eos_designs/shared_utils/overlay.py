@@ -31,14 +31,14 @@ class OverlayMixin(Protocol):
     @cached_property
     def evpn_role(self: SharedUtilsProtocol) -> str | None:
         if self.underlay_router:
-            default_evpn_role = self.node_type_key_data.default_evpn_role
+            default_evpn_role = self.consolidated.node_type_keys_item.default_evpn_role
             return default(self.node_config.evpn_role, default_evpn_role)
         return None
 
     @cached_property
     def mpls_overlay_role(self: SharedUtilsProtocol) -> str | None:
         if self.underlay_router:
-            default_mpls_overlay_role = self.node_type_key_data.default_mpls_overlay_role
+            default_mpls_overlay_role = self.consolidated.node_type_keys_item.default_mpls_overlay_role
             return default(self.node_config.mpls_overlay_role, default_mpls_overlay_role)
         return None
 
@@ -100,7 +100,7 @@ class OverlayMixin(Protocol):
     @cached_property
     def evpn_encapsulation(self: SharedUtilsProtocol) -> str:
         """EVPN encapsulation based on fabric_evpn_encapsulation and node default_evpn_encapsulation."""
-        return default(self.inputs.fabric_evpn_encapsulation, self.node_type_key_data.default_evpn_encapsulation)
+        return default(self.inputs.fabric_evpn_encapsulation, self.consolidated.node_type_keys_item.default_evpn_encapsulation)
 
     @cached_property
     def evpn_soo(self: SharedUtilsProtocol) -> str:

@@ -7,8 +7,8 @@
 #   "gitpython>=3.1.57"
 # ]
 # requires-python = ">=3.11"
-# # [tool.uv]
-# # reinstall-package = ["pyavd"]
+# [tool.uv]
+# reinstall-package = ["pyavd"]
 # ///
 # pylint: disable=too-many-lines
 
@@ -54,7 +54,7 @@ from pyavd._schema.store import init_store as pyavd_init_store
 from pyavd._utils import default, strip_empties_from_dict, template
 from pyavd._utils.avd_templar import AVDTemplar
 from pyavd.api.pool_manager import PoolManager
-from pyavd.api.schemas import AVDDesign
+from pyavd.api.schemas import ConsolidatedAVDDesign
 from pyavd.j2filters import add_md_toc
 
 if typing.TYPE_CHECKING:
@@ -511,12 +511,10 @@ class AvdV6Build:
     _avd_facts_shm_info: SharedMemoryMetadata | None
     """Shared memory metadata for avd_facts (created in common_build_stage, used by workers)."""
     _finalizer: weakref.finalize | None
-    _loaded_avd_designs: dict[str, AVDDesign]
-    """Map of device -> AVDDesign object. Created in common_build_stage, passed to workers."""
+    _loaded_avd_designs: dict[str, ConsolidatedAVDDesign]
+    """Map of device -> ConsolidatedAVDDesign object. Created in consolidation_stage, passed to workers."""
     _validated_inputs_dict: dict[str, dict]
-    """Map of device -> validated inputs as dict. Created in common_build_stage, passed to workers."""
-    _validated_inputs_json: dict[str, str]
-    """Map of device -> validated JSON string. Created during validation."""
+    """Map of device -> validated inputs as dict. Created in validation_stage, passed to workers."""
 
     def __init__(
         self,
@@ -535,7 +533,6 @@ class AvdV6Build:
         self.config = config
         self.context = context
         self.devices = devices
-        self._validated_inputs_json = {}  # Store validated JSON strings in main process
         self._validated_inputs_dict = {}  # Store validated inputs as dicts in main process
         self._avd_facts_shm_info = None
         self._loaded_avd_designs = {}
@@ -601,7 +598,7 @@ class AvdV6Build:
         """
         Use multithreading to validate inputs for all devices.
 
-        Yielding device_build_result for each.
+        Yielding a bool signalling success for each.
         """
         with ThreadPoolExecutor(max_workers=self.context.validation_max_workers) as executor:
             results = executor.map(
@@ -609,12 +606,20 @@ class AvdV6Build:
             )
             for result in results:
                 if result.pyavd_utils_validated_data_result.validated_data is not None:
-                    # Validation succeeded - store JSON in main process dict
-                    self._validated_inputs_json[result.device_id] = result.pyavd_utils_validated_data_result.validated_data
                     self._validated_inputs_dict[result.device_id] = json.loads(result.pyavd_utils_validated_data_result.validated_data)
                     yield True
                     continue
 
+                yield False
+
+    def consolidation_stage(self) -> Generator[bool, None, None]:
+        """Consolidate input variables serially in the main process."""
+        for device, validated_inputs in self._validated_inputs_dict.items():
+            try:
+                self._loaded_avd_designs[device] = ConsolidatedAVDDesign._from_avd_design(device, validated_inputs)
+                yield True
+            except Exception as e:  # noqa: PERF203  # Errors must be reported separately for every device.
+                dump_exception(e, self.config, "consolidation", device)
                 yield False
 
     def device_build_stage(
@@ -626,7 +631,7 @@ class AvdV6Build:
         All phases (build, validate, render) run in the same worker process
         to avoid serialization overhead.
 
-        Yielding device_build_result for each.
+        Yielding a bool signalling success for each.
         """
         # Ensure avd_facts shared memory was created in common_build_stage
         if self.config.avd_design and self._avd_facts_shm_info is None:
@@ -646,7 +651,7 @@ class AvdV6Build:
         )
 
         if self.config.avd_design:
-            # Clear loaded AVDDesign objects and dicts - no longer needed
+            # Clear loaded ConsolidatedAVDDesign objects and dicts - no longer needed
             self._loaded_avd_designs.clear()
             self._validated_inputs_dict.clear()
 
@@ -654,15 +659,8 @@ class AvdV6Build:
         """
         Run PyAVD to get AVD facts for all devices.
 
-        Load validated inputs from main process dict (created during validation)
+        Uses consolidated designs created during consolidation_stage.
         """
-        for device_name, validated_inputs_dict in self._validated_inputs_dict.items():
-            # Parse JSON and create AVDDesign object
-            self._loaded_avd_designs[device_name] = AVDDesign._from_dict(validated_inputs_dict)
-
-        # Clear validated JSON strings - no longer needed
-        self._validated_inputs_json.clear()
-
         pool_manager = PoolManager(self.config.full_output_dir)
         # Get avd_facts from PyAVD
         try:
@@ -831,7 +829,7 @@ def validate_inputs_for_one_device(device: str, device_avd_inputs: dict, config:
 
 def build_validate_and_render_for_one_device(
     device: str,
-    device_avd_validated_inputs: AVDDesign | None,
+    device_avd_consolidated_inputs: ConsolidatedAVDDesign | None,
     device_avd_validated_inputs_dict: dict,
     avd_facts_metadata: SharedMemoryMetadata,
     config: FabricConfig,
@@ -855,13 +853,13 @@ def build_validate_and_render_for_one_device(
 
     Args:
         device: Device name.
-        device_avd_validated_inputs: AVDDesign object.
+        device_avd_consolidated_inputs: ConsolidatedAVDDesign object.
         device_avd_validated_inputs_dict: Dict with validated inputs (hostvars)
         avd_facts_metadata: Metadata to access `avd_facts` shared memory.
         config: FabricConfig object with dirs and other build parameters
     """
     if config.avd_design:
-        device_avd_validated_inputs = typing.cast("AVDDesign", device_avd_validated_inputs)
+        device_avd_consolidated_inputs = typing.cast("ConsolidatedAVDDesign", device_avd_consolidated_inputs)
 
         # Load (and cache) avd_facts from shared memory in this worker.
         avd_facts = _load_avd_facts_from_shm(avd_facts_metadata.name, avd_facts_metadata.size)
@@ -870,7 +868,7 @@ def build_validate_and_render_for_one_device(
         try:
             eos_config = get_structured_config(
                 hostname=device,
-                inputs=device_avd_validated_inputs,
+                inputs=device_avd_consolidated_inputs,
                 hostvars=device_avd_validated_inputs_dict,
                 all_facts=avd_facts,
                 templar=get_avd_templar(config),
@@ -880,8 +878,8 @@ def build_validate_and_render_for_one_device(
             dump_exception(e, config, "structured_config", device)
             return False
         finally:
-            # Free device_avd_validated_inputs - no longer needed after structured config is built
-            del device_avd_validated_inputs
+            # Free device_avd_consolidated_inputs - no longer needed after structured config is built
+            del device_avd_consolidated_inputs
 
         # Phase 2: Serialize structured config
         # TODO: Honor the config.structured_config_suffix setting
@@ -1152,8 +1150,10 @@ def build(scenario: Scenario) -> None:
                     # All devices failed validation so skip the rest
                     continue
 
-                if fabric_config.avd_design and not build.common_build_stage():
-                    continue
+                if fabric_config.avd_design:
+                    consolidation_result = list(build.consolidation_stage())
+                    if not all(consolidation_result) or not build.common_build_stage():
+                        continue
 
                 list(build.device_build_stage())
 

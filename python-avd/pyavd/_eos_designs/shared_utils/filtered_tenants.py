@@ -32,7 +32,7 @@ class FilteredTenantsMixin(Protocol):
     @cached_property
     def filtered_tenants(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices:
         """
-        Return sorted tenants list from all network_services_keys and filtered based on filter_tenants.
+        Return sorted and fully filtered tenants from the consolidated network-services groups.
 
         Keys of Tenant data model will be converted to lists.
         All sub data models like vrfs and l2vlans are also converted and filtered.
@@ -41,24 +41,10 @@ class FilteredTenantsMixin(Protocol):
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices()
 
         filtered_tenants = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices()
-        filter_tenants = self.node_config.filter.tenants
-
-        if self.inputs.network_services:
-            for original_tenant in self.inputs.network_services:
-                if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
-                    continue
-                tenant = original_tenant._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem)
-                tenant._internal_data.context = "network_services"
-                tenant.l2vlans = self.filtered_l2vlans(tenant)
-                tenant.vrfs = self.filtered_vrfs(tenant)
-                filtered_tenants.append(tenant)
-
-        for network_services_key in self.inputs._dynamic_keys.network_services:
-            for original_tenant in network_services_key.value:
-                if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
-                    continue
+        for network_services_group in self.consolidated.network_services:
+            for original_tenant in network_services_group.tenants:
                 tenant = original_tenant._deepcopy()
-                tenant._internal_data.context = f"{network_services_key.key}"
+                tenant._internal_data.context = network_services_group.key
                 tenant.l2vlans = self.filtered_l2vlans(tenant)
                 tenant.vrfs = self.filtered_vrfs(tenant)
                 filtered_tenants.append(tenant)
@@ -97,7 +83,7 @@ class FilteredTenantsMixin(Protocol):
         """
         Return sorted and filtered l2vlan list from given tenant.
 
-        Filtering based on l2vlan tags.
+        Filtering based on the VLANs accepted by facts. Tag filtering was already applied during consolidation.
         """
         if not self.network_services_l2 or not tenant.l2vlans:
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
@@ -105,10 +91,6 @@ class FilteredTenantsMixin(Protocol):
         filtered_l2vlans = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
         for l2vlan in tenant.l2vlans:
             if not self.is_accepted_vlan(l2vlan):
-                continue
-
-            # Perform filtering on tags before merge of profiles, to avoid spending cycles on merging something that will be filtered away.
-            if not ("all" in self.filter_tags or bool(set(l2vlan.tags).intersection(self.filter_tags))):
                 continue
 
             merged_l2vlan = self.get_merged_l2vlan_config(l2vlan)
@@ -376,12 +358,8 @@ class FilteredTenantsMixin(Protocol):
         for svi in vrf.svis:
             if not self.is_accepted_vlan(svi):
                 continue
-            # TODO: Tags exist only on the SVI itself, not in svi_profiles. Avoid duplicating this logic here—check tags before merging.
             # Handle svi_profile inheritance
             merged_svi = self.get_merged_svi_config(svi)
-            # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
-            if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
-                continue
 
             merged_svi.evpn_vlan_bundle = default(merged_svi.evpn_vlan_bundle, vrf.evpn_vlan_bundle, tenant.evpn_vlan_bundle)
 

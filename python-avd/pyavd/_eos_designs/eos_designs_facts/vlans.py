@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import re
 from functools import cached_property
 from itertools import chain
 from typing import TYPE_CHECKING, Protocol
@@ -98,54 +97,39 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         if self.shared_utils.configure_inband_mgmt:
             vlans.add(self.shared_utils.node_config.inband_mgmt_vlan)
-        connected_endpoints = self.shared_utils.all_connected_endpoints
-        for connected_endpoints_key in connected_endpoints:
-            for connected_endpoint in connected_endpoints_key.value:
-                for index, adapter in enumerate(connected_endpoint.adapters):
-                    adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{index}]"
-                    adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
-                    if self.shared_utils.hostname not in adapter_settings.switches:
-                        # This switch is not connected to this endpoint. Skipping.
-                        continue
-
-                    adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
-                    vlans.update(adapter_vlans)
-                    trunk_groups.update(adapter_trunk_groups)
-                    if individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(adapter_settings):
-                        individual_vlans, individual_trunk_groups = self._parse_adapter_settings(individual_adapter_settings)
-                        vlans.update(individual_vlans)
-                        trunk_groups.update(individual_trunk_groups)
-
-                    if len(vlans) >= 4094:
-                        # No need to check further, since the set is now containing all vlans.
-                        # The trunk group list may not be complete, but it will not matter, since we will
-                        # configure all vlans anyway.
-                        return vlans, trunk_groups
-
-        for index, network_port_item in enumerate(self.inputs.network_ports):
-            for switch_regex in network_port_item.switches:
-                # The match test is built on Python re.match which tests from the beginning of the string #}
-                # Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force ^ and $ around the regex
-                raw_switch_regex = rf"^{switch_regex}$"
-                if not re.match(raw_switch_regex, self.shared_utils.hostname):
-                    # Skip entry if no match
-                    continue
-
-                network_port_item._internal_data.context = f"network_ports[{index}]"
-                adapter_settings = self.shared_utils.get_merged_adapter_settings(network_port_item)
-                adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
+        for connected_endpoint in self.shared_utils.filtered_connected_endpoints:
+            for adapter in connected_endpoint.adapters:
+                adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter)
                 vlans.update(adapter_vlans)
                 trunk_groups.update(adapter_trunk_groups)
-                if individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(adapter_settings):
+                if individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(adapter):
                     individual_vlans, individual_trunk_groups = self._parse_adapter_settings(individual_adapter_settings)
                     vlans.update(individual_vlans)
                     trunk_groups.update(individual_trunk_groups)
 
                 if len(vlans) >= 4094:
-                    # No need to check further, since the list is now containing all vlans.
+                    # No need to check further, since the set is now containing all vlans.
                     # The trunk group list may not be complete, but it will not matter, since we will
                     # configure all vlans anyway.
                     return vlans, trunk_groups
+
+        # Use all switch-matched candidates here, including platform-only entries. Facts only need a conservative
+        # superset of endpoint VLANs, while the exact effective-platform filter is applied during structured config.
+        for network_port in self.consolidated.network_ports:
+            adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(network_port)
+            vlans.update(adapter_vlans)
+            trunk_groups.update(adapter_trunk_groups)
+            network_port_context = f"network_ports[{network_port._source_index}]"
+            if individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(network_port, network_port_context):
+                individual_vlans, individual_trunk_groups = self._parse_adapter_settings(individual_adapter_settings)
+                vlans.update(individual_vlans)
+                trunk_groups.update(individual_trunk_groups)
+
+            if len(vlans) >= 4094:
+                # No need to check further, since the list is now containing all vlans.
+                # The trunk group list may not be complete, but it will not matter, since we will
+                # configure all vlans anyway.
+                return vlans, trunk_groups
 
         return vlans, trunk_groups
 
@@ -288,25 +272,19 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         if not self.shared_utils.any_network_services:
             return frozenset()
 
-        tenant_filter = set(self.shared_utils.node_config.filter.tenants)
-        accepted_tenants = chain(
-            (
-                tenant
-                for network_services_key in self.inputs._dynamic_keys.network_services
-                for tenant in network_services_key.value
-                if tenant_filter.intersection((tenant.name, "all"))
-            ),
-            (tenant for tenant in self.inputs.network_services if tenant_filter.intersection((tenant.name, "all"))),
-        )
-
-        return frozenset(
-            vlan_id
-            for tenant in accepted_tenants
-            for vlan_id in chain(
-                (svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi)),
-                (l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan)),
+        candidate_vlans = (
+            vlan
+            for network_services_group in self.consolidated.network_services
+            for tenant in network_services_group.tenants
+            for vlan in chain(
+                (svi for vrf in tenant.vrfs for svi in vrf.svis),
+                tenant.l2vlans,
             )
         )
+        if not self.shared_utils.node_config.filter.only_vlans_in_use:
+            return frozenset(vlan.id for vlan in candidate_vlans)
+
+        return frozenset(vlan.id for vlan in candidate_vlans if self._is_vlan_in_use(vlan))
 
     @cached_property
     def _available_vlans(self: EosDesignsFactsGeneratorProtocol) -> frozenset[int]:
@@ -364,20 +342,11 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         return frozenset(available_vlans)
 
-    def _is_accepted_vlan(
+    def _is_vlan_in_use(
         self: EosDesignsFactsGeneratorProtocol,
         vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
-        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
-        | EosDesigns.NetworkServicesItem.VrfsItem.SvisItem
-        | EosDesigns.NetworkServicesItem.L2vlansItem,
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
     ) -> bool:
-        if "all" not in self.shared_utils.filter_tags and not set(vlan.tags).intersection(self.shared_utils.filter_tags):
-            return False
-
-        if not self.shared_utils.node_config.filter.only_vlans_in_use:
-            # Nothing else to filter
-            return True
-
         # Check if vlan is in use
         if vlan.id in self._endpoint_vlans:
             return True
