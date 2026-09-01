@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._utils import AvdStringFormatter, strip_null_from_data
+from pyavd._utils.deprecated_dict import DeprecatedDict
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
@@ -81,16 +82,28 @@ class AvdInterfaceDescriptions(AvdFacts):
                 wan_carrier=data.wan_carrier,
                 wan_circuit_id=data.wan_circuit_id,
                 main_interface_wan_carrier=data.main_interface_wan_carrier,
-                # TODO: Add deprecation warning for link.* vars
-                link={
-                    "type": data.link_type,
-                    "interface": data.interface,
-                    "peer": data.peer,
-                    "peer_interface": data.peer_interface,
-                    "wan_carrier": data.wan_carrier,
-                    "wan_circuit_id": data.wan_circuit_id,
-                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
-                },
+                link=DeprecatedDict(
+                    {
+                        "type": data.link_type,
+                        "interface": data.interface,
+                        "peer": data.peer,
+                        "peer_interface": data.peer_interface,
+                        "wan_carrier": data.wan_carrier,
+                        "wan_circuit_id": data.wan_circuit_id,
+                        "main_interface_wan_carrier": data.main_interface_wan_carrier,
+                    },
+                    _deprecated_dict_key="link",
+                    _new_keys={
+                        "type": "link_type",
+                        "interface": "interface",
+                        "peer": "peer",
+                        "peer_interface": "peer_interface",
+                        "wan_carrier": "wan_carrier",
+                        "wan_circuit_id": "wan_circuit_id",
+                        "main_interface_wan_carrier": "main_interface_wan_carrier",
+                    },
+                    _remove_in_version="7.0.0",
+                ),
             )
 
         if data.description is not None:
@@ -172,18 +185,32 @@ class AvdInterfaceDescriptions(AvdFacts):
                 wan_carrier=data.wan_carrier,
                 wan_circuit_id=data.wan_circuit_id,
                 main_interface_wan_carrier=data.main_interface_wan_carrier,
-                # TODO: Add deprecation warning for link.* vars
-                link={
-                    "interface": data.interface,
-                    "peer": data.peer,
-                    "channel_group_id": data.port_channel_id,
-                    "peer_channel_group_id": data.peer_channel_group_id,
-                    "channel_description": data.port_channel_description,
-                    "peer_node_group": data.peer_node_group,
-                    "wan_carrier": data.wan_carrier,
-                    "wan_circuit_id": data.wan_circuit_id,
-                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
-                },
+                link=DeprecatedDict(
+                    {
+                        "interface": data.interface,
+                        "peer": data.peer,
+                        "channel_group_id": data.port_channel_id,
+                        "peer_channel_group_id": data.peer_channel_group_id,
+                        "channel_description": data.port_channel_description,
+                        "peer_node_group": data.peer_node_group,
+                        "wan_carrier": data.wan_carrier,
+                        "wan_circuit_id": data.wan_circuit_id,
+                        "main_interface_wan_carrier": data.main_interface_wan_carrier,
+                    },
+                    _deprecated_dict_key="link",
+                    _new_keys={
+                        "interface": "interface",
+                        "peer": "peer",
+                        "channel_group_id": "channel_group_id",
+                        "peer_channel_group_id": "peer_channel_group_id",
+                        "channel_description": "channel_description",
+                        "peer_node_group": "peer_node_group",
+                        "wan_carrier": "wan_carrier",
+                        "wan_circuit_id": "wan_circuit_id",
+                        "main_interface_wan_carrier": "main_interface_wan_carrier",
+                    },
+                    _remove_in_version="7.0.0",
+                ),
             )
 
         if data.port_channel_description is not None:
