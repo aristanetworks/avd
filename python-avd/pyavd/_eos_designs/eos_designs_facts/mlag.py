@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from re import findall
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
@@ -25,17 +26,101 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
 
     @remove_cached_property_type
     @cached_property
-    def mlag_peer(self: EosDesignsFactsGeneratorProtocol) -> str | None:
+    def mlag(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.Mlag:
         """
-        Set this device as mlag_peer in the facts of the mlag_peer.
+        Always returns the Mlag fact. Refer to Mlag.enabled to see if MLAG should be configured.
 
-        Also verifies that exactly two devices are part of the same mlag_group.
+        Verifies that exactly two devices are part of the same mlag_group.
+
+        Verify that settings are compatible between the devices.
         """
-        if not self.shared_utils.mlag:
-            return None
+        if (peer_hostname := self.mlag_peer) is None:
+            return EosDesignsFactsProtocol.Mlag(enabled=False)
 
-        if self.shared_utils.node_group_is_primary_and_peer_hostname:
-            return self.shared_utils.node_group_is_primary_and_peer_hostname[1]
+        if (mlag_local_info := self._mlag_local_info) is None:
+            return EosDesignsFactsProtocol.Mlag(enabled=False)
+
+        peer_facts_generator = self._mlag_peer_facts_generator
+
+        if (peer_id := peer_facts_generator.id) is None:
+            msg = f"Could not determine ID for MLAG peer '{peer_hostname}'"
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if (peer_mlag_info := peer_facts_generator._mlag_local_info) is None:
+            msg = (
+                f"Could not determine MLAG local information for MLAG peer '{peer_hostname}'. "
+                "Ensure the peer has MLAG enabled and is part of a valid two-node MLAG pair"
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if mlag_local_info.primary == peer_mlag_info.primary:
+            role = "primary" if mlag_local_info.primary else "secondary"
+            msg = (
+                f"Inconsistent MLAG roles with MLAG peer '{peer_hostname}'. "
+                f"Both devices resolve to '{role}'. Exactly one device must be primary and the other secondary"
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if (peer_mlag_peer := peer_facts_generator.mlag_peer) != self.shared_utils.hostname:
+            if peer_mlag_peer is None:
+                msg = (
+                    f"MLAG peer relationship is not reciprocal for MLAG peer '{peer_hostname}'. "
+                    f"The peer does not resolve an MLAG peer but should point to '{self.shared_utils.hostname}'"
+                )
+            else:
+                msg = (
+                    f"MLAG peer relationship is not reciprocal for MLAG peer '{peer_hostname}'. "
+                    f"The peer points to '{peer_mlag_peer}' instead of '{self.shared_utils.hostname}'"
+                )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        peer_mlag_interfaces = peer_facts_generator._mlag_interfaces
+        if len(self.shared_utils.mlag_interfaces) != len(peer_mlag_interfaces):
+            msg = f"Inconsistent number of 'mlag_interfaces' defined for MLAG peer '{peer_hostname}'"
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if mlag_local_info.mlag_l3_enabled != peer_mlag_info.mlag_l3_enabled:
+            msg = (
+                f"Inconsistent MLAG L3 enablement with MLAG peer '{peer_hostname}'. "
+                f"Local 'mlag_l3_enabled' is '{mlag_local_info.mlag_l3_enabled}' while peer is '{peer_mlag_info.mlag_l3_enabled}'"
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if mlag_local_info.mlag_l3_enabled and mlag_local_info.mlag_l3_vlan != peer_mlag_info.mlag_l3_vlan:
+            msg = (
+                f"Inconsistent MLAG L3 VLAN with MLAG peer '{peer_hostname}'. "
+                f"Local 'mlag_peer_l3_vlan' resolves to '{mlag_local_info.mlag_l3_vlan}' while peer resolves to '{peer_mlag_info.mlag_l3_vlan}'"
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        peer = EosDesignsFactsProtocol.Mlag.Peer(
+            hostname=peer_hostname,
+            id=peer_id,
+            mlag_ip=peer_mlag_info.mlag_ip,
+            port_channel_id=peer_mlag_info.port_channel_id,
+            mlag_interfaces=peer_mlag_interfaces,
+            mgmt_ip=peer_facts_generator.mgmt_ip,
+            mlag_l3_ip=peer_mlag_info.mlag_l3_ip,
+            bgp_as=peer_facts_generator.bgp_as,
+            inband_ztp=peer_facts_generator.inband_ztp,
+            inband_ztp_lacp_fallback_delay=peer_facts_generator.inband_ztp_lacp_fallback_delay,
+            inband_ztp_vlan=peer_facts_generator.inband_ztp_vlan,
+            underlay_multicast=peer_mlag_info.underlay_multicast._cast_as(EosDesignsFactsProtocol.Mlag.Peer.UnderlayMulticast),
+        )
+        return EosDesignsFactsProtocol.Mlag(
+            enabled=True,
+            local=mlag_local_info,
+            peer=peer,
+        )
+
+    @cached_property
+    def _mlag_allowed(self: EosDesignsFactsGeneratorProtocol) -> bool:
+        return self.shared_utils.node_type_key_data.mlag_support and self.shared_utils.node_config.mlag
+
+    @cached_property
+    def _mlag_is_primary_and_peer_hostname(self: EosDesignsFactsGeneratorProtocol) -> tuple[bool, str] | None:
+        if primary_and_peer_hostname := self.shared_utils.node_group_is_primary_and_peer_hostname:
+            return primary_and_peer_hostname
 
         if self.shared_utils.device_config and (mlag_group := self.shared_utils.device_config.mlag_group):
             mlag_group_members = self._mlag_groups[mlag_group]
@@ -46,72 +131,127 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
-            return next(iter(mlag_group_members.difference([self.shared_utils.hostname])))
+            is_primary = natural_sort(mlag_group_members)[0] == self.shared_utils.hostname
+            peer_hostname = next(iter(mlag_group_members.difference([self.shared_utils.hostname])))
+            return is_primary, peer_hostname
 
         return None
 
     @remove_cached_property_type
     @cached_property
-    def mlag_port_channel_id(self: EosDesignsFactsGeneratorProtocol) -> int | None:
-        """Exposed in avd_switch_facts."""
-        if self.shared_utils.mlag:
-            return self.shared_utils.mlag_port_channel_id
-        return None
+    def mlag_peer(self: EosDesignsFactsGeneratorProtocol) -> str | None:
+        """
+        MLAG peer is only set when MLAG is allowed and configured with a proper peer.
+
+        So presence of the mlag_peer fact is the same as MLAG should be configured.
+
+        'mlag_peer' cannot be folded in to 'mlag', since it is used as a dependency in shared_utils that are indirectly used to build this.
+        """
+        if not self._mlag_allowed:
+            return None
+
+        if (is_primary_and_peer_hostname := self._mlag_is_primary_and_peer_hostname) is None:
+            return None
+
+        return is_primary_and_peer_hostname[1]
 
     @remove_cached_property_type
     @cached_property
-    def mlag_interfaces(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.MlagInterfaces:
-        """Exposed in avd_switch_facts."""
-        if self.shared_utils.mlag:
-            return EosDesignsFactsProtocol.MlagInterfaces(self.shared_utils.mlag_interfaces)
-        return EosDesignsFactsProtocol.MlagInterfaces()
+    def mlag_primary(self: EosDesignsFactsGeneratorProtocol) -> bool | None:
+        """
+        MLAG Primary is only set when MLAG is allowed and configured with a proper peer.
+
+        'mlag_primary' cannot be folded in to 'mlag', since it is used as a dependency in shared_utils that are indirectly used to build this.
+        """
+        if not self._mlag_allowed:
+            return None
+
+        if (is_primary_and_peer_hostname := self._mlag_is_primary_and_peer_hostname) is None:
+            return None
+
+        return is_primary_and_peer_hostname[0]
 
     @remove_cached_property_type
     @cached_property
-    def mlag_ip(self: EosDesignsFactsGeneratorProtocol) -> str | None:
-        """Exposed in avd_switch_facts."""
-        if self.shared_utils.mlag:
-            return self.shared_utils.mlag_ip
-        return None
+    def mlag_peer_id(self: EosDesignsFactsGeneratorProtocol) -> int | None:
+        """
+        MLAG Peer ID is only set when MLAG is allowed and configured with a proper peer.
 
-    @remove_cached_property_type
+        'mlag_peer_id' cannot be folded in to 'mlag', since it is used as a dependency in shared_utils that are indirectly used to build this.
+        """
+        if not self.mlag_peer:
+            return None
+
+        return self._mlag_peer_facts_generator.id
+
     @cached_property
-    def mlag_l3_ip(self: EosDesignsFactsGeneratorProtocol) -> str | None:
+    def _mlag_local_info(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.Mlag.Local | None:
         """
-        Exposed in avd_switch_facts.
+        Generate the local MLAG information.
 
-        Only if L3 and not running rfc5549 for both underlay and overlay
+        This is also called from the MLAG peer's facts generator.
         """
-        if (
-            self.shared_utils.mlag_l3
-            and self.shared_utils.mlag_peer_l3_vlan is not None
-            and not (self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549)
-        ):
-            return self.shared_utils.mlag_l3_ip
-        return None
+        if (primary_and_peer_hostname := self._mlag_is_primary_and_peer_hostname) is None:
+            return None
 
-    @remove_cached_property_type
-    @cached_property
-    def mlag_switch_ids(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.MlagSwitchIds:
-        """
-        Exposed in avd_switch_facts.
+        is_primary = primary_and_peer_hostname[0]
 
-        Returns the switch ids of both primary and secondary switches for a given node group or an empty class.
-        """
-        if not (mlag_switch_ids := self.shared_utils.mlag_switch_ids):
-            return EosDesignsFactsProtocol.MlagSwitchIds()
+        mlag_ip = self.shared_utils.ip_addressing.mlag_ip_primary() if is_primary else self.shared_utils.ip_addressing.mlag_ip_secondary()
 
-        return EosDesignsFactsProtocol.MlagSwitchIds(primary=mlag_switch_ids["primary"], secondary=mlag_switch_ids["secondary"])
+        if self.shared_utils.underlay_router:
+            mlag_l3_enabled = True
+            mlag_l3_vlan = self._get_mlag_l3_vlan()
+            needs_l3_ip = mlag_l3_vlan and not (self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549)
+            # Only set a specific L3 IP, when there is a dedicated L3 vlan and not unnumbered.
+            mlag_l3_ip = self._get_mlag_l3_ip(is_primary) if needs_l3_ip else None
+        else:
+            mlag_l3_enabled = False
+            mlag_l3_ip = None
+            mlag_l3_vlan = None
 
-    @remove_cached_property_type
-    @cached_property
-    def mlag_underlay_multicast(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.MlagUnderlayMulticast:
-        """
-        Exposed in avd_switch_facts.
-
-        Returns the switch MLAG enabled protocol for Underlay Multicast
-        """
-        return EosDesignsFactsProtocol.MlagUnderlayMulticast(
-            pim_sm=self.shared_utils.underlay_multicast_pim_mlag_enabled,
-            static=self.shared_utils.underlay_multicast_static_mlag_enabled,
+        return EosDesignsFactsProtocol.Mlag.Local(
+            primary=is_primary,
+            mlag_ip=mlag_ip,
+            port_channel_id=self._get_mlag_port_channel_id(),
+            mlag_l3_enabled=mlag_l3_enabled,
+            mlag_l3_vlan=mlag_l3_vlan,
+            mlag_l3_ip=mlag_l3_ip,
+            underlay_multicast=EosDesignsFactsProtocol.Mlag.Local.UnderlayMulticast(
+                pim_sm=self.shared_utils.underlay_multicast_pim_mlag_enabled,
+                static=self.shared_utils.underlay_multicast_static_mlag_enabled,
+            ),
         )
+
+    def _get_mlag_l3_vlan(self: EosDesignsFactsGeneratorProtocol) -> int | None:
+        mlag_peer_vlan = self.shared_utils.node_config.mlag_peer_vlan
+        mlag_peer_l3_vlan = self.shared_utils.node_config.mlag_peer_l3_vlan
+        if mlag_peer_l3_vlan not in [None, False, mlag_peer_vlan]:
+            return mlag_peer_l3_vlan
+
+        return None
+
+    def _get_mlag_l3_ip(self: EosDesignsFactsGeneratorProtocol, is_primary: bool) -> str:
+        if self.shared_utils.underlay_ipv6_numbered:
+            return self.shared_utils.ip_addressing.mlag_l3_ipv6_primary() if is_primary else self.shared_utils.ip_addressing.mlag_l3_ipv6_secondary()
+
+        return self.shared_utils.ip_addressing.mlag_l3_ip_primary() if is_primary else self.shared_utils.ip_addressing.mlag_l3_ip_secondary()
+
+    def _get_mlag_port_channel_id(self: EosDesignsFactsGeneratorProtocol) -> int:
+        if (manual_id := self.shared_utils.node_config.mlag_port_channel_id) is not None:
+            return manual_id
+
+        first_mlag_interface = self._mlag_interfaces[0]
+        return int("".join(findall(r"\d", first_mlag_interface)))
+
+    @cached_property
+    def _mlag_interfaces(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.Mlag.Peer.MlagInterfaces:
+        """
+        Local MLAG interfaces.
+
+        This is also called from the MLAG peer's facts generator.
+        """
+        if not (mlag_interfaces := self.shared_utils.mlag_interfaces):
+            msg = "'mlag_interfaces' not set"
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        return EosDesignsFactsProtocol.Mlag.Peer.MlagInterfaces(mlag_interfaces)

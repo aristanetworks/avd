@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Inconsistent number of 'mlag_interfaces' defined for MLAG peer 'mlag-interfaces-count-mismatch2' for host 'mlag-interfaces-count-mismatch1'.

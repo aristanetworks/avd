@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'id' is required to compute MLAG ids for host 'missing-id-for-secondary-mlag2'.
+pyavd._errors.AristaAvdInvalidInputsError: Could not determine ID for MLAG peer 'missing-id-for-secondary-mlag2' for host 'missing-id-for-secondary-mlag1'.

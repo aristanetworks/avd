@@ -41,7 +41,7 @@ class RouterOspfMixin(Protocol):
                 process.no_passive_interfaces.append(link.interface)
 
         if self.shared_utils.mlag_l3 is True:
-            mlag_l3_vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
+            mlag_l3_vlan = default(self.facts.mlag.local.mlag_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
             process.no_passive_interfaces.append(f"Vlan{mlag_l3_vlan}")
 
         if self.shared_utils.overlay_routing_protocol == "none":

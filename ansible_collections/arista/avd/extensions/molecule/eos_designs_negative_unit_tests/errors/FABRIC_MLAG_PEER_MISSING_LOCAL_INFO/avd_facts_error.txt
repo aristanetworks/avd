@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Could not determine MLAG local information for MLAG peer 'mlag-peer-missing-local-info2'. Ensure the peer has MLAG enabled and is part of a valid two-node MLAG pair for host 'mlag-peer-missing-local-info1'.

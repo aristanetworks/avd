@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Inconsistent MLAG roles with MLAG peer 'mlag-inconsistent-roles2'. Both devices resolve to 'primary'. Exactly one device must be primary and the other secondary for host 'mlag-inconsistent-roles1'.

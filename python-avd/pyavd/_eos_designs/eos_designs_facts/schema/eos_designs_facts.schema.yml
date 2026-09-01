@@ -60,6 +60,7 @@ keys:
     type: int
   inband_ztp:
     type: bool
+    required: true
   inband_ztp_vlan:
     type: int
   inband_ztp_lacp_fallback_delay:
@@ -100,38 +101,98 @@ keys:
           required: true
         parent_profile:
           type: str
+  mlag:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+        required: true
+      local:
+        type: dict
+        keys:
+          primary:
+            type: bool
+            required: true
+          port_channel_id:
+            type: int
+            required: true
+          mlag_ip:
+            type: str
+            required: true
+          mlag_l3_enabled:
+            type: bool
+            required: true
+          mlag_l3_vlan:
+            type: int
+          mlag_l3_ip:
+            type: str
+          underlay_multicast:
+            type: dict
+            description: Should multicast be enabled on the mlag peer-l3-vlan.
+            keys:
+              pim_sm:
+                type: bool
+                required: true
+              static:
+                type: bool
+                required: true
+      peer:
+        type: dict
+        keys:
+          hostname:
+            type: str
+            required: true
+            description: Same hostname as mlag_peer fact but here we have a type guarantee.
+          id:
+            type: int
+            required: true
+          mlag_ip:
+            type: str
+            required: true
+          port_channel_id:
+            type: int
+            required: true
+          mlag_interfaces:
+            type: list
+            required: true
+            items:
+              type: str
+          mgmt_ip:
+            type: str
+          mlag_l3_ip:
+            type: str
+          bgp_as:
+            type: str
+          inband_ztp:
+            type: bool
+            required: true
+          inband_ztp_lacp_fallback_delay:
+            type: int
+          inband_ztp_vlan:
+            type: int
+          underlay_multicast:
+            type: dict
+            description: Should multicast be enabled on the mlag peer-l3-vlan.
+            keys:
+              pim_sm:
+                type: bool
+                required: true
+              static:
+                type: bool
+                required: true
   mlag_peer:
     type: str
-  mlag_port_channel_id:
+    description: |-
+      MLAG peer is only set when MLAG is allowed and configured with a proper peer.
+      So presence of the mlag_peer fact is the same as MLAG should be configured.
+  mlag_primary:
+    type: bool
+    description: |-
+      MLAG primary is only set when MLAG is allowed and configured with a proper peer.
+  mlag_peer_id:
     type: int
-  mlag_interfaces:
-    type: list
-    items:
-      type: str
-  mlag_ip:
-    type: str
-  mlag_l3_ip:
-    type: str
-  mlag_switch_ids:
-    type: dict
-    description: The switch ids of both primary and secondary switches for a this node group.
-    keys:
-      primary:
-        type: int
-        required: true
-      secondary:
-        type: int
-        required: true
-  mlag_underlay_multicast:
-    type: dict
-    description: Should multicast be enabled on the mlag peer-l3-vlan.
-    keys:
-      pim_sm:
-        type: bool
-        required: true
-      static:
-        type: bool
-        required: true
+    description: |-
+      MLAG peer ID is only set when MLAG is allowed and configured with a proper peer.
   evpn_role:
     type: str
   mpls_overlay_role:

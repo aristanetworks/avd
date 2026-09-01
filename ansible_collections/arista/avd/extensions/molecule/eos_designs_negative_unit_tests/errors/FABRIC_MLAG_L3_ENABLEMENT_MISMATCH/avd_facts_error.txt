@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Inconsistent MLAG L3 enablement with MLAG peer 'mlag-l3-enablement-mismatch2'. Local 'mlag_l3_enabled' is 'True' while peer is 'False' for host 'mlag-l3-enablement-mismatch1'.

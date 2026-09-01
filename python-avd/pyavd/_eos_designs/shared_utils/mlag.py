@@ -4,17 +4,13 @@
 from __future__ import annotations
 
 from functools import cached_property
-from re import findall
-from typing import TYPE_CHECKING, Protocol, cast
+from typing import TYPE_CHECKING, Protocol
 
-from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get_ip_from_ip_prefix
-from pyavd.j2filters import natural_sort, range_expand
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
     from typing import Literal
-
-    from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
 
     from . import SharedUtilsProtocol
 
@@ -29,15 +25,7 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag(self: SharedUtilsProtocol) -> bool:
-        if not self.node_type_key_data.mlag_support or not self.node_config.mlag:
-            return False
-
-        # Node groups used for mlag peer.
-        if self.node_group_is_primary_and_peer_hostname:
-            return True
-
-        # devices[].mlag_group used for mlag peer.
-        return bool(self.device_config and self.device_config.mlag_group)
+        return bool(self.switch_facts.mlag_peer)
 
     @cached_property
     def group(self: SharedUtilsProtocol) -> str | None:
@@ -82,15 +70,10 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_role(self: SharedUtilsProtocol) -> Literal["primary", "secondary"] | None:
-        if not self.mlag:
+        if not self.mlag or (is_primary := self.switch_facts.mlag_primary) is None:
             return None
-        if self.node_group_is_primary_and_peer_hostname is not None:
-            return "primary" if self.node_group_is_primary_and_peer_hostname[0] else "secondary"
 
-        if self.switch_facts.mlag_peer:
-            return "primary" if natural_sort([self.hostname, self.switch_facts.mlag_peer])[0] == self.hostname else "secondary"
-
-        return None
+        return "primary" if is_primary else "secondary"
 
     @cached_property
     def mlag_peer(self: SharedUtilsProtocol) -> str:
@@ -102,121 +85,21 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_l3(self: SharedUtilsProtocol) -> bool:
-        return self.mlag is True and self.underlay_router is True
-
-    @cached_property
-    def mlag_peer_l3_vlan(self: SharedUtilsProtocol) -> int | None:
-        if self.mlag_l3:
-            mlag_peer_vlan = self.node_config.mlag_peer_vlan
-            mlag_peer_l3_vlan = self.node_config.mlag_peer_l3_vlan
-            if mlag_peer_l3_vlan not in [None, False, mlag_peer_vlan]:
-                return mlag_peer_l3_vlan
-        return None
-
-    @cached_property
-    def mlag_peer_ip(self: SharedUtilsProtocol) -> str:
-        return cast("str", self.mlag_peer_facts.mlag_ip)
-
-    @cached_property
-    def mlag_peer_l3_ip(self: SharedUtilsProtocol) -> str | None:
-        if self.mlag_peer_l3_vlan is not None:
-            return self.mlag_peer_facts.mlag_l3_ip
-        return None
-
-    @cached_property
-    def mlag_peer_id(self: SharedUtilsProtocol) -> int:
-        return cast("int", self.mlag_peer_facts.id)
-
-    @cached_property
-    def mlag_peer_facts(self: SharedUtilsProtocol) -> EosDesignsFactsProtocol:
-        return self.get_peer_facts(self.mlag_peer)
-
-    @cached_property
-    def mlag_peer_mgmt_ip(self: SharedUtilsProtocol) -> str | None:
-        if (mlag_peer_mgmt_ip := self.mlag_peer_facts.mgmt_ip) is None:
-            return None
-
-        if mlag_peer_mgmt_ip == "dhcp":
-            msg = (
-                f"'mgmt_ip: dhcp' is not supported for MLAG peer '{self.mlag_peer}'."
-                f" MLAG dual-primary detection heartbeat requires a static management IP address."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-
-        return get_ip_from_ip_prefix(mlag_peer_mgmt_ip)
-
-    @cached_property
-    def mlag_ip(self: SharedUtilsProtocol) -> str | None:
-        """Render ipv4 address for mlag_ip using dynamically loaded python module."""
-        if self.mlag_role == "primary":
-            return self.ip_addressing.mlag_ip_primary()
-        if self.mlag_role == "secondary":
-            return self.ip_addressing.mlag_ip_secondary()
-        return None
-
-    @cached_property
-    def mlag_l3_ip(self: SharedUtilsProtocol) -> str | None:
-        """Render ipv4 or ipv6 address for mlag_l3_ip using dynamically loaded python module."""
-        if self.mlag_peer_l3_vlan is None:
-            return None
-        if self.mlag_role == "primary":
-            if self.underlay_ipv6_numbered:
-                return self.ip_addressing.mlag_l3_ipv6_primary()
-            return self.ip_addressing.mlag_l3_ip_primary()
-        if self.mlag_role == "secondary":
-            if self.underlay_ipv6_numbered:
-                return self.ip_addressing.mlag_l3_ipv6_secondary()
-            return self.ip_addressing.mlag_l3_ip_secondary()
-        return None
-
-    @cached_property
-    def mlag_switch_ids(self: SharedUtilsProtocol) -> dict[str, int] | None:
-        """
-        Returns the switch id's of both primary and secondary switches for a given node group.
-
-        {"primary": int, "secondary": int}.
-        """
-        if self.mlag_role == "primary":
-            if self.id is None:
-                msg = "'id' is required to compute MLAG ids"
-                raise AristaAvdInvalidInputsError(msg)
-            return {"primary": self.id, "secondary": self.mlag_peer_id}
-        if self.mlag_role == "secondary":
-            if self.id is None:
-                msg = "'id' is required to compute MLAG ids"
-                raise AristaAvdInvalidInputsError(msg)
-            return {"primary": self.mlag_peer_id, "secondary": self.id}
-        return None
-
-    @cached_property
-    def mlag_port_channel_id(self: SharedUtilsProtocol) -> int:
-        if not self.mlag_interfaces:
-            msg = "'mlag_interfaces' not set"
-            raise AristaAvdInvalidInputsError(msg)
-        default_mlag_port_channel_id = int("".join(findall(r"\d", self.mlag_interfaces[0])))
-        return default(self.node_config.mlag_port_channel_id, default_mlag_port_channel_id)
-
-    @cached_property
-    def mlag_peer_port_channel_id(self: SharedUtilsProtocol) -> int:
-        return self.mlag_peer_facts.mlag_port_channel_id or self.mlag_port_channel_id
-
-    @cached_property
-    def mlag_peer_interfaces(self: SharedUtilsProtocol) -> list[str]:
-        return list(self.mlag_peer_facts.mlag_interfaces) or self.mlag_interfaces
+        return self.mlag and self.switch_facts.mlag.local.mlag_l3_enabled
 
     @cached_property
     def mlag_ibgp_ip(self: SharedUtilsProtocol) -> str:
-        if self.mlag_l3_ip is not None:
-            return self.mlag_l3_ip
+        if self.switch_facts.mlag.local.mlag_l3_ip is not None:
+            return self.switch_facts.mlag.local.mlag_l3_ip
 
-        return cast("str", self.mlag_ip)
+        return self.switch_facts.mlag.local.mlag_ip
 
     @cached_property
     def mlag_peer_ibgp_ip(self: SharedUtilsProtocol) -> str:
-        if self.mlag_peer_l3_ip is not None:
-            return self.mlag_peer_l3_ip
+        if self.switch_facts.mlag.peer.mlag_l3_ip is not None:
+            return self.switch_facts.mlag.peer.mlag_l3_ip
 
-        return self.mlag_peer_ip
+        return self.switch_facts.mlag.peer.mlag_ip
 
     @cached_property
     def use_separate_peer_group_for_mlag_vrfs(self: SharedUtilsProtocol) -> bool:

@@ -1,0 +1,40 @@
+---
+fabric_name: FABRIC_MLAG_PEER_MISSING_LOCAL_INFO
+underlay_routing_protocol: isis
+
+type: l2leaf
+
+l2leaf:
+  defaults:
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+  node_groups:
+    - group: mlag-peer-missing-local-info-secondary-only
+      nodes:
+        - name: mlag-peer-missing-local-info2
+          id: 22
+          mgmt_ip: 192.168.201.222/24
+          uplink_switch_interfaces: [Ethernet31]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+    - group: mlag-peer-missing-local-info
+      nodes:
+        - name: mlag-peer-missing-local-info1
+          id: 21
+          mgmt_ip: 192.168.201.221/24
+          uplink_switch_interfaces: [Ethernet30]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+        - name: mlag-peer-missing-local-info2
+          id: 22
+          mgmt_ip: 192.168.201.222/24
+          uplink_switch_interfaces: [Ethernet31]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+
+expected_error_message: >-
+  Could not determine MLAG local information for MLAG peer 'mlag-peer-missing-local-info2'.
+  Ensure the peer has MLAG enabled and is part of a valid two-node MLAG pair for host 'mlag-peer-missing-local-info1'.

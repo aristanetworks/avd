@@ -119,7 +119,7 @@ class EosDesignsFactsGeneratorProtocol(
                 raise AristaAvdError(msg)
 
             if (
-                self.shared_utils.mlag
+                self.mlag.enabled
                 and self.shared_utils.overlay_rd_type_admin_subfield == self._mlag_peer_facts_generator.shared_utils.overlay_rd_type_admin_subfield
             ):
                 msg = "For MLAG devices Route Distinguisher must be unique when 'evpn_multicast: True' since it will create a multi-vtep configuration."
@@ -221,7 +221,7 @@ class EosDesignsFactsGeneratorProtocol(
 
     @remove_cached_property_type
     @cached_property
-    def inband_ztp(self) -> bool | None:
+    def inband_ztp(self) -> bool:
         """Exposed in avd_switch_facts."""
         return self.shared_utils.node_config.inband_ztp
 
@@ -236,7 +236,11 @@ class EosDesignsFactsGeneratorProtocol(
     @remove_cached_property_type
     @cached_property
     def inband_ztp_lacp_fallback_delay(self) -> int | None:
-        """Exposed in avd_switch_facts."""
+        """
+        Exposed in avd_switch_facts.
+
+        Also called from MLAG peer's facts generator.
+        """
         if self.shared_utils.node_config.inband_ztp:
             return self.shared_utils.node_config.inband_ztp_lacp_fallback_delay
         return None
@@ -410,7 +414,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
 
     def update_mlag_groups(self) -> None:
         """Update the shared dict of MLAG groups. Used to deduct the MLAG pairs from the mlag_group set on each device."""
-        if self.shared_utils.mlag and self.shared_utils.device_config and (mlag_group := self.shared_utils.device_config.mlag_group):
+        if self._mlag_allowed and self.shared_utils.device_config and (mlag_group := self.shared_utils.device_config.mlag_group):
             self._mlag_groups.setdefault(mlag_group, set()).add(self.shared_utils.hostname)
 
     def cross_pollinate(self) -> None:

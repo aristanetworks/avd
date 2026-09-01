@@ -157,19 +157,28 @@ class RoutingMixin(Protocol):
             raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
         bgp_as_range_expanded = range_expand(self.node_config.bgp_as)
-        try:
-            if len(bgp_as_range_expanded) == 1:
-                return bgp_as_range_expanded[0]
-            if self.mlag_switch_ids:
-                return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
 
-            if self.id is None:
-                msg = f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'"
-                raise AristaAvdInvalidInputsError(msg)
+        if len(bgp_as_range_expanded) == 1:
+            return bgp_as_range_expanded[0]
+
+        if self.switch_facts.mlag_primary is False and self.switch_facts.mlag_peer_id is not None:
+            try:
+                return bgp_as_range_expanded[self.switch_facts.mlag_peer_id - 1]
+            except IndexError as e:
+                msg = (
+                    f"Unable to allocate BGP AS: bgp_as range '{self.node_config.bgp_as}' is too small ({len(bgp_as_range_expanded)}) "
+                    f"for the MLAG peer's id '{self.switch_facts.mlag_peer_id}'."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname) from e
+
+        if self.id is None:
+            msg = f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'"
+            raise AristaAvdInvalidInputsError(msg)
+        try:
             return bgp_as_range_expanded[self.id - 1]
-        except IndexError as exc:
+        except IndexError as e:
             msg = f"Unable to allocate BGP AS: bgp_as range '{self.node_config.bgp_as}' is too small ({len(bgp_as_range_expanded)}) for the id '{self.id}'."
-            raise AristaAvdInvalidInputsError(msg, host=self.hostname) from exc
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname) from e
 
     def get_bgp_password(
         self: SharedUtilsProtocol,

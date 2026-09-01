@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: MLAG peer relationship is not reciprocal for MLAG peer 'mlag-peer-not-reciprocal2'. The peer points to 'mlag-peer-not-reciprocal3' instead of 'mlag-peer-not-reciprocal1' for host 'mlag-peer-not-reciprocal1'.
