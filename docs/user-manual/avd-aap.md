@@ -17,10 +17,10 @@ This guide will walk you through the steps required to get up and running with A
 - An AVD project or Git repository with playbooks and an inventory. To get started, you may also use any of our [example topologies](../../ansible_collections/arista/avd/examples/single-dc-l3ls/README.md).
 - A RHEL instance running AAP.
   - If you need access to a RHEL instance, you can join the [developer program](https://developers.redhat.com) to get a copy.
-  - To get started, you may also sign up for a 60-day [trial license](https://www.redhat.com/en/technologies/management/ansible/trial) for AAP.
+  - To get started with AAP, you may sign up for a 60-day [trial license](https://www.redhat.com/en/technologies/management/ansible/trial).
 
 !!! note
-    This guide leverages AAP version 2.4. The workflows should be similar in newer versions. If there are any questions, please see the official [AAP documentation](https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4). If you notice any errors in this guide, please open an [issue](https://github.com/aristanetworks/avd/issues).
+    This guide leverages AAP version 2.7. The workflows should be similar in newer versions. If there are any questions, please see the official [AAP documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7). If you notice any errors in this guide, please open an [issue](https://github.com/aristanetworks/avd/issues).
 
 ## Topology
 
@@ -36,9 +36,10 @@ The image below provides an excellent overview of the AAP dashboard. From one pa
 - Projects
 - Inventories
 - Job templates
-- Surveys
+- Credentials
 
-![AAP Dashboard](../_media/getting-started/aap-avd/aap-dashboardpng.png)
+![AAP Dashboard](../_media/getting-started/aap-avd/aap-dashboardpng.png#only-light)
+![AAP Dashboard](../_media/getting-started/aap-avd/aap-dashboardpng.png#only-dark)
 
 ## Execution environments with Ansible Builder
 
@@ -70,32 +71,24 @@ You can place the Ansible builder dependencies with your current project or leve
 
     images: #(2)
       base_image:
-        name: registry.fedoraproject.org/fedora:40
+        name: ghcr.io/ansible-community/community-ee-minimal:2.21.3-1
 
     dependencies: #(3)
       python_interpreter:
-        package_system: python311
-        python_path: /usr/bin/python3.11
+        package_system: python314
+        python_path: /usr/bin/python3.14
 
-      ansible_core: #(4)
-        package_pip: ansible-core<2.17.0
+      galaxy: requirements.yml #(4)
 
-      ansible_runner: #(5)
-        package_pip: ansible-runner
-
-      galaxy: requirements.yml #(6)
-
-      python: requirements.txt #(7)
+      python: requirements.txt #(5)
 
     ```
 
     1. We are leveraging Ansible Builder 3.x, which requires version 3 of the definition file. If you leverage an older version of Ansible Builder, you may need to use `version: 1`.
     2. You may use any base container image. Please see the official documentation for more examples.
     3. Specifying what version of Python we would like installed during the container build.
-    4. The version of ansible-core you need will greatly depend on your specific workflows.
-    5. The `ansible-runner` package is required when building an EE.
-    6. This is a pointer to any additional collections we want installed on our container.
-    7. This is a pointer to any additional Python packages we require for our workflow.
+    4. This is a pointer to any additional collections we want installed on our container.
+    5. This is a pointer to any additional Python packages we require for our workflow.
 
 === "requirements.yml"
 
@@ -103,7 +96,7 @@ You can place the Ansible builder dependencies with your current project or leve
     ---
     collections: #(1)
       - name: arista.avd
-        version: 4.9.0
+        version: 6.4.0
 
     ```
 
@@ -112,7 +105,7 @@ You can place the Ansible builder dependencies with your current project or leve
 === "requirements.txt"
 
     ```text
-    pyavd[ansible-collection]==4.9.0
+    pyavd[ansible]==6.4.0
 
     ```
 
@@ -123,17 +116,17 @@ You can place the Ansible builder dependencies with your current project or leve
 The command below will use Ansible Builder to start building our custom EE. In this case, we leverage Podman as a container runtime and tag the image appropriately.
 
 ```shell
-ansible-builder build --container-runtime podman -v 3 --tag username/image-name
+ansible-builder build --container-runtime podman -v 3 --tag registry-url/username/image-name:image-version
 ```
 
 Once complete, you can push the image to a public or private container registry.
 
 ```shell
-podman push IMAGEID docker://docker.io/username/image-name
+podman push registry-url/username/image-name:image-version
 ```
 
 !!! note
-    This guide uses Docker Hub as the container registry, but you may use any container registry that is accessible by AAP.
+    You will need to authenticate to your respective container registry. Please see the official documentation for your respective registry on authenticating.
 
 ### Execution environments on AAP
 
@@ -141,13 +134,13 @@ Once the image is located on our container registry, we are ready to add our cus
 
 === "Click on EE"
 
-    Scroll down on the left pane, and under `Administration`, click on `Execution Environments`.
+    Scroll down on the left pane, and under `Automation Execution > Infrastructure`, click on `Execution Environments`.
 
     ![Select execution environment](../_media/getting-started/aap-avd/select-ee.png)
 
 === "EE - Add"
 
-    In the new pane, click on `Add`. You can also see the built-in EEs installed with AAP.
+    In the new pane, click on `Create execution environment`. You can also see the built-in EEs installed with AAP.
 
     ![Select add](../_media/getting-started/aap-avd/select-add-ee.png)
 
@@ -157,19 +150,23 @@ Once the image is located on our container registry, we are ready to add our cus
 
     ![Create EE](../_media/getting-started/aap-avd/create-ee.png)
 
+#### Authentication with Private Execution Environments
+
+If you are leveraging a private execution environment, we must tell AAP how to authenticate to the private registry.
+
 ## Projects
 
 Projects in AAP are vital in setting up additional options. For example, we can leverage our project when defining a new inventory or reference playbooks within the project to define job workflows in AAP.
 
 === "Click on Projects"
 
-    Scroll up on the left pane, and under `Resources`, click on `Projects`.
+    Scroll up on the left pane, and under `Automation Execution`, click on `Projects`.
 
     ![Select execution environment](../_media/getting-started/aap-avd/select-projects.png)
 
 === "Projects - Add"
 
-    In the new pane, click on `Add`.
+    In the new pane, click on `Create project`.
 
     ![Add project](../_media/getting-started/aap-avd/select-add-project.png)
 
@@ -185,25 +182,25 @@ AAP provides many ways to add an inventory. For example, we can use an inventory
 
 === "Click on Inventories"
 
-    On the left pane, and under `Resources`, click on `Inventories`.
+    On the left pane, and under `Automation Execution > Infrastructure`, click on `Inventories`.
 
     ![Select execution environment](../_media/getting-started/aap-avd/select-inv.png)
 
 === "Inventories - Add"
 
-    In the new pane, click on `Add` and select `Add inventory`.
+    In the new pane, click on `Create inventory` and select `Create inventory`.
 
     ![Add inventory](../_media/getting-started/aap-avd/select-add-inv.png)
 
 === "Inventories - Save"
 
-    Give the inventory an appropriate `Name` and click `Save`.
+    Give the inventory an appropriate `Name` and click `Save inventory`.
 
     ![Create inventory](../_media/getting-started/aap-avd/save-inv.png)
 
 ### Inventory Sources
 
-At this point, we have an inventory with no hosts. This is where inventory sources come into play. Like most things, we have a series of options. We can leverage an inventory source from Cloud providers, virtualization platforms, or, in our case, directly from our project.
+At this point, we have an inventory with no hosts. This is where inventory sources come into play. Like most things, we have a series of options. We can leverage an inventory source from cloud providers, virtualization platforms, or, in our case, directly from our project.
 
 === "Click on Sources"
 
@@ -334,30 +331,26 @@ Below is an example of the playbook we are leveraging to build and deploy our co
 
 ```yaml
 ---
-- name: Manage Arista EOS EVPN/VXLAN Configuration
-  hosts: ATD_FABRIC
-  connection: local
+- name: Build and Deploy configurations
+  hosts: FABRIC
   gather_facts: false
-  collections:
-    - arista.avd
-  vars:
-    fabric_dir_name: "{{ fabric_name }}"
+  vars_files:
+    - ../group_vars/vault.yml
   tasks:
 
-    - name: Generate intended variables
-      import_role:
-        name: eos_designs
+    - name: Generate AVD Structured Configurations and Fabric Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
 
-    - name: Generate device intended config and documentation
-      import_role:
-        name: eos_cli_config_gen
+    - name: Generate Device Configurations and Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
 
-    - name: Provision nodes with CV
-      import_role:
-        name: cv_deploy
+    - name: Provision nodes with CloudVision
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
       vars:
-        cv_server: <CV or CVaaS URL>
-        cv_token: "{{ lab_token }}"
+        cv_server: <cv_url>
         cv_run_change_control: true
 
 ```
@@ -365,7 +358,7 @@ Below is an example of the playbook we are leveraging to build and deploy our co
 We have everything we need to run our job template now.
 
 !!! note
-    This guide leverages the `cv_deploy` role for provisioning through CV. The `cv_deploy` role requires additional options and tokens to be generated. Please see the `cv_deploy` role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md) for the most up-to-date settings. We also set `cv_change_control` to `true`, the default it `false`. This allows the change control to be executed automatically.
+    This guide leverages the `cv_deploy` role for provisioning through CV. The `cv_deploy` role requires additional options and tokens to be generated. Please see the `cv_deploy` role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md) for the most up-to-date settings. We also set `cv_run_change_control` to `true`, the default is `false`. This allows the change control to be executed automatically.
 
 === "Templates Run"
 
