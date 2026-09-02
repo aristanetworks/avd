@@ -29,10 +29,6 @@
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
-- [Filters](#filters)
-  - [Prefix-lists](#prefix-lists)
-  - [IPv6 Prefix-lists](#ipv6-prefix-lists)
-  - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -418,7 +414,7 @@ router bgp 65001
    neighbor 192.168.255.15 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.15 remote-as 65107
    neighbor 192.168.255.15 description DC1-LEAF4B_Loopback0
-   redistribute connected route-map RM-CONN-2-BGP
+   redistribute connected
    neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65107
    neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65107
    !
@@ -450,66 +446,6 @@ router bgp 65001
 !
 router bfd
    multihop interval 1200 min-rx 1200 multiplier 3
-```
-
-## Filters
-
-### Prefix-lists
-
-#### Prefix-lists Summary
-
-##### PL-LOOPBACKS-EVPN-OVERLAY
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 192.168.255.0/24 eq 32 |
-
-#### Prefix-lists Device Configuration
-
-```eos
-!
-ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 192.168.255.0/24 eq 32
-```
-
-### IPv6 Prefix-lists
-
-#### IPv6 Prefix-lists Summary
-
-##### PL-LOOPBACKS-EVPN-OVERLAY-V6
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 2001:1::/64 eq 128 |
-
-#### IPv6 Prefix-lists Device Configuration
-
-```eos
-!
-ipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
-   seq 10 permit 2001:1::/64 eq 128
-```
-
-### Route-maps
-
-#### Route-maps Summary
-
-##### RM-CONN-2-BGP
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
-| 30 | permit | ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6 | - | - | - |
-
-#### Route-maps Device Configuration
-
-```eos
-!
-route-map RM-CONN-2-BGP permit 10
-   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-!
-route-map RM-CONN-2-BGP permit 30
-   match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 ```
 
 ## VRF Instances

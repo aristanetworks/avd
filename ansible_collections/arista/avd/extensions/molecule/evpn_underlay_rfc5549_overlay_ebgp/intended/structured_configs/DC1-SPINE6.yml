@@ -44,11 +44,6 @@ ip_name_server:
     - ip_address: 192.168.200.5
     - ip_address: 8.8.8.8
 ip_routing_ipv6_interfaces: true
-ipv6_prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY-V6
-  sequence_numbers:
-  - sequence: 10
-    action: permit 2001:1::/64 eq 128
 ipv6_unicast_routing: true
 local_users:
 - name: admin
@@ -90,22 +85,6 @@ ntp:
   - name: 192.168.200.5
     preferred: true
   vrf: MGMT
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 192.168.255.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  - sequence: 30
-    type: permit
-    match:
-    - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 router_bfd:
   multihop:
     interval: 1200
@@ -169,7 +148,6 @@ router_bgp:
   redistribute:
     connected:
       enabled: true
-      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

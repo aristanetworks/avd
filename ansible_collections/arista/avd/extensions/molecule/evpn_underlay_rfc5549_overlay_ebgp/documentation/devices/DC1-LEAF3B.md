@@ -45,7 +45,6 @@
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
-  - [IPv6 Prefix-lists](#ipv6-prefix-lists)
   - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
@@ -997,7 +996,7 @@ router bgp 65106
    neighbor 2001:1::5 peer group EVPN-OVERLAY-PEERS
    neighbor 2001:1::5 remote-as 65001
    neighbor 2001:1::5 description DC1-SPINE5_Loopback0
-   redistribute connected route-map RM-CONN-2-BGP
+   redistribute connected
    neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65001
    neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65001
    neighbor interface Vlan4093 peer-group MLAG_PEER remote-as 65106
@@ -1174,13 +1173,6 @@ no ip igmp snooping vlan 120
 
 #### Prefix-lists Summary
 
-##### PL-LOOPBACKS-EVPN-OVERLAY
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 192.168.255.0/24 eq 32 |
-| 20 | permit 192.168.254.0/24 eq 32 |
-
 ##### PL-MLAG-PEER-VRFS
 
 | Sequence | Action |
@@ -1191,42 +1183,13 @@ no ip igmp snooping vlan 120
 
 ```eos
 !
-ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 192.168.255.0/24 eq 32
-   seq 20 permit 192.168.254.0/24 eq 32
-!
 ip prefix-list PL-MLAG-PEER-VRFS
    seq 10 permit 10.255.251.14/31
-```
-
-### IPv6 Prefix-lists
-
-#### IPv6 Prefix-lists Summary
-
-##### PL-LOOPBACKS-EVPN-OVERLAY-V6
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 2001:1::/64 eq 128 |
-
-#### IPv6 Prefix-lists Device Configuration
-
-```eos
-!
-ipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
-   seq 10 permit 2001:1::/64 eq 128
 ```
 
 ### Route-maps
 
 #### Route-maps Summary
-
-##### RM-CONN-2-BGP
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
-| 30 | permit | ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6 | - | - | - |
 
 ##### RM-CONN-2-BGP-VRFS
 
@@ -1244,12 +1207,6 @@ ipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 #### Route-maps Device Configuration
 
 ```eos
-!
-route-map RM-CONN-2-BGP permit 10
-   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-!
-route-map RM-CONN-2-BGP permit 30
-   match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 !
 route-map RM-CONN-2-BGP-VRFS deny 10
    match ip address prefix-list PL-MLAG-PEER-VRFS

@@ -1068,7 +1068,7 @@ router bgp 65102
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.4 remote-as 65001
    neighbor 192.168.255.4 description DC1-SPINE4_Loopback0
-   redistribute connected route-map RM-CONN-2-BGP
+   redistribute connected
    neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65001
    neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65001
    neighbor interface Ethernet3 peer-group UNDERLAY_PEERS remote-as 65001
@@ -1260,13 +1260,6 @@ no ip igmp snooping vlan 120
 
 #### Prefix-lists Summary
 
-##### PL-LOOPBACKS-EVPN-OVERLAY
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 192.168.255.0/24 eq 32 |
-| 20 | permit 192.168.254.0/24 eq 32 |
-
 ##### PL-MLAG-PEER-VRFS
 
 | Sequence | Action |
@@ -1277,10 +1270,6 @@ no ip igmp snooping vlan 120
 
 ```eos
 !
-ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 192.168.255.0/24 eq 32
-   seq 20 permit 192.168.254.0/24 eq 32
-!
 ip prefix-list PL-MLAG-PEER-VRFS
    seq 10 permit 10.255.251.2/31
 ```
@@ -1288,12 +1277,6 @@ ip prefix-list PL-MLAG-PEER-VRFS
 ### Route-maps
 
 #### Route-maps Summary
-
-##### RM-CONN-2-BGP
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
 
 ##### RM-CONN-2-BGP-VRFS
 
@@ -1311,9 +1294,6 @@ ip prefix-list PL-MLAG-PEER-VRFS
 #### Route-maps Device Configuration
 
 ```eos
-!
-route-map RM-CONN-2-BGP permit 10
-   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP-VRFS deny 10
    match ip address prefix-list PL-MLAG-PEER-VRFS

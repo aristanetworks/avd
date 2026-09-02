@@ -59,11 +59,6 @@ ip_name_server:
     - ip_address: 8.8.8.8
 ip_routing_ipv6_interfaces: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-ipv6_prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY-V6
-  sequence_numbers:
-  - sequence: 10
-    action: permit 2001:1::/64 eq 128
 ipv6_unicast_routing: true
 local_users:
 - name: admin
@@ -135,13 +130,6 @@ port_channel_interfaces:
     trunk:
       groups:
       - MLAG
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 192.168.255.0/24 eq 32
-  - sequence: 20
-    action: permit 192.168.254.0/24 eq 32
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -150,16 +138,6 @@ route_maps:
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
     set:
     - origin incomplete
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  - sequence: 30
-    type: permit
-    match:
-    - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 - name: RM-CONN-2-BGP-VRFS
   sequence_numbers:
   - sequence: 10
@@ -243,7 +221,6 @@ router_bgp:
   redistribute:
     connected:
       enabled: true
-      route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.14:12
