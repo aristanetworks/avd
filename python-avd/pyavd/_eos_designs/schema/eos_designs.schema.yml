@@ -17486,7 +17486,8 @@ $defs:
           The access-list must be defined under `ipv6_acls` and supports substitution
           of the field "interface_ipv6",
 
-          resolved from the IPv6 address set on the SVI.
+          resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals`
+          is used as a fallback.
 
           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
           and will be removed in AVD 7.0.0.'
@@ -17499,7 +17500,8 @@ $defs:
           The access-list must be defined under `ipv6_acls` and supports substitution
           of the field "interface_ipv6",
 
-          resolved from the IPv6 address set on the SVI.
+          resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals`
+          is used as a fallback.
 
           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
           and will be removed in AVD 7.0.0.'
