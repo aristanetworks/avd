@@ -13,7 +13,8 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default, get_v2
+from pyavd._utils.default import default
+from pyavd._utils.get import get_v2
 from pyavd.j2filters import natural_sort
 
 from .aaa_settings import AaaSettingsMixin
@@ -325,6 +326,9 @@ class AvdStructuredConfigBaseProtocol(
         if stp_settings.loop_guard_default:
             self.structured_config.spanning_tree.loop_guard_default = True
 
+        if stp_settings.edge_port_bpduguard_default:
+            self.structured_config.spanning_tree.edge_port.bpduguard_default = True
+
         if spanning_tree_mode is not None:
             self.structured_config.spanning_tree.mode = spanning_tree_mode
             # "rapid-pvst" is not included below. Per vlan spanning-tree priorities are set under network-services.
@@ -481,6 +485,7 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def prefix_lists(self) -> None:
         self.structured_config.prefix_lists.extend(self.shared_utils.l3_bgp_prefix_lists)
+        self.structured_config.ipv6_prefix_lists.extend(self.shared_utils.l3_bgp_ipv6_prefix_lists)
 
     @structured_config_contributor
     def route_maps(self) -> None:

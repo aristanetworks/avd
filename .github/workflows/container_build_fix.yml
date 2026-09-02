@@ -31,7 +31,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: ./.github/workflows/container_build_template.yml
+    uses: $/.github/workflows/container_build_template.yml
     with:
       container_name: ${{ inputs.container_name }}
       container_tags: ${{ inputs.container_tags }}

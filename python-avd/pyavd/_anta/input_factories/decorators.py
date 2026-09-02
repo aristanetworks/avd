@@ -7,7 +7,7 @@ from typing import Any, TypeVar
 
 from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
-from pyavd._utils import get_v2
+from pyavd._utils.get import get_v2
 
 from .base_classes import AntaTestInputFactory
 

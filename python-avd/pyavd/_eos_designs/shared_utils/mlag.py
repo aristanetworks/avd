@@ -8,7 +8,8 @@ from re import findall
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get_ip_from_ip_prefix
+from pyavd._utils.default import default
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:

@@ -7,8 +7,8 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdMissingVariableError
-from pyavd._utils import Undefined, UndefinedType
 from pyavd._utils.run_once import run_once_method
+from pyavd._utils.undefined import Undefined, UndefinedType
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -58,5 +58,4 @@ class UtilsMixin(Protocol):
         if acl_name not in self.inputs.ipv4_standard_acls:
             msg = f"ipv4_standard_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
-        if acl_name in self.inputs.ipv4_standard_acls:
-            self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))
+        self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))

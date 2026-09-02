@@ -564,12 +564,12 @@ ip routing vrf Tenant_L3_VRF_Zone
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| Tenant_A_WAN_Zone | false |
-| Tenant_B_OP_Zone | false |
-| Tenant_B_WAN_Zone | false |
-| Tenant_C_WAN_Zone | false |
-| Tenant_L3_VRF_Zone | false |
+| MGMT | False |
+| Tenant_A_WAN_Zone | False |
+| Tenant_B_OP_Zone | False |
+| Tenant_B_WAN_Zone | False |
+| Tenant_C_WAN_Zone | False |
+| Tenant_L3_VRF_Zone | False |
 
 ### Static Routes
 
@@ -634,20 +634,20 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 172.31.255.96 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.31.255.98 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.31.255.100 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.31.255.102 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - | - | - |
-| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - | - | - | - |
-| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - | - | - | - |
-| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | - | all | - | - | - | - | - | - | - |
-| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 172.31.255.96 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
+| 172.31.255.98 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
+| 172.31.255.100 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
+| 172.31.255.102 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
+| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - | - | - | - | - | - |
+| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - | - | - | - | - | - |
+| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | - | all | - | - | - | - | - | - | - | - | - |
+| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 

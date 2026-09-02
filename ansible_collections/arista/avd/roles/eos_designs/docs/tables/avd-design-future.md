@@ -14,6 +14,8 @@
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `inband_mgmt_vrf` for IPv6 inband management. |
     | [<samp>&nbsp;&nbsp;disable_sflow_subinterfaces_on_r_series_platforms</samp>](## "avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Use updated feature-support defaults for sFlow on subinterfaces.<br>When enabled, AVD uses `platform_settings[].feature_support.sflow_subinterfaces_future` as the value of `sflow_subinterfaces` only when<br>`sflow_subinterfaces_future` is set and `sflow_subinterfaces` is not explicitly set for the matched platform.<br>The default platform settings set `sflow_subinterfaces_future: false` for 7020R, 7280R, 7280R2, 7280R3, 7500R, 7500R2, 7500R3, and 7800R3,<br>which disables sFlow configuration on subinterfaces for these platforms.<br>To apply this behavior to custom R Series platform definitions, set `sflow_subinterfaces_future` under<br>`custom_platform_settings[].feature_support`.<br>Ingress sFlow on subinterfaces of R Series platforms requires a user-defined TCAM profile containing `feature sflow subintf` to be applied as<br>the system TCAM profile.<br>Applying a custom system TCAM profile may impact traffic and the functionality of other features on a live/production switch and therefore<br>requires customers to work with their Arista account team or TAC to define and test the new TCAM profile before deploying it on production switches. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
+    | [<samp>&nbsp;&nbsp;fix_address_locking_dhcp_server_interfaces</samp>](## "avd_design_future.fix_address_locking_dhcp_server_interfaces") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix support for `address_locking_settings.dhcp_server_interfaces`.<br>When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive. |
+    | [<samp>&nbsp;&nbsp;fix_match_ipv6_prefix_list_on_mlag_route_map</samp>](## "avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`<br>instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`. |
     | [<samp>&nbsp;&nbsp;fix_radius_server_group_tls</samp>](## "avd_design_future.fix_radius_server_group_tls") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
     | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
@@ -63,6 +65,16 @@
       # Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
       # and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
       consistent_uplink_vlans: <bool; default=False>
+
+      # Available from AVD 6.4.0.
+      # Fix support for `address_locking_settings.dhcp_server_interfaces`.
+      # When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive.
+      fix_address_locking_dhcp_server_interfaces: <bool; default=False>
+
+      # Available from AVD 6.4.0.
+      # Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`
+      # instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`.
+      fix_match_ipv6_prefix_list_on_mlag_route_map: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations.

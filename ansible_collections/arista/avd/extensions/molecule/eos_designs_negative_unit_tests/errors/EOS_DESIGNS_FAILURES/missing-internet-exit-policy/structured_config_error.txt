@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The internet exit policy MISSING-INTERNET-EXIT-POLICY configured under `wan_virtual_topologies.policies[name=DEFAULT-POLICY].internet_exit.policy` is not defined under `cv_pathfinder_internet_exit_policies`.
