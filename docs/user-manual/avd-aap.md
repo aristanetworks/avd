@@ -38,8 +38,8 @@ The image below provides an excellent overview of the AAP dashboard. From one pa
 - Job templates
 - Credentials
 
-![AAP Dashboard](../_media/getting-started/aap-avd/aap-dashboardpng.png#only-light)
-![AAP Dashboard](../_media/getting-started/aap-avd/aap-dashboardpng.png#only-dark)
+![AAP Dashboard](../_media/getting-started/aap-avd/aap-dashboard-light.png#only-light)
+![AAP Dashboard](../_media/getting-started/aap-avd/aap-dashboard-dark.png#only-dark)
 
 ## Execution environments with Ansible Builder
 
@@ -136,19 +136,22 @@ Once the image is located on our container registry, we are ready to add our cus
 
     Scroll down on the left pane, and under `Automation Execution > Infrastructure`, click on `Execution Environments`.
 
-    ![Select execution environment](../_media/getting-started/aap-avd/select-ee.png)
+    ![Select execution environment](../_media/getting-started/aap-avd/select-ee-light.png#only-light)
+    ![Select execution environment](../_media/getting-started/aap-avd/select-ee-dark.png#only-dark)
 
 === "EE - Add"
 
     In the new pane, click on `Create execution environment`. You can also see the built-in EEs installed with AAP.
 
-    ![Select add](../_media/getting-started/aap-avd/select-add-ee.png)
+    ![Select add](../_media/getting-started/aap-avd/select-add-ee-light.png#only-light)
+    ![Select add](../_media/getting-started/aap-avd/select-add-ee-dark.png#only-dark)
 
 === "EE - Save"
 
     Give the EE an appropriate `Name` and full `Image` location. For the `Pull` option, this will vary if the EE is in active development and frequent changes are expected. Since our EE is in development, we will set this to `Always pull container before running`.
 
-    ![Create EE](../_media/getting-started/aap-avd/create-ee.png)
+    ![Create EE](../_media/getting-started/aap-avd/create-ee-light.png#only-light)
+    ![Create EE](../_media/getting-started/aap-avd/create-ee-dark.png#only-dark)
 
 #### Authentication with Private Execution Environments
 
@@ -162,19 +165,22 @@ Projects in AAP are vital in setting up additional options. For example, we can 
 
     Scroll up on the left pane, and under `Automation Execution`, click on `Projects`.
 
-    ![Select execution environment](../_media/getting-started/aap-avd/select-projects.png)
+    ![Select execution environment](../_media/getting-started/aap-avd/select-projects-light.png#only-light)
+    ![Select execution environment](../_media/getting-started/aap-avd/select-projects-dark.png#only-dark)
 
 === "Projects - Add"
 
     In the new pane, click on `Create project`.
 
-    ![Add project](../_media/getting-started/aap-avd/select-add-project.png)
+    ![Add project](../_media/getting-started/aap-avd/select-add-project-light.png#only-light)
+    ![Add project](../_media/getting-started/aap-avd/select-add-project-dark.png#only-dark)
 
 === "Projects - Save"
 
     Give the project an appropriate `Name`. Again, you may use any examples hosted within the [AVD repository](https://github.com/aristanetworks/avd/tree/devel/ansible_collections/arista/avd/examples) or any current project you have. This example will leverage a Git repository as the `Source Control Type`. We will also set the URL for our Git project and, optionally, an alternate branch. Finally, we also check `Update Revision on Launch` and set the `Cache Timeout` to zero. Setting it to zero will also ensure the project updates when running a job that references this project, which is helpful for any projects with active development.
 
-    ![Create EE](../_media/getting-started/aap-avd/save-project.png)
+    ![Create EE](../_media/getting-started/aap-avd/save-project-light.png#only-light)
+    ![Create EE](../_media/getting-started/aap-avd/save-project-dark.png#only-dark)
 
 ## Inventories
 
@@ -184,19 +190,22 @@ AAP provides many ways to add an inventory. For example, we can use an inventory
 
     On the left pane, and under `Automation Execution > Infrastructure`, click on `Inventories`.
 
-    ![Select execution environment](../_media/getting-started/aap-avd/select-inv.png)
+    ![Select execution environment](../_media/getting-started/aap-avd/select-inv-light.png#only-light)
+    ![Select execution environment](../_media/getting-started/aap-avd/select-inv-dark.png#only-dark)
 
 === "Inventories - Add"
 
     In the new pane, click on `Create inventory` and select `Create inventory`.
 
-    ![Add inventory](../_media/getting-started/aap-avd/select-add-inv.png)
+    ![Add inventory](../_media/getting-started/aap-avd/select-add-inv-light.png#only-light)
+    ![Add inventory](../_media/getting-started/aap-avd/select-add-inv-dark.png#only-dark)
 
 === "Inventories - Save"
 
     Give the inventory an appropriate `Name` and click `Save inventory`.
 
-    ![Create inventory](../_media/getting-started/aap-avd/save-inv.png)
+    ![Create inventory](../_media/getting-started/aap-avd/save-inv-light.png#only-light)
+    ![Create inventory](../_media/getting-started/aap-avd/save-inv-dark.png#only-dark)
 
 ### Inventory Sources
 
@@ -206,31 +215,35 @@ At this point, we have an inventory with no hosts. This is where inventory sourc
 
     On the center pane, click on `Sources`.
 
-    ![Select sources](../_media/getting-started/aap-avd/select-sources.png)
+    ![Select sources](../_media/getting-started/aap-avd/select-sources-light.png#only-light)
+    ![Select sources](../_media/getting-started/aap-avd/select-sources-dark.png#only-dark)
 
 === "Sources - Add"
 
-    - In the new pane, click on `Add`.
-    - A new pane is shown but similar to before, fill in an appropriate `Name` and select `Source from a Project` under `source`.
-    - Under `Source details` click on the search icon under `Project`
+    - In the new pane, click on `Create source`.
+    - A new pane is shown but similar to before, fill in an appropriate `Name` and select `Sourced from a Project` under `Source`.
+    - Under `Source Details` click on the search icon under `Project`
       - Select your newly created project
-    - Under `Source details`, if the `Inventory file` drop-down does not show your inventory, feel free to enter it manually.
-    - Under `Update options`:
+    - Under `Source Details`, if the `Inventory file` drop-down does not show your inventory, feel free to enter it manually.
+    - Under `Options`:
       - `Overwrite` is checked. Overwrite will ensure our inventory source manages additions and removal of hosts and groups.
-      - `Update on launch` is checked.
-    - Scroll down and click `Save`.
+      - `Update on launch` is checked and will ensure any job run using this inventory will force and inventory update.
+      - `Overwrite variables` is checked as well and ensures variables assigned to the host always originate from the source.
+    - Click `Save source`.
 
-    ![Create source](../_media/getting-started/aap-avd/create-source.png)
+    ![Create source](../_media/getting-started/aap-avd/create-source-light.png#only-light)
+    ![Create source](../_media/getting-started/aap-avd/create-source-dark.png#only-dark)
 
 === "Sources - Sync"
 
-    In the new pane, click on `Sync` to update your inventory.
+    In the new pane, click on `Sync inventory source` to update your inventory.
 
-    ![Inventory sync](../_media/getting-started/aap-avd/inv-sync.png)
+    ![Inventory sync](../_media/getting-started/aap-avd/inv-sync-light.png#only-light)
+    ![Inventory sync](../_media/getting-started/aap-avd/inv-sync-dark.png#only-dark)
 
 ### View the Inventory
 
-There are a few locations to view the inventory, but for simplicity, we can view it by clicking on `Hosts` on the left pane.
+There are a few locations to view the inventory, but for simplicity, we can view it by clicking on `Jobs` under `Automation Execution` on the left pane.
 
 === "Click on Sync Job"
 
@@ -238,19 +251,22 @@ There are a few locations to view the inventory, but for simplicity, we can view
       - You should see an inventory sync running or complete.
     - Click on the inventory sync job.
 
-    ![Inventory job sync](../_media/getting-started/aap-avd/inv-job-sync.png)
+    ![Inventory job sync](../_media/getting-started/aap-avd/inv-job-sync-light.png#only-light)
+    ![Inventory job sync](../_media/getting-started/aap-avd/inv-job-sync-dark.png#only-dark)
 
 === "Sync job output"
 
-    Towards the bottom of the output, we see that AAP successfully parsed our inventory. In this case, we have loaded nine groups and seven hosts.
+    Towards the bottom of the output, we see that AAP successfully parsed our inventory. In this case, we have loaded four groups and six hosts.
 
-    ![Sync job output](../_media/getting-started/aap-avd/inv-job-output.png)
+    ![Sync job output](../_media/getting-started/aap-avd/inv-job-output-light.png#only-light)
+    ![Sync job output](../_media/getting-started/aap-avd/inv-job-output-dark.png#only-dark)
 
 === "Hosts"
 
     There are a few locations to view the inventory, but for simplicity, we can take a look by clicking on `Hosts` on the left pane.
 
-    ![View inventory](../_media/getting-started/aap-avd/all-hosts.png)
+    ![View inventory](../_media/getting-started/aap-avd/all-hosts-light.png#only-light)
+    ![View inventory](../_media/getting-started/aap-avd/all-hosts-dark.png#only-dark)
 
 ## Job templates and workflow templates
 
@@ -260,70 +276,74 @@ One thing that may need some clarification is the naming of "job templates." The
 
     On the left pane, click on `Templates`.
 
-    ![Click on Templates](../_media/getting-started/aap-avd/select-templates.png)
+    ![Click on Templates](../_media/getting-started/aap-avd/select-templates-light.png#only-light)
+    ![Click on Templates](../_media/getting-started/aap-avd/select-templates-dark.png#only-dark)
 
 === "Templates - Add"
 
-    - On the center pane, select `Add`.
-    - In the drop down select `Add job template`.
+    - On the center pane, select `Create template`.
+    - In the drop down select `Create job template`.
 
-    ![Add template](../_media/getting-started/aap-avd/add-template.png)
+    ![Add template](../_media/getting-started/aap-avd/add-template-light.png#only-light)
+    ![Add template](../_media/getting-started/aap-avd/add-template-dark.png#only-dark)
 
 === "Templates - Job"
 
-    The job template is where we leverage the custom execution environment. Since our setup requires specific Ansible collections and Python packages installed, we would like to use a pre-packaged environment with that software. We can modify a decent number of settings, and they may look familiar from previous history with Ansible configurations. If you need a refresher on these options, please see the [official documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/html/automation_controller_user_guide/controller-job-templates). Once you are happy with the settings, click `Save`.
+    The job template is where we leverage the custom execution environment. Since our setup requires specific Ansible collections and Python packages installed, we would like to use a pre-packaged environment with that software. We can modify a decent number of settings, and they may look familiar from previous history with Ansible configurations. If you need a refresher on these options, please see the [official documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/html/automation_controller_user_guide/controller-job-templates). Once you are happy with the settings, click `Save job template`.
 
     !!! warning
-        The playbook is set to "Run," and the EOS instances in use will be changed. Please ensure you are leveraging nonproduction instances when testing.
+        The playbook is set to "Run," and the EOS instances in use will be changed. Please ensure you are leveraging nonproduction instances when testing. We also specify an Ansible Vault credential which will be covered in the next section.
 
-    ![Template save](../_media/getting-started/aap-avd/template-save.png)
+    ![Template save](../_media/getting-started/aap-avd/template-save-light.png#only-light)
+    ![Template save](../_media/getting-started/aap-avd/template-save-dark.png#only-dark)
 
-### Surveys
+### Ansible Vault
 
-With most jobs, we need a way to authenticate to our CV instance or EOS nodes. AAP provides a multitude of ways to define credentials. Some options are credentials for Network devices, Container registries, HashiCorp Vault, etc. Feel free to explore any option you need for your environment. For this guide, we will leverage a survey secret. Surveys allow us to ask users for information we require for a job to execute correctly. We will leverage a survey with a default secret value (this is the credential used to connect to our nodes).
+With most jobs, we need a way to authenticate to our CV instance or EOS nodes. AAP provides a multitude of ways to define credentials. Some options are credentials for network devices, container registries, HashiCorp Vault, etc. Feel free to explore any option you need for your environment. For this guide, we will leverage a vault credential. Ansible Vault allows us to encrypt files that can then be read as variables during our playbook or job template runs.
 
 !!! note
-    You will need to create a service account and token in CloudVision for the survey.
+    You will need to create a service account and token in CloudVision for the token.
 
-=== "Surveys"
-
-    On the center pane, click on `Survey`.
-
-    ![Click on Survey](../_media/getting-started/aap-avd/template-survey.png)
-
-=== "Surveys - Save"
-
-    - On the center pane, select `Add`.
-    - Set `Question` to an appropriate value.
-    - Set `Answer variable name` to any valid variable name, here we use `lab_token`.
-    - `Answer type` is set to `Password` and the default value is set.
-    - Set `Maximum length` to 2000 to fit the Service account token for CV provisioning.
-    - Enter your `Default answer`.
-    - Click `Save` when done.
-
-    ![Survey save](../_media/getting-started/aap-avd/survey-save.png)
-
-    The `lab_token` variable will be leveraged when provisioning the fabric with the `cv_deploy` role.
+=== "Create a vault file"
 
     ```yaml
-    tasks:
-      - name: Provision CV with AVD configuration
-        import_role:
-          name: cv_deploy
-        vars:
-          cv_server: <CV or CVaaS URL>
-          cv_token: "{{ lab_token }}"
-          cv_run_change_control: true
+    ---
+    cv_token: < CloudVision Service Account Token >
+
+    ```
+
+=== "Encrypt the vault file"
+
+    `ansible-vault encrypt < vault file path >/vault.yml`
+
+    The `cv_token` variable will be leveraged when provisioning the fabric with the `cv_deploy` role.
+
+    ```yaml
+    ---
+    - name: Build and Deploy configurations
+      hosts: FABRIC
+      gather_facts: false
+      vars_files:
+        - ../group_vars/vault.yml
+      tasks:
     ```
 
     !!! note
-        This guide leverages the `cv_deploy` role for provisioning through CV. The `cv_deploy` role requires additional options and tokens to be generated. Please see the `cv_deploy` role [documentation](https://avd.arista.com/stable/ansible_collections/arista/avd/roles/cv_deploy/index.html) for the most up-to-date settings. We also set `cv_change_control` to `true`, the default it `false`. This allows the change control to be executed automatically.
+        This guide leverages the `cv_deploy` role for provisioning through CV. The `cv_deploy` role requires additional options and tokens to be generated. Please see the `cv_deploy` role [documentation](https://avd.arista.com/stable/ansible_collections/arista/avd/roles/cv_deploy/index.html) for the most up-to-date settings. We also set `cv_change_control` to `true`, the default is `false`. This allows the change control to be executed automatically.
 
-=== "Surveys - Enable"
+=== "Create a vault credential"
 
-    Click the `Surveys Disabled` radio button to ensure the survey is enabled.
+    Under `Automation Execution > Infrastructure` click on `Credentials` and select `Create credential`.
 
-    ![Survey enable](../_media/getting-started/aap-avd/survey-enabled.png)
+    ![Vault credential create](../_media/getting-started/aap-avd/vault-credential-light.png#only-light)
+    ![Vault credential create](../_media/getting-started/aap-avd/vault-credential-dark.png#only-dark)
+
+=== "Save credential "
+
+    The credential type will be `Vault` and the `Vault Password` will be what we set when using the encrypt command. Once complete, click `Save credential`.
+
+    ![Vault credential save](../_media/getting-started/aap-avd/save-credential-light.png#only-light)
+    ![Vault credential save](../_media/getting-started/aap-avd/save-credential-dark.png#only-dark)
 
 ### Running the Template with CV
 
@@ -364,22 +384,23 @@ We have everything we need to run our job template now.
 
     - On the left pane, click on `Templates`.
     - Click on the `Launch Template` icon to run the job template.
-    - In the new pane, click `Next`.
-    - In the `Launch` pane, click `Launch`.
 
-    ![Run job](../_media/getting-started/aap-avd/run-job.png)
+    ![Run job](../_media/getting-started/aap-avd/run-job-light.png#only-light)
+    ![Run job](../_media/getting-started/aap-avd/run-job-dark.png#only-dark)
 
 === "Jobs"
 
     On the left pane, select `Jobs`. You may see a series of updates. For example, our source control is updating because our timeout is set to zero. The inventory has also been updating since we checked `Update on launch`. Last but not least, the job template will run.
 
-    ![Job updates](../_media/getting-started/aap-avd/job-updates.png)
+    ![Job updates](../_media/getting-started/aap-avd/job-updates-light.png#only-light)
+    ![Job updates](../_media/getting-started/aap-avd/job-updates-dark.png#only-dark)
 
 === "Job - Output"
 
     We can now click on the job run and see a successful execution.
 
-    ![Job output](../_media/getting-started/aap-avd/job-output.png)
+    ![Job output](../_media/getting-started/aap-avd/job-output-light.png#only-light)
+    ![Job output](../_media/getting-started/aap-avd/job-output-dark.png#only-dark)
 
 === "CV View"
 
