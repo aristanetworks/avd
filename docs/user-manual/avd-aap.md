@@ -153,9 +153,13 @@ Once the image is located on our container registry, we are ready to add our cus
     ![Create EE](../_media/getting-started/aap-avd/create-ee-light.png#only-light)
     ![Create EE](../_media/getting-started/aap-avd/create-ee-dark.png#only-dark)
 
-#### Authentication with Private Execution Environments
+#### Authentication with Private Container Registries
 
-If you are leveraging a private execution environment, we must tell AAP how to authenticate to the private registry.
+If you are leveraging a private execution environment, we must tell AAP how to authenticate to the private registry. You may have noticed when building the image, we leveraged a GitHub container registry credential. GitHub container registries are considered private registries by default and require authentication to pull images.
+
+We can create the required credential by clicking on `Credentials` right below `Execution Environments` on the left pane.
+
+=== "Click on Credentials" TBD
 
 ## Projects
 
@@ -165,8 +169,8 @@ Projects in AAP are vital in setting up additional options. For example, we can 
 
     Scroll up on the left pane, and under `Automation Execution`, click on `Projects`.
 
-    ![Select execution environment](../_media/getting-started/aap-avd/select-projects-light.png#only-light)
-    ![Select execution environment](../_media/getting-started/aap-avd/select-projects-dark.png#only-dark)
+    ![Select execution environment](../_media/getting-started/aap-avd/select-project-light.png#only-light)
+    ![Select execution environment](../_media/getting-started/aap-avd/select-project-dark.png#only-dark)
 
 === "Projects - Add"
 
