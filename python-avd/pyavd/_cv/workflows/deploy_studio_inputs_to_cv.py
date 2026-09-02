@@ -7,7 +7,7 @@ from asyncio import gather
 from logging import getLogger
 from typing import TYPE_CHECKING
 
-from pyavd._utils import batch
+from pyavd._utils.batch import batch
 
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
