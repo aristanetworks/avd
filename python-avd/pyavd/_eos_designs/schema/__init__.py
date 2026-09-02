@@ -118326,8 +118326,9 @@ class EosDesigns(EosDesignsRootModel):
     tcam_profiles: EosCliConfigGen.TcamProfile.Profiles
     """
     TCAM profile definitions.
-    Only the profile referenced by `platform_settings[].tcam_profile` for the
-    device platform is configured.
+    Only the profile referenced by
+    `custom_platform_settings[].tcam_profile`/`platform_settings[].tcam_profile` for the device platform
+    is configured.
     """
     timezone: str | None
     """Clock timezone like "CET" or "US/Pacific"."""
@@ -120267,8 +120268,9 @@ class EosDesigns(EosDesignsRootModel):
                    precedence.
                 tcam_profiles:
                    TCAM profile definitions.
-                   Only the profile referenced by `platform_settings[].tcam_profile` for the
-                   device platform is configured.
+                   Only the profile referenced by
+                   `custom_platform_settings[].tcam_profile`/`platform_settings[].tcam_profile` for the device platform
+                   is configured.
                 timezone: Clock timezone like "CET" or "US/Pacific".
                 trunk_groups: Subclass of AvdModel.
                 type:

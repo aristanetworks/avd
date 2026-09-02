@@ -373,7 +373,7 @@ class AvdStructuredConfigBaseProtocol(
         # TODO: 7.0 Validate that the referenced TCAM profile exists; raise an error if missing.
         self.structured_config.tcam_profile.system = tcam_profile_name
         if tcam_profile_name in self.inputs.tcam_profiles:
-            self.structured_config.tcam_profile.profiles.append(self.inputs.tcam_profiles[tcam_profile_name]._cast_as(EosCliConfigGen.TcamProfile.ProfilesItem))
+            self.structured_config.tcam_profile.profiles.append(self.inputs.tcam_profiles[tcam_profile_name])
 
     @structured_config_contributor
     def mac_address_table(self) -> None:

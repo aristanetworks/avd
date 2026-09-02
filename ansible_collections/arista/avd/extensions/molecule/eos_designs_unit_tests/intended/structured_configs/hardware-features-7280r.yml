@@ -376,9 +376,6 @@ spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 tcam_profile:
   system: vxlan-routing
-  profiles:
-  - name: vxlan-routing
-    source: flash:/vxlan-routing.conf
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4093

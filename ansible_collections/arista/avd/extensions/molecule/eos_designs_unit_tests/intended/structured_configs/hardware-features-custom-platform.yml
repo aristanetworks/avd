@@ -133,6 +133,11 @@ sflow:
   run: true
 spanning_tree:
   no_spanning_tree_vlan: 4093-4094
+tcam_profile:
+  system: myprofile
+  profiles:
+  - name: myprofile
+    source: flash:/myprofile.conf
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4093
