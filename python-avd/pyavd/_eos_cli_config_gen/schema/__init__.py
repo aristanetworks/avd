@@ -13,7 +13,7 @@ from pyavd._schema.models.avd_model import AvdModel
 from pyavd._schema.models.eos_cli_config_gen_root_model import EosCliConfigGenRootModel
 
 if TYPE_CHECKING:
-    from pyavd._utils import Undefined, UndefinedType
+    from pyavd._utils.undefined import Undefined, UndefinedType
 
 
 class EosCliConfigGen(EosCliConfigGenRootModel):
@@ -75327,7 +75327,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"destination": {"type": Destination}, "source": {"type": Source}}
+            _fields: ClassVar[dict] = {"service_profile": {"type": str}, "destination": {"type": Destination}, "source": {"type": Source}}
+            service_profile: str | None
+            """NAT interface profile."""
             destination: Destination
             """Subclass of AvdModel."""
             source: Source
@@ -75335,7 +75337,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, destination: Destination | UndefinedType = Undefined, source: Source | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    service_profile: str | UndefinedType | None = Undefined,
+                    destination: Destination | UndefinedType = Undefined,
+                    source: Source | UndefinedType = Undefined,
+                ) -> None:
                     """
                     IpNat.
 
@@ -75343,6 +75351,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        service_profile: NAT interface profile.
                         destination: Subclass of AvdModel.
                         source: Subclass of AvdModel.
 
