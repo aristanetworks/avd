@@ -13,7 +13,7 @@ import pytest_asyncio
 
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.versioning import CvVersion
-from pyavd._utils import get_v2
+from pyavd._utils.get import get_v2
 from tests.pyavd.cv.mockery import (
     mocked_cv_client_aenter,
     playback_static_recording_unary_stream,

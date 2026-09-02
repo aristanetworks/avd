@@ -9,7 +9,10 @@ from math import ceil
 from typing import TYPE_CHECKING
 
 from pyavd._eos_designs.avdfacts import AvdFacts
-from pyavd._utils import default, get, get_item, get_networks_from_pool
+from pyavd._utils.default import default
+from pyavd._utils.get import get
+from pyavd._utils.get_ip_from_pool import get_networks_from_pool
+from pyavd._utils.get_item import get_item
 from pyavd.j2filters import natural_sort
 
 from .topology import Topology
