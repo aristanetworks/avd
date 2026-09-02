@@ -17,4 +17,3 @@
   ansible.builtin.assert:
     that:
       - result is success
-      - result is not failed
