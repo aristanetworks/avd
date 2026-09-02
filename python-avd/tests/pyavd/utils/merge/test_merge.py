@@ -7,7 +7,7 @@ import pytest
 import yaml
 
 from pyavd._schema.avdschema import AvdSchema
-from pyavd._utils import merge
+from pyavd._utils.merge import merge
 
 script_dir = Path(__file__).parent
 with Path(script_dir, "access_lists.schema.yml").open(encoding="utf-8") as schema_file:

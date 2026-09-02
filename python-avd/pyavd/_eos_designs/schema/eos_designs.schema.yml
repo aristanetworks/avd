@@ -299,14 +299,27 @@ keys:
     keys:
       local_interface:
         type: str
-        default: use_default_mgmt_method_interface
         description: "The value will be interpreted according to these rules:\n  -
           `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.\n
           \ - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface`
           as the local interface.\n  - `use_default_mgmt_method_interface` will configure
           `mgmt_interface` or `inband_mgmt_interface` as the local interface depending
           on the value of `default_mgmt_method`.\n  - Any other string will be used
-          directly as the local interface."
+          directly as the local interface.\nWhen `avd_design_future.fix_address_locking_dhcp_server_interfaces`
+          is `true`, this setting is mutually exclusive with `dhcp_server_interfaces`."
+      dhcp_server_interfaces:
+        type: list
+        description: 'The list of interfaces connected to the DHCP server.
+
+          Requires `avd_design_future.fix_address_locking_dhcp_server_interfaces:
+          true`. Otherwise this setting is ignored.
+
+          When enabled, this setting is mutually exclusive with `local_interface`.
+
+          Requires EOS version 4.36 or later.'
+        items:
+          type: str
+          description: Interface name.
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -384,6 +397,15 @@ keys:
           and on all ''uplink_switches'' even when available VLANs differ between
           the ''uplink_switches''.'
         default: false
+      fix_address_locking_dhcp_server_interfaces:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Fix support for `address_locking_settings.dhcp_server_interfaces`.
+
+          When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface`
+          are mutually exclusive.'
       fix_match_ipv6_prefix_list_on_mlag_route_map:
         type: bool
         default: false

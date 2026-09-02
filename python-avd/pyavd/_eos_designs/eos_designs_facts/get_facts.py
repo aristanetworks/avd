@@ -5,14 +5,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from pyavd._eos_designs.eos_designs_facts import EosDesignsFactsGenerator
+from pyavd._eos_designs.eos_designs_facts.generator import EosDesignsFactsGenerator
 from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
-    from pyavd._utils import AVDTemplar
+    from pyavd._utils.avd_templar import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
     from pyavd.api.schemas import AVDDesign
 

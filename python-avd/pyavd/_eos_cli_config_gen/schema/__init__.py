@@ -13,7 +13,7 @@ from pyavd._schema.models.avd_model import AvdModel
 from pyavd._schema.models.eos_cli_config_gen_root_model import EosCliConfigGenRootModel
 
 if TYPE_CHECKING:
-    from pyavd._utils import Undefined, UndefinedType
+    from pyavd._utils.undefined import Undefined, UndefinedType
 
 
 class EosCliConfigGen(EosCliConfigGenRootModel):
