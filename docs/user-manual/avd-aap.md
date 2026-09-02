@@ -116,13 +116,13 @@ You can place the Ansible Builder dependencies with your current project or leve
 The command below will use Ansible Builder to start building our custom EE. In this case, we leverage Podman as a container runtime and tag the image appropriately.
 
 ```shell
-ansible-builder build --container-runtime podman -v 3 --tag registry-url/username/image-name:image-version
+ansible-builder build --container-runtime podman -v 3 --tag registry-url/username/image-name:image-tag
 ```
 
 Once complete, you can push the image to a public or private container registry.
 
 ```shell
-podman push registry-url/username/image-name:image-version
+podman push registry-url/username/image-name:image-tag
 ```
 
 !!! note
@@ -389,7 +389,7 @@ Below is an example of the playbook we are leveraging to build and deploy our co
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
       vars:
-        cv_server: <cv_url>
+        cv_server: < cv_url >
         cv_run_change_control: true
 
 ```
