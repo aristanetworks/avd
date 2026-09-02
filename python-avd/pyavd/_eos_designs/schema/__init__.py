@@ -14,7 +14,7 @@ from pyavd._schema.models.avd_model import AvdModel
 from pyavd._schema.models.eos_designs_root_model import EosDesignsRootModel
 
 if TYPE_CHECKING:
-    from pyavd._utils import Undefined, UndefinedType
+    from pyavd._utils.undefined import Undefined, UndefinedType
 
 
 class EosDesigns(EosDesignsRootModel):

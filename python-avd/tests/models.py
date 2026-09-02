@@ -16,7 +16,7 @@ from yaml import CSafeLoader, load
 
 from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._utils import get
+from pyavd._utils.get import get
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import natural_sort
 
