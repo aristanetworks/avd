@@ -24,7 +24,11 @@ class RouterBgpMixin(Protocol):
         """Set the structured config for router_bgp."""
         if self.shared_utils.underlay_bgp or self.shared_utils.is_wan_router or self.shared_utils.l3_bgp_neighbors:
             self.structured_config.router_bgp.redistribute.connected.enabled = True
-            if (self.shared_utils.overlay_routing_protocol != "none" or self.shared_utils.is_wan_router) and self.inputs.underlay_filter_redistribute_connected:
+            if (
+                (self.shared_utils.overlay_routing_protocol != "none" or self.shared_utils.is_wan_router)
+                and self.inputs.underlay_filter_redistribute_connected
+                and not self.inputs.underlay_rfc5549
+            ):
                 # Use route-map for redistribution
                 self.structured_config.router_bgp.redistribute.connected.route_map = "RM-CONN-2-BGP"
                 # Create route-map
