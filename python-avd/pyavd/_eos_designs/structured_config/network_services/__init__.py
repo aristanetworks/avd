@@ -15,6 +15,7 @@ from .ip_igmp_snooping import IpIgmpSnoopingMixin
 from .ip_nat import IpNatMixin
 from .ip_security import IpSecurityMixin
 from .ip_virtual_router_mac_address import IpVirtualRouterMacAddressMixin
+from .ipv6_router_ospf import Ipv6RouterOspfMixin
 from .ipv6_static_routes import Ipv6StaticRoutesMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
 from .metadata import MetadataMixin
@@ -67,6 +68,7 @@ class AvdStructuredConfigNetworkServicesProtocol(
     StaticRoutesMixin,
     RouterAdaptiveVirtualTopologyMixin,
     RouterOspfMixin,
+    Ipv6RouterOspfMixin,
     RouterPathSelectionMixin,
     RouterServiceInsertionMixin,
     RouterInternetExitMixin,
