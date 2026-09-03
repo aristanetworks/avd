@@ -855,7 +855,7 @@ keys:
                       out:
                         type: bool
                         default: true
-                        description: Restricts multicast routing to and from the interface. Must be `true` when set.
+                        description: Restricts multicast routing to and from the interface. Must be `true` when set. This key is mandatory on EOS and is included here to maintain consistency.
                         required: true
                 static:
                   type: bool

@@ -37731,7 +37731,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Standard ACL name or multicast IP subnet."""
                     out: bool
                     """
-                    Restricts multicast routing to and from the interface. Must be `true` when set.
+                    Restricts multicast routing to and from the interface. Must be `true` when set. This key is
+                    mandatory on EOS and is included here to maintain consistency.
 
                     Default value: `True`
                     """
@@ -37747,7 +37748,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 boundary: Standard ACL name or multicast IP subnet.
-                                out: Restricts multicast routing to and from the interface. Must be `true` when set.
+                                out:
+                                   Restricts multicast routing to and from the interface. Must be `true` when set. This key is
+                                   mandatory on EOS and is included here to maintain consistency.
 
                             """
 
