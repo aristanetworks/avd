@@ -1,8 +1,14 @@
+[project]
+name = "avd-dev"
+version = "0"
+requires-python = ">=3.10"
+
 [dependency-groups]
 # pyavd minimal requirements when running from source
 # anta is set to latest version to make sure developers run with the latest version
 # when generating molecule artifacts.
 dev = [
+    {include-group = "lock"},
     "anta==1.9.0",
     "netaddr>=0.7.19",
     "pyavd-utils==0.0.7",
@@ -26,6 +32,9 @@ dev = [
     "yamllint>=1.38.0",
     # TODO: avoid the next line down the line if possible
     "gitpython>=3.1.57",  # for pyright check in CI for e2e script
+]
+lock = [
+    "uv==0.10.9",
 ]
 coverage = [
     "coverage[toml]==7.15.4",
@@ -68,6 +77,9 @@ schema-tools = [
     "pyyaml>=6.0.0",
     "referencing>=0.37.0",
 ]
+
+[tool.uv]
+package = false
 
 [tool.ruff]
 line-length = 160
