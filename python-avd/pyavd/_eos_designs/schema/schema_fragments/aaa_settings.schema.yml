@@ -197,6 +197,16 @@ keys:
           enable:
             type: dict
             $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/enable"
+          dot1x:
+            type: dict
+            keys:
+              default:
+                type: str
+                deprecation:
+                  warning: true
+                  removed: true
+                  remove_in_version: 6.0.0
+                  new_key: dot1x_settings.authentication.radius_groups
           policies:
             type: dict
             $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/policies"
@@ -215,6 +225,19 @@ keys:
           serial_console:
             type: bool
             $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/serial_console"
+          dynamic:
+            type: dict
+            keys:
+              dot1x_additional_groups:
+                type: list
+                min_length: 1
+                items:
+                  type: str
+                deprecation:
+                  warning: true
+                  removed: true
+                  remove_in_version: 6.0.0
+                  new_key: dot1x_settings.dynamic_authorization.additional_groups
           commands:
             type: dict
             $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/commands"
@@ -227,6 +250,57 @@ keys:
           system:
             type: dict
             $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/system"
+          dot1x:
+            type: dict
+            keys:
+              default:
+                type: dict
+                keys:
+                  type:
+                    type: str
+                    valid_values: ["start-stop", "stop-only"]
+                    required: true
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: dot1x_settings.accounting.mode
+                  methods:
+                    type: list
+                    min_length: 1
+                    items:
+                      type: dict
+                      keys:
+                        method:
+                          type: str
+                          required: true
+                          valid_values: ["logging", "group"]
+                          deprecation:
+                            warning: true
+                            removed: true
+                            remove_in_version: 6.0.0
+                            new_key: dot1x_settings.accounting.syslog
+                        group:
+                          type: str
+                          deprecation:
+                            warning: true
+                            removed: true
+                            remove_in_version: 6.0.0
+                            new_key: dot1x_settings.accounting.radius_groups
+                        multicast:
+                          type: bool
+                          deprecation:
+                            warning: true
+                            removed: true
+                            remove_in_version: 6.0.0
+                            new_key: dot1x_settings.accounting.multicast
+                  group:
+                    type: str
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: dot1x_settings.accounting.radius_groups
           commands:
             type: dict
             $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/commands"
