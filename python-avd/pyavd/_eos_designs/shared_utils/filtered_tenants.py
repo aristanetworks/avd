@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
+from typing import TYPE_CHECKING, Literal, Protocol, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
@@ -632,7 +632,7 @@ class FilteredTenantsMixin(Protocol):
         elif ospf_key.cleartext_key is not None:
             # ospf_key.cleartext_key is not None
             key = ospf_message_digest_encrypt(
-                password=cast("str", ospf_key.cleartext_key),
+                password=ospf_key.cleartext_key,
                 key=interface.name,
                 hash_algorithm=ospf_key.hash_algorithm,
                 key_id=str(ospf_key.id),
