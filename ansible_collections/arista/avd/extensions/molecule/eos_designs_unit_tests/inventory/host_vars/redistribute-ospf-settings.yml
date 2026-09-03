@@ -1,0 +1,157 @@
+---
+# Tests for redistribute_ospf_settings (issue #5418)
+# Covers all code paths in router_bgp.py for the new OSPF redistribution settings.
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.99.0/24
+    vtep_loopback_ipv4_pool: 192.168.143.0/24
+    virtual_router_mac_address: 00:11:22:33:44:55
+    bgp_as: 999
+  nodes:
+    - name: redistribute-ospf-settings
+      id: 50
+      mgmt_ip: 192.168.42.50/24
+
+tenants:
+  - name: Tenant_OSPF_REDIST
+    mac_vrf_vni_base: 10000
+    vrfs:
+      # Path: redistribute_ospf_settings with match: internal -> match_internal.enabled: true
+      - name: VRF_MATCH_INTERNAL
+        vrf_vni: 201
+        vrf_id: 201
+        ospf:
+          enabled: true
+        redistribute_ospf_settings:
+          match: internal
+        svis:
+          - id: 201
+            name: SVI_201
+            enabled: true
+            ip_address_virtual: 10.20.1.1/24
+
+      # Path: redistribute_ospf_settings with match: external -> match_external.enabled: true
+      - name: VRF_MATCH_EXTERNAL
+        vrf_vni: 202
+        vrf_id: 202
+        ospf:
+          enabled: true
+        redistribute_ospf_settings:
+          match: external
+        svis:
+          - id: 202
+            name: SVI_202
+            enabled: true
+            ip_address_virtual: 10.20.2.1/24
+
+      # Path: redistribute_ospf_settings with match: nssa-external -> match_nssa_external.enabled: true
+      - name: VRF_MATCH_NSSA
+        vrf_vni: 203
+        vrf_id: 203
+        ospf:
+          enabled: true
+        redistribute_ospf_settings:
+          match: nssa-external
+        svis:
+          - id: 203
+            name: SVI_203
+            enabled: true
+            ip_address_virtual: 10.20.3.1/24
+
+      # Path: redistribute_ospf_settings with match + route_map -> match_target.enabled + match_target.route_map
+      - name: VRF_MATCH_ROUTE_MAP
+        vrf_vni: 204
+        vrf_id: 204
+        ospf:
+          enabled: true
+        redistribute_ospf_settings:
+          match: internal
+          route_map: RM-OSPF-INT
+        svis:
+          - id: 204
+            name: SVI_204
+            enabled: true
+            ip_address_virtual: 10.20.4.1/24
+
+      # Path: redistribute_ospf_settings with route_map only (no match) -> ospf.enabled + ospf.route_map
+      - name: VRF_ROUTE_MAP_ONLY
+        vrf_vni: 205
+        vrf_id: 205
+        ospf:
+          enabled: true
+        redistribute_ospf_settings:
+          route_map: RM-OSPF-ALL
+        svis:
+          - id: 205
+            name: SVI_205
+            enabled: true
+            ip_address_virtual: 10.20.5.1/24
+
+      # Path: redistribute_ospf_settings.enabled: false -> no redistribution configured
+      - name: VRF_REDIST_DISABLED
+        vrf_vni: 206
+        vrf_id: 206
+        ospf:
+          enabled: true
+        redistribute_ospf_settings:
+          enabled: false
+        svis:
+          - id: 206
+            name: SVI_206
+            enabled: true
+            ip_address_virtual: 10.20.6.1/24
+
+      # Path: redistribute_ospf_settings.enabled: true, no match, no route_map -> ospf.enabled: true only (line 284 false branch)
+      - name: VRF_ENABLED_ONLY
+        vrf_vni: 207
+        vrf_id: 207
+        ospf:
+          enabled: true
+        redistribute_ospf_settings:
+          enabled: true
+        svis:
+          - id: 207
+            name: SVI_207
+            enabled: true
+            ip_address_virtual: 10.20.7.1/24
+
+      # Path: legacy - neither field set explicitly; default redistribute_ospf: true -> ospf.enabled: true
+      - name: VRF_DEFAULT_LEGACY
+        vrf_vni: 208
+        vrf_id: 208
+        ospf:
+          enabled: true
+        svis:
+          - id: 208
+            name: SVI_208
+            enabled: true
+            ip_address_virtual: 10.20.8.1/24
+
+      # Path: deprecated bool explicitly true -> issues warning, ospf.enabled: true
+      - name: VRF_DEPRECATED_TRUE
+        vrf_vni: 209
+        vrf_id: 209
+        ospf:
+          enabled: true
+        redistribute_ospf: true
+        svis:
+          - id: 209
+            name: SVI_209
+            enabled: true
+            ip_address_virtual: 10.20.9.1/24
+
+      # Path: deprecated bool explicitly false -> issues warning, no ospf redistribution
+      - name: VRF_DEPRECATED_FALSE
+        vrf_vni: 210
+        vrf_id: 210
+        ospf:
+          enabled: true
+        redistribute_ospf: false
+        svis:
+          - id: 210
+            name: SVI_210
+            enabled: true
+            ip_address_virtual: 10.20.10.1/24

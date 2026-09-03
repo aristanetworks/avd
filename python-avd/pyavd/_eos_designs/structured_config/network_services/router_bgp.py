@@ -279,8 +279,26 @@ class RouterBgpMixin(Protocol):
                             bgp_peer_config.metadata.validate_state = True
                         bgp_vrf.neighbors.append(bgp_peer_config)
 
-                if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
-                    bgp_vrf.redistribute.ospf.enabled = True
+                if vrf.ospf.enabled and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
+                    # TODO: Remove the deprecated `redistribute_ospf` bool in AVD 7.0 and always use `redistribute_ospf_settings`.
+                    if ospf_redistribute := vrf.redistribute_ospf_settings:
+                        if ospf_redistribute.enabled:
+                            match_target_map = {
+                                "internal": bgp_vrf.redistribute.ospf.match_internal,
+                                "external": bgp_vrf.redistribute.ospf.match_external,
+                                "nssa-external": bgp_vrf.redistribute.ospf.match_nssa_external,
+                            }
+                            if ospf_redistribute.match in match_target_map:
+                                match_target = match_target_map[ospf_redistribute.match]
+                                match_target.enabled = True
+                                if ospf_redistribute.route_map:
+                                    match_target.route_map = ospf_redistribute.route_map
+                            else:
+                                bgp_vrf.redistribute.ospf.enabled = True
+                                if ospf_redistribute.route_map:
+                                    bgp_vrf.redistribute.ospf.route_map = ospf_redistribute.route_map
+                    elif vrf.redistribute_ospf:
+                        bgp_vrf.redistribute.ospf.enabled = True
 
                 if bgp_vrf.neighbors and self.inputs.bgp_update_wait_install and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install:
                     bgp_vrf.updates.wait_install = True
