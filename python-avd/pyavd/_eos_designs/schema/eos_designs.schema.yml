@@ -387,6 +387,39 @@ keys:
 
           Configure `inband_mgmt_vrf` for IPv6 inband management.'
         default: false
+      disable_sflow_subinterfaces_on_r_series_platforms:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Use updated feature-support defaults for sFlow on subinterfaces.
+
+          When enabled, AVD uses `platform_settings[].feature_support.sflow_subinterfaces_future`
+          as the value of `sflow_subinterfaces` only when
+
+          `sflow_subinterfaces_future` is set and `sflow_subinterfaces` is not explicitly
+          set for the matched platform.
+
+          The default platform settings set `sflow_subinterfaces_future: false` for
+          7020R, 7280R, 7280R2, 7280R3, 7500R, 7500R2, 7500R3, and 7800R3,
+
+          which disables sFlow configuration on subinterfaces for these platforms.
+
+          To apply this behavior to custom R Series platform definitions, set `sflow_subinterfaces_future`
+          under
+
+          `custom_platform_settings[].feature_support`.
+
+          Ingress sFlow on subinterfaces of R Series platforms requires a user-defined
+          TCAM profile containing `feature sflow subintf` to be applied as
+
+          the system TCAM profile.
+
+          Applying a custom system TCAM profile may impact traffic and the functionality
+          of other features on a live/production switch and therefore
+
+          requires customers to work with their Arista account team or TAC to define
+          and test the new TCAM profile before deploying it on production switches.'
       consistent_uplink_vlans:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -8857,6 +8890,7 @@ keys:
         subinterface_mtu: false
         per_interface_l2_mtu: false
         private_vlan: false
+        sflow_subinterfaces_future: false
         errdisable_causes:
           acl:
             recovery: false
@@ -8898,6 +8932,7 @@ keys:
         subinterface_mtu: false
         per_interface_l2_mtu: false
         private_vlan: false
+        sflow_subinterfaces_future: false
         errdisable_causes:
           acl:
             recovery: false
@@ -8953,6 +8988,7 @@ keys:
         subinterface_monitor_session: false
         per_interface_l2_mtu: false
         private_vlan: false
+        sflow_subinterfaces_future: false
         errdisable_causes:
           acl:
             recovery: false
@@ -9009,6 +9045,7 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         per_interface_l2_mtu: false
         private_vlan: false
+        sflow_subinterfaces_future: false
         errdisable_causes:
           acl:
             recovery: false
@@ -9114,6 +9151,7 @@ keys:
         subinterface_mtu: false
         per_interface_l2_mtu: false
         private_vlan: false
+        sflow_subinterfaces_future: false
         errdisable_causes:
           acl:
             recovery: false
@@ -9172,6 +9210,7 @@ keys:
         subinterface_monitor_session: false
         per_interface_l2_mtu: false
         private_vlan: false
+        sflow_subinterfaces_future: false
         errdisable_causes:
           acl:
             recovery: false
@@ -9230,6 +9269,7 @@ keys:
         evpn_gateway_all_active_multihoming: true
         evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
+        sflow_subinterfaces_future: false
         errdisable_causes:
           acl:
             recovery: false
@@ -9286,6 +9326,7 @@ keys:
         evpn_gateway_all_active_multihoming: true
         evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
+        sflow_subinterfaces_future: false
         errdisable_causes:
           acl:
             recovery: false
@@ -16885,6 +16926,19 @@ $defs:
 
                 The feature will be ignored on platforms where this is false.'
               default: true
+            sflow_subinterfaces_future:
+              type: bool
+              description: 'Temporary value for `sflow_subinterfaces` used to opt
+                in to updated platform behavior before AVD 7.0.
+
+                This value is used for the matched platform only when `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms`
+                is enabled and
+
+                `sflow_subinterfaces` is not explicitly set.
+
+                For custom R Series platform definitions, set this under `custom_platform_settings[].feature_support`.
+
+                This setting will be removed in AVD 7.0.'
             wan:
               type: bool
               description: 'Support for Arista WAN features.

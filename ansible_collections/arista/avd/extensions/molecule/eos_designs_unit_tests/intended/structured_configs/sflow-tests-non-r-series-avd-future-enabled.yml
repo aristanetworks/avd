@@ -1,0 +1,109 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet10
+  description: P2P_sflow-tests-r-series-avd-future-disabled_Ethernet10
+  shutdown: false
+  mtu: 9214
+  metadata:
+    peer: sflow-tests-r-series-avd-future-disabled
+    peer_interface: Ethernet10
+    peer_type: spine
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet10.100
+  description: P2P_sflow-tests-r-series-avd-future-disabled_Ethernet10.100
+  shutdown: false
+  mtu: 9214
+  metadata:
+    peer: sflow-tests-r-series-avd-future-disabled
+    peer_interface: Ethernet10.100
+    peer_type: spine
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+hostname: sflow-tests-non-r-series-avd-future-enabled
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.255.0.5/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.51/24
+  type: oob
+  gateway: 192.168.0.1
+metadata:
+  is_deployed: true
+  platform: default
+  fabric_name: SFLOW_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.0.0/27 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65200'
+  router_id: 10.255.0.5
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+service_routing_protocols_model: multi-agent
+sflow:
+  vrfs:
+  - name: MGMT
+    destinations:
+    - destination: 10.10.10.10
+    - destination: 10.10.10.11
+    source_interface: Management1
+  - name: sflowvrf
+    destinations:
+    - destination: 10.10.10.12
+      port: 1234
+    source_interface: Loopback321
+  run: true
+spanning_tree:
+  mode: none
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
