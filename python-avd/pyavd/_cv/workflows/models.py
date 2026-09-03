@@ -399,6 +399,8 @@ class DeployToCvResult:
     removed_static_config_configlets: list[str] = field(default_factory=list)
     removed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     removed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
+    removed_devices: list[CVDevice] = field(default_factory=list)
+    """Devices successfully staged for decommission in CloudVision."""
 
     def get_result(self) -> dict[str, Any]:
         """Return a representation of this object for the Ansible module result."""
@@ -439,6 +441,7 @@ class DeployToCvResult:
             self.removed_static_config_configlets,
             self.removed_device_tags,
             self.removed_interface_tags,
+            self.removed_devices,
         ):
             attempt_results.clear()
         self.workspace.reset()
@@ -464,6 +467,7 @@ class CVDevice:
     exists_on_cv: bool | None = None
     streaming: bool | None = None
     """Device's streaming status."""
+    action: Literal["deploy", "decommission"] = "deploy"
 
     def __post_init__(self) -> None:
         """
@@ -488,6 +492,7 @@ class CVDevice:
             "system_mac_address": self.system_mac_address,
             "exists_on_cv": self.exists_on_cv,
             "streaming": self.streaming,
+            "action": self.action,
         }
 
 

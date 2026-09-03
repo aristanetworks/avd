@@ -37,6 +37,10 @@ async def deploy_tags_to_cv(
       - Always remove other tag assignments with the same label as given tags.
       - TODO: Remove deassociated tags if they are no longer associated with any device.
 
+    Tags for decommission devices (``device.action="decommission"``) are added to ``skipped_tags``. CloudVision
+    automatically removes all device and interface tag assignments when the device is staged for decommission.
+    Tag definitions remain in CloudVision and are not deleted by this workflow.
+
     TODO: Refactor CVDeviceTag / CVInterfaceTag to produce a stable hash so we can use it with set() methods.
           Then improve logic below using sets.
 
@@ -52,8 +56,10 @@ async def deploy_tags_to_cv(
     tag_type = "interface" if isinstance(tags[0], CVInterfaceTag) else "device"
 
     # Build todo tags with CVDevice/CVInterfaceTag objects that exist on CloudVision. Add the rest to skipped.
-    skipped_tags.extend(tag for tag in tags if tag.device is not None and not tag.device.exists_on_cv)
-    todo_tags = [tag for tag in tags if tag.device is None or tag.device.exists_on_cv]
+    # Decommission device tags are also skipped. CloudVision removes their assignments during decommission staging,
+    # but retains the tag definitions.
+    skipped_tags.extend(tag for tag in tags if tag.device is not None and (not tag.device.exists_on_cv or tag.device.action == "decommission"))
+    todo_tags = [tag for tag in tags if tag.device is None or (tag.device.exists_on_cv and tag.device.action != "decommission")]
 
     # No need to continue if we have nothing to do.
     if not todo_tags:
