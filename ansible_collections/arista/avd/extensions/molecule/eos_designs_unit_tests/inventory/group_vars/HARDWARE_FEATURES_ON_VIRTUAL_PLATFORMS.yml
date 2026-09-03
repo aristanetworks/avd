@@ -1,4 +1,11 @@
 ---
+tcam_profiles:
+  # This profile is configured as referenced in platform settings
+  - name: myprofile
+    source: flash:/myprofile.conf
+  # This profile is not configured as not referenced in platform settings
+  - name: unused-profile
+    source: flash:/unused-profile.conf
 
 custom_platform_settings:
   - platforms:
@@ -148,6 +155,7 @@ custom_platform_settings:
     p2p_uplinks_mtu: 9194
   - platforms:
       - customplatform
+    tcam_profile: myprofile
     feature_support:
       # Test for disable sflow on subinterfaces
       sflow_subinterfaces: false

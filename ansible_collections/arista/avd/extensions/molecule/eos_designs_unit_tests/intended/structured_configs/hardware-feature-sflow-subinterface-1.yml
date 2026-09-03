@@ -223,6 +223,11 @@ sflow:
   - destination: 10.10.10.10
   source_interface: Vlan10
   run: true
+tcam_profile:
+  system: myprofile
+  profiles:
+  - name: myprofile
+    source: flash:/myprofile.conf
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

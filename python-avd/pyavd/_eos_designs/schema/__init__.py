@@ -116591,6 +116591,7 @@ class EosDesigns(EosDesignsRootModel):
         "ssh_settings": {"type": SshSettings},
         "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
+        "tcam_profiles": {"type": EosCliConfigGen.TcamProfile.Profiles},
         "timezone": {"type": str},
         "trunk_groups": {"type": TrunkGroups},
         "type": {"type": str},
@@ -118445,6 +118446,13 @@ class EosDesigns(EosDesignsRootModel):
     If both are set, the value under node type settings takes
     precedence.
     """
+    tcam_profiles: EosCliConfigGen.TcamProfile.Profiles
+    """
+    TCAM profile definitions.
+    Only the profile referenced by
+    `custom_platform_settings[].tcam_profile`/`platform_settings[].tcam_profile` for the device platform
+    is configured.
+    """
     timezone: str | None
     """Clock timezone like "CET" or "US/Pacific"."""
     trunk_groups: TrunkGroups
@@ -119021,6 +119029,7 @@ class EosDesigns(EosDesignsRootModel):
             ssh_settings: SshSettings | UndefinedType = Undefined,
             svi_profiles: SviProfiles | UndefinedType = Undefined,
             system_mac_address: str | UndefinedType | None = Undefined,
+            tcam_profiles: EosCliConfigGen.TcamProfile.Profiles | UndefinedType = Undefined,
             timezone: str | UndefinedType | None = Undefined,
             trunk_groups: TrunkGroups | UndefinedType = Undefined,
             type: str | UndefinedType | None = Undefined,
@@ -120403,6 +120412,11 @@ class EosDesigns(EosDesignsRootModel):
                    also be set under node type settings.
                    If both are set, the value under node type settings takes
                    precedence.
+                tcam_profiles:
+                   TCAM profile definitions.
+                   Only the profile referenced by
+                   `custom_platform_settings[].tcam_profile`/`platform_settings[].tcam_profile` for the device platform
+                   is configured.
                 timezone: Clock timezone like "CET" or "US/Pacific".
                 trunk_groups: Subclass of AvdModel.
                 type:

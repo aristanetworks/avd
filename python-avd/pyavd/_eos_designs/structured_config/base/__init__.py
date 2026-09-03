@@ -367,8 +367,13 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def tcam_profile(self) -> None:
         """tcam_profile set based on platform_settings.tcam_profile fact."""
-        if tcam_profile := self.shared_utils.platform_settings.tcam_profile:
-            self.structured_config.tcam_profile.system = tcam_profile
+        if not (tcam_profile_name := self.shared_utils.platform_settings.tcam_profile):
+            return
+
+        # TODO: 7.0 Validate that the referenced TCAM profile exists; raise an error if missing.
+        self.structured_config.tcam_profile.system = tcam_profile_name
+        if tcam_profile_name in self.inputs.tcam_profiles:
+            self.structured_config.tcam_profile.profiles.append(self.inputs.tcam_profiles[tcam_profile_name])
 
     @structured_config_contributor
     def mac_address_table(self) -> None:

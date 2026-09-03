@@ -10832,6 +10832,13 @@ keys:
       If both are set, the value under node type settings takes precedence.
 
       '
+  tcam_profiles:
+    type: list
+    $ref: eos_cli_config_gen#/keys/tcam_profile/keys/profiles
+    description: 'TCAM profile definitions.
+
+      Only the profile referenced by  `custom_platform_settings[].tcam_profile`/`platform_settings[].tcam_profile`
+      for the device platform is configured.'
   terminattr_disable_aaa:
     documentation_options:
       table: cloudvision-settings
