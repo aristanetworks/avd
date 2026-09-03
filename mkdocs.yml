@@ -223,6 +223,7 @@ nav:
       - IP Addressing: docs/howto/ip_addressing/README.md
       - IPv6 Addressing: docs/howto/ipv6_numbered/README.md
       - Node Types: docs/howto/node_types/README.md
+      - L2 Ring Topology: docs/howto/l2_ring_topology/README.md
       - Network Services: docs/howto/network_services/README.md
       - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
       - Configuring WAN: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/wan.md
