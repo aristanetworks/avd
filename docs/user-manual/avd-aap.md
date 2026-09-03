@@ -47,11 +47,12 @@ Execution environments (EEs) are Red Hat's solution for managing project depende
 
 ### Ansible Builder
 
-Ansible Builder is a tool developed by the Ansible team to aid in creating EEs. Like any tool, there are a few requirements to get started with Ansible Builder.
+Ansible Builder is a tool developed by the Ansible team to aid in creating EEs. Like any tool, there are a few requirements on our development machine to get started with Ansible Builder.
 
-- A development machine with Python installed.
-- Ansible Builder installed with `pip install ansible-builder`.
-- [Podman](https://podman.io/docs/installation) installed on the development machine.
+- Supported Python version
+- [Ansible Builder](https://docs.ansible.com/projects/builder/en/latest/)
+- [Ansible core](https://pypi.org/project/ansible-core/)
+- [Podman](https://podman.io/docs/installation)
 
 You can place the Ansible Builder dependencies with your current project or leverage a separate project entirely for your EE builds. Please note that this example was created with version 6.4.0 of the AVD collection. Dependencies may change between versions.
 
