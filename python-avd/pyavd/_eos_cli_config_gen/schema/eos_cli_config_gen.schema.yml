@@ -14490,7 +14490,8 @@ keys:
                         description: Standard ACL name or multicast IP subnet.
                       out:
                         type: bool
-                        description: Multicast boundary direction - outbound.
+                        description: Restrict multicast routing to and from the interface
+                          for group.
                 static:
                   type: bool
             ipv6:
@@ -14499,8 +14500,18 @@ keys:
                 boundaries:
                   type: list
                   items:
-                    type: str
-                    description: Standard ACL name or multicast IP subnet.
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        required: true
+                        description: Standard ACL name or multicast IP subnet.
+                      out:
+                        type: bool
+                        default: true
+                        description: Restricts multicast routing to and from the interface.
+                          Must be `true` when set.
+                        required: true
                 static:
                   type: bool
         service_profile:

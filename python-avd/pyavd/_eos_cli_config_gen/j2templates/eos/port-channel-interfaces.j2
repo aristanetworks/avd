@@ -529,7 +529,7 @@ interface {{ port_channel_interface.name }}
    {{ boundary_cli }}
 {%         endfor %}
 {%         for boundary in port_channel_interface.multicast.ipv6.boundaries | arista.avd.default([]) %}
-   multicast ipv6 boundary {{ boundary }} out
+   multicast ipv6 boundary {{ boundary.boundary }} out
 {%         endfor %}
 {%         if port_channel_interface.multicast.ipv4.static is arista.avd.defined(true) %}
    multicast ipv4 static

@@ -37678,7 +37678,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     boundary: str
                     """Standard ACL name or multicast IP subnet."""
                     out: bool | None
-                    """Multicast boundary direction - outbound."""
+                    """Restrict multicast routing to and from the interface for group."""
 
                     if TYPE_CHECKING:
 
@@ -37691,7 +37691,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 boundary: Standard ACL name or multicast IP subnet.
-                                out: Multicast boundary direction - outbound.
+                                out: Restrict multicast routing to and from the interface for group.
 
                             """
 
@@ -37723,14 +37723,42 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv6(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Boundaries(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
+                class BoundariesItem(AvdModel):
+                    """Subclass of AvdModel."""
 
-                Boundaries._item_type = str
+                    _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool, "default": True}}
+                    boundary: str
+                    """Standard ACL name or multicast IP subnet."""
+                    out: bool
+                    """
+                    Restricts multicast routing to and from the interface. Must be `true` when set.
+
+                    Default value: `True`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, boundary: str | UndefinedType = Undefined, out: bool | UndefinedType = Undefined) -> None:
+                            """
+                            BoundariesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                boundary: Standard ACL name or multicast IP subnet.
+                                out: Restricts multicast routing to and from the interface. Must be `true` when set.
+
+                            """
+
+                class Boundaries(AvdList[BoundariesItem]):
+                    """Subclass of AvdList with `BoundariesItem` items."""
+
+                Boundaries._item_type = BoundariesItem
 
                 _fields: ClassVar[dict] = {"boundaries": {"type": Boundaries}, "static": {"type": bool}}
                 boundaries: Boundaries
-                """Subclass of AvdList with `str` items."""
+                """Subclass of AvdList with `BoundariesItem` items."""
                 static: bool | None
 
                 if TYPE_CHECKING:
@@ -37743,7 +37771,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            boundaries: Subclass of AvdList with `str` items.
+                            boundaries: Subclass of AvdList with `BoundariesItem` items.
                             static: static
 
                         """

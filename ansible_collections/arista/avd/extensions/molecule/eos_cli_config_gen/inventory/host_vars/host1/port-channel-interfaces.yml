@@ -648,8 +648,10 @@ port_channel_interfaces:
       ipv6:
         static: true
         boundaries:
-          - ff00::/8
-          - ff01::/16
+          - boundary: ff00::/8
+            out: true
+          - boundary: ff01::/16
+            out: true
     ip_proxy_arp: true
     logging:
       event:
@@ -1330,7 +1332,8 @@ port_channel_interfaces:
             out: true
       ipv6:
         boundaries:
-          - ff04::/16
+          - boundary: ff04::/16
+            out: true
 
   - name: Port-Channel302
     description: Legacy IPv6 address and managed config flag
@@ -1349,8 +1352,10 @@ port_channel_interfaces:
       ipv6:
         static: true
         boundaries:
-          - ACL_IPV6_MULTICAST
-          - MulticastAclIpv6
+          - boundary: ACL_IPV6_MULTICAST
+            out: true
+          - boundary: MulticastAclIpv6
+            out: true
 
   # Validates that ipv6_nd / ipv6_access_group trigger IPv6 table inclusion without an IPv6 address.
   - name: Port-Channel400
@@ -1392,4 +1397,5 @@ port_channel_interfaces:
       ipv6:
         static: true
         boundaries:
-          - ff02::/16
+          - boundary: ff02::/16
+            out: true

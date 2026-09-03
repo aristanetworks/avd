@@ -303,11 +303,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "port_channel_interfaces.[].multicast.ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boundaries</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;boundary</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries.[].boundary") | String | Required |  |  | Standard ACL name or multicast IP subnet. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries.[].out") | Boolean |  |  |  | Multicast boundary direction - outbound. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries.[].out") | Boolean |  |  |  | Restrict multicast routing to and from the interface for group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "port_channel_interfaces.[].multicast.ipv4.static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "port_channel_interfaces.[].multicast.ipv6") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boundaries</samp>](## "port_channel_interfaces.[].multicast.ipv6.boundaries") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].multicast.ipv6.boundaries.[]") | String |  |  |  | Standard ACL name or multicast IP subnet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boundaries</samp>](## "port_channel_interfaces.[].multicast.ipv6.boundaries") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;boundary</samp>](## "port_channel_interfaces.[].multicast.ipv6.boundaries.[].boundary") | String | Required |  |  | Standard ACL name or multicast IP subnet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out</samp>](## "port_channel_interfaces.[].multicast.ipv6.boundaries.[].out") | Boolean | Required | `True` |  | Restricts multicast routing to and from the interface. Must be `true` when set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "port_channel_interfaces.[].multicast.ipv6.static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_profile</samp>](## "port_channel_interfaces.[].service_profile") | String |  |  |  | QOS profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_network_point_to_point</samp>](## "port_channel_interfaces.[].ospf_network_point_to_point") | Boolean |  |  |  |  |
@@ -1155,14 +1156,17 @@
                 # Standard ACL name or multicast IP subnet.
               - boundary: <str; required>
 
-                # Multicast boundary direction - outbound.
+                # Restrict multicast routing to and from the interface for group.
                 out: <bool>
             static: <bool>
           ipv6:
             boundaries:
 
                 # Standard ACL name or multicast IP subnet.
-              - <str>
+              - boundary: <str; required>
+
+                # Restricts multicast routing to and from the interface. Must be `true` when set.
+                out: <bool; default=True; required>
             static: <bool>
 
         # QOS profile.
