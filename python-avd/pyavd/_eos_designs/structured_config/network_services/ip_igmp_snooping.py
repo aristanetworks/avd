@@ -76,6 +76,9 @@ class IpIgmpSnoopingMixin(Protocol):
         """
         igmp_snooping_enabled = None
         igmp_snooping_querier_enabled = None
+        l2vlan_node_specific_igmp_snooping_querier = vrf is None and self._has_l2vlan_node_specific_igmp_snooping_querier(
+            cast("EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem", vlan)
+        )
         evpn_l2_multicast_enabled = bool(default(vlan.evpn_l2_multicast.enabled, tenant.evpn_l2_multicast.enabled)) and self.shared_utils.evpn_multicast
         if self.shared_utils.overlay_vtep and evpn_l2_multicast_enabled:
             # Leaving igmp_snooping_enabled unset, to avoid extra line of config as we already check
@@ -88,7 +91,7 @@ class IpIgmpSnoopingMixin(Protocol):
         else:
             # vlan.igmp_snooping.enabled takes precedence over deprecated key vlan.igmp_snooping_enabled.
             igmp_snooping_enabled = default(vlan.igmp_snooping.enabled, vlan.igmp_snooping_enabled)
-            if self.shared_utils.network_services_l3 and self.shared_utils.uplink_type in ["p2p", "p2p-vrfs"]:
+            if l2vlan_node_specific_igmp_snooping_querier or (self.shared_utils.network_services_l3 and self.shared_utils.uplink_type in ["p2p", "p2p-vrfs"]):
                 # vlan.igmp_snooping.querier.enabled takes precedence over deprecated key vlan.igmp_snooping_querier.enabled.
                 # tenant.igmp_snooping.querier.enabled takes precedence over deprecated key tenant.igmp_snooping_querier.enabled.
                 igmp_snooping_querier_enabled = default(
@@ -140,6 +143,18 @@ class IpIgmpSnoopingMixin(Protocol):
         if vlan_item:
             vlan_item.id = vlan.id
             self.structured_config.ip_igmp_snooping.vlans.append(vlan_item)
+
+    def _has_l2vlan_node_specific_igmp_snooping_querier(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        l2vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
+    ) -> bool:
+        """Return True if this L2VLAN has node-specific IGMP snooping querier settings for the current node."""
+        if self.shared_utils.hostname not in l2vlan.nodes:
+            return False
+
+        node_specific_l2vlan = l2vlan.nodes[self.shared_utils.hostname]
+        igmp_snooping = node_specific_l2vlan._get("igmp_snooping")
+        return bool(igmp_snooping and igmp_snooping._get("querier"))
 
     def _get_l2vlan_igmp_querier_source_address(
         self: AvdStructuredConfigNetworkServicesProtocol,
