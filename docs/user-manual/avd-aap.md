@@ -111,7 +111,13 @@ You can place the Ansible Builder dependencies with your current project or leve
 
     The Python dependencies listed here are from the [collection installation](../../docs/installation/collection-installation.md#python-requirements-installation) instructions. Please update the requirements for the specific version of the `arista.avd` collection you are leveraging.
 
-#### Build the image
+#### Build and push the image
+
+Login to your respective container registry.
+
+```shell
+podman login < registry url >
+```
 
 The command below will use Ansible Builder to start building our custom EE. In this case, we leverage Podman as a container runtime and tag the image appropriately.
 
