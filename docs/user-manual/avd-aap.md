@@ -13,7 +13,7 @@ This guide will walk you through the steps required to get up and running with A
 
 ## Requirements to get started
 
-- An accessible lab topology running Arista EOS.
+- An accessible lab topology running Arista EOS, CloudVision, and Ansible core.
 - An AVD project or Git repository with playbooks and an inventory. To get started, you may also use any of our [example topologies](../../ansible_collections/arista/avd/examples/single-dc-l3ls/README.md).
 - A RHEL instance running AAP.
   - If you need access to a RHEL instance, you can join the [developer program](https://developers.redhat.com) to get a copy.
@@ -182,6 +182,8 @@ We can create the required credential by clicking on `Credentials` right below `
     ![Save registry credential](../_media/getting-started/aap-avd/save-rc-light.png#only-light)
     ![Save registry credential](../_media/getting-started/aap-avd/save-rc-dark.png#only-dark)
 
+    After saving the credential, return to `Execution Environments` and edit the execution environment. If the EE image is hosted in a private registry, select the saved credential in the `Registry credential` field and save the execution environment. The credential must be associated with the execution environment before AAP attempts to pull the image.
+
 ## Projects
 
 Projects in AAP are vital in setting up additional options. For example, we can leverage our project when defining a new inventory or reference playbooks within the project to define job workflows in AAP.
@@ -314,7 +316,7 @@ One thing that may need some clarification is the naming of "job templates." The
 
 === "Templates - Job"
 
-    The job template is where we leverage the custom execution environment. Since our setup requires specific Ansible collections and Python packages to be installed, we would like to use a pre-packaged environment with that software. We can modify a decent number of settings, and they may look familiar from previous experience with Ansible configurations. If you need a refresher on these options, please see the [official documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/html/automation_controller_user_guide/controller-job-templates). Once you are happy with the settings, click `Save job template`.
+    The job template is where we leverage the custom execution environment. Since our setup requires specific Ansible collections and Python packages to be installed, we would like to use a pre-packaged environment with that software. We can modify a decent number of settings, and they may look familiar from previous experience with Ansible configurations. If you need a refresher on these options, please see the [official documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7). Once you are happy with the settings, click `Save job template`.
 
     !!! warning
         The playbook is set to "Run," and the EOS instances in use will be changed. Please ensure you are leveraging nonproduction instances when testing. We also specify an Ansible Vault credential which will be covered in the next section.
