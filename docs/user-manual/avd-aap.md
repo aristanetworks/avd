@@ -317,7 +317,7 @@ One thing that may need some clarification is the naming of "job templates." The
 
 === "Templates - Job"
 
-    The job template is where we leverage the custom execution environment. Since our setup requires specific Ansible collections and Python packages to be installed, we would like to use a pre-packaged environment with that software. We can modify a decent number of settings, and they may look familiar from previous experience with Ansible configurations. If you need a refresher on these options, please see the [official documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7). Once you are happy with the settings, click `Save job template`.
+    The job template is where we leverage the custom execution environment. Since our setup requires specific Ansible collections and Python packages to be installed, we would like to use a pre-packaged environment with that software. In the `Execution environment` field, select the custom execution environment containing the `arista.avd` collection and `pyavd` dependencies. We can modify a decent number of settings, and they may look familiar from previous experience with Ansible configurations. If you need a refresher on these options, please see the [official documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7). Once you are happy with the settings, click `Save job template`.
 
     !!! warning
         The playbook is set to "Run," and the EOS instances in use will be changed. Please ensure you are leveraging nonproduction instances when testing. We also specify an Ansible Vault credential which will be covered in the next section.
