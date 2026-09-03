@@ -22,6 +22,8 @@ AVD_ENTITY_PREFIX = "avd_"
 
 LOGGER = getLogger(__name__)
 
+CVChangeControlState = Literal["pending approval", "approved", "scheduled", "running", "completed", "deleted", "failed"]
+
 
 @dataclass
 class CVGRPCKeepalives:
@@ -87,6 +89,8 @@ class CloudVision:
 
 @dataclass(frozen=True)
 class AvdChangeControl:
+    id: str | None = None
+    """ID of an existing Change Control to manage."""
     name: str | None = None
     description: str | None = None
     change_control_template: AvdChangeControlTemplate | None = None
@@ -100,22 +104,30 @@ class AvdChangeControl:
     - `"completed"`: Approve and start the Change Control. Wait for the Change Control to be completed.
     - `"deleted"`: Create and delete the Change Control. Used for dry-run where no changes will be committed to the network.
     """
+    approval_note: str = "Automatic approval by AVD"
+    """Note used when approving the Change Control."""
+    start_note: str = "Automatically started by AVD"
+    """Note used when starting the Change Control."""
 
 
 @dataclass
 class CVChangeControl:
     avd_change_control: AvdChangeControl = field(default_factory=AvdChangeControl)
     id: str | None = None
-    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
+    state: CVChangeControlState | None = None
     name: str | None = None
     description: str | None = None
+    changed: bool = False
+    """Set to `True` when the workflow modifies the Change Control."""
 
     def __post_init__(self) -> None:
         """
-        Use intended name and/or description as initial state.
+        Use intended ID, name and/or description as initial state.
 
         Replacing empty strings with None.
         """
+        if not self.id:
+            self.id = self.avd_change_control.id or None
         if not self.name:
             self.name = self.avd_change_control.name or None
         if not self.description:

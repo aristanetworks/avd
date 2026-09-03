@@ -79,7 +79,7 @@ ARGUMENT_SPEC = {
             "permit_without_calls": {"type": "bool", "required": False, "default": False},
         },
     },
-    # TODO: Make configuration_dir optional for users using the manifest to push device configs.
+    # TODO: Make configuration_dir optional for Change-Control-only and static config manifest workflows.
     "configuration_dir": {"type": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": False},
     "structured_config_suffix": {"type": "str", "default": "yml"},
@@ -125,9 +125,16 @@ ARGUMENT_SPEC = {
     "change_control": {
         "type": "dict",
         "options": {
+            "id": {"type": "str", "required": False},
             "name": {"type": "str", "required": False},
             "description": {"type": "str", "required": False},
-            "requested_state": {"type": "str", "default": "pending approval", "choices": ["pending approval", "approved", "running", "completed"]},
+            "approval_note": {"type": "str", "required": False, "default": "Automatic approval by AVD"},
+            "start_note": {"type": "str", "required": False, "default": "Automatically started by AVD"},
+            "requested_state": {
+                "type": "str",
+                "default": "pending approval",
+                "choices": ["pending approval", "approved", "running", "completed"],
+            },
         },
     },
     "timeouts": {
@@ -263,7 +270,20 @@ class ActionModule(ActionBase):
                 ]
             )
 
-            if work_to_do:
+            change_control = CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={})))
+
+            if change_control.id is not None:
+                workspace_id = get(validated_args, "workspace.id")
+                workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id)) if workspace_id is not None else None
+
+                result_object = await deploy_to_cv(
+                    cloudvision=cloudvision,
+                    change_control=change_control,
+                    device_deployments=device_deployments,
+                    static_config_manifest=static_config_manifest,
+                    workspace=workspace,
+                )
+            elif work_to_do:
                 # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
                 workspace_args = get(validated_args, "workspace", default={})
                 if "build_warnings" in workspace_args:
@@ -271,7 +291,7 @@ class ActionModule(ActionBase):
 
                 # Perform deployment of all objects, getting a DeployToCVResult object back.
                 result_object = await deploy_to_cv(
-                    change_control=CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={}))),
+                    change_control=change_control,
                     cloudvision=cloudvision,
                     device_deployments=device_deployments,
                     static_config_manifest=static_config_manifest,
@@ -281,15 +301,16 @@ class ActionModule(ActionBase):
                     timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
                     workspace=CVWorkspace(avd_workspace=AvdWorkspace(**workspace_args)),
                 )
-                # Errors and warnings are converted to JSON compatible strings.
-                result_object.errors = [str(error) for error in result_object.errors]
-                result_object.warnings = [str(warning) for warning in result_object.warnings]
-
-                # Add warnings caught by the logger.
-                result_object.warnings.extend(result.get("warnings", []))
             else:
                 result_object = DeployToCvResult(workspace=None)
                 result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
+
+            # Add warnings caught by the logger.
+            result_object.warnings.extend(result.get("warnings", []))
+
+            # Errors and warnings are converted to JSON compatible strings.
+            result_object.errors = [str(error) for error in result_object.errors]
+            result_object.warnings = [str(warning) for warning in result_object.warnings]
 
             # Add either all return data or only warnings, errors, failed.
             if validated_args["return_details"]:
@@ -306,6 +327,7 @@ class ActionModule(ActionBase):
 
             # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
             change_indicators = [
+                result_object.change_control is not None and result_object.change_control.changed,
                 result_object.deployed_configs,
                 result_object.deployed_static_config_containers,
                 result_object.deployed_static_config_configlets,
