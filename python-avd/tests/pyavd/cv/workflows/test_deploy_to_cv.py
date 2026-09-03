@@ -5,20 +5,30 @@ from __future__ import annotations
 
 import tempfile
 from contextlib import nullcontext as does_not_raise
-from logging import DEBUG
-from typing import TYPE_CHECKING
+from logging import DEBUG, getLogger
+from os import environ
+from typing import TYPE_CHECKING, Literal
 from unittest.mock import AsyncMock, MagicMock, patch
+from uuid import uuid4
 
 import pytest
 
+from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus
+from pyavd._cv.client import CVClient
+from pyavd._cv.client.constants import DEFAULT_API_TIMEOUT
 from pyavd._cv.client.exceptions import CVResourceNotFound, CVWorkspaceSubmitFailedInactiveDevices, CVWorkspaceSynchronizationAttemptsExhausted
+from pyavd._cv.client.models import CVTagAssignment
+from pyavd._cv.client.versioning import CvVersion
 from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, deploy_to_cv
 from pyavd._cv.workflows.models import (
+    AvdDevice,
     AvdWorkspace,
     CloudVision,
     CVChangeControl,
     CVDeployFuture,
+    CVDevice,
     CVDeviceDeployment,
+    CVDeviceTag,
     CVEosConfig,
     CVGRPCChannelConfiguration,
     CVGRPCKeepalives,
@@ -35,8 +45,10 @@ from tests.pyavd.cv.constants import (
 )
 from tests.pyavd.cv.mockery import mocked_cvdevices
 
+LOGGER = getLogger(__name__)
+
 if TYPE_CHECKING:
-    from pyavd._cv.client import CVClient
+    from pyavd._cv.api.arista.workspace.v1 import Response, Workspace, WorkspaceConfig
 
 
 @pytest.mark.asyncio
@@ -560,3 +572,369 @@ async def test_deploy_to_cv_workspace_sync_exhausted(max_sync_retries: int) -> N
     assert result.warnings == ["sync-required-warning"]
     assert mock_finalize.call_count == max_sync_retries + 1
     assert mock_rebase.call_count == max_sync_retries
+
+
+@pytest.fixture(scope="session")
+def workspace_sync_run_id() -> str:
+    """Return one unique ID shared by all Workspace synchronization live-test destinations in the pytest session."""
+    return uuid4().hex[:4]
+
+
+@pytest.mark.asyncio
+@pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy tests are skipped.")
+@pytest.mark.parametrize(
+    ("targeted_cv", "verify_certs"),
+    [
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_PRD_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_PRD_SERVER", default=""),
+            },
+            True,
+            id="CVAAS_PRD",
+        ),
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_STG_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_STG_SERVER", default=""),
+            },
+            True,
+            id="CVAAS_STG",
+        ),
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_ONPREM_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_ONPREM_SERVER", default=""),
+            },
+            False,
+            id="CV_ONPREM",
+        ),
+    ],
+)
+@pytest.mark.parametrize(
+    ("pre_build_change_count", "pre_submit_change_count"),
+    [pytest.param(1, 1, id="ONE_PRE-BUILD_ONE_PRE-SUBMIT")],
+)
+@pytest.mark.filterwarnings("ignore:Unverified HTTPS request is being made to host")
+async def test_workspace_synchronization_during_build_and_submit(
+    targeted_cv: dict[str, str],
+    verify_certs: bool,
+    pre_build_change_count: int,
+    pre_submit_change_count: int,
+    workspace_sync_run_id: str,
+) -> None:
+    """
+    Test Workspace synchronization during build and submit against a live CloudVision tenant.
+
+    - Skip targets running a CloudVision version older than 2026.2.0.
+    - Select the first preferred device present in the target inventory, or the first inventory device as fallback.
+    - Submit and verify baseline tag values for the selected test device.
+    - Deploy tags through a forced Workspace while injecting configured mainline changes.
+    - Verify build-time synchronization performs build, rebase, and rebuild.
+      - Initial CloudVision state observed by ``deploy_to_cv``: ``NeedsBuild=True``, ``NeedsRebase=False``.
+      - After mainline change, CloudVision has ``NeedsBuild=True``, while ``NeedsRebase`` may be ``True`` or ``False`` depending on
+        the environment. ``deploy_to_cv`` has not observed the change.
+      - After build, ``deploy_to_cv`` observes response status ``SUCCESS``, code ``UNSPECIFIED``, ``NeedsBuild=False``, ``NeedsRebase=True``.
+      - After rebase, ``deploy_to_cv`` observes response status ``SUCCESS``, code ``UNSPECIFIED``, ``NeedsBuild=True``, ``NeedsRebase=False``.
+      - After rebuild, ``deploy_to_cv`` observes response status ``SUCCESS``, code ``UNSPECIFIED``, ``NeedsBuild=False``, ``NeedsRebase=False``.
+    - Verify submit-time synchronization performs submit, rebase, rebuild, and submit retry.
+      - Initial CloudVision state observed by ``deploy_to_cv``: ``NeedsBuild=False``, ``NeedsRebase=False``.
+      - After mainline change, CloudVision has ``NeedsBuild=False``, while ``NeedsRebase`` may be ``True`` or ``False`` depending on
+        the environment. ``deploy_to_cv`` has not observed the change.
+      - After submit, ``deploy_to_cv`` observes response status ``FAIL``, code ``SYNCHRONIZATION_REQUIRED``, and ``NeedsRebase=True``.
+      - After rebase, ``deploy_to_cv`` observes response status ``SUCCESS``, code ``UNSPECIFIED``, ``NeedsBuild=True``, ``NeedsRebase=False``.
+      - After rebuild, ``deploy_to_cv`` observes response status ``SUCCESS``, code ``UNSPECIFIED``, ``NeedsBuild=False``, ``NeedsRebase=False``.
+      - After submit retry, ``deploy_to_cv`` observes response status ``SUCCESS``, code ``UNSPECIFIED``, and the submitted Workspace.
+    - Verify the API responses, event sequence, and final tag values.
+    - Restore and verify the baseline tag values.
+    """
+    preferred_live_test_devices = ("avd-ci-core1", "avd-ci-leaf1", "dc1-leaf1a")
+    tag_labels = (
+        "avd-live-ws-sync-test",
+        "avd-live-ws-sync-pre-build-change",
+        "avd-live-ws-sync-pre-submit-change",
+    )
+    cloudvision = CloudVision(
+        servers=targeted_cv["cv_server"],
+        token=targeted_cv["cv_access_token"],
+        username=None,
+        password=None,
+        verify_certs=verify_certs,
+        proxy_host=None,
+        proxy_port=None,
+        proxy_username=None,
+        proxy_password=None,
+    )
+
+    async def _select_live_test_device() -> str:
+        """Skip unsupported CloudVision versions and select a preferred inventory device or the first returned device."""
+        async with CVClient(servers=targeted_cv["cv_server"], token=targeted_cv["cv_access_token"], verify_certs=verify_certs) as cv_client:
+            cv_version = cv_client._cv_version
+            assert cv_version is not None, f"Failed to determine the CloudVision version on {targeted_cv['cv_server']}"
+            if cv_version < CvVersion("2026.2.0"):
+                pytest.skip(f"Workspace synchronization requires CloudVision 2026.2.0 or later. Server {targeted_cv['cv_server']} is running {cv_version}")
+            inventory_devices = await cv_client.get_inventory_devices()
+
+        assert inventory_devices, f"No devices were returned from the CloudVision inventory on {targeted_cv['cv_server']}"
+        inventory_hostnames = {device.hostname for device in inventory_devices}
+        if preferred_device := next((device for device in preferred_live_test_devices if device in inventory_hostnames), None):
+            LOGGER.debug("Selected preferred live-test device '%s' for CloudVision server '%s'", preferred_device, targeted_cv["cv_server"])
+            return preferred_device
+
+        fallback_device = inventory_devices[0].hostname
+        assert fallback_device is not None, f"The first inventory device on {targeted_cv['cv_server']} has no hostname"
+        LOGGER.debug("Selected fallback live-test device '%s' for CloudVision server '%s'", fallback_device, targeted_cv["cv_server"])
+        return fallback_device
+
+    live_test_device = await _select_live_test_device()
+    workspace_api_trace: list[tuple[str, str, str, object | None]] = []
+    # Correlate each WUT request ID with the operation that produced it.
+    wut_request_operations: dict[str, Literal["build", "rebase", "submit"]] = {}
+    # Store terminal WUT responses by operation for synchronization-specific assertions.
+    wut_terminal_responses: dict[str, list[tuple[Response, Workspace]]] = {"build": [], "rebase": [], "submit": []}
+
+    async def _deploy_device_tags(
+        workspace_id: str,
+        workspace_name: str,
+        tags: dict[str, str],
+        requested_state: Literal["pending", "submitted"],
+        max_sync_retries: int = 5,
+    ) -> DeployToCvResult:
+        """Deploy device tags for the live test device through the deploy_to_cv workflow."""
+        device = CVDevice(avd_device=AvdDevice(hostname=live_test_device))
+        return await deploy_to_cv(
+            cloudvision=cloudvision,
+            workspace=CVWorkspace(
+                avd_workspace=AvdWorkspace(
+                    id=workspace_id,
+                    name=workspace_name,
+                    requested_state=requested_state,
+                    force=True,
+                    max_sync_retries=max_sync_retries,
+                )
+            ),
+            device_deployments=[
+                CVDeviceDeployment(
+                    device=device,
+                    device_tags=[CVDeviceTag(label=label, value=value, device=device) for label, value in tags.items()],
+                )
+            ],
+            strict_tags=False,
+        )
+
+    def _assert_successful_result(result: DeployToCvResult, expected_state: str, failure_context: str = "Workspace deployment failed") -> None:
+        """Assert that a deployment succeeded and reached the expected Workspace state."""
+        failure_message = f"{failure_context}. Errors: {result.errors}. Workspace API trace: {workspace_api_trace}"
+        assert not result.failed, failure_message
+        assert result.errors == [], failure_message
+        assert result.workspace is not None, failure_message
+        assert result.workspace.state == expected_state, failure_message
+
+    async def _get_mainline_test_tag_values(device_id: str) -> set[tuple[str, str]]:
+        """Return the test-owned tag label and value pairs assigned to a device on mainline."""
+        async with CVClient(servers=targeted_cv["cv_server"], token=targeted_cv["cv_access_token"], verify_certs=verify_certs) as cv_client:
+            assignments = {
+                CVTagAssignment.from_api(assignment)
+                for assignment in await cv_client.get_tag_assignments(workspace_id="", element_type="device", creator_type="user")
+            }
+        return {(assignment.label, assignment.value) for assignment in assignments if assignment.label in tag_labels and assignment.device_id == device_id}
+
+    baseline_workspace_id = f"ws-avd-live-sync-baseline-{workspace_sync_run_id}"
+    test_workspace_id = f"ws-avd-live-sync-test-{workspace_sync_run_id}"
+    cleanup_workspace_id = f"ws-avd-live-sync-cleanup-{workspace_sync_run_id}"
+    baseline_device_id: str | None = None
+    test_tag = {tag_labels[0]: "test"}
+    # Track the WUT (Workspace Under Test) lifecycle to verify synchronization during both build and submit.
+    events: list[str] = []
+    # Track how many mainline changes have been injected for each synchronization phase.
+    injected_change_counts = {"build": 0, "submit": 0}
+
+    async def _inject_mainline_change(phase: Literal["build", "submit"]) -> None:
+        """Submit one numbered tag change to mainline before a WUT build or submit attempt."""
+        injected_change_counts[phase] += 1
+        attempt = injected_change_counts[phase]
+        tag_label = tag_labels[1] if phase == "build" else tag_labels[2]
+        change_result = await _deploy_device_tags(
+            workspace_id=f"ws-avd-live-sync-pre-{phase}-change-{attempt}-{workspace_sync_run_id}",
+            workspace_name=f"AVD live WS sync pre-{phase} change {attempt} {workspace_sync_run_id}",
+            tags={tag_label: f"attempt-{attempt}"},
+            requested_state="submitted",
+        )
+        _assert_successful_result(change_result, "submitted")
+        events.append(f"mainline-change-before-{phase}-{attempt}")
+
+    original_build_workspace = CVClient.build_workspace
+    original_rebase_workspace = CVClient.rebase_workspace
+    original_submit_workspace = CVClient.submit_workspace
+    original_wait_for_workspace_response = CVClient.wait_for_workspace_response
+
+    async def tracked_build_workspace(self: CVClient, workspace_id: str, timeout: float = DEFAULT_API_TIMEOUT) -> WorkspaceConfig:
+        """Inject requested pre-build changes and call build_workspace while recording the interaction."""
+        if workspace_id == test_workspace_id:
+            if injected_change_counts["build"] < pre_build_change_count:
+                await _inject_mainline_change("build")
+            events.append("build")
+        workspace_api_trace.append(("build", "request", workspace_id, None))
+        reply = await original_build_workspace(self, workspace_id, timeout)
+        workspace_api_trace.append(("build", "reply", workspace_id, reply))
+        if workspace_id == test_workspace_id:
+            request_id = reply.request_params.request_id
+            assert request_id is not None, f"Build reply did not include a request ID. Workspace API trace: {workspace_api_trace}"
+            wut_request_operations[request_id] = "build"
+        return reply
+
+    async def tracked_rebase_workspace(self: CVClient, workspace_id: str, timeout: float = DEFAULT_API_TIMEOUT) -> WorkspaceConfig:
+        """Call rebase_workspace while recording its request, reply, and Test Workspace event."""
+        workspace_api_trace.append(("rebase", "request", workspace_id, None))
+        if workspace_id == test_workspace_id:
+            events.append("rebase")
+        reply = await original_rebase_workspace(self, workspace_id, timeout)
+        workspace_api_trace.append(("rebase", "reply", workspace_id, reply))
+        if workspace_id == test_workspace_id:
+            request_id = reply.request_params.request_id
+            assert request_id is not None, f"Rebase reply did not include a request ID. Workspace API trace: {workspace_api_trace}"
+            wut_request_operations[request_id] = "rebase"
+        return reply
+
+    async def submit_workspace_with_mainline_change(
+        self: CVClient, workspace_id: str, force: bool = False, timeout: float = DEFAULT_API_TIMEOUT
+    ) -> WorkspaceConfig:
+        """Inject requested pre-submit mainline changes and call submit_workspace while recording the interaction."""
+        if workspace_id == test_workspace_id:
+            if injected_change_counts["submit"] < pre_submit_change_count:
+                await _inject_mainline_change("submit")
+            events.append("submit")
+        workspace_api_trace.append(("submit", "request", workspace_id, {"force": force}))
+        reply = await original_submit_workspace(self, workspace_id, force, timeout)
+        workspace_api_trace.append(("submit", "reply", workspace_id, reply))
+        if workspace_id == test_workspace_id:
+            request_id = reply.request_params.request_id
+            assert request_id is not None, f"Submit reply did not include a request ID. Workspace API trace: {workspace_api_trace}"
+            wut_request_operations[request_id] = "submit"
+        return reply
+
+    async def tracked_wait_for_workspace_response(
+        self: CVClient,
+        workspace_id: str,
+        request_id: str,
+        timeout: float = 3600.0,
+    ) -> tuple[Response, Workspace]:
+        """Call wait_for_workspace_response while recording and classifying its request and terminal reply."""
+        workspace_api_trace.append(("wait_for_response", "request", workspace_id, {"request_id": request_id}))
+        reply = await original_wait_for_workspace_response(self, workspace_id, request_id, timeout)
+        workspace_api_trace.append(("wait_for_response", "reply", workspace_id, reply))
+        if workspace_id == test_workspace_id:
+            wut_terminal_responses[wut_request_operations[request_id]].append(reply)
+        return reply
+
+    try:
+        with (
+            patch.object(CVClient, "build_workspace", tracked_build_workspace),
+            patch.object(CVClient, "rebase_workspace", tracked_rebase_workspace),
+            patch.object(CVClient, "submit_workspace", submit_workspace_with_mainline_change),
+            patch.object(CVClient, "wait_for_workspace_response", tracked_wait_for_workspace_response),
+        ):
+            # Enforce correct initial state for the test (device is associated with cleanup tags)
+            baseline_result = await _deploy_device_tags(
+                workspace_id=baseline_workspace_id,
+                workspace_name=f"AVD live WS sync baseline {workspace_sync_run_id}",
+                tags=dict.fromkeys(tag_labels, "cleanup"),
+                requested_state="submitted",
+            )
+            _assert_successful_result(baseline_result, "submitted")
+            baseline_tag = baseline_result.deployed_device_tags[0]
+            assert baseline_tag.device is not None, workspace_api_trace
+            assert baseline_tag.device.serial_number is not None, workspace_api_trace
+            baseline_device_id = baseline_tag.device.serial_number
+            assert await _get_mainline_test_tag_values(baseline_device_id) == {(label, "cleanup") for label in tag_labels}, (
+                f"Failed to enforce cleanup tag values on {live_test_device} before the test. Workspace API trace: {workspace_api_trace}"
+            )
+
+            submitted_result = await _deploy_device_tags(
+                workspace_id=test_workspace_id,
+                workspace_name=f"AVD live WS sync test {workspace_sync_run_id}",
+                tags=test_tag,
+                requested_state="submitted",
+                max_sync_retries=pre_build_change_count + pre_submit_change_count,
+            )
+            _assert_successful_result(submitted_result, "submitted")
+            deployed_test_tag = submitted_result.deployed_device_tags[0]
+            assert deployed_test_tag.device is not None
+            assert deployed_test_tag.device.serial_number is not None
+            device_id = deployed_test_tag.device.serial_number
+
+        expected_events: list[str] = []
+        for attempt in range(1, pre_build_change_count + 1):
+            expected_events.extend([f"mainline-change-before-build-{attempt}", "build", "rebase"])
+        expected_events.append("build")
+        for attempt in range(1, pre_submit_change_count + 1):
+            expected_events.extend([f"mainline-change-before-submit-{attempt}", "submit", "rebase", "build"])
+        expected_events.append("submit")
+        assert events == expected_events, f"Unexpected event sequence. Workspace API trace: {workspace_api_trace}"
+
+        build_responses = wut_terminal_responses["build"]
+        # Build after each pre-build chamge + final build + build after each pre-submit build
+        assert len(build_responses) == pre_build_change_count + 1 + pre_submit_change_count, workspace_api_trace
+        # Attempt to build WS requiring SYNC returns `response.status == ResponseStatus.SUCCESS` and `workspace.needs_rebase == True`
+        assert all(response.status == ResponseStatus.SUCCESS and response.code == ResponseCode.UNSPECIFIED for response, _workspace in build_responses), (
+            workspace_api_trace
+        )
+        assert all(workspace.needs_build is False for _response, workspace in build_responses), workspace_api_trace
+        assert [workspace.needs_rebase for _response, workspace in build_responses] == [True] * pre_build_change_count + [False] * (
+            pre_submit_change_count + 1
+        ), workspace_api_trace
+
+        rebase_responses = wut_terminal_responses["rebase"]
+        # Rebase after each pre-build change and each pre-submit change
+        assert len(rebase_responses) == pre_build_change_count + pre_submit_change_count, workspace_api_trace
+        assert all(
+            response.status == ResponseStatus.SUCCESS
+            and response.code == ResponseCode.UNSPECIFIED
+            and workspace.needs_build is True
+            and workspace.needs_rebase is False
+            for response, workspace in rebase_responses
+        ), workspace_api_trace
+
+        submit_responses = wut_terminal_responses["submit"]
+        # Submit per every pre-submit change + final submit
+        assert len(submit_responses) == 1 + pre_submit_change_count, workspace_api_trace
+        # Attempt to submit WS requiring SYNC returns `response.status == ResponseStatus.FAIL`` and `response.code == ResponseCode.SYNCHRONIZATION_REQUIRED`
+        assert all(
+            response.status == ResponseStatus.FAIL
+            and response.code == ResponseCode.SYNCHRONIZATION_REQUIRED
+            and workspace.needs_build is False
+            and workspace.needs_rebase is True
+            for response, workspace in submit_responses[:-1]
+        ), workspace_api_trace
+        # Final submit simply returns SUCCESS
+        final_submit_response, final_submit_workspace = submit_responses[-1]
+        assert final_submit_response.status == ResponseStatus.SUCCESS, workspace_api_trace
+        assert final_submit_response.code == ResponseCode.UNSPECIFIED, workspace_api_trace
+        assert final_submit_workspace.needs_build is False, workspace_api_trace
+        assert final_submit_workspace.needs_rebase is False, workspace_api_trace
+
+        expected_tag_values = {
+            (tag_labels[0], "test"),
+            (tag_labels[1], f"attempt-{pre_build_change_count}" if pre_build_change_count else "cleanup"),
+            (tag_labels[2], f"attempt-{pre_submit_change_count}" if pre_submit_change_count else "cleanup"),
+        }
+        assert await _get_mainline_test_tag_values(device_id) == expected_tag_values
+    finally:
+        if any(injected_change_counts.values()):
+            cleanup_result = await _deploy_device_tags(
+                workspace_id=cleanup_workspace_id,
+                workspace_name=f"AVD live WS sync cleanup {workspace_sync_run_id}",
+                tags=dict.fromkeys(tag_labels, "cleanup"),
+                requested_state="submitted",
+            )
+            _assert_successful_result(
+                cleanup_result,
+                "submitted",
+                failure_context=(
+                    f"Failed to reset test tag assignments on {live_test_device}. Test values may remain assigned to labels {tag_labels} on mainline"
+                ),
+            )
+            assert baseline_device_id is not None, f"Failed to identify {live_test_device} before verifying cleanup. Workspace API trace: {workspace_api_trace}"
+            assert await _get_mainline_test_tag_values(baseline_device_id) == {(label, "cleanup") for label in tag_labels}, (
+                f"Failed to verify cleanup tag values on {live_test_device}. Workspace API trace: {workspace_api_trace}"
+            )
