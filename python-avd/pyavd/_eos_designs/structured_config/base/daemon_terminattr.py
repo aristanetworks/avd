@@ -30,7 +30,13 @@ class DaemonTerminattrMixin(Protocol):
         flow_tracking_settings = self.inputs.flow_tracking_settings
         first_tracker_exported_to_cloudvision = next((tracker.name for tracker in flow_tracking_settings.trackers if tracker.export_to_cloudvision), None)
 
-        if not (cv_settings := self.inputs.cv_settings):
+        cv_settings = self.inputs.cv_settings
+
+        # In Digital Twin mode, digital_twin.fabric.cv_settings overrides the global cv_settings.
+        if self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.cv_settings:
+            cv_settings = self.inputs.digital_twin.fabric.cv_settings._cast_as(EosDesigns.CvSettings)
+
+        if not cv_settings:
             self._validate_missing_cv_settings(first_tracker_exported_to_cloudvision)
             return
 

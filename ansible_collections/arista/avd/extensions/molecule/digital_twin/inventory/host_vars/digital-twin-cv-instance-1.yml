@@ -1,0 +1,29 @@
+---
+# Test that digital_twin.fabric.cv_settings overrides global cv_settings for daemon_terminattr in Digital Twin mode.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-cv-instance-1
+      id: 1
+      mgmt_ip: 192.168.1.10/32
+      mgmt_gateway: 192.168.1.254
+
+digital_twin:
+  environment: act
+  fabric:
+    cv_settings:
+      onprem_clusters:
+        - name: dev
+          servers:
+            - name: 10.20.30.40
+
+cv_settings:
+  onprem_clusters:
+    - name: production
+      servers:
+        - name: 192.168.200.11
+
+ntp_settings:
+  servers:
+    - name: 0.pool.ntp.org
