@@ -126,6 +126,9 @@ validation_profiles:
     interfaces:
       errdisable:
         only_avd_interfaces: true
+    bgp:
+      check_tcp_queues: false
+      minimum_established_time: 10000
   - name: profile2
     logging:
       validate_no_errors_period: 1
