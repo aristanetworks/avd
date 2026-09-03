@@ -12,13 +12,9 @@ loopback_interfaces:
   ip_address: 192.168.250.1/32
   isis_enable: CORE
   isis_passive: true
-  node_segment:
-    ipv4_index: 1
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-mpls:
-  ip: true
 router_bfd:
   multihop:
     interval: 300
@@ -35,6 +31,8 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+    route_reflector_preserve_attributes:
+      enabled: true
   peer_groups:
   - name: RR-OVERLAY-PEERS
     metadata:
@@ -55,6 +53,8 @@ router_bgp:
     peer_groups:
     - name: RR-OVERLAY-PEERS
       activate: true
+    next_hop:
+      resolution_disabled: true
 router_isis:
   instance: CORE
   net: 49.0001.1921.6825.0001.00
@@ -64,9 +64,6 @@ router_isis:
   address_family_ipv4:
     enabled: true
     maximum_paths: 4
-  segment_routing_mpls:
-    enabled: true
-    router_id: 192.168.250.1
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

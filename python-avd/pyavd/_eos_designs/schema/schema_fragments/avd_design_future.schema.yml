@@ -102,6 +102,14 @@ keys:
           Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
           since this combination is not supported.
         default: false
+      remove_mpls_lsr_dependency_for_mpls_overlay_role_server:
+        type: bool
+        description: |-
+          Available from AVD 6.5.0.
+          For iBGP Route Reflectors using `mpls_overlay_role: server` with `mpls_lsr: false`,
+          configure `bgp route-reflector preserve-attributes` and
+          `next-hop resolution disabled` under enabled EVPN and/or VPN address families.
+        default: false
       remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool
         description: |-
