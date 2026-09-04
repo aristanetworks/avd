@@ -1,0 +1,47 @@
+---
+- name: Ensure warning input directory exists
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/tmp_validate_inputs_warning_configuration_input"
+    state: directory
+    mode: "0755"
+
+- name: Write warning input file
+  ansible.builtin.copy:
+    dest: "{{ actual_output_dir }}/tmp_validate_inputs_warning_configuration_input/testhost.json"
+    mode: "0644"
+    content: >-
+      {"fabric_name":"testgroup","type":"l2leaf","hosts":["testhost"],"hostname":"testhost"}
+
+- name: Validate avd_design inputs with warn_eos_config_keys enabled
+  vars:
+    fabric_name: testgroup
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    input_dir: "{{ actual_output_dir }}/tmp_validate_inputs_warning_configuration_input"
+    input_suffix: json
+    read_from_input_dir: true
+    validation_configuration:
+      warn_eos_config_keys: true
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_validation_configuration"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+  register: result
+
+- name: Validate result
+  when: ansible_version.major > 2 or (ansible_version.major == 2 and ansible_version.minor >= 19)
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.warnings | default([]) == [expected_warning]
+  vars:
+    expected_warning: >-
+      [testhost]: The EOS Config input key 'hostname' is present in the input to 'eos_designs' and will be ignored.
+      To address this, use the equivalent AVD Design input model if available or use custom_structured_configuration.
+      See https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html#using-eos-config-eos_cli_config_gen-data-models-when-running-eos_designs for details.
+
+- name: Validate result on ansible-core < 2.19
+  when: ansible_version.major == 2 and ansible_version.minor < 19
+  ansible.builtin.assert:
+    that:
+      - result is success
