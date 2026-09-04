@@ -7,11 +7,11 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv4_acls</samp>](## "ipv4_acls") | List, items: Dictionary |  |  |  | IPv4 extended access-lists supporting substitution on certain fields.<br>These access-lists can be referenced under node settings `l3_interfaces`, or using `dot1x.authentication_failure.allow_access_list` under connected endpoints,<br>network ports, and port profiles. They will only be configured on devices where they are in use.<br><br>The substitution is useful when assigning the same access-list on multiple interfaces,<br>but where certain fields require unique values like the "interface_ip" or "peer_ip".<br>When using substitution, the interface name will be appended to the ACL name. |
+    | [<samp>ipv4_acls</samp>](## "ipv4_acls") | List, items: Dictionary |  |  |  | IPv4 extended access-lists supporting substitution on certain fields.<br>These access-lists can be referenced using `ipv4_acl_in` / `ipv4_acl_out` under network services `svis`, `l3_interfaces`, `l3_port_channels`, or under node type `l3_interfaces` and `l3_port_channels`,<br>or using `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port profiles.<br>They will only be configured on devices where they are in use.<br><br>The substitution is useful when assigning the same access-list on multiple interfaces where certain fields require unique values.<br>When using substitution, the interface name will be appended to the ACL name.<br><br>The "interface_ip" substitution field is resolved per interface type:<br>- For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is used as a fallback.<br>- For network services L3 interfaces: resolved from the node's entry in `ip_addresses`.<br>- For network services L3 port-channels: resolved from `ip_address`.<br>- For node type L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.<br>If the required field is not set, the substitution will fail with an error.<br><br>The "peer_ip" substitution field is resolved per interface type:<br>- For SVIs: not supported. Substitution will fail with an error if used.<br>- For network services L3 interfaces and L3 port-channels: not supported. Substitution will fail with an error if used.<br>- For node type L3 interfaces and L3 port-channels: resolved from `peer_ip`.<br>If `peer_ip` is not set on the interface, the substitution will fail with an error. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv4_acls.[].name") | String | Required, Unique |  |  | Access-list name.<br>When using substitution for any fields, the interface name will be appended to the ACL name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ipv4_acls.[].entries") | List, items: Dictionary | Required |  |  | ACL Entries. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "ipv4_acls.[].entries.[].source") | String |  |  |  | This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.<br>Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".<br>"<ip>" without a mask means host.<br>Required except for remarks. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "ipv4_acls.[].entries.[].destination") | String |  |  |  | This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.<br>Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".<br>"<ip>" without a mask means host.<br>Required except for remarks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "ipv4_acls.[].entries.[].source") | String |  |  |  | This field supports substitution of the fields "interface_ip" and "peer_ip". "peer_ip" is only supported for node type L3 interfaces and L3 port-channels; it is not supported for SVIs or network services L3 interfaces and L3 port-channels.<br>Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".<br>"<ip>" without a mask means host.<br>Required except for remarks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "ipv4_acls.[].entries.[].destination") | String |  |  |  | This field supports substitution of the fields "interface_ip" and "peer_ip". "peer_ip" is only supported for node type L3 interfaces and L3 port-channels, it is not supported for SVIs or network services L3 interfaces and L3 port-channels.<br>Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".<br>"<ip>" without a mask means host.<br>Required except for remarks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sequence</samp>](## "ipv4_acls.[].entries.[].sequence") | Integer |  |  |  | ACL entry sequence number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remark</samp>](## "ipv4_acls.[].entries.[].remark") | String |  |  |  | Comment up to 100 characters.<br>If remark is defined, other keys in the ACL entry will be ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "ipv4_acls.[].entries.[].action") | String |  |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> | ACL action.<br>Required except for remarks. |
@@ -46,12 +46,25 @@
 
     ```yaml
     # IPv4 extended access-lists supporting substitution on certain fields.
-    # These access-lists can be referenced under node settings `l3_interfaces`, or using `dot1x.authentication_failure.allow_access_list` under connected endpoints,
-    # network ports, and port profiles. They will only be configured on devices where they are in use.
+    # These access-lists can be referenced using `ipv4_acl_in` / `ipv4_acl_out` under network services `svis`, `l3_interfaces`, `l3_port_channels`, or under node type `l3_interfaces` and `l3_port_channels`,
+    # or using `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port profiles.
+    # They will only be configured on devices where they are in use.
     #
-    # The substitution is useful when assigning the same access-list on multiple interfaces,
-    # but where certain fields require unique values like the "interface_ip" or "peer_ip".
+    # The substitution is useful when assigning the same access-list on multiple interfaces where certain fields require unique values.
     # When using substitution, the interface name will be appended to the ACL name.
+    #
+    # The "interface_ip" substitution field is resolved per interface type:
+    # - For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
+    # - For network services L3 interfaces: resolved from the node's entry in `ip_addresses`.
+    # - For network services L3 port-channels: resolved from `ip_address`.
+    # - For node type L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
+    # If the required field is not set, the substitution will fail with an error.
+    #
+    # The "peer_ip" substitution field is resolved per interface type:
+    # - For SVIs: not supported. Substitution will fail with an error if used.
+    # - For network services L3 interfaces and L3 port-channels: not supported. Substitution will fail with an error if used.
+    # - For node type L3 interfaces and L3 port-channels: resolved from `peer_ip`.
+    # If `peer_ip` is not set on the interface, the substitution will fail with an error.
     ipv4_acls:
 
         # Access-list name.
@@ -61,13 +74,13 @@
         # ACL Entries.
         entries: # required
 
-            # This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+            # This field supports substitution of the fields "interface_ip" and "peer_ip". "peer_ip" is only supported for node type L3 interfaces and L3 port-channels; it is not supported for SVIs or network services L3 interfaces and L3 port-channels.
             # Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".
             # "<ip>" without a mask means host.
             # Required except for remarks.
           - source: <str>
 
-            # This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+            # This field supports substitution of the fields "interface_ip" and "peer_ip". "peer_ip" is only supported for node type L3 interfaces and L3 port-channels, it is not supported for SVIs or network services L3 interfaces and L3 port-channels.
             # Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".
             # "<ip>" without a mask means host.
             # Required except for remarks.

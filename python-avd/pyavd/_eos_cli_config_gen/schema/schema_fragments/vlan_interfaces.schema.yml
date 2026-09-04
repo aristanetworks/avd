@@ -173,6 +173,10 @@ keys:
         ip_nat:
           type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
+          keys:
+            service_profile:
+              type: str
+              description: NAT interface profile.
         dhcp_server_ipv4:
           type: bool
           description: Enable IPv4 DHCP server.
