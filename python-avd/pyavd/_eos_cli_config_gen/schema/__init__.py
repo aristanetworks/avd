@@ -44517,6 +44517,35 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Bgp(AvdModel):
             """Subclass of AvdModel."""
 
+            class Convergence(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"slow_peer_time": {"type": int}, "time": {"type": int}}
+                slow_peer_time: int | None
+                """
+                Maximum amount of time to wait in seconds before declaring initial BGP convergence for peers that do
+                not establish session within a reasonable time.
+                """
+                time: int | None
+                """Maximum amount of time to wait in seconds before declaring initial BGP convergence."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, slow_peer_time: int | UndefinedType | None = Undefined, time: int | UndefinedType | None = Undefined) -> None:
+                        """
+                        Convergence.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            slow_peer_time:
+                               Maximum amount of time to wait in seconds before declaring initial BGP convergence for peers that do
+                               not establish session within a reasonable time.
+                            time: Maximum amount of time to wait in seconds before declaring initial BGP convergence.
+
+                        """
+
             class Default(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -44742,6 +44771,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "convergence": {"type": Convergence},
                 "default": {"type": Default},
                 "route_reflector_preserve_attributes": {"type": RouteReflectorPreserveAttributes},
                 "bestpath": {"type": Bestpath},
@@ -44749,6 +44779,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "redistribute_internal": {"type": bool},
                 "labeled_unicast": {"type": LabeledUnicast},
             }
+            convergence: Convergence
+            """Subclass of AvdModel."""
             default: Default
             """Subclass of AvdModel."""
             route_reflector_preserve_attributes: RouteReflectorPreserveAttributes
@@ -44767,6 +44799,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
+                    convergence: Convergence | UndefinedType = Undefined,
                     default: Default | UndefinedType = Undefined,
                     route_reflector_preserve_attributes: RouteReflectorPreserveAttributes | UndefinedType = Undefined,
                     bestpath: Bestpath | UndefinedType = Undefined,
@@ -44781,6 +44814,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        convergence: Subclass of AvdModel.
                         default: Subclass of AvdModel.
                         route_reflector_preserve_attributes: Subclass of AvdModel.
                         bestpath: Subclass of AvdModel.

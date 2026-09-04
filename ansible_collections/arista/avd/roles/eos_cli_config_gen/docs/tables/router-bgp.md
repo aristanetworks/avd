@@ -45,6 +45,9 @@
     | [<samp>&nbsp;&nbsp;bgp_defaults</samp>](## "router_bgp.bgp_defaults") | List, items: String |  |  |  | BGP command as string. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.bgp_defaults.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;bgp</samp>](## "router_bgp.bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;convergence</samp>](## "router_bgp.bgp.convergence") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slow_peer_time</samp>](## "router_bgp.bgp.convergence.slow_peer_time") | Integer |  |  | Min: 1<br>Max: 3600 | Maximum amount of time to wait in seconds before declaring initial BGP convergence for peers that do not establish session within a reasonable time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time</samp>](## "router_bgp.bgp.convergence.time") | Integer |  |  | Min: 1<br>Max: 3600 | Maximum amount of time to wait in seconds before declaring initial BGP convergence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "router_bgp.bgp.default") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_unicast</samp>](## "router_bgp.bgp.default.ipv4_unicast") | Boolean |  |  |  | Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_unicast_transport_ipv6</samp>](## "router_bgp.bgp.default.ipv4_unicast_transport_ipv6") | Boolean |  |  |  | Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False). |
@@ -1779,6 +1782,13 @@
       bgp_defaults:
         - <str>
       bgp:
+        convergence:
+
+          # Maximum amount of time to wait in seconds before declaring initial BGP convergence for peers that do not establish session within a reasonable time.
+          slow_peer_time: <int; 1-3600>
+
+          # Maximum amount of time to wait in seconds before declaring initial BGP convergence.
+          time: <int; 1-3600>
         default:
 
           # Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True).
