@@ -14471,6 +14471,50 @@ keys:
                       min: 1
                       max: 65535
                       description: PIM hello interval in seconds.
+        multicast:
+          type: dict
+          description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix
+            but not combination of both.
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                boundaries:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        required: true
+                        description: Standard ACL name or multicast IP subnet.
+                      out:
+                        type: bool
+                        description: Restrict multicast routing to and from the interface
+                          for group.
+                static:
+                  type: bool
+            ipv6:
+              type: dict
+              keys:
+                boundaries:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        required: true
+                        description: Standard ACL name or multicast IP subnet.
+                      out:
+                        type: bool
+                        default: true
+                        description: Restricts multicast routing to and from the interface.
+                          Must be `true` when set. This key is mandatory on EOS and
+                          is included here to maintain consistency.
+                        required: true
+                static:
+                  type: bool
         service_profile:
           type: str
           description: QOS profile.

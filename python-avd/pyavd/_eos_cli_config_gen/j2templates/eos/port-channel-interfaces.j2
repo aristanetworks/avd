@@ -520,6 +520,24 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.pim.ipv4.bfd is arista.avd.defined(true) %}
    pim ipv4 bfd
 {%     endif %}
+{%     if port_channel_interface.multicast.ipv4 is arista.avd.defined or port_channel_interface.multicast.ipv6 is arista.avd.defined %}
+{%         for boundary in port_channel_interface.multicast.ipv4.boundaries | arista.avd.default([]) %}
+{%             set boundary_cli = "multicast ipv4 boundary " ~ boundary.boundary %}
+{%             if boundary.out is arista.avd.defined(true) %}
+{%                 set boundary_cli = boundary_cli ~ " out" %}
+{%             endif %}
+   {{ boundary_cli }}
+{%         endfor %}
+{%         for boundary in port_channel_interface.multicast.ipv6.boundaries | arista.avd.default([]) %}
+   multicast ipv6 boundary {{ boundary.boundary }} out
+{%         endfor %}
+{%         if port_channel_interface.multicast.ipv4.static is arista.avd.defined(true) %}
+   multicast ipv4 static
+{%         endif %}
+{%         if port_channel_interface.multicast.ipv6.static is arista.avd.defined(true) %}
+   multicast ipv6 static
+{%         endif %}
+{%     endif %}
 {%     if port_channel_interface.switchport.port_security is arista.avd.defined %}
 {%         if port_channel_interface.switchport.port_security.enabled is arista.avd.defined(true) or port_channel_interface.switchport.port_security.violation.mode is arista.avd.defined('shutdown') %}
    switchport port-security

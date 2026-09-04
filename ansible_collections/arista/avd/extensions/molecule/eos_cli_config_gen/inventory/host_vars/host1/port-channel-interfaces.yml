@@ -639,6 +639,19 @@ port_channel_interfaces:
         hello:
           count: 4.5
           interval: 15
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: ACL_MULTICAST_OUTBOUND
+            out: true
+      ipv6:
+        static: true
+        boundaries:
+          - boundary: ff00::/8
+            out: true
+          - boundary: ff01::/16
+            out: true
     ip_proxy_arp: true
     logging:
       event:
@@ -1311,6 +1324,16 @@ port_channel_interfaces:
           valid_lifetime: 400
           preferred_lifetime: 200
           no_autoconfig_flag: true
+    # Multicast boundaries without static flag — ACL (IPv4) + CIDR prefix (IPv6)
+    multicast:
+      ipv4:
+        boundaries:
+          - boundary: ACL_NO_STATIC
+            out: true
+      ipv6:
+        boundaries:
+          - boundary: ff04::/16
+            out: true
 
   - name: Port-Channel302
     description: Legacy IPv6 address and managed config flag
@@ -1319,6 +1342,20 @@ port_channel_interfaces:
       - 2001:db8:302::1/64
     ipv6_nd:
       managed_config_flag: true
+    # Multicast ACL boundaries with mixed case — validates case-sensitive natural_sort (uppercase before lowercase)
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: MulticastBoundaryAcl
+          - boundary: ACL_NO_OUT_FLAG
+      ipv6:
+        static: true
+        boundaries:
+          - boundary: ACL_IPV6_MULTICAST
+            out: true
+          - boundary: MulticastAclIpv6
+            out: true
 
   # Validates that ipv6_nd / ipv6_access_group trigger IPv6 table inclusion without an IPv6 address.
   - name: Port-Channel400
@@ -1330,6 +1367,11 @@ port_channel_interfaces:
       other_config_flag: true
     ipv6_access_group_in: TEST-V6-IN
     ipv6_access_group_out: TEST-V6-OUT
+    multicast:
+      ipv4:
+        static: true
+      ipv6:
+        static: true
 
   - name: Port-Channel303
     description: Traffic Engineering Static Delay Coverage
@@ -1344,3 +1386,16 @@ port_channel_interfaces:
       min_delay_static:
         number: 7
         unit: microseconds
+    # Multicast CIDR prefix boundaries — IPv4 multi-entry (mixed out flags) + IPv6 single entry
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: 224.0.0.0/8
+            out: true
+          - boundary: 224.1.0.0/16
+      ipv6:
+        static: true
+        boundaries:
+          - boundary: ff02::/16
+            out: true

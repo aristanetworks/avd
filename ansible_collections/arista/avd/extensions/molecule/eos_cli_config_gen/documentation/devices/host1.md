@@ -6633,6 +6633,21 @@ interface Ethernet90
 | Port-Channel101 | 111 | - |
 | Port-Channel103 | - | True |
 
+##### Multicast Routing
+
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
+| --------- | ---------- | --------------------- | -------------------- |
+| Port-Channel99 | IPv4 | True | ACL_MULTICAST_OUTBOUND (out) |
+| Port-Channel99 | IPv6 | True | ff00::/8 (out), ff01::/16 (out) |
+| Port-Channel301 | IPv4 | - | ACL_NO_STATIC (out) |
+| Port-Channel301 | IPv6 | - | ff04::/16 (out) |
+| Port-Channel302 | IPv4 | True | MulticastBoundaryAcl, ACL_NO_OUT_FLAG |
+| Port-Channel302 | IPv6 | True | ACL_IPV6_MULTICAST (out), MulticastAclIpv6 (out) |
+| Port-Channel303 | IPv4 | True | 224.0.0.0/8 (out), 224.1.0.0/16 |
+| Port-Channel303 | IPv6 | True | ff02::/16 (out) |
+| Port-Channel400 | IPv4 | True | - |
+| Port-Channel400 | IPv6 | True | - |
+
 ##### VLAN Translations
 
 | Interface | Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
@@ -7071,6 +7086,11 @@ interface Port-Channel99
    pim ipv4 dr-priority 200
    pim ipv4 neighbor filter Test_Filter_PortChannel
    pim ipv4 bfd
+   multicast ipv4 boundary ACL_MULTICAST_OUTBOUND out
+   multicast ipv6 boundary ff00::/8 out
+   multicast ipv6 boundary ff01::/16 out
+   multicast ipv4 static
+   multicast ipv6 static
    no logging event storm-control discards
    vmtracer vmware-esx
 !
@@ -7496,6 +7516,8 @@ interface Port-Channel301
    ipv6 nd managed-config-flag
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:300::/64 400 200 no-autoconfig
+   multicast ipv4 boundary ACL_NO_STATIC out
+   multicast ipv6 boundary ff04::/16 out
    isis enable ISIS_TEST
    isis authentication mode md5 level-1
    isis authentication key 0 <removed> level-1
@@ -7505,11 +7527,22 @@ interface Port-Channel302
    no shutdown
    ipv6 address 2001:db8:302::1/64
    ipv6 nd managed-config-flag
+   multicast ipv4 boundary MulticastBoundaryAcl
+   multicast ipv4 boundary ACL_NO_OUT_FLAG
+   multicast ipv6 boundary ACL_IPV6_MULTICAST out
+   multicast ipv6 boundary MulticastAclIpv6 out
+   multicast ipv4 static
+   multicast ipv6 static
 !
 interface Port-Channel303
    description Traffic Engineering Static Delay Coverage
    no switchport
    ip address 100.64.127.10/31
+   multicast ipv4 boundary 224.0.0.0/8 out
+   multicast ipv4 boundary 224.1.0.0/16
+   multicast ipv6 boundary ff02::/16 out
+   multicast ipv4 static
+   multicast ipv6 static
    traffic-engineering
    traffic-engineering bandwidth 42 percent
    traffic-engineering min-delay static 7 microseconds
@@ -7543,6 +7576,8 @@ interface Port-Channel400
    ipv6 nd other-config-flag
    ipv6 access-group TEST-V6-IN in
    ipv6 access-group TEST-V6-OUT out
+   multicast ipv4 static
+   multicast ipv6 static
 !
 interface Port-Channel667
    description Multiple VRIDs

@@ -37665,6 +37665,141 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Multicast(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                class BoundariesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
+                    boundary: str
+                    """Standard ACL name or multicast IP subnet."""
+                    out: bool | None
+                    """Restrict multicast routing to and from the interface for group."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, boundary: str | UndefinedType = Undefined, out: bool | UndefinedType | None = Undefined) -> None:
+                            """
+                            BoundariesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                boundary: Standard ACL name or multicast IP subnet.
+                                out: Restrict multicast routing to and from the interface for group.
+
+                            """
+
+                class Boundaries(AvdList[BoundariesItem]):
+                    """Subclass of AvdList with `BoundariesItem` items."""
+
+                Boundaries._item_type = BoundariesItem
+
+                _fields: ClassVar[dict] = {"boundaries": {"type": Boundaries}, "static": {"type": bool}}
+                boundaries: Boundaries
+                """Subclass of AvdList with `BoundariesItem` items."""
+                static: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, boundaries: Boundaries | UndefinedType = Undefined, static: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            boundaries: Subclass of AvdList with `BoundariesItem` items.
+                            static: static
+
+                        """
+
+            class Ipv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                class BoundariesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool, "default": True}}
+                    boundary: str
+                    """Standard ACL name or multicast IP subnet."""
+                    out: bool
+                    """
+                    Restricts multicast routing to and from the interface. Must be `true` when set. This key is
+                    mandatory on EOS and is included here to maintain consistency.
+
+                    Default value: `True`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, boundary: str | UndefinedType = Undefined, out: bool | UndefinedType = Undefined) -> None:
+                            """
+                            BoundariesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                boundary: Standard ACL name or multicast IP subnet.
+                                out:
+                                   Restricts multicast routing to and from the interface. Must be `true` when set. This key is
+                                   mandatory on EOS and is included here to maintain consistency.
+
+                            """
+
+                class Boundaries(AvdList[BoundariesItem]):
+                    """Subclass of AvdList with `BoundariesItem` items."""
+
+                Boundaries._item_type = BoundariesItem
+
+                _fields: ClassVar[dict] = {"boundaries": {"type": Boundaries}, "static": {"type": bool}}
+                boundaries: Boundaries
+                """Subclass of AvdList with `BoundariesItem` items."""
+                static: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, boundaries: Boundaries | UndefinedType = Undefined, static: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Ipv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            boundaries: Subclass of AvdList with `BoundariesItem` items.
+                            static: static
+
+                        """
+
+            _fields: ClassVar[dict] = {"ipv4": {"type": Ipv4}, "ipv6": {"type": Ipv6}}
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+            ipv6: Ipv6
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ipv4: Ipv4 | UndefinedType = Undefined, ipv6: Ipv6 | UndefinedType = Undefined) -> None:
+                    """
+                    Multicast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4: Subclass of AvdModel.
+                        ipv6: Subclass of AvdModel.
+
+                    """
+
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
         OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
@@ -40017,6 +40152,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "mac_access_group_in": {"type": str},
             "mac_access_group_out": {"type": str},
             "pim": {"type": Pim},
+            "multicast": {"type": Multicast},
             "service_profile": {"type": str},
             "ospf_network_point_to_point": {"type": bool},
             "ospf_area": {"type": str},
@@ -40181,6 +40317,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """MAC access list name."""
         pim: Pim
         """Subclass of AvdModel."""
+        multicast: Multicast
+        """
+        Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+        both.
+
+        Subclass of AvdModel.
+        """
         service_profile: str | None
         """QOS profile."""
         ospf_network_point_to_point: bool | None
@@ -40299,6 +40442,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 mac_access_group_in: str | UndefinedType | None = Undefined,
                 mac_access_group_out: str | UndefinedType | None = Undefined,
                 pim: Pim | UndefinedType = Undefined,
+                multicast: Multicast | UndefinedType = Undefined,
                 service_profile: str | UndefinedType | None = Undefined,
                 ospf_network_point_to_point: bool | UndefinedType | None = Undefined,
                 ospf_area: str | UndefinedType | None = Undefined,
@@ -40413,6 +40557,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     mac_access_group_in: MAC access list name.
                     mac_access_group_out: MAC access list name.
                     pim: Subclass of AvdModel.
+                    multicast:
+                       Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+                       both.
+
+                       Subclass of AvdModel.
                     service_profile: QOS profile.
                     ospf_network_point_to_point: ospf_network_point_to_point
                     ospf_area: ospf_area
