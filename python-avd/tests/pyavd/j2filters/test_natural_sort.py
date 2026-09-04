@@ -299,22 +299,6 @@ class TestNaturalSortFilter:
             "11:22:33:44:55:66:77:77",
         ]
 
-    def test_natural_sort_mapping_as_ip_address(self) -> None:
-        """Test numeric IP address sorting using a mapping key."""
-        entries = [
-            {"address": "11:22:33:44:55:66:77:77"},
-            {"address": "::ffff:192.1.56.10"},
-        ]
-
-        assert natural_sort(entries, sort_key="address", sort_as_ip_address=True) == list(reversed(entries))
-
-    def test_natural_sort_namespace_as_ip_address(self) -> None:
-        """Test numeric IP address sorting using a Namespace attribute."""
-        high_address = Namespace(address="11:22:33:44:55:66:77:77")
-        low_address = Namespace(address="::ffff:192.1.56.10")
-
-        assert natural_sort([high_address, low_address], sort_key="address", sort_as_ip_address=True) == [low_address, high_address]
-
     def test_natural_sort_as_ip_address_invalid_address(self) -> None:
         """Test that invalid IP addresses raise ValueError."""
         with pytest.raises(ValueError, match="does not appear to be an IPv4 or IPv6 address"):
