@@ -29,13 +29,19 @@
   register: result
 
 - name: Validate result
+  when: ansible_version.major > 2 or (ansible_version.major == 2 and ansible_version.minor >= 19)
   ansible.builtin.assert:
     that:
       - result is success
-      - result.warnings is defined
-      - result.warnings == [expected_warning]
+      - result.warnings | default([]) == [expected_warning]
   vars:
     expected_warning: >-
       [testhost]: The EOS Config input key 'hostname' is present in the input to 'eos_designs' and will be ignored.
       To address this, use the equivalent AVD Design input model if available or use custom_structured_configuration.
       See https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html#using-eos-config-eos_cli_config_gen-data-models-when-running-eos_designs for details.
+
+- name: Validate result on ansible-core < 2.19
+  when: ansible_version.major == 2 and ansible_version.minor < 19
+  ansible.builtin.assert:
+    that:
+      - result is success
