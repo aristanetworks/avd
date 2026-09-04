@@ -1,4 +1,6 @@
 ---
+fabric_name: FABRIC_PORT_PROFILES_CIRCULAR_REFERENCE
+
 avd_design_future:
   allow_infinite_profile_inheritance: true
 

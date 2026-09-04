@@ -288,6 +288,13 @@
       ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
 - name: Converge Negative tests for 'eos_designs_facts'
+  hosts: FABRIC_PORT_PROFILES_CIRCULAR_REFERENCE
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for 'eos_designs_facts'
   hosts: FABRIC_UNDERLAY_ROUTER_WITH_L2_ETHERNET_UPLINK
   connection: local
   tasks:
