@@ -60,6 +60,11 @@ options:
     type: bool
     default: true
     version_added: "5.0.0"
+  sort_as_ip_address:
+    description: When true, values are parsed and sorted as IP addresses instead of using natural sorting. IPv4 addresses are sorted before IPv6 addresses.
+    type: bool
+    default: false
+    version_added: "6.5.0"
 """
 
 EXAMPLES = r"""
@@ -67,6 +72,7 @@ EXAMPLES = r"""
 sorted_list: "{{ ['test19', 'test9'] | natural_sort }}" # -> ["test9", "test19"]
 sorted_keys: "{{ {'test19': 'value', 'test9': 'value'} | natural_sort }}" # -> ["test9", "test19"]
 sorted_on_name_key: "{{ [{'name': 'test19'}, {'name': 'test9'}] | natural_sort('name') }}" # -> [{"name": "test9"}, {"name": "test19"}]
+sorted_ip_addresses: "{{ ['192.0.2.10', '192.0.2.2'] | natural_sort(sort_as_ip_address=true) }}" # -> ["192.0.2.2", "192.0.2.10"]
 empty_list_1: "{{ none | natural_sort }}" # -> []
 empty_list_2: "{{ some_undefined_var | natural_sort }}" # -> []
 """

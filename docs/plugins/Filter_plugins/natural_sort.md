@@ -31,6 +31,7 @@ The filter will return an empty list if the value parsed to `arista.avd.natural_
 | <samp>sort_key</samp> | string | optional | None | - | Key to sort on when sorting a list of dictionaries |
 | <samp>strict</samp> | bool | optional | True | - | When `sort_key` is set, setting strict to true will trigger an exception if the `sort_key` is missing in any items in the input. |
 | <samp>ignore_case</samp> | bool | optional | True | - | When true, strings are coerced to lower case before being compared. |
+| <samp>sort_as_ip_address</samp> | bool | optional | False | - | When true, values are parsed and sorted as IP addresses instead of using natural sorting. IPv4 addresses are sorted before IPv6 addresses. |
 
 ## Examples
 
@@ -39,6 +40,7 @@ The filter will return an empty list if the value parsed to `arista.avd.natural_
 sorted_list: "{{ ['test19', 'test9'] | natural_sort }}" # -> ["test9", "test19"]
 sorted_keys: "{{ {'test19': 'value', 'test9': 'value'} | natural_sort }}" # -> ["test9", "test19"]
 sorted_on_name_key: "{{ [{'name': 'test19'}, {'name': 'test9'}] | natural_sort('name') }}" # -> [{"name": "test9"}, {"name": "test19"}]
+sorted_ip_addresses: "{{ ['192.0.2.10', '192.0.2.2'] | natural_sort(sort_as_ip_address=true) }}" # -> ["192.0.2.2", "192.0.2.10"]
 empty_list_1: "{{ none | natural_sort }}" # -> []
 empty_list_2: "{{ some_undefined_var | natural_sort }}" # -> []
 ```

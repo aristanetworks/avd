@@ -287,6 +287,23 @@ class TestNaturalSortFilter:
         assert resp == [n2, n3, n1]
         assert n2.counters_per_entry is False
 
+    def test_natural_sort_as_ip_address(self) -> None:
+        """Test numeric sorting of IPv4 and IPv6 addresses."""
+        addresses = ["11:22:33:44:55:66:77:77", "::ffff:192.1.56.10", "::1", "192.0.2.10", "192.0.2.2"]
+
+        assert natural_sort(addresses, sort_as_ip_address=True) == [
+            "192.0.2.2",
+            "192.0.2.10",
+            "::1",
+            "::ffff:192.1.56.10",
+            "11:22:33:44:55:66:77:77",
+        ]
+
+    def test_natural_sort_as_ip_address_invalid_address(self) -> None:
+        """Test that invalid IP addresses raise ValueError."""
+        with pytest.raises(ValueError, match="does not appear to be an IPv4 or IPv6 address"):
+            natural_sort(["invalid"], sort_as_ip_address=True)
+
     def test__alphanum_key_failure_mapping(self) -> None:
         with pytest.raises(ValueError, match=r"'natural_sort' requires 'sort_key' to be set when used for a Mapping:"):
             # trying to get a key for a dict without sort_key
