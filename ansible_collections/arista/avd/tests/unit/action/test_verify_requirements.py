@@ -190,31 +190,21 @@ def test__get_collection_version_rejects_unsafe_version(tmp_path: Path) -> None:
 
 
 @pytest.mark.parametrize(
-    ("mocked_running_version", "deprecated_version", "expected_return"),
+    ("mocked_running_version", "expected_return"),
     [
-        pytest.param(
-            "2.16",
-            False,
-            True,
-            id="valid ansible version",
-        ),
-        pytest.param(
-            "2.14.0",
-            True,
-            False,
-            id="invalid ansible version",
-        ),
+        pytest.param("2.16", True, id="valid ansible version"),
+        pytest.param("2.14.0", False, id="invalid ansible version"),
     ],
 )
-def test__validate_ansible_version(mocked_running_version: str, deprecated_version: bool, expected_return: bool) -> None:
+def test__validate_ansible_version(mocked_running_version: str, expected_return: bool) -> None:
     """TODO: - check that the requires_ansible is picked up from the correct place."""
     info = {}
-    result = {}  # As in ansible module result
-    ret = _validate_ansible_version("arista.avd", mocked_running_version, info)
+    with patch(
+        "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_metadata",
+        return_value={"requires_ansible": ">=2.16.0,<2.22.0"},
+    ):
+        ret = _validate_ansible_version("arista.avd", mocked_running_version, info)
     assert ret == expected_return
-    if expected_return is True and deprecated_version is True:
-        # Check for depreecation of old Ansible versions (Not used right now)
-        assert len(result["deprecations"]) == 1
 
 
 @pytest.mark.parametrize(
