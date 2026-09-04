@@ -4,4 +4,7 @@
 # that can be found in the LICENSE file.
 set -eux
 cd "$(dirname "$0")"
+# Disable source-checkout detection so schema_tools (and its 'referencing' dep) are not imported.
+# This test targets requirement validation, not schema recompilation.
+export AVD_NEVER_RUN_FROM_SOURCE=1
 ansible-playbook -i hosts.yml playbook.yml "$@"
