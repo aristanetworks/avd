@@ -1,5 +1,8 @@
 loopback_ipv4_pool: 192.168.0.0/24
 
+avd_design_future:
+  allow_infinite_profile_inheritance: true
+
 mac_acls:
   - name: acl-on-port-profile
     counters_per_entry: true
@@ -347,6 +350,19 @@ servers:
         port_channel:
           mode: active
           channel_id: 47
+
+  - name: PORT_PROFILE_CHAIN1
+    adapters:
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet51]
+        profile: profile1
+
+  - name: PORT_PROFILE_CHAIN2
+    adapters:
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet52]
+        profile: profile2
+
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
@@ -386,6 +402,43 @@ port_profiles:
       # setting ipv4: false to show up in port-channel configuration
       ipv4: false
       ipv6: true
+
+  - profile: profile1
+    mode: trunk
+    vlans: "1,2,3,4,5,6,7,123,234"
+    native_vlan_tag: false
+    native_vlan: 123
+    parent_profile: profile2
+
+  - profile: profile2
+    mode: trunk
+    spanning_tree_portfast: "edge"
+    spanning_tree_bpdufilter: true
+    spanning_tree_link_type: point-to-point
+    parent_profile: profile3
+
+  - profile: profile3
+    mode: trunk
+    qos_profile: MYQOS
+    poe:
+      disabled: true
+    ptp:
+      enabled: true
+    sflow: false
+    parent_profile: profile4
+
+  - profile: profile4
+    mode: trunk
+    native_vlan: 123
+    link_tracking:
+      enabled: true
+    # Testing for dot1x mode supplicant.
+    dot1x:
+      pae:
+        mode: supplicant
+        supplicant_profile: test_profile_port_profile
+    mac_acl_in: acl-on-port-profile
+    mac_acl_out: acl-on-port-profile
 
 monitor:
   - name: custom_connected_endpoint

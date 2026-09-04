@@ -11,6 +11,7 @@
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'. |
     | [<samp>&nbsp;&nbsp;accept_ra_default_route_for_ipv6_mgmt_ip_auto_config</samp>](## "avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Configure management interface to accept Router Advertisement default route when the IPv6 management IP is set to 'auto-config'. |
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_inband_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;allow_infinite_profile_inheritance</samp>](## "avd_design_future.allow_infinite_profile_inheritance") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Allow `parent_profile` to inherit from its `parent_profile` in port_profiles. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `inband_mgmt_vrf` for IPv6 inband management. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
     | [<samp>&nbsp;&nbsp;fix_address_locking_dhcp_server_interfaces</samp>](## "avd_design_future.fix_address_locking_dhcp_server_interfaces") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix support for `address_locking_settings.dhcp_server_interfaces`.<br>When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive. |
@@ -41,6 +42,10 @@
       # Available from AVD 6.3.0.
       # Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'.
       accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # Allow `parent_profile` to inherit from its `parent_profile` in port_profiles.
+      allow_infinite_profile_inheritance: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Configure `inband_mgmt_vrf` for IPv6 inband management.

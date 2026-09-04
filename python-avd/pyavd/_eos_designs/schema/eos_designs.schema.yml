@@ -381,6 +381,12 @@ keys:
 
           Configure inband management interface to accept DHCP default route when
           the inband management IP is set to ''dhcp''.'
+      allow_infinite_profile_inheritance:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Allow `parent_profile` to inherit from its `parent_profile` in port_profiles.'
       configure_inband_mgmt_ipv6_vrf:
         type: bool
         description: 'Available from AVD 6.2.0.
