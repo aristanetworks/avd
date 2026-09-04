@@ -14,10 +14,10 @@
 {{ persistent_cli }}
 {%     endif %}
 {%     if ipv6_neighbor.static_entries is arista.avd.defined %}
-{%         for neighbor in ipv6_neighbor.static_entries | rejectattr("vrf", "arista.avd.defined") | arista.avd.natural_sort(sort_key='interface') | arista.avd.natural_sort(sort_key='ipv6_address') %}
+{%         for neighbor in ipv6_neighbor.static_entries | rejectattr("vrf", "arista.avd.defined") | arista.avd.natural_sort(sort_key='interface') | arista.avd.natural_sort(sort_key='ipv6_address', sort_as_ip_address=true) %}
 ipv6 neighbor {{ neighbor.ipv6_address }} {{ neighbor.interface }} {{ neighbor.mac_address }}
 {%         endfor %}
-{%         for neighbor in ipv6_neighbor.static_entries | selectattr("vrf", "arista.avd.defined") | arista.avd.natural_sort(sort_key='interface') | arista.avd.natural_sort(sort_key='ipv6_address') | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
+{%         for neighbor in ipv6_neighbor.static_entries | selectattr("vrf", "arista.avd.defined") | arista.avd.natural_sort(sort_key='interface') | arista.avd.natural_sort(sort_key='ipv6_address', sort_as_ip_address=true) | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
 ipv6 neighbor vrf {{ neighbor.vrf }} {{ neighbor.ipv6_address }} {{ neighbor.interface }} {{ neighbor.mac_address }}
 {%         endfor %}
 {%     endif %}

@@ -8846,9 +8846,9 @@ IPv6 neighbor cache persistency is enabled. The refresh-delay is 1000 seconds af
 ```eos
 !
 ipv6 neighbor persistent refresh-delay 1000
-ipv6 neighbor 11:22:33:44:55:66:77:77 Ethernet2 22:22:22:22:22:22
 ipv6 neighbor ::ffff:192.1.56.10 Ethernet2 22:22:22:22:22:22
 ipv6 neighbor ::ffff:192.1.56.10 Loopback99 aa:af:12:34:bc:bf
+ipv6 neighbor 11:22:33:44:55:66:77:77 Ethernet2 22:22:22:22:22:22
 ipv6 neighbor vrf MGMT 11:11:11:11:11:11:11:11 Ethernet3 11:11:11:11:11:11
 ipv6 neighbor vrf MGMT 11:11:11:11:11:11:11:11 Ethernet4 00:00:00:00:00:00
 ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
