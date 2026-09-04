@@ -107,19 +107,43 @@ class UtilsMixin(Protocol):
             msg = f"Profile '{profile_name}' applied under '{context}' does not exist in `port_profiles`."
             raise AristaAvdInvalidInputsError(msg)
 
-        port_profile = self.inputs.port_profiles[profile_name]
+        port_profiles_chain: list[EosDesigns.PortProfilesItem] = []
+        port_profile = self.inputs.port_profiles[profile_name]._deepcopy()
+        port_profiles_chain.append(port_profile)
+        port_profile_collector = [profile_name]
+        if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
+            while port_profile.parent_profile is not None:
+                if port_profile.parent_profile not in self.inputs.port_profiles:
+                    msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
+                    raise AristaAvdInvalidInputsError(msg)
+                if port_profile.parent_profile in port_profile_collector:
+                    msg = f"Profile '{port_profile.parent_profile}' referenced in '{port_profile.profile}' is already referenced as parent profile."
+                    "This is creating circular reference."
+                    raise AristaAvdInvalidInputsError(msg)
+                parent_profile = self.inputs.port_profiles[port_profile.parent_profile]
+                port_profiles_chain.append(parent_profile)
+                port_profile_collector.append(port_profile.parent_profile)
+                port_profile = parent_profile
+            resolved_profile = port_profiles_chain[0]
+            for profile in port_profiles_chain[1:]:
+                resolved_profile._deepinherit(profile)
+            delattr(resolved_profile, "parent_profile")
+            return resolved_profile
+
         if port_profile.parent_profile:
             if port_profile.parent_profile not in self.inputs.port_profiles:
                 msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
                 raise AristaAvdInvalidInputsError(msg)
 
             parent_profile = self.inputs.port_profiles[port_profile.parent_profile]
+            resolved_profile = port_profile._deepinherited(parent_profile)
 
-            # Notice reuse of the same variable with the merged content.
-            port_profile = port_profile._deepinherited(parent_profile)
+            # Remove parent_profile from the merged result
+            delattr(resolved_profile, "parent_profile")
+            return resolved_profile
 
+        # Parent_profile is not mentioned in port_profile.
         delattr(port_profile, "parent_profile")
-
         return port_profile
 
     def get_merged_adapter_settings(self: SharedUtilsProtocol, adapter_or_network_port_settings: ADAPTER_SETTINGS) -> ADAPTER_SETTINGS:
