@@ -107,25 +107,24 @@ class UtilsMixin(Protocol):
             msg = f"Profile '{profile_name}' applied under '{context}' does not exist in `port_profiles`."
             raise AristaAvdInvalidInputsError(msg)
 
-        port_profiles_chain: list[EosDesigns.PortProfilesItem] = []
+        port_profiles_chain = EosDesigns.PortProfiles()
         port_profile = self.inputs.port_profiles[profile_name]._deepcopy()
-        port_profiles_chain.append(port_profile)
-        port_profile_collector = [profile_name]
         if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
             while port_profile.parent_profile is not None:
                 if port_profile.parent_profile not in self.inputs.port_profiles:
                     msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
                     raise AristaAvdInvalidInputsError(msg)
-                if port_profile.parent_profile in port_profile_collector:
-                    msg = f"Profile '{port_profile.parent_profile}' referenced in '{port_profile.profile}' is already referenced as parent profile."
-                    "This is creating circular reference."
+                if port_profile.parent_profile in port_profiles_chain or port_profile.parent_profile == profile_name:
+                    msg = (
+                        f"Circular profile dependency detected: Profile '{port_profile.parent_profile}' "
+                        f"cannot be assigned as the parent of '{port_profile.profile}' because it would create a loop."
+                    )
                     raise AristaAvdInvalidInputsError(msg)
                 parent_profile = self.inputs.port_profiles[port_profile.parent_profile]
                 port_profiles_chain.append(parent_profile)
-                port_profile_collector.append(port_profile.parent_profile)
                 port_profile = parent_profile
-            resolved_profile = port_profiles_chain[0]
-            for profile in port_profiles_chain[1:]:
+            resolved_profile = self.inputs.port_profiles[profile_name]
+            for profile in port_profiles_chain:
                 resolved_profile._deepinherit(profile)
             delattr(resolved_profile, "parent_profile")
             return resolved_profile

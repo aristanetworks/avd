@@ -1,5 +1,5 @@
 ---
-fabric_name: FABRIC_PORT_PROFILES_CIRCULAR_REFERENCE
+fabric_name: FABRIC_PORT_PROFILE_CIRCULAR_INHERITANCE
 
 avd_design_future:
   allow_infinite_profile_inheritance: true
@@ -56,4 +56,5 @@ port_profiles:
       enabled: true
 
 expected_error_message: >-
-  Profile 'profile2' referenced in 'profile4' is already referenced as parent profile for host 'port-profiles-circular-reference'.
+  Circular profile dependency detected: Profile 'profile2' cannot be assigned
+  as the parent of 'profile4' because it would create a loop for host 'port-profiles-circular-reference'.

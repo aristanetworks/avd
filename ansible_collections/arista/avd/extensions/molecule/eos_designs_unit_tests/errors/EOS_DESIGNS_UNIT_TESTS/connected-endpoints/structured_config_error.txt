@@ -1,0 +1,1 @@
+AttributeError: 'PortProfilesItem' object has no attribute 'parent_profile'. Did you mean: 'all_connected_endpoints'?

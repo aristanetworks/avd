@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Circular profile dependency detected: Profile 'profile2' cannot be assigned as the parent of 'profile4' because it would create a loop for host 'port-profiles-circular-reference'.
