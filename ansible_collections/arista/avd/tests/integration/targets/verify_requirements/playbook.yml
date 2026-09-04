@@ -1,0 +1,94 @@
+---
+# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+#
+# These tests verify arista.avd.verify_requirements behavior.
+#
+# The key trick enabling post-line-419 code coverage in integration tests:
+# ansible_collection_name is set as a play-level var. When a task is NOT inside
+# a collection role, Ansible's magic-variable mechanism (vars/manager.py:475)
+# never writes to task_vars["ansible_collection_name"], so the play var value
+# survives intact and the action plugin reads "arista.avd" as expected.
+
+# Test 1: Missing requirements argument - error before line 419
+- name: Test verify_requirements with missing requirements argument
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Run verify_requirements without requirements argument
+      arista.avd.verify_requirements:
+      ignore_errors: true
+      register: result
+      run_once: true
+      check_mode: false
+
+    - name: Assert failure with expected message
+      ansible.builtin.assert:
+        that:
+          - result is failed
+          - "result.msg is search(\"The argument 'requirements' must be set\")"
+
+# Test 2: Invalid requirements type - error before line 419
+- name: Test verify_requirements with requirements as string instead of list
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Run verify_requirements with string requirements
+      arista.avd.verify_requirements:
+        requirements: "Jinja2>=2.9"
+      ignore_errors: true
+      register: result
+      run_once: true
+      check_mode: false
+
+    - name: Assert failure with expected message
+      ansible.builtin.assert:
+        that:
+          - result is failed
+          - "result.msg is search(\"The argument 'requirements' is not a list\")"
+
+# Test 3: Happy path - exercises all validation functions after line 419.
+# ansible_collection_name is set as a play var. Since this task is not inside
+# a collection role, Ansible does not override it with the magic-variable mechanism.
+- name: Test verify_requirements with empty requirements (all validations exercised)
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ansible_collection_name: "arista.avd"  # noqa: var-naming[read-only]
+  tasks:
+    - name: Run verify_requirements with empty requirements and ignore flag
+      arista.avd.verify_requirements:
+        requirements: []
+        avd_ignore_requirements: true
+      register: result
+      run_once: true
+      check_mode: false
+
+    - name: Assert success
+      ansible.builtin.assert:
+        that:
+          - not result.failed
+
+# Test 4: Failing python requirement - validates error path after line 419
+- name: Test verify_requirements with nonexistent python requirement
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ansible_collection_name: "arista.avd"  # noqa: var-naming[read-only]
+  tasks:
+    - name: Run verify_requirements with nonexistent package
+      arista.avd.verify_requirements:
+        requirements:
+          - "nonexistent-package-xyz-abc>=99.0.0"
+        avd_ignore_requirements: false
+      ignore_errors: true
+      register: result
+      run_once: true
+      check_mode: false
+
+    - name: Assert failure is reported for missing requirement
+      ansible.builtin.assert:
+        that:
+          - result is failed
+          - result.failed
