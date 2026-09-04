@@ -138,7 +138,7 @@ jobs:
   # -------------------------------------- #
   build_pyavd:
     name: Build pyavd
-    uses: ./.github/workflows/build-pyavd-wheel.yml
+    uses: $/.github/workflows/build-pyavd-wheel.yml
 
   # -------------------------------------------- #
   # Python type checking not covered in pre-commit
@@ -885,4 +885,4 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/codecov.yml
+    uses: $/.github/workflows/codecov.yml

@@ -36,7 +36,7 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
     from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._utils import AVDTemplar
+    from pyavd._utils.avd_templar import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
 
 
