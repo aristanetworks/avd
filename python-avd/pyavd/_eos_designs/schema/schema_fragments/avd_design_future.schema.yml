@@ -34,7 +34,7 @@ keys:
         default: false
         description: |-
           Available from AVD 6.5.0.
-          Allow `parent_profile` to inherit from its `parent_profile` in port_profiles.
+          Allow `parent_profile` to inherit from its own `parent_profile` in `port_profiles` and `device_profiles`.
       configure_inband_mgmt_ipv6_vrf:
         type: bool
         description: |-
