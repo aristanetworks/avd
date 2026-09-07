@@ -15,7 +15,7 @@
   run_once: true
   register:
     task_failed: _task.polymorphic_result.failed | default(false)
-    captured_warnings: _task.polymorphic_result.warnings | map('string') | list
+    captured_warnings: _task.polymorphic_result.warnings | default([]) | map('string') | list
 
 - name: Validate result
   ansible.builtin.assert:

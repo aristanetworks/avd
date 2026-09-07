@@ -14,8 +14,8 @@
 
 - name: Run warning validation on ansible-core >= 2.19
   when: ansible_version.major > 2 or (ansible_version.major == 2 and ansible_version.minor >= 19)
-  ansible.builtin.include_tasks: test_validate_inputs_with_validation_configuration_ansible_2_19_and_above.yml
+  ansible.builtin.include_tasks: validate_inputs_with_validation_configuration_ansible_2_19_and_above.yaml
 
 - name: Run warning validation on ansible-core < 2.19
   when: ansible_version.major == 2 and ansible_version.minor < 19
-  ansible.builtin.include_tasks: test_validate_inputs_with_validation_configuration_ansible_2_18_and_below.yml
+  ansible.builtin.include_tasks: validate_inputs_with_validation_configuration_ansible_2_18_and_below.yaml
