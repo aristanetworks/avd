@@ -3,22 +3,18 @@ fabric_name: FABRIC_DEVICE_PROFILE_INFINITE_INHERITANCE
 
 devices:
   - name: device-profile-infinite-inheritance
-    device_profile: L3LEAF1B
+    profile: L3LEAF1B
     type: l3leaf
     id: 1
 
 device_profiles:
   - name: L3LEAF_PARENT_PROFILE
-    mlag_group: L3LEAF1
     type: l3leaf
     bgp_as: 65101
     platform: vEOS-lab
     loopback_ipv4_pool: 10.255.0.0/27
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 10.255.1.0/27
-    mlag_peer_ipv4_pool: 10.255.1.64/27
-    mlag_peer_l3_ipv4_pool: 10.255.1.96/27
-    mlag_interfaces: [Ethernet5, Ethernet6]
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
