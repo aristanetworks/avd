@@ -259,7 +259,6 @@ keys:
                   type:
                     type: str
                     valid_values: ["start-stop", "stop-only"]
-                    required: true
                     deprecation:
                       warning: true
                       removed: true
