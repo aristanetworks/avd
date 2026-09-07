@@ -26,6 +26,6 @@ device_profiles:
   - name: L3LEAF1B
     parent_profile: L3LEAF_PARENT_PROFILE
 
-expected_error_message:
-  "Circular profile dependency detected: Profile 'L3LEAF1B' cannot be assigned as the parent of
-   'L3LEAF_PARENT_PROFILE' because it would create a loop."
+expected_error_message: >-
+  Circular profile dependency detected: Profile 'L3LEAF1B' cannot be assigned as the parent of
+  'L3LEAF_PARENT_PROFILE' in 'device_profiles' because it would create a loop.

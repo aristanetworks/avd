@@ -118,7 +118,7 @@ class UtilsMixin(Protocol):
                 if port_profile.parent_profile in port_profiles_chain or port_profile.parent_profile == profile_name:
                     msg = (
                         f"Circular profile dependency detected: Profile '{port_profile.parent_profile}' "
-                        f"cannot be assigned as the parent of '{port_profile.profile}' because it would create a loop."
+                        f"cannot be assigned as the parent of '{port_profile.profile}' in 'port_profiles' because it would create a loop."
                     )
                     raise AristaAvdInvalidInputsError(msg)
                 parent_profile = self.inputs.port_profiles[port_profile.parent_profile]._deepcopy()
