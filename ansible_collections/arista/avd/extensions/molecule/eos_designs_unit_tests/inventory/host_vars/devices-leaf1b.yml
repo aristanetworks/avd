@@ -1,0 +1,3 @@
+---
+avd_design_future:
+  allow_infinite_profile_inheritance: true
