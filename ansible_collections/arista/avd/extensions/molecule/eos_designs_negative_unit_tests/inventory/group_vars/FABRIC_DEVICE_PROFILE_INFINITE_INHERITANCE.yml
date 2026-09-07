@@ -1,6 +1,9 @@
 ---
 fabric_name: FABRIC_DEVICE_PROFILE_INFINITE_INHERITANCE
 
+avd_design_future:
+  allow_infinite_profile_inheritance: true
+
 devices:
   - name: device-profile-infinite-inheritance
     profile: L3LEAF1B
@@ -20,14 +23,9 @@ device_profiles:
     spanning_tree_mode: mstp
     parent_profile: L3LEAF1B
 
-  - name: L3LEAF_GRAND_PARENT
-    ptp:
-      enabled: true
-      mode: boundary
-      mode_one_step: true
-
   - name: L3LEAF1B
     parent_profile: L3LEAF_PARENT_PROFILE
 
-expected_error_messsage: >-
-  Circular profile dependency detected: Profile 'L3LEAF1B' cannot be assigned as the parent of 'L3LEAF_PARENT_PROFILE' because it would create a loop.
+expected_error_message:
+  "Circular profile dependency detected: Profile 'L3LEAF1B' cannot be assigned as the parent of
+   'L3LEAF_PARENT_PROFILE' because it would create a loop."

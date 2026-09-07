@@ -42,7 +42,6 @@ class DeviceConfigMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         device_profiles_chain = EosDesigns.DeviceProfiles()
-        device_profile = self.inputs.device_profiles[device_profile_name]._deepcopy()
         resolved_profile = self.inputs.device_profiles[device_profile_name]._deepcopy()
         if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
             while device_profile.parent_profile is not None:
