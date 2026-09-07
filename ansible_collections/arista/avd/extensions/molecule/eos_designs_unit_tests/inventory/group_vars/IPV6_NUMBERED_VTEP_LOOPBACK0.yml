@@ -2,6 +2,10 @@
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
 
+# Don't fix known bugs where the fix was introduced after 6.0.
+avd_design_future:
+  fix_match_ipv6_prefix_list_on_mlag_route_map: false
+
 default_node_types:
   - node_type: spine
     match_hostnames:

@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils import default
+from pyavd._utils.default import default
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:

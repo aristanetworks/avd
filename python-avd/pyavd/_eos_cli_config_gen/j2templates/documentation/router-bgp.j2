@@ -267,6 +267,21 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                 endif %}
 | Maximum routes | {{ value }} |
 {%             endif %}
+{%             if peer_group.maximum_advertised_routes is arista.avd.defined %}
+{%                 if peer_group.maximum_advertised_routes == 0 %}
+{%                     set value = "0 (no limit)" %}
+{%                 else %}
+{%                     set value = peer_group.maximum_advertised_routes %}
+{%                 endif %}
+{%                 if peer_group.maximum_advertised_routes_warning_limit is arista.avd.defined %}
+{%                     if peer_group.maximum_advertised_routes_warning_limit == "0" %}
+{%                         set value = value ~ " (never warn)" %}
+{%                     else %}
+{%                         set value = value ~ " (warning-limit " ~ peer_group.maximum_advertised_routes_warning_limit ~ ")" %}
+{%                     endif %}
+{%                 endif %}
+| Maximum Advertised Routes | {{ value }} |
+{%             endif %}
 {%             if peer_group.maximum_accepted_routes is arista.avd.defined %}
 {%                 if peer_group.maximum_accepted_routes.limit == 0 %}
 {%                     set value = "0 (no limit)" %}
@@ -310,8 +325,8 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 {%         for neighbor in router_bgp.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.peer_group is arista.avd.defined %}
 {%                 set inherited = namespace() %}
@@ -327,6 +342,9 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                 endif %}
 {%                 if peer_group.maximum_routes is arista.avd.defined %}
 {%                     set inherited.maximum_routes = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                 endif %}
+{%                 if peer_group.maximum_advertised_routes is arista.avd.defined %}
+{%                     set inherited.maximum_advertised_routes = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
 {%                 if peer_group.maximum_accepted_routes is arista.avd.defined %}
 {%                     set inherited.maximum_accepted_routes = "Inherited from peer group " ~ neighbor.peer_group %}
@@ -400,6 +418,21 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                 endif %}
 {%             endif %}
 {%             set active_parameter.maximum_routes = value | arista.avd.default(inherited.maximum_routes, '-') %}
+{%             if neighbor.maximum_advertised_routes is arista.avd.defined %}
+{%                 if neighbor.maximum_advertised_routes == 0 %}
+{%                     set maximum_advertised_routes_value = "0 (no limit)" %}
+{%                 else %}
+{%                     set maximum_advertised_routes_value = neighbor.maximum_advertised_routes %}
+{%                 endif %}
+{%                 if neighbor.maximum_advertised_routes_warning_limit is arista.avd.defined %}
+{%                     if neighbor.maximum_advertised_routes_warning_limit == "0" %}
+{%                         set maximum_advertised_routes_value = maximum_advertised_routes_value ~ " (never warn)" %}
+{%                     else %}
+{%                         set maximum_advertised_routes_value = maximum_advertised_routes_value ~ " (warning-limit " ~ neighbor.maximum_advertised_routes_warning_limit ~ ")" %}
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+{%             set active_parameter.maximum_advertised_routes = maximum_advertised_routes_value | arista.avd.default(inherited.maximum_advertised_routes, '-') %}
 {%             set value_maximum_accepted_routes = inherited.maximum_accepted_routes | arista.avd.default('-') %}
 {%             if neighbor.maximum_accepted_routes is arista.avd.defined %}
 {%                 if neighbor.maximum_accepted_routes.limit == 0 %}
@@ -427,7 +460,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             endif %}
 {%             set ttl_maximum_hops = neighbor.ttl_maximum_hops | arista.avd.default(inherited.ttl_maximum_hops, "-") %}
 {%             set active_parameter.allowas_in = value_allowas | arista.avd.default(inherited.allowas_in, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.maximum_accepted_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} | {{ active_parameter.route_reflector_client }} | {{ active_parameter.passive }} | {{ ttl_maximum_hops }} |
+| {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.maximum_accepted_routes }} | {{ active_parameter.maximum_advertised_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} | {{ active_parameter.route_reflector_client }} | {{ active_parameter.passive }} | {{ ttl_maximum_hops }} |
 {%         endfor %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.neighbors is arista.avd.defined %}
@@ -541,7 +574,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf.rib_in_pre_policy_retain = neighbor_rib_in_pre_policy_retain | arista.avd.default(inherited_vrf.rib_in_pre_policy_retain, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.maximum_accepted_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} | {{ active_parameter_vrf.route_reflector_client }} | {{ active_parameter_vrf.passive }} | - |
+| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.maximum_accepted_routes }} | - | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} | {{ active_parameter_vrf.route_reflector_client }} | {{ active_parameter_vrf.passive }} | - |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}

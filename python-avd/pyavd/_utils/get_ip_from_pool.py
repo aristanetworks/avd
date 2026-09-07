@@ -7,7 +7,7 @@ from collections.abc import Iterator
 from functools import partial
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import ensure_type
+from pyavd._utils.ensure_type import ensure_type
 
 # Not using f-strings since more {} in there would just make it harder to follow.
 # These do not match valid IP addresses, but just something that looks like an IP at first glance.

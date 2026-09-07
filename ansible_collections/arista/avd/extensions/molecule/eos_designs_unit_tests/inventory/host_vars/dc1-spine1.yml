@@ -1,0 +1,10 @@
+---
+# Match the passwords used by the regular EVPN neighbors returning from the Route Server clients.
+override_router_bgp:
+  neighbors:
+    # dc1-leaf1a
+    - ip_address: 192.168.42.42
+      password: kOhRpwk9ntubU34C5v9pnw==
+    # dc1-leaf2b
+    - ip_address: 192.168.255.11
+      password: HghkdQ0sw7AtuM2SiimoYg==

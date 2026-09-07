@@ -30,7 +30,7 @@ from pyavd._cv.api.arista.configlet.v1 import (
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVGRPCError, CVGRPCStatusUnavailable, CVMessageSizeExceeded, CVResourceNotFound, CVTimeoutError
-from pyavd._utils import batch
+from pyavd._utils.batch import batch
 
 from .async_decorators import GRPCRequestHandler, LimitCvVersion
 from .constants import DEFAULT_API_TIMEOUT

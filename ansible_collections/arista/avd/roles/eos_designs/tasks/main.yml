@@ -35,6 +35,7 @@
         fail_on_validation_errors: true
         validation_configuration: "{{ eos_designs_validation_configuration }}"
         vault_id: "{{ avd_vault_id }}"
+        template_with_multiprocessing: "{{ eos_designs_validate_inputs_template_with_multiprocessing | arista.avd.default(true) }}"
       delegate_to: localhost
       check_mode: false
       run_once: true

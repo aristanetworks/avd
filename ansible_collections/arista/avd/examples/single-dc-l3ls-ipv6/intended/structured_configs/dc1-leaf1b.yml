@@ -222,7 +222,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - ip address prefix-list PL-MLAG-PEER-VRFS
+    - ipv6 address prefix-list PL-MLAG-PEER-VRFS
   - sequence: 20
     type: permit
 router_bfd:

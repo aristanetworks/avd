@@ -6,7 +6,7 @@ from __future__ import annotations
 from re import findall as re_findall
 from typing import TYPE_CHECKING, cast
 
-from pyavd._utils import get
+from pyavd._utils.get import get
 from pyavd.api.fabric_documentation import (
     ACTDigitalTwin,
     ActLinkSettings,

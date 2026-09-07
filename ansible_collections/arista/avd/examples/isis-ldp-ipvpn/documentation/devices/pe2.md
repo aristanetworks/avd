@@ -344,9 +344,9 @@ no ip routing vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| C1_VRF1 | false |
-| C2_VRF1 | false |
-| MGMT | false |
+| C1_VRF1 | False |
+| C2_VRF1 | False |
+| MGMT | False |
 
 ### Static Routes
 
@@ -469,11 +469,11 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 10.255.2.1 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
-| 10.255.2.2 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
-| 10.1.1.3 | 65123 | C2_VRF1 | - | standard | 100 | - | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 10.255.2.1 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
+| 10.255.2.2 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
+| 10.1.1.3 | 65123 | C2_VRF1 | - | standard | 100 | - | - | - | - | - | - | - | - |
 
 #### Router BGP VPN-IPv4 Address Family
 

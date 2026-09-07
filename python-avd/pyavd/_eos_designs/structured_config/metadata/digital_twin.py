@@ -6,7 +6,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, ClassVar, Protocol
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import default, get
+from pyavd._utils.default import default
+from pyavd._utils.get import get
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigMetadataProtocol

@@ -1239,8 +1239,16 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
 {%         if ethernet_interface.dot1x.authentication_failure is arista.avd.defined %}
 {%             if ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('allow') and
-                  ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
-   dot1x authentication failure action traffic allow vlan {{ ethernet_interface.dot1x.authentication_failure.allow_vlan }}
+                (ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined or
+                ethernet_interface.dot1x.authentication_failure.allow_access_list is arista.avd.defined) %}
+{%                 set dot1x_auth_failure_allow_cli = "dot1x authentication failure action traffic allow" %}
+{%                 if ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
+{%                     set dot1x_auth_failure_allow_cli = dot1x_auth_failure_allow_cli ~ " vlan " ~ ethernet_interface.dot1x.authentication_failure.allow_vlan %}
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.authentication_failure.allow_access_list is arista.avd.defined %}
+{%                     set dot1x_auth_failure_allow_cli = dot1x_auth_failure_allow_cli ~ " access-list " ~ ethernet_interface.dot1x.authentication_failure.allow_access_list %}
+{%                 endif %}
+   {{ dot1x_auth_failure_allow_cli }}
 {%             elif ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('drop') %}
    dot1x authentication failure action traffic drop
 {%             endif %}

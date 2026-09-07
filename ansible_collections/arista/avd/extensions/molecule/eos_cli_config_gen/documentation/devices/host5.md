@@ -74,7 +74,7 @@ daemon TerminAttr
 | --- | --------------- |
 | default | False |
 | FUTURE_IPV6_INTERFACES | True (ipv6 interfaces) |
-| IPv6_ROUTING_ENABLED_VRF | - |
+| IPv6_ROUTING_ENABLED_VRF | False |
 
 #### IP Routing Device Configuration
 
@@ -90,8 +90,8 @@ ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| FUTURE_IPV6_INTERFACES | false |
-| IPv6_ROUTING_ENABLED_VRF | true |
+| FUTURE_IPV6_INTERFACES | False |
+| IPv6_ROUTING_ENABLED_VRF | True |
 
 #### IPv6 Routing Device Configuration
 

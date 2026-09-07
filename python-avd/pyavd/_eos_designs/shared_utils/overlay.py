@@ -8,7 +8,7 @@ from ipaddress import ip_address
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import default
+from pyavd._utils.default import default
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
