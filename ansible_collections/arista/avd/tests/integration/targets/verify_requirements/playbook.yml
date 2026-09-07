@@ -92,3 +92,69 @@
         that:
           - result is failed
           - result.failed
+
+# Test 5: Valid installed python requirement - covers _check_requirement happy path
+# (lines 100-107, 118-122, 161 in verify_requirements.py)
+# jinja2 is always installed in any ansible-test environment.
+- name: Test verify_requirements with a valid python requirement (jinja2)
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ansible_collection_name: "arista.avd"  # noqa: var-naming[read-only]
+  tasks:
+    - name: Run verify_requirements with valid jinja2 requirement
+      arista.avd.verify_requirements:
+        requirements:
+          - "jinja2>=0.0.0"
+        avd_ignore_requirements: true
+      register: result
+      run_once: true
+      check_mode: false
+
+    - name: Assert success
+      ansible.builtin.assert:
+        that:
+          - not result.failed
+
+# Test 6: Installed python requirement with impossible version - covers _check_requirement mismatch path
+# (lines 153-159 in verify_requirements.py)
+- name: Test verify_requirements with a mismatched python requirement version (jinja2)
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ansible_collection_name: "arista.avd"  # noqa: var-naming[read-only]
+  tasks:
+    - name: Run verify_requirements with impossible jinja2 version requirement
+      arista.avd.verify_requirements:
+        requirements:
+          - "jinja2>=999.0.0"
+        avd_ignore_requirements: true
+      register: result
+      run_once: true
+      check_mode: false
+
+    - name: Assert success (ignored due to avd_ignore_requirements)
+      ansible.builtin.assert:
+        that:
+          - not result.failed
+
+# Test 7: avd_ignore_requirements passed as a string "true" instead of boolean True
+# Covers the string-to-bool conversion branch at line 412 of verify_requirements.py.
+- name: Test verify_requirements with avd_ignore_requirements as a string
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ansible_collection_name: "arista.avd"  # noqa: var-naming[read-only]
+  tasks:
+    - name: Run verify_requirements with avd_ignore_requirements as string true
+      arista.avd.verify_requirements:
+        requirements: []
+        avd_ignore_requirements: "true"
+      register: result
+      run_once: true
+      check_mode: false
+
+    - name: Assert success
+      ansible.builtin.assert:
+        that:
+          - not result.failed
