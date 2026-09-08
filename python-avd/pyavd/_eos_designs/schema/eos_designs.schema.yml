@@ -310,7 +310,7 @@ keys:
                             warning: true
                             removed: true
                             remove_in_version: 6.0.0
-                            new_key: dot1x_settings.accounting.syslog
+                            new_key: dot1x_settings.accounting.syslog or dot1x_settings.accounting.radius_groups
                         group:
                           type: str
                           deprecation:
