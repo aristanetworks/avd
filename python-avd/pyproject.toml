@@ -22,7 +22,7 @@ classifiers = [
 keywords = ["pyavd"]
 requires-python = ">=3.10"
 dependencies = [
-    "anta>=1.8.0",
+    "anta @ git+https://github.com/vitthalmagadum/anta.git@feat/resource_warning",
     "aristaproto>=0.1.1",
     "deepmerge>=1.1.0",
     # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
