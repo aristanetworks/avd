@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: WAN carrier Test1 is not in the available carriers defined in `wan_carriers` for host 'missing-wan-carriers'.

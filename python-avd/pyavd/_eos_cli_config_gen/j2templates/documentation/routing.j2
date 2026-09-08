@@ -18,6 +18,7 @@
        or router_traffic_engineering is arista.avd.defined
        or router_adaptive_virtual_topology is arista.avd.defined
        or router_ospf is arista.avd.defined
+       or router_ospfv3 is arista.avd.defined
        or router_isis is arista.avd.defined
        or router_bgp is arista.avd.defined
        or policy_maps.pbr is arista.avd.defined
@@ -54,6 +55,8 @@
 {%     include 'documentation/router-ospf.j2' %}
 {## IPv6 Router OSPF #}
 {%     include 'documentation/ipv6-router-ospf.j2' %}
+{## Router OSPFv3 #}
+{%     include 'documentation/router-ospfv3.j2' %}
 {## Router ISIS #}
 {%     include 'documentation/router-isis.j2' %}
 {## Router BGP #}

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'uplink_switches', 'uplink_interfaces', 'uplink_switch_interfaces' and 'mlag_interfaces' should not be set when 'use_cv_topology' is set to 'true'.

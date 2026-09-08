@@ -864,6 +864,13 @@ keys:
             transport:
               type: str
               valid_values: ["ipv4", "ipv6", "layer2"]
+            management:
+              # In the future, this will grow to include both `drop` and `drop_multicast_boundary` boolean settings.
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         profile:
           type: str
           description: Interface profile.
@@ -986,6 +993,11 @@ keys:
                   max: 4094
                   convert_types:
                     - str
+                allow_access_list:
+                  type: str
+                  convert_types:
+                    - int
+                  description: Name of the IPv4/IPv6 standard/extended access list to be applied to unauthenticated traffic.
             host_mode:
               type: dict
               keys:

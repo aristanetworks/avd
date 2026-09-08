@@ -22,7 +22,8 @@ def _subprocess_env(*extra_python_paths: Path) -> dict[str, str]:
 
 
 def test_report_does_not_require_compiled_templates(tmp_path: Path) -> None:
-    template_root = tmp_path / "j2templates"
+    package_root = tmp_path / "test_package"
+    template_root = package_root / "j2templates"
     compiled_root = template_root / "compiled_templates"
     source_file = template_root / "simple.j2"
     coverage_file = tmp_path / ".coverage"
@@ -31,11 +32,12 @@ def test_report_does_not_require_compiled_templates(tmp_path: Path) -> None:
     coverage_config = tmp_path / "pyproject.toml"
 
     compiled_root.mkdir(parents=True)
+    (package_root / "__init__.py").write_text("", encoding="utf-8")
     source_file.write_text("{% if enabled %}\nhello\n{% endif %}\n", encoding="utf-8")
     script.write_text(
         "from pathlib import Path\n"
         "from jinja2 import Environment, FileSystemLoader, ModuleLoader\n"
-        "root = Path(__file__).parent / 'j2templates'\n"
+        "root = Path(__file__).parent / 'test_package/j2templates'\n"
         "compiled = root / 'compiled_templates'\n"
         "Environment(loader=FileSystemLoader(root)).compile_templates(compiled, zip=None, ignore_errors=False)\n"
         "Environment(loader=ModuleLoader(compiled)).get_template('simple.j2').render(enabled=True)\n",
@@ -47,9 +49,10 @@ def test_report_does_not_require_compiled_templates(tmp_path: Path) -> None:
         'core = "ctrace"\n'
         "parallel = true\n"
         'plugins = ["coverage_plugins.jinja"]\n'
-        f'source_dirs = ["{template_root.as_posix()}"]\n'
+        'source_pkgs = ["test_package"]\n'
         "[tool.coverage.coverage_plugins.jinja]\n"
-        f'compiled_template_roots = ["{compiled_root.as_posix()}"]\n',
+        'package = "test_package"\n'
+        'compiled_template_roots = ["j2templates/compiled_templates"]\n',
         encoding="utf-8",
     )
 
@@ -57,13 +60,13 @@ def test_report_does_not_require_compiled_templates(tmp_path: Path) -> None:
         [sys.executable, "-m", "coverage", "run", "--rcfile", str(coverage_config), "--data-file", str(coverage_file), str(script)],
         check=True,
         cwd=tmp_path,
-        env=_subprocess_env(),
+        env=_subprocess_env(tmp_path),
     )
     subprocess.run(  # noqa: S603
         [sys.executable, "-m", "coverage", "combine", "--rcfile", str(coverage_config), "--data-file", str(coverage_file)],
         check=True,
         cwd=tmp_path,
-        env=_subprocess_env(),
+        env=_subprocess_env(tmp_path),
     )
     shutil.rmtree(compiled_root)
 
@@ -71,13 +74,13 @@ def test_report_does_not_require_compiled_templates(tmp_path: Path) -> None:
         [sys.executable, "-m", "coverage", "report", "--rcfile", str(coverage_config), "--data-file", str(coverage_file), "-m"],
         check=True,
         cwd=tmp_path,
-        env=_subprocess_env(),
+        env=_subprocess_env(tmp_path),
     )
     subprocess.run(  # noqa: S603
         [sys.executable, "-m", "coverage", "xml", "--rcfile", str(coverage_config), "--data-file", str(coverage_file), "-o", str(coverage_xml)],
         check=True,
         cwd=tmp_path,
-        env=_subprocess_env(),
+        env=_subprocess_env(tmp_path),
     )
 
     xml = coverage_xml.read_text(encoding="utf-8")

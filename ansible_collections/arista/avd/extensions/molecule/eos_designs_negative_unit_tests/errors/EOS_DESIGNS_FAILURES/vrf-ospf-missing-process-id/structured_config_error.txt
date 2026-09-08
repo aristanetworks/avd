@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Missing or invalid 'ospf.process_id' or 'vrf_id' under vrf 'Tenant_X_OP_Zone

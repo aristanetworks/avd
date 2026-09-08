@@ -95,6 +95,14 @@
     - name: Run failure scenario Test
       ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
+- name: Converge Negative tests for 'eos_designs_facts' - missing-ipv6-prefix-list-definition
+  hosts: missing-ipv6-prefix-list-definition
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
 - name: Converge Negative tests for 'eos_designs_facts' - missing-vtep-loopback-ipv4-pool
   hosts: missing-vtep-loopback-ipv4-pool
   gather_facts: false

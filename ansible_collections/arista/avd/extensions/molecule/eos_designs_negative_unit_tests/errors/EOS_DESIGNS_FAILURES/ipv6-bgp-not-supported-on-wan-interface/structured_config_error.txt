@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: IPv6 BGP peering is not supported on WAN interfaces. Got 'peer_ipv6: 2001:db8::1' on 'l3_interfaces[Ethernet1]'

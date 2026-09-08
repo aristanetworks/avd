@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'use_underlay_ospf_authentication' is set to true for core_interfaces.p2p_links[0] but 'underlay_ospf_authentication.enabled' is false. Enable 'underlay_ospf_authentication.enabled'.

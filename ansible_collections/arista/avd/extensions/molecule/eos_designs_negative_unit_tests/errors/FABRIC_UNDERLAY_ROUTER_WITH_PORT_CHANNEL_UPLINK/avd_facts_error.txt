@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'underlay_router: true' is not supported with 'uplink_type: port-channel' for host 'underlay-router-with-port-channel-uplink'.

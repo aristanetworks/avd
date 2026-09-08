@@ -1,0 +1,35 @@
+aaa_root:
+  disabled: true
+config_end: true
+cvx:
+  shutdown: false
+  peer_hosts:
+  - 192.168.201.118
+  services:
+    vxlan:
+      shutdown: false
+enable_password:
+  disabled: true
+hostname: dhcp-mgmt-ip-cvx-server-2
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: dhcp
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_FAILURES
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

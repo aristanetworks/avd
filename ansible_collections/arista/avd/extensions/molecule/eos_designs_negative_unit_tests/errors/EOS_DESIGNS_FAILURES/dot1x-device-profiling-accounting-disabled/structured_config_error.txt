@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and 'dot1x_settings.accounting.mode: start-stop' since the feature relies on Interim-Update accounting messages.

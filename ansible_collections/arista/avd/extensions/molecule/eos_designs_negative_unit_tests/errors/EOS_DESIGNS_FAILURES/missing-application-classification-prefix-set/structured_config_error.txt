@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: IPv4 prefix field set 'MISSING-PREFIX-SET' referenced in the application 'TEST-APPLICATION' is not defined in 'application_classification.fields_sets.ipv4_prefixes'.

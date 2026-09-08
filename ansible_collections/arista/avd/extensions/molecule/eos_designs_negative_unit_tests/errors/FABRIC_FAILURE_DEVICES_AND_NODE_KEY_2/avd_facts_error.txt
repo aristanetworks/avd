@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Found the device 'failure-devices-and-node-key-2' under 'l2leaf' but it also has 'device_profile' set. Those two models are mutually exclusive one of them must be removed for this device.

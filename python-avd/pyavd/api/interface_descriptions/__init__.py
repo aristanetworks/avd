@@ -9,7 +9,8 @@ from collections import ChainMap
 from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.avdfacts import AvdFacts
-from pyavd._utils import AvdStringFormatter, strip_null_from_data
+from pyavd._utils.format_string import AvdStringFormatter
+from pyavd._utils.strip_empties import strip_null_from_data
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol

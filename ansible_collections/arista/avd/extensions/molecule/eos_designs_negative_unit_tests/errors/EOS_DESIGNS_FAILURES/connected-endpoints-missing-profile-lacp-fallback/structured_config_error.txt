@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: A Port-channel which is set to LACP fallback mode 'individual' must have either 'profile' or ('mode' and 'vlans') set under 'port_channel.lacp_fallback.individual'. This is missing for the connected endpoint with the name 'INDIVIDUAL_1'.

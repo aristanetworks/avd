@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface.

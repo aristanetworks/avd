@@ -1,0 +1,149 @@
+---
+# Test for ospfv3 and ospfv3 internal are mutually exclusive
+router_ospfv3:
+  router_id: 1.1.1.1
+  passive_interface_default: true
+  auto_cost_reference_bandwidth: 1000
+  address_family_ipv4:
+    enabled: true
+    redistribute:
+      bgp:
+        enabled: true
+        include_leaked: true
+        route_map: map1
+      connected:
+        enabled: true
+        include_leaked: true
+        route_map: map1
+      isis:
+        enabled: true
+        level: level-1
+        include_leaked: true
+        route_map: map1
+      ospfv3:
+        leaked:
+          enabled: true
+      static:
+        enabled: true
+        include_leaked: true
+        route_map: map1
+  address_family_ipv6:
+    enabled: true
+    redistribute:
+      ospfv3:
+        leaked:
+          enabled: true
+      bgp:
+        enabled: true
+        include_leaked: true
+        route_map: map1
+      connected:
+        enabled: true
+        include_leaked: true
+        route_map: map1
+      isis:
+        enabled: true
+        level: level-1
+        include_leaked: true
+        route_map: map1
+      static:
+        enabled: true
+        include_leaked: true
+        route_map: map1
+      dhcp:
+        enabled: true
+        route_map: map1
+  vrfs:
+    - name: data
+      # These settings will not get rendered as address family level settings gets precedence.
+      router_id: 2.2.2.2
+      passive_interface_default: false
+      auto_cost_reference_bandwidth: 100
+      address_family_ipv4:
+        enabled: true
+        router_id: 1.1.1.1
+        passive_interface_default: true
+        auto_cost_reference_bandwidth: 1000
+      eos_cli: |-
+        bfd default
+    # Test with IPv4 Address family
+    - name: MGMT
+      auto_cost_reference_bandwidth: 100
+      address_family_ipv6:
+        enabled: true
+        redistribute:
+          bgp:
+            enabled: true
+            include_leaked: true
+            route_map: map1
+          connected:
+            enabled: true
+            include_leaked: true
+            route_map: map1
+          isis:
+            enabled: true
+            level: level-1
+            include_leaked: true
+            route_map: map1
+          ospfv3:
+            leaked:
+              enabled: true
+              route_map: map1
+            leaked_match_external:
+              enabled: true
+              route_map: map1
+            leaked_match_nssa_external:
+              enabled: true
+              route_map: map1
+          static:
+            enabled: true
+            include_leaked: true
+            route_map: map1
+          dhcp:
+            enabled: true
+            route_map: map1
+    - name: TEST
+      auto_cost_reference_bandwidth: 100
+      # Address family configs will not render as enabled: false
+      address_family_ipv4:
+        enabled: false
+        router_id: 1.1.1.1
+        passive_interface_default: true
+      address_family_ipv6:
+        enabled: false
+        router_id: 1.1.1.1
+        passive_interface_default: true
+    # address_family_ipv4.enabled is false
+    - name: TEST_VRF
+      router_id: 2.2.2.2
+      auto_cost_reference_bandwidth: 100
+      passive_interface_default: true
+      address_family_ipv4:
+        enabled: false
+        passive_interface_default: false
+        redistribute:
+          bgp:
+            enabled: true
+      address_family_ipv6:
+        enabled: true
+        passive_interface_default: true
+        redistribute:
+          bgp:
+            enabled: true
+    # address_family_ipv4.enabled and address_family_ipv6.enabled is false, will generate global configurations
+    - name: TEST_VRF2
+      router_id: 2.2.2.2
+      auto_cost_reference_bandwidth: 100
+      passive_interface_default: true
+      address_family_ipv4:
+        enabled: false
+        passive_interface_default: false
+        redistribute:
+          bgp:
+            enabled: true
+      address_family_ipv6:
+        enabled: false
+        passive_interface_default: true
+        redistribute:
+          bgp:
+            enabled: true

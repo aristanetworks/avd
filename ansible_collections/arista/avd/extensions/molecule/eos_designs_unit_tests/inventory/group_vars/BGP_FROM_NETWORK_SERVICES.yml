@@ -101,6 +101,8 @@ tenants:
             remote_as: 65991
             next_hop_self: true
             bfd: true
+            maximum_advertised_routes: 2000
+            maximum_advertised_routes_warning_limit: 800
       # Test to validate the BGP peers under non default vrf
       - name: validate_bgp_peers
         vrf_id: 101
@@ -136,6 +138,12 @@ tenants:
             remote_as: 65991
             next_hop_self: true
             bfd: true
+            maximum_advertised_routes: 1000
+            maximum_advertised_routes_warning_limit: 80 percent
+            maximum_accepted_routes:
+              limit: 1000
+              warning_limit:
+                count: 100
   # Tenant for node 11 and 12 with VRF default
   - name: TEST2
     vrfs:
@@ -177,3 +185,25 @@ tenants:
           - ip_address: 10.10.41.42
             peer_group: VALIDATE_BGP_PEERS
             nodes: [bgp-from-network-services-41]
+      - name: graceful-restart-enabled
+        vrf_id: 105
+        address_families: []
+        bgp:
+          enabled: true
+          graceful_restart:
+            enabled: true
+            restart_time: 120
+      - name: graceful-restart-default_restart_time
+        vrf_id: 106
+        address_families: []
+        bgp:
+          enabled: true
+          graceful_restart:
+            enabled: true
+      - name: graceful-restart-disabled
+        vrf_id: 107
+        address_families: []
+        bgp:
+          enabled: true
+          graceful_restart:
+            enabled: false

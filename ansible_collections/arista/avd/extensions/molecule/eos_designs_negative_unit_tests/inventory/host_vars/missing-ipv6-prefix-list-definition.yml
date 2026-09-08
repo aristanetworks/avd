@@ -1,0 +1,25 @@
+---
+fabric_name: MISSING_IPV6_PREFIX_LIST_DEFINITION
+type: spine
+underlay_routing_protocol: none
+
+spine:
+  nodes:
+    - name: missing-ipv6-prefix-list-definition
+      id: 1
+      bgp_as: 65000
+      evpn_role: none
+      loopback_ipv4_pool: 192.168.255.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          ipv6_addresses:
+            - 2001:db8::1/64
+          peer: PEER-IPV6
+          peer_interface: Ethernet1
+          peer_ipv6: 2001:db8::2
+          bgp:
+            peer_as: 65001
+            ipv6_prefix_list_in: MISSING-IPV6-PREFIX-LIST
+
+expected_error_message: >-
+  'ipv6_prefix_list_catalog[name=MISSING-IPV6-PREFIX-LIST]' is required but was not found for host 'missing-ipv6-prefix-list-definition'.

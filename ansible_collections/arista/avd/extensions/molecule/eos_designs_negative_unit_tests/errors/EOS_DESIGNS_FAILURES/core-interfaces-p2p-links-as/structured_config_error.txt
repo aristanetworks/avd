@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: core_interfaces.p2p_links.[].as or core_interfaces.p2p_links_profiles.[].as

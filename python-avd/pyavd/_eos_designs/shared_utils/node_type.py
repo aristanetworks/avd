@@ -8,7 +8,7 @@ from re import search
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default
+from pyavd._utils.default import default
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns

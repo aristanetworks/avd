@@ -15,25 +15,7 @@ SCHEMA = create_store()["eos_cli_config_gen"]
 
 
 @pytest.mark.molecule_scenarios(
-    "digital_twin",
-    "eos_designs_unit_tests",
-    "eos_designs_deprecated_vars",
-    "eos_designs-l2ls",
-    "eos_designs-mpls-isis-sr-ldp",
-    # TODO: "eos_designs-twodc-5stage-clos", # Remove inline jinja
-    "evpn_underlay_ebgp_overlay_ebgp",
-    "evpn_underlay_isis_overlay_ibgp",
-    "evpn_underlay_ospf_overlay_ebgp",
-    "evpn_underlay_rfc5549_overlay_ebgp",
-    "example-campus-fabric",
-    # TODO: "example-cv-pathfinder", # Work around Ansible vault
-    "example-dual-dc-l3ls",
-    "example-isis-ldp-ipvpn",
-    "example-l2ls-fabric",
-    "example-single-dc-l3ls",
     "eos_cli_config_gen",
-    "example-single-dc-l3ls-ipv6",
-    "example-single-dc-multipod-l3ls",
     "eos_cli_config_gen_deprecated_vars",
 )
 def test_eos_cli_config_gen_initialize_dict_with_valid_data(molecule_host: MoleculeHost) -> None:
@@ -50,24 +32,6 @@ def test_eos_cli_config_gen_initialize_dict_with_valid_data(molecule_host: Molec
 
 
 @pytest.mark.molecule_scenarios(
-    "digital_twin",
-    "eos_designs_unit_tests",
-    "eos_designs_deprecated_vars",
-    "eos_designs-l2ls",
-    "eos_designs-mpls-isis-sr-ldp",
-    # TODO: "eos_designs-twodc-5stage-clos", # Remove inline jinja
-    "evpn_underlay_ebgp_overlay_ebgp",
-    "evpn_underlay_isis_overlay_ibgp",
-    "evpn_underlay_ospf_overlay_ebgp",
-    "evpn_underlay_rfc5549_overlay_ebgp",
-    "example-campus-fabric",
-    # TODO: "example-cv-pathfinder", # Work around Ansible vault
-    "example-dual-dc-l3ls",
-    "example-isis-ldp-ipvpn",
-    "example-l2ls-fabric",
-    "example-single-dc-l3ls",
-    "example-single-dc-l3ls-ipv6",
-    "example-single-dc-multipod-l3ls",
     "eos_cli_config_gen",
     "eos_cli_config_gen_deprecated_vars",
 )
@@ -85,24 +49,6 @@ def test_eos_cli_config_gen_initialize_kwargs_with_valid_data(molecule_host: Mol
 
 
 @pytest.mark.molecule_scenarios(
-    "digital_twin",
-    "eos_designs_unit_tests",
-    "eos_designs_deprecated_vars",
-    "eos_designs-l2ls",
-    "eos_designs-mpls-isis-sr-ldp",
-    # TODO: "eos_designs-twodc-5stage-clos", # Remove custom templates
-    "evpn_underlay_ebgp_overlay_ebgp",
-    "evpn_underlay_isis_overlay_ibgp",
-    "evpn_underlay_ospf_overlay_ebgp",
-    "evpn_underlay_rfc5549_overlay_ebgp",
-    "example-campus-fabric",
-    # TODO: "example-cv-pathfinder", # Work around Ansible vault
-    "example-dual-dc-l3ls",
-    "example-isis-ldp-ipvpn",
-    "example-l2ls-fabric",
-    "example-single-dc-l3ls",
-    "example-single-dc-l3ls-ipv6",
-    "example-single-dc-multipod-l3ls",
     "eos_cli_config_gen",
     "eos_cli_config_gen_deprecated_vars",
 )

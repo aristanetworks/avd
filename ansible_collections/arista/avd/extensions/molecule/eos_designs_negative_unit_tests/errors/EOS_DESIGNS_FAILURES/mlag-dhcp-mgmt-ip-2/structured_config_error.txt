@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'mgmt_ip: dhcp' is not supported for MLAG peer 'mlag-dhcp-mgmt-ip-1'. MLAG dual-primary detection heartbeat requires a static management IP address.

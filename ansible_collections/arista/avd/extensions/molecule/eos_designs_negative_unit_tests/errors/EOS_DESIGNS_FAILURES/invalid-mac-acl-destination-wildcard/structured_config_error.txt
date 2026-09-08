@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Can not set 'mac_acls[name=acl1].entries[0].destination_wildcard' when destination is 'any' for host invalid-mac-acl-destination-wildcard.

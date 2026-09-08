@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Length of 'default_interfaces.uplink_interfaces': 1 is less than the length of 'uplink_switches': 2 for host 'uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches'.

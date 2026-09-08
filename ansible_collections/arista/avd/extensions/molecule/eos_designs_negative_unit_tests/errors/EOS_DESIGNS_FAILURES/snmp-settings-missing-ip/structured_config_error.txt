@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The key 'snmp_settings.local_engineid_ip' must be set when 'default_mgmt_method' is set to 'none'.

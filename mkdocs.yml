@@ -263,6 +263,9 @@ nav:
   - Contribute:
       - Overview: docs/contribution/overview.md
       - Development Tooling: docs/contribution/development-tooling.md
+      - End-to-End Test Tool:
+          - Using the Tool: docs/contribution/e2e-test/using-the-tool.md
+          - Tool Flow: docs/contribution/e2e-test/tool-flow.md
       - Code Style: docs/contribution/style-guide.md
       - Validation of Input Variables: docs/contribution/input-variable-validation.md
       - EOS Designs internal notes: docs/contribution/eos_designs_internal_notes.md

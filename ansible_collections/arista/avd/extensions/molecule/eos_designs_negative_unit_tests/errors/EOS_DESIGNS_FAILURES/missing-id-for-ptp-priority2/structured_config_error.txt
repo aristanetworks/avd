@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'id' must be set on 'missing-id-for-ptp-priority2' to set ptp priority2.

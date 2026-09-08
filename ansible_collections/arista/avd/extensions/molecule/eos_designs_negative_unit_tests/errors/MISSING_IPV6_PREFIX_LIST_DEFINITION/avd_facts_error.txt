@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'ipv6_prefix_list_catalog[name=MISSING-IPV6-PREFIX-LIST]' is required but was not found for host 'missing-ipv6-prefix-list-definition'.

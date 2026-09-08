@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid IGMP snooping querier source address for VLAN 'VLAN_21' in VRF 'IGMP_QUERIER_TEST_3' in Tenant 'Tenant_A'. The value 'none' resolved from 'igmp_snooping.querier.source_address: none' is not a valid IPv4 address.

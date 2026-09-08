@@ -1,0 +1,30 @@
+---
+- name: Validate eos_designs inputs for missing eos_designs facts test
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_missing_eos_designs_facts"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Ensure eos_designs facts file is absent
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/tmp_missing_eos_designs_facts/eos_designs_facts.json"
+    state: absent
+
+- name: Test with missing eos_designs facts
+  ignore_errors: true
+  register: result
+  arista.avd.eos_designs_structured_config:
+    tmp_dir: "{{ actual_output_dir }}/tmp_missing_eos_designs_facts"
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == expected_error
+  vars:
+    expected_error: >-
+      Error during plugin 'arista.avd.eos_designs_structured_config' execution: Missing AVD eos_designs facts
+      for host 'testhost' ({{ actual_output_dir }}/tmp_missing_eos_designs_facts/eos_designs_facts.json).
+      Ensure the 'arista.avd.eos_designs_facts' task ran successfully.

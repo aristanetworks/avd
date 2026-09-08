@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under SVI Profile 'PROFILE-1' does not exist in `svi_profiles`.

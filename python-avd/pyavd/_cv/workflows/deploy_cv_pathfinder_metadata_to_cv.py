@@ -8,7 +8,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._cv.client.exceptions import CVResourceNotFound
-from pyavd._utils import get, get_v2
+from pyavd._utils.get import get, get_v2
 from pyavd._utils.password_utils.password import simple_7_decrypt
 
 if TYPE_CHECKING:

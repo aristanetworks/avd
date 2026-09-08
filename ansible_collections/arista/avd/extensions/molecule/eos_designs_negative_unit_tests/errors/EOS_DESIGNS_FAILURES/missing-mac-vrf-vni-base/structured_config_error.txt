@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'mac_vrf_vni_base' for Tenant: Tenant_A is required.

@@ -190,7 +190,20 @@ $defs:
               Optional if default link_tracking settings are configured on the node.
       dot1x:
         type: dict
-        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
+        $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x"
+        keys:
+          authentication_failure:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/authentication_failure"
+            keys:
+              allow_access_list:
+                type: str
+                convert_types:
+                  - int
+                description: |-
+                  Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                  The access list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                  On EOS, the access list is only applied when `dot1x.mac_based_access_list` is enabled on the interface.
       address_locking:
         type: dict
         description: Address locking settings applied on the port.

@@ -1,0 +1,13 @@
+---
+- name: Test with structured_config false
+  ignore_errors: false
+  register: result
+  arista.avd.eos_designs_structured_config:
+    structured_config: false
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.changed == false
+      - result.ansible_facts is not defined

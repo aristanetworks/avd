@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'port_profiles[profile=common].port_channel.subinterfaces' is not supported since this profile is referenced under a network_port.

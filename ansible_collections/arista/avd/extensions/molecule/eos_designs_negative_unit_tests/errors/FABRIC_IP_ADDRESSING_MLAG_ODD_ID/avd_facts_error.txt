@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID for host 'mlag-odd-id-oddodd1'.

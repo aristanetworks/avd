@@ -10,7 +10,7 @@ import pytest
 
 import pyavd._schema.models.avd_model
 from schema_tools.generate_classes.class_src_gen import SrcGenInt
-from schema_tools.generate_classes.src_generators import FileSrc
+from schema_tools.generate_classes.src_generators import FieldSrc, FieldTypeHintSrc, FileSrc
 from schema_tools.generate_classes.utils import generate_class_name
 from schema_tools.metaschema.meta_schema_model import AristaAvdSchema, AvdSchemaInt
 from schema_tools.store import create_store
@@ -82,3 +82,15 @@ class TestSrcGenBase:
         srcgen.schema = schema
         with pytest.raises(RuntimeError, match=r"'valid_key' was called when 'schema._key' is 'None'"):
             _ = srcgen.valid_key
+
+
+class TestFieldSrc:
+    def test_str_renders_none_after_undefined_type(self) -> None:
+        field = FieldSrc(name="foo", field_type="str", type_hints=[FieldTypeHintSrc("str")])
+
+        assert str(field) == "foo: str | UndefinedType | None = Undefined"
+
+    def test_field_as_class_attr_does_not_render_undefined_type(self) -> None:
+        field = FieldSrc(name="foo", field_type="str", type_hints=[FieldTypeHintSrc("str")])
+
+        assert field.field_as_class_attr() == "foo: str | None"

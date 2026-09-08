@@ -14,6 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "spanning_tree_settings.port_id_allocation_port_channel_range.minimum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify minimum value for reserved range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "spanning_tree_settings.port_id_allocation_port_channel_range.maximum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify maximum value for reserved range. |
     | [<samp>&nbsp;&nbsp;loop_guard_default</samp>](## "spanning_tree_settings.loop_guard_default") | Boolean |  | `False` |  | Enable loopguard by default on all ports. |
+    | [<samp>&nbsp;&nbsp;edge_port_bpduguard_default</samp>](## "spanning_tree_settings.edge_port_bpduguard_default") | Boolean |  | `False` |  | Enable BPDU Guard on portfast interfaces. |
 
 === "YAML"
 
@@ -44,4 +45,7 @@
 
       # Enable loopguard by default on all ports.
       loop_guard_default: <bool; default=False>
+
+      # Enable BPDU Guard on portfast interfaces.
+      edge_port_bpduguard_default: <bool; default=False>
     ```

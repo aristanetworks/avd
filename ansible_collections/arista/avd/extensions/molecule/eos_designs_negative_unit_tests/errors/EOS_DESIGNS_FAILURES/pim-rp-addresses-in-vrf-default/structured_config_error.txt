@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Use 'underlay_multicast_rps' instead of 'tenant[name=Default_tenant].vrfs[name=default].pim_rp_addresses' for host 'pim-rp-addresses-in-vrf-default'.

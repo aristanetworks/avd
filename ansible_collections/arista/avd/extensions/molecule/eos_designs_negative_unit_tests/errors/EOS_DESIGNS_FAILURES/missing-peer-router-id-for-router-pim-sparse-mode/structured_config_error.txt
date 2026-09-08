@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'router_id' is required but was not found for missing-mgmt-ip-cvx-servers.

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: 'generate_cv_tags.device_tags[name=myaname].data_path' (ethernet_interfaces) points to a list or dict. This is not supported for cloudvision tag data_paths.

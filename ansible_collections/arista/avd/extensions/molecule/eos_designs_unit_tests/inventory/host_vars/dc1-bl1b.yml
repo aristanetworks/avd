@@ -1,0 +1,7 @@
+---
+# Match the password used by the regular EVPN neighbor returning from the Route Server.
+override_router_bgp:
+  neighbors:
+    # dc1-spine1
+    - ip_address: 192.168.255.1
+      password: 5B0XC3gLnsY/sTjyPTZ8og==
