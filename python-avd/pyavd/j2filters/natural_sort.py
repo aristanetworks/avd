@@ -6,7 +6,6 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable, Mapping
 from functools import partial
-from ipaddress import ip_address
 from typing import TYPE_CHECKING
 
 from jinja2.runtime import Undefined
@@ -27,7 +26,6 @@ def natural_sort(
     strict: bool = True,
     ignore_case: bool = True,
     default_value: Any = None,
-    sort_as_ip_address: bool = False,
 ) -> list[T]:
     """
     Sorts an iterable in a natural (alphanumeric) order.
@@ -38,7 +36,6 @@ def natural_sort(
         strict: If strict is True, raise an error if the sort_key is missing and no default value is given.
         ignore_case: If ignore_case is True, strings are applied lower() function.
         default_value: Default value to use if the sort_key is missing.
-        sort_as_ip_address: If True, values are parsed and sorted as IP addresses instead of using natural sorting.
 
     Returns:
         list: Sorted iterable.
@@ -56,7 +53,6 @@ def natural_sort(
         strict=strict,
         ignore_case=ignore_case,
         default_value=default_value,
-        sort_as_ip_address=sort_as_ip_address,
     )
 
     return sorted(iterable, key=alphanum_key)
@@ -69,7 +65,6 @@ def _alphanum_key(
     strict: bool = True,
     ignore_case: bool = True,
     default_value: Any = None,
-    sort_as_ip_address: bool = False,
 ) -> list:
     """Get the key to natural sort by. Falling back to the item itself."""
     if isinstance(item, Mapping):
@@ -82,7 +77,7 @@ def _alphanum_key(
                 msg = f"Missing key '{sort_key}' in item to sort {item}."
                 raise KeyError(msg)
             val = default_value if default_value is not None else item
-        return _sort_key(val, ignore_case, sort_as_ip_address)
+        return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(val))]
     if isinstance(item, Namespace):
         if sort_key is None:
             msg = f"'natural_sort' requires 'sort_key' to be set when used for a Namespace: {item} "
@@ -93,18 +88,9 @@ def _alphanum_key(
                 msg = f"Missing attribute '{sort_key}' in item to sort {item}."
                 raise KeyError(msg)
             val = default_value if default_value is not None else f"~{str(item).lstrip('<')}"
-        return _sort_key(val, ignore_case, sort_as_ip_address)
+        return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(val))]
 
-    return _sort_key(item, ignore_case, sort_as_ip_address)
-
-
-def _sort_key(value: Any, ignore_case: bool, sort_as_ip_address: bool) -> list:
-    """Return a numeric IP address key or a natural alphanumeric key."""
-    if sort_as_ip_address:
-        address = ip_address(value)
-        return [address.version, int(address)]
-
-    return [_convert(component, ignore_case) for component in re.split(SPLIT_PATTERN, str(value))]
+    return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(item))]
 
 
 def _convert(text: str, ignore_case: bool) -> int | str:
