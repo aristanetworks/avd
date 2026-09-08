@@ -29590,6 +29590,32 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Bgp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"check_tcp_queues": {"type": bool}, "minimum_established_time": {"type": int}}
+            check_tcp_queues: bool | None
+            """Flag to check if the TCP session queues are empty for all BGP peers."""
+            minimum_established_time: int | None
+            """Minimum established time (seconds) for all BGP sessions."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, check_tcp_queues: bool | UndefinedType | None = Undefined, minimum_established_time: int | UndefinedType | None = Undefined
+                ) -> None:
+                    """
+                    Bgp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        check_tcp_queues: Flag to check if the TCP session queues are empty for all BGP peers.
+                        minimum_established_time: Minimum established time (seconds) for all BGP sessions.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "is_deployed": {"type": bool},
             "platform": {"type": str},
@@ -29607,6 +29633,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "validate_no_errors_period": {"type": int},
             "exclude_as_extra_fabric_validation_target": {"type": bool},
             "interfaces": {"type": Interfaces},
+            "bgp": {"type": Bgp},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -29680,6 +29707,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
+        bgp: Bgp
+        """
+        Validation settings for BGP.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -29702,6 +29735,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 validate_no_errors_period: int | UndefinedType | None = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | UndefinedType | None = Undefined,
                 interfaces: Interfaces | UndefinedType = Undefined,
+                bgp: Bgp | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -29762,6 +29796,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        fabric validation tests performed by the `anta_runner` role.
                     interfaces:
                        Interface validation settings.
+
+                       Subclass of AvdModel.
+                    bgp:
+                       Validation settings for BGP.
 
                        Subclass of AvdModel.
 
