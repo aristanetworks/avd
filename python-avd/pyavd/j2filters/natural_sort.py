@@ -20,12 +20,7 @@ SPLIT_PATTERN = re.compile(r"(\d+)")
 
 
 def natural_sort(
-    iterable: Iterable[T] | None,
-    sort_key: str | None = None,
-    *,
-    strict: bool = True,
-    ignore_case: bool = True,
-    default_value: Any = None,
+    iterable: Iterable[T] | None, sort_key: str | None = None, *, strict: bool = True, ignore_case: bool = True, default_value: Any = None
 ) -> list[T]:
     """
     Sorts an iterable in a natural (alphanumeric) order.
@@ -47,25 +42,12 @@ def natural_sort(
     if isinstance(iterable, Undefined) or iterable is None:
         return []
 
-    alphanum_key = partial(
-        _alphanum_key,
-        sort_key=sort_key,
-        strict=strict,
-        ignore_case=ignore_case,
-        default_value=default_value,
-    )
+    alphanum_key = partial(_alphanum_key, sort_key=sort_key, strict=strict, ignore_case=ignore_case, default_value=default_value)
 
     return sorted(iterable, key=alphanum_key)
 
 
-def _alphanum_key(
-    item: Any,
-    sort_key: str | None = None,
-    *,
-    strict: bool = True,
-    ignore_case: bool = True,
-    default_value: Any = None,
-) -> list:
+def _alphanum_key(item: Any, sort_key: str | None = None, *, strict: bool = True, ignore_case: bool = True, default_value: Any = None) -> list:
     """Get the key to natural sort by. Falling back to the item itself."""
     if isinstance(item, Mapping):
         if sort_key is None:
