@@ -6,6 +6,7 @@ from __future__ import annotations
 from re import findall as re_findall
 from typing import TYPE_CHECKING, cast
 
+from pyavd._errors import AristaAvdError
 from pyavd._utils.get import get
 from pyavd.api.fabric_documentation import (
     ACTDigitalTwin,
@@ -32,7 +33,6 @@ def get_fabric_documentation(
     p2p_links_csv: bool = False,
     toc: bool = True,
     digital_twin: bool = False,
-    digital_twin_settings: ActSettings | None = None,
 ) -> FabricDocumentation:
     """
     Build and return the AVD fabric documentation.
@@ -54,7 +54,6 @@ def get_fabric_documentation(
         p2p_links_csv: Returns P2P links CSV when set to True.
         toc: Skip TOC when set to False.
         digital_twin: PREVIEW: Returns Digital Twin topology when set to True.
-        digital_twin_settings: PREVIEW: Settings for the Digital Twin topology.
 
     Returns:
         FabricDocumentation object containing the requested documentation areas.
@@ -91,7 +90,7 @@ def get_fabric_documentation(
     if p2p_links_csv:
         result.p2p_links_csv = _get_p2p_links_csv(fabric_documentation_facts)
     if digital_twin:
-        result.digital_twin = _get_digital_twin(fabric_documentation_facts, digital_twin_settings)
+        result.digital_twin = _get_digital_twin(fabric_documentation_facts)
 
     return result
 
@@ -150,7 +149,7 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
     return csv_content.read()
 
 
-def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts, digital_twin_settings: ActSettings | None = None) -> ACTDigitalTwin | None:
+def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin | None:
     digital_twin_env = next(
         (
             environment
@@ -161,12 +160,12 @@ def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts, digi
     )
     match digital_twin_env:
         case "act":
-            return _get_digital_twin_act(fabric_documentation_facts, digital_twin_settings)
+            return _get_digital_twin_act(fabric_documentation_facts)
         case _:
             return None
 
 
-def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts, digital_twin_settings: ActSettings | None = None) -> ACTDigitalTwin:
+def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin:
     """
     Build and return the ACT topology data.
 
@@ -177,7 +176,6 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts, 
 
     Args:
         fabric_documentation_facts: FabricDocumentationFacts object holding facts used for generating Fabric Documentation.
-        digital_twin_settings: Settings for the Digital Twin topology.
 
     Returns:
         ACTDigitalTwin object containing information to render ACT topology file.
@@ -199,6 +197,15 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts, 
             for device_structured_config in fabric_documentation_facts.structured_configs.values()
         ),
     )
+    act_legacy_eos_versioning_values = {
+        act_legacy_eos_versioning
+        for avd_facts in fabric_documentation_facts.avd_facts.values()
+        if (act_legacy_eos_versioning := avd_facts.digital_twin.act_legacy_eos_versioning if avd_facts.digital_twin else None) is not None
+    }
+    if len(act_legacy_eos_versioning_values) > 1:
+        msg = "Found conflicting values for 'digital_twin.fabric.act_legacy_eos_versioning'. The ACT topology only supports one global value."
+        raise AristaAvdError(msg)
+    digital_twin_settings = ActSettings(legacy_eos_versioning=next(iter(act_legacy_eos_versioning_values))) if act_legacy_eos_versioning_values else None
 
     digital_twin_node_types: dict[str, ActNodeTypeSettings | None] = {
         "cloudeos": None,

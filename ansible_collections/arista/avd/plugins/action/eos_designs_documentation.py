@@ -19,7 +19,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils.get import get
     from pyavd._utils.strip_empties import strip_empties_from_dict
-    from pyavd.api.fabric_documentation import ActSettings
     from pyavd.get_fabric_documentation import get_fabric_documentation
     from pyavd.j2filters import natural_sort
 
@@ -27,7 +26,6 @@ try:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils.get import get
     from pyavd._utils.strip_empties import strip_empties_from_dict
-    from pyavd.api.fabric_documentation import ActSettings
     from pyavd.get_fabric_documentation import get_fabric_documentation
     from pyavd.j2filters import natural_sort
 
@@ -81,7 +79,6 @@ class ActionModule(AVDActionPlugin):
             structured_config_suffix=validated_args["structured_config_suffix"],
         )
         fabric_name = get(task_vars, "fabric_name", required=True)
-        act_legacy_eos_versioning = get(task_vars, "digital_twin.fabric.act_legacy_eos_versioning")
         output = get_fabric_documentation(
             avd_facts=all_facts,
             structured_configs=structured_configs,
@@ -92,7 +89,6 @@ class ActionModule(AVDActionPlugin):
             p2p_links_csv=validated_args["p2p_links_csv"],
             toc=validated_args["toc"],
             digital_twin=validated_args["digital_twin"],
-            digital_twin_settings=ActSettings(legacy_eos_versioning=act_legacy_eos_versioning) if act_legacy_eos_versioning is not None else None,
         )
 
         self.result["changed"] = False
