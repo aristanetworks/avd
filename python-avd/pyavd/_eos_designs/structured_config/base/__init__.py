@@ -366,14 +366,18 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def tcam_profile(self) -> None:
-        """tcam_profile set based on platform_settings.tcam_profile fact."""
+        """Set TCAM profiles based on platform settings."""
         if not (tcam_profile_name := self.shared_utils.platform_settings.tcam_profile):
             return
-
-        # TODO: 7.0 Validate that the referenced TCAM profile exists; raise an error if missing.
         self.structured_config.tcam_profile.system = tcam_profile_name
-        if tcam_profile_name in self.inputs.tcam_profiles:
-            self.structured_config.tcam_profile.profiles.append(self.inputs.tcam_profiles[tcam_profile_name])
+
+        # Configure additional profiles.
+        for additional_tcam_profile_name in self.shared_utils.platform_settings.additional_tcam_profiles:
+            # Every additional profile must reference a profile defined under `tcam_profiles`.
+            if additional_tcam_profile_name not in self.inputs.tcam_profiles:
+                msg = f"TCAM profile '{additional_tcam_profile_name}' referenced under 'additional_tcam_profiles' is not defined under 'tcam_profiles'."
+                raise AristaAvdInvalidInputsError(msg)
+            self.structured_config.tcam_profile.profiles.append(self.inputs.tcam_profiles[additional_tcam_profile_name])
 
     @structured_config_contributor
     def mac_address_table(self) -> None:

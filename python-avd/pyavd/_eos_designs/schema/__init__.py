@@ -42730,6 +42730,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class AdditionalTcamProfiles(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        AdditionalTcamProfiles._item_type = str
+
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
@@ -44430,6 +44435,7 @@ class EosDesigns(EosDesignsRootModel):
             "trident_forwarding_table_partition": {"type": str},
             "reload_delay": {"type": ReloadDelay},
             "tcam_profile": {"type": str},
+            "additional_tcam_profiles": {"type": AdditionalTcamProfiles},
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
@@ -44447,6 +44453,15 @@ class EosDesigns(EosDesignsRootModel):
         reload_delay: ReloadDelay
         """Subclass of AvdModel."""
         tcam_profile: str | None
+        additional_tcam_profiles: AdditionalTcamProfiles
+        """
+        List of additional TCAM profile names that must be defined under `tcam_profiles`.
+        These profiles are
+        always configured in EOS but are not selected as the EOS system profile.
+
+        Subclass of AvdList with
+        `str` items.
+        """
         lag_hardware_only: bool | None
         default_interface_mtu: int | None
         """
@@ -44492,6 +44507,7 @@ class EosDesigns(EosDesignsRootModel):
                 trident_forwarding_table_partition: str | UndefinedType | None = Undefined,
                 reload_delay: ReloadDelay | UndefinedType = Undefined,
                 tcam_profile: str | UndefinedType | None = Undefined,
+                additional_tcam_profiles: AdditionalTcamProfiles | UndefinedType = Undefined,
                 lag_hardware_only: bool | UndefinedType | None = Undefined,
                 default_interface_mtu: int | UndefinedType | None = Undefined,
                 p2p_uplinks_mtu: int | UndefinedType | None = Undefined,
@@ -44513,6 +44529,13 @@ class EosDesigns(EosDesignsRootModel):
                     trident_forwarding_table_partition: Only applied when evpn_multicast is true.
                     reload_delay: Subclass of AvdModel.
                     tcam_profile: tcam_profile
+                    additional_tcam_profiles:
+                       List of additional TCAM profile names that must be defined under `tcam_profiles`.
+                       These profiles are
+                       always configured in EOS but are not selected as the EOS system profile.
+
+                       Subclass of AvdList with
+                       `str` items.
                     lag_hardware_only: lag_hardware_only
                     default_interface_mtu:
                        Default interface MTU configured on EOS under "interface defaults".
@@ -44576,6 +44599,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class AdditionalTcamProfiles(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        AdditionalTcamProfiles._item_type = str
+
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
@@ -46276,6 +46304,7 @@ class EosDesigns(EosDesignsRootModel):
             "trident_forwarding_table_partition": {"type": str},
             "reload_delay": {"type": ReloadDelay},
             "tcam_profile": {"type": str},
+            "additional_tcam_profiles": {"type": AdditionalTcamProfiles},
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
@@ -46293,6 +46322,15 @@ class EosDesigns(EosDesignsRootModel):
         reload_delay: ReloadDelay
         """Subclass of AvdModel."""
         tcam_profile: str | None
+        additional_tcam_profiles: AdditionalTcamProfiles
+        """
+        List of additional TCAM profile names that must be defined under `tcam_profiles`.
+        These profiles are
+        always configured in EOS but are not selected as the EOS system profile.
+
+        Subclass of AvdList with
+        `str` items.
+        """
         lag_hardware_only: bool | None
         default_interface_mtu: int | None
         """
@@ -46338,6 +46376,7 @@ class EosDesigns(EosDesignsRootModel):
                 trident_forwarding_table_partition: str | UndefinedType | None = Undefined,
                 reload_delay: ReloadDelay | UndefinedType = Undefined,
                 tcam_profile: str | UndefinedType | None = Undefined,
+                additional_tcam_profiles: AdditionalTcamProfiles | UndefinedType = Undefined,
                 lag_hardware_only: bool | UndefinedType | None = Undefined,
                 default_interface_mtu: int | UndefinedType | None = Undefined,
                 p2p_uplinks_mtu: int | UndefinedType | None = Undefined,
@@ -46359,6 +46398,13 @@ class EosDesigns(EosDesignsRootModel):
                     trident_forwarding_table_partition: Only applied when evpn_multicast is true.
                     reload_delay: Subclass of AvdModel.
                     tcam_profile: tcam_profile
+                    additional_tcam_profiles:
+                       List of additional TCAM profile names that must be defined under `tcam_profiles`.
+                       These profiles are
+                       always configured in EOS but are not selected as the EOS system profile.
+
+                       Subclass of AvdList with
+                       `str` items.
                     lag_hardware_only: lag_hardware_only
                     default_interface_mtu:
                        Default interface MTU configured on EOS under "interface defaults".

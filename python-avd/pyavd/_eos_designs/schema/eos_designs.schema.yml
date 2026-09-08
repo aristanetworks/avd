@@ -16568,6 +16568,15 @@ $defs:
               description: In seconds.
         tcam_profile:
           type: str
+        additional_tcam_profiles:
+          type: list
+          description: 'List of additional TCAM profile names that must be defined
+            under `tcam_profiles`.
+
+            These profiles are always configured in EOS but are not selected as the
+            EOS system profile.'
+          items:
+            type: str
         lag_hardware_only:
           type: bool
         default_interface_mtu:
