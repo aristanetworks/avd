@@ -445,6 +445,9 @@ keys:
           version:
             type: str
             description: OS version used for deploying a replica of the fabric device within the Digital Twin environment.
+          instance_type:
+            type: str
+            description: ACT instance type used for deploying a replica of the fabric device within the Digital Twin environment.
           username:
             type: str
             description: Local username assigned to a replica of the fabric device within the Digital Twin environment.

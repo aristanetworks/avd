@@ -44397,7 +44397,7 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
 
             ActNodeType: TypeAlias = Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"]
-            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}}
+            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}, "act_node_size": {"type": str}}
             platform: str | None
             """
             Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
@@ -44406,10 +44406,18 @@ class EosDesigns(EosDesignsRootModel):
             """
             act_node_type: ActNodeType | None
             """ACT node type."""
+            act_node_size: str | None
+            """ACT node size to use for the ACT `instance_type`."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, platform: str | UndefinedType | None = Undefined, act_node_type: ActNodeType | UndefinedType | None = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    platform: str | UndefinedType | None = Undefined,
+                    act_node_type: ActNodeType | UndefinedType | None = Undefined,
+                    act_node_size: str | UndefinedType | None = Undefined,
+                ) -> None:
                     """
                     DigitalTwin.
 
@@ -44422,6 +44430,7 @@ class EosDesigns(EosDesignsRootModel):
                            The
                            `platform_settings` for the regular `platform` is used if this is not set.
                         act_node_type: ACT node type.
+                        act_node_size: ACT node size to use for the ACT `instance_type`.
 
                     """
 
@@ -46243,7 +46252,7 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
 
             ActNodeType: TypeAlias = Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"]
-            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}}
+            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}, "act_node_size": {"type": str}}
             platform: str | None
             """
             Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
@@ -46252,10 +46261,18 @@ class EosDesigns(EosDesignsRootModel):
             """
             act_node_type: ActNodeType | None
             """ACT node type."""
+            act_node_size: str | None
+            """ACT node size to use for the ACT `instance_type`."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, platform: str | UndefinedType | None = Undefined, act_node_type: ActNodeType | UndefinedType | None = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    platform: str | UndefinedType | None = Undefined,
+                    act_node_type: ActNodeType | UndefinedType | None = Undefined,
+                    act_node_size: str | UndefinedType | None = Undefined,
+                ) -> None:
                     """
                     DigitalTwin.
 
@@ -46268,6 +46285,7 @@ class EosDesigns(EosDesignsRootModel):
                            The
                            `platform_settings` for the regular `platform` is used if this is not set.
                         act_node_type: ACT node type.
+                        act_node_size: ACT node size to use for the ACT `instance_type`.
 
                     """
 
