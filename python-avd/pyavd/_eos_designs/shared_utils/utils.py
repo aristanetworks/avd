@@ -112,7 +112,7 @@ class UtilsMixin(Protocol):
         resolved_profile = self.inputs.port_profiles[profile_name]._deepcopy()
         if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
             while port_profile.parent_profile is not None:
-                if port_profile.parent_profile  not in self.inputs.port_profiles:
+                if port_profile.parent_profile not in self.inputs.port_profiles:
                     msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in 'port_profiles'."
                     raise AristaAvdInvalidInputsError(msg)
                 if port_profile.parent_profile in port_profiles_chain or port_profile.parent_profile == profile_name:
