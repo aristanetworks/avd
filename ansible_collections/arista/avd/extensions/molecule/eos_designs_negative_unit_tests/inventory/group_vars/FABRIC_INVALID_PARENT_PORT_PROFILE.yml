@@ -1,0 +1,41 @@
+---
+fabric_name: FABRIC_INVALID_PARENT_PORT_PROFILE
+
+avd_design_future:
+  allow_infinite_profile_inheritance: true
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: fabric-invalid-parent-port-profile
+      platform: 720XP
+      link_tracking:
+        enabled: true
+      filter:
+        only_vlans_in_use: true
+      mgmt_ip: 192.168.1.2
+
+servers:
+  - name: PORT_PROFILE_CHAIN1
+    adapters:
+      - switches: [fabric-invalid-parent-port-profile]
+        switch_ports: [Ethernet51]
+        profile: profile1
+
+port_profiles:
+  - profile: profile1
+    mode: trunk
+    vlans: "1,2,3,4,5,6,7,123,234"
+    native_vlan_tag: false
+    native_vlan: 123
+    parent_profile: profile3
+
+  - profile: profile2
+    mode: trunk
+    spanning_tree_portfast: "edge"
+    spanning_tree_bpdufilter: true
+    spanning_tree_link_type: point-to-point
+
+expected_error_message: >-
+  Profile 'profile3' applied under port profile 'profile1' does not exist in 'port_profiles' for host 'fabric-invalid-parent-port-profile'.

@@ -1,0 +1,31 @@
+---
+fabric_name: FABRIC_INVALID_PARENT_DEVICE_PROFILE
+
+avd_design_future:
+  allow_infinite_profile_inheritance: true
+
+devices:
+  - name: fabric-invalid-parent-device-profile
+    profile: L3LEAF1B
+    type: l3leaf
+    id: 1
+
+device_profiles:
+  - name: L3LEAF_PARENT_PROFILE
+    type: l3leaf
+    bgp_as: 65101
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.0.0/27
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.1.0/27
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+    parent_profile: invalid-profile
+
+  - name: L3LEAF1B
+    parent_profile: L3LEAF_PARENT_PROFILE
+
+expected_error_message: >-
+  Circular profile dependency detected: Profile 'L3LEAF1B' cannot be assigned as the parent of
+  'L3LEAF_PARENT_PROFILE' in 'device_profiles' because it would create a loop.
