@@ -79,6 +79,11 @@ ip_igmp_snooping:
       enabled: true
       address: 2.2.2.2
       version: 1
+  - id: 24
+    querier:
+      enabled: true
+      address: 192.168.255.1
+      version: 3
   - id: 121
     querier:
       enabled: true
@@ -132,7 +137,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 1-3,11-12,21-23,101-103,111-113,121-123
+      allowed_vlan: 1-3,11-12,21-24,101-103,111-113,121-123
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -307,6 +312,16 @@ router_bgp:
       - 40023:40023
     redistribute_routes:
     - learned
+  - id: 24
+    metadata:
+      tenants:
+      - Tenant_D
+    rd: 192.168.255.1:40024
+    route_targets:
+      both:
+      - 40024:40024
+    redistribute_routes:
+    - learned
   - id: 121
     metadata:
       tenants:
@@ -475,6 +490,16 @@ vlan_interfaces:
     - Tenant_D
     tags:
     - test_l3
+- name: Vlan24
+  description: VLAN_24
+  shutdown: false
+  vrf: IGMP_QUERIER_TEST_3
+  ip_address_virtual: 10.0.23.2/24
+  metadata:
+    tenants:
+    - Tenant_D
+    tags:
+    - test_l3
 vlan_internal_order:
   allocation: ascending
   range:
@@ -551,6 +576,11 @@ vlans:
   metadata:
     tenants:
     - Tenant_D
+- id: 24
+  name: VLAN_24
+  metadata:
+    tenants:
+    - Tenant_D
 - id: 121
   name: VLAN_121
   metadata:
@@ -622,6 +652,8 @@ vxlan_interface:
         vni: 40022
       - id: 23
         vni: 40023
+      - id: 24
+        vni: 40024
       - id: 121
         vni: 40121
       - id: 122

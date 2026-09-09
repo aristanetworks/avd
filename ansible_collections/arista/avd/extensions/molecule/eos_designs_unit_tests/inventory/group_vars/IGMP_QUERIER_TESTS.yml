@@ -4,8 +4,22 @@
 
 mgmt_gateway: 192.168.200.5
 
+avd_design_future:
+  allow_infinite_profile_inheritance: true
+
 svi_profiles:
   - profile: IGMP_QUERIER_PARENT
+    igmp_snooping:
+      querier:
+        enabled: true
+  - profile: profile3
+    igmp_snooping:
+      querier:
+        version: 3
+  - profile: profile1
+    parent_profile: profile2
+  - profile: profile2
+    parent_profile: profile3
     igmp_snooping:
       querier:
         enabled: true
@@ -185,7 +199,13 @@ tenants:
                 source_address: 2.2.2.2
                 version: 1
             profile: IGMP_QUERIER_CHILD_2
-
+          - id: 24
+            name: "VLAN_24"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.0.23.2/24
+            # Profile1 inherits from a chain of profiles
+            profile: profile1
     l2vlans:
       # Expected results:
       # igmp querier enable, querier address set to 2.2.2.2, and version set to 1

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Circular profile dependency detected: Profile 'profile1' cannot be applied as the parent profile of 'profile3' as it would create a loop.

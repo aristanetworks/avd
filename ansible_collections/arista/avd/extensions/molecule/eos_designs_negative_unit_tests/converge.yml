@@ -288,6 +288,20 @@
       ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
 - name: Converge Negative tests for 'eos_designs_facts'
+  hosts: FABRIC_SVI_PROFILE_CIRCULAR_INHERITANCE
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for 'eos_designs_facts'
+  hosts: FABRIC_SVI_PROFILE_INVALID_SVI_PROFILE
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for 'eos_designs_facts'
   hosts: FABRIC_UNDEFINED_PEER
   connection: local
   tasks:
