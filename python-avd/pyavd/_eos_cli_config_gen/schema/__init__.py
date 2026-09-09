@@ -37695,14 +37695,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class Boundaries(AvdList[BoundariesItem]):
-                    """Subclass of AvdList with `BoundariesItem` items."""
+                class Boundaries(AvdIndexedList[str, BoundariesItem]):
+                    """Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "boundary"
 
                 Boundaries._item_type = BoundariesItem
 
                 _fields: ClassVar[dict] = {"boundaries": {"type": Boundaries}, "static": {"type": bool}}
                 boundaries: Boundaries
-                """Subclass of AvdList with `BoundariesItem` items."""
+                """Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`)."""
                 static: bool | None
 
                 if TYPE_CHECKING:
@@ -37715,7 +37717,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            boundaries: Subclass of AvdList with `BoundariesItem` items.
+                            boundaries: Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`).
                             static: static
 
                         """
@@ -37726,20 +37728,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class BoundariesItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool, "default": True}}
+                    _fields: ClassVar[dict] = {"boundary": {"type": str}}
                     boundary: str
                     """Standard ACL name or multicast IP subnet."""
-                    out: bool
-                    """
-                    Restricts multicast routing to and from the interface. Must be `true` when set. This key is
-                    mandatory on EOS and is included here to maintain consistency.
-
-                    Default value: `True`
-                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, boundary: str | UndefinedType = Undefined, out: bool | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, boundary: str | UndefinedType = Undefined) -> None:
                             """
                             BoundariesItem.
 
@@ -37748,20 +37743,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 boundary: Standard ACL name or multicast IP subnet.
-                                out:
-                                   Restricts multicast routing to and from the interface. Must be `true` when set. This key is
-                                   mandatory on EOS and is included here to maintain consistency.
 
                             """
 
-                class Boundaries(AvdList[BoundariesItem]):
-                    """Subclass of AvdList with `BoundariesItem` items."""
+                class Boundaries(AvdIndexedList[str, BoundariesItem]):
+                    """Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "boundary"
 
                 Boundaries._item_type = BoundariesItem
 
                 _fields: ClassVar[dict] = {"boundaries": {"type": Boundaries}, "static": {"type": bool}}
                 boundaries: Boundaries
-                """Subclass of AvdList with `BoundariesItem` items."""
+                """Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`)."""
                 static: bool | None
 
                 if TYPE_CHECKING:
@@ -37774,7 +37768,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            boundaries: Subclass of AvdList with `BoundariesItem` items.
+                            boundaries: Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`).
                             static: static
 
                         """
