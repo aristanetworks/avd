@@ -9825,12 +9825,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv4: Ipv4
             """Subclass of AvdModel."""
             ipv6: Ipv6
-            """
-            Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
-            both.
-
-            Subclass of AvdModel.
-            """
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -9843,11 +9838,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         ipv4: Subclass of AvdModel.
-                        ipv6:
-                           Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
-                           both.
-
-                           Subclass of AvdModel.
+                        ipv6: Subclass of AvdModel.
 
                     """
 
