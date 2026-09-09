@@ -3,22 +3,18 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: bgp-peer-groups-4
+hostname: bgp-peer-groups-5
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.250.1/32
+  ip_address: 192.168.251.2/32
   isis_enable: CORE
   isis_passive: true
-  node_segment:
-    ipv4_index: 1
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-mpls:
-  ip: true
 router_bfd:
   multihop:
     interval: 300
@@ -26,15 +22,17 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65001'
-  router_id: 192.168.250.1
+  router_id: 192.168.251.2
   maximum_paths:
     paths: 4
   updates:
     wait_install: true
-  bgp_cluster_id: 192.168.250.1
+  bgp_cluster_id: 192.168.251.2
   bgp:
     default:
       ipv4_unicast: false
+    route_reflector_preserve_attributes:
+      enabled: true
   peer_groups:
   - name: RR-OVERLAY-PEERS
     metadata:
@@ -55,18 +53,17 @@ router_bgp:
     peer_groups:
     - name: RR-OVERLAY-PEERS
       activate: true
+    next_hop:
+      resolution_disabled: true
 router_isis:
   instance: CORE
-  net: 49.0001.1921.6825.0001.00
-  router_id: 192.168.250.1
+  net: 49.0001.1921.6825.1002.00
+  router_id: 192.168.251.2
   is_type: level-2
   log_adjacency_changes: true
   address_family_ipv4:
     enabled: true
     maximum_paths: 4
-  segment_routing_mpls:
-    enabled: true
-    router_id: 192.168.250.1
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
