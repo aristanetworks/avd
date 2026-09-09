@@ -529,7 +529,7 @@ keys:
           description: MAC access list name.
         multicast:
           type: dict
-          description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both.
+          description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of both.
           keys:
             ipv4:
               type: dict
@@ -541,13 +541,14 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet.
+                        description: Standard ACL name or multicast IP subnet.
                       out:
                         type: bool
                 static:
                   type: bool
             ipv6:
               type: dict
+              description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of both.
               keys:
                 boundaries:
                   type: list
@@ -556,7 +557,7 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet.
+                        description: Standard ACL name or multicast IP subnet.
                 static:
                   type: bool
         ospf_network_point_to_point:
