@@ -513,19 +513,13 @@ class EosDesigns(EosDesignsRootModel):
         class Authentication(AvdModel):
             """Subclass of AvdModel."""
 
-            class Dot1x(AvdModel):
-                """Subclass of AvdModel."""
-
             _fields: ClassVar[dict] = {
                 "login": {"type": EosCliConfigGen.AaaAuthentication.Login},
                 "enable": {"type": EosCliConfigGen.AaaAuthentication.Enable},
-                "dot1x": {"type": Dot1x},
                 "policies": {"type": EosCliConfigGen.AaaAuthentication.Policies},
             }
             login: EosCliConfigGen.AaaAuthentication.Login
             enable: EosCliConfigGen.AaaAuthentication.Enable
-            dot1x: Dot1x
-            """Subclass of AvdModel."""
             policies: EosCliConfigGen.AaaAuthentication.Policies
 
             if TYPE_CHECKING:
@@ -535,7 +529,6 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     login: EosCliConfigGen.AaaAuthentication.Login | UndefinedType = Undefined,
                     enable: EosCliConfigGen.AaaAuthentication.Enable | UndefinedType = Undefined,
-                    dot1x: Dot1x | UndefinedType = Undefined,
                     policies: EosCliConfigGen.AaaAuthentication.Policies | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -547,7 +540,6 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         login: login
                         enable: enable
-                        dot1x: Subclass of AvdModel.
                         policies: policies
 
                     """
@@ -555,23 +547,17 @@ class EosDesigns(EosDesignsRootModel):
         class Authorization(AvdModel):
             """Subclass of AvdModel."""
 
-            class Dynamic(AvdModel):
-                """Subclass of AvdModel."""
-
             _fields: ClassVar[dict] = {
                 "policy": {"type": EosCliConfigGen.AaaAuthorization.Policy},
                 "exec": {"type": EosCliConfigGen.AaaAuthorization.Exec},
                 "config_commands": {"type": bool},
                 "serial_console": {"type": bool},
-                "dynamic": {"type": Dynamic},
                 "commands": {"type": EosCliConfigGen.AaaAuthorization.Commands},
             }
             policy: EosCliConfigGen.AaaAuthorization.Policy
             exec: EosCliConfigGen.AaaAuthorization.Exec
             config_commands: bool | None
             serial_console: bool | None
-            dynamic: Dynamic
-            """Subclass of AvdModel."""
             commands: EosCliConfigGen.AaaAuthorization.Commands
 
             if TYPE_CHECKING:
@@ -583,7 +569,6 @@ class EosDesigns(EosDesignsRootModel):
                     exec: EosCliConfigGen.AaaAuthorization.Exec | UndefinedType = Undefined,
                     config_commands: bool | UndefinedType | None = Undefined,
                     serial_console: bool | UndefinedType | None = Undefined,
-                    dynamic: Dynamic | UndefinedType = Undefined,
                     commands: EosCliConfigGen.AaaAuthorization.Commands | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -597,7 +582,6 @@ class EosDesigns(EosDesignsRootModel):
                         exec: exec
                         config_commands: config_commands
                         serial_console: serial_console
-                        dynamic: Subclass of AvdModel.
                         commands: commands
 
                     """
@@ -605,66 +589,13 @@ class EosDesigns(EosDesignsRootModel):
         class Accounting(AvdModel):
             """Subclass of AvdModel."""
 
-            class Dot1x(AvdModel):
-                """Subclass of AvdModel."""
-
-                class Default(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    class MethodsItem(AvdModel):
-                        """Subclass of AvdModel."""
-
-                    class Methods(AvdList[MethodsItem]):
-                        """Subclass of AvdList with `MethodsItem` items."""
-
-                    Methods._item_type = MethodsItem
-
-                    _fields: ClassVar[dict] = {"methods": {"type": Methods}}
-                    methods: Methods
-                    """Subclass of AvdList with `MethodsItem` items."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, methods: Methods | UndefinedType = Undefined) -> None:
-                            """
-                            Default.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                methods: Subclass of AvdList with `MethodsItem` items.
-
-                            """
-
-                _fields: ClassVar[dict] = {"default": {"type": Default}}
-                default: Default
-                """Subclass of AvdModel."""
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, default: Default | UndefinedType = Undefined) -> None:
-                        """
-                        Dot1x.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            default: Subclass of AvdModel.
-
-                        """
-
             _fields: ClassVar[dict] = {
                 "exec": {"type": EosCliConfigGen.AaaAccounting.Exec},
                 "system": {"type": EosCliConfigGen.AaaAccounting.System},
-                "dot1x": {"type": Dot1x},
                 "commands": {"type": EosCliConfigGen.AaaAccounting.Commands},
             }
             exec: EosCliConfigGen.AaaAccounting.Exec
             system: EosCliConfigGen.AaaAccounting.System
-            dot1x: Dot1x
-            """Subclass of AvdModel."""
             commands: EosCliConfigGen.AaaAccounting.Commands
 
             if TYPE_CHECKING:
@@ -674,7 +605,6 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     exec: EosCliConfigGen.AaaAccounting.Exec | UndefinedType = Undefined,
                     system: EosCliConfigGen.AaaAccounting.System | UndefinedType = Undefined,
-                    dot1x: Dot1x | UndefinedType = Undefined,
                     commands: EosCliConfigGen.AaaAccounting.Commands | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -686,7 +616,6 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         exec: exec
                         system: system
-                        dot1x: Subclass of AvdModel.
                         commands: commands
 
                     """

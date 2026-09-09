@@ -227,6 +227,11 @@ keys:
             $ref: eos_cli_config_gen#/keys/aaa_authentication/keys/enable
           dot1x:
             type: dict
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 6.0.0
+              new_key: dot1x_settings.authentication
             keys:
               default:
                 type: str
@@ -255,6 +260,11 @@ keys:
             $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/serial_console
           dynamic:
             type: dict
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 6.0.0
+              new_key: dot1x_settings.dynamic_authorization
             keys:
               dot1x_additional_groups:
                 type: list
@@ -280,6 +290,11 @@ keys:
             $ref: eos_cli_config_gen#/keys/aaa_accounting/keys/system
           dot1x:
             type: dict
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 6.0.0
+              new_key: dot1x_settings.accounting
             keys:
               default:
                 type: dict

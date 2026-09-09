@@ -50,7 +50,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console</samp>](## "aaa_settings.authentication.login.console") | String |  |  |  | Console authentication method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group radius group MYGROUP local"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "aaa_settings.authentication.enable") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_settings.authentication.enable.default") | String |  |  |  | Enable authentication method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group radius group MYGROUP local"<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "aaa_settings.authentication.dot1x") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "aaa_settings.authentication.dot1x") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>dot1x_settings.authentication</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_settings.authentication.dot1x.default") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>dot1x_settings.authentication.radius_groups</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;policies</samp>](## "aaa_settings.authentication.policies") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on_failure_log</samp>](## "aaa_settings.authentication.policies.on_failure_log") | Boolean |  |  |  |  |
@@ -68,7 +68,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_settings.authorization.exec.default") | String |  |  |  | Exec authorization method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group radius group MYGROUP local"<br>- "group ldap"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;config_commands</samp>](## "aaa_settings.authorization.config_commands") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_console</samp>](## "aaa_settings.authorization.serial_console") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "aaa_settings.authorization.dynamic") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "aaa_settings.authorization.dynamic") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>dot1x_settings.dynamic_authorization</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_additional_groups</samp>](## "aaa_settings.authorization.dynamic.dot1x_additional_groups") <span style="color:red">removed</span> | List, items: String |  |  | Min Length: 1 | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>dot1x_settings.dynamic_authorization.additional_groups</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "aaa_settings.authorization.dynamic.dot1x_additional_groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;commands</samp>](## "aaa_settings.authorization.commands") | Dictionary |  |  |  |  |
@@ -99,7 +99,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;method</samp>](## "aaa_settings.accounting.system.default.methods.[].method") | String | Required |  | Valid Values:<br>- <code>logging</code><br>- <code>group</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.system.default.methods.[].group") | String |  |  |  | Specify the server group to be used.<br>This option is applicable only when the `method` key is explicitly set to `group`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.system.default.group") <span style="color:red">removed</span> | String |  |  |  | Group Name.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "aaa_settings.accounting.dot1x") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "aaa_settings.accounting.dot1x") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>dot1x_settings.accounting</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_settings.accounting.dot1x.default") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_settings.accounting.dot1x.default.type") <span style="color:red">removed</span> | String |  |  | Valid Values:<br>- <code>start-stop</code><br>- <code>stop-only</code> | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>dot1x_settings.accounting.mode</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;methods</samp>](## "aaa_settings.accounting.dot1x.default.methods") | List, items: Dictionary |  |  | Min Length: 1 |  |
@@ -290,7 +290,6 @@
           # - "group MYGROUP none"
           # - "group radius group MYGROUP local"
           default: <str>
-        dot1x:
         policies:
           on_failure_log: <bool>
           on_success_log: <bool>
@@ -314,7 +313,6 @@
           default: <str>
         config_commands: <bool>
         serial_console: <bool>
-        dynamic:
         commands:
 
           # Command authorization method(s) as a string.
@@ -361,9 +359,6 @@
                 # Specify the server group to be used.
                 # This option is applicable only when the `method` key is explicitly set to `group`.
                 group: <str>
-        dot1x:
-          default:
-            methods: # >=1 items
         commands:
           console:
 
