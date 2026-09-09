@@ -197,6 +197,9 @@ keys:
           enable:
             type: dict
             $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/enable"
+          policies:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/policies"
           dot1x:
             type: dict
             deprecation:
@@ -212,9 +215,6 @@ keys:
                   removed: true
                   remove_in_version: 6.0.0
                   new_key: dot1x_settings.authentication.radius_groups
-          policies:
-            type: dict
-            $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/policies"
       authorization:
         type: dict
         keys:
@@ -230,6 +230,9 @@ keys:
           serial_console:
             type: bool
             $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/serial_console"
+          commands:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/commands"
           dynamic:
             type: dict
             deprecation:
@@ -248,9 +251,6 @@ keys:
                   removed: true
                   remove_in_version: 6.0.0
                   new_key: dot1x_settings.dynamic_authorization.additional_groups
-          commands:
-            type: dict
-            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/commands"
       accounting:
         type: dict
         keys:
@@ -260,6 +260,9 @@ keys:
           system:
             type: dict
             $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/system"
+          commands:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/commands"
           dot1x:
             type: dict
             deprecation:
@@ -315,9 +318,6 @@ keys:
                       removed: true
                       remove_in_version: 6.0.0
                       new_key: dot1x_settings.accounting.radius_groups
-          commands:
-            type: dict
-            $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/commands"
       root_login:
         type: dict
         keys:
