@@ -27,5 +27,5 @@ device_profiles:
     parent_profile: L3LEAF_PARENT_PROFILE
 
 expected_error_message: >-
-  Circular profile dependency detected: Profile 'L3LEAF1B' cannot be assigned as the parent of
-  'L3LEAF_PARENT_PROFILE' in 'device_profiles' because it would create a loop.
+  The Device Profile 'invalid-profile' applied for the device 'fabric-invalid-parent-device-profile'
+  does not exist under 'device_profiles'.
