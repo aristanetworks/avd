@@ -44457,10 +44457,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         List of additional TCAM profile names that must be defined under `tcam_profiles`.
         These profiles are
-        always configured in EOS but are not selected as the EOS system profile.
+        always configured in EOS.
 
-        Subclass of AvdList with
-        `str` items.
+        Subclass of AvdList with `str` items.
         """
         lag_hardware_only: bool | None
         default_interface_mtu: int | None
@@ -44532,10 +44531,9 @@ class EosDesigns(EosDesignsRootModel):
                     additional_tcam_profiles:
                        List of additional TCAM profile names that must be defined under `tcam_profiles`.
                        These profiles are
-                       always configured in EOS but are not selected as the EOS system profile.
+                       always configured in EOS.
 
-                       Subclass of AvdList with
-                       `str` items.
+                       Subclass of AvdList with `str` items.
                     lag_hardware_only: lag_hardware_only
                     default_interface_mtu:
                        Default interface MTU configured on EOS under "interface defaults".
@@ -46326,10 +46324,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         List of additional TCAM profile names that must be defined under `tcam_profiles`.
         These profiles are
-        always configured in EOS but are not selected as the EOS system profile.
+        always configured in EOS.
 
-        Subclass of AvdList with
-        `str` items.
+        Subclass of AvdList with `str` items.
         """
         lag_hardware_only: bool | None
         default_interface_mtu: int | None
@@ -46401,10 +46398,9 @@ class EosDesigns(EosDesignsRootModel):
                     additional_tcam_profiles:
                        List of additional TCAM profile names that must be defined under `tcam_profiles`.
                        These profiles are
-                       always configured in EOS but are not selected as the EOS system profile.
+                       always configured in EOS.
 
-                       Subclass of AvdList with
-                       `str` items.
+                       Subclass of AvdList with `str` items.
                     lag_hardware_only: lag_hardware_only
                     default_interface_mtu:
                        Default interface MTU configured on EOS under "interface defaults".

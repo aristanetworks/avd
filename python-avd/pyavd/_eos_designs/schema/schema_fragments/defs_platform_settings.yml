@@ -43,7 +43,7 @@ $defs:
           type: list
           description: |-
             List of additional TCAM profile names that must be defined under `tcam_profiles`.
-            These profiles are always configured in EOS but are not selected as the EOS system profile.
+            These profiles are always configured in EOS.
           items:
             type: str
         lag_hardware_only:

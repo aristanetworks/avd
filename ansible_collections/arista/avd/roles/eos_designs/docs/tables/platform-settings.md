@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "platform_settings.[].reload_delay.mlag") | Integer |  |  | Min: 0<br>Max: 86400 | In seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;non_mlag</samp>](## "platform_settings.[].reload_delay.non_mlag") | Integer |  |  | Min: 0<br>Max: 86400 | In seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tcam_profile</samp>](## "platform_settings.[].tcam_profile") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;additional_tcam_profiles</samp>](## "platform_settings.[].additional_tcam_profiles") | List, items: String |  |  |  | List of additional TCAM profile names that must be defined under `tcam_profiles`.<br>These profiles are always configured in EOS but are not selected as the EOS system profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;additional_tcam_profiles</samp>](## "platform_settings.[].additional_tcam_profiles") | List, items: String |  |  |  | List of additional TCAM profile names that must be defined under `tcam_profiles`.<br>These profiles are always configured in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "platform_settings.[].additional_tcam_profiles.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lag_hardware_only</samp>](## "platform_settings.[].lag_hardware_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
@@ -208,7 +208,7 @@
         tcam_profile: <str>
 
         # List of additional TCAM profile names that must be defined under `tcam_profiles`.
-        # These profiles are always configured in EOS but are not selected as the EOS system profile.
+        # These profiles are always configured in EOS.
         additional_tcam_profiles:
           - <str>
         lag_hardware_only: <bool>
