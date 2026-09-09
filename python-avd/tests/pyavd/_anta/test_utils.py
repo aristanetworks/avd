@@ -9,8 +9,8 @@ from anta.tests.connectivity import VerifyReachability
 from anta.tests.interfaces import VerifyInterfacesVoqAndEgressQueueDrops
 
 from pyavd._anta.index import AVD_TEST_INDEX
-from pyavd._anta.input_factories import VerifyReachabilityInputFactory
 from pyavd._anta.input_factories.base_classes import AntaTestInputFactory
+from pyavd._anta.input_factories.connectivity import VerifyReachabilityInputFactory
 from pyavd._anta.utils import get_filtered_test_specs
 from pyavd.api.anta import AVDCatalogGenerationSettings, AVDTestSpec
 

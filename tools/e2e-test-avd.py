@@ -7,8 +7,8 @@
 #   "gitpython>=3.1.57"
 # ]
 # requires-python = ">=3.11"
-# # [tool.uv]
-# # reinstall-package = ["pyavd"]
+# [tool.uv]
+# reinstall-package = ["pyavd"]
 # ///
 # pylint: disable=too-many-lines
 
@@ -46,23 +46,15 @@ from ansible.vars.hostvars import HostVars
 from ansible.vars.manager import VariableManager
 from yaml import CLoader as YamlLoader
 
-import pyavd
-from pyavd import validate_structured_config
-from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
-from pyavd._eos_designs.structured_config import get_structured_config
-from pyavd._schema.store import init_store as pyavd_init_store
-from pyavd._utils import default, strip_empties_from_dict, template
-from pyavd._utils.avd_templar import AVDTemplar
-from pyavd.api.pool_manager import PoolManager
-from pyavd.api.schemas import AVDDesign
-from pyavd.j2filters import add_md_toc
-
 if typing.TYPE_CHECKING:
     from collections.abc import Generator
     from typing import TypeVar
 
     from ansible.inventory.host import Host
     from typing_extensions import Self
+
+    from pyavd._utils.avd_templar import AVDTemplar
+    from pyavd.api.schemas import AVDDesign
 
     class DataclassInstance(typing.Protocol):
         __dataclass_fields__: typing.ClassVar[dict[str, typing.Any]]
@@ -117,6 +109,8 @@ class DocumentationConfig:
         parent: Self,
         overrides: DocumentationConfigOverrides,
     ) -> Self:
+        from pyavd._utils.default import default
+
         return cls(
             device_docs=default(overrides.device_docs, parent.device_docs),
             device_docs_toc=default(overrides.device_docs_toc, parent.device_docs_toc),
@@ -211,6 +205,8 @@ class ScenarioConfig:
         project: ProjectConfig,
         overrides: ScenarioConfigOverrides,
     ) -> Self:
+        from pyavd._utils.default import default
+
         return cls(
             scenario_name=scenario_name,
             project=project,
@@ -303,6 +299,8 @@ class FabricConfig:
         scenario: ScenarioConfig,
         overrides: FabricConfigOverrides,
     ) -> Self:
+        from pyavd._utils.default import default
+
         return cls(
             fabric_name=fabric_name,
             scenario=scenario,
@@ -656,6 +654,10 @@ class AvdV6Build:
 
         Load validated inputs from main process dict (created during validation)
         """
+        from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
+        from pyavd.api.pool_manager import PoolManager
+        from pyavd.api.schemas import AVDDesign
+
         for device_name, validated_inputs_dict in self._validated_inputs_dict.items():
             # Parse JSON and create AVDDesign object
             self._loaded_avd_designs[device_name] = AVDDesign._from_dict(validated_inputs_dict)
@@ -722,6 +724,9 @@ class AvdV6Build:
 
         Ignores missing structured configs.
         """
+        from pyavd import get_fabric_documentation
+        from pyavd._utils.strip_empties import strip_empties_from_dict
+
         # Ensure avd_facts shared memory was created in common_build_stage
         if self._avd_facts_shm_info is None:
             dump_error("avd_facts shared memory not initialized. Did you run common_build_stage()?", self.config, "internal_common_doc")
@@ -734,7 +739,7 @@ class AvdV6Build:
         fabric_name: str = self.config.fabric_name
 
         doc_config = self.config.documentation
-        output = pyavd.get_fabric_documentation(
+        output = get_fabric_documentation(
             avd_facts=avd_facts,
             structured_configs=structured_configs,
             fabric_name=fabric_name,
@@ -861,6 +866,9 @@ def build_validate_and_render_for_one_device(
         config: FabricConfig object with dirs and other build parameters
     """
     if config.avd_design:
+        from pyavd import validate_structured_config
+        from pyavd._eos_designs.structured_config import get_structured_config
+
         device_avd_validated_inputs = typing.cast("AVDDesign", device_avd_validated_inputs)
 
         # Load (and cache) avd_facts from shared memory in this worker.
@@ -910,13 +918,17 @@ def build_validate_and_render_for_one_device(
 
     # Phase 4: Render EOS CLI
     if config.device_configs:
+        from pyavd import get_device_config
+
         try:
-            eos_cli = pyavd.get_device_config(eos_config)
+            eos_cli = get_device_config(eos_config)
         except Exception as e:
             dump_exception(e, config, "eos_cli", device)
             return False
 
         if config.custom_templates and eos_config.get("custom_templates"):
+            from pyavd._utils.template import template
+
             templar = get_avd_templar(config)
             eos_cli += template(CUSTOM_TEMPLATES_CFG_TEMPLATE, device_avd_validated_inputs_dict, templar)
 
@@ -926,17 +938,23 @@ def build_validate_and_render_for_one_device(
 
     # Phase 5: Render device documentation
     if config.documentation.device_docs:
+        from pyavd import get_device_doc
+
         try:
-            device_doc = pyavd.get_device_doc(eos_config, add_md_toc=False)
+            device_doc = get_device_doc(eos_config, add_md_toc=False)
         except Exception as e:
             dump_exception(e, config, "device_doc", device)
             return False
 
         if config.custom_templates and eos_config.get("custom_templates"):
+            from pyavd._utils.template import template
+
             templar = get_avd_templar(config)
             device_doc += template(CUSTOM_TEMPLATES_DOC_TEMPLATE, device_avd_validated_inputs_dict, templar)
 
         if config.documentation.device_docs_toc:
+            from pyavd.j2filters import add_md_toc
+
             device_doc = add_md_toc(device_doc, skip_lines=3)
 
         config.full_docs_dir.joinpath("devices").mkdir(parents=True, exist_ok=True)
@@ -958,6 +976,8 @@ def initialize_worker(config: ScenarioConfig) -> None:
 def get_avd_templar(config: FabricConfig) -> AVDTemplar | None:
     if not config.custom_templates:
         return None
+
+    from pyavd._utils.avd_templar import AVDTemplar
 
     searchpath = [
         str(config.full_project_dir.joinpath("templates")),
@@ -1006,7 +1026,9 @@ def dump_exception(exc: Exception, config: FabricConfig, stage: str, device: str
 @lru_cache(maxsize=1)
 def _ensure_pyavd_store_initialized() -> None:
     """Initialize the PyAVD store once per process."""
-    pyavd_init_store()
+    from pyavd._schema.store import init_store
+
+    init_store()
 
 
 @lru_cache(maxsize=1)

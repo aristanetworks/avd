@@ -8,9 +8,6 @@ from functools import cached_property
 from logging import getLogger
 from typing import TYPE_CHECKING, Protocol, cast
 
-from pyavd._cv.client import CVClient
-from pyavd._cv.workflows.models import AvdDevice, CVDevice
-from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 
@@ -47,6 +44,10 @@ class UtilsZscalerMixin(Protocol):
         TODO: Add support for cv_verify_certs
         TODO: Get the CV proto updated to guarantee values in all endpoint fields and cloud_name.
         """
+        from pyavd._cv.client import CVClient  # noqa: PLC0415
+        from pyavd._cv.workflows.models import AvdDevice, CVDevice  # noqa: PLC0415
+        from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory  # noqa: PLC0415
+
         context = "The WAN Internet-exit integration with Zscaler fetches information from CloudVision"
         if not (cv_server := self.inputs.cv_server):
             msg = f"{context} and requires 'cv_server' to be set."

@@ -7986,6 +7986,12 @@ interface Tunnel7
 | --------- | ----------- | --------- | -------- | ------- |
 | Vlan50 | ACL1 | POOL1 | 0 | - |
 
+##### IP NAT: Interfaces configured via profile
+
+| Interface | Profile |
+| --------- | ------- |
+| Vlan44 | PROFILE1 |
+
 ##### IPv6
 
 | Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
@@ -8144,6 +8150,7 @@ interface Vlan44
    ipv6 dhcp relay destination a0::8
    ipv6 dhcp relay destination a0::5 vrf TEST source-address a0::6 link-address a0::7
    ipv6 address a0::4/64
+   ip nat service-profile PROFILE1
 !
 interface Vlan50
    description IP NAT Testing

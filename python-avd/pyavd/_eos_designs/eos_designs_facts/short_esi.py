@@ -9,10 +9,10 @@ from hashlib import sha256
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
-from pyavd._utils import default
+from pyavd._utils.default import default
 
 if TYPE_CHECKING:
-    from . import EosDesignsFactsGeneratorProtocol
+    from .generator import EosDesignsFactsGeneratorProtocol
 
 
 class ShortEsiMixin(EosDesignsFactsProtocol, Protocol):

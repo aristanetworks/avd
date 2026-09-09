@@ -8,7 +8,8 @@ from ipaddress import IPv4Address, IPv4Interface, ip_interface
 from logging import getLogger
 from typing import Any
 
-from pyavd._utils import get, get_item
+from pyavd._utils.get import get
+from pyavd._utils.get_item import get_item
 
 LOGGER = getLogger(__name__)
 

@@ -5,7 +5,7 @@
 
 import pytest
 
-from pyavd._utils import short_esi_to_route_target
+from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 
 ESI_TO_RT_TEST_CASES = [
     # (<short_esi>, <route_target>)

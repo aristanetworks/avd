@@ -11364,6 +11364,19 @@ keys:
                 description: Only validate interfaces defined in the AVD structured
                   configuration for errdisabled state.
                 default: false
+      bgp:
+        type: dict
+        description: Validation settings for BGP.
+        keys:
+          check_tcp_queues:
+            type: bool
+            description: Flag to check if the TCP session queues are empty for all
+              BGP peers.
+          minimum_established_time:
+            type: int
+            convert_types:
+            - str
+            description: Minimum established time (seconds) for all BGP sessions.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -27130,6 +27143,10 @@ keys:
         ip_nat:
           type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
+          keys:
+            service_profile:
+              type: str
+              description: NAT interface profile.
         dhcp_server_ipv4:
           type: bool
           description: Enable IPv4 DHCP server.

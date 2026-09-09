@@ -9,7 +9,7 @@ distlib>=0.3.9
 grpclib>=0.4.8
 jinja2>=3.0
 netaddr>=0.7.19
-pyavd==6.4.0.dev1
+pyavd==6.5.0.dev0
 pyavd-utils==0.0.7
 python-socks[asyncio]>=2.7.2
 pyyaml>=6.0.0
