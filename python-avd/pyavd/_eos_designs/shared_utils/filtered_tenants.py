@@ -357,7 +357,9 @@ class FilteredTenantsMixin(Protocol):
                 return merged_svi
             if resolved_profile.parent_profile:
                 if resolved_profile.parent_profile not in self.inputs.svi_profiles:
-                    msg = f"Profile '{resolved_profile.parent_profile}' applied under SVI Profile '{resolved_profile.profile}' does not exist in 'svi_profiles'."
+                    msg = (
+                        f"Profile '{resolved_profile.parent_profile}' applied under SVI Profile '{resolved_profile.profile}' does not exist in 'svi_profiles'."
+                    )
                     raise AristaAvdInvalidInputsError(msg)
                 # Inherit from the parent profile
                 resolved_profile = resolved_profile._deepinherited(self.inputs.svi_profiles[resolved_profile.parent_profile])
@@ -372,12 +374,13 @@ class FilteredTenantsMixin(Protocol):
             )
             self._set_node_specific_config(merged_svi)
             return merged_svi
-        else:
-            merged_svi = svi
-            self._set_node_specific_config(merged_svi)
-            return merged_svi
+        merged_svi = svi
+        self._set_node_specific_config(merged_svi)
+        return merged_svi
 
-    def _set_node_specific_config(self: SharedUtilsProtocol, merged_svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem:
+    def _set_node_specific_config(
+        self: SharedUtilsProtocol, merged_svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem:
         # Merge node specific SVI over the general SVI data.
         if self.hostname in merged_svi.nodes:
             node_specific_svi = merged_svi.nodes[self.hostname]._cast_as(
