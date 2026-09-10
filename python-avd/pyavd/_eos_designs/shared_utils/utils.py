@@ -138,10 +138,6 @@ class UtilsMixin(Protocol):
             parent_profile = self.inputs.port_profiles[resolved_profile.parent_profile]._deepcopy()
             resolved_profile = resolved_profile._deepinherited(parent_profile)
 
-            # Remove parent_profile from the merged result
-            delattr(resolved_profile, "parent_profile")
-            return resolved_profile
-
         # Parent_profile is not mentioned in port_profile.
         delattr(resolved_profile, "parent_profile")
         return resolved_profile

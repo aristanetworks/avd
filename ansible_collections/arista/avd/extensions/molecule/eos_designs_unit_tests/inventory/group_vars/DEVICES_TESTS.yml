@@ -47,13 +47,6 @@ device_profiles:
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
-    parent_profile: L3LEAF_GRAND_PARENT
-
-  - name: L3LEAF_GRAND_PARENT
-    ptp:
-      enabled: true
-      mode: boundary
-      mode_one_step: true
 
   - name: L3LEAF1A
     # No parent_profile
