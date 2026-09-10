@@ -19,6 +19,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "platform_settings.[].feature_support.dot1x") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_bpdu_bypass</samp>](## "platform_settings.[].feature_support.dot1x.protocol_bpdu_bypass") | Boolean |  | `True` |  | Support for 802.1X BPDU bypass.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "platform_settings.[].feature_support.address_locking") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.address_locking.supported") | Boolean |  | `True` |  | Global support for Address Locking feature.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_enforcement_disabled</samp>](## "platform_settings.[].feature_support.address_locking.ipv4_enforcement_disabled") | Boolean |  | `True` |  | Support for disabling enforcement for locked IPv4 addresses.<br>The feature will be ignored on platforms where this is false. |
@@ -215,6 +217,11 @@
         # <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
         p2p_uplinks_mtu: <int; 68-65535>
         feature_support:
+          dot1x:
+
+            # Support for 802.1X BPDU bypass.
+            # The feature will be ignored on platforms where this is false.
+            protocol_bpdu_bypass: <bool; default=True>
           address_locking:
 
             # Global support for Address Locking feature.
