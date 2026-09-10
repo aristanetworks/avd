@@ -367,9 +367,8 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def tcam_profile(self) -> None:
         """Set TCAM profiles based on platform settings."""
-        if not (tcam_profile_name := self.shared_utils.platform_settings.tcam_profile):
-            return
-        self.structured_config.tcam_profile.system = tcam_profile_name
+        if tcam_profile_name := self.shared_utils.platform_settings.tcam_profile:
+            self.structured_config.tcam_profile.system = tcam_profile_name
 
         # Configure additional profiles.
         for additional_tcam_profile_name in self.shared_utils.platform_settings.additional_tcam_profiles:
