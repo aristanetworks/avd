@@ -70,6 +70,9 @@ metadata:
   interfaces:
     errdisable:
       only_avd_interfaces: true
+  bgp:
+    check_tcp_queues: false
+    minimum_established_time: 10000
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC2_L3_LEAF2_Port-Channel8

@@ -53794,6 +53794,7 @@ class EosDesigns(EosDesignsRootModel):
             "logging": {"type": Logging},
             "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
             "interfaces": {"type": EosCliConfigGen.Metadata.Interfaces},
+            "bgp": {"type": EosCliConfigGen.Metadata.Bgp},
         }
         name: str
         parent_profile: str | None
@@ -53823,6 +53824,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         interfaces: EosCliConfigGen.Metadata.Interfaces
         """Interface validation settings."""
+        bgp: EosCliConfigGen.Metadata.Bgp
+        """Validation settings for BGP."""
 
         if TYPE_CHECKING:
 
@@ -53835,6 +53838,7 @@ class EosDesigns(EosDesignsRootModel):
                 logging: Logging | UndefinedType = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
                 interfaces: EosCliConfigGen.Metadata.Interfaces | UndefinedType = Undefined,
+                bgp: EosCliConfigGen.Metadata.Bgp | UndefinedType = Undefined,
             ) -> None:
                 """
                 ValidationProfilesItem.
@@ -53861,6 +53865,7 @@ class EosDesigns(EosDesignsRootModel):
                        Exclude this node from being used as a destination target from other fabric devices in the extra
                        fabric validation tests performed by the `anta_runner` role.
                     interfaces: Interface validation settings.
+                    bgp: Validation settings for BGP.
 
                 """
 
