@@ -49,6 +49,12 @@ EXAMPLES = r"""
 ---
 sorted_ipv4_addresses: "{{ ['192.0.2.10/24', '192.0.2.2'] | arista.avd.ip_address_sort }}" # -> ["192.0.2.2", "192.0.2.10/24"]
 sorted_ipv6_addresses: "{{ ['2001:db8::10/64', '2001:db8::2'] | arista.avd.ip_address_sort }}" # -> ["2001:db8::2", "2001:db8::10/64"]
+sorted_neighbors: >-
+  {{
+    [{'ip_address': '192.0.2.10'}, {'ip_address': '192.0.2.2'}]
+    | arista.avd.ip_address_sort(sort_key='ip_address')
+  }}
+# -> [{"ip_address": "192.0.2.2"}, {"ip_address": "192.0.2.10"}]
 """
 
 RETURN = r"""
