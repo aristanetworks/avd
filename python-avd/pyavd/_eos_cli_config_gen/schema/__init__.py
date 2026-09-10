@@ -9729,7 +9729,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
                     boundary: str | None
-                    """Standard ACL name or multicast IP subnet."""
+                    """Standard IPv4 access-list name or IPv4 multicast group prefix with mask."""
                     out: bool | None
 
                     if TYPE_CHECKING:
@@ -9742,7 +9742,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: Standard ACL name or multicast IP subnet.
+                                boundary: Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
                                 out: out
 
                             """
@@ -9780,7 +9780,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}}
                     boundary: str | None
-                    """Standard ACL name or multicast IP subnet."""
+                    """Standard IPv6 access-list name or IPv6 multicast group prefix with mask."""
 
                     if TYPE_CHECKING:
 
@@ -9792,7 +9792,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: Standard ACL name or multicast IP subnet.
+                                boundary: Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
 
                             """
 
@@ -37714,7 +37714,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
                     boundary: str
-                    """Standard ACL name or multicast IP subnet."""
+                    """Standard IPv4 access-list name or IPv4 multicast group prefix with mask."""
                     out: bool | None
                     """Restrict multicast routing to and from the interface for group."""
 
@@ -37728,7 +37728,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: Standard ACL name or multicast IP subnet.
+                                boundary: Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
                                 out: Restrict multicast routing to and from the interface for group.
 
                             """
@@ -37768,7 +37768,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}}
                     boundary: str
-                    """Standard ACL name or multicast IP subnet."""
+                    """Standard IPv6 access-list name or IPv6 multicast group prefix with mask."""
 
                     if TYPE_CHECKING:
 
@@ -37780,7 +37780,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: Standard ACL name or multicast IP subnet.
+                                boundary: Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
 
                             """
 
@@ -75977,7 +75977,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
                     boundary: str
-                    """Standard ACL name or multicast IP subnet."""
+                    """Standard IPv4 access-list name or IPv4 multicast group prefix with mask."""
                     out: bool | None
 
                     if TYPE_CHECKING:
@@ -75990,7 +75990,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: Standard ACL name or multicast IP subnet.
+                                boundary: Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
                                 out: out
 
                             """
@@ -76072,7 +76072,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}}
                     boundary: str
-                    """Standard ACL name or multicast IP subnet."""
+                    """Standard IPv6 access-list name or IPv6 multicast group prefix with mask."""
 
                     if TYPE_CHECKING:
 
@@ -76084,7 +76084,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: Standard ACL name or multicast IP subnet.
+                                boundary: Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
 
                             """
 

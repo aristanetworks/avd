@@ -4032,7 +4032,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: Standard ACL name or multicast IP subnet.
+                        description: Standard IPv4 access-list name or IPv4 multicast
+                          group prefix with mask.
                       out:
                         type: bool
                 static:
@@ -4047,7 +4048,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: Standard ACL name or multicast IP subnet.
+                        description: Standard IPv6 access-list name or IPv6 multicast
+                          group prefix with mask.
                 static:
                   type: bool
         ospf_network_point_to_point:
@@ -14500,7 +14502,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: Standard ACL name or multicast IP subnet.
+                        description: Standard IPv4 access-list name or IPv4 multicast
+                          group prefix with mask.
                       out:
                         type: bool
                         description: Restrict multicast routing to and from the interface
@@ -14520,7 +14523,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: Standard ACL name or multicast IP subnet.
+                        description: Standard IPv6 access-list name or IPv6 multicast
+                          group prefix with mask.
                 static:
                   type: bool
         service_profile:
@@ -27342,7 +27346,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: Standard ACL name or multicast IP subnet.
+                        description: Standard IPv4 access-list name or IPv4 multicast
+                          group prefix with mask.
                         convert_types:
                         - int
                       out:
@@ -27374,7 +27379,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: Standard ACL name or multicast IP subnet.
+                        description: Standard IPv6 access-list name or IPv6 multicast
+                          group prefix with mask.
                         convert_types:
                         - int
                 source_route_export:
