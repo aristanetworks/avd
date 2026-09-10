@@ -1665,6 +1665,8 @@ ASN Notation: asplain
 | IP | True | RM-test2 |
 | Tunnel | True | - |
 
+#### Router BGP VPN-IPv6 Address Family
+
 #### Router BGP Path-Selection Address Family
 
 #### Router BGP VRFs
@@ -1754,6 +1756,8 @@ router bgp 65101
    !
    address-family path-selection
       no bgp additional-paths send
+   !
+   address-family vpn-ipv6
    !
    vrf VRF01
       rd evpn domain all 10.50.64.15:30003

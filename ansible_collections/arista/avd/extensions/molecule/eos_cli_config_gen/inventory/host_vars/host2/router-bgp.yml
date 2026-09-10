@@ -81,6 +81,8 @@ router_bgp:
       additional_paths:
         install_ecmp_primary: true
         send: disabled
+    next_hop:
+      resolution_disabled: false
     redistribute:
       bgp:
         enabled: true
@@ -124,6 +126,8 @@ router_bgp:
         install: true
         send: ecmp
         send_limit: 8
+    next_hop:
+      resolution_disabled: false
     redistribute:
       attached_host:
         enabled: true
@@ -161,6 +165,9 @@ router_bgp:
           nssa_type: 1
           include_leaked: true
           route_map: RM-REDISTRIBUTE-OSPF-NSSA-EXTERNAL
+  address_family_vpn_ipv6:
+    next_hop:
+      resolution_disabled: false
   address_family_ipv4_multicast:
     redistribute:
       ospf:

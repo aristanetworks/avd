@@ -50363,12 +50363,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "networks": {"type": Networks},
                 "bgp": {"type": Bgp},
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "redistribute": {"type": Redistribute},
+                "next_hop": {"type": NextHop},
             }
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
@@ -50384,6 +50405,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
+            next_hop: NextHop
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -50395,6 +50418,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv4.
@@ -50411,6 +50435,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 
@@ -53709,12 +53734,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "networks": {"type": Networks},
                 "bgp": {"type": Bgp},
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "redistribute": {"type": Redistribute},
+                "next_hop": {"type": NextHop},
             }
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
@@ -53730,6 +53776,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
+            next_hop: NextHop
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -53741,6 +53789,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv6.
@@ -53757,6 +53806,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 
@@ -56122,12 +56172,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "domain_identifier": {"type": str},
                 "peer_groups": {"type": PeerGroups},
                 "route": {"type": Route},
                 "neighbors": {"type": Neighbors},
                 "neighbor_default_encapsulation_mpls_next_hop_self": {"type": NeighborDefaultEncapsulationMplsNextHopSelf},
+                "next_hop": {"type": NextHop},
             }
             domain_identifier: str | None
             peer_groups: PeerGroups
@@ -56137,6 +56208,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             neighbors: Neighbors
             """Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`)."""
             neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf
+            """Subclass of AvdModel."""
+            next_hop: NextHop
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
@@ -56149,6 +56222,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     route: Route | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyVpnIpv6.
@@ -56162,6 +56236,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         route: Subclass of AvdModel.
                         neighbors: Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`).
                         neighbor_default_encapsulation_mpls_next_hop_self: Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 

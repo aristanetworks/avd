@@ -18990,6 +18990,11 @@ keys:
 
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes
                       precedence.'
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           redistribute_routes:
             type: list
             deprecation:
@@ -20050,6 +20055,11 @@ keys:
 
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes
                       precedence.'
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           redistribute_routes:
             type: list
             deprecation:
@@ -20749,6 +20759,11 @@ keys:
             keys:
               source_interface:
                 type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
       vrfs:
         type: list
         primary_key: name
