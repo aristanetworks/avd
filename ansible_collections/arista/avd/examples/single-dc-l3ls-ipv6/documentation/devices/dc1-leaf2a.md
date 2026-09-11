@@ -936,6 +936,8 @@ router bgp 65102
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
+      neighbor MLAG-IPv6-UNDERLAY-PEER activate
+      neighbor MLAG-IPv6-UNDERLAY-PEER next-hop address-family ipv6 originate
    !
    address-family ipv6
       neighbor IPv6-UNDERLAY-PEERS activate
