@@ -71176,6 +71176,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
+            AuthPassphraseType: TypeAlias = Literal["0", "7", "8a"]
+            PrivPassphraseType: TypeAlias = Literal["0", "7", "8a"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "group": {"type": str},
@@ -71184,12 +71186,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "version": {"type": str},
                 "localized": {"type": str},
                 "auth": {"type": str},
+                "auth_passphrase_type": {"type": str},
                 "auth_passphrase": {"type": str},
                 "priv": {"type": str},
+                "priv_passphrase_type": {"type": str},
                 "priv_passphrase": {"type": str},
             }
             name: str | None
-            """Username."""
+            """
+            Username.
+            Must be no more than 32 characters.
+            """
             group: str | None
             """Group name."""
             remote_address: str | None
@@ -71208,12 +71215,47 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Engine ID in hexadecimal for localizing auth and/or priv."""
             auth: str | None
             """Hash algorithm."""
+            auth_passphrase_type: AuthPassphraseType | None
+            """
+            Authentication passphrase type.
+            EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and
+            4.34.8M+.
+            Requires `localized` to set.
+            - `0`: Key string is not encrypted.
+            - `7`: Type-7 encrypted
+            (HIDDEN) key.
+            - `8a`: AES-256-GCM encrypted key.
+            """
             auth_passphrase: str | None
-            """Hashed authentication passphrase if localized is used else cleartext authentication passphrase."""
+            """
+            Authentication passphrase or key value.
+            Provide a localized key when `localized` is set.
+            Provide an
+            encrypted/obfuscated value when `auth_passphrase_type` is `7` or `8a`.
+            Otherwise, provide a
+            cleartext authentication passphrase.
+            """
             priv: str | None
             """Encryption algorithm."""
+            priv_passphrase_type: PrivPassphraseType | None
+            """
+            Privacy passphrase type.
+            EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
+            Requires `localized` to set.
+            - `0`: Key string is not encrypted.
+            - `7`: Type-7 encrypted (HIDDEN)
+            key.
+            - `8a`: AES-256-GCM encrypted key.
+            """
             priv_passphrase: str | None
-            """Hashed privacy passphrase if localized is used else cleartext privacy passphrase."""
+            """
+            Privacy passphrase or key value.
+            Provide a localized key when `localized` is set.
+            Provide an
+            encrypted/obfuscated value when `priv_passphrase_type` is `7` or `8a`.
+            Otherwise, provide a
+            cleartext privacy passphrase.
+            """
 
             if TYPE_CHECKING:
 
@@ -71227,8 +71269,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     version: Version | UndefinedType | None = Undefined,
                     localized: str | UndefinedType | None = Undefined,
                     auth: str | UndefinedType | None = Undefined,
+                    auth_passphrase_type: AuthPassphraseType | UndefinedType | None = Undefined,
                     auth_passphrase: str | UndefinedType | None = Undefined,
                     priv: str | UndefinedType | None = Undefined,
+                    priv_passphrase_type: PrivPassphraseType | UndefinedType | None = Undefined,
                     priv_passphrase: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -71238,7 +71282,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: Username.
+                        name:
+                           Username.
+                           Must be no more than 32 characters.
                         group: Group name.
                         remote_address:
                            Hostname or ip of remote engine.
@@ -71251,9 +71297,38 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         version: version
                         localized: Engine ID in hexadecimal for localizing auth and/or priv.
                         auth: Hash algorithm.
-                        auth_passphrase: Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+                        auth_passphrase_type:
+                           Authentication passphrase type.
+                           EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and
+                           4.34.8M+.
+                           Requires `localized` to set.
+                           - `0`: Key string is not encrypted.
+                           - `7`: Type-7 encrypted
+                           (HIDDEN) key.
+                           - `8a`: AES-256-GCM encrypted key.
+                        auth_passphrase:
+                           Authentication passphrase or key value.
+                           Provide a localized key when `localized` is set.
+                           Provide an
+                           encrypted/obfuscated value when `auth_passphrase_type` is `7` or `8a`.
+                           Otherwise, provide a
+                           cleartext authentication passphrase.
                         priv: Encryption algorithm.
-                        priv_passphrase: Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+                        priv_passphrase_type:
+                           Privacy passphrase type.
+                           EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
+                           Requires `localized` to set.
+                           - `0`: Key string is not encrypted.
+                           - `7`: Type-7 encrypted (HIDDEN)
+                           key.
+                           - `8a`: AES-256-GCM encrypted key.
+                        priv_passphrase:
+                           Privacy passphrase or key value.
+                           Provide a localized key when `localized` is set.
+                           Provide an
+                           encrypted/obfuscated value when `priv_passphrase_type` is `7` or `8a`.
+                           Otherwise, provide a
+                           cleartext privacy passphrase.
 
                     """
 

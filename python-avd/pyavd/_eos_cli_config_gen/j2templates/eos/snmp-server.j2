@@ -118,10 +118,18 @@ snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.nam
 {%             if user.localized is arista.avd.defined %}
 {%                 set user_cli = user_cli ~ " localized " ~ user.localized %}
 {%             endif %}
-{%             set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%             set user_cli = user_cli ~ " auth " ~ user.auth %}
+{%             if user.auth_passphrase_type is arista.avd.defined and user.localized is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " key " ~ user.auth_passphrase_type %}
+{%             endif %}
+{%             set user_cli = user_cli ~ " " ~ user.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
 {%             if user.priv is arista.avd.defined
                   and user.priv_passphrase is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%                 set user_cli = user_cli ~ " priv " ~ user.priv %}
+{%                 if user.priv_passphrase_type is arista.avd.defined and user.localized is arista.avd.defined %}
+{%                     set user_cli = user_cli ~ " key " ~ user.priv_passphrase_type %}
+{%                 endif %}
+{%                 set user_cli = user_cli ~ " " ~ user.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
 {%             endif %}
 {%         endif %}
 {{ user_cli }}
@@ -159,10 +167,18 @@ snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.nam
 {%             if user.localized is arista.avd.defined %}
 {%                 set user_cli = user_cli ~ " localized " ~ user.localized %}
 {%             endif %}
-{%             set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%             set user_cli = user_cli ~ " auth " ~ user.auth %}
+{%             if user.auth_passphrase_type is arista.avd.defined and user.localized is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " key " ~ user.auth_passphrase_type %}
+{%             endif %}
+{%             set user_cli = user_cli ~ " " ~ user.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
 {%             if user.priv is arista.avd.defined
                   and user.priv_passphrase is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%                 set user_cli = user_cli ~ " priv " ~ user.priv %}
+{%                 if user.priv_passphrase_type is arista.avd.defined and user.localized is arista.avd.defined %}
+{%                     set user_cli = user_cli ~ " key " ~ user.priv_passphrase_type %}
+{%                 endif %}
+{%                 set user_cli = user_cli ~ " " ~ user.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
 {%             endif %}
 {%         endif %}
 {{ user_cli }}

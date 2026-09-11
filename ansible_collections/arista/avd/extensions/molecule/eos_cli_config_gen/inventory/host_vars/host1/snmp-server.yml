@@ -129,6 +129,54 @@ snmp_server:
       auth_passphrase: DEADBEEFCAFE123456ABC1234321AB1233456778
       priv: aes
       priv_passphrase: DEADBEEFCAFE123456ABC1234321AB12334567
+    - name: USER-AUTH-TYPE7
+      group: GRP-READ
+      version: v3
+      localized: f5717f500000bb417100
+      auth: md5
+      auth_passphrase_type: 7
+      auth_passphrase: 00564605530A0F005D71484C59185615175A08542C297778363175460240025252
+    - name: USER-AUTH-PRIV-TYPE0
+      group: GRP-WRITE
+      version: v3
+      localized: f5717f500000bb417100
+      auth: sha
+      auth_passphrase_type: 0
+      auth_passphrase: DEADBEEFCAFE123456ABC1234321AB1233456778
+      priv: aes
+      priv_passphrase_type: 0
+      priv_passphrase: DEADBEEFCAFE123456ABC1234321AB1233456778
+    - name: USER-AUTH-PRIV-WITHOUT-LOCALIZED
+      group: GRP-WRITE
+      version: v3
+      auth: sha
+      # auth_passphrase_type and priv_passphrase_type will ignore as localized is not set
+      auth_passphrase_type: 7
+      auth_passphrase: 00564605530A0F005D71484C5918561517
+      priv: aes256
+      priv_passphrase_type: 7
+      priv_passphrase: 00564605530A0F005D71484C59185615175
+    - name: USER-LOCALIZED-TYPE7
+      group: GRP-WRITE
+      version: v3
+      localized: f5717f500000bb417100
+      auth: sha
+      auth_passphrase_type: 7
+      auth_passphrase: 00534602530E5A075622181F5B4A5C11435C5A532F7A227B6A33201004410753015B5D04040F054C4E
+      priv: aes
+      priv_passphrase_type: 7
+      priv_passphrase: 00054156070F5C070E771C1A5A1C561410090F522F2D27786330211106465A5901
+    - name: USER-REMOTE-TYPE7
+      group: GRP-REMOTE
+      version: v3
+      remote_address: 10.1.1.1
+      auth: md5
+      localized: f5717f500000bb417100
+      auth_passphrase_type: 7
+      auth_passphrase: 00511103025A52565F754A1D0F1B0046455A08072F7E707E656D7B4054425655525D0A04035C544E42
+      priv: des
+      priv_passphrase_type: 7
+      priv_passphrase: 00054156070F5C070E771C1A5A1C561410090F522F2D27786330211106465A5901
   hosts:
     - host: 10.6.75.121
       vrf: MGMT

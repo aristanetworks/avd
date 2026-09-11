@@ -202,6 +202,8 @@ class SnmpServerMixin(Protocol):
                         user_dict.auth_passphrase = snmp_hash(hash_filter)
                     else:
                         user_dict.auth_passphrase = user.auth_passphrase
+                    if user.auth_passphrase_type is not None:
+                        user_dict.auth_passphrase_type = user.auth_passphrase_type
 
                     if user.priv is not None and user.priv_passphrase is not None:
                         user_dict.priv = user.priv
@@ -210,6 +212,8 @@ class SnmpServerMixin(Protocol):
                             user_dict.priv_passphrase = snmp_hash(hash_filter)
                         else:
                             user_dict.priv_passphrase = user.priv_passphrase
+                        if user.priv_passphrase_type is not None:
+                            user_dict.priv_passphrase_type = user.priv_passphrase_type
 
             self.structured_config.snmp_server.users.append(user_dict)
 

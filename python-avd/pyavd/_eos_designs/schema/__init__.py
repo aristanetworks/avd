@@ -49533,14 +49533,18 @@ class EosDesigns(EosDesignsRootModel):
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
             Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
+            AuthPassphraseType: TypeAlias = Literal["0", "7", "8a"]
             Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
+            PrivPassphraseType: TypeAlias = Literal["0", "7", "8a"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "group": {"type": str},
                 "version": {"type": str},
                 "auth": {"type": str},
+                "auth_passphrase_type": {"type": str},
                 "auth_passphrase": {"type": str},
                 "priv": {"type": str},
+                "priv_passphrase_type": {"type": str},
                 "priv_passphrase": {"type": str},
             }
             name: str | None
@@ -49549,11 +49553,40 @@ class EosDesigns(EosDesignsRootModel):
             """Group name."""
             version: Version | None
             auth: Auth | None
+            auth_passphrase_type: AuthPassphraseType | None
+            """
+            Authentication passphrase type.
+            EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and
+            4.34.8M+.
+            Requires `compute_v3_user_localized_key` to be `true`.
+            """
             auth_passphrase: str | None
-            """Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set."""
+            """
+            Authentication passphrase or key value. Requires 'auth' to be set.
+            AVD computes a localized key when
+            `compute_v3_user_localized_key` is `true`.
+            Provide an encrypted/obfuscated value when
+            `auth_passphrase_type` is `7` or `8a`.
+            Otherwise, provide a cleartext passphrase so the
+            recommendation is to use vault.
+            """
             priv: Priv | None
+            priv_passphrase_type: PrivPassphraseType | None
+            """
+            Privacy passphrase type.
+            EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
+            Requires `compute_v3_user_localized_key` to be `true`.
+            """
             priv_passphrase: str | None
-            """Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set."""
+            """
+            Privacy passphrase or key value. Requires 'priv' to be set.
+            AVD computes a localized key when
+            `compute_v3_user_localized_key` is `true`.
+            Provide an encrypted/obfuscated value when
+            `priv_passphrase_type` is `7` or `8a`.
+            Otherwise, provide a cleartext passphrase so the
+            recommendation is to use vault.
+            """
 
             if TYPE_CHECKING:
 
@@ -49564,8 +49597,10 @@ class EosDesigns(EosDesignsRootModel):
                     group: str | UndefinedType | None = Undefined,
                     version: Version | UndefinedType | None = Undefined,
                     auth: Auth | UndefinedType | None = Undefined,
+                    auth_passphrase_type: AuthPassphraseType | UndefinedType | None = Undefined,
                     auth_passphrase: str | UndefinedType | None = Undefined,
                     priv: Priv | UndefinedType | None = Undefined,
+                    priv_passphrase_type: PrivPassphraseType | UndefinedType | None = Undefined,
                     priv_passphrase: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -49579,9 +49614,32 @@ class EosDesigns(EosDesignsRootModel):
                         group: Group name.
                         version: version
                         auth: auth
-                        auth_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+                        auth_passphrase_type:
+                           Authentication passphrase type.
+                           EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and
+                           4.34.8M+.
+                           Requires `compute_v3_user_localized_key` to be `true`.
+                        auth_passphrase:
+                           Authentication passphrase or key value. Requires 'auth' to be set.
+                           AVD computes a localized key when
+                           `compute_v3_user_localized_key` is `true`.
+                           Provide an encrypted/obfuscated value when
+                           `auth_passphrase_type` is `7` or `8a`.
+                           Otherwise, provide a cleartext passphrase so the
+                           recommendation is to use vault.
                         priv: priv
-                        priv_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
+                        priv_passphrase_type:
+                           Privacy passphrase type.
+                           EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
+                           Requires `compute_v3_user_localized_key` to be `true`.
+                        priv_passphrase:
+                           Privacy passphrase or key value. Requires 'priv' to be set.
+                           AVD computes a localized key when
+                           `compute_v3_user_localized_key` is `true`.
+                           Provide an encrypted/obfuscated value when
+                           `priv_passphrase_type` is `7` or `8a`.
+                           Otherwise, provide a cleartext passphrase so the
+                           recommendation is to use vault.
 
                     """
 
