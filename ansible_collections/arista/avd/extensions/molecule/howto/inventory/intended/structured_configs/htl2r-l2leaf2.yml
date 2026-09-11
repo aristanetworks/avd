@@ -1,0 +1,124 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.1.12:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvsourceintf: Management1
+  cvvrf: MGMT
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_htl2r-l2leaf1_Ethernet2
+  shutdown: false
+  metadata:
+    peer: htl2r-l2leaf1
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100-101,200
+- name: Ethernet2
+  description: L2_htl2r-l2leaf3_Ethernet1
+  shutdown: false
+  metadata:
+    peer: htl2r-l2leaf3
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100-101,200
+- name: Ethernet10
+  description: SERVER_server-leaf2_nic1
+  shutdown: false
+  metadata:
+    peer: server-leaf2
+    peer_interface: nic1
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,200
+hostname: htl2r-l2leaf2
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
+ip_igmp_snooping:
+  globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.4.112/24
+  type: oob
+metadata:
+  is_deployed: true
+  platform: cEOS-lab
+  fabric_name: FABRIC
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 0.pool.ntp.org
+    preferred: true
+  vrf: MGMT
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 16384
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 100
+  name: PROD_VLAN100
+  metadata:
+    tenants:
+    - TENANT1
+- id: 101
+  name: PROD_VLAN101
+  metadata:
+    tenants:
+    - TENANT1
+- id: 200
+  name: L2_VLAN200
+  metadata:
+    tenants:
+    - TENANT1
+vrfs:
+- name: MGMT
+  ip_routing: false
