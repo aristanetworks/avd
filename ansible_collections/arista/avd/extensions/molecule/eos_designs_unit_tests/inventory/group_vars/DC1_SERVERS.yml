@@ -145,6 +145,31 @@ port_profiles:
         tx_period: 3
       reauthorization_request_limit: 3
 
+  - profile: profile1
+    mode: trunk
+    vlans: "1,2,3,4,5,6,7,123,234"
+    native_vlan_tag: false
+    native_vlan: 123
+    parent_profile: profile2
+
+  - profile: profile2
+    mode: trunk
+    spanning_tree_portfast: "edge"
+    spanning_tree_bpdufilter: true
+    spanning_tree_link_type: point-to-point
+    parent_profile: profile3
+
+    # profile3 is not inherited for profile1 as allow_infinite_profile_inheritence is set to false.
+  - profile: profile3
+    mode: trunk
+    qos_profile: MYQOS
+    poe:
+      disabled: true
+    ptp:
+      enabled: true
+    sflow: false
+    parent_profile: profile4
+
 servers:
   - name: server01_MLAG
     rack: RackB
@@ -657,6 +682,14 @@ servers:
                 type: ip
                 name: myIpAVL
                 priority: 5
+
+  - name: port-profiles-chain
+    rack: RackC
+    adapters:
+      - endpoint_ports: [Eth1]
+        switch_ports: [Ethernet45]
+        switches: [dc1-svc3a]
+        profile: profile1
 
 phones:
   - name: PHONE01_untagged

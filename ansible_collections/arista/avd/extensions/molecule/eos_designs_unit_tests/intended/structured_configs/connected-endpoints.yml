@@ -690,6 +690,88 @@ ethernet_interfaces:
     peer: ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
     peer_type: custom_server
     peer_key: servers
+- name: Ethernet51
+  description: CUSTOM_SERVER_PORT_PROFILE_CHAIN1
+  shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
+  mac_access_group_in: acl-on-port-profile
+  mac_access_group_out: acl-on-port-profile
+  poe:
+    disabled: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  dot1x:
+    pae:
+      mode: supplicant
+      supplicant_profile: test_profile_port_profile
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
+  metadata:
+    peer: PORT_PROFILE_CHAIN1
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: profile1
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4,5,6,7,123,234
+      native_vlan: 123
+      native_vlan_tag: false
+- name: Ethernet52
+  description: CUSTOM_SERVER_PORT_PROFILE_CHAIN2
+  shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
+  mac_access_group_in: acl-on-port-profile
+  mac_access_group_out: acl-on-port-profile
+  poe:
+    disabled: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  dot1x:
+    pae:
+      mode: supplicant
+      supplicant_profile: test_profile_port_profile
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
+  metadata:
+    peer: PORT_PROFILE_CHAIN2
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: profile2
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      native_vlan: 123
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false

@@ -1,0 +1,51 @@
+---
+mgmt_gateway: 192.168.200.5
+
+avd_design_future:
+  allow_infinite_profile_inheritance: true
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  nodes:
+    - name: invalid-parent-profile-in-circular-svi-profile-inheritance
+      bgp_as: 65101
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+
+svi_profiles:
+  - profile: profile3
+    igmp_snooping:
+      querier:
+        version: 3
+    parent_profile: profile1
+  - profile: profile1
+    parent_profile: profile2
+  - profile: profile2
+    parent_profile: profile3
+    igmp_snooping:
+      querier:
+        enabled: true
+
+tenants:
+  - name: Tenant_D
+    mac_vrf_vni_base: 40000
+    vrfs:
+      - name: infinite-inheritance
+        vrf_vni: 41
+        svis:
+          - id: 24
+            name: "VLAN_24"
+            enabled: true
+            ip_address_virtual: 10.0.23.2/24
+            profile: profile1
+
+expected_error_message: >-
+  Circular profile dependency detected: Profile 'profile1' cannot be applied as the parent profile of 'profile3'
+  as it would create a loop.

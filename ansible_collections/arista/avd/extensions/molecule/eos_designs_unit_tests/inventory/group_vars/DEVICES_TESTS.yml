@@ -32,6 +32,11 @@ devices:
     profile: l3leaf
     mlag_group: devices-leaf2
 
+    # device using profile with multilevel inheritance.
+  - name: devices-leaf3a
+    id: 5
+    profile: profile1
+
 device_profiles:
   - name: L3LEAF_PARENT_PROFILE
     mlag_group: L3LEAF1
@@ -47,6 +52,19 @@ device_profiles:
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
+
+  - name: profile1
+    type: l3leaf
+    vtep_loopback_ipv4_pool: 10.255.2.100/27
+    parent_profile: profile2
+
+  - name: profile2
+    loopback_ipv4_pool: 10.254.0.0/27
+    parent_profile: profile3
+
+  - name: profile3
+    bgp_as: 65101
+    platform: cEOS-lab
 
   - name: L3LEAF1A
     # No parent_profile
