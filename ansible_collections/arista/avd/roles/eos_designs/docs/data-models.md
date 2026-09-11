@@ -1732,6 +1732,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-platform-set
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-speed-groups.md
 --8<--
 
+### TCAM profiles
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/tcam-profiles.md
+--8<--
+
 ## Validation Profiles
 
 --8<--

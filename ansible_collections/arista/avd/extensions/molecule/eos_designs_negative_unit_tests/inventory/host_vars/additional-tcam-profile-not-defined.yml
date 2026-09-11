@@ -1,0 +1,23 @@
+---
+type: l2leaf
+
+l2leaf:
+  defaults:
+    platform: CUSTOM-TCAM-PLATFORM
+  nodes:
+    - name: additional-tcam-profile-not-defined
+
+tcam_profiles:
+  - name: system-profile
+    source: flash:/system-profile.conf
+
+custom_platform_settings:
+  - platforms:
+      - CUSTOM-TCAM-PLATFORM
+    tcam_profile: system-profile
+    additional_tcam_profiles:
+      - undefined-additional-profile
+
+expected_error_message: >-
+  TCAM profile 'undefined-additional-profile' referenced under
+  'additional_tcam_profiles' is not defined under 'tcam_profiles'.
