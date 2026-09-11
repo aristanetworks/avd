@@ -1,0 +1,21 @@
+---
+- name: Ensure warning input directory exists
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/tmp_validate_inputs_warning_configuration_input"
+    state: directory
+    mode: "0755"
+
+- name: Write warning input file
+  ansible.builtin.copy:
+    dest: "{{ actual_output_dir }}/tmp_validate_inputs_warning_configuration_input/testhost.json"
+    mode: "0644"
+    content: >-
+      {"fabric_name":"testgroup","type":"l2leaf","hosts":["testhost"],"hostname":"testhost"}
+
+- name: Run warning validation on ansible-core >= 2.19
+  when: ansible_version.major > 2 or (ansible_version.major == 2 and ansible_version.minor >= 19)
+  ansible.builtin.include_tasks: validate_inputs_with_validation_configuration_ansible_2_19_and_above.yaml
+
+- name: Run warning validation on ansible-core < 2.19
+  when: ansible_version.major == 2 and ansible_version.minor < 19
+  ansible.builtin.include_tasks: validate_inputs_with_validation_configuration_ansible_2_18_and_below.yaml
