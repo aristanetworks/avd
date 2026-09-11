@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils.default import default
+from pyavd._utils.undefined import Undefined
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -37,7 +38,18 @@ class PlatformMixin(Protocol):
 
     @cached_property
     def platform_settings(self: SharedUtilsProtocol) -> EosDesigns.PlatformSettingsItem | EosDesigns.CustomPlatformSettingsItem:
-        return self.get_platform_settings(self.platform)
+        platform_settings = self.get_platform_settings(self.platform)
+
+        # TODO: AVD 7.0.0 - Remove this after setting `sflow_subinterfaces: false` in the default platform settings for the R series platforms.
+        if (
+            self.inputs.avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms
+            and platform_settings.feature_support._get_defined_attr("sflow_subinterfaces") is Undefined
+            and (sflow_subinterfaces_future := platform_settings.feature_support.sflow_subinterfaces_future) is not None
+        ):
+            platform_settings = platform_settings._deepcopy()
+            platform_settings.feature_support.sflow_subinterfaces = sflow_subinterfaces_future
+
+        return platform_settings
 
     def get_platform_settings(self: SharedUtilsProtocol, platform: str | None) -> EosDesigns.PlatformSettingsItem | EosDesigns.CustomPlatformSettingsItem:
         # First look for a matching platform setting specifying our platform

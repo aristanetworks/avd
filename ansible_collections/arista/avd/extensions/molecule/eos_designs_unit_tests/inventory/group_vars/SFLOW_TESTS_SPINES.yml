@@ -15,3 +15,28 @@ spine:
     - name: sflow-tests-spine2
       id: 2
       mgmt_ip: 192.168.0.21/24
+
+    - name: sflow-tests-r-series-avd-future-disabled
+      id: 3
+      platform: 7280R
+      mgmt_ip: 192.168.0.31/24
+
+    - name: sflow-tests-r-series-avd-future-enabled
+      id: 4
+      platform: 7280R
+      mgmt_ip: 192.168.0.41/24
+
+    - name: sflow-tests-non-r-series-avd-future-enabled
+      id: 5
+      platform: default
+      mgmt_ip: 192.168.0.51/24
+
+    - name: sflow-tests-custom-r-series-explicit-override
+      id: 6
+      platform: custom-r-series-platform
+      mgmt_ip: 192.168.0.61/24
+
+    - name: sflow-tests-custom-r-series-fallback
+      id: 7
+      platform: custom-r-series-platform-fallback
+      mgmt_ip: 192.168.0.71/24

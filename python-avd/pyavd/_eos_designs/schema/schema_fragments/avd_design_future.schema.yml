@@ -35,6 +35,22 @@ keys:
           Available from AVD 6.2.0.
           Configure `inband_mgmt_vrf` for IPv6 inband management.
         default: false
+      disable_sflow_subinterfaces_on_r_series_platforms:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.4.0.
+          Use updated feature-support defaults for sFlow on subinterfaces.
+          When enabled, AVD uses `platform_settings[].feature_support.sflow_subinterfaces_future` as the value of `sflow_subinterfaces` only when
+          `sflow_subinterfaces_future` is set and `sflow_subinterfaces` is not explicitly set for the matched platform.
+          The default platform settings set `sflow_subinterfaces_future: false` for 7020R, 7280R, 7280R2, 7280R3, 7500R, 7500R2, 7500R3, and 7800R3,
+          which disables sFlow configuration on subinterfaces for these platforms.
+          To apply this behavior to custom R Series platform definitions, set `sflow_subinterfaces_future` under
+          `custom_platform_settings[].feature_support`.
+          Ingress sFlow on subinterfaces of R Series platforms requires a user-defined TCAM profile containing `feature sflow subintf` to be applied as
+          the system TCAM profile.
+          Applying a custom system TCAM profile may impact traffic and the functionality of other features on a live/production switch and therefore
+          requires customers to work with their Arista account team or TAC to define and test the new TCAM profile before deploying it on production switches.
       consistent_uplink_vlans:
         type: bool
         description: |-

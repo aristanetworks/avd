@@ -549,6 +549,7 @@ keys:
           subinterface_mtu: false
           per_interface_l2_mtu: false
           private_vlan: false
+          sflow_subinterfaces_future: false
           errdisable_causes:
             acl:
               recovery: false
@@ -590,6 +591,7 @@ keys:
           subinterface_mtu: false
           per_interface_l2_mtu: false
           private_vlan: false
+          sflow_subinterfaces_future: false
           errdisable_causes:
             acl:
               recovery: false
@@ -645,6 +647,7 @@ keys:
           subinterface_monitor_session: false
           per_interface_l2_mtu: false
           private_vlan: false
+          sflow_subinterfaces_future: false
           errdisable_causes:
             acl:
               recovery: false
@@ -701,6 +704,7 @@ keys:
           evpn_gateway_rd_rt_rewrite: true
           per_interface_l2_mtu: false
           private_vlan: false
+          sflow_subinterfaces_future: false
           errdisable_causes:
             acl:
               recovery: false
@@ -806,6 +810,7 @@ keys:
           subinterface_mtu: false
           per_interface_l2_mtu: false
           private_vlan: false
+          sflow_subinterfaces_future: false
           errdisable_causes:
             acl:
               recovery: false
@@ -864,6 +869,7 @@ keys:
           subinterface_monitor_session: false
           per_interface_l2_mtu: false
           private_vlan: false
+          sflow_subinterfaces_future: false
           errdisable_causes:
             acl:
               recovery: false
@@ -922,6 +928,7 @@ keys:
           evpn_gateway_all_active_multihoming: true
           evpn_gateway_rd_rt_rewrite: true
           private_vlan: false
+          sflow_subinterfaces_future: false
           errdisable_causes:
             acl:
               recovery: false
@@ -978,6 +985,7 @@ keys:
           evpn_gateway_all_active_multihoming: true
           evpn_gateway_rd_rt_rewrite: true
           private_vlan: false
+          sflow_subinterfaces_future: false
           errdisable_causes:
             acl:
               recovery: false
