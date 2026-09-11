@@ -38,6 +38,9 @@ class RouterBgpMixin(Protocol):
 
         if self.shared_utils.overlay_dpath:
             self.structured_config.router_bgp.bgp.bestpath.d_path = True
+        if self.shared_utils._is_mpls_overlay_server_without_lsr:
+            self.structured_config.router_bgp.bgp.route_reflector_preserve_attributes.enabled = True
+
         self._set_bgp_cluster_id()
         self._set_bgp_listen_ranges()
         self._set_address_family_evpn()
@@ -427,7 +430,7 @@ class RouterBgpMixin(Protocol):
         if self.shared_utils.overlay_dpath:
             self.structured_config.router_bgp.address_family_evpn.domain_identifier = self.shared_utils.node_config.ipvpn_gateway.evpn_domain_id
 
-        if self.shared_utils.is_wan_server:
+        if self.shared_utils.is_wan_server or (self.shared_utils._is_mpls_overlay_server_without_lsr and self.shared_utils.overlay_evpn_mpls):
             self.structured_config.router_bgp.address_family_evpn.next_hop.resolution_disabled = True
 
         # Activitating HA iBGP session for WAN HA
@@ -469,6 +472,9 @@ class RouterBgpMixin(Protocol):
 
         if self.shared_utils.overlay_dpath:
             af_vpn.domain_identifier = self.shared_utils.node_config.ipvpn_gateway.ipvpn_domain_id
+
+        if self.shared_utils._is_mpls_overlay_server_without_lsr:
+            af_vpn.next_hop.resolution_disabled = True
 
     def _create_neighbor(
         self: AvdStructuredConfigOverlayProtocol,
