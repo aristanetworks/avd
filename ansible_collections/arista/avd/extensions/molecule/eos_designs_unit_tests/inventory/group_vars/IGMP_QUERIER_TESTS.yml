@@ -19,6 +19,22 @@ svi_profiles:
         source_address: 1.1.1.1
         version: 3
 
+l2vlan_profiles:
+  - profile: IGMP_QUERIER_NODE_SPECIFIC
+    nodes:
+      - node: igmp-querier-l3leaf1a
+        igmp_snooping:
+          querier:
+            enabled: true
+            source_address: 10.0.125.2
+            version: 3
+      - node: igmp-querier-l2leaf1a
+        igmp_snooping:
+          querier:
+            enabled: true
+            source_address: 10.0.125.3
+            version: 3
+
 tenants:
 # igmp_snooping.querier enable on Tenant
   - name: Tenant_A
@@ -87,6 +103,22 @@ tenants:
         igmp_snooping:
           querier:
             enabled: false
+      # Expected results:
+      # igmp querier enabled from tenant level with per-node source addresses and versions.
+      - id: 104
+        name: "VLAN_104"
+        tags: ['test_l2']
+        nodes:
+          - node: igmp-querier-l3leaf1a
+            igmp_snooping:
+              querier:
+                source_address: 10.0.104.2
+                version: 1
+          - node: igmp-querier-l2leaf1a
+            igmp_snooping:
+              querier:
+                source_address: 10.0.104.3
+                version: 1
 
 # Test setting source address and version at tenant level
   - name: Tenant_B
@@ -214,3 +246,46 @@ tenants:
         igmp_snooping:
           querier:
             enabled: false
+      # Expected results:
+      # igmp querier enabled with per-node source addresses.
+      - id: 124
+        name: "VLAN_124"
+        tags: ['test_l2']
+        nodes:
+          - node: igmp-querier-l3leaf1a
+            igmp_snooping:
+              querier:
+                enabled: true
+                source_address: 10.0.124.2
+                version: 2
+          - node: igmp-querier-l2leaf1a
+            igmp_snooping:
+              querier:
+                enabled: true
+                source_address: 10.0.124.3
+                version: 2
+      # Expected results:
+      # igmp querier enabled with per-node source addresses inherited from l2vlan profile.
+      - id: 125
+        name: "VLAN_125"
+        tags: ['test_l2']
+        profile: IGMP_QUERIER_NODE_SPECIFIC
+      # Expected results:
+      # igmp querier disabled by per-node override even though the L2VLAN enables it.
+      - id: 126
+        name: "VLAN_126"
+        tags: ['test_l2']
+        igmp_snooping:
+          querier:
+            enabled: true
+            source_address: 10.0.126.1
+            version: 2
+        nodes:
+          - node: igmp-querier-l3leaf1a
+            igmp_snooping:
+              querier:
+                enabled: false
+          - node: igmp-querier-l2leaf1a
+            igmp_snooping:
+              querier:
+                enabled: false
