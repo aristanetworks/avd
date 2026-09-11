@@ -18956,6 +18956,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_username": {"type": str, "default": "cvpadmin"},
                 "act_password": {"type": str, "default": "cvp123!"},
                 "act_internet_access": {"type": bool, "default": False},
+                "act_legacy_eos_versioning": {"type": bool},
                 "act_ensure_eapi_access": {"type": bool, "default": False},
             }
             act_os_version: str | None
@@ -18982,6 +18983,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            act_legacy_eos_versioning: bool | None
+            """Set the ACT `legacy_eos_versioning` topology setting."""
             act_ensure_eapi_access: bool
             """
             Ensures eAPI remains accessible for automation and testing via ACT.
@@ -19006,6 +19009,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_username: str | UndefinedType = Undefined,
                     act_password: str | UndefinedType = Undefined,
                     act_internet_access: bool | UndefinedType = Undefined,
+                    act_legacy_eos_versioning: bool | UndefinedType | None = Undefined,
                     act_ensure_eapi_access: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -19024,6 +19028,7 @@ class EosDesigns(EosDesignsRootModel):
                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
                            types.
                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        act_legacy_eos_versioning: Set the ACT `legacy_eos_versioning` topology setting.
                         act_ensure_eapi_access:
                            Ensures eAPI remains accessible for automation and testing via ACT.
                            Clients connecting to device

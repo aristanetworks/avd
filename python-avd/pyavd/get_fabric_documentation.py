@@ -6,12 +6,14 @@ from __future__ import annotations
 from re import findall as re_findall
 from typing import TYPE_CHECKING, cast
 
+from pyavd._errors import AristaAvdError
 from pyavd._utils.get import get
 from pyavd.api.fabric_documentation import (
     ACTDigitalTwin,
     ActLinkSettings,
     ActNodeSettings,
     ActNodeTypeSettings,
+    ActSettings,
     FabricDocumentation,
 )
 
@@ -195,6 +197,15 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
             for device_structured_config in fabric_documentation_facts.structured_configs.values()
         ),
     )
+    act_legacy_eos_versioning_values = {
+        act_legacy_eos_versioning
+        for avd_facts in fabric_documentation_facts.avd_facts.values()
+        if (act_legacy_eos_versioning := avd_facts.digital_twin.act_legacy_eos_versioning if avd_facts.digital_twin else None) is not None
+    }
+    if len(act_legacy_eos_versioning_values) > 1:
+        msg = "Found conflicting values for 'digital_twin.fabric.act_legacy_eos_versioning'. The ACT topology only supports one global value."
+        raise AristaAvdError(msg)
+    digital_twin_settings = ActSettings(legacy_eos_versioning=next(iter(act_legacy_eos_versioning_values))) if act_legacy_eos_versioning_values else None
 
     digital_twin_node_types: dict[str, ActNodeTypeSettings | None] = {
         "cloudeos": None,
@@ -272,6 +283,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
         )
 
     return ACTDigitalTwin(
+        settings=digital_twin_settings,
         nodes=tuple(digital_twin_devices),
         links=tuple(
             ActLinkSettings(

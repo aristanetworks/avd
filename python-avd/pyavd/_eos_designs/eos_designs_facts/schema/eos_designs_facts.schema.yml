@@ -21,6 +21,13 @@ keys:
   is_deployed:
     type: bool
     required: true
+  digital_twin:
+    type: dict
+    description: Digital Twin fabric facts.
+    keys:
+      act_legacy_eos_versioning:
+        type: bool
+        description: ACT legacy EOS versioning fabric setting.
   serial_number:
     type: str
   mgmt_interface:

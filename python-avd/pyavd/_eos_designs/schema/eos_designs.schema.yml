@@ -2359,6 +2359,9 @@ keys:
 
               ACT does not provide direct Internet access to cloudeos or veos devices
               by default.'
+          act_legacy_eos_versioning:
+            type: bool
+            description: Set the ACT `legacy_eos_versioning` topology setting.
           act_ensure_eapi_access:
             type: bool
             description: 'Ensures eAPI remains accessible for automation and testing
