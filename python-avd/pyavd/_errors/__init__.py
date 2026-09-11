@@ -84,7 +84,7 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
         self.date = remove_after_date
         self.removed = removed
         self.conflict = conflict
-        self.version_message = f" in and will be removed in AVD {remove_in_version}" if remove_in_version else ""
+        self.version_message = f" and will be removed in AVD {remove_in_version}" if remove_in_version else ""
 
         if removed:
             messages.append(f"The input data model '{self.path}' was removed.")
