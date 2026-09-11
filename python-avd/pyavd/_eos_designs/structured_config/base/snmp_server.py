@@ -196,9 +196,9 @@ class SnmpServerMixin(Protocol):
 
                 if user.auth is not None and user.auth_passphrase is not None:
                     user_dict.auth = user.auth
-                    hash_filter = {}
-                    if compute_v3_user_localized_key:
-                        hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": engine_ids.local}
+                    hash_filter = {"auth": user.auth, "engine_id": engine_ids.local} if compute_v3_user_localized_key else {}
+                    if compute_v3_user_localized_key and user.auth_passphrase_type not in ["7", "8a"]:
+                        hash_filter.update({"passphrase": user.auth_passphrase})
                         user_dict.auth_passphrase = snmp_hash(hash_filter)
                     else:
                         user_dict.auth_passphrase = user.auth_passphrase
@@ -207,7 +207,7 @@ class SnmpServerMixin(Protocol):
 
                     if user.priv is not None and user.priv_passphrase is not None:
                         user_dict.priv = user.priv
-                        if compute_v3_user_localized_key:
+                        if compute_v3_user_localized_key and user.priv_passphrase_type not in ["7", "8a"]:
                             hash_filter.update({"passphrase": user.priv_passphrase, "priv": user.priv})
                             user_dict.priv_passphrase = snmp_hash(hash_filter)
                         else:
