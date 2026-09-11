@@ -128,7 +128,9 @@ keys:
           keys:
             name:
               type: str
-              description: Username.
+              description: |-
+                SNMP username.
+                Maximum length is 32 characters.
             group:
               type: str
               description: Group name.
@@ -138,15 +140,37 @@ keys:
             auth:
               type: str
               valid_values: ["md5", "sha", "sha256", "sha384", "sha512"]
+            auth_passphrase_type:
+              type: str
+              valid_values: ["0", "7", "8a"]
+              description: |
+                Authentication passphrase type.
+                EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
+                Requires `compute_v3_user_localized_key` to be `true`.
             auth_passphrase:
               type: str
-              description: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+              description: |
+                Authentication passphrase or key value. Requires 'auth' to be set.
+                AVD computes a localized key when `compute_v3_user_localized_key` is `true`.
+                Provide an encrypted/obfuscated value when `auth_passphrase_type` is `7` or `8a`.
+                Otherwise, provide a cleartext passphrase so the recommendation is to use vault.
             priv:
               type: str
               valid_values: ["des", "aes", "aes192", "aes256"]
+            priv_passphrase_type:
+              type: str
+              valid_values: ["0", "7", "8a"]
+              description: |
+                Privacy passphrase type.
+                EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
+                Requires `compute_v3_user_localized_key` to be `true`.
             priv_passphrase:
               type: str
-              description: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
+              description: |
+                Privacy passphrase or key value. Requires 'priv' to be set.
+                AVD computes a localized key when `compute_v3_user_localized_key` is `true`.
+                Provide an encrypted/obfuscated value when `priv_passphrase_type` is `7` or `8a`.
+                Otherwise, provide a cleartext passphrase so the recommendation is to use vault.
       hosts:
         type: list
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/hosts"

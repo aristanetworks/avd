@@ -162,18 +162,20 @@
 
 #### SNMP Users Configuration
 
-| User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
-| ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
+| User | Group | Version | Authentication | Auth Type | Privacy | Priv Type | Remote Address | Remote Port | Engine ID |
+| ---- | ----- | ------- | -------------- | --------- | ------- | --------- | -------------- | ----------- | --------- |
 {%         for user in snmp_server.users %}
 {%             set row_user = user.name | arista.avd.default('default') %}
 {%             set row_group = user.group | arista.avd.default('-') %}
 {%             set row_version = user.version | arista.avd.default('-') %}
 {%             set row_auth = user.auth | arista.avd.default('-') %}
+{%             set row_auth_type = user.auth_passphrase_type | arista.avd.default('-') %}
 {%             set row_policy = user.priv | arista.avd.default('-') %}
+{%             set row_priv_type = user.priv_passphrase_type | arista.avd.default('-') %}
 {%             set row_remote_address = user.remote_address | arista.avd.default('-') %}
 {%             set row_udp_port = user.udp_port | arista.avd.default('-') %}
 {%             set row_engine_id = user.localized | arista.avd.default('-') %}
-| {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_policy }} | {{ row_remote_address }} | {{ row_udp_port }} | {{ row_engine_id }} |
+| {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_auth_type }} | {{ row_policy }} | {{ row_priv_type }} | {{ row_remote_address }} | {{ row_udp_port }} | {{ row_engine_id }} |
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.extensions is arista.avd.defined %}

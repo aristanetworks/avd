@@ -22,13 +22,15 @@
     | [<samp>&nbsp;&nbsp;local_engineid_ip</samp>](## "snmp_settings.local_engineid_ip") | String |  | `use_default_mgmt_method_interface` |  | The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411_type5`.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface` will use the Out-of-band interface IP or IPv6.<br>  The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.<br>  An error will be raised if neither are configured for the device.<br>- `use_inband_mgmt_interface` will use the inband management IP.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_interface` will use the IP for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the IP (it can be IP or IPv6).<br> |
     | [<samp>&nbsp;&nbsp;compute_v3_user_localized_key</samp>](## "snmp_settings.compute_v3_user_localized_key") | Boolean |  | `False` |  | Requires compute_local_engineid to be `true`.<br>If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.<br>The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.<br> |
     | [<samp>&nbsp;&nbsp;users</samp>](## "snmp_settings.users") | List, items: Dictionary |  |  |  | Configuration of local SNMP users.<br>Configuration of remote SNMP users are currently only possible using `structured_config`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.users.[].name") | String |  |  |  | Username. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.users.[].name") | String |  |  |  | SNMP username.<br>Maximum length is 32 characters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "snmp_settings.users.[].group") | String |  |  |  | Group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_settings.users.[].version") | String |  |  | Valid Values:<br>- <code>v1</code><br>- <code>v2c</code><br>- <code>v3</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_settings.users.[].auth") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_settings.users.[].auth_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase_type</samp>](## "snmp_settings.users.[].auth_passphrase_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Authentication passphrase type.<br>EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.<br>Requires `compute_v3_user_localized_key` to be `true`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_settings.users.[].auth_passphrase") | String |  |  |  | Authentication passphrase or key value. Requires 'auth' to be set.<br>AVD computes a localized key when `compute_v3_user_localized_key` is `true`.<br>Provide an encrypted/obfuscated value when `auth_passphrase_type` is `7` or `8a`.<br>Otherwise, provide a cleartext passphrase so the recommendation is to use vault.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_settings.users.[].priv") | String |  |  | Valid Values:<br>- <code>des</code><br>- <code>aes</code><br>- <code>aes192</code><br>- <code>aes256</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_settings.users.[].priv_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase_type</samp>](## "snmp_settings.users.[].priv_passphrase_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Privacy passphrase type.<br>EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.<br>Requires `compute_v3_user_localized_key` to be `true`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_settings.users.[].priv_passphrase") | String |  |  |  | Privacy passphrase or key value. Requires 'priv' to be set.<br>AVD computes a localized key when `compute_v3_user_localized_key` is `true`.<br>Provide an encrypted/obfuscated value when `priv_passphrase_type` is `7` or `8a`.<br>Otherwise, provide a cleartext passphrase so the recommendation is to use vault.<br> |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "snmp_settings.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "snmp_settings.hosts.[].host") | String |  |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_settings.hosts.[].vrf") | String |  |  |  | VRF Name.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed. |
@@ -153,7 +155,8 @@
       # Configuration of remote SNMP users are currently only possible using `structured_config`.
       users:
 
-          # Username.
+          # SNMP username.
+          # Maximum length is 32 characters.
         - name: <str>
 
           # Group name.
@@ -161,11 +164,27 @@
           version: <str; "v1" | "v2c" | "v3">
           auth: <str; "md5" | "sha" | "sha256" | "sha384" | "sha512">
 
-          # Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+          # Authentication passphrase type.
+          # EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
+          # Requires `compute_v3_user_localized_key` to be `true`.
+          auth_passphrase_type: <str; "0" | "7" | "8a">
+
+          # Authentication passphrase or key value. Requires 'auth' to be set.
+          # AVD computes a localized key when `compute_v3_user_localized_key` is `true`.
+          # Provide an encrypted/obfuscated value when `auth_passphrase_type` is `7` or `8a`.
+          # Otherwise, provide a cleartext passphrase so the recommendation is to use vault.
           auth_passphrase: <str>
           priv: <str; "des" | "aes" | "aes192" | "aes256">
 
-          # Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
+          # Privacy passphrase type.
+          # EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
+          # Requires `compute_v3_user_localized_key` to be `true`.
+          priv_passphrase_type: <str; "0" | "7" | "8a">
+
+          # Privacy passphrase or key value. Requires 'priv' to be set.
+          # AVD computes a localized key when `compute_v3_user_localized_key` is `true`.
+          # Provide an encrypted/obfuscated value when `priv_passphrase_type` is `7` or `8a`.
+          # Otherwise, provide a cleartext passphrase so the recommendation is to use vault.
           priv_passphrase: <str>
       hosts:
 

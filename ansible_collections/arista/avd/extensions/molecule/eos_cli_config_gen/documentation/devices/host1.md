@@ -2899,18 +2899,23 @@ mcs client
 
 #### SNMP Users Configuration
 
-| User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
-| ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
-| USER-READ-NO-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | - | - | - | - | - |
-| USER-READ-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | sha | - | - | - | - |
-| USER-READ-AUTH-PRIV | GRP-READ-ONLY | v3 | sha | aes | - | - | - |
-| USER-READ-NO-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | - | - | - | - | 424242424242424242 |
-| USER-READ-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - | - | - | 424242424242424242 |
-| USER-READ-AUTH-PRIV-LOC | GRP-READ-ONLY | v3 | sha | aes | - | - | 424242424242424242 |
-| USER-WRITE | GRP-READ-WRITE | v3 | sha | aes | - | - | - |
-| REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | 42.42.42.42 | - | - |
-| REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
-| REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | aes | 42.42.42.42 | - | DEADBEEFCAFE123456 |
+| User | Group | Version | Authentication | Auth Type | Privacy | Priv Type | Remote Address | Remote Port | Engine ID |
+| ---- | ----- | ------- | -------------- | --------- | ------- | --------- | -------------- | ----------- | --------- |
+| USER-READ-NO-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | - | - | - | - | - | - | - |
+| USER-READ-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | sha | - | - | - | - | - | - |
+| USER-READ-AUTH-PRIV | GRP-READ-ONLY | v3 | sha | - | aes | - | - | - | - |
+| USER-READ-NO-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | - | - | - | - | - | - | 424242424242424242 |
+| USER-READ-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - | - | - | - | - | 424242424242424242 |
+| USER-READ-AUTH-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - | aes | - | - | - | 424242424242424242 |
+| USER-WRITE | GRP-READ-WRITE | v3 | sha | - | aes | - | - | - | - |
+| REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | - | - | 42.42.42.42 | - | - |
+| REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | - | - | 42.42.42.42 | 666 | - |
+| REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | - | aes | - | 42.42.42.42 | - | DEADBEEFCAFE123456 |
+| USER-AUTH-TYPE7 | GRP-READ | v3 | md5 | 7 | - | - | - | - | f5717f500000bb417100 |
+| USER-AUTH-PRIV-TYPE0 | GRP-WRITE | v3 | sha | 0 | aes | 0 | - | - | f5717f500000bb417100 |
+| USER-AUTH-PRIV-WITHOUT-LOCALIZED | GRP-WRITE | v3 | sha | 7 | aes256 | 7 | - | - | - |
+| USER-LOCALIZED-TYPE7 | GRP-WRITE | v3 | sha | 7 | aes | 7 | - | - | f5717f500000bb417100 |
+| USER-REMOTE-TYPE7 | GRP-REMOTE | v3 | md5 | 7 | des | 7 | 10.1.1.1 | - | f5717f500000bb417100 |
 
 #### SNMP Extensions
 
@@ -2945,6 +2950,10 @@ snmp-server community <removed> view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
 snmp-server community <removed> ro
 snmp-server group GRP-READ-ONLY v3 priv read v3read
 snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
+snmp-server user USER-AUTH-PRIV-TYPE0 GRP-WRITE v3 localized f5717f500000bb417100 auth sha key 0 <removed> priv aes key 0 <removed>
+snmp-server user USER-AUTH-PRIV-WITHOUT-LOCALIZED GRP-WRITE v3 auth sha <removed> priv aes256 <removed>
+snmp-server user USER-AUTH-TYPE7 GRP-READ v3 localized f5717f500000bb417100 auth md5 key 7 <removed>
+snmp-server user USER-LOCALIZED-TYPE7 GRP-WRITE v3 localized f5717f500000bb417100 auth sha key 7 <removed> priv aes key 7 <removed>
 snmp-server user USER-READ-AUTH-NO-PRIV GRP-READ-ONLY v3 auth sha <removed>
 snmp-server user USER-READ-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha <removed>
 snmp-server user USER-READ-AUTH-PRIV GRP-READ-ONLY v3 auth sha <removed> priv aes <removed>
@@ -2959,6 +2968,7 @@ snmp-server engineID remote 42.42.42.42 udp-port 666 424242424242DEAD6666
 snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed> priv aes <removed>
 snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
 snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
+snmp-server user USER-REMOTE-TYPE7 GRP-REMOTE remote 10.1.1.1 v3 localized f5717f500000bb417100 auth md5 key 7 <removed> priv des key 7 <removed>
 snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ-AUTH-PRIV
 snmp-server host 10.6.75.121 vrf MGMT version 1 <removed>
 snmp-server host 10.6.75.121 vrf MGMT version 2c <removed>
