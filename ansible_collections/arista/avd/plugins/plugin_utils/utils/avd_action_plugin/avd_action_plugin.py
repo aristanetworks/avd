@@ -1,6 +1,7 @@
 # Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import ast
 import logging
 import warnings
 from abc import abstractmethod
@@ -99,7 +100,7 @@ class AVDActionPlugin(ActionBase):
                     if issubclass(w.category, DeprecationWarning):
                         # AvdDeprecationWarning's are added from AvdSchemaTools with more context
                         # This is a catch-all for other deprecations
-                        self.result["deprecations"].append({"msg": msg})
+                        self.result["warnings"].append(f"DEPRECATION_WARNING: {msg}")
                     else:
                         # Catch-all for standard Python warnings from any library
                         self.result["warnings"].append(msg)
