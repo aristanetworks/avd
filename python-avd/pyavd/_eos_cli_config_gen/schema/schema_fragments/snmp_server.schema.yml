@@ -172,8 +172,8 @@ keys:
             name:
               type: str
               description: |-
-                Username.
-                Must be no more than 32 characters.
+                SNMP username.
+                Maximum length is 32 characters.
             # TODO: AVD 6.0, make group required
             group:
               type: str

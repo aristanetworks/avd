@@ -128,7 +128,9 @@ keys:
           keys:
             name:
               type: str
-              description: Username.
+              description: |-
+                SNMP username.
+                Maximum length is 32 characters.
             group:
               type: str
               description: Group name.

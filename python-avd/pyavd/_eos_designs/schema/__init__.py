@@ -49548,7 +49548,10 @@ class EosDesigns(EosDesignsRootModel):
                 "priv_passphrase": {"type": str},
             }
             name: str | None
-            """Username."""
+            """
+            SNMP username.
+            Maximum length is 32 characters.
+            """
             group: str | None
             """Group name."""
             version: Version | None
@@ -49610,7 +49613,9 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: Username.
+                        name:
+                           SNMP username.
+                           Maximum length is 32 characters.
                         group: Group name.
                         version: version
                         auth: auth

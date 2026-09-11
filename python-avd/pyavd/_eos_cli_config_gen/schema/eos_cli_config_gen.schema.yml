@@ -25547,9 +25547,9 @@ keys:
           keys:
             name:
               type: str
-              description: 'Username.
+              description: 'SNMP username.
 
-                Must be no more than 32 characters.'
+                Maximum length is 32 characters.'
             group:
               type: str
               description: Group name.

@@ -69,6 +69,13 @@ snmp_server:
     auth_passphrase: clearauth
     priv: aes192
     priv_passphrase: clearpriv
+  - name: usertest-auth-priv-passphrase
+    group: usergroup
+    version: v3
+    auth: sha
+    auth_passphrase: clearauth
+    priv: aes192
+    priv_passphrase: clearpriv
   hosts:
   - host: 10.6.75.121
     vrf: SNMPVRF

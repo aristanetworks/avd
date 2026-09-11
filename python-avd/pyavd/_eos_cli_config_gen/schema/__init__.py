@@ -71194,8 +71194,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             name: str | None
             """
-            Username.
-            Must be no more than 32 characters.
+            SNMP username.
+            Maximum length is 32 characters.
             """
             group: str | None
             """Group name."""
@@ -71283,8 +71283,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name:
-                           Username.
-                           Must be no more than 32 characters.
+                           SNMP username.
+                           Maximum length is 32 characters.
                         group: Group name.
                         remote_address:
                            Hostname or ip of remote engine.
