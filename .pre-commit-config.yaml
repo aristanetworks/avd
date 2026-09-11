@@ -169,6 +169,7 @@ repos:
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.35.0'
           - 'ruff==0.16.4'
+          - 'setuptools>=82.0.1'
 
   - repo: https://github.com/pycqa/pylint
     rev: "4e1125d0149c638ca073c3dc7f1648a5c9459a3d"  # frozen: v4.0.8
