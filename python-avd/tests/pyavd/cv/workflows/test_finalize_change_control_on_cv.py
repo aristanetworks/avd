@@ -34,6 +34,21 @@ async def test_finalize_pending_approval(mock_cv_client: MagicMock) -> None:
 
 
 @pytest.mark.asyncio
+async def test_finalize_workspace_change_control_preserves_legacy_state_handling(mock_cv_client: MagicMock) -> None:
+    """Test that a Workspace-created Change Control retains the legacy state handling."""
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(requested_state="approved"), id="cc_id_1")
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=ChangeControlStatus.RUNNING, approved=True)
+
+    await finalize_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.approve_change_control.assert_called_once_with(
+        change_control_id="cc_id_1", timestamp=DEFAULT_TIMESTAMP, description="Automatic approval by AVD"
+    )
+    mock_cv_client.start_change_control.assert_not_called()
+    assert local_cc.state == "approved"
+
+
+@pytest.mark.asyncio
 async def test_finalize_approved(mock_cv_client: MagicMock) -> None:
     """Test that a Change Control with requested_state='approved' is approved and finalized."""
     # Arrange
@@ -78,6 +93,21 @@ async def test_finalize_running(mock_cv_client: MagicMock) -> None:
     )
     mock_cv_client.wait_for_change_control_state.assert_not_called()
     assert local_cc.state == "running"
+
+
+@pytest.mark.asyncio
+async def test_finalize_running_with_custom_notes(mock_cv_client: MagicMock) -> None:
+    """Test that custom approval and start notes are passed to CloudVision during deployment."""
+    local_cc = CVChangeControl(
+        avd_change_control=AvdChangeControl(requested_state="running", approval_note="Approved by operator", start_note="Started by operator"),
+        id="cc_id_1",
+    )
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control()
+
+    await finalize_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.approve_change_control.assert_called_once_with(change_control_id="cc_id_1", timestamp=DEFAULT_TIMESTAMP, description="Approved by operator")
+    mock_cv_client.start_change_control.assert_called_once_with(change_control_id="cc_id_1", description="Started by operator")
 
 
 @pytest.mark.asyncio

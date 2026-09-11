@@ -17,6 +17,7 @@ from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
 from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
 from .finalize_workspace_on_cv import finalize_workspace_on_cv, rebase_workspace_on_cv
+from .manage_change_control_on_cv import manage_change_control_on_cv
 from .models import (
     CloudVision,
     CVChangeControl,
@@ -136,17 +137,12 @@ async def _rebase_workspace_on_cv_or_raise(
 
 
 async def _finalize_change_control(result: DeployToCvResult, cv_client: CVClient) -> None:
-    # Create/update CVChangeControl object with ID created by workspace.
+    # Finalize the Change Control created by the submitted Workspace.
     if result.workspace.change_control_id is not None:
         if result.change_control is None:
             result.change_control = CVChangeControl()
         result.change_control.id = result.workspace.change_control_id
 
-    # This is a separate "if" to allow to test stuff on a change control not created by the workspace.
-    # You can run this by setting "id" directly in the given change control object.
-    # TODO: Remove once we are done with testing (?)
-    # Run, Delete or run and wait for Change Control if the workspace created one.
-    if result.change_control is not None and result.change_control.id is not None:
         await finalize_change_control_on_cv(change_control=result.change_control, cv_client=cv_client)
 
 
@@ -178,8 +174,8 @@ async def deploy_to_cv(
         workspace: CloudVision Workspace to create or use for the deployment. \
             If the Workspace already exists, it must be in 'pending' state. \
             The `state` property will be inplace updated in the given CVWorkSpace object.
-        change_control: CloudVision Change Control to create for the deployment. \
-            It is not supported to reuse an existing Change Control, so the `id` field should not be set in the given CVChangeControl object. \
+        change_control: CloudVision Change Control to create for the deployment or an existing Change Control to manage. \
+            When the `id` field is set, no Workspace or deployment inputs may be supplied. \
             The `id` and `state` properties will be inplace updated in the given CVChangeControl object.
         device_deployments: Per-device deployment objects containing configs, tags, and metadata to be deployed.
         static_config_manifest: Static Configuration Studio manifest to deploy.
@@ -239,7 +235,14 @@ async def deploy_to_cv(
         + Return result object.
     """
     LOGGER.info("deploy_to_cv:")
-    result = DeployToCvResult(workspace=workspace or CVWorkspace(), change_control=change_control)
+    change_control_only = change_control is not None and change_control.id is not None
+    if change_control_only:
+        static_config_manifest_has_content = bool(static_config_manifest and (static_config_manifest.containers or static_config_manifest.configlets))
+        if any((workspace, device_deployments, static_config_manifest_has_content, studio_inputs)):
+            msg = "Change-Control-only mode cannot be combined with a Workspace or deployment inputs."
+            raise ValueError(msg)
+
+    result = DeployToCvResult(workspace=None if change_control_only else workspace or CVWorkspace(), change_control=change_control)
     if device_deployments is None:
         device_deployments = []
     if studio_inputs is None:
@@ -272,6 +275,10 @@ async def deploy_to_cv(
             proxy_password=cloudvision.proxy_password,
             grpc_channel_configuration=cloudvision.grpc_channel_configuration,
         ) as cv_client:
+            if change_control_only:
+                await manage_change_control_on_cv(change_control=result.change_control, cv_client=cv_client)
+                return result
+
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
