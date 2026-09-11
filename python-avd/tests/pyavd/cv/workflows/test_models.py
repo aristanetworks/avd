@@ -611,6 +611,7 @@ class TestCVDevice:
         assert result["system_mac_address"] == "00:11:22:33:44:55"
         assert result["exists_on_cv"] is True
         assert result["streaming"] is True
+        assert result["action"] == "deploy"
 
 
 class TestDeployToCvResult:
@@ -666,6 +667,7 @@ class TestDeployToCvResult:
             removed_static_config_configlets=["OLD_CONFIGLET"],
             removed_device_tags=[CVDeviceTag(label="old_dc", value="old_val")],
             removed_interface_tags=[CVInterfaceTag(label="old_speed", value="old_val")],
+            removed_devices=[CVDevice(avd_device=AvdDevice(hostname="decom-leaf1"), serial_number="sndecom1", action="decommission")],
         )
 
         result = result_obj.get_result()
@@ -809,6 +811,11 @@ class TestDeployToCvResult:
         assert result["removed_interface_tags"][0]["value"] == "old_val"
         assert result["removed_interface_tags"][0]["device"] is None
 
+        # removed_devices
+        assert result["removed_devices"][0]["hostname"] == "decom-leaf1"
+        assert result["removed_devices"][0]["serial_number"] == "sndecom1"
+        assert result["removed_devices"][0]["action"] == "decommission"
+
     def test_reset(self, caplog: pytest.LogCaptureFixture) -> None:
         """Tests that reset defaults all current or future attempt fields while preserving persistent fields."""
         device = CVDevice(avd_device=AvdDevice(hostname="leaf1"))
@@ -829,6 +836,7 @@ class TestDeployToCvResult:
         eos_config = CVEosConfig(file="leaf1.cfg", device=device)
         studio_inputs = CVStudioInputs(studio_id="studio-id", inputs={"key": "value"})
         cv_pathfinder_metadata = CVPathfinderMetadata(metadata={"role": "pathfinder"}, device=device)
+        removed_device = CVDevice(avd_device=AvdDevice(hostname="decom-leaf1"), serial_number="SN-DECOM", action="decommission")
         attempt_values: dict[str, Any] = {
             "failed": True,
             "errors": [CVManifestError("error")],
@@ -850,6 +858,7 @@ class TestDeployToCvResult:
             "removed_device_tags": [device_tag],
             "removed_interface_tags": [interface_tag],
         }
+        attempt_values["removed_devices"] = [removed_device]
         resettable_field_names = {dataclass_field.name for dataclass_field in fields(DeployToCvResult) if dataclass_field.name not in preserved_field_names}
         # Guard to catch newly-added fields of the DeployToCvResult dataclass
         assert set(attempt_values) == resettable_field_names

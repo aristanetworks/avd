@@ -19,6 +19,7 @@ description: |-
   - Deploy a full hierarchy of containers and configlets using Static Configuration Studio.
   - Create and associate Device and Interface Tags.
   - Approve, run, cancel Change Controls as needed.
+  - Decommission devices marked with `is_deployed: false` from CloudVision (requires `inventory_mode: controlled` and CloudVision 2025.1.0 or later).
 options:
   cv_servers:
     description: List of hostnames or IP addresses for CloudVision instance to deploy to.
@@ -96,6 +97,22 @@ options:
     description: If `true` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue.
     type: bool
     default: false
+  inventory_mode:
+    description: |-
+      Controls how devices with `is_deployed: false` are handled.
+
+      - `loose` (default): Devices with `is_deployed: false` are silently skipped. No changes are made to CloudVision for these devices.
+      - `controlled`: Devices with `is_deployed: false` are decommissioned from CloudVision.
+          CloudVision removes device-specific containers and all device and interface tag assignments associated with the device.
+          CloudVision does not remove configlets or tag definitions.
+          After decommission staging succeeds, AVD removes any leftover flat-layout device configlet, including for devices using the manifest layout.
+          The supplied static configuration manifest remains authoritative and is reconciled after decommission staging.
+          AVD does not delete tag definitions.
+
+      Requires CloudVision 2025.1.0 or later when set to `controlled`.
+    type: str
+    default: loose
+    choices: ["loose", "controlled"]
   strict_system_mac_address:
     description: |-
       If `true`, raise an exception if the input data contains devices with a duplicated system_mac_address but unique serial_number values.
@@ -294,6 +311,7 @@ EXAMPLES = r"""
         device_list: "{{ ansible_play_hosts }}"
         # strict_tags: false
         # skip_missing_devices: false
+        # inventory_mode: loose
         # strict_system_mac_address: false
         # configlet_name_template: "AVD-${hostname}"
         # static_config_manifest:

@@ -39,6 +39,7 @@ async def verify_devices_in_cloudvision_inventory(
     skip_missing_devices: bool,
     warnings: list[Exception],
     cv_client: CVClient,
+    warn_on_missing_devices: bool = True,
 ) -> list[CVDevice]:
     """
     Verify that the given Devices are already present in the CloudVision Inventory.
@@ -52,6 +53,9 @@ async def verify_devices_in_cloudvision_inventory(
     Skip checks for devices where exists_on_cv is already filled out on the device.
 
     Populate current streaming status for all existing devices.
+
+    When `skip_missing_devices` is `True` and `warn_on_missing_devices` is `False`, missing devices
+    are silently skipped without logging a warning or appending to `warnings`.
 
     Returns list of CVDevice objects found on CloudVision.
     """
@@ -116,7 +120,7 @@ async def verify_devices_in_cloudvision_inventory(
         len(existing_device_tuples),
     )
 
-    if missing_devices := [device for device in devices if not device.exists_on_cv]:
+    if (missing_devices := [device for device in devices if not device.exists_on_cv]) and (warn_on_missing_devices or not skip_missing_devices):
         warnings.append(
             missing_devices_handler(missing_devices=missing_devices, skip_missing_devices=skip_missing_devices, context="CloudVision Device Inventory")
         )

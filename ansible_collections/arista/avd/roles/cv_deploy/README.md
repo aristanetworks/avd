@@ -55,6 +55,7 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
 - This role is **only** supported on **CloudVision as a Service (CVaaS)** or "on-prem" **CloudVision 2024.1.0** or later.
   - Configuration deployment is based on the "Static Configuration Studio" which was a Beta feature on CloudVision 2024.1.0.
     Make sure to enable "Studios - End-to-End Provisioning" under Settings, Features.
+  - `cv_inventory_mode: controlled` (device decommission) requires **CloudVision 2025.1.0** or later.
 
     ![Figure 1: Ansible Role arista.avd.cv_deploy](../../../../../docs/_media/studios_end_to_end_provisioning.png)
 
@@ -203,7 +204,7 @@ cv_devices: [ DC1-L3LEAF1A, DC1-L3LEAF1B ]
 
 The role will fail if a device is not found on CloudVision. Any workspace created will be abandoned automatically.
 
-Devices with `is_deployed: false` set as part of AVD Design inputs will be ignored.
+Devices with `is_deployed: false` set as part of AVD Design inputs are handled according to the `cv_inventory_mode` setting described below.
 
 It is possible to ignore other missing devices by simply skipping them and continue with the remaining devices.
 
@@ -211,6 +212,31 @@ It is possible to ignore other missing devices by simply skipping them and conti
 # If false, the deployment will fail if any devices are missing (excempting devices where 'is_deployed' is set to false).
 cv_skip_missing_devices: true
 ```
+
+#### Inventory mode
+
+`cv_inventory_mode` controls how `cv_deploy` handles devices that have `is_deployed: false` set in their AVD Design inputs or structured configuration.
+
+```yaml
+# Controls how devices with 'is_deployed: false' are handled.
+# Accepted values: "loose", "controlled".
+# "loose" (default): devices with 'is_deployed: false' are silently skipped.
+# "controlled": devices with 'is_deployed: false' are decommissioned from CloudVision. Requires CloudVision 2025.1.0 or later.
+cv_inventory_mode: "loose"
+```
+
+**`loose` (default)**
+
+Devices with `is_deployed: false` are silently skipped. No changes are made to CloudVision for these devices.
+
+**`controlled`**
+
+Devices with `is_deployed: false` are decommissioned from CloudVision. CloudVision removes device-specific containers and all device and interface tag assignments associated with the device, but it does not remove configlets or tag definitions.
+
+After decommission staging succeeds, AVD removes any leftover flat-layout device configlet, including for devices using the manifest layout. The supplied static configuration manifest remains authoritative and is reconciled after decommission staging. AVD does not delete tag definitions.
+
+!!! note
+    `cv_inventory_mode: controlled` requires **CloudVision 2025.1.0** or later.
 
 #### Role behavior configuration
 

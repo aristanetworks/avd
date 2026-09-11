@@ -93,6 +93,27 @@ async def test_verify_device_not_found_on_cv(mock_cv_client: MagicMock, device: 
     assert warnings[0].args[0] == "Missing devices on CloudVision"
 
 
+@pytest.mark.asyncio
+async def test_verify_missing_device_without_warning(mock_cv_client: MagicMock, caplog: pytest.LogCaptureFixture) -> None:
+    """Test that a missing device is silently skipped when warnings are disabled."""
+    device = CVDevice(avd_device=AvdDevice(hostname="mocked_eos_device", serial_number="MISSING_SERIAL"))
+    mock_cv_client.get_inventory_devices = AsyncMock(return_value=[])
+    warnings: list[Exception] = []
+
+    result = await verify_devices_in_cloudvision_inventory(
+        devices=[device],
+        skip_missing_devices=True,
+        warnings=warnings,
+        cv_client=mock_cv_client,
+        warn_on_missing_devices=False,
+    )
+
+    assert result == []
+    assert device.exists_on_cv is False
+    assert not warnings
+    assert not caplog.records
+
+
 def test_missing_devices_handler_skip_true() -> None:
     """Test that missing_devices_handler returns exception when skip_missing_devices is True."""
     device = CVDevice(avd_device=AvdDevice(hostname="mocked_eos_device"))
