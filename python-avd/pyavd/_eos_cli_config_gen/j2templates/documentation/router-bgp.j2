@@ -70,6 +70,12 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | bgp additional-paths send limit {{ router_bgp.bgp.additional_paths.send_limit }} |
 {%             endif %}
 {%         endif %}
+{%         if router_bgp.bgp.convergence.time is arista.avd.defined %}
+| bgp convergence time {{ router_bgp.bgp.convergence.time }} seconds |
+{%         endif %}
+{%         if router_bgp.bgp.convergence.slow_peer_time is arista.avd.defined %}
+| bgp convergence slow-peer time {{ router_bgp.bgp.convergence.slow_peer_time }} seconds |
+{%         endif %}
 {%         if router_bgp.updates.wait_for_convergence is arista.avd.defined(true) %}
 | update wait-for-convergence |
 {%         endif %}
