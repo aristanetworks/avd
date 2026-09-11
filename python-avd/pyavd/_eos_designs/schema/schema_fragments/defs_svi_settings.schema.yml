@@ -464,6 +464,23 @@ $defs:
                     To protect the password at rest it is strongly recommended to make use of a vault or similar.
                   min_length: 1
                   max_length: 16
+      ipv6_ospf:
+        documentation_options:
+          table: network-services-vrfs-ospfv3-settings
+        type: dict
+        description: OSPFv3 interface configuration.
+        keys:
+          enabled:
+            type: bool
+          area:
+            type: str
+            description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+            convert_types:
+              - int
+            default: "0.0.0.0"
+          point_to_point:
+            type: bool
+            default: false
       bgp:
         type: dict
         keys:

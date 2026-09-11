@@ -1,0 +1,29 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: failure-svi-ospfv3
+      bgp_as: 65101
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+
+tenants:
+  - name: Tenant_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: OSPFv3_TEST_SVI
+        description: "IGMP_QUERIER_TEST_3"
+        vrf_vni: 41
+        svis:
+          - id: 21
+            name: "VLAN_21"
+            ipv6_enable: true
+            ipv6_ospf:
+              enabled: true
+
+expected_error_message: >-
+  OSPFv3 is enabled on SVI 'VLAN_21' but not under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST_SVI]'.

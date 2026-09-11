@@ -282,6 +282,9 @@ class RouterBgpMixin(Protocol):
                 if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
                     bgp_vrf.redistribute.ospf.enabled = True
 
+                if vrf.ipv6_ospf.enabled and vrf.redistribute_ospfv3 and (not vrf.ipv6_ospf.nodes or self.shared_utils.hostname in vrf.ipv6_ospf.nodes):
+                    bgp_vrf.redistribute.ospfv3.enabled = True
+
                 if bgp_vrf.neighbors and self.inputs.bgp_update_wait_install and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install:
                     bgp_vrf.updates.wait_install = True
 

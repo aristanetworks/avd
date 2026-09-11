@@ -1,0 +1,31 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: failure-ospfv3-process-id
+      bgp_as: 65101
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+
+tenants:
+  - name: Tenant_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: OSPFv3_TEST_SVI
+        description: "IGMP_QUERIER_TEST_3"
+        vrf_vni: 41
+        ipv6_ospf:
+          enabled: true
+        svis:
+          - id: 21
+            name: "VLAN_21"
+            ipv6_enable: true
+            ipv6_ospf:
+              enabled: true
+
+expected_error_message: >-
+  Missing or invalid 'ipv6_ospf.process_id' or 'vrf_id' under vrf 'OSPFv3_TEST_SVI'.

@@ -475,7 +475,7 @@ keys:
                   - str
                 description: |
                   Required if "vrf_vni" is not set.
-                  "vrf_id" is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.
+                  "vrf_id" is used as default value for "vrf_vni", "ospf.process_id" and "ipv6_ospf.process_id" unless those are set.
                   "vrf_id" may also be used for VRF RD/RT ID. See "overlay_rd_type" and "overlay_rt_type" for details.
                   "vrf_id" is preferred over "vrf_vni" for MLAG iBGP peering vlan, see "mlag_ibgp_peering_vrfs.base_vlan" for details.
               rd_override:
@@ -778,12 +778,80 @@ keys:
                     documentation_options:
                       hide_keys: true
                     $ref: "eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items"
+              ipv6_ospf:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: dict
+                description: |
+                  Router OSPFv3 configuration.
+                  This will create an OSPFv3 routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be
+                  created on all leafs where the VRF is deployed. This will also cause automatic OSPFv3 redistribution into BGP unless
+                  explicitly turned off with "redistribute_ospfv3: false".
+                keys:
+                  enabled:
+                    type: bool
+                  process_id:
+                    type: int
+                    convert_types:
+                      - str
+                    description: If not set, "vrf_id" will be used.
+                  router_id:
+                    type: str
+                    description: |-
+                      Router ID to use for OSPFv3 in this VRF.
+                      This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".
+                      - "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."
+                      - "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+                      - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
+                    default: main_router_id
+                  auto_cost_reference_bandwidth:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Bandwidth in mbps.
+                    min: 1
+                    max: 4294967
+                  redistribute_bgp:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: true
+                      route_map:
+                        type: str
+                        description: Route-map name.
+                      include_leaked:
+                        type: bool
+                        description: Include leaked routes while redistributing.
+                  redistribute_connected:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: false
+                      route_map:
+                        type: str
+                        description: Route-map name.
+                      include_leaked:
+                        type: bool
+                        description: Include leaked routes while redistributing.
+                  nodes:
+                    type: list
+                    items:
+                      type: str
+                      description: Hostname.
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
                 type: bool
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf inside the VRF.
+              redistribute_ospfv3:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: bool
+                default: true
+                description: Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
