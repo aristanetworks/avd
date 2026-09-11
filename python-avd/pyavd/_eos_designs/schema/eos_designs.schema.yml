@@ -16594,6 +16594,15 @@ $defs:
         feature_support:
           type: dict
           keys:
+            dot1x:
+              type: dict
+              keys:
+                protocol_bpdu_bypass:
+                  type: bool
+                  default: true
+                  description: 'Support for 802.1X BPDU bypass.
+
+                    The feature will be ignored on platforms where this is false.'
             address_locking:
               type: dict
               keys:
