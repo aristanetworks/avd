@@ -99,7 +99,7 @@ class AVDActionPlugin(ActionBase):
                     if issubclass(w.category, DeprecationWarning):
                         # AvdDeprecationWarning's are added from AvdSchemaTools with more context
                         # This is a catch-all for other deprecations
-                        self.result["warnings"].append(f"DEPRECATION_WARNING: {msg}")
+                        self.result["deprecations"].append({"msg": msg})
                     else:
                         # Catch-all for standard Python warnings from any library
                         self.result["warnings"].append(msg)
