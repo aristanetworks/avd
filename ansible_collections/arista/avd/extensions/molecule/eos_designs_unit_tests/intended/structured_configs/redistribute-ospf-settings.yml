@@ -1,0 +1,648 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: redistribute-ospf-settings
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:11:22:33:44:55
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.99.50/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.143.50/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.42.50/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.99.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.143.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '999'
+  router_id: 192.168.99.50
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 208
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10208
+    route_targets:
+      both:
+      - 10208:10208
+    redistribute_routes:
+    - learned
+  - id: 210
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10210
+    route_targets:
+      both:
+      - 10210:10210
+    redistribute_routes:
+    - learned
+  - id: 209
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10209
+    route_targets:
+      both:
+      - 10209:10209
+    redistribute_routes:
+    - learned
+  - id: 207
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10207
+    route_targets:
+      both:
+      - 10207:10207
+    redistribute_routes:
+    - learned
+  - id: 202
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10202
+    route_targets:
+      both:
+      - 10202:10202
+    redistribute_routes:
+    - learned
+  - id: 201
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10201
+    route_targets:
+      both:
+      - 10201:10201
+    redistribute_routes:
+    - learned
+  - id: 203
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10203
+    route_targets:
+      both:
+      - 10203:10203
+    redistribute_routes:
+    - learned
+  - id: 204
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10204
+    route_targets:
+      both:
+      - 10204:10204
+    redistribute_routes:
+    - learned
+  - id: 206
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10206
+    route_targets:
+      both:
+      - 10206:10206
+    redistribute_routes:
+    - learned
+  - id: 205
+    metadata:
+      tenants:
+      - Tenant_OSPF_REDIST
+    rd: 192.168.99.50:10205
+    route_targets:
+      both:
+      - 10205:10205
+    redistribute_routes:
+    - learned
+  vrfs:
+  - name: VRF_DEFAULT_LEGACY
+    rd: 192.168.99.50:208
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 208:208
+      export:
+      - address_family: evpn
+        route_targets:
+        - 208:208
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        enabled: true
+  - name: VRF_DEPRECATED_FALSE
+    rd: 192.168.99.50:210
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 210:210
+      export:
+      - address_family: evpn
+        route_targets:
+        - 210:210
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_DEPRECATED_TRUE
+    rd: 192.168.99.50:209
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 209:209
+      export:
+      - address_family: evpn
+        route_targets:
+        - 209:209
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        enabled: true
+  - name: VRF_ENABLED_ONLY
+    rd: 192.168.99.50:207
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 207:207
+      export:
+      - address_family: evpn
+        route_targets:
+        - 207:207
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        enabled: true
+  - name: VRF_MATCH_EXTERNAL
+    rd: 192.168.99.50:202
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 202:202
+      export:
+      - address_family: evpn
+        route_targets:
+        - 202:202
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        match_external:
+          enabled: true
+  - name: VRF_MATCH_INTERNAL
+    rd: 192.168.99.50:201
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 201:201
+      export:
+      - address_family: evpn
+        route_targets:
+        - 201:201
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        match_internal:
+          enabled: true
+  - name: VRF_MATCH_NSSA
+    rd: 192.168.99.50:203
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 203:203
+      export:
+      - address_family: evpn
+        route_targets:
+        - 203:203
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        match_nssa_external:
+          enabled: true
+  - name: VRF_MATCH_ROUTE_MAP
+    rd: 192.168.99.50:204
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 204:204
+      export:
+      - address_family: evpn
+        route_targets:
+        - 204:204
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        match_internal:
+          enabled: true
+          route_map: RM-OSPF-INT
+  - name: VRF_REDIST_DISABLED
+    rd: 192.168.99.50:206
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 206:206
+      export:
+      - address_family: evpn
+        route_targets:
+        - 206:206
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_ROUTE_MAP_ONLY
+    rd: 192.168.99.50:205
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 205:205
+      export:
+      - address_family: evpn
+        route_targets:
+        - 205:205
+    router_id: 192.168.99.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        enabled: true
+        route_map: RM-OSPF-ALL
+router_ospf:
+  process_ids:
+  - id: 208
+    vrf: VRF_DEFAULT_LEGACY
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 210
+    vrf: VRF_DEPRECATED_FALSE
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 209
+    vrf: VRF_DEPRECATED_TRUE
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 207
+    vrf: VRF_ENABLED_ONLY
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 202
+    vrf: VRF_MATCH_EXTERNAL
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 201
+    vrf: VRF_MATCH_INTERNAL
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 203
+    vrf: VRF_MATCH_NSSA
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 204
+    vrf: VRF_MATCH_ROUTE_MAP
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 206
+    vrf: VRF_REDIST_DISABLED
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 205
+    vrf: VRF_ROUTE_MAP_ONLY
+    passive_interface_default: true
+    router_id: 192.168.99.50
+    redistribute:
+      bgp:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan208
+  description: SVI_208
+  shutdown: false
+  vrf: VRF_DEFAULT_LEGACY
+  ip_address_virtual: 10.20.8.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: Vlan210
+  description: SVI_210
+  shutdown: false
+  vrf: VRF_DEPRECATED_FALSE
+  ip_address_virtual: 10.20.10.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: Vlan209
+  description: SVI_209
+  shutdown: false
+  vrf: VRF_DEPRECATED_TRUE
+  ip_address_virtual: 10.20.9.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: Vlan207
+  description: SVI_207
+  shutdown: false
+  vrf: VRF_ENABLED_ONLY
+  ip_address_virtual: 10.20.7.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: Vlan202
+  description: SVI_202
+  shutdown: false
+  vrf: VRF_MATCH_EXTERNAL
+  ip_address_virtual: 10.20.2.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: Vlan201
+  description: SVI_201
+  shutdown: false
+  vrf: VRF_MATCH_INTERNAL
+  ip_address_virtual: 10.20.1.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: Vlan203
+  description: SVI_203
+  shutdown: false
+  vrf: VRF_MATCH_NSSA
+  ip_address_virtual: 10.20.3.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: Vlan204
+  description: SVI_204
+  shutdown: false
+  vrf: VRF_MATCH_ROUTE_MAP
+  ip_address_virtual: 10.20.4.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: Vlan206
+  description: SVI_206
+  shutdown: false
+  vrf: VRF_REDIST_DISABLED
+  ip_address_virtual: 10.20.6.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: Vlan205
+  description: SVI_205
+  shutdown: false
+  vrf: VRF_ROUTE_MAP_ONLY
+  ip_address_virtual: 10.20.5.1/24
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 208
+  name: SVI_208
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- id: 210
+  name: SVI_210
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- id: 209
+  name: SVI_209
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- id: 207
+  name: SVI_207
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- id: 202
+  name: SVI_202
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- id: 201
+  name: SVI_201
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- id: 203
+  name: SVI_203
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- id: 204
+  name: SVI_204
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- id: 206
+  name: SVI_206
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- id: 205
+  name: SVI_205
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF_DEFAULT_LEGACY
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: VRF_DEPRECATED_FALSE
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: VRF_DEPRECATED_TRUE
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: VRF_ENABLED_ONLY
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: VRF_MATCH_EXTERNAL
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: VRF_MATCH_INTERNAL
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: VRF_MATCH_NSSA
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: VRF_MATCH_ROUTE_MAP
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: VRF_REDIST_DISABLED
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+- name: VRF_ROUTE_MAP_ONLY
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPF_REDIST
+vxlan_interface:
+  vxlan1:
+    description: redistribute-ospf-settings_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 208
+        vni: 10208
+      - id: 210
+        vni: 10210
+      - id: 209
+        vni: 10209
+      - id: 207
+        vni: 10207
+      - id: 202
+        vni: 10202
+      - id: 201
+        vni: 10201
+      - id: 203
+        vni: 10203
+      - id: 204
+        vni: 10204
+      - id: 206
+        vni: 10206
+      - id: 205
+        vni: 10205
+      vrfs:
+      - name: VRF_DEFAULT_LEGACY
+        vni: 208
+      - name: VRF_DEPRECATED_FALSE
+        vni: 210
+      - name: VRF_DEPRECATED_TRUE
+        vni: 209
+      - name: VRF_ENABLED_ONLY
+        vni: 207
+      - name: VRF_MATCH_EXTERNAL
+        vni: 202
+      - name: VRF_MATCH_INTERNAL
+        vni: 201
+      - name: VRF_MATCH_NSSA
+        vni: 203
+      - name: VRF_MATCH_ROUTE_MAP
+        vni: 204
+      - name: VRF_REDIST_DISABLED
+        vni: 206
+      - name: VRF_ROUTE_MAP_ONLY
+        vni: 205

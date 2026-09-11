@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].name") | String | Required, Unique |  |  | Specify a tenant name.<br>Tenant provide a construct to group L3 VRFs and L2 VLANs.<br>Networks services can be filtered by tenant name.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "<network_services_keys.name>.[].vrfs") | List, items: Dictionary |  |  |  | VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the node.<br><br>It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants<br>are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.<br><br>VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,<br>route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.<br>Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf") | Dictionary |  |  |  | Router OSPF configuration.<br>This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be<br>created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless<br>explicitly turned off with "redistribute_ospf: false".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf") | Dictionary |  |  |  | Router OSPF configuration.<br>This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be<br>created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless<br>explicitly turned off with "redistribute_ospf: false" or "redistribute_ospf_settings.enabled: false".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process_id</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.process_id") | Integer |  |  |  | If not set, "vrf_id" will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPF in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
@@ -32,7 +32,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.nodes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.nodes.[]") | String |  |  |  | Hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for the EOS Config schema. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf") | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospf inside the VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf") <span style="color:red">deprecated</span> | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospf inside the VRF.<br>Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>redistribute_ospf_settings</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf_settings</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf_settings") | Dictionary |  |  |  | Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.<br>When `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf_settings.enabled") | Boolean |  | `True` |  | Enable or disable redistribution of OSPF routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf_settings.route_map") | String |  |  |  | Route-map name to apply to redistributed OSPF routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospf_settings.match") | String |  |  | Valid Values:<br>- <code>internal</code><br>- <code>external</code><br>- <code>nssa-external</code> | Redistribute only OSPF routes of the specified type.<br>- "internal": Redistribute OSPF internal routes.<br>- "external": Redistribute OSPF external routes.<br>- "nssa-external": Redistribute OSPF NSSA external routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "<network_services_keys.name>.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
@@ -67,7 +71,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].name") | String | Required, Unique |  |  | Specify a tenant name.<br>Tenant provide a construct to group L3 VRFs and L2 VLANs.<br>Networks services can be filtered by tenant name.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "network_services.[].vrfs") | List, items: Dictionary |  |  |  | VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the node.<br><br>It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants<br>are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.<br><br>VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,<br>route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.<br>Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].vrfs.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "network_services.[].vrfs.[].ospf") | Dictionary |  |  |  | Router OSPF configuration.<br>This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be<br>created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless<br>explicitly turned off with "redistribute_ospf: false".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "network_services.[].vrfs.[].ospf") | Dictionary |  |  |  | Router OSPF configuration.<br>This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be<br>created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless<br>explicitly turned off with "redistribute_ospf: false" or "redistribute_ospf_settings.enabled: false".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].ospf.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process_id</samp>](## "network_services.[].vrfs.[].ospf.process_id") | Integer |  |  |  | If not set, "vrf_id" will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "network_services.[].vrfs.[].ospf.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPF in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
@@ -88,7 +92,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "network_services.[].vrfs.[].ospf.nodes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].ospf.nodes.[]") | String |  |  |  | Hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_services.[].vrfs.[].ospf.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for the EOS Config schema. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf</samp>](## "network_services.[].vrfs.[].redistribute_ospf") | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospf inside the VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf</samp>](## "network_services.[].vrfs.[].redistribute_ospf") <span style="color:red">deprecated</span> | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospf inside the VRF.<br>Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>redistribute_ospf_settings</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf_settings</samp>](## "network_services.[].vrfs.[].redistribute_ospf_settings") | Dictionary |  |  |  | Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.<br>When `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].redistribute_ospf_settings.enabled") | Boolean |  | `True` |  | Enable or disable redistribution of OSPF routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "network_services.[].vrfs.[].redistribute_ospf_settings.route_map") | String |  |  |  | Route-map name to apply to redistributed OSPF routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match</samp>](## "network_services.[].vrfs.[].redistribute_ospf_settings.match") | String |  |  | Valid Values:<br>- <code>internal</code><br>- <code>external</code><br>- <code>nssa-external</code> | Redistribute only OSPF routes of the specified type.<br>- "internal": Redistribute OSPF internal routes.<br>- "external": Redistribute OSPF external routes.<br>- "nssa-external": Redistribute OSPF NSSA external routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "network_services.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "network_services.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "network_services.[].vrfs.[].svis.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
@@ -174,7 +182,7 @@
             # Router OSPF configuration.
             # This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be
             # created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless
-            # explicitly turned off with "redistribute_ospf: false".
+            # explicitly turned off with "redistribute_ospf: false" or "redistribute_ospf_settings.enabled: false".
             ospf:
               enabled: <bool>
 
@@ -225,7 +233,27 @@
               structured_config: <dict>
 
             # Non-selectively enabling or disabling redistribute ospf inside the VRF.
+            # Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `redistribute_ospf_settings` instead.
             redistribute_ospf: <bool; default=True>
+
+            # Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.
+            # When `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`.
+            redistribute_ospf_settings:
+
+              # Enable or disable redistribution of OSPF routes into BGP.
+              enabled: <bool; default=True>
+
+              # Route-map name to apply to redistributed OSPF routes.
+              route_map: <str>
+
+              # Redistribute only OSPF routes of the specified type.
+              # - "internal": Redistribute OSPF internal routes.
+              # - "external": Redistribute OSPF external routes.
+              # - "nssa-external": Redistribute OSPF NSSA external routes.
+              match: <str; "internal" | "external" | "nssa-external">
 
             # List of SVIs.
             # This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
@@ -323,7 +351,7 @@
             # Router OSPF configuration.
             # This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be
             # created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless
-            # explicitly turned off with "redistribute_ospf: false".
+            # explicitly turned off with "redistribute_ospf: false" or "redistribute_ospf_settings.enabled: false".
             ospf:
               enabled: <bool>
 
@@ -374,7 +402,27 @@
               structured_config: <dict>
 
             # Non-selectively enabling or disabling redistribute ospf inside the VRF.
+            # Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `redistribute_ospf_settings` instead.
             redistribute_ospf: <bool; default=True>
+
+            # Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.
+            # When `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`.
+            redistribute_ospf_settings:
+
+              # Enable or disable redistribution of OSPF routes into BGP.
+              enabled: <bool; default=True>
+
+              # Route-map name to apply to redistributed OSPF routes.
+              route_map: <str>
+
+              # Redistribute only OSPF routes of the specified type.
+              # - "internal": Redistribute OSPF internal routes.
+              # - "external": Redistribute OSPF external routes.
+              # - "nssa-external": Redistribute OSPF NSSA external routes.
+              match: <str; "internal" | "external" | "nssa-external">
 
             # List of SVIs.
             # This will create both the L3 SVI and L2 VLAN based on filters applied to the node.

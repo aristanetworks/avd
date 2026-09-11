@@ -1,0 +1,34 @@
+---
+# Negative test: explicitly setting the deprecated `redistribute_ospf` bool triggers AvdDeprecationWarning.
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:11:22:33:44:55
+  nodes:
+    - name: redistribute-ospf-deprecated
+      id: 102
+      bgp_as: 102
+
+tenants:
+  - name: Tenant-A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_WITH_OSPF
+        vrf_vni: 100
+        vrf_id: 100
+        ospf:
+          enabled: true
+        redistribute_ospf: false
+        svis:
+          - id: 100
+            name: SVI_100
+            enabled: true
+            ip_address_virtual: 10.100.0.1/24
+
+expected_error_message: >-
+  The input data model '<network_services_key>.vrfs.redistribute_ospf' is deprecated. Use 'redistribute_ospf_settings' instead.
