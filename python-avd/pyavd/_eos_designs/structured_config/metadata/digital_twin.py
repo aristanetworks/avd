@@ -72,6 +72,7 @@ class DigitalTwinMixin(Protocol):
                     node_type=digital_twin_node_type,
                     ip_addr=ip_addr,
                     version=version,
+                    instance_type=self.shared_utils.platform_settings.digital_twin.act_node_size,
                     username=username,
                     password=password,
                 )
