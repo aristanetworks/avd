@@ -352,14 +352,14 @@ keys:
               keys:
                 boundaries:
                   type: list
-                  description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both.
+                  description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of both.
                   primary_key: boundary
                   items:
                     type: dict
                     keys:
                       boundary:
                         type: str
-                        description: IPv4 access-list name or IPv4 multicast group prefix with mask.
+                        description: Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
                         convert_types: [int]
                       out:
                         type: bool
@@ -382,14 +382,14 @@ keys:
               keys:
                 boundaries:
                   type: list
-                  description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both.
+                  description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of both.
                   primary_key: boundary
                   items:
                     type: dict
                     keys:
                       boundary:
                         type: str
-                        description: IPv6 access-list name or IPv6 multicast group prefix with mask.
+                        description: Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
                         convert_types: [int]
                 source_route_export:
                   type: dict
