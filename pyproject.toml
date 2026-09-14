@@ -2,7 +2,7 @@
 # pyavd minimal requirements when running from source
 dev = [
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.7",
+    "pyavd-utils==0.0.8",
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"

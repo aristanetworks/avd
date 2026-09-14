@@ -15,3 +15,4 @@ EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH = EOS_CLI_CONFIG_GEN_JINJA2_
 EOS_DESIGNS_JINJA2_TEMPLATE_PATH = Path(__file__).parent.joinpath("_eos_designs/j2templates")
 EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH = EOS_DESIGNS_JINJA2_TEMPLATE_PATH.joinpath("compiled_templates")
 SCHEMA_STORE_GZ_FILE = Path(__file__).parent.joinpath("_schema/schemas.json.gz")
+SCHEMA_STORE_ARCHIVE_FILE = Path(__file__).parent.joinpath("_schema/schemas.rkyv")

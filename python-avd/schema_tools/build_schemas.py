@@ -15,7 +15,7 @@ from yaml import CSafeDumper, CSafeLoader
 from yaml import dump as yaml_dump
 from yaml import load as yaml_load
 
-from .constants import LICENSE_HEADER, METASCHEMA_DIR, SCHEMA_STORE_GZ_FILE, SCHEMAS
+from .constants import LICENSE_HEADER, METASCHEMA_DIR, SCHEMA_STORE_ARCHIVE_FILE, SCHEMA_STORE_GZ_FILE, SCHEMAS
 from .generate_classes.src_generators import FileSrc
 from .generate_classes.utils import generate_class_name
 from .generate_docs.mdtabsgen import get_md_tabs
@@ -146,6 +146,10 @@ def build_schema_classes() -> None:
 def build_schemas() -> None:
     """Combines the schema fragments, and rebuild the pickled schemas."""
     combine_schemas()
+    from pyavd_utils.schema_store import compile_schema_archive  # noqa: PLC0415
+
+    LOGGER.info("Compiling archived schema store")
+    compile_schema_archive(SCHEMA_STORE_GZ_FILE, SCHEMA_STORE_ARCHIVE_FILE)
     LOGGER.info("Rebuilding pickled schemas")
     schema_store = create_store(force_rebuild=True)
     validate_schemas(schema_store)
