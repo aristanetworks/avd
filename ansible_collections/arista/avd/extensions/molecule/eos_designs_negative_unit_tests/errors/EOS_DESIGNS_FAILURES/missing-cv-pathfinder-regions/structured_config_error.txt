@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'.

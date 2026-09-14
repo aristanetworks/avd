@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Unable to assign IPs for uplinks. 'uplink_ipv4_pool' (10.0.2.0/24) on this switch cannot be combined with 'downlink_pools' (10.0.2.0/24) on any uplink switch for host 'downlink-pools-duplicate-l3leaf'.

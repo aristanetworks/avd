@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set

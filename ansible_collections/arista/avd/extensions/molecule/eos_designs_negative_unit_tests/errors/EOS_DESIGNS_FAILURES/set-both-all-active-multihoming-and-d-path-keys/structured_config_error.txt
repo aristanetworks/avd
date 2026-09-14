@@ -1,0 +1,1 @@
+pyavd._errors.AvdDeprecationWarning: The input data model 'evpn_gateway.all_active_multihoming' is deprecated and cannot be used in conjunction with the new data model 'evpn_gateway.d_path'. This usually happens when a data model has been updated and custom structured configuration still uses the old model.

@@ -1,16 +1,13 @@
 [dependency-groups]
 # pyavd minimal requirements when running from source
-# anta is set to latest version to make sure developers run with the latest version
-# when generating molecule artifacts.
 dev = [
-    "anta==1.9.0",
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.6",
+    "pyavd-utils==0.0.7",
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"
-    {include-group = "molecule"},
     {include-group = "pytest"},
+    {include-group = "molecule"},
     "ansible-doc-extractor>=0.1.11",
     "ansible-lint>=26.6.0",
     "aristaproto[compiler]==0.1.5",
@@ -20,13 +17,15 @@ dev = [
     "pre-commit-hooks>=6.0.0",
     "pre-commit>=4.5.1",
     "pylint>=4.0.5",
-    "ruff==0.15.22",
+    "ruff==0.16.5",
     "setuptools>=82.0.1", # for pyright check in CI
     "tox>=4.52.1",
     "yamllint>=1.38.0",
+    # TODO: avoid the next line down the line if possible
+    "gitpython>=3.1.57",  # for pyright check in CI for e2e script
 ]
 coverage = [
-    "coverage[toml]==7.15.2",
+    "coverage[toml]==7.16.0",
 ]
 release = [
     "build",
@@ -52,9 +51,11 @@ molecule = [
     "molecule>=26.4.0",
     "molecule-plugins[docker]>=25.8.12",
 ]
+# anta is pinned to the latest version to make sure developers run with the latest version
+# when generating molecule artifacts.
 pytest = [
     "ansible-core>=2.16.0,<2.22.0",
-    "anta==1.9.0",
+    "anta==1.10.0",
     "pytest>=9.1.0",
     "pytest-asyncio>=1.3.0",
     {include-group = "schema-tools"},
@@ -223,8 +224,8 @@ pythonpath = [
   "python-avd",
 ]
 markers = [
-    "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios. Pass hosts=(...) to limit molecule_host parametrization.",
-    "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode. Pass hosts=(...) to limit molecule_host parametrization.",
+    "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
+    "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
     "benchmark_scale: Benchmarks excluded from the default CodSpeed PR suite.",
 ]
 asyncio_default_fixture_loop_scope = "function"
@@ -235,9 +236,17 @@ log_file_date_format = "%Y-%m-%d %H:%M:%S.%f"
 
 [tool.coverage.run]
 branch = true
+# Keep the default thread tracing while enabling coverage in forkserver workers.
+concurrency = ["thread", "multiprocessing"]
 # ctrace is required to support coverage file tracer plugins. Python 3.14 can otherwise default to SysMonitor.
 core = "ctrace"
+# Forkserver imports the entrypoint before Coverage attaches in each worker. Parent and runtime execution are still measured.
+disable_warnings = [
+  "module-not-imported",
+  "module-not-measured",
+]
 parallel = true
+sigterm = true
 plugins = [
   "coverage_plugins.jinja",
 ]
@@ -245,19 +254,16 @@ source_pkgs = [
   "pyavd",
   "schema_tools",
 ]
-source_dirs = [
-  # Jinja source roots are included so the coverage plugin can report compiled-template execution against checked-in .j2 files.
-  "python-avd/pyavd/_eos_cli_config_gen/j2templates",
-  "python-avd/pyavd/_eos_designs/j2templates",
-]
 omit = [
-  "python-avd/pyavd/_cv/api/*",
+  # Exclude generated CloudVision API bindings independently of install location and worker cwd.
+  "*/pyavd/_cv/api/*",
 ]
 
 [tool.coverage.coverage_plugins.jinja]
+package = "pyavd"
 compiled_template_roots = [
-  "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
-  "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
+  "_eos_cli_config_gen/j2templates/compiled_templates",
+  "_eos_designs/j2templates/compiled_templates",
 ]
 
 [tool.coverage.report]
@@ -293,7 +299,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.4.0-dev1"
+current_version = "6.5.0-dev0"
 
 allow_dirty = true
 commit = false

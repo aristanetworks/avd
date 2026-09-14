@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: L4 Ports field set 'MISSING-PORT-SET' referenced in the application 'TEST-APPLICATION' is not defined in 'application_classification.fields_sets.l4_ports'.

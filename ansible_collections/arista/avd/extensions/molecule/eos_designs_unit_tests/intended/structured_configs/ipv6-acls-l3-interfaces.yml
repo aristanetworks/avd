@@ -100,6 +100,7 @@ ipv6_access_lists:
     destination: 2001:db8:1::2
     sequence: 15
     action: deny
+    copy_captive_portal: true
   - protocol: ipv6
     source: 2001:db8:1::1
     destination: 2001:db8:1::2
@@ -130,6 +131,7 @@ ipv6_access_lists:
     destination: 2001:db8:4::2
     sequence: 15
     action: deny
+    copy_captive_portal: true
   - protocol: ipv6
     source: 2001:db8:4::1
     destination: 2001:db8:4::2
@@ -165,6 +167,7 @@ ipv6_access_lists:
     destination: 2001:db8:10::2
     sequence: 15
     action: deny
+    copy_captive_portal: true
   - protocol: ipv6
     source: 2001:db8:10::1
     destination: 2001:db8:10::2

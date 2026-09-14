@@ -8,8 +8,10 @@ from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, UndefinedType, get_v2, short_esi_to_route_target
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils.get import get_v2
+from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
+from pyavd._utils.undefined import Undefined, UndefinedType
 
 if TYPE_CHECKING:
     from typing import TypeVar
@@ -239,7 +241,8 @@ class UtilsMixin(Protocol):
         output_type: type[T_AddressLocking],
     ) -> T_AddressLocking | UndefinedType:
         """Return address_locking for one adapter, mapping ipv4/ipv6 flags to address_family format."""
-        if not adapter.address_locking:
+        feature_support = self.shared_utils.platform_settings.feature_support
+        if not (adapter.address_locking and feature_support.address_locking.supported):
             return Undefined
 
         address_locking = output_type()
@@ -250,7 +253,8 @@ class UtilsMixin(Protocol):
                 address_locking.address_family.ipv6 = adapter.address_locking.ipv6
         else:  # EosCliConfigGen.EthernetInterfacesItem.AddressLocking
             address_locking.address_family.ipv4 = adapter.address_locking.ipv4
-            address_locking.address_family.ipv6 = adapter.address_locking.ipv6
+            if feature_support.address_locking.ipv6_ethernet_interface:
+                address_locking.address_family.ipv6 = adapter.address_locking.ipv6
         return address_locking
 
     def _get_adapter_dot1x(
@@ -269,7 +273,20 @@ class UtilsMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg)
 
-        return adapter.dot1x
+        dot1x = adapter.dot1x._cast_as(EosCliConfigGen.EthernetInterfacesItem.Dot1x, ignore_extra_keys=True)
+        if acl_name := adapter.dot1x.authentication_failure.allow_access_list:
+            acl_found = False
+            if acl_name in self.inputs.ipv4_acls:
+                self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[acl_name])
+                acl_found = True
+            if acl_name in self.inputs.ipv6_acls:
+                self.structured_config_utils._set_ipv6_acl(self.inputs.ipv6_acls[acl_name])
+                acl_found = True
+            if not acl_found:
+                msg = f"ipv4_acls[name={acl_name}] or ipv6_acls[name={acl_name}]"
+                raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+
+        return dot1x
 
     def _get_adapter_l2_mru(
         self: AvdStructuredConfigConnectedEndpointsProtocol,

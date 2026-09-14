@@ -4,7 +4,7 @@
 import pytest
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import get_ip_from_pool
+from pyavd._utils.get_ip_from_pool import get_ip_from_pool
 
 # default values for testcases
 

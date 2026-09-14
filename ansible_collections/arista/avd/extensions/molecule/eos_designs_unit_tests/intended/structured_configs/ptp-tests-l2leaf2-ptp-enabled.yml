@@ -46,6 +46,8 @@ port_channel_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
+    management:
+      drop: true
   switchport:
     enabled: true
     mode: trunk

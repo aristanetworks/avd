@@ -6,6 +6,19 @@ l2leaf:
   nodes:
     - name: dot1x-settings-6
       mgmt_ip: 192.168.0.2/24
+      platform: no_address_locking_platform
+
+# Verify DHCP profiling is allowed when Address Locking is configured but unsupported by the platform.
+custom_platform_settings:
+  - platforms:
+      - no_address_locking_platform
+    feature_support:
+      address_locking:
+        supported: false
+
+address_locking_settings:
+  dhcp_servers_ipv4:
+    - 10.0.0.1
 
 dot1x_settings:
   enabled: true

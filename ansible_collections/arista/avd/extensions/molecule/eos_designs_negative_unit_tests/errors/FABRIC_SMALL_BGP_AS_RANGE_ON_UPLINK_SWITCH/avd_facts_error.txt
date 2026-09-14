@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Unable to allocate BGP AS: bgp_as range '65001-65002' is too small (2) for the id '10' for host 'small-bgp-as-range-on-uplink-switch-spine'.
