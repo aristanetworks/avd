@@ -97,9 +97,12 @@ class AVDActionPlugin(ActionBase):
                 for w in captured_warnings:
                     msg = str(w.message)
                     if issubclass(w.category, DeprecationWarning):
-                        # AvdDeprecationWarning's are added from AvdSchemaTools with more context
-                        # This is a catch-all for other deprecations
-                        self.result["deprecations"].append({"msg": msg})
+                        deprecation: dict[str, Any] = {"msg": msg}
+                        if (date := getattr(w.message, "date", None)) is not None:
+                            deprecation.update(date=date, collection_name="arista.avd")
+                        elif (version := getattr(w.message, "version", None)) is not None:
+                            deprecation.update(version=version, collection_name="arista.avd")
+                        self.result["deprecations"].append(deprecation)
                     else:
                         # Catch-all for standard Python warnings from any library
                         self.result["warnings"].append(msg)

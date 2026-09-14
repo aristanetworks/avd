@@ -84,7 +84,6 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
         self.date = remove_after_date
         self.removed = removed
         self.conflict = conflict
-        self.version_message = f" and will be removed in AVD {remove_in_version}" if remove_in_version else ""
 
         if removed:
             messages.append(f"The input data model '{self.path}' was removed.")
@@ -95,7 +94,7 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
                 "This usually happens when a data model has been updated and custom structured configuration still uses the old model."
             )
         else:
-            messages.append(f"The input data model '{self.path}' is deprecated{self.version_message}.")
+            messages.append(f"The input data model '{self.path}' is deprecated.")
 
         if new_key and not conflict:
             messages.append(f"Use '{new_key}' instead.")
