@@ -40,5 +40,6 @@ def test_ip_address_sort_invalid_address() -> None:
     with pytest.raises(ValueError, match="requires 'sort_key' to be set when used for a Mapping"):
         ip_address_sort([{"address": "192.0.2.1"}])
 
+    namespace = Namespace(address="192.0.2.1")
     with pytest.raises(ValueError, match="requires 'sort_key' to be set when used for a Namespace"):
-        ip_address_sort([Namespace(address="192.0.2.1")])
+        ip_address_sort([namespace])
