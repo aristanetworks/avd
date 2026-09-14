@@ -16,6 +16,28 @@ from .log_config import AVDLoggingConfig, LoggerState, get_avd_log_level
 from .log_handlers import AnsibleDisplayHandler, ContextFilter, SaveToResultHandler
 
 
+def _handle_captured_warnings(captured_warnings: list[warnings.WarningMessage], result: dict[str, Any]) -> None:
+    """Add captured Python warnings to the appropriate lists in the Ansible result."""
+    if not captured_warnings:
+        return
+
+    result.setdefault("deprecations", [])
+    result.setdefault("warnings", [])
+    for warning in captured_warnings:
+        message = str(warning.message)
+        if not issubclass(warning.category, DeprecationWarning):
+            # Catch-all for standard Python warnings from any library
+            result["warnings"].append(message)
+            continue
+
+        deprecation: dict[str, Any] = {"msg": message}
+        if (date := getattr(warning.message, "date", None)) is not None:
+            deprecation.update(date=date, collection_name="arista.avd")
+        elif (version := getattr(warning.message, "version", None)) is not None:
+            deprecation.update(version=version, collection_name="arista.avd")
+        result["deprecations"].append(deprecation)
+
+
 class AVDActionPlugin(ActionBase):
     """Base class for AVD Ansible action plugins to provide common functionality."""
 
@@ -90,22 +112,7 @@ class AVDActionPlugin(ActionBase):
                 # Run the plugin
                 self.main(task_vars)
 
-            # Process captured Python warnings and update the result object
-            if captured_warnings:
-                self.result.setdefault("deprecations", [])
-                self.result.setdefault("warnings", [])
-                for w in captured_warnings:
-                    msg = str(w.message)
-                    if issubclass(w.category, DeprecationWarning):
-                        deprecation: dict[str, Any] = {"msg": msg}
-                        if (date := getattr(w.message, "date", None)) is not None:
-                            deprecation.update(date=date, collection_name="arista.avd")
-                        elif (version := getattr(w.message, "version", None)) is not None:
-                            deprecation.update(version=version, collection_name="arista.avd")
-                        self.result["deprecations"].append(deprecation)
-                    else:
-                        # Catch-all for standard Python warnings from any library
-                        self.result["warnings"].append(msg)
+            _handle_captured_warnings(captured_warnings, self.result)
 
         except Exception as exc:
             # Recast errors as AnsibleActionFail
