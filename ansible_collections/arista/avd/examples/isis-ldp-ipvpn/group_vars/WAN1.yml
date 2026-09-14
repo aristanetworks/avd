@@ -1,12 +1,10 @@
 ---
-# Default gateway used for the management interface
-mgmt_gateway: 172.16.1.1
+# Please note, comments below are intended for site documentation only
+mgmt_gateway: 172.16.1.1 # (1)!
 
-# iBGP ASN for the fabric
-bgp_as: 65001
+bgp_as: 65001 # (2)!
 
-# BGP distance for specific route types
-bgp_distance:
+bgp_distance: # (3)!
   external_routes: 20
   internal_routes: 200
   local_routes: 200
@@ -15,21 +13,15 @@ bgp_distance:
 p:
   # Definition of default values that will be configured to all nodes defined in this group
   defaults:
-    # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: cEOSLab
-    # Pool of IPv4 addresses to configure interface Loopback0 used for Router ID
-    loopback_ipv4_pool: 10.255.0.0/27
-    # ISIS NET system id prefix
-    isis_system_id_prefix: '0000.0000'
+    platform: cEOSLab # (4)!
+    loopback_ipv4_pool: 10.255.0.0/27 # (5)!
+    isis_system_id_prefix: '0000.0000' # (6)!
   # Definition of nodes contained in this group.
-  # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
-  nodes:
-    # Name of the node to be defined (must be consistent with definition in inventory)
-    - name: p1
-      # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
-      id: 1
-      # Management IP to be assigned to the management interface
-      mgmt_ip: 172.16.1.11/24
+  # Specific configuration of device must take place under the node definition. Each node inherits all values defined under 'defaults'
+  nodes: # (7)!
+    - name: p1 # (8)!
+      id: 1 # (9)!
+      mgmt_ip: 172.16.1.11/24 # (10)!
     - name: p2
       id: 2
       mgmt_ip: 172.16.1.12/24
@@ -44,22 +36,18 @@ p:
 pe:
   defaults:
     # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: cEOSLab
+    platform: cEOSLab # (1)!
     # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
-    loopback_ipv4_pool: 10.255.1.0/27
-    virtual_router_mac_address: 00:1c:73:00:dc:00
-    mpls_route_reflectors: [rr1, rr2]
+    loopback_ipv4_pool: 10.255.1.0/27 # (2)!
+    virtual_router_mac_address: 00:1c:73:00:dc:00 # (3)!
+    mpls_route_reflectors: [rr1, rr2] # (4)!
     # ISIS NET system id prefix
-    isis_system_id_prefix: '0000.0001'
-    spanning_tree_mode: none
+    isis_system_id_prefix: '0000.0001' # (5)!
+    spanning_tree_mode: none # (6)!
 
-  # If two nodes (and only two) are in the same node_group, they will automatically form an MLAG pair
-  node_groups:
-    # Definition of a node group that will include two devices in MLAG.
-    # Definitions under the group will be inherited by both nodes in the group
+  node_groups: # (7)!
     - group: WAN1-PE1-2
       nodes:
-        # Definition of hostnames under the node_group
         - name: pe1
           id: 1
           mgmt_ip: 172.16.1.101/24
@@ -79,8 +67,7 @@ rr:
     platform: cEOSLab
     spanning_tree_mode: none
     loopback_ipv4_pool: 10.255.2.0/27
-    mpls_route_reflectors: [rr1, rr2]
-    # ISIS NET system id prefix
+    mpls_route_reflectors: [rr1, rr2] # (1)!
     isis_system_id_prefix: '0000.0002'
   node_groups:
     - group: WAN1_RR1-2
@@ -97,24 +84,21 @@ rr:
 # substituted for this free-standing data model of core_interfaces, where all p2p underlay links in the topology are defined.
 
 core_interfaces:
-  # First, an IP-pool for the underlay p2p links is defined
-  p2p_links_ip_pools:
-    - name: core_pool
+  p2p_links_ip_pools: # (1)!
+    - name: core_pool # (2)!
       ipv4_pool: 10.255.3.0/24
   p2p_links_profiles:
-    - name: core_profile
-      # speed: 100gfull
+    - name: core_profile # (3)!
       isis_metric: 50
       ip_pool: core_pool
       isis_circuit_type: level-2
       isis_authentication_mode: md5
       isis_authentication_key: $1c$sTNAlR6rKSw=
-  p2p_links:
-    # PE1 links
-    - nodes: [pe1, p1]
-      id: 1
+  p2p_links: # (4)!
+    - nodes: [pe1, p1] # (5)!
+      id: 1 # (6)!
       interfaces: [Ethernet1, Ethernet1]
-      profile: core_profile
+      profile: core_profile # (7)!
     - nodes: [pe1, p2]
       id: 2
       interfaces: [Ethernet2, Ethernet2]

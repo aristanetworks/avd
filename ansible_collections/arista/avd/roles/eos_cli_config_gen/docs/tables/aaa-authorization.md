@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;policy</samp>](## "aaa_authorization.policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_default_role</samp>](## "aaa_authorization.policy.local_default_role") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;exec</samp>](## "aaa_authorization.exec") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_authorization.exec.default") | String |  |  |  | Exec authorization method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group radius group MYGROUP local"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_authorization.exec.default") | String |  |  |  | Exec authorization method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group radius group MYGROUP local"<br>- "group ldap"<br> |
     | [<samp>&nbsp;&nbsp;config_commands</samp>](## "aaa_authorization.config_commands") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;serial_console</samp>](## "aaa_authorization.serial_console") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dynamic</samp>](## "aaa_authorization.dynamic") | Dictionary |  |  |  |  |
@@ -36,6 +36,7 @@
         # - "group tacacs+ local"
         # - "group MYGROUP none"
         # - "group radius group MYGROUP local"
+        # - "group ldap"
         default: <str>
       config_commands: <bool>
       serial_console: <bool>

@@ -33,6 +33,7 @@ class SourceTemplate:
     reportable_lines: frozenset[int]
     arc_endpoint_lines: frozenset[int]
     possible_arcs: frozenset[tuple[int, int]]
+    arc_aliases: Mapping[tuple[int, int], tuple[int, int]]
     no_branch_lines: frozenset[int]
     tag_ranges: Mapping[int, tuple[int, int]]
 

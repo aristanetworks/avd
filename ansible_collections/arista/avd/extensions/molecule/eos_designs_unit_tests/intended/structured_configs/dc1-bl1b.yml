@@ -271,6 +271,11 @@ monitor_sessions:
   - name: Ethernet7.7
     direction: rx
 ntp: null
+peer_filters:
+- name: peerfilter1
+  sequence_numbers:
+  - sequence: 20
+    match: as-range 1-2 result reject
 platform:
   sand:
     lag:
@@ -331,6 +336,14 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  listen_ranges:
+  - prefix: 192.168.143.0/24
+    peer_id_include_router_id: true
+    peer_group: Tenant_C_LISTEN_RANGE_PEER_GROUP
+    peer_filter: peerfilter1
+  - prefix: 192.168.144.0/24
+    peer_group: Tenant_C_LISTEN_RANGE_PEER_GROUP
+    remote_as: '112'
   peer_groups:
   - name: UNDERLAY-PEERS
     metadata:
@@ -370,6 +383,8 @@ router_bgp:
     maximum_routes: 1000
     route_map_in: TEST_IN
     route_map_out: TEST_OUT
+  - name: Tenant_C_LISTEN_RANGE_PEER_GROUP
+    remote_as: '668'
   neighbors:
   - ip_address: 172.31.254.192
     peer_group: UNDERLAY-PEERS
@@ -395,12 +410,6 @@ router_bgp:
     metadata:
       peer: dc1-spine4
     description: dc1-spine4_Ethernet23
-  - ip_address: 192.168.255.1
-    peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '65001'
-    metadata:
-      peer: dc1-spine1
-    description: dc1-spine1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
@@ -419,6 +428,19 @@ router_bgp:
     metadata:
       peer: dc1-spine4
     description: dc1-spine4
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65001'
+    metadata:
+      peer: dc1-spine1
+    description: dc1-spine1
+    password: 5B0XC3gLnsY/sTjyPTZ8og==
+  - ip_address: 192.168.42.43
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65001'
+    metadata:
+      peer: dc1-spine2
+    description: dc1-spine2
   - ip_address: 1.1.1.1
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65555'
@@ -516,6 +538,8 @@ router_bgp:
       route_map_out: TEST_OUT
       rcf_in: TEST_RCF_IN()
       rcf_out: TEST_RCF_OUT()
+      default_originate:
+        always: true
   address_family_ipv6:
     peer_groups:
     - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
@@ -664,6 +688,16 @@ router_bgp:
         route_targets:
         - '65105:31'
     router_id: 192.168.255.15
+    listen_ranges:
+    - prefix: 192.168.141.0/24
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      remote_as: '111'
+    - prefix: 192.168.142.0/24
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      peer_filter: peerfilter1
+    - prefix: cafe::cafe/64
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      peer_filter: peerfilter1
     redistribute:
       connected:
         enabled: true

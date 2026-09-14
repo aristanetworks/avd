@@ -1,0 +1,25 @@
+---
+custom_structured_configuration_standard_access_lists:
+  - name: acl1
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.1
+
+snmp_settings:
+  contact: example@example.com
+  location: false
+
+  communities:
+    - name: SNMP-COMMUNITY-1
+      access: ro
+      access_list_ipv4:
+        name: acl1
+    - name: SNMP-COMMUNITY-2
+      access: rw
+      access_list_ipv4:
+        name: SNMP-MGMT
+      access_list_ipv6:
+        name: SNMP-MGMT
+      view: VW-READ
+    - name: SNMP-COMMUNITY-3

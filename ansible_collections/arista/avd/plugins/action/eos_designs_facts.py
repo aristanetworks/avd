@@ -3,40 +3,36 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import cProfile
 import json
-import pstats
 from collections import ChainMap
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
-from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
-from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AVDFileHandler,
     AVDVaultHandler,
+    cprofile,
     get_eos_designs_facts_path,
     get_templar,
     get_tmp_paths,
-    raise_action_fail,
 )
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
     from ansible.playbook.task import Task
     from ansible.template import Templar
 
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
-    from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
     from pyavd.api.schemas import AVDDesign
     from pyavd.j2filters import natural_sort
 
 try:
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
-    from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
     from pyavd.api.schemas import AVDDesign
     from pyavd.j2filters import natural_sort
@@ -46,33 +42,40 @@ except ImportError:
     HAS_PYAVD = False
 
 
-class ActionModule(ActionBase):
+ARGUMENT_SPEC = {
+    "tmp_dir": {"type": "str", "required": True},
+    "output_dir": {"type": "str", "required": True},
+    "template_output": {"type": "bool", "default": False},
+    "digital_twin": {"type": "bool", "default": False},
+    "cprofile_file": {"type": "str"},
+}
+
+
+class ActionModule(AVDActionPlugin):
     _task: Task
     _templar: Templar
+    _logging_config = AVDLoggingConfig(add_role_context=True)
     tmp_dir: str
 
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
-        if task_vars is None:
-            task_vars = {}
-        result = super().run(tmp, task_vars)
-        del tmp  # tmp no longer has any effect
+    @cprofile()
+    def main(self, task_vars: dict[str, Any]) -> None:
+        """Load validated eos_designs inputs and render avd_switch_facts."""
         if not HAS_PYAVD:
-            msg = "The arista.avd.eos_designs_facts' plugin requires the 'pyavd' Python library. Got import error"
-            raise AnsibleActionFail(msg)
+            msg = "plugin requires the 'pyavd' Python library. Got import error"
+            raise ImportError(msg)
 
-        self._task.args = cast("dict", self._task.args)
+        self.logger.debug("Validating task arguments...")
+        validated_args = self.validate_args()
+        self.logger.debug("Validating task arguments [done].")
 
-        cprofile_file = self._task.args.get("cprofile_file")
-        if cprofile_file:
-            profiler = cProfile.Profile()
-            profiler.enable()
+        self.tmp_dir = validated_args["tmp_dir"]
 
         # Only template output on ansible versions < 2.19.
-        self.template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
+        self.template_output = validated_args["template_output"] and not ANSIBLE_ABOVE_2_19
 
-        self._digital_twin = self._task.args.get("digital_twin", False)
-        output_dir = self._task.args.get("output_dir")
-        self.tmp_dir = self._task.args.get("tmp_dir")
+        self._digital_twin = validated_args["digital_twin"]
+        output_dir = validated_args["output_dir"]
+
         # Get target path and clean any previously generated facts.
         avd_switch_facts_path = get_eos_designs_facts_path(self.tmp_dir, clean=True)
 
@@ -90,29 +93,33 @@ class ActionModule(ActionBase):
                 "which must point to an Ansible Group containing the hosts."
                 f"play_hosts: {ansible_play_hosts_all}"
             )
-            raise AnsibleActionFail(msg)
+            raise ValueError(msg)
 
+        self.logger.debug("Loading validated inputs...")
         all_inputs, all_hostvars = self.load_validated_inputs(fabric_hosts)
+        self.logger.debug("Loading validated inputs [done].")
 
         # Get updated templar instance to be passed along to our simplified "templater"
         templar = get_templar(self, task_vars)
 
+        self.logger.debug("Rendering eos_designs facts...")
         pool_manager = PoolManager(Path(output_dir))
 
         avd_switch_facts = self.render_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, templar=templar)
+        self.logger.debug("Rendering eos_designs facts [done].")
 
         # Dump facts to file.
         self.dump_facts(avd_switch_facts, avd_switch_facts_path)
 
         # Save any updated pools.
-        result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
+        self.result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
 
-        if cprofile_file:
-            profiler.disable()
-            stats = pstats.Stats(profiler).sort_stats("cumtime")
-            stats.dump_stats(cprofile_file)
+    def validate_args(self) -> dict[str, Any]:
+        """Get task arguments and validate them."""
+        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
 
-        return result
+        # Converting to json and back to remove any AnsibleUnsafe types.
+        return json.loads(json.dumps(validated_args))
 
     def load_validated_inputs(self, fabric_hosts: list) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
         """
@@ -142,7 +149,7 @@ class ActionModule(ActionBase):
                     f"Missing validated inputs for host '{host}'. "
                     "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
                 )
-                raise AnsibleActionFail(message=msg)
+                raise FileNotFoundError(msg)
 
             # Read, unvault, and parse the JSON file
             vault_handler = AVDVaultHandler(self._loader)
@@ -157,7 +164,7 @@ class ActionModule(ActionBase):
 
     def render_facts(self, all_inputs: dict[str, AVDDesign], pool_manager: PoolManager, all_hostvars: dict[str, dict], templar: Templar) -> dict[str, dict]:
         """
-        Render facts, reraising errors as AnsibleActionFail.
+        Render facts.
 
         Args:
             all_inputs: EosDesigns instances for each device.
@@ -167,14 +174,8 @@ class ActionModule(ActionBase):
 
         Returns:
             Facts as dict for each device.
-
-        Raises:
-            AnsibleActionFail for every AristaAvdError raised by pyavd.
         """
-        try:
-            all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar, digital_twin=self._digital_twin)
-        except AristaAvdError as e:
-            raise_action_fail(str(e), e)
+        all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar, digital_twin=self._digital_twin)
 
         all_facts_as_dicts: dict[str, dict] = {}
         for host, facts in all_facts.items():

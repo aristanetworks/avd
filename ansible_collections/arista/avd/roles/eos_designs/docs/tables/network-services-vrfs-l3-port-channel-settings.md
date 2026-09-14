@@ -27,6 +27,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ip_address") | String |  |  |  | IPv4 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address_secondaries</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ip_address_secondaries") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ip_address_secondaries.[]") | String |  |  |  | IPv4 address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ipv6_addresses") | List, items: String |  |  |  | IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.<br>Can be used instead of or together with `ip_address`.<br>For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ipv6_addresses.[]") | String |  |  | Min Length: 1 | IPv6 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
@@ -34,6 +36,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].mtu") | Integer |  |  |  | MTU can only be set on the parent Port-Channel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the first IPv6 address set on the interface.<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the first IPv6 address set on the interface.<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].static_routes") | List, items: Dictionary |  |  |  | Static routes to be configured on the device where this Port-channel interface is configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].static_routes.[].prefix") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].static_routes.[].next_hop") | String |  |  |  |  |
@@ -90,6 +94,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].ip_address") | String |  |  |  | IPv4 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address_secondaries</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].ip_address_secondaries") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].ip_address_secondaries.[]") | String |  |  |  | IPv4 address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].ipv6_addresses") | List, items: String |  |  |  | IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.<br>Can be used instead of or together with `ip_address`.<br>For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].ipv6_addresses.[]") | String |  |  | Min Length: 1 | IPv6 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
@@ -97,6 +103,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].mtu") | Integer |  |  |  | MTU can only be set on the parent Port-Channel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the first IPv6 address set on the interface.<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the first IPv6 address set on the interface.<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].static_routes") | List, items: Dictionary |  |  |  | Static routes to be configured on the device where this Port-channel interface is configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].static_routes.[].prefix") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "network_services.[].vrfs.[].l3_port_channels.[].static_routes.[].next_hop") | String |  |  |  |  |
@@ -209,6 +217,14 @@
                     # IPv4 address/Mask.
                   - <str>
 
+                # IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                # Can be used instead of or together with `ip_address`.
+                # For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                ipv6_addresses:
+
+                    # IPv6 address/Mask.
+                  - <str; length >=1>
+
                 # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                 encapsulation_dot1q_vlan: <int; 1-4094>
 
@@ -229,6 +245,18 @@
 
                 # Name of the IPv4 Access-list to be assigned in the egress direction.
                 ipv4_acl_out: <str>
+
+                # Name of the IPv6 access-list to be assigned in the ingress direction.
+                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                # resolved from the first IPv6 address set on the interface.
+                # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
+                ipv6_acl_in: <str>
+
+                # Name of the IPv6 access-list to be assigned in the egress direction.
+                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                # resolved from the first IPv6 address set on the interface.
+                # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
+                ipv6_acl_out: <str>
 
                 # Static routes to be configured on the device where this Port-channel interface is configured.
                 static_routes:
@@ -379,6 +407,14 @@
                     # IPv4 address/Mask.
                   - <str>
 
+                # IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                # Can be used instead of or together with `ip_address`.
+                # For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                ipv6_addresses:
+
+                    # IPv6 address/Mask.
+                  - <str; length >=1>
+
                 # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                 encapsulation_dot1q_vlan: <int; 1-4094>
 
@@ -399,6 +435,18 @@
 
                 # Name of the IPv4 Access-list to be assigned in the egress direction.
                 ipv4_acl_out: <str>
+
+                # Name of the IPv6 access-list to be assigned in the ingress direction.
+                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                # resolved from the first IPv6 address set on the interface.
+                # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
+                ipv6_acl_in: <str>
+
+                # Name of the IPv6 access-list to be assigned in the egress direction.
+                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                # resolved from the first IPv6 address set on the interface.
+                # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
+                ipv6_acl_out: <str>
 
                 # Static routes to be configured on the device where this Port-channel interface is configured.
                 static_routes:

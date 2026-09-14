@@ -32,6 +32,7 @@ ntp_settings:
   server_vrf: use_mgmt_interface_vrf
   servers:
     - name: 192.168.200.5
+      source_address: use_mgmt_interface_ipv4
 
 dns_settings:
   servers:

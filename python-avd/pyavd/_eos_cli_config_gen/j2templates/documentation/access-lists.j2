@@ -9,8 +9,8 @@
 ### Extended Access-lists
 
 #### Extended Access-lists Summary
-
 {%     for access_list in access_lists | arista.avd.natural_sort('name') %}
+
 ##### {{ access_list.name }}
 {%         if access_list.counters_per_entry is arista.avd.defined(true) %}
 
@@ -25,8 +25,8 @@ ACL has counting mode `counters per-entry` enabled!
 {%         if access_list.permit_response_traffic is arista.avd.defined %}
 | - | permit response traffic {{ access_list.permit_response_traffic }} |
 {%         endif %}
-
 {%     endfor %}
+
 #### Extended Access-lists Device Configuration
 
 ```eos

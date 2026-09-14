@@ -51,15 +51,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].link_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_ports.[].link_tracking.name") | String |  |  |  | Tracking group name.<br>The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".<br>Optional if default link_tracking settings are configured on the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "network_ports.[].dot1x") | Dictionary |  |  |  | 802.1x |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure</samp>](## "network_ports.[].dot1x.authentication_failure") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_access_list</samp>](## "network_ports.[].dot1x.authentication_failure.allow_access_list") | String |  |  |  | Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.<br>The access list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.<br>On EOS, the access list is only applied when `dot1x.mac_based_access_list` is enabled on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_ports.[].dot1x.authentication_failure.action") | String |  |  | Valid Values:<br>- <code>allow</code><br>- <code>drop</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vlan</samp>](## "network_ports.[].dot1x.authentication_failure.allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control</samp>](## "network_ports.[].dot1x.port_control") | String |  |  | Valid Values:<br>- <code>auto</code><br>- <code>force-authorized</code><br>- <code>force-unauthorized</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control_force_authorized_phone</samp>](## "network_ports.[].dot1x.port_control_force_authorized_phone") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauthentication</samp>](## "network_ports.[].dot1x.reauthentication") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pae</samp>](## "network_ports.[].dot1x.pae") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].dot1x.pae.mode") | String |  |  | Valid Values:<br>- <code>authenticator</code><br>- <code>supplicant</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supplicant_profile</samp>](## "network_ports.[].dot1x.pae.supplicant_profile") | String |  |  |  | Supplicant profile name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure</samp>](## "network_ports.[].dot1x.authentication_failure") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_ports.[].dot1x.authentication_failure.action") | String |  |  | Valid Values:<br>- <code>allow</code><br>- <code>drop</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vlan</samp>](## "network_ports.[].dot1x.authentication_failure.allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_mode</samp>](## "network_ports.[].dot1x.host_mode") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].dot1x.host_mode.mode") | String |  |  | Valid Values:<br>- <code>multi-host</code><br>- <code>single-host</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_host_authenticated</samp>](## "network_ports.[].dot1x.host_mode.multi_host_authenticated") | Boolean |  |  |  |  |
@@ -103,8 +104,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_ports.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "network_ports.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>Key `ipv4` can only be set to false.<br>For EOS version 4.31 and higher. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "network_ports.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For EOS version 4.31 and higher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "network_ports.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>For Port-Channels, only `ipv4: false` is supported.<br>For EOS version 4.31 and higher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "network_ports.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For Port-Channels, only `ipv6: false` is supported.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "network_ports.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "network_ports.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "network_ports.[].poe.priority") | String |  |  | Valid Values:<br>- <code>critical</code><br>- <code>high</code><br>- <code>medium</code><br>- <code>low</code> | Prioritize a port's power in the event that one of the switch's power supplies loses power. |
@@ -341,6 +342,14 @@
 
         # 802.1x
         dot1x:
+          authentication_failure:
+
+            # Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+            # The access list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+            # On EOS, the access list is only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+            allow_access_list: <str>
+            action: <str; "allow" | "drop">
+            allow_vlan: <int; 1-4094>
           port_control: <str; "auto" | "force-authorized" | "force-unauthorized">
           port_control_force_authorized_phone: <bool>
           reauthentication: <bool>
@@ -349,9 +358,6 @@
 
             # Supplicant profile name.
             supplicant_profile: <str>
-          authentication_failure:
-            action: <str; "allow" | "drop">
-            allow_vlan: <int; 1-4094>
           host_mode:
             mode: <str; "multi-host" | "single-host">
             multi_host_authenticated: <bool>
@@ -439,11 +445,12 @@
         address_locking:
 
           # Enable address locking for IPv4.
-          # Key `ipv4` can only be set to false.
+          # For Port-Channels, only `ipv4: false` is supported.
           # For EOS version 4.31 and higher.
           ipv4: <bool>
 
           # Enable address locking for IPv6.
+          # For Port-Channels, only `ipv6: false` is supported.
           # For EOS version 4.31 and higher.
           ipv6: <bool>
 

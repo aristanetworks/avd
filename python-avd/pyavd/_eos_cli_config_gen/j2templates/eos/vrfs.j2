@@ -11,5 +11,8 @@ vrf instance {{ vrf.name }}
 {%         if vrf.description is arista.avd.defined %}
    description {{ vrf.description }}
 {%         endif %}
+{%         if vrf.rd is arista.avd.defined %}
+   rd {{ vrf.rd }}
+{%         endif %}
 {%     endif %}
 {% endfor %}

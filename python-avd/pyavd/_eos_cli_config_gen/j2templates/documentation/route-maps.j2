@@ -9,8 +9,8 @@
 ### Route-maps
 
 #### Route-maps Summary
-
 {%     for route_map in route_maps | arista.avd.natural_sort('name') %}
+
 ##### {{ route_map.name }}
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
@@ -21,8 +21,8 @@
 {%             endif %}
 | {{ sequence.sequence }} | {{ sequence.type }} | {{ sequence.match | arista.avd.default(['-']) | join('<br>') }} | {{ sequence.set | arista.avd.default(['-']) | join('<br>') }} | {{ sequence.sub_route_map | arista.avd.default('-') }} | {{ row_continue | arista.avd.default('-') }} |
 {%         endfor %}
-
 {%     endfor %}
+
 #### Route-maps Device Configuration
 
 ```eos

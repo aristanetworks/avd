@@ -1,0 +1,48 @@
+---
+name: autofix.ci
+
+"on":
+  pull_request:
+  push:
+    branches:
+      - devel
+
+concurrency:
+  group: autofix-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  autofix:
+    name: Run pre-commit and commit back any changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Run pre-commit autofix pass
+        id: pre_commit
+        uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
+        continue-on-error: true
+        with:
+          extra_args: --all-files
+
+      - name: Fail if pre-commit failed without fixes
+        if: steps.pre_commit.outcome == 'failure'
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "pre-commit failed and did not produce changes for autofix.ci to commit."
+            exit 1
+          fi
+
+      - name: Commit back any git diff
+        uses: autofix-ci/action@c5b2d67aa2274e7b5a18224e8171550871fc7e4a # v1.3.4

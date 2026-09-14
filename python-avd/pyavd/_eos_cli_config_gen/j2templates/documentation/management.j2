@@ -22,6 +22,7 @@
        or management_console is arista.avd.defined
        or management_api_http is arista.avd.defined
        or management_api_models is arista.avd.defined
+       or management_ldap is arista.avd.defined
        or ip_http_client is arista.avd.defined
        or ip_ftp_client is arista.avd.defined
        or ip_telnet_client is arista.avd.defined
@@ -75,4 +76,6 @@
 {%     include 'documentation/management-api-http.j2' %}
 {## Management API Models #}
 {%     include 'documentation/management-api-models.j2' %}
+{## Management LDAP #}
+{%     include 'documentation/management-ldap.j2' %}
 {% endif %}

@@ -52,6 +52,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "vlan_interfaces.[].ip_helpers.[].vrf") | String |  |  |  | VRF where DHCP server can be reached. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_dhcp_relay_all_subnets</samp>](## "vlan_interfaces.[].ip_dhcp_relay_all_subnets") | Boolean |  |  |  | Allow forwarding requests with secondary IP addresses in the gateway address "giaddr" field. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_nat</samp>](## "vlan_interfaces.[].ip_nat") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;service_profile</samp>](## "vlan_interfaces.[].ip_nat.service_profile") | String |  |  |  | NAT interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "vlan_interfaces.[].ip_nat.destination") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "vlan_interfaces.[].ip_nat.destination.dynamic") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;access_list</samp>](## "vlan_interfaces.[].ip_nat.destination.dynamic.[].access_list") | String | Required, Unique |  |  |  |
@@ -161,11 +162,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "vlan_interfaces.[].multicast.ipv6.static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_network_point_to_point</samp>](## "vlan_interfaces.[].ospf_network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_area</samp>](## "vlan_interfaces.[].ospf_area") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf</samp>](## "vlan_interfaces.[].ipv6_ospf") | Dictionary |  |  |  | IPv6 OSPF configuration for the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf</samp>](## "vlan_interfaces.[].ipv6_ospf") | Dictionary |  |  |  | IPv6 OSPF configuration for the interface. Mutually exclusive with 'ospfv3'. Ignored when 'ospfv3' is also configured.<br>Use only one style throughout the configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process</samp>](## "vlan_interfaces.[].ipv6_ospf.process") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "vlan_interfaces.[].ipv6_ospf.process.id") | Integer | Required |  | Min: 1<br>Max: 65535 | OSPF Process ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "vlan_interfaces.[].ipv6_ospf.process.area") | String | Required |  |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "vlan_interfaces.[].ipv6_ospf.network_point_to_point") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "vlan_interfaces.[].ospfv3") | Dictionary |  |  |  | Mutually exclusive with 'ipv6_ospf' and takes precedence over it.<br>Use only one style throughout the configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "vlan_interfaces.[].ospfv3.ipv4") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "vlan_interfaces.[].ospfv3.ipv4.area") | String | Required |  |  | OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "vlan_interfaces.[].ospfv3.ipv6") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "vlan_interfaces.[].ospfv3.ipv6.area") | String | Required |  |  | OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "vlan_interfaces.[].ospfv3.passive_interface") | Boolean |  |  |  | Include interface but without actively running OSPF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "vlan_interfaces.[].ospfv3.network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_cost</samp>](## "vlan_interfaces.[].ospf_cost") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_authentication</samp>](## "vlan_interfaces.[].ospf_authentication") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>simple</code><br>- <code>message-digest</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_authentication_key</samp>](## "vlan_interfaces.[].ospf_authentication_key") | String |  |  |  | Encrypted password. |
@@ -192,6 +200,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_passive</samp>](## "vlan_interfaces.[].isis_passive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "vlan_interfaces.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_network_point_to_point</samp>](## "vlan_interfaces.[].isis_network_point_to_point") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "vlan_interfaces.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1-2</code><br>- <code>level-1</code><br>- <code>level-2</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "vlan_interfaces.[].isis_hello_padding") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication</samp>](## "vlan_interfaces.[].isis_authentication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;both</samp>](## "vlan_interfaces.[].isis_authentication.both") | Dictionary |  |  |  | Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "vlan_interfaces.[].isis_authentication.both.key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Configure authentication key type. |
@@ -295,6 +305,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "vlan_interfaces.[].traffic_policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "vlan_interfaces.[].traffic_policy.input") | String |  |  |  | Ingress traffic policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output</samp>](## "vlan_interfaces.[].traffic_policy.output") | String |  |  |  | Egress traffic policy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "vlan_interfaces.[].mpls") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "vlan_interfaces.[].mpls.ip") | Boolean |  |  |  | Enable MPLS traffic on interface if MPLS enabled globally. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldp</samp>](## "vlan_interfaces.[].mpls.ldp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "vlan_interfaces.[].mpls.ldp.interface") | Boolean |  |  |  | Enable LDP on this interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igp_sync</samp>](## "vlan_interfaces.[].mpls.ldp.igp_sync") | Boolean |  |  |  | Tell the IGP to keep a link at max metric until LDP labels are ready. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ntp_serve</samp>](## "vlan_interfaces.[].ntp_serve") | Boolean |  |  |  | Enable/disable serving NTP to clients. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;pvlan_mapping</samp>](## "vlan_interfaces.[].pvlan_mapping") | String |  |  |  | List of VLANs as string. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "vlan_interfaces.[].metadata") | Dictionary |  |  |  |  |
@@ -393,6 +408,9 @@
         # Allow forwarding requests with secondary IP addresses in the gateway address "giaddr" field.
         ip_dhcp_relay_all_subnets: <bool>
         ip_nat:
+
+          # NAT interface profile.
+          service_profile: <str>
           destination:
             dynamic:
               - access_list: <str; required; unique>
@@ -659,7 +677,8 @@
         ospf_network_point_to_point: <bool>
         ospf_area: <str>
 
-        # IPv6 OSPF configuration for the interface.
+        # IPv6 OSPF configuration for the interface. Mutually exclusive with 'ospfv3'. Ignored when 'ospfv3' is also configured.
+        # Use only one style throughout the configuration.
         ipv6_ospf:
           process:
 
@@ -668,6 +687,22 @@
 
             # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
             area: <str; required>
+          network_point_to_point: <bool>
+
+        # Mutually exclusive with 'ipv6_ospf' and takes precedence over it.
+        # Use only one style throughout the configuration.
+        ospfv3:
+          ipv4:
+
+            # OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+            area: <str; required>
+          ipv6:
+
+            # OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+            area: <str; required>
+
+          # Include interface but without actively running OSPF.
+          passive_interface: <bool>
           network_point_to_point: <bool>
         ospf_cost: <int>
         ospf_authentication: <str; "none" | "simple" | "message-digest">
@@ -719,6 +754,8 @@
         isis_passive: <bool>
         isis_metric: <int>
         isis_network_point_to_point: <bool>
+        isis_circuit_type: <str; "level-1-2" | "level-1" | "level-2">
+        isis_hello_padding: <bool>
         isis_authentication:
 
           # Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
@@ -937,6 +974,17 @@
 
           # Egress traffic policy.
           output: <str>
+        mpls:
+
+          # Enable MPLS traffic on interface if MPLS enabled globally.
+          ip: <bool>
+          ldp:
+
+            # Enable LDP on this interface.
+            interface: <bool>
+
+            # Tell the IGP to keep a link at max metric until LDP labels are ready.
+            igp_sync: <bool>
 
         # Enable/disable serving NTP to clients.
         ntp_serve: <bool>

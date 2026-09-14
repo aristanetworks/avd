@@ -3,4 +3,5 @@
 router_bfd:
   session_snapshot_interval: 3
 
-expected_error_message: "Error during plugin execution: router_bfd.session_snapshot_interval_dangerous was expected but not set!"
+expected_error_message: >-
+  Error during plugin 'arista.avd.eos_cli_config_gen' execution: router_bfd.session_snapshot_interval_dangerous was expected but not set!

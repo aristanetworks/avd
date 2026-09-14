@@ -9,7 +9,7 @@ import pytest
 
 from pyavd import get_device_test_catalog
 from pyavd._anta.lib import AntaCatalog
-from pyavd._utils import get
+from pyavd._utils.get import get
 from pyavd.api.anta import AVDCatalogGenerationSettings, AVDFabricData
 from tests.models import MoleculeHost, MoleculeScenario
 

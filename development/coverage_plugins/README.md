@@ -29,21 +29,21 @@ Enable the plugin in `pyproject.toml`:
 plugins = [
   "coverage_plugins.jinja",
 ]
-source_dirs = [
-  "python-avd/pyavd/_eos_cli_config_gen/j2templates",
-  "python-avd/pyavd/_eos_designs/j2templates",
-]
+source_pkgs = ["pyavd"]
 
 [tool.coverage.coverage_plugins.jinja]
+package = "pyavd"
 compiled_template_roots = [
-  "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
-  "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
+  "_eos_cli_config_gen/j2templates/compiled_templates",
+  "_eos_designs/j2templates/compiled_templates",
 ]
 ```
 
-`compiled_template_roots` is required and is used during `coverage run` only. It tells the tracer where generated Jinja Python modules can be found. Reporting should work without those directories being present.
+`compiled_template_roots` is required and tells the tracer where generated Jinja Python modules can be found. When `package` is set, the plugin discovers the installed package with Python's import machinery and resolves each root relative to it. This works for regular and editable installs without importing the package or depending on the current working directory. Without `package`, roots retain their original behavior and are resolved relative to the current working directory.
 
-Do not omit compiled template paths in `[tool.coverage.run]`; coverage must be allowed to see those files so the tracer can claim them and remap execution to `.j2` files.
+The package must include both the compiled Python modules and their corresponding `.j2` source templates. Coverage executes the compiled modules, while the plugin uses the source templates for mapping and reporting.
+
+The plugin also exposes the `.j2` files beneath these roots to coverage source discovery. Reporting therefore works after generated compiled-template directories have been removed, without adding cwd-sensitive template paths to `source_dirs`.
 
 ## Line Coverage
 
@@ -51,10 +51,14 @@ Line coverage is based on generated Python execution, Jinja `debug_info`, and ex
 
 The plugin reports these template lines as executable:
 
-- Static output lines.
+- Static output lines, including intentional blank lines rendered as Markdown structure.
 - Output expression lines, including mixed text and expressions.
 - Jinja control statement lines such as `if`, `elif`, `for`, and `set`.
 - Static output inside conditionals and loops.
+
+Jinja `debug_info` does not map every rendered static line back to source. The plugin supplements `debug_info` by parsing generated `yield` statements and matching rendered static output back to static source-template tokens. This includes blank-only rendered output when the source line is intentionally blank.
+
+Blank-only static output is credited only when the generated Python gives enough runtime evidence. For example, if Jinja compiles a conditional body as a generated `yield "\n"` before a `for` loop, the plugin maps that generated yield to the blank source line inside the `if` body. Jinja may insert generated `pass` statements before the yield; those are ignored while looking for the first real generated body statement.
 
 Generated Python lines are credited to template lines only when the mapping is explicit enough to be useful. Runtime scaffolding that cannot be tied confidently to a source line is ignored instead of being assigned to the nearest previous template line.
 
@@ -81,6 +85,8 @@ The plugin also reports source-level branch arcs for common Jinja control flow:
 Normal `for` loops without an explicit `{% else %}` do not report the empty-iteration path as a missing branch. In AVD templates, an empty loop without an `else` usually means there was no optional input to render, not that an important source branch was untested.
 
 Top-level optional guards without `elif` or `else` are marked as no-branch lines. These are commonly used to wrap optional EOS feature sections and would otherwise add noisy `line->exit` misses across many templates.
+
+Some Jinja body statements, especially `set`, `do`, and static output, execute through generated Python scaffolding instead of clean source-to-source arcs. When coverage records generated code entering a reportable body line, the plugin credits the corresponding source branch arc. This prevents false partial branches for conditionals whose body was executed but whose body statement did not produce a normal Python frame mapped directly from the source `if` line.
 
 ## Expected Noise
 

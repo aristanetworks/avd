@@ -10,7 +10,11 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, Undefined, default, short_esi_to_route_target, strip_null_from_data
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
+from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
+from pyavd._utils.strip_empties import strip_null_from_data
+from pyavd._utils.undefined import Undefined
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 

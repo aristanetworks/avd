@@ -6,7 +6,7 @@ from anta.tests.hardware import VerifyInventory
 from anta.tests.security import VerifyAPIHttpsSSL
 from anta.tests.system import VerifyFileSystemUtilization
 
-from pyavd._anta.input_factories import VerifyAPIHttpsSSLInputFactory
+from pyavd._anta.input_factories.security import VerifyAPIHttpsSSLInputFactory
 from pyavd.api.anta import AVDTestSpec
 
 

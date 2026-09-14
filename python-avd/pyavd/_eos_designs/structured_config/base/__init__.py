@@ -13,7 +13,8 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default, get_v2
+from pyavd._utils.default import default
+from pyavd._utils.get import get_v2
 from pyavd.j2filters import natural_sort
 
 from .aaa_settings import AaaSettingsMixin
@@ -80,26 +81,29 @@ class AvdStructuredConfigBaseProtocol(
         """static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf."""
         # Skip static routes if mgmt_ip is set to "dhcp" and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true,
         # since DHCP will provide the default route
-        if self.shared_utils.node_config.mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+        if self.shared_utils.oob_mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
             return
 
-        if self.shared_utils.mgmt_gateway is None:
+        if self.shared_utils.oob_mgmt_gateway is None:
             return
 
         if self.inputs.mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.mgmt_destination_networks:
                 self.structured_config.static_routes.append_new(
-                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway
+                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.oob_mgmt_gateway
                 )
         else:
             self.structured_config.static_routes.append_new(
-                vrf=self.shared_utils.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway
+                vrf=self.shared_utils.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.oob_mgmt_gateway
             )
 
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
         """ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf."""
         if self.shared_utils.ipv6_mgmt_gateway is None or self.shared_utils.node_config.ipv6_mgmt_ip is None:
+            return
+
+        if self.shared_utils.node_config.ipv6_mgmt_ip == "auto-config" and self.inputs.avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
             return
 
         if self.inputs.ipv6_mgmt_destination_networks:
@@ -215,6 +219,15 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.vlan_internal_order = self.inputs.internal_vlan_order._cast_as(EosCliConfigGen.VlanInternalOrder)
 
     @structured_config_contributor
+    def vlans(self) -> None:
+        """Suspend vlans set based on general_settings.suspended_vlans data-model."""
+        if not (suspended_vlans := self.inputs.general_settings.suspended_vlans):
+            return
+
+        for vlan in suspended_vlans:
+            self.structured_config.vlans.append_new(id=vlan.id, name=vlan.name, state="suspend")
+
+    @structured_config_contributor
     def config_end(self) -> None:
         """config_end is always set to match EOS default config and historic configs."""
         self.structured_config.config_end = True
@@ -312,6 +325,9 @@ class AvdStructuredConfigBaseProtocol(
 
         if stp_settings.loop_guard_default:
             self.structured_config.spanning_tree.loop_guard_default = True
+
+        if stp_settings.edge_port_bpduguard_default:
+            self.structured_config.spanning_tree.edge_port.bpduguard_default = True
 
         if spanning_tree_mode is not None:
             self.structured_config.spanning_tree.mode = spanning_tree_mode
@@ -469,6 +485,7 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def prefix_lists(self) -> None:
         self.structured_config.prefix_lists.extend(self.shared_utils.l3_bgp_prefix_lists)
+        self.structured_config.ipv6_prefix_lists.extend(self.shared_utils.l3_bgp_ipv6_prefix_lists)
 
     @structured_config_contributor
     def route_maps(self) -> None:
@@ -482,7 +499,7 @@ class AvdStructuredConfigBaseProtocol(
     @cached_property
     def _act_ensure_eapi_access(self) -> bool:
         """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
-        return self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_ensure_eapi_access
+        return self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
     @structured_config_contributor
     def management_settings(self) -> None:

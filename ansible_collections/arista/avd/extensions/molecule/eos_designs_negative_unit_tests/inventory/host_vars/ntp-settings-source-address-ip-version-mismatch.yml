@@ -1,0 +1,18 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: ntp-settings-source-address-ip-version-mismatch
+      id: 1
+      inband_mgmt_ip: 192.168.1.2/24
+      inband_mgmt_ipv6_address: 2001:db8:200::2/64
+      inband_mgmt_vrf: INBAND_MGMT
+
+ntp_settings:
+  server_vrf: use_inband_mgmt_vrf
+  servers:
+    - name: 1.2.3.4
+      source_address: use_inband_mgmt_interface_ipv6
+
+expected_error_message: >-
+  'ntp_settings.servers[name=1.2.3.4].source_address' resolves to '2001:db8:200::2', but NTP server '1.2.3.4' is IPv4.
+  Set a matching IPv4 source address or use an FQDN server name.

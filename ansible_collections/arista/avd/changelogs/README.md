@@ -20,7 +20,7 @@
     - Replace (vscode syntax):
 
       ```re
-      - |-\n $1
+        - |-\n   $1
       ```
 
 - Copy the fragment to `changelogs/fragments_backup` *before* generating the changelog

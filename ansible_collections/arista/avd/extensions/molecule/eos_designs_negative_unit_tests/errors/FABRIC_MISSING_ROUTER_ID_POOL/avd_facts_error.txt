@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'router_id_pool' is required but was not found for host 'missing-router-id-pool'.

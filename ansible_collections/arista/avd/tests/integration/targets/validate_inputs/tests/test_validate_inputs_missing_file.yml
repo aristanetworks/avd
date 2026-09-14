@@ -19,4 +19,4 @@
       - expected_error in result.msg
   vars:
     expected_error: |-
-      Error during plugin 'arista.avd.validate_inputs' execution: 'Unexpected errors occurred while processing 1 host(s): testhost.
+      Error during plugin 'arista.avd.validate_inputs' execution: Unexpected errors occurred while processing 1 host(s): testhost.

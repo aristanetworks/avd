@@ -23,6 +23,7 @@ def source_template(filename: Path) -> SourceTemplate:
             reportable_lines=frozenset(),
             arc_endpoint_lines=frozenset(),
             possible_arcs=frozenset(),
+            arc_aliases=MappingProxyType({}),
             no_branch_lines=frozenset(),
             tag_ranges=MappingProxyType({}),
         )
@@ -42,10 +43,12 @@ def _source_template_cached(filename: Path, stamp: FileStamp) -> SourceTemplate:
     reportable_lines = _find_reportable_jinja_lines_cached(filename, stamp)
     structural_control_label_lines = _find_structural_control_label_lines_cached(filename, stamp)
     arc_endpoint_lines = _arc_endpoint_lines(reportable_lines, structural_control_label_lines)
+    possible_arcs = _find_possible_jinja_arcs_cached(filename, stamp, reportable_lines, arc_endpoint_lines)
     return SourceTemplate(
         reportable_lines=reportable_lines,
         arc_endpoint_lines=arc_endpoint_lines,
-        possible_arcs=_find_possible_jinja_arcs_cached(filename, stamp, reportable_lines, arc_endpoint_lines),
+        possible_arcs=possible_arcs,
+        arc_aliases=MappingProxyType(_find_jinja_arc_aliases_cached(filename, stamp, possible_arcs, reportable_lines)),
         no_branch_lines=_find_no_branch_jinja_lines_cached(filename, stamp),
         tag_ranges=MappingProxyType(source_tag_ranges(filename)),
     )
@@ -101,6 +104,35 @@ def covered_multiline_tag_branch_arcs(
     return covered_branch_arcs
 
 
+def covered_structural_control_branch_arcs(
+    recorded_arcs: tuple[tuple[int, int], ...],
+    possible_arcs: Collection[tuple[int, int]],
+    tag_ranges: Mapping[int, tuple[int, int]],
+    reportable_lines: Collection[int],
+) -> set[tuple[int, int]]:
+    """
+    Return branch arcs covered by jumps from multiline tags to structural labels.
+
+    No-else ``if`` statements use the source ``endif`` line as the false branch
+    target. Jinja may report the runtime jump from the last line in a multiline
+    ``if`` tag to that ``endif`` label instead of from the first tag line.
+    """
+    recorded_arc_set = set(recorded_arcs)
+    reportable_line_set = set(reportable_lines)
+    covered_branch_arcs: set[tuple[int, int]] = set()
+    for from_line, to_line in possible_arcs:
+        if from_line <= 0 or to_line <= 0:
+            continue
+        if to_line in reportable_line_set:
+            continue
+
+        start_line, end_line = tag_ranges.get(from_line, (from_line, from_line))
+        if any((line_number, to_line) in recorded_arc_set for line_number in range(start_line, end_line + 1)):
+            covered_branch_arcs.add((from_line, to_line))
+
+    return covered_branch_arcs
+
+
 def covered_else_branch_arcs(
     recorded_arcs: tuple[tuple[int, int], ...],
     translated_arcs: set[tuple[int, int]],
@@ -125,6 +157,92 @@ def covered_else_branch_arcs(
             covered_else_arcs.add((from_line, to_line))
 
     return covered_else_arcs
+
+
+def covered_generated_body_branch_arcs(
+    recorded_arcs: tuple[tuple[int, int], ...],
+    translated_arcs: set[tuple[int, int]],
+    possible_arcs: Collection[tuple[int, int]],
+    reportable_lines: Collection[int],
+) -> set[tuple[int, int]]:
+    """
+    Return body branch arcs covered by generated code entering reportable body lines.
+
+    Jinja compiles ``set`` and ``do`` statements, and sometimes static output,
+    into generated Python lines that enter the source body line without a direct
+    source-to-source arc. If the condition was evaluated and generated code
+    reached the body line, credit the source branch body arc.
+    """
+    executed_lines = {line for arc in translated_arcs for line in arc if line > 0}
+    executed_lines.update(raw_to_line for _raw_from_line, raw_to_line in recorded_arcs if raw_to_line in reportable_lines)
+    covered_branch_arcs: set[tuple[int, int]] = set()
+    for from_line, to_line in possible_arcs:
+        if from_line not in executed_lines or to_line not in reportable_lines:
+            continue
+
+        if any(raw_to_line == to_line and raw_from_line not in reportable_lines for raw_from_line, raw_to_line in recorded_arcs):
+            covered_branch_arcs.add((from_line, to_line))
+
+    return covered_branch_arcs
+
+
+def covered_adjacent_static_branch_arcs(
+    recorded_arcs: tuple[tuple[int, int], ...],
+    possible_arcs: Collection[tuple[int, int]],
+    reportable_lines: Collection[int],
+) -> set[tuple[int, int]]:
+    """
+    Return branch arcs covered by jumps from adjacent rendered output.
+
+    Jinja sometimes records line events on the static output immediately before
+    an ``if`` tag instead of on the generated ``if`` statement itself. In that
+    shape, coverage sees an arc from the previous rendered line into the body
+    when the condition is true, or around the body when it is false.
+    """
+    covered_branch_arcs: set[tuple[int, int]] = set()
+    reportable_line_set = set(reportable_lines)
+    recorded_line_set = {line for recorded_arc in recorded_arcs for line in recorded_arc if line > 0}
+    possible_arcs_by_from_line: dict[int, set[int]] = {}
+    for from_line, to_line in possible_arcs:
+        if from_line > 0 and to_line > 0:
+            possible_arcs_by_from_line.setdefault(from_line, set()).add(to_line)
+
+    for from_line, to_lines in possible_arcs_by_from_line.items():
+        if len(to_lines) < 2:
+            continue
+
+        previous_line = _previous_reportable_line(reportable_line_set, from_line)
+        if previous_line is None or previous_line not in recorded_line_set:
+            continue
+
+        forward_targets = {to_line for to_line in to_lines if to_line > from_line}
+        if not forward_targets:
+            continue
+
+        body_target = min(forward_targets)
+        skipped_targets = to_lines - {body_target}
+        first_skipped_target = min(skipped_targets) if skipped_targets else SOURCE_EXIT
+        if body_target in recorded_line_set or any(
+            raw_from_line == from_line and body_target <= raw_to_line < first_skipped_target for raw_from_line, raw_to_line in recorded_arcs
+        ):
+            covered_branch_arcs.add((from_line, body_target))
+
+        predecessor_lines = {previous_line, from_line - 1}
+        if not any(
+            raw_from_line in predecessor_lines and (raw_to_line < from_line or raw_to_line >= first_skipped_target)
+            for raw_from_line, raw_to_line in recorded_arcs
+        ):
+            continue
+
+        for skipped_target in skipped_targets:
+            covered_branch_arcs.add((from_line, skipped_target))
+
+    return covered_branch_arcs
+
+
+def _previous_reportable_line(reportable_lines: Collection[int], line_number: int) -> int | None:
+    """Return the nearest reportable line before ``line_number``."""
+    return next((line for line in sorted(reportable_lines, reverse=True) if line < line_number), None)
 
 
 def find_reportable_jinja_lines(filename: Path) -> frozenset[int]:
@@ -190,19 +308,20 @@ def _find_structural_control_label_lines_cached(filename: Path, stamp: FileStamp
 
 
 def static_template_lines(source: str) -> tuple[tuple[int, str], ...]:
-    """Return non-empty static-data lines from a Jinja source template."""
+    """Return static-data lines from a Jinja source template."""
     try:
         from jinja2 import Environment  # noqa: PLC0415
     except ImportError:
         return ()
 
     environment = Environment(extensions=JINJA2_EXTENSIONS)  # noqa: S701
+    source_lines = source.splitlines()
     static_lines: list[tuple[int, str]] = []
     try:
         tokens = environment.lex(source)
         for lineno, kind, value in tokens:
             if kind == "data":
-                static_lines.extend(_numbered_non_whitespace_lines(lineno, value))
+                static_lines.extend(_numbered_static_lines(lineno, value, source_lines))
     except Exception:
         return ()
 
@@ -372,14 +491,14 @@ def block_statement_lines(source: str) -> tuple[tuple[int, str], ...]:
     return tuple(block_statements)
 
 
-def _numbered_non_whitespace_lines(start_lineno: int, value: str) -> list[tuple[int, str]]:
-    """Split a Jinja static-data token into stripped non-empty lines with source line numbers."""
+def _numbered_static_lines(start_lineno: int, value: str, source_lines: list[str]) -> list[tuple[int, str]]:
+    """Split a Jinja static-data token into stripped source lines with line numbers."""
     numbered_lines: list[tuple[int, str]] = []
     line_number = start_lineno
     for line in value.splitlines(keepends=True):
         line_without_newline = line.removesuffix("\n").removesuffix("\r")
         stripped_line = line_without_newline.strip()
-        if stripped_line:
+        if stripped_line or _source_line_is_blank(line_number, source_lines):
             numbered_lines.append((line_number, stripped_line))
 
         if line.endswith(("\n", "\r")):
@@ -388,9 +507,23 @@ def _numbered_non_whitespace_lines(start_lineno: int, value: str) -> list[tuple[
     return numbered_lines
 
 
-def non_whitespace_lines(value: str) -> list[str]:
-    """Return stripped non-empty lines from rendered static output."""
-    return [line.strip() for line in value.splitlines() if line.strip()]
+def _source_line_is_blank(line_number: int, source_lines: list[str]) -> bool:
+    """Return whether a source line is whitespace-only."""
+    return 0 < line_number <= len(source_lines) and not source_lines[line_number - 1].strip()
+
+
+def rendered_static_lines(value: str) -> list[str]:
+    """Return stripped rendered static lines, including intentional blank lines."""
+    rendered_lines: list[str] = []
+    for index, line in enumerate(value.splitlines(keepends=True)):
+        line_without_newline = line.removesuffix("\n").removesuffix("\r")
+        stripped_line = line_without_newline.strip()
+        if stripped_line:
+            rendered_lines.append(stripped_line)
+        elif index > 0:
+            rendered_lines.append("")
+
+    return rendered_lines
 
 
 def find_possible_jinja_arcs(source_filename: Path) -> frozenset[tuple[int, int]]:
@@ -507,6 +640,104 @@ def _add_for_arcs(
     _add_arc(arcs, node.lineno, body_line, arc_endpoint_lines)
     if node.else_:
         _add_arc(arcs, node.lineno, _first_reportable_line_in_nodes(reportable_lines, node.else_), arc_endpoint_lines)
+
+
+@lru_cache(maxsize=4096)
+def _find_jinja_arc_aliases_cached(
+    source_filename: Path,
+    stamp: FileStamp,  # noqa: ARG001
+    possible_arcs: frozenset[tuple[int, int]],
+    reportable_lines: frozenset[int],
+) -> dict[tuple[int, int], tuple[int, int]]:
+    """
+    Return observed runtime arcs that should be normalized to source arcs.
+
+    No-else ``if`` blocks use the source ``endif`` line as the canonical false
+    branch target. When such an ``if`` is the last executed statement in a loop
+    iteration, Jinja can record the false path as a jump back to the enclosing
+    ``for`` line instead.
+    """
+    try:
+        source = source_filename.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return {}
+
+    try:
+        from jinja2 import Environment, TemplateSyntaxError, nodes  # noqa: PLC0415
+    except ImportError:
+        return {}
+
+    environment = Environment(extensions=JINJA2_EXTENSIONS)  # noqa: S701
+    try:
+        parsed_template = environment.parse(source)
+    except TemplateSyntaxError:
+        return {}
+
+    possible_arc_set = set(possible_arcs)
+    reportable_line_set = set(reportable_lines)
+    endif_lines_by_conditional_line = if_endif_lines(source)
+    endif_lines = set(endif_lines_by_conditional_line.values())
+    aliases: dict[tuple[int, int], tuple[int, int]] = {}
+
+    def visit_statements(statements: list[Any], enclosing_for_lines: tuple[int, ...] = ()) -> None:
+        for statement in statements:
+            if isinstance(statement, nodes.For):
+                visit_statements(statement.body, (*enclosing_for_lines, statement.lineno))
+                visit_statements(statement.else_, enclosing_for_lines)
+                continue
+
+            if isinstance(statement, nodes.Macro):
+                visit_statements(statement.body)
+                continue
+
+            if isinstance(statement, nodes.If):
+                _add_no_else_if_loop_backedge_aliases(
+                    aliases,
+                    statement,
+                    enclosing_for_lines,
+                    endif_lines_by_conditional_line,
+                    endif_lines,
+                    possible_arc_set,
+                    reportable_line_set,
+                )
+                for conditional_node in (statement, *statement.elif_):
+                    visit_statements(conditional_node.body, enclosing_for_lines)
+
+                visit_statements(statement.else_, enclosing_for_lines)
+                continue
+
+            if isinstance(statement, (nodes.Block, nodes.CallBlock, nodes.FilterBlock, nodes.With)):
+                visit_statements(statement.body, enclosing_for_lines)
+
+    visit_statements(parsed_template.body)
+    return aliases
+
+
+def _add_no_else_if_loop_backedge_aliases(
+    aliases: dict[tuple[int, int], tuple[int, int]],
+    node: Any,
+    enclosing_for_lines: tuple[int, ...],
+    endif_lines_by_conditional_line: Mapping[int, int],
+    endif_lines: set[int],
+    possible_arcs: set[tuple[int, int]],
+    reportable_lines: set[int],
+) -> None:
+    """Add aliases from generated structural fall-throughs to canonical no-else ``if`` false arcs."""
+    if node.else_:
+        return
+
+    final_conditional_node = node.elif_[-1] if node.elif_ else node
+    endif_line = endif_lines_by_conditional_line.get(final_conditional_node.lineno)
+    if endif_line is None or endif_line in reportable_lines or (final_conditional_node.lineno, endif_line) not in possible_arcs:
+        return
+
+    canonical_arc = (final_conditional_node.lineno, endif_line)
+    for structural_line in endif_lines:
+        if structural_line != endif_line:
+            aliases[(final_conditional_node.lineno, structural_line)] = canonical_arc
+
+    for for_line in enclosing_for_lines:
+        aliases[(final_conditional_node.lineno, for_line)] = canonical_arc
 
 
 def _first_reportable_line_in_nodes(reportable_lines: Collection[int], nodes, after_line: int = 0) -> int | None:  # noqa: ANN001

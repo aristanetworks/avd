@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under l2vlan 'research1' does not exist in 'l2vlan_profiles'.

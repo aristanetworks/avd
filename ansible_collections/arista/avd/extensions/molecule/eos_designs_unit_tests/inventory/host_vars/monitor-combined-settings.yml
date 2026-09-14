@@ -26,11 +26,11 @@ monitor_connectivity:
   interval: 10
   interface_sets:
     - name: SET_LOOPBACK0
-      interfaces: [ Loopback0 ]
+      interfaces: [Loopback0]
     - name: SET_LOOPBACK1
-      interfaces: [ Loopback1 ]
+      interfaces: [Loopback1]
     - name: SET_LOOPBACK2
-      interfaces: [ Loopback2 ]
+      interfaces: [Loopback2]
   hosts:
     - name: INTERNET_CHECK
       # local address_only: true with local_interfaces

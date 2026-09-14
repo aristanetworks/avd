@@ -1,0 +1,6 @@
+---
+### System Boot Configuration
+### Testing backward-compatible behavior with partial boot.secret config (no key)
+boot:
+  secret:
+    hash_algorithm: md5

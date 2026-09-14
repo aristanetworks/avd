@@ -40,15 +40,13 @@ jobs:
       - ansible_test_integration
       - galaxy_importer
       - ansible_lint
+      - e2e
+      - e2e_coverage
       - test_pyavd
-      - codespell
-      - j2lint
-      - markdownlint
-      - check_schema_tables_in_docs
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - env:
@@ -60,14 +58,17 @@ jobs:
     outputs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
+      plugins: ${{ steps.filter.outputs.plugins }}
       pyavd: ${{ steps.filter.outputs.pyavd }}
       requirements: ${{ steps.filter.outputs.requirements }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
+      e2e: ${{ steps.filter.outputs.e2e }}
+      e2e_test_matrix: ${{ steps.e2e_test_matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
         id: filter
         with:
           filters: |
@@ -82,6 +83,9 @@ jobs:
               - 'python-avd/pyavd/_eos_designs/*'
               - 'python-avd/pyavd/_eos_designs/**/*'
             config_gen:
+              - 'ansible_collections/arista/avd/plugins/action/eos_cli_config_gen.py'
+              - 'ansible_collections/arista/avd/plugins/plugin_utils/utils/avd_action_plugin/*'
+              - 'ansible_collections/arista/avd/plugins/plugin_utils/utils/avd_action_plugin/**/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/pull-request-management.yml'
@@ -90,6 +94,7 @@ jobs:
               - 'python-avd/pyavd/_eos_cli_config_gen/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
             plugins:
+              - 'ansible_collections/arista/avd/plugins/action/**'
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
             requirements:
@@ -100,6 +105,7 @@ jobs:
               - '.sonarcloud.properties'
               - '.pre-commit-config.yaml'
             pyavd:
+              - 'development/coverage_plugins/**/*'
               - 'python-avd/**/*'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'
@@ -109,36 +115,30 @@ jobs:
               - 'python-avd/pyavd/api/_anta/*'
               - 'python-avd/pyavd/api/_anta/**/*'
               - 'python-avd/pyavd/get_device_anta_catalog.py'
+            e2e:
+              - '.github/workflows/pull-request-management.yml'
+              - 'Makefile'
+              - 'tools/e2e-test-avd.py'
+              - '**/e2e-test.toml'
+      - name: Find all e2e-test.toml file
+        id: e2e_test_matrix
+        run: |
+          # 1. Find all matching files
+          # 2. Convert raw lines into a JSON array of objects with 'path' and 'display_name'
+          JSON_ARRAY=$(find . -type f -name e2e-test.toml -print | sort | jq -R . | jq -s -c 'map({
+            path: .,
+            # Split path by "/", remove the filename, take the last 2 directories, and join with "/"
+            display_name: (split("/") | .[0:-1] | .[-2:] | join("/"))
+          })')
+
+          echo "matrix=$JSON_ARRAY" >> $GITHUB_OUTPUT
 
   # -------------------------------------- #
   # Build PyAVD wheel and upload artifact
   # -------------------------------------- #
   build_pyavd:
     name: Build pyavd
-    runs-on: ubuntu-latest
-    outputs:
-      wheel_file: ${{ steps.build_step.outputs.wheel_file }}
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: |
-            3.12
-      - name: Create pyavd wheel and output wheel path
-        id: build_step
-        working-directory: ./python-avd
-        run: |
-          pip install build
-          python -m build --wheel
-          WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
-          echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
-      - name: Upload pyavd artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: pyavd
-          path: ./python-avd/dist/*.whl
+    uses: $/.github/workflows/build-pyavd-wheel.yml
 
   # -------------------------------------------- #
   # Python type checking not covered in pre-commit
@@ -147,10 +147,10 @@ jobs:
     name: Python Linting not covered in pre-commit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
       - name: Install pyavd and Ansible requirements
@@ -178,11 +178,11 @@ jobs:
           - "3.13"
           - "3.14"
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ matrix.python_version }}
       - name: Download pyavd Artifact
@@ -192,19 +192,21 @@ jobs:
           path: /tmp/pyavd/
       - name: "Install Python requirements"
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install "$WHEEL_FILE" --group dev --upgrade
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
   # ----------------------------------- #
+  # TODO: Remove this once we have support in e2e for eos_cli_config_gen
   molecule_eos_cli_config_gen:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
     if: |
       needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.plugins == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
       github.event_name == 'merge_group'
     strategy:
@@ -224,7 +226,7 @@ jobs:
             ansible_version: "ansible-core==2.16.0"
             python_version: "3.11"
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Download pyavd Artifact
@@ -233,12 +235,12 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Set up Python ${{ matrix.python_version }}
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ matrix.python_version }}
       - name: Install pyavd and Ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
       - name: Run molecule test
@@ -259,6 +261,7 @@ jobs:
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.plugins == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
       github.event_name == 'merge_group'
     strategy:
@@ -266,31 +269,15 @@ jobs:
       matrix:
         avd_scenario:
           - "ansible_only"
-          - "digital_twin"
-          - "eos_designs_deprecated_vars"
-          - "eos_designs-l2ls"
-          - "eos_designs-mpls-isis-sr-ldp"
-          - "eos_designs-twodc-5stage-clos"
-          - "eos_designs_unit_tests"
-          - "evpn_underlay_ebgp_overlay_ebgp"
-          - "evpn_underlay_isis_overlay_ibgp"
-          - "evpn_underlay_ospf_overlay_ebgp"
-          - "evpn_underlay_rfc5549_overlay_ebgp"
-          - "example-campus-fabric"
-          - "example-dual-dc-l3ls"
-          - "example-isis-ldp-ipvpn"
-          - "example-l2ls-fabric"
-          - "example-single-dc-l3ls"
-          - "example-single-dc-l3ls-ipv6"
-          - "example-single-dc-multipod-l3ls"
           - "example-cv-pathfinder"
           - "howto"
-          - "eos_designs_negative_unit_tests"
         ansible_version:
           - "ansible-core>=2.16.0,<2.22.0"
         python_version:
           - "3.12"
         include:
+          # TODO: reevaluate here what we do as this was done to "guarantee" we don't break
+          # across ansible versions but maybe we don't need it to be these molecule scenario
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.17.0"
             python_version: "3.11"
@@ -310,6 +297,7 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.22.0"
             python_version: "3.14"
+          # TODO: This one in particular may be costly
           - avd_scenario: "eos_designs_negative_unit_tests"
             ansible_version: "ansible-core<2.22.0"
             python_version: "3.14"
@@ -323,7 +311,7 @@ jobs:
             python_version: "3.14"
 
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Download pyavd Artifact
@@ -332,12 +320,12 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Set up Python ${{ matrix.python_version }}
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ matrix.python_version }}
       - name: Install pyavd and Ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
       - name: Run molecule test
@@ -347,6 +335,7 @@ jobs:
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
+        if: "!contains(matrix.avd_scenario, 'eos_designs_negative_unit_test')"
         run: |
           sh .github/check-git-status.sh
 
@@ -355,10 +344,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
     if:
-      needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' ||
+      needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.plugins == 'true' || needs.file-changes.outputs.requirements == 'true' ||
       github.event_name == 'merge_group'
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Download pyavd Artifact
@@ -367,7 +356,7 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Use Python 3.10 for minimum requirements
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: |
             3.10
@@ -377,7 +366,7 @@ jobs:
         # Need to delete min_requirements afterwards otherwise git status is sad
         # pip upgrade to get dependency groups
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install uv
           uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct > /tmp/pyavd/min_requirements.txt
@@ -403,6 +392,7 @@ jobs:
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.anta_runner == 'true' ||
+      needs.file-changes.outputs.plugins == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
       github.event_name == 'merge_group'
     strategy:
@@ -419,7 +409,7 @@ jobs:
             ansible_version: "ansible-core==2.16.0"
             python_version: "3.11"
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Download pyavd Artifact
@@ -428,12 +418,12 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Set up Python ${{ matrix.python_version }}
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ matrix.python_version }}
       - name: Install pyavd and Ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
       - name: Run molecule test
@@ -474,11 +464,11 @@ jobs:
             python_version: |
               3.14
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: |
             ${{ matrix.python_version }}
@@ -489,7 +479,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install "${{ matrix.pip_installation }}" "$WHEEL_FILE[ansible-collection]"
       - name: Run ansible-test sanity
@@ -502,11 +492,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [file-changes, build_pyavd]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: |
             3.12
@@ -517,7 +507,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install "ansible-core<2.22.0" "$WHEEL_FILE[ansible-collection]"
       - name: Run ansible-test units
@@ -533,36 +523,49 @@ jobs:
           path: ansible_collections/arista/avd/units-coverage.xml
 
   ansible_test_integration:
-    name: Run ansible-test integration test cases
+    name: Run ansible-test integration test cases (${{ matrix.ansible_version }})
     runs-on: ubuntu-latest
     needs: [file-changes]
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - ansible_version: latest_stable
+            pip_installation: "ansible-core<2.22.0"
+            python_version: |
+              3.10
+              3.12
+              3.13
+              3.14
+            integration_args: ""
+          - ansible_version: ansible_core_2_18
+            pip_installation: "ansible-core>=2.18.0,<2.19.0"
+            python_version: "3.12"
+            # TODO: Remove this exclusion once AVDActionPlugin stores log warnings in result["warnings"] for ansible-core <2.19.
+            integration_args: "--exclude eos_designs_documentation"
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          # Testing 3.10 to ensure ansible-core < 2.19 still works.
-          python-version: |
-            3.10
-            3.12
-            3.13
-            3.14
+          python-version: ${{ matrix.python_version }}
       - name: Install Python requirements
         run: |
-          pip install "ansible-core<2.22.0" "./python-avd[ansible-collection]" --upgrade
+          pip install "${{ matrix.pip_installation }}" "./python-avd[ansible-collection]" --upgrade
       - name: Run ansible-test integration test cases
         working-directory: ansible_collections/arista/avd
         run: |
-          ansible-test integration --coverage --requirements -vv
+          ansible-test integration --coverage --requirements -vv ${{ matrix.integration_args }}
+          ansible-test coverage report --show-missing
           ansible-test coverage xml
-          mv tests/output/reports/coverage.xml ./integration-coverage.xml
+          mv tests/output/reports/coverage.xml "./integration-coverage-${{ matrix.ansible_version }}.xml"
       - name: Upload coverage from ansible-test integration
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: ansible-test-integration-coverage
-          path: ansible_collections/arista/avd/integration-coverage.xml
+          name: ansible-test-integration-coverage-${{ matrix.ansible_version }}
+          path: ansible_collections/arista/avd/integration-coverage-${{ matrix.ansible_version }}.xml
 
   # ----------------------------------- #
   # Build Collection
@@ -571,11 +574,11 @@ jobs:
     name: Build Ansible collection
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: |
             3.12
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Install Python & Ansible requirements
@@ -599,11 +602,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_collection]
     steps:
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: |
             3.11
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Install Python & Ansible requirements
@@ -637,11 +640,11 @@ jobs:
     env:
       ANSIBLE_COLLECTIONS_PATH: ${{ github.workspace }}
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: |
             3.10
@@ -656,7 +659,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install Python & Ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install "$WHEEL_FILE[ansible-collection]" --group dev --upgrade
       - name: Download collection
@@ -673,80 +676,129 @@ jobs:
           ansible-lint --force-color --strict -v
 
   # ----------------------------------- #
-  # Codespell
+  # End-to-end tests
   # ----------------------------------- #
-  codespell:
-    name: Check for common misspellings in text files
+  e2e:
+    name: Run end-to-end tests (Python ${{ matrix.python }})
     runs-on: ubuntu-latest
+    needs: [file-changes, build_collection]
+    env:
+      PROJECT_ROOT: ${{ github.workspace }}
+      UV_PYTHON: ${{ matrix.python }}
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.plugins == 'true' ||
+      needs.file-changes.outputs.pyavd == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      needs.file-changes.outputs.e2e == 'true' ||
+      github.event_name == 'merge_group'
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.12 is in coverage job.
+        python: ["3.11", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "3.12"
-      - name: Install codespell
-        run: pip install codespell==2.4.2
-      - name: Run codespell
-        run: codespell --config .codespellrc
-
-  # ----------------------------------- #
-  # j2lint
-  # ----------------------------------- #
-  j2lint:
-    name: Check for linting errors on Jinja2 files
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+          python-version: ${{ matrix.python }}
+      - name: Install uv
+        run: python -m pip install uv
+      - name: Download AVD collection
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: "3.12"
-      - name: Install j2lint
-        run: pip install j2lint==1.2.0
-      - name: Run j2lint
-        run: j2lint .
-
-  # ----------------------------------- #
-  # markdownlint
-  # ----------------------------------- #
-  markdownlint:
-    name: Check for linting errors on Markdown files
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-      - name: Install markdownlint-cli2
-        run: npm install markdownlint-cli2 --global
-      - name: Run markdownlint-cli2
-        # Exclusions are configured in .markdownlint-cli2.yaml
-        run: markdownlint-cli2 "**/*.md"
-      - name: Check GIT status
+          name: avd-collection
+          path: /tmp/avd-collection/
+      - name: Install Ansible collections
+        run: |
+          uv run --no-project --with-requirements tools/e2e-test-avd.py \
+            ansible-galaxy collection install /tmp/avd-collection/arista-avd-*.tar.gz ansible.utils
+      - name: Run end-to-end tests
+        run: make e2e
+      - name: Print new end-to-end errors
+        if: always()
+        shell: bash
+        run: |
+          while IFS= read -r error_file; do
+            printf '\n===== %s =====\n' "$error_file"
+            cat "$error_file"
+          done < <(git ls-files --others --exclude-standard -- ':(glob)**/errors/**')
+      - name: Check generated outputs
         run: sh .github/check-git-status.sh
 
-  # ----------------------------------- #
-  # Check schema tables in docs
-  # ----------------------------------- #
-  check_schema_tables_in_docs:
-    name: Check for schema tables in documentation
+  e2e_coverage:
+    name: E2E coverage ${{ matrix.e2e_test_project.display_name }} (Python 3.12)
     runs-on: ubuntu-latest
+    needs: [file-changes, build_collection]
+    env:
+      JOB_INDEX: ${{ strategy.job-index }}
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.plugins == 'true' ||
+      needs.file-changes.outputs.pyavd == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      needs.file-changes.outputs.e2e == 'true' ||
+      github.event_name == 'merge_group'
+    strategy:
+      fail-fast: false
+      matrix:
+        # The project is an object with display_name and path properties.
+        e2e_test_project: ${{ fromJson(needs.file-changes.outputs.e2e_test_matrix) }}
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - name: Set up Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
-      - name: Check for schema tables in documentation
-        run: python development/find_missing_tables.py @.find-missing-tables-args
+      - name: Install end-to-end coverage requirements
+        run: |
+          python -m pip install --group coverage \
+            -e "python-avd[ansible]" \
+            -e development/coverage_plugins \
+            "gitpython>=3.1.57"
+      - name: Download AVD collection
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: avd-collection
+          path: /tmp/avd-collection/
+      - name: Install Ansible collections for coverage
+        run: ansible-galaxy collection install /tmp/avd-collection/arista-avd-*.tar.gz ansible.utils
+      - name: Run end-to-end tests with coverage
+        run: |
+          coverage run tools/e2e-test-avd.py ${{ matrix.e2e_test_project.path }}
+          # Workers inherit each E2E project's working directory, so collect their parallel data files recursively.
+          mapfile -t coverage_files < <(find . -type f -name '.coverage.*' -print | sort)
+          coverage combine "${coverage_files[@]}"
+      - name: Print new end-to-end errors
+        if: always()
+        shell: bash
+        run: |
+          while IFS= read -r error_file; do
+            printf '\n===== %s =====\n' "$error_file"
+            cat "$error_file"
+          done < <(git ls-files --others --exclude-standard -- ':(glob)**/errors/**')
+      - name: Check generated outputs
+        run: sh .github/check-git-status.sh
+      - name: Prepare end-to-end coverage data
+        run: mv .coverage coverage-End-to-End-$JOB_INDEX.dat
+      - name: Upload end-to-end coverage data
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-data-End-to-End-${{ strategy.job-index }}
+          path: coverage-End-to-End-${{ strategy.job-index }}.dat
 
   # ----------------------------------- #
   # Test of pyavd
   # ----------------------------------- #
   test_pyavd:
-    name: Test pyavd (Python ${{ matrix.python }}, Suite ${{ matrix.suite.name }})
+    name: Test pyavd (Python ${{ matrix.python }})
     runs-on: ubuntu-latest
     needs: [file-changes]
     if: |
@@ -758,29 +810,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
-        suite:
-          - name: "Main-Tests"
-            id: Main-Tests
-            pytest_args: >-
-              --ignore=python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py
-              --ignore=python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
-              --ignore=python-avd/tests/schema_tools/metaschema/test_meta_schema_model.py
-          - name: "Excluded-Tests (test_get_device_config and test_meta_schema_model)"
-            id: Excluded-test_get_device_config-and-test_meta_schema_model
-            pytest_args: >-
-              python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py
-              python-avd/tests/schema_tools/metaschema/test_meta_schema_model.py
-          - name: "Excluded-Tests (test_negative_eos_designs)"
-            id: Excluded-test_negative_eos_designs
-            pytest_args: >-
-              python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
+        python: ["3.11", "3.12", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ matrix.python }}
       - name: Install tox
@@ -788,32 +824,40 @@ jobs:
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox for ${{ matrix.python }}
         run: |
-          tox run -- ${{ matrix.suite.pytest_args }}
+          tox run
       - name: Rename the coverage file
-        if: matrix.python == '3.11'
+        if: matrix.python == '3.12'
         run: |
-          mv .coverage coverage-${{ matrix.suite.id }}.dat
+          mv .coverage coverage-PyAVD.dat
       - name: Upload pytest coverage data
-        if: matrix.python == '3.11'
+        if: matrix.python == '3.12'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: coverage-data-${{ matrix.suite.id }}
-          path: coverage-${{ matrix.suite.id }}.dat
+          name: coverage-data-PyAVD
+          path: coverage-PyAVD.dat
 
   generate_pyavd_coverage_report:
-    name: Test pyavd python 3.11 coverage report
+    name: Test pyavd python 3.12 coverage report
     runs-on: ubuntu-latest
-    needs: [test_pyavd]
+    needs: [e2e_coverage, test_pyavd]
+    # Run with coverage from either producer when the other is skipped by path filtering, but not if either producer fails or both are skipped.
+    if: |
+      always() &&
+      (needs.e2e_coverage.result == 'success' || needs.e2e_coverage.result == 'skipped') &&
+      (needs.test_pyavd.result == 'success' || needs.test_pyavd.result == 'skipped') &&
+      (needs.e2e_coverage.result == 'success' || needs.test_pyavd.result == 'success')
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up Python 3.11
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - name: Set up Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - name: Install coverage
         run: pip install --group coverage -e development/coverage_plugins
+      - name: Install PyAVD for coverage source discovery
+        run: pip install --no-deps -e python-avd
       - name: Download coverage artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
@@ -841,4 +885,4 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/codecov.yml
+    uses: $/.github/workflows/codecov.yml

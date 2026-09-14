@@ -17,12 +17,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iburst</samp>](## "ntp.servers.[].iburst") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "ntp.servers.[].key") | Integer |  |  | Min: 1<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "ntp.servers.[].local_interface") | String |  |  |  | Source interface.<br>Mutually exclusive with 'source_address'. Takes precedence if both are set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "ntp.servers.[].source_address") | String |  |  |  | Source IPv4 address.<br>Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "ntp.servers.[].source_address") | String |  |  |  | Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.<br>Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxpoll</samp>](## "ntp.servers.[].maxpoll") | Integer |  |  | Min: 3<br>Max: 17 | Value of maxpoll between 3 - 17 (Logarithmic). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minpoll</samp>](## "ntp.servers.[].minpoll") | Integer |  |  | Min: 3<br>Max: 17 | Value of minpoll between 3 - 17 (Logarithmic). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred</samp>](## "ntp.servers.[].preferred") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "ntp.servers.[].version") | Integer |  |  | Min: 1<br>Max: 4 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ntp.servers.[].vrf") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD. Use <samp>ntp.vrf</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ntp.servers.[].vrf") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ntp.vrf</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;vrf</samp>](## "ntp.vrf") | String |  |  |  | VRF name for all NTP servers.<br>All NTP servers must be in the same VRF on EOS. |
     | [<samp>&nbsp;&nbsp;authenticate</samp>](## "ntp.authenticate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;authenticate_servers_only</samp>](## "ntp.authenticate_servers_only") | Boolean |  |  |  |  |
@@ -65,7 +65,7 @@
           # Mutually exclusive with 'source_address'. Takes precedence if both are set.
           local_interface: <str>
 
-          # Source IPv4 address.
+          # Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
           # Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
           source_address: <str>
 

@@ -69,4 +69,8 @@ class VrfsMixin(Protocol):
 
         Expects a VRF definition coming from filtered_tenants, where all keys have been set and filtered
         """
-        return any(svi.ipv6_address or svi.ipv6_address_virtuals for svi in vrf.svis)
+        return (
+            any(svi.ipv6_address or svi.ipv6_address_virtuals for svi in vrf.svis)
+            or any(l3_interface.ipv6_addresses for l3_interface in vrf.l3_interfaces)
+            or any(l3_port_channel.ipv6_addresses for l3_port_channel in vrf.l3_port_channels)
+        )

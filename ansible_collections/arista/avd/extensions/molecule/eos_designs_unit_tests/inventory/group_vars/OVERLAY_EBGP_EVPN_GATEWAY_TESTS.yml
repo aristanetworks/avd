@@ -101,7 +101,7 @@ l3leaf:
       mgmt_ip: 192.168.0.209/24
       evpn_route_servers: [evpn-gateway-l2-evpn-role-server]
       filter:
-        tenants: [ EVPN_GATEWAY_TESTS, RD_RT_REWRITE_PARTIAL_TESTS ]
+        tenants: [EVPN_GATEWAY_TESTS, RD_RT_REWRITE_PARTIAL_TESTS]
       evpn_gateway:
         remote_peers:
           - hostname: DCI_TEST

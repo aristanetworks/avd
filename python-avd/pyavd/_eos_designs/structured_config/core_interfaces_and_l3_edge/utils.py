@@ -12,8 +12,10 @@ from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import UndefinedType, default, get_ip_from_pool
+from pyavd._utils.default import default
+from pyavd._utils.get_ip_from_pool import get_ip_from_pool
 from pyavd._utils.password_utils.password import isis_encrypt, ospf_message_digest_encrypt
+from pyavd._utils.undefined import UndefinedType
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol

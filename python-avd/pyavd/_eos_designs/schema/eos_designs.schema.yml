@@ -299,14 +299,27 @@ keys:
     keys:
       local_interface:
         type: str
-        default: use_default_mgmt_method_interface
         description: "The value will be interpreted according to these rules:\n  -
           `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.\n
           \ - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface`
           as the local interface.\n  - `use_default_mgmt_method_interface` will configure
           `mgmt_interface` or `inband_mgmt_interface` as the local interface depending
           on the value of `default_mgmt_method`.\n  - Any other string will be used
-          directly as the local interface."
+          directly as the local interface.\nWhen `avd_design_future.fix_address_locking_dhcp_server_interfaces`
+          is `true`, this setting is mutually exclusive with `dhcp_server_interfaces`."
+      dhcp_server_interfaces:
+        type: list
+        description: 'The list of interfaces connected to the DHCP server.
+
+          Requires `avd_design_future.fix_address_locking_dhcp_server_interfaces:
+          true`. Otherwise this setting is ignored.
+
+          When enabled, this setting is mutually exclusive with `local_interface`.
+
+          Requires EOS version 4.36 or later.'
+        items:
+          type: str
+          description: Interface name.
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -354,6 +367,13 @@ keys:
 
           Configure management interface to accept DHCP default route when the management
           IP is set to ''dhcp''.'
+      accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Configure management interface to accept Router Advertisement default route
+          when the IPv6 management IP is set to ''auto-config''.'
       accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
         type: bool
         default: false
@@ -377,6 +397,24 @@ keys:
           and on all ''uplink_switches'' even when available VLANs differ between
           the ''uplink_switches''.'
         default: false
+      fix_address_locking_dhcp_server_interfaces:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Fix support for `address_locking_settings.dhcp_server_interfaces`.
+
+          When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface`
+          are mutually exclusive.'
+      fix_match_ipv6_prefix_list_on_mlag_route_map:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
+          ipv6 address prefix-list`
+
+          instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`.'
       fix_radius_server_group_tls:
         type: bool
         default: false
@@ -643,6 +681,15 @@ keys:
       Only supported in combination with MPLS overlay.
 
       '
+  bgp_peer_filters_catalog:
+    type: list
+    description: 'BGP peer filter catalog.
+
+      Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in the
+      configuration when
+
+      they are explicitly referenced in listen ranges.'
+    $ref: eos_cli_config_gen#/keys/peer_filters
   bgp_peer_groups:
     documentation_options:
       table: bgp-settings
@@ -1836,6 +1883,9 @@ keys:
           flowdns:
             type: bool
             $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/flowdns
+          custom_cv_options:
+            type: list
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/custom_cv_options
       set_source_interfaces:
         type: bool
         description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
@@ -2648,6 +2698,11 @@ keys:
             type: bool
             required: true
             description: Enable the Web Authentication feature.
+          ipv4_acl:
+            type: str
+            description: 'Extended IPv4 ACL name.
+
+              This ACL must be present in `ipv4_acls` catalog.'
           url:
             type: str
             pattern: https?://[^\s/:]+(:\d+)?
@@ -2789,6 +2844,17 @@ keys:
 
       Depending on your inventory size and the available resources, you may want to
       adjust this number.'
+  eos_designs_validate_inputs_template_with_multiprocessing:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: 'Use Multiprocessing for variable templating.
+
+      Disable this when templating of input variables invokes code that uses locks
+      or background threads.
+
+      Forked worker processes may inherit locked state, potentially causing deadlocks.'
   errdisable_settings:
     type: dict
     documentation_options:
@@ -3634,6 +3700,22 @@ keys:
 
               This will only be configured on VXLAN VTEPs which are also MLAG devices.'
             default: false
+      suspended_vlans:
+        type: list
+        description: 'Suspended VLANs are rendered only as local suspended VLAN definitions.
+
+          They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk
+          allowed VLANs, and must not overlap with VLANs defined by network services.'
+        primary_key: id
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              min: 1
+              max: 4094
+            name:
+              type: str
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
@@ -3779,15 +3861,48 @@ keys:
     primary_key: name
     description: 'IPv4 extended access-lists supporting substitution on certain fields.
 
-      These access-lists can be referenced under node settings `l3_interfaces`, and
-      will only be configured on devices where they are in use.
+      These access-lists can be referenced using `ipv4_acl_in` / `ipv4_acl_out` under
+      network services `svis`, `l3_interfaces`, `l3_port_channels`, or under node
+      type `l3_interfaces` and `l3_port_channels`,
+
+      or using `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+      network ports, and port profiles.
+
+      They will only be configured on devices where they are in use.
 
 
-      The substitution is useful when assigning the same access-list on multiple interfaces,
+      The substitution is useful when assigning the same access-list on multiple interfaces
+      where certain fields require unique values.
 
-      but where certain fields require unique values like the "interface_ip" or "peer_ip".
+      When using substitution, the interface name will be appended to the ACL name.
 
-      When using substitution, the interface name will be appended to the ACL name.'
+
+      The "interface_ip" substitution field is resolved per interface type:
+
+      - For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is
+      used as a fallback.
+
+      - For network services L3 interfaces: resolved from the node''s entry in `ip_addresses`.
+
+      - For network services L3 port-channels: resolved from `ip_address`.
+
+      - For node type L3 interfaces and L3 port-channels: resolved from `ip_address`.
+      If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
+
+      If the required field is not set, the substitution will fail with an error.
+
+
+      The "peer_ip" substitution field is resolved per interface type:
+
+      - For SVIs: not supported. Substitution will fail with an error if used.
+
+      - For network services L3 interfaces and L3 port-channels: not supported. Substitution
+      will fail with an error if used.
+
+      - For node type L3 interfaces and L3 port-channels: resolved from `peer_ip`.
+
+      If `peer_ip` is not set on the interface, the substitution will fail with an
+      error.'
     items:
       $ref: eos_cli_config_gen#/keys/ip_access_lists/items
       type: dict
@@ -3807,7 +3922,9 @@ keys:
               source:
                 type: str
                 description: 'This field supports substitution of the fields "interface_ip"
-                  for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+                  and "peer_ip". "peer_ip" is only supported for node type L3 interfaces
+                  and L3 port-channels; it is not supported for SVIs or network services
+                  L3 interfaces and L3 port-channels.
 
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>"
                   or "<ip>".
@@ -3818,7 +3935,9 @@ keys:
               destination:
                 type: str
                 description: 'This field supports substitution of the fields "interface_ip"
-                  for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+                  and "peer_ip". "peer_ip" is only supported for node type L3 interfaces
+                  and L3 port-channels, it is not supported for SVIs or network services
+                  L3 interfaces and L3 port-channels.
 
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>"
                   or "<ip>".
@@ -3868,13 +3987,99 @@ keys:
                 description: 'Action as string.
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  ipv4_standard_acls:
+    type: list
+    primary_key: name
+    description: 'IPv4 standard access-lists catalog.
+
+      These access-lists will only be configured on devices where they are in use.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Access-list Name.
+          convert_types:
+          - int
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                description: 'Action as string.
+
+                  '
+                valid_values:
+                - permit
+                - deny
+              remark:
+                type: str
+                description: Specify a comment. If remark is specified other keys
+                  of the entry are ignored.
+              source:
+                type: str
+                description: 'Required for non-remark entries.
+
+                  The value can be:
+
+                  1. A single source address.
+
+                  2. Source address with mask. e.g. ''10.0.0.1/8''.
+
+                  3. ''any'' source address.'
+              vlan:
+                type: int
+                description: Match packets by VLAN value.
+                convert_types:
+                - str
+              vlan_mask:
+                type: str
+                description: 'VLAN mask. Range "0x000"-"0xFFF". Required when `vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              inner_vlan:
+                type: int
+                description: Match packets by inner VLAN value.
+                convert_types:
+                - str
+              inner_vlan_mask:
+                type: str
+                description: 'Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              log:
+                type: bool
+                description: Enable logging when a packet matches the ACL rule.
+              mirror_session:
+                type: str
+                description: Mirror session to mirror matches against this rule.
   ipv6_acls:
     type: list
     primary_key: name
     description: 'IPv6 extended access-lists supporting substitution on certain fields.
 
-      These access-lists can be referenced under network services `svis` using `ipv6_acl_in`
-      / `ipv6_acl_out`, and will only be configured on devices where they are in use.
+      These access-lists can be referenced using `ipv6_acl_in` / `ipv6_acl_out` under
+      network services `svis`, or under node type `l3_interfaces` and `l3_port_channels`,
+
+      or using `dot1x.authentication_failure.allow_access_list` under connected endpoints,
+      network ports, and port profiles.
+
+      They will only be configured on devices where they are in use.
 
 
       The substitution is useful when assigning the same access-list on multiple interfaces
@@ -3883,13 +4088,31 @@ keys:
       When using substitution, the interface name will be appended to the ACL name.
 
 
-      The "interface_ip" substitution field is resolved from `ipv6_address` set on
-      the SVI.
+      The "interface_ipv6" substitution field is resolved per interface type:
 
-      If `ipv6_address` is not set, the first entry of `ipv6_address_virtuals` is
-      used as a fallback.
+      - For SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals`
+      is used as a fallback.
 
-      If neither is set, the substitution will fail with an error.'
+      - For L3 interfaces and L3 port-channels: resolved from the first entry of `ipv6_addresses`.
+
+      If the required field is not set, the substitution will fail with an error.
+
+
+      The "peer_ipv6" substitution field is resolved per interface type:
+
+      - For SVIs: not supported. Substitution will fail with an error if used.
+
+      - For network services L3 interfaces and L3 port-channels: not supported. Substitution
+      will fail with an error if used.
+
+      - For node type L3 interfaces and L3 port-channels: resolved from `peer_ipv6`.
+
+      If `peer_ipv6` is not set on the interface, the substitution will fail with
+      an error.
+
+
+      Note: The "interface_ip" token is deprecated and will be removed in AVD 7.0.0.
+      Use "interface_ipv6" instead.'
     items:
       $ref: eos_cli_config_gen#/keys/ipv6_access_lists/items
       type: dict
@@ -3908,8 +4131,11 @@ keys:
             keys:
               source:
                 type: str
-                description: 'This field supports substitution of the field "interface_ip"
-                  for SVIs.
+                description: 'This field supports substitution of the fields "interface_ipv6"
+                  and "peer_ipv6".
+
+                  Token "interface_ip" is also accepted but deprecated and will be
+                  removed in AVD 7.0.0.
 
                   Alternatively it can be set with a static value of "any", "<ipv6>/<mask>"
                   or "<ipv6>".
@@ -3919,8 +4145,11 @@ keys:
                   Required except for remarks.'
               destination:
                 type: str
-                description: 'This field supports substitution of the field "interface_ip"
-                  for SVIs.
+                description: 'This field supports substitution of the fields "interface_ipv6"
+                  and "peer_ipv6".
+
+                  Token "interface_ip" is also accepted but deprecated and will be
+                  removed in AVD 7.0.0.
 
                   Alternatively it can be set with a static value of "any", "<ipv6>/<mask>"
                   or "<ipv6>".
@@ -3936,6 +4165,13 @@ keys:
 
       Replaces the default route.
 
+      Ignored when ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+      true'' and
+
+      ''ipv6_mgmt_ip'' under node config is set to ''auto-config'', since router
+
+      advertisements are expected to provide the gateway and default route.
+
       '
     type: list
     items:
@@ -3950,7 +4186,48 @@ keys:
 
       Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks''.
 
+      Ignored when ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+      true'' and
+
+      ''ipv6_mgmt_ip'' under node config is set to ''auto-config'', since router
+
+      advertisements are expected to provide the gateway and default route.
+
       '
+  ipv6_prefix_list_catalog:
+    type: list
+    primary_key: name
+    description: 'IPv6 prefix-list catalog.
+
+      Entries are only rendered when explicitly referenced by `ipv6_prefix_list_in`
+      or
+
+      `ipv6_prefix_list_out` under BGP on an L3 interface or L3 Port-Channel.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Prefix-list Name.
+        sequence_numbers:
+          type: list
+          primary_key: sequence
+          required: true
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                required: true
+                description: 'Action as string.
+
+                  Example: "permit 2001:db8::/32 le 128"'
   is_deployed:
     documentation_options:
       table: is-deployed
@@ -4119,7 +4396,6 @@ keys:
         default: false
       hosts:
         type: list
-        required: true
         min_length: 1
         items:
           type: dict
@@ -5057,6 +5333,38 @@ keys:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+              listen_ranges:
+                type: list
+                description: Note - bgp_peer_groups[].nodes[] must have a node matching
+                  with the hostname to configure the bgp listen ranges.
+                items:
+                  type: dict
+                  keys:
+                    prefix:
+                      type: str
+                      required: true
+                      description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                    remote_as:
+                      type: str
+                      description: 'BGP AS <1-4294967295> or AS number in asdot notation
+                        "<1-65535>.<0-65535>".
+
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.
+
+                        note: `peer_filter` or `remote_as` is required.'
+                      convert_types:
+                      - int
+                    peer_id_include_router_id:
+                      type: bool
+                      description: Include router ID as part of peer filter.
+                    peer_filter:
+                      type: str
+                      description: 'Peer-filter name.
+
+                        note: `peer_filter` or `remote_as` is required.
+
+                        '
         igmp_snooping:
           documentation_options:
             table: network-services-multicast-settings
@@ -6051,6 +6359,18 @@ keys:
                       items:
                         type: str
                         description: IPv4_address/Mask.
+                    ipv6_addresses:
+                      type: list
+                      description: 'IPv6 addresses with prefix length, e.g., ''2001:db8::1/64''.
+
+                        Can be used instead of or together with `ip_addresses`.
+
+                        For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses`
+                        must be set.'
+                      items:
+                        type: str
+                        min_length: 1
+                        description: IPv6 address/Mask.
                     static_routes:
                       type: list
                       $ref: eos_designs#/$defs/static_routes
@@ -6090,6 +6410,36 @@ keys:
                       convert_types:
                       - int
                     ipv4_acl_out:
+                      type: str
+                      convert_types:
+                      - int
+                    ipv6_acl_in:
+                      description: 'Name of the IPv6 access-list to be assigned in
+                        the ingress direction.
+
+                        The access-list must be defined under `ipv6_acls` and supports
+                        substitution of the field "interface_ipv6",
+
+                        resolved from the IPv6 address set on the interface for this
+                        node.
+
+                        Deprecated token "interface_ip" is also accepted as an alias
+                        for "interface_ipv6" and will be removed in AVD 7.0.0.'
+                      type: str
+                      convert_types:
+                      - int
+                    ipv6_acl_out:
+                      description: 'Name of the IPv6 access-list to be assigned in
+                        the egress direction.
+
+                        The access-list must be defined under `ipv6_acls` and supports
+                        substitution of the field "interface_ipv6",
+
+                        resolved from the IPv6 address set on the interface for this
+                        node.
+
+                        Deprecated token "interface_ip" is also accepted as an alias
+                        for "interface_ipv6" and will be removed in AVD 7.0.0.'
                       type: str
                       convert_types:
                       - int
@@ -6318,6 +6668,18 @@ keys:
                       items:
                         type: str
                         description: IPv4 address/Mask.
+                    ipv6_addresses:
+                      type: list
+                      description: 'IPv6 addresses with prefix length, e.g., ''2001:db8::1/64''.
+
+                        Can be used instead of or together with `ip_address`.
+
+                        For subinterfaces, at least one of `ip_address` or `ipv6_addresses`
+                        must be set.'
+                      items:
+                        type: str
+                        min_length: 1
+                        description: IPv6 address/Mask.
                     encapsulation_dot1q_vlan:
                       description: For subinterfaces the dot1q vlan is derived from
                         the interface name by default, but can also be specified.
@@ -6352,6 +6714,34 @@ keys:
                     ipv4_acl_out:
                       description: Name of the IPv4 Access-list to be assigned in
                         the egress direction.
+                      type: str
+                      convert_types:
+                      - int
+                    ipv6_acl_in:
+                      description: 'Name of the IPv6 access-list to be assigned in
+                        the ingress direction.
+
+                        The access-list must be defined under `ipv6_acls` and supports
+                        substitution of the field "interface_ipv6",
+
+                        resolved from the first IPv6 address set on the interface.
+
+                        Token "interface_ip" is also accepted but deprecated and will
+                        be removed in AVD 7.0.0.'
+                      type: str
+                      convert_types:
+                      - int
+                    ipv6_acl_out:
+                      description: 'Name of the IPv6 access-list to be assigned in
+                        the egress direction.
+
+                        The access-list must be defined under `ipv6_acls` and supports
+                        substitution of the field "interface_ipv6",
+
+                        resolved from the first IPv6 address set on the interface.
+
+                        Token "interface_ip" is also accepted but deprecated and will
+                        be removed in AVD 7.0.0.'
                       type: str
                       convert_types:
                       - int
@@ -6786,6 +7176,9 @@ keys:
                     bfd_timers:
                       type: dict
                       $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/neighbors/items/keys/bfd_timers
+                    route_reflector_client:
+                      type: bool
+                      description: Configure the peer as a route-reflector-client.
                     shutdown:
                       type: bool
               bgp:
@@ -6822,6 +7215,30 @@ keys:
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic
                       Loopback interface.'
                     default: main_router_id
+                  graceful_restart:
+                    type: dict
+                    description: 'BGP graceful-restart configuration for this VRF.
+
+                      This setting is not supported for VRF default. Use `bgp_graceful_restart`
+                      instead.
+
+                      '
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                        description: 'Enable or disable BGP graceful-restart for this
+                          VRF.
+
+                          '
+                      restart_time:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 3600
+                        default: 300
+                        description: Restart time in seconds.
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF
@@ -6944,6 +7361,17 @@ keys:
                         prefix_list_out:
                           type: str
                           description: Outbound prefix-list name.
+                    listen_ranges:
+                      type: list
+                      $ref: eos_designs#/keys/network_services/items/keys/bgp_peer_groups/items/keys/listen_ranges
+                      description: 'Note - vrfs[].bgp_peer_groups[].nodes[] must have
+                        a node matching with the hostname to configure the bgp listen
+                        ranges.
+
+                        When set for VRF default, this is configured under root `router
+                        bgp <as>`. For other VRFs this is configured under
+
+                        respective VRF.'
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings
@@ -7386,9 +7814,20 @@ keys:
           server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.\n-
           Any other string will be used directly as the VRF name but local interface
           must be set with `custom_structured_configuration_ntp` if needed."
+      set_first_ntp_server_as_preferred:
+        type: bool
+        description: 'If ''true'', AVD marks the first entry under ''ntp_settings.servers''
+          as ''preferred''.
+
+          Set to ''false'' to avoid automatically setting any server as ''preferred''.'
+        default: true
       servers:
         type: list
-        description: The first server is always set as "preferred".
+        primary_key: name
+        description: 'By default, AVD marks the first server as `preferred`.
+
+          Set ''ntp_settings.set_first_ntp_server_as_preferred: false'' to disable
+          this behavior.'
         items:
           type: dict
           keys:
@@ -7411,6 +7850,25 @@ keys:
             version:
               type: int
               $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/version
+            source_address:
+              type: str
+              description: '- `use_mgmt_interface_ipv4` configures the source address
+                as the IPv4 address of the management interface.
+
+                - `use_mgmt_interface_ipv6` configures the source address as the IPv6
+                address of the management interface.
+
+                - `use_inband_mgmt_interface_ipv4` configures the source address as
+                the IPv4 address of the inband management interface.
+
+                - `use_inband_mgmt_interface_ipv6` configures the source address as
+                the IPv6 address of the inband management interface.
+
+                - Any other string is used directly as the source address (for example,
+                an IPv4 or IPv6 address).
+
+                `use_*` values fail validation when the management address is missing/dhcp,
+                ntp_settings.server_vrf is not the expected management VRF.'
       authenticate:
         type: bool
       authenticate_servers_only:
@@ -9630,6 +10088,12 @@ keys:
           type: str
           valid_values:
           - ipv4
+        management:
+          type: dict
+          keys:
+            drop:
+              type: bool
+              description: Drop PTP management messages.
     default:
     - profile: aes67-r16-2016
       announce:
@@ -10071,7 +10535,41 @@ keys:
                 new_key: 'vrf: "use_inband_mgmt_vrf"'
       communities:
         type: list
-        $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Community name.
+            access:
+              type: str
+              valid_values:
+              - ro
+              - rw
+            access_list_ipv4:
+              type: dict
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: ipv4_standard_acl
+              keys:
+                name:
+                  type: str
+                  description: IPv4 access list name.
+            ipv4_standard_acl:
+              type: str
+              description: IPv4 standard access list name. The access-list must be
+                defined under `ipv4_standard_acls`.
+            access_list_ipv6:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv6 access list name.
+            view:
+              type: str
       views:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
@@ -10087,14 +10585,14 @@ keys:
           warning: true
           removed: true
           remove_in_version: 6.0.0
-          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
+          new_key: vrfs[name="use_mgmt_interface_vrf"].enable
       enable_inband_mgmt_vrf:
         type: bool
         deprecation:
           warning: true
           removed: true
           remove_in_version: 6.0.0
-          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
+          new_key: vrfs[name="use_inband_mgmt_vrf"].enable
       ipv4_acls:
         type: list
         deprecation:
@@ -10236,6 +10734,10 @@ keys:
       loop_guard_default:
         type: bool
         description: Enable loopguard by default on all ports.
+        default: false
+      edge_port_bpduguard_default:
+        type: bool
+        description: Enable BPDU Guard on portfast interfaces.
         default: false
   ssh_settings:
     type: dict
@@ -10909,6 +11411,9 @@ keys:
         interfaces:
           type: dict
           $ref: eos_cli_config_gen#/keys/metadata/keys/interfaces
+        bgp:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/metadata/keys/bgp
   vtep_loopback_description:
     documentation_options:
       table: overlay-settings
@@ -11748,6 +12253,23 @@ $defs:
       dot1x:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
+        keys:
+          authentication_failure:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/authentication_failure
+            keys:
+              allow_access_list:
+                type: str
+                convert_types:
+                - int
+                description: 'Name of the IPv4 and/or IPv6 extended access list to
+                  apply to unauthenticated traffic.
+
+                  The access list must be defined under the `ipv4_acls` and/or `ipv6_acls`
+                  catalog.
+
+                  On EOS, the access list is only applied when `dot1x.mac_based_access_list`
+                  is enabled on the interface.'
       address_locking:
         type: dict
         description: Address locking settings applied on the port.
@@ -11756,12 +12278,14 @@ $defs:
             type: bool
             description: 'Enable address locking for IPv4.
 
-              Key `ipv4` can only be set to false.
+              For Port-Channels, only `ipv4: false` is supported.
 
               For EOS version 4.31 and higher.'
           ipv6:
             type: bool
             description: 'Enable address locking for IPv6.
+
+              For Port-Channels, only `ipv6: false` is supported.
 
               For EOS version 4.31 and higher.'
       poe:
@@ -12590,15 +13114,31 @@ $defs:
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
-            description: Node management interface IPv6 address.
+            description: 'Node management interface IPv6 address with prefix length
+              or ''auto-config''.
+
+              Set ''auto-config'' to use SLAAC to automatically configure the IPv6
+              address.
+
+              When set to ''auto-config'' and ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+              true'', the ''ipv6_mgmt_gateway'' and ''ipv6_mgmt_destination_networks''
+              settings are ignored since the router advertisements are expected to
+              provide the gateway and the default route.
+
+              In this case, AVD also configures the management interface to accept
+              the default route and honor route preferences from Router Advertisements.'
             type: str
-            format: cidr
           ipv6_mgmt_gateway:
             documentation_options:
               table: node-type-common-configuration
             type: str
-            description: This key sets the ipv6 management gateway for the device.
+            description: 'This key sets the ipv6 management gateway for the device.
               It takes precedence over the global `ipv6_mgmt_gateway`.
+
+              This setting is ignored when ''ipv6_mgmt_ip'' is set to ''auto-config''
+              and ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+              true'', since the router advertisements are expected to provide the
+              gateway and the default route.'
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
@@ -13278,7 +13818,9 @@ $defs:
           evpn_route_servers:
             documentation_options:
               table: node-type-bgp-configuration
-            description: List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+            description: 'List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+
+              '
             type: list
             items:
               type: str
@@ -13401,6 +13943,22 @@ $defs:
 
                   If the peer''s hostname can not be found in the inventory, ip_address
                   and bgp_as must be defined.
+
+                  If a remote peer is also an EVPN Route Server or Route Server client
+                  and uses the same IP address, only the EVPN Gateway core peering
+                  is configured on the local node.
+
+                  Suppression is evaluated independently on each node based on its
+                  local EVPN Route Server and client relationships and `evpn_gateway.remote_peers`
+                  configuration.
+
+                  When one node uses an EVPN Gateway core peering and the other uses
+                  a regular EVPN peering, AVD does not synchronize BGP passwords.
+                  The user must ensure that both sides use the same password.
+
+                  If an explicit `ip_address` differs from the regular EVPN peering
+                  address, the EVPN Gateway core peering is configured in addition
+                  to the regular EVPN peering.
 
                   '
                 type: list
@@ -13545,8 +14103,8 @@ $defs:
           ipvpn_gateway:
             documentation_options:
               table: node-type-evpn-ipvpn-gateway-configuration
-            description: 'Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN
-              Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+            description: 'Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN
+              interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
 
               L3 Reachability is required for this to work, the preferred method to
               establish underlay connectivity is to use core_interfaces.
@@ -14647,8 +15205,8 @@ $defs:
             description: 'PREVIEW: This option is marked as "preview", meaning the
               data models or generated configuration can change at any time.
 
-              Set the OS version and management IP address for the digital twin of
-              the associated node(s).'
+              Set the OS version, management IP address, and management gateway for
+              the digital twin of the associated node(s).'
             type: dict
             keys:
               act_os_version:
@@ -14658,8 +15216,21 @@ $defs:
                   Overrides global `digital_twin.fabric.act_os_version` flag.'
               mgmt_ip:
                 type: str
-                description: Desired management interface IPv4 address.
+                description: 'Desired management interface IPv4 address for the Digital
+                  Twin.
+
+                  In ACT Digital Twin mode, this address is used in the ACT topology.
+
+                  If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip` address
+                  is also used for the generated OOB management interface.'
                 format: cidr
+              mgmt_gateway:
+                type: str
+                description: 'Desired OOB management gateway for the Digital Twin.
+
+                  In ACT Digital Twin mode, if the regular `mgmt_ip` is set, this
+                  `digital_twin.mgmt_gateway` address takes precedence over the regular
+                  management gateway for the generated OOB management interface.'
               act_internet_access:
                 type: bool
                 description: 'Specifies if the ACT Digital Twin device is deployed
@@ -15158,12 +15729,19 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        peer_ipv6:
+          type: str
+          description: 'The peer device IPv6 address (no mask). Used for field substitution
+            in `ipv6_acls` entries with the "peer_ipv6" token
+
+            and for creating IPv6 BGP peering if `bgp` is also set.
+
+            IPv6 BGP peering using `peer_ipv6` and `bgp` is not supported when `wan_carrier`
+            is set.'
         bgp:
           type: dict
-          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
-            peering (when `peer_ip` is set).
-
-            IPv6 BGP peering on L3 interfaces is not yet supported.'
+          description: Configure IPv4 and/or IPv6 BGP peering for the interface when
+            `peer_ip` and/or `peer_ipv6` is set.
           keys:
             peer_as:
               type: str
@@ -15189,6 +15767,22 @@ $defs:
                 If not specified, nothing would be advertised.
 
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
+            ipv6_prefix_list_in:
+              type: str
+              description: 'IPv6 prefix list name. Accept routes for only these IPv6
+                prefixes from the peer.
+
+                Only applied when `peer_ipv6` is set; otherwise ignored.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
+            ipv6_prefix_list_out:
+              type: str
+              description: 'IPv6 prefix list name. Advertise routes for only these
+                IPv6 prefixes.
+
+                Only applied when `peer_ipv6` is set; otherwise ignored.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
@@ -15207,6 +15801,32 @@ $defs:
 
             The access-list must be defined under `ipv4_acls` and supports field substitution
             for "interface_ip" and "peer_ip".'
+          type: str
+          convert_types:
+          - int
+        ipv6_acl_in:
+          description: 'Name of the IPv6 access-list to be assigned in the ingress
+            direction.
+
+            The access-list must be defined under `ipv6_acls` and supports field substitution
+            for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
+            and "peer_ipv6" (resolved from `peer_ipv6`).
+
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
+          type: str
+          convert_types:
+          - int
+        ipv6_acl_out:
+          description: 'Name of the IPv6 Access-list to be assigned in the egress
+            direction.
+
+            The access-list must be defined under `ipv6_acls` and supports field substitution
+            for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
+            and "peer_ipv6" (resolved from `peer_ipv6`).
+
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
           type: str
           convert_types:
           - int
@@ -15413,12 +16033,19 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        peer_ipv6:
+          type: str
+          description: 'The peer device IPv6 address (no mask). Used for field substitution
+            in `ipv6_acls` entries with the "peer_ipv6" token
+
+            and for creating IPv6 BGP peering if `bgp` is also set.
+
+            IPv6 BGP peering using `peer_ipv6` and `bgp` is not supported when `wan_carrier`
+            is set.'
         bgp:
           type: dict
-          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
-            peering (when `peer_ip` is set).
-
-            IPv6 BGP peering on L3 Port-Channels is not yet supported.'
+          description: Configure IPv4 and/or IPv6 BGP peering for the interface when
+            `peer_ip` and/or `peer_ipv6` is set.
           keys:
             peer_as:
               type: str
@@ -15444,6 +16071,22 @@ $defs:
                 If not specified, nothing would be advertised.
 
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
+            ipv6_prefix_list_in:
+              type: str
+              description: 'Prefix List Name. Accept routes for only these IPv6 prefixes
+                from the peer.
+
+                Only applied when `peer_ipv6` is set; otherwise ignored.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
+            ipv6_prefix_list_out:
+              type: str
+              description: 'Prefix List Name. Advertise routes for only these IPv6
+                prefixes.
+
+                Only applied when `peer_ipv6` is set; otherwise ignored.
+
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
@@ -15462,6 +16105,32 @@ $defs:
 
             The access-list must be defined under `ipv4_acls` and supports field substitution
             for "interface_ip" and "peer_ip".'
+          type: str
+          convert_types:
+          - int
+        ipv6_acl_in:
+          description: 'Name of the IPv6 access-list to be assigned in the ingress
+            direction.
+
+            The access-list must be defined under `ipv6_acls` and supports field substitution
+            for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
+            and "peer_ipv6" (resolved from `peer_ipv6`).
+
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
+          type: str
+          convert_types:
+          - int
+        ipv6_acl_out:
+          description: 'Name of the IPv6 Access-list to be assigned in the egress
+            direction.
+
+            The access-list must be defined under `ipv6_acls` and supports field substitution
+            for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
+            and "peer_ipv6" (resolved from `peer_ipv6`).
+
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
           type: str
           convert_types:
           - int
@@ -15925,6 +16594,43 @@ $defs:
         feature_support:
           type: dict
           keys:
+            address_locking:
+              type: dict
+              keys:
+                supported:
+                  type: bool
+                  description: 'Global support for Address Locking feature.
+
+                    The feature will be ignored on platforms where this is false.'
+                  default: true
+                ipv4_enforcement_disabled:
+                  type: bool
+                  description: 'Support for disabling enforcement for locked IPv4
+                    addresses.
+
+                    The feature will be ignored on platforms where this is false.'
+                  default: true
+                ipv6_enforcement_disabled:
+                  type: bool
+                  description: 'Support for disabling enforcement for locked IPv6
+                    addresses.
+
+                    The feature will be ignored on platforms where this is false.'
+                  default: true
+                ipv6_ethernet_interface:
+                  type: bool
+                  description: 'Support for controlling IPv6 Address Locking on the
+                    Ethernet interface level.
+
+                    The feature will be ignored on platforms where this is false.'
+                  default: true
+                ipv6_vlan:
+                  type: bool
+                  description: 'Support for controlling IPv6 Address Locking on the
+                    VLAN level.
+
+                    The feature will be ignored on platforms where this is false.'
+                  default: true
             queue_monitor:
               type: bool
               description: 'Support for LANZ.
@@ -16803,7 +17509,13 @@ $defs:
         description: 'Name of the IPv6 access-list to be assigned in the ingress direction.
 
           The access-list must be defined under `ipv6_acls` and supports substitution
-          of the field "interface_ip".'
+          of the field "interface_ipv6",
+
+          resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals`
+          is used as a fallback.
+
+          Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
+          and will be removed in AVD 7.0.0.'
         type: str
         convert_types:
         - int
@@ -16811,7 +17523,13 @@ $defs:
         description: 'Name of the IPv6 access-list to be assigned in the egress direction.
 
           The access-list must be defined under `ipv6_acls` and supports substitution
-          of the field "interface_ip".'
+          of the field "interface_ipv6",
+
+          resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals`
+          is used as a fallback.
+
+          Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
+          and will be removed in AVD 7.0.0.'
         type: str
         convert_types:
         - int

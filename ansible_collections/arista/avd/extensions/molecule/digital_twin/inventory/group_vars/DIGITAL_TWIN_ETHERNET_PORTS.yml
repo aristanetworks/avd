@@ -8,7 +8,7 @@ l3leaf:
     loopback_ipv4_pool: 192.168.3.128/28
     vtep_loopback_ipv4_pool: 192.168.3.144/28
     bgp_as: 65001
-    mlag_interfaces: [ Ethernet4, Ethernet5 ]
+    mlag_interfaces: [Ethernet4, Ethernet5]
   node_groups:
     - group: NODE_GROUP_A
       nodes:
@@ -40,9 +40,9 @@ l3leaf:
         - name: digital.twin.ethernet.ports.2
           id: 2
           mgmt_ip: 192.169.3.2/32
-          uplink_interfaces: [ Ethernet3 ]
-          uplink_switches: [ digital-twin-ethernet-ports-1 ]
-          uplink_switch_interfaces: [ Ethernet3 ]
+          uplink_interfaces: [Ethernet3]
+          uplink_switches: [digital-twin-ethernet-ports-1]
+          uplink_switch_interfaces: [Ethernet3]
           # (Dotted switch name) validate_state should be set to False in Digital Twin mode for l3_interfaces
           l3_interfaces:
             - name: Ethernet19
@@ -71,9 +71,9 @@ l3leaf:
           id: 1
           platform: custom-platform
           mgmt_ip: 192.169.3.3/32
-          uplink_interfaces: [ Ethernet6 ]
-          uplink_switches: [ digital-twin-ethernet-ports-1 ]
-          uplink_switch_interfaces: [ Ethernet6 ]
+          uplink_interfaces: [Ethernet6]
+          uplink_switches: [digital-twin-ethernet-ports-1]
+          uplink_switch_interfaces: [Ethernet6]
 
 custom_platform_settings:
   - platforms:
@@ -85,25 +85,25 @@ firewalls:
   - name: firewall-1
     adapters:
       # validate_state should be set to False in Digital Twin mode for standalone interfaces facing connected endpoints
-      - endpoint_ports: [ Eth1, Eth2 ]
-        switch_ports: [ Ethernet1, Ethernet1 ]
-        switches: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
+      - endpoint_ports: [Eth1, Eth2]
+        switch_ports: [Ethernet1, Ethernet1]
+        switches: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
 
       # validate_state should be set to False in Digital Twin mode for PO (and its member interfaces) facing connected endpoints
-      - endpoint_ports: [ Eth3, Eth4 ]
-        switch_ports: [ Ethernet9, Ethernet9 ]
-        switches: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
+      - endpoint_ports: [Eth3, Eth4]
+        switch_ports: [Ethernet9, Ethernet9]
+        switches: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
         port_channel:
           mode: active
 
 network_ports:
   # validate_state should be set to False in Digital Twin mode for standalone network_port interfaces
-  - switches: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
-    switch_ports: [ Ethernet2, Ethernet2 ]
+  - switches: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
+    switch_ports: [Ethernet2, Ethernet2]
 
   # validate_state should be set to False in Digital Twin mode for PO (and member interfaces) network_port interfaces
-  - switches: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
-    switch_ports: [ Ethernet16, Ethernet16 ]
+  - switches: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
+    switch_ports: [Ethernet16, Ethernet16]
     port_channel:
       mode: active
 
@@ -122,15 +122,15 @@ tenants:
             vxlan: false
         l3_interfaces:
           # validate_state should be set to False in Digital Twin mode for l3_interfaces
-          - interfaces: [ Ethernet10.100, Ethernet10.100 ]
-            ip_addresses: [ "192.168.3.160/31", "192.168.3.162/31" ]
-            nodes: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
-          - interfaces: [ Ethernet10.101, Ethernet10.101 ]
-            ip_addresses: [ "192.168.3.164/31", "192.168.3.166/31" ]
-            nodes: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
-          - interfaces: [ Ethernet10, Ethernet10 ]
-            ip_addresses: [ "192.168.3.168/31", "192.168.3.170/31" ]
-            nodes: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
+          - interfaces: [Ethernet10.100, Ethernet10.100]
+            ip_addresses: ["192.168.3.160/31", "192.168.3.162/31"]
+            nodes: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
+          - interfaces: [Ethernet10.101, Ethernet10.101]
+            ip_addresses: ["192.168.3.164/31", "192.168.3.166/31"]
+            nodes: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
+          - interfaces: [Ethernet10, Ethernet10]
+            ip_addresses: ["192.168.3.168/31", "192.168.3.170/31"]
+            nodes: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
         l3_port_channels:
           # validate_state should be set to False in Digital Twin mode for l3_port_channels and members
           # PO with sub-interface
@@ -170,68 +170,68 @@ tenants:
 l3_edge:
   p2p_links:
     # validate_state should NOT be set to False in Digital Twin mode for standalone interfaces (including subs) facing another fabric device
-    - nodes: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
-      interfaces: [ Ethernet11, Ethernet11 ]
-      as: [ 65001, 65001 ]
-      ip: [ "192.168.3.184/31", "192.168.3.185/31" ]
-    - nodes: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
-      interfaces: [ Ethernet11.100, Ethernet11.100 ]
-      as: [ 65001, 65001 ]
-      ip: [ "192.168.3.186/31", "192.168.3.187/31" ]
-    - nodes: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
-      interfaces: [ Ethernet11.101, Ethernet11.101 ]
-      as: [ 65001, 65001 ]
-      ip: [ "192.168.3.188/31", "192.168.3.189/31" ]
+    - nodes: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
+      interfaces: [Ethernet11, Ethernet11]
+      as: [65001, 65001]
+      ip: ["192.168.3.184/31", "192.168.3.185/31"]
+    - nodes: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
+      interfaces: [Ethernet11.100, Ethernet11.100]
+      as: [65001, 65001]
+      ip: ["192.168.3.186/31", "192.168.3.187/31"]
+    - nodes: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
+      interfaces: [Ethernet11.101, Ethernet11.101]
+      as: [65001, 65001]
+      ip: ["192.168.3.188/31", "192.168.3.189/31"]
 
     # validate_state should be set to False in Digital Twin mode for standalone interfaces (including subs) facing non-fabric device
-    - nodes: [ digital-twin-ethernet-ports-1, external-device-1 ]
-      interfaces: [ Ethernet13, Ethernet13 ]
-      as: [ 65001, 65001 ]
-      ip: [ "192.168.3.190/31", "192.168.3.191/31" ]
-    - nodes: [ digital-twin-ethernet-ports-1, external-device-1 ]
-      interfaces: [ Ethernet13.100, Ethernet13.100 ]
-      as: [ 65001, 65001 ]
-      ip: [ "192.168.3.192/31", "192.168.3.193/31" ]
+    - nodes: [digital-twin-ethernet-ports-1, external-device-1]
+      interfaces: [Ethernet13, Ethernet13]
+      as: [65001, 65001]
+      ip: ["192.168.3.190/31", "192.168.3.191/31"]
+    - nodes: [digital-twin-ethernet-ports-1, external-device-1]
+      interfaces: [Ethernet13.100, Ethernet13.100]
+      as: [65001, 65001]
+      ip: ["192.168.3.192/31", "192.168.3.193/31"]
 
     # (Dotted switch name) validate_state should be set to False in Digital Twin mode for standalone interfaces (including subs) facing non-fabric device
-    - nodes: [ digital.twin.ethernet.ports.2, external-device-2 ]
-      interfaces: [ Ethernet13, Ethernet13 ]
-      as: [ 65001, 65001 ]
-      ip: [ "192.168.3.194/31", "192.168.3.195/31" ]
-    - nodes: [ digital.twin.ethernet.ports.2, external-device-2 ]
-      interfaces: [ Ethernet13.100, Ethernet13.100 ]
-      as: [ 65001, 65001 ]
-      ip: [ "192.168.3.196/31", "192.168.3.197/31" ]
+    - nodes: [digital.twin.ethernet.ports.2, external-device-2]
+      interfaces: [Ethernet13, Ethernet13]
+      as: [65001, 65001]
+      ip: ["192.168.3.194/31", "192.168.3.195/31"]
+    - nodes: [digital.twin.ethernet.ports.2, external-device-2]
+      interfaces: [Ethernet13.100, Ethernet13.100]
+      as: [65001, 65001]
+      ip: ["192.168.3.196/31", "192.168.3.197/31"]
 
     # validate_state should NOT be set to False in Digital Twin mode for PO (and its member interfaces) facing another fabric device
-    - nodes: [ digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 ]
-      as: [ 65001, 65001 ]
-      ip: [ "192.168.3.198/31", "192.168.3.199/31" ]
+    - nodes: [digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2]
+      as: [65001, 65001]
+      ip: ["192.168.3.198/31", "192.168.3.199/31"]
       port_channel:
         nodes_child_interfaces:
           - node: digital-twin-ethernet-ports-1
-            interfaces: [ Ethernet14 ]
+            interfaces: [Ethernet14]
           - node: digital.twin.ethernet.ports.2
-            interfaces: [ Ethernet14 ]
+            interfaces: [Ethernet14]
 
     # validate_state should be set to False in Digital Twin mode for PO (and its member interfaces) facing non-fabric device
-    - nodes: [ digital-twin-ethernet-ports-1, external-device-3 ]
-      as: [ 65001, 65001 ]
-      ip: [ "192.168.3.200/31", "192.168.3.201/31" ]
+    - nodes: [digital-twin-ethernet-ports-1, external-device-3]
+      as: [65001, 65001]
+      ip: ["192.168.3.200/31", "192.168.3.201/31"]
       port_channel:
         nodes_child_interfaces:
           - node: digital-twin-ethernet-ports-1
-            interfaces: [ Ethernet15 ]
+            interfaces: [Ethernet15]
           - node: external-device-3
-            interfaces: [ Ethernet15 ]
+            interfaces: [Ethernet15]
 
     # (Dotted switch name) validate_state should be set to False in Digital Twin mode for PO (and its member interfaces) facing non-fabric device
-    - nodes: [ digital.twin.ethernet.ports.2, external-device-4 ]
-      as: [ 65001, 65001 ]
-      ip: [ "192.168.3.202/31", "192.168.3.203/31" ]
+    - nodes: [digital.twin.ethernet.ports.2, external-device-4]
+      as: [65001, 65001]
+      ip: ["192.168.3.202/31", "192.168.3.203/31"]
       port_channel:
         nodes_child_interfaces:
           - node: digital.twin.ethernet.ports.2
-            interfaces: [ Ethernet15 ]
+            interfaces: [Ethernet15]
           - node: external-device-4
-            interfaces: [ Ethernet15 ]
+            interfaces: [Ethernet15]

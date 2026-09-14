@@ -49,7 +49,7 @@ class UtilsMixin(Protocol):
         """
         source_interfaces = output_type()
         if include_mgmt_interface:
-            if (self.shared_utils.node_config.mgmt_ip is None) and (self.shared_utils.node_config.ipv6_mgmt_ip is None):
+            if (self.shared_utils.oob_mgmt_ip is None) and (self.shared_utils.node_config.ipv6_mgmt_ip is None):
                 msg = f"Unable to configure {error_context} source-interface since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set."
                 raise AristaAvdInvalidInputsError(msg)
 

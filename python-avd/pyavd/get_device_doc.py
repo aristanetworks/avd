@@ -3,13 +3,15 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from collections import ChainMap
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from .api.eos_cli_config_gen import DocRenderConfiguration
     from .api.schemas import EOSConfig
 
 
-def get_device_doc(structured_config: EOSConfig | dict, add_md_toc: bool = False) -> str:
+def get_device_doc(structured_config: EOSConfig | dict, add_md_toc: bool = False, *, configuration: DocRenderConfiguration | None = None) -> str:
     """
     Render and return the device documentation using AVD eos_cli_config_gen templates.
 
@@ -24,6 +26,9 @@ def get_device_doc(structured_config: EOSConfig | dict, add_md_toc: bool = False
 
         add_md_toc:
             Add a table of contents for markdown headings.
+
+        configuration:
+            Optional render configuration for the device Markdown documentation.
 
     Returns:
         Device documentation in Markdown format.
@@ -45,8 +50,14 @@ def get_device_doc(structured_config: EOSConfig | dict, add_md_toc: bool = False
     if isinstance(structured_config, EOSConfig):
         structured_config = structured_config._as_dict()
 
+    template_vars: dict[str, Any] | ChainMap[str, Any] = structured_config
+    if configuration is not None and configuration.hide_passwords is not None:
+        # Keep structured_config first for the many normal template lookups. This means a caller-provided
+        # internal _eos_cli_config_gen_hide_passwords key would take precedence over the render option.
+        template_vars = ChainMap(structured_config, {"_eos_cli_config_gen_hide_passwords": configuration.hide_passwords})
+
     templar = Templar(precompiled_templates_path=EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH)
-    result: str = templar.render_template_from_file(template_file=EOS_CLI_CONFIG_GEN_JINJA2_DOCUMENTAITON_TEMPLATE, template_vars=structured_config)
+    result: str = templar.render_template_from_file(template_file=EOS_CLI_CONFIG_GEN_JINJA2_DOCUMENTAITON_TEMPLATE, template_vars=template_vars)
     if add_md_toc:
         return filter_add_md_toc(result, skip_lines=3)
 

@@ -1,0 +1,12 @@
+---
+- name: Test Workspace Force False
+  import_playbook: ../cv_deploy/workspace_force_false.yml
+
+- name: Test Workspace build with invalid Designed Config
+  import_playbook: ../cv_deploy/invalid_config.yml
+
+- name: Test cv_deploy with duplicated devices in inventory and default cv_strict_system_mac_address
+  import_playbook: ../cv_deploy/duplicated_devices.yml
+
+- name: Test cv_deploy with duplicated devices in inventory and non-default cv_strict_system_mac_address
+  import_playbook: ../cv_deploy/duplicated_devices_strict_system_mac.yml

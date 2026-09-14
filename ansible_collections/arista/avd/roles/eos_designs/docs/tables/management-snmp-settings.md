@@ -42,8 +42,9 @@
     | [<samp>&nbsp;&nbsp;communities</samp>](## "snmp_settings.communities") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.communities.[].name") | String | Required, Unique |  |  | Community name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access</samp>](## "snmp_settings.communities.[].access") | String |  |  | Valid Values:<br>- <code>ro</code><br>- <code>rw</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv4</samp>](## "snmp_settings.communities.[].access_list_ipv4") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv4</samp>](## "snmp_settings.communities.[].access_list_ipv4") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv4_standard_acl</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_settings.communities.[].access_list_ipv4.name") | String |  |  |  | IPv4 access list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "snmp_settings.communities.[].ipv4_standard_acl") | String |  |  |  | IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv6</samp>](## "snmp_settings.communities.[].access_list_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_settings.communities.[].access_list_ipv6.name") | String |  |  |  | IPv6 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;view</samp>](## "snmp_settings.communities.[].view") | String |  |  |  |  |
@@ -63,8 +64,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;snmp_traps</samp>](## "snmp_settings.traps.snmp_traps") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.traps.snmp_traps.[].name") | String |  |  |  | Enable or disable specific snmp-traps and their sub_traps.<br>Examples:<br>- "bgp"<br>- "bgp established"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "snmp_settings.traps.snmp_traps.[].enabled") | Boolean |  |  |  | The trap is enabled unless this is set to false. |
-    | [<samp>&nbsp;&nbsp;enable_mgmt_interface_vrf</samp>](## "snmp_settings.enable_mgmt_interface_vrf") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrfs[name="use_mgmt_interface_vrf"].enabled</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;enable_inband_mgmt_vrf</samp>](## "snmp_settings.enable_inband_mgmt_vrf") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrfs[name="use_inband_mgmt_vrf"].enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;enable_mgmt_interface_vrf</samp>](## "snmp_settings.enable_mgmt_interface_vrf") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrfs[name="use_mgmt_interface_vrf"].enable</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;enable_inband_mgmt_vrf</samp>](## "snmp_settings.enable_inband_mgmt_vrf") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrfs[name="use_inband_mgmt_vrf"].enable</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;ipv4_acls</samp>](## "snmp_settings.ipv4_acls") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrfs[].ipv4_acl</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;ipv6_acls</samp>](## "snmp_settings.ipv6_acls") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrfs[].ipv6_acl</samp> instead.</span> |
 
@@ -192,10 +193,16 @@
           # Community name.
         - name: <str; required; unique>
           access: <str; "ro" | "rw">
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `ipv4_standard_acl` instead.
           access_list_ipv4:
 
             # IPv4 access list name.
             name: <str>
+
+          # IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
+          ipv4_standard_acl: <str>
           access_list_ipv6:
 
             # IPv6 access list name.
