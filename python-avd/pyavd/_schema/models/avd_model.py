@@ -10,7 +10,8 @@ from typing import TYPE_CHECKING, Any, ClassVar, Literal, cast
 
 from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
-from pyavd._utils import Undefined, UndefinedType, merge
+from pyavd._utils.merge import merge
+from pyavd._utils.undefined import Undefined, UndefinedType
 
 from .avd_base import AvdBase
 from .avd_indexed_list import AvdIndexedList

@@ -14,7 +14,5 @@ l3leaf:
       bgp_as: 153
 
 logging_settings:
-  hosts:
-    - name: syslog.minimal.example.com
   monitor_layer1:
     enabled: true

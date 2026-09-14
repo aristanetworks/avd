@@ -276,7 +276,7 @@ no ip routing vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
+| MGMT | False |
 
 #### IPv6 Routing Device Configuration
 

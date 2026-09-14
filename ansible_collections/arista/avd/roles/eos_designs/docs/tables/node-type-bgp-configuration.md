@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_defaults</samp>](## "<node_type_keys.key>.defaults.bgp_defaults") | List, items: String |  |  |  | List of EOS commands to apply to BGP daemon. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.bgp_defaults.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "<node_type_keys.key>.defaults.evpn_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "<node_type_keys.key>.defaults.evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br>Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "<node_type_keys.key>.defaults.evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.evpn_route_servers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
@@ -23,13 +23,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_defaults</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].bgp_defaults") | List, items: String |  |  |  | List of EOS commands to apply to BGP daemon. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].bgp_defaults.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br>Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_route_servers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "<node_type_keys.key>.node_groups.[].bgp_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.<br>Required with eBGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_defaults</samp>](## "<node_type_keys.key>.node_groups.[].bgp_defaults") | List, items: String |  |  |  | List of EOS commands to apply to BGP daemon. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].bgp_defaults.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "<node_type_keys.key>.node_groups.[].evpn_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "<node_type_keys.key>.node_groups.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br>Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "<node_type_keys.key>.node_groups.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].evpn_route_servers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
@@ -37,7 +37,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_defaults</samp>](## "<node_type_keys.key>.nodes.[].bgp_defaults") | List, items: String |  |  |  | List of EOS commands to apply to BGP daemon. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].bgp_defaults.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "<node_type_keys.key>.nodes.[].evpn_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "<node_type_keys.key>.nodes.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br>Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "<node_type_keys.key>.nodes.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].evpn_route_servers.[]") | String |  |  |  |  |
     | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
@@ -45,7 +45,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_defaults</samp>](## "device_profiles.[].bgp_defaults") | List, items: String |  |  |  | List of EOS commands to apply to BGP daemon. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].bgp_defaults.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "device_profiles.[].evpn_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "device_profiles.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br>Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "device_profiles.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].evpn_route_servers.[]") | String |  |  |  |  |
     | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
@@ -53,7 +53,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_defaults</samp>](## "devices.[].bgp_defaults") | List, items: String |  |  |  | List of EOS commands to apply to BGP daemon. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].bgp_defaults.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "devices.[].evpn_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "devices.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br>Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "devices.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].evpn_route_servers.[]") | String |  |  |  |  |
 
 === "YAML"
@@ -78,7 +78,6 @@
         evpn_role: <str; "client" | "server" | "none">
 
         # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-        # Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.
         evpn_route_servers:
           - <str>
 
@@ -109,7 +108,6 @@
               evpn_role: <str; "client" | "server" | "none">
 
               # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-              # Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.
               evpn_route_servers:
                 - <str>
 
@@ -127,7 +125,6 @@
           evpn_role: <str; "client" | "server" | "none">
 
           # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-          # Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.
           evpn_route_servers:
             - <str>
 
@@ -151,7 +148,6 @@
           evpn_role: <str; "client" | "server" | "none">
 
           # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-          # Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.
           evpn_route_servers:
             - <str>
 
@@ -175,7 +171,6 @@
         evpn_role: <str; "client" | "server" | "none">
 
         # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-        # Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.
         evpn_route_servers:
           - <str>
 
@@ -199,7 +194,6 @@
         evpn_role: <str; "client" | "server" | "none">
 
         # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-        # Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers` on the same node.
         evpn_route_servers:
           - <str>
     ```

@@ -1,0 +1,201 @@
+---
+router_ospfv3:
+  passive_interface_default: true
+  address_family_ipv4:
+    enabled: true
+    redistribute:
+      bgp:
+        enabled: true
+      connected:
+        enabled: true
+      isis:
+        enabled: true
+      ospfv3:
+        leaked:
+          enabled: true
+      static:
+        enabled: true
+  address_family_ipv6:
+    enabled: true
+    redistribute:
+      bgp:
+        enabled: true
+      dhcp:
+        enabled: true
+      connected:
+        enabled: true
+      isis:
+        enabled: true
+      ospfv3:
+        leaked:
+          enabled: true
+      static:
+        enabled: true
+  vrfs:
+    - name: FULL
+      address_family_ipv4:
+        enabled: true
+        router_id: 3.3.3.3
+        auto_cost_reference_bandwidth: 500
+        passive_interface_default: true
+        redistribute:
+          bgp:
+            enabled: true
+            include_leaked: true
+          connected:
+            enabled: true
+            include_leaked: true
+          isis:
+            enabled: true
+            include_leaked: true
+            level: level-2
+          ospfv3:
+            leaked:
+              enabled: true
+              match_internal: true
+              route_map: map2
+            leaked_match_external:
+              enabled: true
+              route_map: map2
+            leaked_match_nssa_external:
+              enabled: true
+              route_map: map2
+      address_family_ipv6:
+        enabled: true
+        router_id: 4.4.4.4
+        auto_cost_reference_bandwidth: 500
+        passive_interface_default: true
+        redistribute:
+          bgp:
+            enabled: true
+            include_leaked: true
+          connected:
+            enabled: true
+            include_leaked: true
+          isis:
+            enabled: true
+            include_leaked: true
+            level: level-2
+          ospfv3:
+            leaked:
+              enabled: true
+              match_internal: true
+              route_map: map2
+            leaked_match_external:
+              enabled: true
+              route_map: map2
+            leaked_match_nssa_external:
+              enabled: true
+              route_map: map2
+    - name: data
+      # These settings (auto_cost_reference_bandwidth) will not get rendered as address family level settings gets precedence.
+      router_id: 2.2.2.2
+      passive_interface_default: true
+      auto_cost_reference_bandwidth: 100
+      address_family_ipv4:
+        enabled: true
+        auto_cost_reference_bandwidth: 1000
+        redistribute:
+          bgp:
+            enabled: true
+            route_map: map1
+          connected:
+            enabled: true
+            route_map: map1
+          isis:
+            enabled: true
+            route_map: map1
+          ospfv3:
+            leaked:
+              enabled: true
+              route_map: map1
+          static:
+            enabled: true
+            include_leaked: true
+            route_map: map1
+      address_family_ipv6:
+        enabled: true
+        auto_cost_reference_bandwidth: 1000
+        redistribute:
+          bgp:
+            enabled: true
+            route_map: map1
+          connected:
+            enabled: true
+            route_map: map1
+          isis:
+            enabled: true
+            route_map: map1
+          ospfv3:
+            leaked:
+              enabled: true
+              route_map: map1
+          static:
+            enabled: true
+            route_map: map1
+          dhcp:
+            enabled: true
+            route_map: map1
+    - name: MGMT
+      router_id: 2.2.2.2
+      auto_cost_reference_bandwidth: 100
+      passive_interface_default: true
+      address_family_ipv4:
+        enabled: true
+        passive_interface_default: false
+        redistribute:
+          bgp:
+            enabled: true
+          connected:
+            enabled: true
+          isis:
+            enabled: true
+          ospfv3:
+            leaked:
+              enabled: true
+          static:
+            enabled: true
+      address_family_ipv6:
+        enabled: true
+        passive_interface_default: true
+        redistribute:
+          bgp:
+            enabled: true
+          connected:
+            enabled: true
+          isis:
+            enabled: true
+          ospfv3:
+            leaked:
+              enabled: true
+          static:
+            enabled: true
+          dhcp:
+            enabled: true
+    - name: Test
+      address_family_ipv4:
+        enabled: true
+        router_id: 1.1.1.1
+        redistribute:
+          ospfv3:
+            leaked:
+              enabled: true
+            leaked_match_external:
+              enabled: true
+            leaked_match_nssa_external:
+              enabled: true
+      address_family_ipv6:
+        enabled: true
+        passive_interface_default: true
+        redistribute:
+          ospfv3:
+            leaked:
+              enabled: true
+            leaked_match_external:
+              enabled: true
+            leaked_match_nssa_external:
+              enabled: true
+    - name: Test_VRF
+      router_id: 1.1.1.1
+      passive_interface_default: true
+      auto_cost_reference_bandwidth: 1000

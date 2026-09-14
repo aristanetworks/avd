@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Unable to perform substitution of the value 'peer_ipv6' defined under 'ipv6_acls[name=TEST-IPV6-ACL-WITH-PEER-IPV6-FIELD].entries[0].source', since no substitution value was found for interface 'Port-Channel1'. Make sure to set the appropriate fields on the interface.

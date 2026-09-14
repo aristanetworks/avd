@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, overload
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import template_var
+from pyavd._utils.template_var import template_var
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
