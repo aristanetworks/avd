@@ -298,6 +298,8 @@ ethernet_interfaces:
       profile: A1
     ptp:
       enable: true
+      management:
+        drop: true
       delay_mechanism: e2e
       region:
         domain_number: 25
@@ -439,6 +441,8 @@ ethernet_interfaces:
       receive: true
     ptp:
       enable: true
+      management:
+        drop: false
       announce:
         interval: 3
         timeout: 9
@@ -1117,6 +1121,10 @@ ethernet_interfaces:
     dot1x:
       host_mode:
         mode: single-host
+      authentication_failure:
+        action: allow
+        allow_vlan: 100
+        allow_access_list: ACL1
 
   - name: Ethernet37
     switchport:
@@ -1125,6 +1133,9 @@ ethernet_interfaces:
     dot1x:
       host_mode:
         mode: multi-host
+      authentication_failure:
+        action: allow
+        allow_access_list: Test_ACL
 
   - name: Ethernet38
     switchport:

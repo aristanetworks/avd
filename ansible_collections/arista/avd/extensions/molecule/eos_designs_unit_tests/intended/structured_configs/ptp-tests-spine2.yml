@@ -79,6 +79,8 @@ ethernet_interfaces:
     sync_message:
       interval: 2
     transport: ipv4
+    management:
+      drop: false
   metadata:
     peer: ptp-tests-spine1
     peer_interface: Ethernet6
@@ -104,6 +106,26 @@ ethernet_interfaces:
     peer_type: spine
   switchport:
     enabled: false
+- name: Ethernet20
+  description: P2P_ptp-tests-spine1_Ethernet20
+  shutdown: false
+  channel_group:
+    id: 20
+    mode: active
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet20
+    peer_type: spine
+- name: Ethernet21
+  description: P2P_ptp-tests-spine1_Ethernet21
+  shutdown: false
+  channel_group:
+    id: 20
+    mode: active
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet21
+    peer_type: spine
 - name: Ethernet8
   description: P2P_ptp-tests-spine1_Ethernet8
   shutdown: false
@@ -142,6 +164,26 @@ ethernet_interfaces:
     peer_type: spine
   switchport:
     enabled: false
+- name: Ethernet22
+  description: P2P_ptp-tests-spine1_Ethernet22
+  shutdown: false
+  channel_group:
+    id: 22
+    mode: active
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet22
+    peer_type: spine
+- name: Ethernet23
+  description: P2P_ptp-tests-spine1_Ethernet23
+  shutdown: false
+  channel_group:
+    id: 22
+    mode: active
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet23
+    peer_type: spine
 hostname: ptp-tests-spine2
 ip_routing: true
 loopback_interfaces:
@@ -161,6 +203,49 @@ metadata:
   is_deployed: true
   platform: vEOS-LAB
   fabric_name: PTP_TESTS
+port_channel_interfaces:
+- name: Port-Channel20
+  description: P2P_ptp-tests-spine1_Port-Channel20
+  shutdown: false
+  mtu: 9214
+  ptp:
+    enable: true
+    announce:
+      interval: 2
+      timeout: 10
+    delay_req: 2
+    sync_message:
+      interval: 2
+    transport: ipv4
+    management:
+      drop: false
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Port-Channel20
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Port-Channel22
+  description: P2P_ptp-tests-spine1_Port-Channel22
+  shutdown: false
+  mtu: 9214
+  ptp:
+    enable: true
+    announce:
+      interval: 2
+      timeout: 10
+    delay_req: 2
+    sync_message:
+      interval: 2
+    transport: ipv4
+    management:
+      drop: false
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Port-Channel22
+    peer_type: spine
+  switchport:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

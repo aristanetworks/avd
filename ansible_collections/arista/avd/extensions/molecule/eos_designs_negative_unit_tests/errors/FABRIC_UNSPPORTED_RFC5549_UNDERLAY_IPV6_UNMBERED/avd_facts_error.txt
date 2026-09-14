@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. RFC5549 is not supported with numbered IPv6 underlay for host 'unsupported-rfc5549-underlay-ipv6-numbered'.

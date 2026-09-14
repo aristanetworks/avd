@@ -57,6 +57,25 @@ ip_access_lists:
         source: any
         destination: any
         log: true
+      - action: deny
+        protocol: tcp
+        source: any
+        destination: any
+        copy_captive_portal: true
+        # Log is ignored.
+        log: true
+      - action: permit
+        protocol: udp
+        source: any
+        destination: any
+        log: true
+        # Copy captive portal is ignored as it is only supported with deny entries.
+        copy_captive_portal: true
+      - action: deny
+        protocol: tcp
+        source: any
+        destination: any
+        copy_captive_portal: false
       - action: permit
         protocol: icmp
         source: any

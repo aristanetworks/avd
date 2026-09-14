@@ -78,6 +78,7 @@ ipv6_acls:
         protocol: ipv6
         source: any
         destination: interface_ip
+        copy_captive_portal: true
       - action: permit
         protocol: ipv6
         source: peer_ipv6

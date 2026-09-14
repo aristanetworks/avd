@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'underlay_ipv6: true' is required but was not found for host 'missing-underlay-ipv6'.
