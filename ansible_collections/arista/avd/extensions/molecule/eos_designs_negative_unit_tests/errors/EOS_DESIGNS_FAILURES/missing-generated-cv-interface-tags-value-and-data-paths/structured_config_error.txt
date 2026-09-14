@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: 'generate_cv_tags.interface_tags[name=myname]' is missing either a static 'value' or a dynamic 'data_path'

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. inband_ztp is not supported with numbered IPv6 underlay for host 'unsupported-inband-ztp-ip-underlay-ipv6-numbered'.

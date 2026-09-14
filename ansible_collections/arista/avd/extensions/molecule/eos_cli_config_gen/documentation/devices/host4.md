@@ -13,6 +13,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Router OSPF](#router-ospf)
+  - [Router OSPFv3](#router-ospfv3)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
 - [MPLS](#mpls)
@@ -125,7 +126,7 @@ ip routing vrf FUTURE_IPV4
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| FUTURE_IPV4 | false |
+| FUTURE_IPV4 | False |
 
 ### Router OSPF
 
@@ -141,6 +142,78 @@ ip routing vrf FUTURE_IPV4
 !
 router ospf 703
    router-id 10.255.0.4
+```
+
+### Router OSPFv3
+
+#### VRF: default
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
+
+##### Address Family IPv4
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | - |
+| connected | True | - |
+| isis level-1 | True | - |
+| ospfv3 leaked | True | map1 |
+| static | - | map1 |
+
+##### Address Family IPv6
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | - |
+| connected | True | - |
+| dhcp | - | map1 |
+| isis level-1 | True | - |
+| ospfv3 leaked | True | map1 |
+| static | - | map1 |
+
+#### VRF: Test
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 100 |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3 vrf Test
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
+   passive-interface default
+!
+router ospfv3
+   auto-cost reference-bandwidth 100
+   bfd default
+   !
+   address-family ipv4
+      redistribute bgp include leaked
+      redistribute connected include leaked
+      redistribute isis include leaked level-1
+      redistribute ospfv3 leaked route-map map1
+      redistribute static route-map map1
+   !
+   address-family ipv6
+      redistribute bgp include leaked
+      redistribute dhcp route-map map1
+      redistribute connected include leaked
+      redistribute isis include leaked level-1
+      redistribute ospfv3 leaked route-map map1
+      redistribute static route-map map1
 ```
 
 ### Router ISIS
@@ -208,16 +281,16 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 192.0.2.100 | Inherited from peer group PG-DOC-COVERAGE | default | Inherited from peer group PG-DOC-COVERAGE | - | Inherited from peer group PG-DOC-COVERAGE | Inherited from peer group PG-DOC-COVERAGE | - | - | Inherited from peer group PG-DOC-COVERAGE | Inherited from peer group PG-DOC-COVERAGE | - |
-| 192.0.2.101 | 65046 | default | - | - | 0 (no limit) | - | - | - | - | - | - |
-| 192.0.2.102 | 65048 | default | - | - | 200 (warning-limit 100) | - | - | - | - | - | - |
-| 192.0.2.10 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | True (All) | - | - | - |
-| 192.0.2.11 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | - | - | - | - |
-| 192.0.2.12 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | - | - | - | - |
-| 192.0.2.14 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | - | - | - | - |
-| 192.0.2.13 | Inherited from peer group PG-VRF-DOC-COVERAGE | BGP_COVERAGE_IPV4 | - | - | 300 (warning-limit 150) | Inherited from peer group PG-VRF-DOC-COVERAGE | - | - | Inherited from peer group PG-VRF-DOC-COVERAGE | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 192.0.2.100 | Inherited from peer group PG-DOC-COVERAGE | default | Inherited from peer group PG-DOC-COVERAGE | - | Inherited from peer group PG-DOC-COVERAGE | - | - | Inherited from peer group PG-DOC-COVERAGE | - | - | Inherited from peer group PG-DOC-COVERAGE | Inherited from peer group PG-DOC-COVERAGE | - |
+| 192.0.2.101 | 65046 | default | - | - | 0 (no limit) | - | - | - | - | - | - | - | - |
+| 192.0.2.102 | 65048 | default | - | - | 200 (warning-limit 100) | - | - | - | - | - | - | - | - |
+| 192.0.2.10 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | - | - | True (All) | - | - | - |
+| 192.0.2.11 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | - | - | - | - | - | - |
+| 192.0.2.12 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | - | - | - | - | - | - |
+| 192.0.2.14 | - | BGP_COVERAGE_IPV4 | - | - | - | - | - | - | - | - | - | - | - |
+| 192.0.2.13 | Inherited from peer group PG-VRF-DOC-COVERAGE | BGP_COVERAGE_IPV4 | - | - | 300 (warning-limit 150) | - | - | Inherited from peer group PG-VRF-DOC-COVERAGE | - | - | Inherited from peer group PG-VRF-DOC-COVERAGE | - | - |
 
 #### BGP Neighbor Interfaces
 

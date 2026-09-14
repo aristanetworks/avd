@@ -133,11 +133,13 @@ port_profiles:
       authentication_failure:
         action: allow
         allow_vlan: 800
+        allow_access_list: ACL1
       host_mode:
         mode: multi-host
         multi_host_authenticated: true
       mac_based_authentication:
         enabled: true
+      mac_based_access_list: true
       timeout:
         reauth_period: server
         tx_period: 3

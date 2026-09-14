@@ -27,15 +27,17 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 if TYPE_CHECKING:  # pragma: no cover
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
-    from pyavd._utils import merge, strip_null_from_data
-    from pyavd._utils import template as templater
+    from pyavd._utils.merge import merge
+    from pyavd._utils.strip_empties import strip_null_from_data
+    from pyavd._utils.template import template as templater
     from pyavd.api.schemas import AVDDesign
 
 try:
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
-    from pyavd._utils import merge, strip_null_from_data
-    from pyavd._utils import template as templater
+    from pyavd._utils.merge import merge
+    from pyavd._utils.strip_empties import strip_null_from_data
+    from pyavd._utils.template import template as templater
     from pyavd.api.schemas import AVDDesign
 
     HAS_PYAVD = True
