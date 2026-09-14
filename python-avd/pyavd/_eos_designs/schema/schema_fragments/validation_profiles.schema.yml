@@ -89,3 +89,6 @@ keys:
         interfaces:
           type: dict
           $ref: "eos_cli_config_gen#/keys/metadata/keys/interfaces"
+        bgp:
+          type: dict
+          $ref: "eos_cli_config_gen#/keys/metadata/keys/bgp"
