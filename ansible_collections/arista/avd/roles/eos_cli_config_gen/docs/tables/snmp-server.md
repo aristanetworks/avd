@@ -54,13 +54,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_address</samp>](## "snmp_server.users.[].remote_address") | String |  |  |  | Hostname or ip of remote engine.<br>The remote_address and udp_port are used for remote users.<br>A `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set<br>and `localized` is not set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "snmp_server.users.[].udp_port") | Integer |  |  |  | udp_port will not be used if no remote_address is configured.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_server.users.[].version") | String |  |  | Valid Values:<br>- <code>v1</code><br>- <code>v2c</code><br>- <code>v3</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localized</samp>](## "snmp_server.users.[].localized") | String |  |  |  | Engine ID in hexadecimal for localizing auth and/or priv.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localized</samp>](## "snmp_server.users.[].localized") | String |  |  |  | Engine ID in hexadecimal.<br>When set, auth and priv values are interpreted as localized key material<br>(RFC 2574, engine-ID specific) instead of cleartext passphrases.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_server.users.[].auth") | String |  |  |  | Hash algorithm.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase_type</samp>](## "snmp_server.users.[].auth_passphrase_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Authentication passphrase type.<br>EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.<br>Requires `localized` to set.<br>- `0`: Key string is not encrypted.<br>- `7`: Type-7 encrypted (HIDDEN) key.<br>- `8a`: AES-256-GCM encrypted key.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_server.users.[].auth_passphrase") | String |  |  |  | Authentication passphrase or key value.<br>Provide a localized key when `localized` is set.<br>Provide an encrypted/obfuscated value when `auth_passphrase_type` is `7` or `8a`.<br>Otherwise, provide a cleartext authentication passphrase.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase_type</samp>](## "snmp_server.users.[].auth_passphrase_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Authentication passphrase type.<br>EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.<br>Requires `localized` to be set.<br>- `0`: Key string is not encrypted.<br>- `7`: Type-7 encrypted (HIDDEN) key.<br>- `8a`: AES-256-GCM encrypted key.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_server.users.[].auth_passphrase") | String |  |  |  | Authentication passphrase or key value.<br>Interpretation depends on `localized` and `auth_passphrase_type`:<br>- If `localized` is not set: provide a cleartext authentication passphrase.<br>- If `localized` is set and `auth_passphrase_type` is omitted or `0`:<br>  provide a localized (RFC 2574 hashed) authentication key in hex.<br>- If `localized` is set and `auth_passphrase_type` is `7` or `8a`:<br>  provide the corresponding protected localized key.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_server.users.[].priv") | String |  |  |  | Encryption algorithm.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase_type</samp>](## "snmp_server.users.[].priv_passphrase_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Privacy passphrase type.<br>EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.<br>Requires `localized` to set.<br>- `0`: Key string is not encrypted.<br>- `7`: Type-7 encrypted (HIDDEN) key.<br>- `8a`: AES-256-GCM encrypted key.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_server.users.[].priv_passphrase") | String |  |  |  | Privacy passphrase or key value.<br>Provide a localized key when `localized` is set.<br>Provide an encrypted/obfuscated value when `priv_passphrase_type` is `7` or `8a`.<br>Otherwise, provide a cleartext privacy passphrase.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase_type</samp>](## "snmp_server.users.[].priv_passphrase_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Privacy passphrase type.<br>EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.<br>Requires `localized` to be set.<br>- `0`: Key string is not encrypted.<br>- `7`: Type-7 encrypted (HIDDEN) key.<br>- `8a`: AES-256-GCM encrypted key.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_server.users.[].priv_passphrase") | String |  |  |  | Privacy passphrase or key value.<br>Interpretation depends on `localized` and `priv_passphrase_type`:<br>- If `localized` is not set: provide a cleartext privacy passphrase.<br>- If `localized` is set and `priv_passphrase_type` is omitted or `0`:<br>  provide a localized (RFC 2574 hashed) privacy key in hex.<br>- If `localized` is set and `priv_passphrase_type` is `7` or `8a`:<br>  provide the corresponding protected localized key.<br> |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "snmp_server.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "snmp_server.hosts.[].host") | String |  |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.hosts.[].vrf") | String |  |  |  |  |
@@ -181,41 +181,49 @@
           udp_port: <int>
           version: <str; "v1" | "v2c" | "v3">
 
-          # Engine ID in hexadecimal for localizing auth and/or priv.
+          # Engine ID in hexadecimal.
+          # When set, auth and priv values are interpreted as localized key material
+          # (RFC 2574, engine-ID specific) instead of cleartext passphrases.
           localized: <str>
 
           # Hash algorithm.
           auth: <str>
 
           # Authentication passphrase type.
-          # EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
-          # Requires `localized` to set.
+          # EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+          # Requires `localized` to be set.
           # - `0`: Key string is not encrypted.
           # - `7`: Type-7 encrypted (HIDDEN) key.
           # - `8a`: AES-256-GCM encrypted key.
           auth_passphrase_type: <str; "0" | "7" | "8a">
 
           # Authentication passphrase or key value.
-          # Provide a localized key when `localized` is set.
-          # Provide an encrypted/obfuscated value when `auth_passphrase_type` is `7` or `8a`.
-          # Otherwise, provide a cleartext authentication passphrase.
+          # Interpretation depends on `localized` and `auth_passphrase_type`:
+          # - If `localized` is not set: provide a cleartext authentication passphrase.
+          # - If `localized` is set and `auth_passphrase_type` is omitted or `0`:
+          #   provide a localized (RFC 2574 hashed) authentication key in hex.
+          # - If `localized` is set and `auth_passphrase_type` is `7` or `8a`:
+          #   provide the corresponding protected localized key.
           auth_passphrase: <str>
 
           # Encryption algorithm.
           priv: <str>
 
           # Privacy passphrase type.
-          # EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
-          # Requires `localized` to set.
+          # EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+          # Requires `localized` to be set.
           # - `0`: Key string is not encrypted.
           # - `7`: Type-7 encrypted (HIDDEN) key.
           # - `8a`: AES-256-GCM encrypted key.
           priv_passphrase_type: <str; "0" | "7" | "8a">
 
           # Privacy passphrase or key value.
-          # Provide a localized key when `localized` is set.
-          # Provide an encrypted/obfuscated value when `priv_passphrase_type` is `7` or `8a`.
-          # Otherwise, provide a cleartext privacy passphrase.
+          # Interpretation depends on `localized` and `priv_passphrase_type`:
+          # - If `localized` is not set: provide a cleartext privacy passphrase.
+          # - If `localized` is set and `priv_passphrase_type` is omitted or `0`:
+          #   provide a localized (RFC 2574 hashed) privacy key in hex.
+          # - If `localized` is set and `priv_passphrase_type` is `7` or `8a`:
+          #   provide the corresponding protected localized key.
           priv_passphrase: <str>
       hosts:
 

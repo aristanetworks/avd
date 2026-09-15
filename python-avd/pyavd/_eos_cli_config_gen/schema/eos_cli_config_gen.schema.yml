@@ -25582,7 +25582,11 @@ keys:
               type: str
               convert_types:
               - int
-              description: 'Engine ID in hexadecimal for localizing auth and/or priv.
+              description: 'Engine ID in hexadecimal.
+
+                When set, auth and priv values are interpreted as localized key material
+
+                (RFC 2574, engine-ID specific) instead of cleartext passphrases.
 
                 '
             auth:
@@ -25598,9 +25602,9 @@ keys:
               - 8a
               description: 'Authentication passphrase type.
 
-                EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
+                EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
 
-                Requires `localized` to set.
+                Requires `localized` to be set.
 
                 - `0`: Key string is not encrypted.
 
@@ -25611,16 +25615,13 @@ keys:
                 '
             auth_passphrase:
               type: str
-              description: 'Authentication passphrase or key value.
-
-                Provide a localized key when `localized` is set.
-
-                Provide an encrypted/obfuscated value when `auth_passphrase_type`
-                is `7` or `8a`.
-
-                Otherwise, provide a cleartext authentication passphrase.
-
-                '
+              description: "Authentication passphrase or key value.\nInterpretation
+                depends on `localized` and `auth_passphrase_type`:\n- If `localized`
+                is not set: provide a cleartext authentication passphrase.\n- If `localized`
+                is set and `auth_passphrase_type` is omitted or `0`:\n  provide a
+                localized (RFC 2574 hashed) authentication key in hex.\n- If `localized`
+                is set and `auth_passphrase_type` is `7` or `8a`:\n  provide the corresponding
+                protected localized key.\n"
             priv:
               type: str
               description: 'Encryption algorithm.
@@ -25634,9 +25635,9 @@ keys:
               - 8a
               description: 'Privacy passphrase type.
 
-                EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
+                EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
 
-                Requires `localized` to set.
+                Requires `localized` to be set.
 
                 - `0`: Key string is not encrypted.
 
@@ -25647,16 +25648,13 @@ keys:
                 '
             priv_passphrase:
               type: str
-              description: 'Privacy passphrase or key value.
-
-                Provide a localized key when `localized` is set.
-
-                Provide an encrypted/obfuscated value when `priv_passphrase_type`
-                is `7` or `8a`.
-
-                Otherwise, provide a cleartext privacy passphrase.
-
-                '
+              description: "Privacy passphrase or key value.\nInterpretation depends
+                on `localized` and `priv_passphrase_type`:\n- If `localized` is not
+                set: provide a cleartext privacy passphrase.\n- If `localized` is
+                set and `priv_passphrase_type` is omitted or `0`:\n  provide a localized
+                (RFC 2574 hashed) privacy key in hex.\n- If `localized` is set and
+                `priv_passphrase_type` is `7` or `8a`:\n  provide the corresponding
+                protected localized key.\n"
       hosts:
         type: list
         items:

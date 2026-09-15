@@ -71212,15 +71212,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """udp_port will not be used if no remote_address is configured."""
             version: Version | None
             localized: str | None
-            """Engine ID in hexadecimal for localizing auth and/or priv."""
+            """
+            Engine ID in hexadecimal.
+            When set, auth and priv values are interpreted as localized key material
+            (RFC 2574, engine-ID specific) instead of cleartext passphrases.
+            """
             auth: str | None
             """Hash algorithm."""
             auth_passphrase_type: AuthPassphraseType | None
             """
             Authentication passphrase type.
-            EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and
-            4.34.8M+.
-            Requires `localized` to set.
+            EOS version dependent. Supported starting 4.34.8M, 4.35.6M and
+            4.36.2F.
+            Requires `localized` to be set.
             - `0`: Key string is not encrypted.
             - `7`: Type-7 encrypted
             (HIDDEN) key.
@@ -71229,19 +71233,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             auth_passphrase: str | None
             """
             Authentication passphrase or key value.
-            Provide a localized key when `localized` is set.
-            Provide an
-            encrypted/obfuscated value when `auth_passphrase_type` is `7` or `8a`.
-            Otherwise, provide a
-            cleartext authentication passphrase.
+            Interpretation depends on `localized` and
+            `auth_passphrase_type`:
+            - If `localized` is not set: provide a cleartext authentication passphrase.
+            - If `localized` is set and `auth_passphrase_type` is omitted or `0`:
+              provide a localized (RFC
+            2574 hashed) authentication key in hex.
+            - If `localized` is set and `auth_passphrase_type` is `7` or
+            `8a`:
+              provide the corresponding protected localized key.
             """
             priv: str | None
             """Encryption algorithm."""
             priv_passphrase_type: PrivPassphraseType | None
             """
             Privacy passphrase type.
-            EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
-            Requires `localized` to set.
+            EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+            Requires `localized` to be set.
             - `0`: Key string is not encrypted.
             - `7`: Type-7 encrypted (HIDDEN)
             key.
@@ -71250,11 +71258,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             priv_passphrase: str | None
             """
             Privacy passphrase or key value.
-            Provide a localized key when `localized` is set.
-            Provide an
-            encrypted/obfuscated value when `priv_passphrase_type` is `7` or `8a`.
-            Otherwise, provide a
-            cleartext privacy passphrase.
+            Interpretation depends on `localized` and `priv_passphrase_type`:
+            -
+            If `localized` is not set: provide a cleartext privacy passphrase.
+            - If `localized` is set and
+            `priv_passphrase_type` is omitted or `0`:
+              provide a localized (RFC 2574 hashed) privacy key in
+            hex.
+            - If `localized` is set and `priv_passphrase_type` is `7` or `8a`:
+              provide the corresponding
+            protected localized key.
             """
 
             if TYPE_CHECKING:
@@ -71295,40 +71308,52 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            `localized` is not set.
                         udp_port: udp_port will not be used if no remote_address is configured.
                         version: version
-                        localized: Engine ID in hexadecimal for localizing auth and/or priv.
+                        localized:
+                           Engine ID in hexadecimal.
+                           When set, auth and priv values are interpreted as localized key material
+                           (RFC 2574, engine-ID specific) instead of cleartext passphrases.
                         auth: Hash algorithm.
                         auth_passphrase_type:
                            Authentication passphrase type.
-                           EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and
-                           4.34.8M+.
-                           Requires `localized` to set.
+                           EOS version dependent. Supported starting 4.34.8M, 4.35.6M and
+                           4.36.2F.
+                           Requires `localized` to be set.
                            - `0`: Key string is not encrypted.
                            - `7`: Type-7 encrypted
                            (HIDDEN) key.
                            - `8a`: AES-256-GCM encrypted key.
                         auth_passphrase:
                            Authentication passphrase or key value.
-                           Provide a localized key when `localized` is set.
-                           Provide an
-                           encrypted/obfuscated value when `auth_passphrase_type` is `7` or `8a`.
-                           Otherwise, provide a
-                           cleartext authentication passphrase.
+                           Interpretation depends on `localized` and
+                           `auth_passphrase_type`:
+                           - If `localized` is not set: provide a cleartext authentication passphrase.
+                           - If `localized` is set and `auth_passphrase_type` is omitted or `0`:
+                             provide a localized (RFC
+                           2574 hashed) authentication key in hex.
+                           - If `localized` is set and `auth_passphrase_type` is `7` or
+                           `8a`:
+                             provide the corresponding protected localized key.
                         priv: Encryption algorithm.
                         priv_passphrase_type:
                            Privacy passphrase type.
-                           EOS version dependent. Supported in EOS 4.36.2F+, 4.35.6M+, and 4.34.8M+.
-                           Requires `localized` to set.
+                           EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+                           Requires `localized` to be set.
                            - `0`: Key string is not encrypted.
                            - `7`: Type-7 encrypted (HIDDEN)
                            key.
                            - `8a`: AES-256-GCM encrypted key.
                         priv_passphrase:
                            Privacy passphrase or key value.
-                           Provide a localized key when `localized` is set.
-                           Provide an
-                           encrypted/obfuscated value when `priv_passphrase_type` is `7` or `8a`.
-                           Otherwise, provide a
-                           cleartext privacy passphrase.
+                           Interpretation depends on `localized` and `priv_passphrase_type`:
+                           -
+                           If `localized` is not set: provide a cleartext privacy passphrase.
+                           - If `localized` is set and
+                           `priv_passphrase_type` is omitted or `0`:
+                             provide a localized (RFC 2574 hashed) privacy key in
+                           hex.
+                           - If `localized` is set and `priv_passphrase_type` is `7` or `8a`:
+                             provide the corresponding
+                           protected localized key.
 
                     """
 
