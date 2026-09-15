@@ -4019,7 +4019,7 @@ keys:
           description: MAC access list name.
         multicast:
           type: dict
-          description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix
+          description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix
             but not combination of both.
           keys:
             ipv4:
@@ -4032,7 +4032,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet.
+                        description: Standard IPv4 access-list name or IPv4 multicast
+                          group prefix with mask.
                       out:
                         type: bool
                 static:
@@ -4047,7 +4048,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet.
+                        description: Standard IPv6 access-list name or IPv6 multicast
+                          group prefix with mask.
                 static:
                   type: bool
         ospf_network_point_to_point:
@@ -11364,6 +11366,19 @@ keys:
                 description: Only validate interfaces defined in the AVD structured
                   configuration for errdisabled state.
                 default: false
+      bgp:
+        type: dict
+        description: Validation settings for BGP.
+        keys:
+          check_tcp_queues:
+            type: bool
+            description: Flag to check if the TCP session queues are empty for all
+              BGP peers.
+          minimum_established_time:
+            type: int
+            convert_types:
+            - str
+            description: Minimum established time (seconds) for all BGP sessions.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -14471,6 +14486,47 @@ keys:
                       min: 1
                       max: 65535
                       description: PIM hello interval in seconds.
+        multicast:
+          type: dict
+          description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix
+            but not combination of both.
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                boundaries:
+                  type: list
+                  primary_key: boundary
+                  items:
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        description: Standard IPv4 access-list name or IPv4 multicast
+                          group prefix with mask.
+                      out:
+                        type: bool
+                        description: Restrict multicast routing to and from the interface
+                          for group.
+                static:
+                  type: bool
+            ipv6:
+              type: dict
+              description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix
+                but not combination of both.
+              keys:
+                boundaries:
+                  type: list
+                  primary_key: boundary
+                  items:
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        description: Standard IPv6 access-list name or IPv6 multicast
+                          group prefix with mask.
+                static:
+                  type: bool
         service_profile:
           type: str
           description: QOS profile.
@@ -16994,6 +17050,22 @@ keys:
       bgp:
         type: dict
         keys:
+          convergence:
+            type: dict
+            keys:
+              slow_peer_time:
+                type: int
+                min: 1
+                max: 3600
+                description: Maximum amount of time to wait in seconds before declaring
+                  initial BGP convergence for peers that do not establish session
+                  within a reasonable time.
+              time:
+                type: int
+                min: 1
+                max: 3600
+                description: Maximum amount of time to wait in seconds before declaring
+                  initial BGP convergence.
           default:
             type: dict
             keys:
@@ -27282,7 +27354,7 @@ keys:
               keys:
                 boundaries:
                   type: list
-                  description: Boundaries can be either 1 ACL or a list of multicast
+                  description: Boundaries can be either list of ACLs or multicast
                     IP address_range(s)/prefix but not combination of both.
                   primary_key: boundary
                   items:
@@ -27290,8 +27362,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: IPv4 access-list name or IPv4 multicast group
-                          prefix with mask.
+                        description: Standard IPv4 access-list name or IPv4 multicast
+                          group prefix with mask.
                         convert_types:
                         - int
                       out:
@@ -27315,7 +27387,7 @@ keys:
               keys:
                 boundaries:
                   type: list
-                  description: Boundaries can be either 1 ACL or a list of multicast
+                  description: Boundaries can be either list of ACLs or multicast
                     IP address_range(s)/prefix but not combination of both.
                   primary_key: boundary
                   items:
@@ -27323,8 +27395,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: IPv6 access-list name or IPv6 multicast group
-                          prefix with mask.
+                        description: Standard IPv6 access-list name or IPv6 multicast
+                          group prefix with mask.
                         convert_types:
                         - int
                 source_route_export:
