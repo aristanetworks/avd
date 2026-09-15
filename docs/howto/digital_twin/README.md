@@ -330,6 +330,23 @@ spine:
 !!! note
     For `veos` and `cloudeos` ACT node types, `mgmt_ip` is optional. For all other node types (e.g., `generic`, `third-party`, `cvp`), `mgmt_ip` must be configured, otherwise AVD will raise an exception.
 
+#### ACT Management Gateway Configuration
+
+The `digital_twin.mgmt_gateway` setting defines the next-hop gateway for the OOB management network of an ACT Digital Twin node.
+It is used only when running in ACT Digital Twin mode and when the device has a regular `mgmt_ip` configured.
+
+```yaml
+spine:
+  nodes:
+    - name: spine1
+      mgmt_ip: 192.168.1.11/24
+      digital_twin:
+        mgmt_gateway: 192.168.1.1
+```
+
+When `digital_twin.mgmt_gateway` is set, AVD uses it for the generated ACT OOB management configuration and adds a default route in the management VRF.
+If it is not set, AVD falls back to the regular management gateway configuration.
+
 #### ACT OS Version Configuration
 
 Each ACT node type has a default OS version that will be used if not explicitly configured (please see [ACT Default Values](#act-default-values) for details).
