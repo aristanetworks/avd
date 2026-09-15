@@ -638,6 +638,9 @@ ansible-playbook playbooks/anta-runner.yml -vvv
 !!! tip
     Running `ansible-playbook` with `-vvv` is particularly helpful to troubleshoot why some specific AVD-generated tests are missing from a device's final catalog. PyAVD will output detailed information about skipped tests and the reasons for their exclusion.
 
+!!! tip
+    When debugging eAPI connectivity or session-based authentication (`anta_use_session_auth`), run with `-vvvv`. Logs from the `asynceapi` library (HTTP login, session cookies, and request flow) are emitted at DEBUG alongside ANTA logs.
+
 ### Understanding Log Output
 
 `anta_runner` processes devices in parallel batches for improved performance. To help correlate log messages to specific operations or device batches, each log entry is prefixed with a unique identifier:
