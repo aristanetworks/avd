@@ -83,6 +83,9 @@ plugins:
         # both live under tools/. mkdocs_hook.py copies the built tree into
         # site/_assets/schema-explorer/ on `mkdocs build`.
         - tools/*
+        # The live ADR decision log follows devel and is not copied into
+        # versioned documentation snapshots. A curated overview is published.
+        - adr/*
         # Local mkdocs build output. With `docs_dir: .`, serving after a build
         # would otherwise ingest generated `site/` files as source media.
         - site/*
@@ -262,6 +265,7 @@ nav:
       - Porting Guide: docs/porting-guides/6.x.x.md
   - Contribute:
       - Overview: docs/contribution/overview.md
+      - Architecture Decisions: docs/contribution/architecture-decisions.md
       - Development Tooling: docs/contribution/development-tooling.md
       - End-to-End Test Tool:
           - Using the Tool: docs/contribution/e2e-test/using-the-tool.md
