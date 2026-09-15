@@ -9966,8 +9966,8 @@ keys:
             up to two levels (adapter->profile->parent_profile).
 
             From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
-            is enabled, a profile can inherit settings across an infinite number
-            of levels.
+            is enabled, a profile can inherit settings across an infinite number of
+            levels.
 
             '
         port_channel:
@@ -10836,8 +10836,8 @@ keys:
             to two levels (svi -> svi_profile -> svi_parent_profile).
 
             From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
-            is enabled, a profile can inherit settings across an infinite number
-            of levels.
+            is enabled, a profile can inherit settings across an infinite number of
+            levels.
 
             '
   system_mac_address:
