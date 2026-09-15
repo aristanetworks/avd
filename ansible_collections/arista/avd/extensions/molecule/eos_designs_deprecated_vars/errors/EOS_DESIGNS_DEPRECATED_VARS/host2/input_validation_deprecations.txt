@@ -1,0 +1,5 @@
+[['mgmt_interface']]: 'The input data model 'mgmt_interface' is deprecated and will be removed in AVD version 7.0.0. Use 'mgmt_interface_settings.interface' instead.'
+[['mgmt_interface_description']]: 'The input data model 'mgmt_interface_description' is deprecated and will be removed in AVD version 7.0.0. Use 'mgmt_interface_settings.description' instead.'
+[['mgmt_interface_vrf']]: 'The input data model 'mgmt_interface_vrf' is deprecated and will be removed in AVD version 7.0.0. Use 'mgmt_interface_settings.vrf' instead.'
+[['mgmt_vrf_routing']]: 'The input data model 'mgmt_vrf_routing' is deprecated and will be removed in AVD version 7.0.0. Use 'mgmt_interface_settings.vrf_routing' instead.'
+[['pe', 'defaults', 'node_sid_base']]: 'The input data model 'pe.defaults.node_sid_base' is deprecated and will be removed in AVD version 7.0.0. Use 'isis_sr.ipv4_node_sid_index_base' instead.'

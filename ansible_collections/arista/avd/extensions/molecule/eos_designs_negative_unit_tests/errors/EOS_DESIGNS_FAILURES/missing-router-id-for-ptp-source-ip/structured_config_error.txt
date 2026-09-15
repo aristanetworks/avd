@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: PTP source IP is set to 'ptp.source_ip: router_id' but no router ID is configured for this device.

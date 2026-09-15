@@ -81,6 +81,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_accepted_routes") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_accepted_routes.limit") | Integer | Required |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit") | Dictionary |  |  |  | Warning threshold for the maximum number of accepted routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit.count") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;percent</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit.percent") | Integer |  |  | Min: 1<br>Max: 100 | Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -112,6 +117,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "<network_services_keys.name>.[].vrfs") | List, items: Dictionary |  |  |  | VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the node.<br><br>It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants<br>are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.<br><br>VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,<br>route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.<br>Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_peers</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers") | List, items: Dictionary |  |  |  | List of BGP peer definitions.<br>This will configure BGP neighbors inside the tenant VRF for peering with external devices.<br>The configured peer will automatically be activated for ipv4 or ipv6 address family based on the ip address.<br>Note, only ipv4 and ipv6 address families are currently supported in eos_designs.<br>For other address families, use custom_structured configuration with EOS Config schema.<br> |
@@ -145,6 +152,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers.interval") | Integer | Required |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers.min_rx") | Integer | Required |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers.multiplier") | Integer | Required |  | Min: 3<br>Max: 50 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_reflector_client</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].route_reflector_client") | Boolean |  |  |  | Configure the peer as a route-reflector-client. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_peer_groups</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups") | List, items: Dictionary |  |  |  | List of BGP peer groups definitions.<br>This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.<br>Since BGP peer groups are configured at higher BGP level, shared between VRFs,<br>peer_group names should not overlap between VRFs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].name") | String | Required, Unique |  |  | BGP peer group name. |
@@ -218,6 +226,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes.limit") | Integer | Required |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit") | Dictionary |  |  |  | Warning threshold for the maximum number of accepted routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit.count") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;percent</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit.percent") | Integer |  |  | Min: 1<br>Max: 100 | Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -249,6 +262,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_bgp_peers</samp>](## "<network_services_keys.name>.[].vrfs.[].validate_bgp_peers") | Boolean |  | `False` |  | Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis. |
     | [<samp>network_services</samp>](## "network_services") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].name") | String | Required, Unique |  |  | Specify a tenant name.<br>Tenant provide a construct to group L3 VRFs and L2 VLANs.<br>Networks services can be filtered by tenant name.<br> |
@@ -324,6 +339,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "network_services.[].bgp_peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "network_services.[].bgp_peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "network_services.[].bgp_peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "network_services.[].bgp_peer_groups.[].maximum_accepted_routes") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "network_services.[].bgp_peer_groups.[].maximum_accepted_routes.limit") | Integer | Required |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "network_services.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit") | Dictionary |  |  |  | Warning threshold for the maximum number of accepted routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "network_services.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit.count") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;percent</samp>](## "network_services.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit.percent") | Integer |  |  | Min: 1<br>Max: 100 | Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "network_services.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "network_services.[].bgp_peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_services.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -355,6 +375,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_services.[].bgp_peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "network_services.[].bgp_peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "network_services.[].bgp_peer_groups.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "network_services.[].bgp_peer_groups.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "network_services.[].bgp_peer_groups.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "network_services.[].vrfs") | List, items: Dictionary |  |  |  | VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the node.<br><br>It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants<br>are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.<br><br>VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,<br>route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.<br>Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_peers</samp>](## "network_services.[].vrfs.[].bgp_peers") | List, items: Dictionary |  |  |  | List of BGP peer definitions.<br>This will configure BGP neighbors inside the tenant VRF for peering with external devices.<br>The configured peer will automatically be activated for ipv4 or ipv6 address family based on the ip address.<br>Note, only ipv4 and ipv6 address families are currently supported in eos_designs.<br>For other address families, use custom_structured configuration with EOS Config schema.<br> |
@@ -388,6 +410,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "network_services.[].vrfs.[].bgp_peers.[].bfd_timers.interval") | Integer | Required |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "network_services.[].vrfs.[].bgp_peers.[].bfd_timers.min_rx") | Integer | Required |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "network_services.[].vrfs.[].bgp_peers.[].bfd_timers.multiplier") | Integer | Required |  | Min: 3<br>Max: 50 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_reflector_client</samp>](## "network_services.[].vrfs.[].bgp_peers.[].route_reflector_client") | Boolean |  |  |  | Configure the peer as a route-reflector-client. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "network_services.[].vrfs.[].bgp_peers.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_peer_groups</samp>](## "network_services.[].vrfs.[].bgp_peer_groups") | List, items: Dictionary |  |  |  | List of BGP peer groups definitions.<br>This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.<br>Since BGP peer groups are configured at higher BGP level, shared between VRFs,<br>peer_group names should not overlap between VRFs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].name") | String | Required, Unique |  |  | BGP peer group name. |
@@ -461,6 +484,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes.limit") | Integer | Required |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit") | Dictionary |  |  |  | Warning threshold for the maximum number of accepted routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit.count") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;percent</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_accepted_routes.warning_limit.percent") | Integer |  |  | Min: 1<br>Max: 100 | Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -492,6 +520,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_bgp_peers</samp>](## "network_services.[].vrfs.[].validate_bgp_peers") | Boolean |  | `False` |  | Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis. |
 
 === "YAML"
@@ -674,6 +704,19 @@
             # Percentage of maximum number of routes at which to warn ("<1-100> percent").
             maximum_routes_warning_limit: <str>
             maximum_routes_warning_only: <bool>
+            maximum_accepted_routes:
+
+              # Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+              limit: <int; 0-4294967294; required>
+
+              # Warning threshold for the maximum number of accepted routes.
+              warning_limit:
+
+                # Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                count: <int; 0-4294967294>
+
+                # Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                percent: <int; 1-100>
 
             # Missing policy configuration for all address-families.
             missing_policy:
@@ -747,6 +790,13 @@
 
             # Maximum number of hops.
             ttl_maximum_hops: <int; 0-254>
+
+            # Maximum number of advertised routes (0 means unlimited).
+            maximum_advertised_routes: <int; 0-4294967294>
+
+            # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
+            # Percentage of maximum number of routes at which to warn ("<1-100> percent").
+            maximum_advertised_routes_warning_limit: <str>
 
         # VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the node.
         #
@@ -847,6 +897,9 @@
                   # Rate in milliseconds.
                   min_rx: <int; 50-60000; required>
                   multiplier: <int; 3-50; required>
+
+                # Configure the peer as a route-reflector-client.
+                route_reflector_client: <bool>
                 shutdown: <bool>
 
             # List of BGP peer groups definitions.
@@ -1021,6 +1074,19 @@
                 # Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 maximum_routes_warning_limit: <str>
                 maximum_routes_warning_only: <bool>
+                maximum_accepted_routes:
+
+                  # Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                  limit: <int; 0-4294967294; required>
+
+                  # Warning threshold for the maximum number of accepted routes.
+                  warning_limit:
+
+                    # Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                    count: <int; 0-4294967294>
+
+                    # Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                    percent: <int; 1-100>
 
                 # Missing policy configuration for all address-families.
                 missing_policy:
@@ -1094,6 +1160,13 @@
 
                 # Maximum number of hops.
                 ttl_maximum_hops: <int; 0-254>
+
+                # Maximum number of advertised routes (0 means unlimited).
+                maximum_advertised_routes: <int; 0-4294967294>
+
+                # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
+                # Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                maximum_advertised_routes_warning_limit: <str>
 
             # Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
             validate_bgp_peers: <bool; default=False>
@@ -1274,6 +1347,19 @@
             # Percentage of maximum number of routes at which to warn ("<1-100> percent").
             maximum_routes_warning_limit: <str>
             maximum_routes_warning_only: <bool>
+            maximum_accepted_routes:
+
+              # Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+              limit: <int; 0-4294967294; required>
+
+              # Warning threshold for the maximum number of accepted routes.
+              warning_limit:
+
+                # Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                count: <int; 0-4294967294>
+
+                # Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                percent: <int; 1-100>
 
             # Missing policy configuration for all address-families.
             missing_policy:
@@ -1347,6 +1433,13 @@
 
             # Maximum number of hops.
             ttl_maximum_hops: <int; 0-254>
+
+            # Maximum number of advertised routes (0 means unlimited).
+            maximum_advertised_routes: <int; 0-4294967294>
+
+            # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
+            # Percentage of maximum number of routes at which to warn ("<1-100> percent").
+            maximum_advertised_routes_warning_limit: <str>
 
         # VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the node.
         #
@@ -1447,6 +1540,9 @@
                   # Rate in milliseconds.
                   min_rx: <int; 50-60000; required>
                   multiplier: <int; 3-50; required>
+
+                # Configure the peer as a route-reflector-client.
+                route_reflector_client: <bool>
                 shutdown: <bool>
 
             # List of BGP peer groups definitions.
@@ -1621,6 +1717,19 @@
                 # Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 maximum_routes_warning_limit: <str>
                 maximum_routes_warning_only: <bool>
+                maximum_accepted_routes:
+
+                  # Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                  limit: <int; 0-4294967294; required>
+
+                  # Warning threshold for the maximum number of accepted routes.
+                  warning_limit:
+
+                    # Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive with `percent`. `count` takes precedence.
+                    count: <int; 0-4294967294>
+
+                    # Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive with `count`. `count` takes precedence.
+                    percent: <int; 1-100>
 
                 # Missing policy configuration for all address-families.
                 missing_policy:
@@ -1694,6 +1803,13 @@
 
                 # Maximum number of hops.
                 ttl_maximum_hops: <int; 0-254>
+
+                # Maximum number of advertised routes (0 means unlimited).
+                maximum_advertised_routes: <int; 0-4294967294>
+
+                # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
+                # Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                maximum_advertised_routes_warning_limit: <str>
 
             # Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
             validate_bgp_peers: <bool; default=False>

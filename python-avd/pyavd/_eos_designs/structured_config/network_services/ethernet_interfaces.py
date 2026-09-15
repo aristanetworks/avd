@@ -9,7 +9,8 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import default, get_ip_from_ip_prefix
+from pyavd._utils.default import default
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -179,11 +180,11 @@ class EthernetInterfacesMixin(Protocol):
         if l3_interface.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(name=l3_interface.ipv4_acl_in, interface_name=interface.name, interface_ip=interface_ip)
             interface.access_group_in = acl.name
-            self._set_ipv4_acl(acl)
+            self.structured_config_utils._set_ipv4_acl(acl)
         if l3_interface.ipv4_acl_out:
             acl = self.shared_utils.get_ipv4_acl(name=l3_interface.ipv4_acl_out, interface_name=interface.name, interface_ip=interface_ip)
             interface.access_group_out = acl.name
-            self._set_ipv4_acl(acl)
+            self.structured_config_utils._set_ipv4_acl(acl)
         self._update_ethernet_interface_ospf(interface, l3_interface=l3_interface, vrf=vrf, tenant=tenant)
         self._update_ethernet_interface_pim(interface, l3_interface=l3_interface, vrf=vrf, tenant=tenant)
 
@@ -251,13 +252,13 @@ class EthernetInterfacesMixin(Protocol):
             self.structured_config.ipv6_unicast_routing = True
         ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_address) if "/" in ipv6_address else ipv6_address
         if l3_interface.ipv6_acl_in:
-            acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_in, interface_name=interface.name, interface_ip=ipv6_interface_ip)
+            acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_in, interface_name=interface.name, interface_ipv6=ipv6_interface_ip)
             interface.ipv6_access_group_in = acl.name
-            self._set_ipv6_acl(acl)
+            self.structured_config_utils._set_ipv6_acl(acl)
         if l3_interface.ipv6_acl_out:
-            acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_out, interface_name=interface.name, interface_ip=ipv6_interface_ip)
+            acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_out, interface_name=interface.name, interface_ipv6=ipv6_interface_ip)
             interface.ipv6_access_group_out = acl.name
-            self._set_ipv6_acl(acl)
+            self.structured_config_utils._set_ipv6_acl(acl)
 
     def _validate_l3_interface_per_node_list_lengths(
         self: AvdStructuredConfigNetworkServicesProtocol,

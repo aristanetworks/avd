@@ -202,6 +202,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "port_channel_interfaces.[].ptp.vlan") | String |  |  |  | VLAN can be 'all' or list of vlans as string. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transport</samp>](## "port_channel_interfaces.[].ptp.transport") | String |  |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code><br>- <code>layer2</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpass</samp>](## "port_channel_interfaces.[].ptp.mpass") | Boolean |  |  |  | When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.<br>Arista PTP enabled devices always place PTP messages on the same physical link within the port-channel.<br>Hence, MPASS is needed only on MLAG port-channels connected to non-Arista devices. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;management</samp>](## "port_channel_interfaces.[].ptp.management") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "port_channel_interfaces.[].ptp.management.drop") | Boolean |  |  |  | Drop PTP management messages. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "port_channel_interfaces.[].ip_address") | String |  |  |  | IPv4 address/mask or "dhcp". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_secondaries</samp>](## "port_channel_interfaces.[].ip_address_secondaries") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].ip_address_secondaries.[]") | String |  |  |  | IPv4 address/mask. |
@@ -297,6 +299,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hello</samp>](## "port_channel_interfaces.[].pim.ipv4.hello") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "port_channel_interfaces.[].pim.ipv4.hello.count") | String |  |  |  | Number of missed hellos after which the neighbor expires. Range <1.5-65535>. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "port_channel_interfaces.[].pim.ipv4.hello.interval") | Integer |  |  | Min: 1<br>Max: 65535 | PIM hello interval in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "port_channel_interfaces.[].multicast") | Dictionary |  |  |  | Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "port_channel_interfaces.[].multicast.ipv4") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boundaries</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;boundary</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries.[].boundary") | String | Required, Unique |  |  | Standard IPv4 access-list name or IPv4 multicast group prefix with mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out</samp>](## "port_channel_interfaces.[].multicast.ipv4.boundaries.[].out") | Boolean |  |  |  | Restrict multicast routing to and from the interface for group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "port_channel_interfaces.[].multicast.ipv4.static") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "port_channel_interfaces.[].multicast.ipv6") | Dictionary |  |  |  | Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boundaries</samp>](## "port_channel_interfaces.[].multicast.ipv6.boundaries") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;boundary</samp>](## "port_channel_interfaces.[].multicast.ipv6.boundaries.[].boundary") | String | Required, Unique |  |  | Standard IPv6 access-list name or IPv6 multicast group prefix with mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "port_channel_interfaces.[].multicast.ipv6.static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_profile</samp>](## "port_channel_interfaces.[].service_profile") | String |  |  |  | QOS profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_network_point_to_point</samp>](## "port_channel_interfaces.[].ospf_network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_area</samp>](## "port_channel_interfaces.[].ospf_area") | String |  |  |  |  |
@@ -905,6 +917,10 @@
           # Arista PTP enabled devices always place PTP messages on the same physical link within the port-channel.
           # Hence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.
           mpass: <bool>
+          management:
+
+            # Drop PTP management messages.
+            drop: <bool>
 
         # IPv4 address/mask or "dhcp".
         ip_address: <str>
@@ -1130,6 +1146,26 @@
 
               # PIM hello interval in seconds.
               interval: <int; 1-65535>
+
+        # Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of both.
+        multicast:
+          ipv4:
+            boundaries:
+
+                # Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
+              - boundary: <str; required; unique>
+
+                # Restrict multicast routing to and from the interface for group.
+                out: <bool>
+            static: <bool>
+
+          # Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of both.
+          ipv6:
+            boundaries:
+
+                # Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
+              - boundary: <str; required; unique>
+            static: <bool>
 
         # QOS profile.
         service_profile: <str>

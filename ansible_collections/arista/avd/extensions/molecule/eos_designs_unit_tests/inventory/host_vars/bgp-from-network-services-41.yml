@@ -1,3 +1,7 @@
 ---
 underlay_rfc5549: true
 overlay_mlag_rfc5549: true
+
+# Test that VRF-level graceful restart overrides the global setting.
+bgp_graceful_restart:
+  enabled: true

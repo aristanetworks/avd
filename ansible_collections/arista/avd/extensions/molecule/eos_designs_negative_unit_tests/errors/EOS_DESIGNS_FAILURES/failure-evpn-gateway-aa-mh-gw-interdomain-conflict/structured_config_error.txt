@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: The all-active EVPN Gateway redundancy feature requires evpn_gateway.evpn_l3.inter_domain to be enabled.

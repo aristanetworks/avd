@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: monitor_connectivity.local_interfaces 'Loopback0' has to be defined in monitor_connectivity.interface_sets.

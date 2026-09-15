@@ -529,7 +529,7 @@ keys:
           description: MAC access list name.
         multicast:
           type: dict
-          description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both.
+          description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of both.
           keys:
             ipv4:
               type: dict
@@ -541,7 +541,7 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet.
+                        description: Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
                       out:
                         type: bool
                 static:
@@ -556,7 +556,7 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet.
+                        description: Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
                 static:
                   type: bool
         ospf_network_point_to_point:
@@ -864,6 +864,13 @@ keys:
             transport:
               type: str
               valid_values: ["ipv4", "ipv6", "layer2"]
+            management:
+              # In the future, this will grow to include both `drop` and `drop_multicast_boundary` boolean settings.
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         profile:
           type: str
           description: Interface profile.
@@ -986,6 +993,11 @@ keys:
                   max: 4094
                   convert_types:
                     - str
+                allow_access_list:
+                  type: str
+                  convert_types:
+                    - int
+                  description: Name of the IPv4/IPv6 standard/extended access list to be applied to unauthenticated traffic.
             host_mode:
               type: dict
               keys:

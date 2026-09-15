@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Failed to generate ACT Digital Twin metadata for device 'digital-twin-act-missing-node-type' using platform 'vEOS-lab'. 'digital_twin.act_node_type' key is missing in platform settings.

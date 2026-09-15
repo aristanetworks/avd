@@ -8,7 +8,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default
+from pyavd._utils.default import default
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -92,8 +92,18 @@ class MgmtMixin(Protocol):
         return self.inputs.mgmt_vrf_routing
 
     @cached_property
-    def mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
-        return default(self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
+    def oob_mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
+        """
+        Management IPv4 gateway used for the generated OOB management interface.
+
+        In ACT Digital Twin mode, `digital_twin.mgmt_gateway` takes precedence over the regular management gateway.
+        """
+        regular_mgmt_gateway = default(self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
+
+        if self.is_act_digital_twin and self.node_config.mgmt_ip is not None:
+            return default(self.node_config.digital_twin.mgmt_gateway, regular_mgmt_gateway)
+
+        return regular_mgmt_gateway
 
     @cached_property
     def ipv6_mgmt_gateway(self: SharedUtilsProtocol) -> str | None:

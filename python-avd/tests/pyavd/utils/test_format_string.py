@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from pyavd._utils import AvdStringFormatter
+from pyavd._utils.format_string import AvdStringFormatter
 
 
 class DummyClass:
