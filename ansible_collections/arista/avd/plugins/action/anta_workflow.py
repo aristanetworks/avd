@@ -726,8 +726,9 @@ def setup_root_logger(unique_id: str, log_queue: Queue, verbosity: int) -> None:
         logging.getLogger("anta").setLevel(logging.INFO)
         logging.getLogger("asynceapi").setLevel(logging.INFO)
     elif verbosity in (1, 2):
-        # All loggers except low-level libraries (WARNING) will be at INFO
+        # All loggers except low-level libraries and asynceapi (WARNING) will be at INFO
         root_logger.setLevel(logging.INFO)
+        logging.getLogger("asynceapi").setLevel(logging.WARNING)
     else:
         # All loggers will be at WARNING
         root_logger.setLevel(logging.WARNING)
