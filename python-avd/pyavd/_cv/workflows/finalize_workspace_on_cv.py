@@ -15,7 +15,7 @@ from pyavd._cv.client.exceptions import (
     CVWorkspaceSubmitFailedInactiveDevices,
     CVWorkspaceSynchronizationFailed,
 )
-from pyavd._utils import get_v2
+from pyavd._utils.get import get_v2
 
 from .constants import EOS_CLI_WARNINGS
 from .models import (

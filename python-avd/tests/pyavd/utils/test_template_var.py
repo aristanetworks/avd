@@ -9,7 +9,7 @@ import pytest
 from ansible.parsing.dataloader import DataLoader
 from ansible.template import Templar
 
-from pyavd._utils import AVDTemplar
+from pyavd._utils.avd_templar import AVDTemplar
 from pyavd._utils.template_var import template_var
 
 

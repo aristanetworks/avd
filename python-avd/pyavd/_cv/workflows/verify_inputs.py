@@ -7,7 +7,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._cv.client.exceptions import CVDuplicatedDevices
-from pyavd._utils import groupby_obj
+from pyavd._utils.groupby import groupby_obj
 
 from .models import DuplicatedDevices
 
