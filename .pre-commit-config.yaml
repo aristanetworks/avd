@@ -157,7 +157,7 @@ repos:
         # as well.
         additional_dependencies:
           - 'ansible-core>=2.16.0,<2.22.0'
-          - 'anta>=1.8.0'
+          - 'anta>=1.10.0'
           - 'coverage[toml]==7.15.2'
           - 'deepmerge>=1.1.0'
           - 'gitpython>=3.1.57'

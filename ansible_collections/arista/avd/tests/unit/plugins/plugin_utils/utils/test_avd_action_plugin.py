@@ -14,6 +14,7 @@ from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import AnsibleDisplayHandler
+from pyavd._errors import AvdDeprecationWarning
 
 
 class TestAVDActionPlugin:
@@ -291,29 +292,64 @@ class TestAVDActionPlugin:
         mock_display.warning.assert_not_called()
 
     @pytest.mark.parametrize(
-        ("warning_type", "message", "expected_key"),
+        ("warning", "expected_result"),
         [
-            pytest.param(UserWarning, "This is a standard warning.", "warnings", id="user_warning"),
-            pytest.param(DeprecationWarning, "This is a deprecation.", "deprecations", id="deprecation_warning"),
+            pytest.param(
+                UserWarning("This is a standard warning."),
+                {"warnings": ["This is a standard warning."], "deprecations": []},
+                id="user_warning",
+            ),
+            pytest.param(
+                DeprecationWarning("This is a deprecation."),
+                {"warnings": [], "deprecations": [{"msg": "This is a deprecation."}]},
+                id="deprecation_warning",
+            ),
+            pytest.param(
+                AvdDeprecationWarning(["old_key"], remove_in_version="7.0.0"),
+                {
+                    "warnings": [],
+                    "deprecations": [
+                        {
+                            "msg": "The input data model 'old_key' is deprecated.",
+                            "version": "7.0.0",
+                            "collection_name": "arista.avd",
+                        }
+                    ],
+                },
+                id="deprecation_warning_with_version",
+            ),
+            pytest.param(
+                AvdDeprecationWarning(["old_key"], remove_after_date="2027-01-01"),
+                {
+                    "warnings": [],
+                    "deprecations": [
+                        {
+                            "msg": "The input data model 'old_key' is deprecated.",
+                            "date": "2027-01-01",
+                            "collection_name": "arista.avd",
+                        }
+                    ],
+                },
+                id="deprecation_warning_with_date",
+            ),
         ],
     )
-    def test_warning_capture(self, action_module: Callable[..., AVDActionPlugin], warning_type: type[Warning], message: str, expected_key: str) -> None:
+    def test_warning_capture(
+        self, action_module: Callable[..., AVDActionPlugin], warning: Warning, expected_result: dict[str, list[str | dict[str, str]]]
+    ) -> None:
         """Test that Python warnings are captured and added to the correct list in the result."""
 
         class ActionModule(AVDActionPlugin):
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
-                warnings.warn(message, warning_type, stacklevel=1)
+                warnings.warn(warning, stacklevel=1)
 
         plugin = action_module(ActionModule)
 
         result = plugin.run()
 
-        # Assert that the message is in the correct list (either 'warnings' or 'deprecations')
-        if expected_key == "deprecations":
-            assert result[expected_key] == [{"msg": message}]
-        else:
-            assert result[expected_key] == [message]
+        assert result["warnings"] == expected_result["warnings"]
+        assert result["deprecations"] == expected_result["deprecations"]
 
     def test_handles_dirty_logger_state(self, action_module: Callable[..., AVDActionPlugin]) -> None:
         """Test that the plugin can handle a logger with pre-existing handlers and restore them correctly upon exit."""
