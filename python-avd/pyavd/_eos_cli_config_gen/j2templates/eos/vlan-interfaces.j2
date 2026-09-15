@@ -325,6 +325,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_nat is arista.avd.defined %}
 {%         set interface_ip_nat = vlan_interface.ip_nat %}
 {%         include 'eos/interface-ip-nat.j2' %}
+{%         if vlan_interface.ip_nat.service_profile is arista.avd.defined %}
+   ip nat service-profile {{ vlan_interface.ip_nat.service_profile }}
+{%         endif %}
 {%     endif %}
 {%     if vlan_interface.ntp_serve is arista.avd.defined %}
 {%         if vlan_interface.ntp_serve %}

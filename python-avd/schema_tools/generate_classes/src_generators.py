@@ -23,7 +23,7 @@ BASE_MODEL_IMPORTS_MAP = {
 
 IF_TYPE_CHECKING_BLOCK = """\
 if TYPE_CHECKING:
-    from pyavd._utils import Undefined, UndefinedType
+    from pyavd._utils.undefined import Undefined, UndefinedType
 """
 BASE_MODEL_NAME = "AvdModel"
 INDENT = "    "
