@@ -1339,7 +1339,6 @@ port_channel_interfaces:
       - 2001:db8:302::1/64
     ipv6_nd:
       managed_config_flag: true
-    # Multicast ACL boundaries with mixed case — validates case-sensitive natural_sort (uppercase before lowercase)
     multicast:
       ipv4:
         static: true
