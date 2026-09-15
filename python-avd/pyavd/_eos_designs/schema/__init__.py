@@ -11669,6 +11669,10 @@ class EosDesigns(EosDesignsRootModel):
         Inherit settings from a parent profile defined under `device_profiles`.
         Max two levels of profile
         inheritance: device -> profile -> parent_profile
+        From AVD 6.5.0 onwards, if
+        `avd_design_future.allow_infinite_inheritance` is enabled,
+        a profile can inherit settings accross an
+        infinite number of levels.
         """
         type: str | None
         """
@@ -12755,6 +12759,10 @@ class EosDesigns(EosDesignsRootModel):
                        Inherit settings from a parent profile defined under `device_profiles`.
                        Max two levels of profile
                        inheritance: device -> profile -> parent_profile
+                       From AVD 6.5.0 onwards, if
+                       `avd_design_future.allow_infinite_inheritance` is enabled,
+                       a profile can inherit settings accross an
+                       infinite number of levels.
                     type:
                        Set the type of the device as defined under `node_type_keys`.
                        This takes precedence over the global
@@ -48231,6 +48239,9 @@ class EosDesigns(EosDesignsRootModel):
         Parent profile is optional.
         Port_profiles can refer to another port_profile to inherit settings in
         up to two levels (adapter->profile->parent_profile).
+        From AVD 6.5.0 onwards, if
+        `avd_design_future.allow_infinite_inheritance` is enabled, a profile can inherit settings accross an
+        infinite number of levels.
         """
         port_channel: PortChannel
         """
@@ -48486,6 +48497,9 @@ class EosDesigns(EosDesignsRootModel):
                        Parent profile is optional.
                        Port_profiles can refer to another port_profile to inherit settings in
                        up to two levels (adapter->profile->parent_profile).
+                       From AVD 6.5.0 onwards, if
+                       `avd_design_future.allow_infinite_inheritance` is enabled, a profile can inherit settings accross an
+                       infinite number of levels.
                     port_channel:
                        Used for port-channel adapter.
 
@@ -52763,6 +52777,9 @@ class EosDesigns(EosDesignsRootModel):
         Parent SVI profile name to apply.
         svi_profiles can refer to another svi_profile to inherit settings
         in up to two levels (svi -> svi_profile -> svi_parent_profile).
+        From AVD 6.5.0 onwards, if
+        `avd_design_future.allow_infinite_inheritance` is enabled, a profile can inherit settings accross an
+        infinite number of levels.
         """
         nodes: Nodes
         """
@@ -53060,6 +53077,9 @@ class EosDesigns(EosDesignsRootModel):
                        Parent SVI profile name to apply.
                        svi_profiles can refer to another svi_profile to inherit settings
                        in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                       From AVD 6.5.0 onwards, if
+                       `avd_design_future.allow_infinite_inheritance` is enabled, a profile can inherit settings accross an
+                       infinite number of levels.
                     nodes:
                        Define node specific configuration, such as unique IP addresses.
                        Any keys set here will be merged

@@ -2282,7 +2282,12 @@ keys:
           type: str
           description: 'Inherit settings from a parent profile defined under `device_profiles`.
 
-            Max two levels of profile inheritance: device -> profile -> parent_profile'
+            Max two levels of profile inheritance: device -> profile -> parent_profile
+
+            From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
+            is enabled,
+
+            a profile can inherit settings accross an infinite number of levels.'
         type:
           type: str
           description: 'Set the type of the device as defined under `node_type_keys`.
@@ -9926,6 +9931,10 @@ keys:
             Port_profiles can refer to another port_profile to inherit settings in
             up to two levels (adapter->profile->parent_profile).
 
+            From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
+            is enabled, a profile can inherit settings accross an infinite number
+            of levels.
+
             '
         port_channel:
           type: dict
@@ -10791,6 +10800,10 @@ keys:
 
             svi_profiles can refer to another svi_profile to inherit settings in up
             to two levels (svi -> svi_profile -> svi_parent_profile).
+
+            From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
+            is enabled, a profile can inherit settings accross an infinite number
+            of levels.
 
             '
   system_mac_address:
