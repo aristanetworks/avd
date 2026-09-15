@@ -201,6 +201,19 @@ aaa accounting commands all default none
 aaa accounting commands 0 default none
 ```
 
+## System Boot Settings
+
+### Boot Secret Summary
+
+- The md5 hashed Aboot password is configured
+
+### System Boot Device Configuration
+
+```eos
+!
+boot secret 5 <removed>
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -362,6 +375,64 @@ router ospf 702
    router-id 10.255.0.3
    segment-routing mpls
       adjacency-segment allocation none
+```
+
+### Router OSPFv3
+
+#### VRF: default
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 2000 |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| ospfv3 leaked match internal | True | map1 |
+| ospfv3 leaked match external | True | map1 |
+| ospfv3 leaked match nssa-external | True | map1 |
+
+##### Address Family IPv6
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 3.3.3.3 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 2000 |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| ospfv3 leaked match internal | True | map1 |
+| ospfv3 leaked match external | True | map1 |
+| ospfv3 leaked match nssa-external | True | map1 |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3
+   address-family ipv4
+      router-id 2.2.2.2
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked match internal route-map map1
+      redistribute ospfv3 leaked match external route-map map1
+      redistribute ospfv3 leaked match nssa-external route-map map1
+   !
+   address-family ipv6
+      router-id 3.3.3.3
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked match internal route-map map1
+      redistribute ospfv3 leaked match external route-map map1
+      redistribute ospfv3 leaked match nssa-external route-map map1
 ```
 
 ### Router ISIS
@@ -610,4 +681,26 @@ priority-flow-control pause watchdog override action drop
 stun
    server
       local-interface Ethernet2
+```
+
+## Schedule
+
+### Schedule Config
+
+| Max Concurrent Jobs | Prepend Hostname Logfile |
+| ------------------- | ------------------------ |
+| 3 | - |
+
+### Schedule Jobs Summary
+
+| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size | Compression |
+| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- | ----------- |
+| at_interval_nodate | at 10:00:00 2028-03-10 interval 60 minutes | show clock | 1 | - | - | - | - | - |
+
+### Schedule Device Configuration
+
+```eos
+!
+schedule config max-concurrent-jobs 3
+schedule at_interval_nodate at 10:00:00 2028-03-10 interval 60 max-log-files 1 command show clock
 ```

@@ -11,7 +11,10 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
+from pyavd._utils.strip_empties import strip_empties_from_dict
+from pyavd._utils.undefined import Undefined
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -145,7 +148,19 @@ class RouterBgpMixin(Protocol):
                 if not self.shared_utils.bgp_enabled_for_vrf(vrf):
                     continue
 
+                if vrf.name == "default" and vrf.bgp.graceful_restart:
+                    context = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].bgp.graceful_restart"
+                    msg = f"The per-VRF setting '{context}' is not supported for VRF 'default'. Use the global 'bgp_graceful_restart' setting instead."
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
                 bgp_vrf = EosCliConfigGen.RouterBgp.VrfsItem()
+                if vrf.bgp.graceful_restart:
+                    if vrf.bgp.graceful_restart.enabled is False:
+                        bgp_vrf.no_graceful_restart = True
+                    else:
+                        bgp_vrf.graceful_restart.enabled = vrf.bgp.graceful_restart.enabled
+                        bgp_vrf.graceful_restart.restart_time = vrf.bgp.graceful_restart.restart_time
+
                 if vrf.bgp.raw_eos_cli:
                     bgp_vrf.eos_cli = vrf.bgp.raw_eos_cli
 
@@ -241,6 +256,13 @@ class RouterBgpMixin(Protocol):
                         bgp_peer_config.route_map_out = route_map
                         if bgp_peer_config.default_originate and not bgp_peer_config.default_originate.route_map:
                             bgp_peer_config.default_originate.route_map = route_map
+
+                    # Render enabled: True in case of always or route_map set for bgp peer
+                    # TODO: 7.0 Add default_originate.enabled key all around the data models.
+                    if (bgp_peer_config.default_originate.route_map or bgp_peer.default_originate.always is not None) and isinstance(
+                        bgp_vrf, EosCliConfigGen.RouterBgp
+                    ):
+                        bgp_peer_config.default_originate.enabled = True
 
                     # Needing this since type checker gets too confused about the type of bgp_vrf vs. bgp_peer_config.
                     if vrf.name == "default":

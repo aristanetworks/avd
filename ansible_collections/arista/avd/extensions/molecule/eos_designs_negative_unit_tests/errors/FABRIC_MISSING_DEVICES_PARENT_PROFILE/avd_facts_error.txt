@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Device Profile 'missing-profile' applied as 'parent_profile' on the profile 'my-profile' does not exist under 'device_profiles'.

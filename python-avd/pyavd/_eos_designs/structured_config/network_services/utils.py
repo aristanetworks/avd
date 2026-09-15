@@ -9,7 +9,8 @@ from re import fullmatch as re_fullmatch
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import default, get_ip_from_ip_prefix
+from pyavd._utils.default import default
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -52,7 +53,7 @@ class UtilsMixin(Protocol):
     @cached_property
     def _vrf_default_ipv4_subnets(self: AvdStructuredConfigNetworkServicesProtocol) -> list[str]:
         """Return list of ipv4 subnets in VRF "default"."""
-        subnets = set()
+        subnets: dict[str, None] = {}
         for tenant in self.shared_utils.filtered_tenants:
             if "default" not in tenant.vrfs:
                 continue
@@ -62,9 +63,9 @@ class UtilsMixin(Protocol):
                 if ip_address is None:
                     continue
 
-                subnets.add(str(ipaddress.ip_network(ip_address, strict=False)))
+                subnets.setdefault(str(ipaddress.ip_network(ip_address, strict=False)))
                 for ip_address_secondary in svi.ip_address_secondaries:
-                    subnets.add(str(ipaddress.ip_network(ip_address_secondary, strict=False)))
+                    subnets.setdefault(str(ipaddress.ip_network(ip_address_secondary, strict=False)))
 
         return list(subnets)
 

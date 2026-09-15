@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features.

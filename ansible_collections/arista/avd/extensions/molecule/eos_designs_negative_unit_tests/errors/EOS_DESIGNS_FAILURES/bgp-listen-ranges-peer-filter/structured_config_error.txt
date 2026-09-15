@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'tenants[name=Tenant_X].bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[1].peer_filter' and 'tenants[name=Tenant_X].bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[1].remote_as' cannot be set together.

@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default
+from pyavd._utils.default import default
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt, ospf_simple_encrypt
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -408,7 +408,7 @@ class FilteredTenantsMixin(Protocol):
         """
         filtered_l3_interfaces = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces()
         for l3_interface in vrf.l3_interfaces:
-            if not (self.hostname in l3_interface.nodes and l3_interface.ip_addresses and l3_interface.interfaces):
+            if not (self.hostname in l3_interface.nodes and (l3_interface.ip_addresses or l3_interface.ipv6_addresses) and l3_interface.interfaces):
                 continue
             if l3_interface.static_routes:
                 vrf.static_routes.extend(

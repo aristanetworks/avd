@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 import logging
 import warnings
-from collections.abc import Generator
+from collections.abc import Callable, Generator
 from contextlib import ExitStack
 from typing import Any
 from unittest.mock import MagicMock, patch
@@ -14,6 +14,7 @@ from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import AnsibleDisplayHandler
+from pyavd._errors import AvdDeprecationWarning
 
 
 class TestAVDActionPlugin:
@@ -42,22 +43,7 @@ class TestAVDActionPlugin:
 
             yield shared_mock_instance
 
-    def _plugin_factory(self, cls: type[AVDActionPlugin], task_args: dict[str, Any] | None = None) -> AVDActionPlugin:
-        """Factory method to instantiate the provided AVDActionPlugin class with mocks for testing."""
-        # Create mock objects for the Ansible ActionBase constructor arguments
-        mock_task = MagicMock()
-        mock_task.args = task_args or {}
-        mock_task.async_val = False
-        mock_task.check_mode = False
-
-        # Return the instantiated plugin class with a full set of mocks
-        instance = cls(task=mock_task, connection=MagicMock(), play_context=MagicMock(), loader=MagicMock(), templar=MagicMock(), shared_loader_obj=MagicMock())
-
-        # Ignoring Pyright since 'ansible_name' is not typed in Ansible world
-        instance.ansible_name = "pytest_action_plugin"  # pyright: ignore[reportAttributeAccessIssue]
-        return instance
-
-    def test_wrong_logging_config(self) -> None:
+    def test_wrong_logging_config(self, action_module: Callable[..., AVDActionPlugin]) -> None:
         """Test that an exception is raised when _primary_logger_name is not part of the targeted loggers."""
 
         class ActionModule(AVDActionPlugin):
@@ -71,9 +57,9 @@ class TestAVDActionPlugin:
             "the _logging_config.target_loggers tuple for the plugin to work correctly."
         )
         with pytest.raises(ValueError, match=match):
-            self._plugin_factory(ActionModule)
+            action_module(ActionModule)
 
-    def test_run_success(self) -> None:
+    def test_run_success(self, action_module: Callable[..., AVDActionPlugin]) -> None:
         """Test a successful run of the plugin."""
 
         class ActionModule(AVDActionPlugin):
@@ -81,14 +67,14 @@ class TestAVDActionPlugin:
                 _task_vars = task_vars
                 self.result["status"] = "success"
 
-        plugin = self._plugin_factory(cls=ActionModule)
+        plugin = action_module(ActionModule)
 
         result = plugin.run()
 
         assert result["status"] == "success"
         assert "failed" not in result
 
-    def test_run_failure_recast_as_ansible_exception(self) -> None:
+    def test_run_failure_recast_as_ansible_exception(self, action_module: Callable[..., AVDActionPlugin]) -> None:
         """Test that a generic exception in main() is recast as AnsibleActionFail."""
 
         class ActionModule(AVDActionPlugin):
@@ -97,9 +83,9 @@ class TestAVDActionPlugin:
                 msg = "Something went wrong"
                 raise ValueError(msg)
 
-        plugin = self._plugin_factory(ActionModule)
+        plugin = action_module(ActionModule, ansible_name="pytest_action_plugin")
 
-        with pytest.raises(AnsibleActionFail, match="Error during plugin 'pytest_action_plugin' execution: 'Something went wrong'"):
+        with pytest.raises(AnsibleActionFail, match="Error during plugin 'pytest_action_plugin' execution: Something went wrong"):
             plugin.run()
 
     @pytest.mark.parametrize(
@@ -167,7 +153,9 @@ class TestAVDActionPlugin:
             ),
         ],
     )
-    def test_log_levels_set_by_verbosity(self, mock_display: MagicMock, verbosity: int, expected_levels: dict[str, int]) -> None:
+    def test_log_levels_set_by_verbosity(
+        self, action_module: Callable[..., AVDActionPlugin], mock_display: MagicMock, verbosity: int, expected_levels: dict[str, int]
+    ) -> None:
         """Test that log levels are set correctly based on verbosity for both internal and external libraries."""
 
         class ActionModule(AVDActionPlugin):
@@ -181,7 +169,7 @@ class TestAVDActionPlugin:
                     logger = logging.getLogger(logger_name)
                     assert logger.level == expected_level
 
-        plugin = self._plugin_factory(ActionModule)
+        plugin = action_module(ActionModule)
 
         # Set the desired verbosity and run the plugin
         mock_display.verbosity = verbosity
@@ -195,7 +183,9 @@ class TestAVDActionPlugin:
             pytest.param(3, ["vvv", "v", "warning", "error"], id="v3-debug_enabled"),
         ],
     )
-    def test_default_logging_behavior(self, mock_display: MagicMock, verbosity: int, expected_methods_called: list[str]) -> None:
+    def test_default_logging_behavior(
+        self, action_module: Callable[..., AVDActionPlugin], mock_display: MagicMock, verbosity: int, expected_methods_called: list[str]
+    ) -> None:
         """Test the end-to-end default logging behavior (live display on, save logs off)."""
 
         class ActionModule(AVDActionPlugin):
@@ -206,7 +196,7 @@ class TestAVDActionPlugin:
                 self.logger.warning("A warning message.")
                 self.logger.error("An error message.")
 
-        plugin = self._plugin_factory(ActionModule)
+        plugin = action_module(ActionModule)
 
         # Set the desired verbosity and run the plugin
         mock_display.verbosity = verbosity
@@ -240,6 +230,7 @@ class TestAVDActionPlugin:
     )
     def test_logging_with_context_and_format(
         self,
+        action_module: Callable[..., AVDActionPlugin],
         mock_display: MagicMock,
         add_hostname: bool,
         add_role: bool,
@@ -255,7 +246,7 @@ class TestAVDActionPlugin:
                 _task_vars = task_vars
                 self.logger.warning("A message from the plugin.")
 
-        plugin = self._plugin_factory(ActionModule)
+        plugin = action_module(ActionModule)
 
         plugin.run(task_vars=task_vars)
 
@@ -264,7 +255,7 @@ class TestAVDActionPlugin:
         mock_display.warning.assert_called_once_with(expected_message)
 
     @pytest.mark.usefixtures("mock_display")
-    def test_logging_with_save_logs(self) -> None:
+    def test_logging_with_save_logs(self, action_module: Callable[..., AVDActionPlugin]) -> None:
         """Test that logs are saved to the result."""
 
         class ActionModule(AVDActionPlugin):
@@ -275,14 +266,14 @@ class TestAVDActionPlugin:
                 self.logger.info("An info message not to save.")
 
         # Enable the feature via task args
-        plugin = self._plugin_factory(ActionModule, task_args={"save_logs": True})
+        plugin = action_module(ActionModule, task_args={"save_logs": True})
         result = plugin.run()
 
         # Assert that the logs were saved to the result dictionary
         assert result["logs"]["warnings"] == ["A warning to save."]
         assert result["logs"]["errors"] == ["An error to save."]
 
-    def test_logging_with_live_display_false(self, mock_display: MagicMock) -> None:
+    def test_logging_with_live_display_false(self, action_module: Callable[..., AVDActionPlugin], mock_display: MagicMock) -> None:
         """Test that logs are never displayed in Ansible."""
 
         class ActionModule(AVDActionPlugin):
@@ -291,7 +282,7 @@ class TestAVDActionPlugin:
                 self.logger.info("This should not be displayed live.")
 
         # Enable the feature via task args
-        plugin = self._plugin_factory(ActionModule, task_args={"live_display": False})
+        plugin = action_module(ActionModule, task_args={"live_display": False})
 
         # Set the desired verbosity and run the plugin
         mock_display.verbosity = 1
@@ -301,31 +292,66 @@ class TestAVDActionPlugin:
         mock_display.warning.assert_not_called()
 
     @pytest.mark.parametrize(
-        ("warning_type", "message", "expected_key"),
+        ("warning", "expected_result"),
         [
-            pytest.param(UserWarning, "This is a standard warning.", "warnings", id="user_warning"),
-            pytest.param(DeprecationWarning, "This is a deprecation.", "deprecations", id="deprecation_warning"),
+            pytest.param(
+                UserWarning("This is a standard warning."),
+                {"warnings": ["This is a standard warning."], "deprecations": []},
+                id="user_warning",
+            ),
+            pytest.param(
+                DeprecationWarning("This is a deprecation."),
+                {"warnings": [], "deprecations": [{"msg": "This is a deprecation."}]},
+                id="deprecation_warning",
+            ),
+            pytest.param(
+                AvdDeprecationWarning(["old_key"], remove_in_version="7.0.0"),
+                {
+                    "warnings": [],
+                    "deprecations": [
+                        {
+                            "msg": "The input data model 'old_key' is deprecated.",
+                            "version": "7.0.0",
+                            "collection_name": "arista.avd",
+                        }
+                    ],
+                },
+                id="deprecation_warning_with_version",
+            ),
+            pytest.param(
+                AvdDeprecationWarning(["old_key"], remove_after_date="2027-01-01"),
+                {
+                    "warnings": [],
+                    "deprecations": [
+                        {
+                            "msg": "The input data model 'old_key' is deprecated.",
+                            "date": "2027-01-01",
+                            "collection_name": "arista.avd",
+                        }
+                    ],
+                },
+                id="deprecation_warning_with_date",
+            ),
         ],
     )
-    def test_warning_capture(self, warning_type: type[Warning], message: str, expected_key: str) -> None:
+    def test_warning_capture(
+        self, action_module: Callable[..., AVDActionPlugin], warning: Warning, expected_result: dict[str, list[str | dict[str, str]]]
+    ) -> None:
         """Test that Python warnings are captured and added to the correct list in the result."""
 
         class ActionModule(AVDActionPlugin):
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
-                warnings.warn(message, warning_type, stacklevel=1)
+                warnings.warn(warning, stacklevel=1)
 
-        plugin = self._plugin_factory(ActionModule)
+        plugin = action_module(ActionModule)
 
         result = plugin.run()
 
-        # Assert that the message is in the correct list (either 'warnings' or 'deprecations')
-        if expected_key == "deprecations":
-            assert result[expected_key] == [{"msg": message}]
-        else:
-            assert result[expected_key] == [message]
+        assert result["warnings"] == expected_result["warnings"]
+        assert result["deprecations"] == expected_result["deprecations"]
 
-    def test_handles_dirty_logger_state(self) -> None:
+    def test_handles_dirty_logger_state(self, action_module: Callable[..., AVDActionPlugin]) -> None:
         """Test that the plugin can handle a logger with pre-existing handlers and restore them correctly upon exit."""
 
         class ActionModule(AVDActionPlugin):
@@ -352,7 +378,7 @@ class TestAVDActionPlugin:
             # The plugin should restore all existing handlers, including pytest-owned handlers.
             expected_handlers = [*original_handlers, sticky_handler]
 
-            plugin = self._plugin_factory(ActionModule)
+            plugin = action_module(ActionModule)
             plugin.run()
 
             assert logger.handlers == expected_handlers

@@ -15,8 +15,9 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.1.1/32
+  ip_address: 192.168.10.1/32
   type: oob
+  gateway: 192.168.10.254
 metadata:
   is_deployed: true
   platform: vEOS-lab
@@ -26,11 +27,15 @@ metadata:
   digital_twin:
     environment: act
     node_type: veos
-    ip_addr: 192.168.1.1/32
+    ip_addr: 192.168.10.1/32
     version: 4.33.1.1F
     username: cvpadmin
     password: cvp123!
 service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.10.254
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

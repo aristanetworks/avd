@@ -344,6 +344,8 @@ router_bgp:
       route_map_out: TEST_OUT
       rcf_in: TEST_RCF_IN()
       rcf_out: TEST_RCF_OUT()
+      default_originate:
+        always: true
   address_family_ipv6:
     peer_groups:
     - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP

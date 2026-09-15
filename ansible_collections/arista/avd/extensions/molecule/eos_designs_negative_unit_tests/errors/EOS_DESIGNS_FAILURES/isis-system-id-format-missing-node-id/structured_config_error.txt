@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'isis_system_id_prefix' is required when 'isis_system_id_format' is set to 'node_id'. 'isis_system_id_prefix' was not set for 'isis-system-id-format-missing-node-id'

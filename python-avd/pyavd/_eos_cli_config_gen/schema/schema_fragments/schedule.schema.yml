@@ -1,0 +1,99 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  schedule:
+    type: dict
+    description: Configuration of EOS scheduled jobs.
+    keys:
+      config:
+        type: dict
+        description: Global schedule configuration.
+        keys:
+          max_concurrent_jobs:
+            type: int
+            min: 1
+            max: 4
+            convert_types:
+              - str
+            description: Maximum number of concurrent scheduled jobs.
+          prepend_hostname_logfile:
+            type: bool
+            description: Prepend hostname to the log file name.
+      jobs:
+        type: list
+        primary_key: name
+        description: List of schedule jobs.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Schedule job name.
+              pattern: "(?!config)(?!summary$)[a-z0-9_-]+"
+            interval:
+              type: int
+              min: 2
+              max: 1440
+              convert_types:
+                - str
+              description: |-
+                Interval in minutes. Used as the standalone interval when `at` is not set,
+                or as the recurring interval when combined with `at` and `at.once` is not True.
+            at:
+              type: dict
+              description: Schedule job at a specific time on a specific date.
+              keys:
+                time:
+                  required: true
+                  type: str
+                  description: Start time in HH:MM:SS format.
+                date:
+                  required: true
+                  type: str
+                  description: |-
+                    Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd.
+                once:
+                  type: bool
+                  description: |-
+                    Run the command a single time at the given time/date.
+                    Mutually exclusive with `interval`. `once` takes precedence if both are set.
+            timeout:
+              type: int
+              min: 1
+              max: 480
+              convert_types:
+                - str
+              description: |-
+                Job timeout in minutes for CLI command execution. Must be less than the job interval.
+            max_log_files:
+              type: int
+              required: true
+              min: 0
+              max: 10000
+              convert_types:
+                - str
+              description: Maximum number of log files to retain.
+            logging_verbose:
+              type: bool
+              description: Enable verbose logging.
+            loglocation:
+              type: str
+              description: Log file location path (e.g. flash:/schedule/logs).
+            max_total_size:
+              type: str
+              description: |-
+                Maximum total size of log files (e.g. 110m, 1g).
+                Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes), g (gigabytes).
+            compression:
+              type: str
+              valid_values: [gzip, bzip2, xz]
+              description: Compression algorithm for log files.
+            command:
+              type: str
+              required: true
+              description: EOS CLI command to execute.

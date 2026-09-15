@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: No device type found. Either set 'type' or 'default_node_types'.

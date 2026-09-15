@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'compute_local_engineid_source: rfc3411_type3' requires 'system_mac_address' to be set.

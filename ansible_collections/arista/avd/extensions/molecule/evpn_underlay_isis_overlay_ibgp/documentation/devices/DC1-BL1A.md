@@ -468,9 +468,9 @@ interface Loopback1
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
-| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
-| Vlan4093 | EVPN_UNDERLAY | True | 50 | point-to-point | - |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
+| Vlan4093 | EVPN_UNDERLAY | True | 50 | point-to-point | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -563,7 +563,7 @@ no ip routing vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
+| MGMT | False |
 
 ### Static Routes
 
@@ -670,11 +670,11 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 172.30.22.21 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
-| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS | - | - | - | - |
-| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 172.30.22.21 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
+| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | - | - | Inherited from peer group OVERLAY-PEERS | - | - | - | - |
+| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | - | - | Inherited from peer group OVERLAY-PEERS | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 

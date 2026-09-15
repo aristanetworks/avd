@@ -21,14 +21,17 @@ from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaWorkflowFilter, AntaWorkflowHandler, raise_action_fail
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Iterator
 
 PLUGIN_NAME = "arista.avd.anta_workflow"
 
 try:
     from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
-    from pyavd._utils import default, get, strip_empties_from_dict
+    from pyavd._utils.default import default
+    from pyavd._utils.get import get
+    from pyavd._utils.strip_empties import strip_empties_from_dict
     from pyavd.api.anta import AVDCatalogGenerationSettings, AVDFabricData
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
@@ -69,6 +72,7 @@ ARGUMENT_SPEC = {
     "device_list": {"type": "list", "elements": "str", "required": True},
     "avd_catalogs": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "enabled": {"type": "bool", "default": True},
             "output_dir": {"type": "str"},
@@ -88,6 +92,7 @@ ARGUMENT_SPEC = {
     },
     "user_catalogs": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "enabled": {"type": "bool", "default": False},
             "input_dir": {"type": "str"},
@@ -95,6 +100,7 @@ ARGUMENT_SPEC = {
     },
     "runner": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "timeout": {"type": "float", "default": 30.0},
             "batch_size": {"type": "int", "default": 5},
@@ -104,6 +110,7 @@ ARGUMENT_SPEC = {
     },
     "report": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "expand_results": {"type": "bool", "default": False},
             "generate_custom_field": {"type": "bool", "default": False},
@@ -116,6 +123,7 @@ ARGUMENT_SPEC = {
             },
             "sorting": {
                 "type": "dict",
+                "apply_defaults": True,
                 "options": {
                     "status_priority": {
                         "type": "list",

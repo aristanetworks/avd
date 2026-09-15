@@ -47,7 +47,7 @@ keys:
             source_address:
               type: str
               description: |-
-                Source IPv4 address.
+                Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
                 Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
             maxpoll:
               type: int
@@ -76,6 +76,7 @@ keys:
               deprecation:
                 warning: true
                 removed: true
+                remove_in_version: 6.0.0
                 new_key: ntp.vrf
       vrf:
         type: str

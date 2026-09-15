@@ -1,0 +1,12 @@
+# Minimum config to only test the specific feature.
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: mgmt-interface-ipv6-address-auto-config-without-avd-design-future
+      ipv6_mgmt_ip: auto-config
+      id: 106
+ipv6_mgmt_gateway: 0200::1
+ipv6_mgmt_destination_networks:
+  - 0200:1::/64
+  - 0200:2::/64

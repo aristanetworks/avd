@@ -9,7 +9,9 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, default, strip_null_from_data
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
+from pyavd._utils.strip_empties import strip_null_from_data
 from pyavd.j2filters import natural_sort, snmp_hash
 
 if TYPE_CHECKING:
@@ -88,11 +90,11 @@ class SnmpServerMixin(Protocol):
 
         match local_engineid_ip:
             case "use_mgmt_interface":
-                has_mgmt_ip = (self.shared_utils.node_config.mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
+                has_mgmt_ip = (self.shared_utils.oob_mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
                 if not has_mgmt_ip:
                     msg = "'snmp_settings.local_engineid_ip' is set to 'use_mgmt_interface' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
                     raise AristaAvdInvalidInputsError(msg)
-                return default(self.shared_utils.node_config.mgmt_ip, self.shared_utils.node_config.ipv6_mgmt_ip)
+                return default(self.shared_utils.oob_mgmt_ip, self.shared_utils.node_config.ipv6_mgmt_ip)
             case "use_inband_mgmt_interface":
                 if self.shared_utils.inband_mgmt_interface is None:
                     msg = (
@@ -129,7 +131,7 @@ class SnmpServerMixin(Protocol):
                 # This is the default value in AVD 5.x.
                 # This does not handle well inband mgmt cases as it uses None for the management IP
                 # This is kept for legacy purposes.
-                local_engine_id = self._get_sha1_digest(self.shared_utils.node_config.mgmt_ip)
+                local_engine_id = self._get_sha1_digest(self.shared_utils.oob_mgmt_ip)
             case "rfc3411_type3":
                 # prefix with Enterprise Id + 05 to adhere to RCF3411 and RFC5343
                 # Arista Enterprise ID = 30065 (7571 in hex)

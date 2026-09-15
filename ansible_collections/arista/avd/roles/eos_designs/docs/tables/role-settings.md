@@ -27,6 +27,7 @@
     | [<samp>eos_designs_return_structured_config</samp>](## "eos_designs_return_structured_config") | Boolean |  | `False` |  | Return structured configuration as ansible_facts per device. |
     | [<samp>eos_designs_tmp_dir</samp>](## "eos_designs_tmp_dir") | String |  |  |  | Path for temporary files created by the 'eos_designs' role.<br>Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.<br>Defaults to 'intended/tmp_eos_designs'.<br>The temporary directory is cleaned up at the end of the 'eos_designs' role.<br> |
     | [<samp>eos_designs_validate_inputs_batch_size</samp>](## "eos_designs_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
+    | [<samp>eos_designs_validate_inputs_template_with_multiprocessing</samp>](## "eos_designs_validate_inputs_template_with_multiprocessing") | Boolean |  | `True` |  | Use Multiprocessing for variable templating.<br>Disable this when templating of input variables invokes code that uses locks or background threads.<br>Forked worker processes may inherit locked state, potentially causing deadlocks. |
 
 === "YAML"
 
@@ -93,4 +94,9 @@
     # The number of hosts to process in each batch when validating inputs.
     # Depending on your inventory size and the available resources, you may want to adjust this number.
     eos_designs_validate_inputs_batch_size: <int; default=10>
+
+    # Use Multiprocessing for variable templating.
+    # Disable this when templating of input variables invokes code that uses locks or background threads.
+    # Forked worker processes may inherit locked state, potentially causing deadlocks.
+    eos_designs_validate_inputs_template_with_multiprocessing: <bool; default=True>
     ```

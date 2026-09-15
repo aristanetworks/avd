@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The 'cv_pathfinder_site 'Site422' defined at the node level could not be found under the 'cv_pathfinder_global_sites' list

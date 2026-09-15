@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'mlag_peer_l3_ipv4_pool' is required but was not found for host 'missing-mlag-peer-l3-ipv4-pool1'.

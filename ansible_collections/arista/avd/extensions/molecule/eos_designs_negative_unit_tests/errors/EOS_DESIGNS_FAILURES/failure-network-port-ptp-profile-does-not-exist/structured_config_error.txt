@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: PTP Profile 'THIS-PROFILE-DOES-NOT-EXIST' referenced under network_ports[0] does not exist in `ptp_profiles`.

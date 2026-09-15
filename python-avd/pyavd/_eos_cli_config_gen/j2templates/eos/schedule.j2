@@ -1,0 +1,52 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - schedule #}
+{% if schedule.config.max_concurrent_jobs is arista.avd.defined or schedule.config.prepend_hostname_logfile is arista.avd.defined or schedule.jobs is arista.avd.defined %}
+!
+{%     if schedule.config.max_concurrent_jobs is arista.avd.defined or schedule.config.prepend_hostname_logfile is arista.avd.defined %}
+{%         if schedule.config.max_concurrent_jobs is arista.avd.defined %}
+schedule config max-concurrent-jobs {{ schedule.config.max_concurrent_jobs }}
+{%         endif %}
+{%         if schedule.config.prepend_hostname_logfile is arista.avd.defined(true) %}
+schedule config prepend-hostname-logfile
+{%         elif schedule.config.prepend_hostname_logfile is arista.avd.defined(false) %}
+no schedule config prepend-hostname-logfile
+{%         endif %}
+{%     endif %}
+{%     for job in schedule.jobs | arista.avd.natural_sort('name') %}
+{%         set schedule_cli = "schedule " ~ job.name %}
+{%         if job.interval is arista.avd.defined or job.at.once is arista.avd.defined(true) %}
+{%             if job.at is arista.avd.defined %}
+{%                 set schedule_cli = schedule_cli ~ " at " ~ job.at.time ~ " " ~ job.at.date %}
+{%                 if job.at.once is arista.avd.defined(true) %}
+{%                     set schedule_cli = schedule_cli ~ " once" %}
+{%                 elif job.interval is arista.avd.defined %}
+{%                     set schedule_cli = schedule_cli ~ " interval " ~ job.interval %}
+{%                 endif %}
+{%             elif job.interval is arista.avd.defined %}
+{%                 set schedule_cli = schedule_cli ~ " interval " ~ job.interval %}
+{%             endif %}
+{%             if job.timeout is arista.avd.defined %}
+{%                 set schedule_cli = schedule_cli ~ " timeout " ~ job.timeout %}
+{%             endif %}
+{%             set schedule_cli = schedule_cli ~ " max-log-files " ~ job.max_log_files %}
+{%             if job.max_total_size is arista.avd.defined %}
+{%                 set schedule_cli = schedule_cli ~ " max-total-size " ~ job.max_total_size %}
+{%             endif %}
+{%             if job.logging_verbose is arista.avd.defined(true) %}
+{%                 set schedule_cli = schedule_cli ~ " logging verbose" %}
+{%             endif %}
+{%             if job.loglocation is arista.avd.defined %}
+{%                 set schedule_cli = schedule_cli ~ " loglocation " ~ job.loglocation %}
+{%             endif %}
+{%             if job.compression is arista.avd.defined %}
+{%                 set schedule_cli = schedule_cli ~ " compression " ~ job.compression %}
+{%             endif %}
+{%             set schedule_cli = schedule_cli ~ " command " ~ job.command %}
+{{ schedule_cli }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

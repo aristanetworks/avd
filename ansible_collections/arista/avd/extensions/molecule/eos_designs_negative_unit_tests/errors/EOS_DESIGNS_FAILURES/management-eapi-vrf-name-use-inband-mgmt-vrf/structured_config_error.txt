@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'self.inputs.management_eapi.vrfs[name=use_inband_mgmt_vrf]' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management.
