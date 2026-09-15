@@ -2287,7 +2287,7 @@ keys:
             From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
             is enabled,
 
-            a profile can inherit settings accross an infinite number of levels.'
+            a profile can inherit settings across an infinite number of levels.'
         type:
           type: str
           description: 'Set the type of the device as defined under `node_type_keys`.
@@ -9966,7 +9966,7 @@ keys:
             up to two levels (adapter->profile->parent_profile).
 
             From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
-            is enabled, a profile can inherit settings accross an infinite number
+            is enabled, a profile can inherit settings across an infinite number
             of levels.
 
             '
@@ -10836,7 +10836,7 @@ keys:
             to two levels (svi -> svi_profile -> svi_parent_profile).
 
             From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
-            is enabled, a profile can inherit settings accross an infinite number
+            is enabled, a profile can inherit settings across an infinite number
             of levels.
 
             '
