@@ -10943,6 +10943,7 @@ router bgp 65101
       bgp additional-paths send ecmp limit 20
       bgp next-hop-unchanged
       neighbor default next-hop-self
+      next-hop resolution disabled
       next-hop resolution ribs tunnel-rib colored system-colored-tunnel-rib tunnel-rib test-rib system-connected
       neighbor PG-BGP-LU activate
       neighbor PG-BGP-LU graceful-restart

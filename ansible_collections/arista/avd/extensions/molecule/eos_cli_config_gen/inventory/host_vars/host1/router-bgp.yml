@@ -1002,6 +1002,8 @@ router_bgp:
       - rib_type: "system-connected"
     label_local_termination: implicit-null
     lfib_entry_installation_skipped: true
+    next_hop:
+      resolution_disabled: true
     next_hops:
       - ip_address: 192.51.100.1
         lfib_backup_ip_forwarding: true

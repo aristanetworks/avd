@@ -720,6 +720,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].route_map") | String |  |  |  | Route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hop") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resolution_disabled</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hop.resolution_disabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hops</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lfib_backup_ip_forwarding</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].lfib_backup_ip_forwarding") | Boolean |  |  |  |  |
@@ -3252,6 +3254,8 @@
             # RCF name with parenthesis. Example "NETWORK-RCF()".
             # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
             rcf: <str>
+        next_hop:
+          resolution_disabled: <bool>
         next_hops: # >=1 items
           - ip_address: <str; required; unique>
             lfib_backup_ip_forwarding: <bool>
