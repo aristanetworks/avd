@@ -9694,6 +9694,8 @@ ASN Notation: asdot
 | bgp bestpath d-path |
 | bgp additional-paths receive |
 | bgp additional-paths send ecmp limit 30 |
+| bgp convergence time 400 seconds |
+| bgp convergence slow-peer time 500 seconds |
 | update wait-for-convergence |
 | update wait-install |
 | bgp default ipv4-unicast |
@@ -10368,6 +10370,8 @@ router bgp 65101
    bgp asn notation asdot
    bgp labeled-unicast rib ip route-map RM-rib1
    router-id 192.168.255.3
+   bgp convergence time 400
+   bgp convergence slow-peer time 500
    update wait-for-convergence
    update wait-install
    bgp default ipv4-unicast
