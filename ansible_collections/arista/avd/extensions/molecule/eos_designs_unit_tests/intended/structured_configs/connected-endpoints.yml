@@ -771,7 +771,7 @@ ethernet_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      native_vlan: 123
+      native_vlan: 42
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false

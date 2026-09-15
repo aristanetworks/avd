@@ -429,7 +429,7 @@ port_profiles:
 
   - profile: profile4
     mode: trunk
-    native_vlan: 123
+    native_vlan: 42
     link_tracking:
       enabled: true
     # Testing for dot1x mode supplicant.

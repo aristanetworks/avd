@@ -1037,7 +1037,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Available from AVD 6.5.0.
         Allow `parent_profile` to inherit from its own `parent_profile` in
-        `port_profiles` and `device_profiles`.
+        `port_profiles`, `device_profiles` and `svi_profiles`.
 
         Default value: `False`
         """
@@ -1191,7 +1191,7 @@ class EosDesigns(EosDesignsRootModel):
                     allow_infinite_profile_inheritance:
                        Available from AVD 6.5.0.
                        Allow `parent_profile` to inherit from its own `parent_profile` in
-                       `port_profiles` and `device_profiles`.
+                       `port_profiles`, `device_profiles` and `svi_profiles`.
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
