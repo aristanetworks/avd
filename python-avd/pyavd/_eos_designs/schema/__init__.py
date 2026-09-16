@@ -48273,8 +48273,8 @@ class EosDesigns(EosDesignsRootModel):
         parent_profile: str | None
         """
         Parent profile is optional.
-        By default port_profiles can refer to another port_profile to inherit
-        settings in up to two levels (adapter->profile->parent_profile).
+        By default, profile inheritance is limited to two levels: adapter ->
+        profile -> parent_profile.
         From AVD 6.5.0 onwards, setting
         `avd_design_future.allow_infinite_profile_inheritance` to true
         allows profiles to inherit settings
@@ -48532,8 +48532,8 @@ class EosDesigns(EosDesignsRootModel):
                     profile: Port profile name.
                     parent_profile:
                        Parent profile is optional.
-                       By default port_profiles can refer to another port_profile to inherit
-                       settings in up to two levels (adapter->profile->parent_profile).
+                       By default, profile inheritance is limited to two levels: adapter ->
+                       profile -> parent_profile.
                        From AVD 6.5.0 onwards, setting
                        `avd_design_future.allow_infinite_profile_inheritance` to true
                        allows profiles to inherit settings
