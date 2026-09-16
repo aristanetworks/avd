@@ -30636,12 +30636,45 @@ class EosDesigns(EosDesignsRootModel):
             class AddressFamilyIpv6(AvdModel):
                 """Subclass of AvdModel."""
 
+                class DefaultOriginate(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                    enabled: bool
+                    always: bool | None
+                    """Always advertise a default route to this peer."""
+                    route_map: str | None
+                    """Route-map name."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            always: bool | UndefinedType | None = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            DefaultOriginate.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                always: Always advertise a default route to this peer.
+                                route_map: Route-map name.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
+                    "default_originate": {"type": DefaultOriginate},
                     "prefix_list_in": {"type": str},
                     "prefix_list_out": {"type": str},
                 }
@@ -30660,6 +30693,8 @@ class EosDesigns(EosDesignsRootModel):
                 Outbound RCF function name with parenthesis.
                 Example: MyFunction(myarg).
                 """
+                default_originate: DefaultOriginate
+                """Subclass of AvdModel."""
                 prefix_list_in: str | None
                 """Inbound prefix-list name."""
                 prefix_list_out: str | None
@@ -30675,6 +30710,7 @@ class EosDesigns(EosDesignsRootModel):
                         route_map_out: str | UndefinedType | None = Undefined,
                         rcf_in: str | UndefinedType | None = Undefined,
                         rcf_out: str | UndefinedType | None = Undefined,
+                        default_originate: DefaultOriginate | UndefinedType = Undefined,
                         prefix_list_in: str | UndefinedType | None = Undefined,
                         prefix_list_out: str | UndefinedType | None = Undefined,
                     ) -> None:
@@ -30694,6 +30730,7 @@ class EosDesigns(EosDesignsRootModel):
                             rcf_out:
                                Outbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
+                            default_originate: Subclass of AvdModel.
                             prefix_list_in: Inbound prefix-list name.
                             prefix_list_out: Outbound prefix-list name.
 
@@ -37999,12 +38036,45 @@ class EosDesigns(EosDesignsRootModel):
                 class AddressFamilyIpv6(AvdModel):
                     """Subclass of AvdModel."""
 
+                    class DefaultOriginate(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        always: bool | None
+                        """Always advertise a default route to this peer."""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                always: bool | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                DefaultOriginate.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    always: Always advertise a default route to this peer.
+                                    route_map: Route-map name.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
                         "rcf_in": {"type": str},
                         "rcf_out": {"type": str},
+                        "default_originate": {"type": DefaultOriginate},
                         "prefix_list_in": {"type": str},
                         "prefix_list_out": {"type": str},
                     }
@@ -38023,6 +38093,8 @@ class EosDesigns(EosDesignsRootModel):
                     Outbound RCF function name with parenthesis.
                     Example: MyFunction(myarg).
                     """
+                    default_originate: DefaultOriginate
+                    """Subclass of AvdModel."""
                     prefix_list_in: str | None
                     """Inbound prefix-list name."""
                     prefix_list_out: str | None
@@ -38038,6 +38110,7 @@ class EosDesigns(EosDesignsRootModel):
                             route_map_out: str | UndefinedType | None = Undefined,
                             rcf_in: str | UndefinedType | None = Undefined,
                             rcf_out: str | UndefinedType | None = Undefined,
+                            default_originate: DefaultOriginate | UndefinedType = Undefined,
                             prefix_list_in: str | UndefinedType | None = Undefined,
                             prefix_list_out: str | UndefinedType | None = Undefined,
                         ) -> None:
@@ -38057,6 +38130,7 @@ class EosDesigns(EosDesignsRootModel):
                                 rcf_out:
                                    Outbound RCF function name with parenthesis.
                                    Example: MyFunction(myarg).
+                                default_originate: Subclass of AvdModel.
                                 prefix_list_in: Inbound prefix-list name.
                                 prefix_list_out: Outbound prefix-list name.
 
@@ -82874,12 +82948,45 @@ class EosDesigns(EosDesignsRootModel):
                     class AddressFamilyIpv6(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class DefaultOriginate(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            always: bool | None
+                            """Always advertise a default route to this peer."""
+                            route_map: str | None
+                            """Route-map name."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    always: bool | UndefinedType | None = Undefined,
+                                    route_map: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    DefaultOriginate.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        always: Always advertise a default route to this peer.
+                                        route_map: Route-map name.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "activate": {"type": bool},
                             "route_map_in": {"type": str},
                             "route_map_out": {"type": str},
                             "rcf_in": {"type": str},
                             "rcf_out": {"type": str},
+                            "default_originate": {"type": DefaultOriginate},
                             "prefix_list_in": {"type": str},
                             "prefix_list_out": {"type": str},
                         }
@@ -82898,6 +83005,8 @@ class EosDesigns(EosDesignsRootModel):
                         Outbound RCF function name with parenthesis.
                         Example: MyFunction(myarg).
                         """
+                        default_originate: DefaultOriginate
+                        """Subclass of AvdModel."""
                         prefix_list_in: str | None
                         """Inbound prefix-list name."""
                         prefix_list_out: str | None
@@ -82913,6 +83022,7 @@ class EosDesigns(EosDesignsRootModel):
                                 route_map_out: str | UndefinedType | None = Undefined,
                                 rcf_in: str | UndefinedType | None = Undefined,
                                 rcf_out: str | UndefinedType | None = Undefined,
+                                default_originate: DefaultOriginate | UndefinedType = Undefined,
                                 prefix_list_in: str | UndefinedType | None = Undefined,
                                 prefix_list_out: str | UndefinedType | None = Undefined,
                             ) -> None:
@@ -82932,6 +83042,7 @@ class EosDesigns(EosDesignsRootModel):
                                     rcf_out:
                                        Outbound RCF function name with parenthesis.
                                        Example: MyFunction(myarg).
+                                    default_originate: Subclass of AvdModel.
                                     prefix_list_in: Inbound prefix-list name.
                                     prefix_list_out: Outbound prefix-list name.
 
@@ -90277,12 +90388,45 @@ class EosDesigns(EosDesignsRootModel):
                         class AddressFamilyIpv6(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class DefaultOriginate(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                                enabled: bool
+                                always: bool | None
+                                """Always advertise a default route to this peer."""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        always: bool | UndefinedType | None = Undefined,
+                                        route_map: str | UndefinedType | None = Undefined,
+                                    ) -> None:
+                                        """
+                                        DefaultOriginate.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            always: Always advertise a default route to this peer.
+                                            route_map: Route-map name.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "activate": {"type": bool},
                                 "route_map_in": {"type": str},
                                 "route_map_out": {"type": str},
                                 "rcf_in": {"type": str},
                                 "rcf_out": {"type": str},
+                                "default_originate": {"type": DefaultOriginate},
                                 "prefix_list_in": {"type": str},
                                 "prefix_list_out": {"type": str},
                             }
@@ -90301,6 +90445,8 @@ class EosDesigns(EosDesignsRootModel):
                             Outbound RCF function name with parenthesis.
                             Example: MyFunction(myarg).
                             """
+                            default_originate: DefaultOriginate
+                            """Subclass of AvdModel."""
                             prefix_list_in: str | None
                             """Inbound prefix-list name."""
                             prefix_list_out: str | None
@@ -90316,6 +90462,7 @@ class EosDesigns(EosDesignsRootModel):
                                     route_map_out: str | UndefinedType | None = Undefined,
                                     rcf_in: str | UndefinedType | None = Undefined,
                                     rcf_out: str | UndefinedType | None = Undefined,
+                                    default_originate: DefaultOriginate | UndefinedType = Undefined,
                                     prefix_list_in: str | UndefinedType | None = Undefined,
                                     prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
@@ -90335,6 +90482,7 @@ class EosDesigns(EosDesignsRootModel):
                                         rcf_out:
                                            Outbound RCF function name with parenthesis.
                                            Example: MyFunction(myarg).
+                                        default_originate: Subclass of AvdModel.
                                         prefix_list_in: Inbound prefix-list name.
                                         prefix_list_out: Outbound prefix-list name.
 
