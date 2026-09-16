@@ -12,10 +12,14 @@
     content: >-
       {"fabric_name":"testgroup","type":"l2leaf","hosts":["testhost"],"hostname":"testhost"}
 
-- name: Run warning validation on ansible-core >= 2.19
-  when: ansible_version.major > 2 or (ansible_version.major == 2 and ansible_version.minor >= 19)
-  ansible.builtin.include_tasks: validate_inputs_with_validation_configuration_ansible_2_19_and_above.yaml
+- name: Run warning validation on ansible-core >= 2.21
+  when: ansible_version.major > 2 or (ansible_version.major == 2 and ansible_version.minor >= 21)
+  ansible.builtin.include_tasks: validate_inputs_with_validation_configuration_ansible_2_21_and_above.yaml
 
-- name: Run warning validation on ansible-core < 2.19
-  when: ansible_version.major == 2 and ansible_version.minor < 19
+- name: Run warning validation on ansible-core 2.19-2.20
+  when: ansible_version.major == 2 and ansible_version.minor >= 19 and ansible_version.minor < 21
+  ansible.builtin.include_tasks: validate_inputs_with_validation_configuration_ansible_2_19_to_2_20.yaml
+
+- name: Run warning validation on ansible-core <= 2.18
+  when: ansible_version.major == 2 and ansible_version.minor <= 18
   ansible.builtin.include_tasks: validate_inputs_with_validation_configuration_ansible_2_18_and_below.yaml
