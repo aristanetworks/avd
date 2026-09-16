@@ -29,7 +29,9 @@ PLUGIN_NAME = "arista.avd.anta_workflow"
 
 try:
     from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
-    from pyavd._utils import default, get, strip_empties_from_dict
+    from pyavd._utils.default import default
+    from pyavd._utils.get import get
+    from pyavd._utils.strip_empties import strip_empties_from_dict
     from pyavd.api.anta import AVDCatalogGenerationSettings, AVDFabricData
     from pyavd.get_device_test_catalog import get_device_test_catalog
 

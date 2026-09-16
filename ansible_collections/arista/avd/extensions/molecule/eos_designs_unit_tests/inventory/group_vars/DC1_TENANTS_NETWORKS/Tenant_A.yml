@@ -436,6 +436,13 @@ tenant_a:
         # ID defined both in L2VLAN and SVI, making sure this does not raise a conflict.
 
 ipv4_acls:
+  - name: ACL1
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        source: any
+        destination: any
   - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
     entries:
       - sequence: 15
@@ -452,6 +459,13 @@ ipv4_acls:
         destination: any
 
 ipv6_acls:
+  - name: ACL1
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: any
+        destination: any
   # ACL with remark + source and destination interface_ip substitution.
   # Covers: remark skipping, source substitution, destination substitution, name suffix appended.
   - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN

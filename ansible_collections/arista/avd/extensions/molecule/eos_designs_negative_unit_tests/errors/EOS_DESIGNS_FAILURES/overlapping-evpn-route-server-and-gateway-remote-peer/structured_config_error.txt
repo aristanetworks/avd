@@ -1,1 +1,0 @@
-pyavd._errors.AristaAvdInvalidInputsError: EVPN Gateway remote peer 'explicit-evpn-route-server' is also configured under 'evpn_route_servers'. Use each inventory hostname in only one of these inputs.

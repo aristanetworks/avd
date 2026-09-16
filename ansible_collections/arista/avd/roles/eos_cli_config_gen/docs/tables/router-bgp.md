@@ -45,6 +45,9 @@
     | [<samp>&nbsp;&nbsp;bgp_defaults</samp>](## "router_bgp.bgp_defaults") | List, items: String |  |  |  | BGP command as string. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.bgp_defaults.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;bgp</samp>](## "router_bgp.bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;convergence</samp>](## "router_bgp.bgp.convergence") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slow_peer_time</samp>](## "router_bgp.bgp.convergence.slow_peer_time") | Integer |  |  | Min: 1<br>Max: 3600 | Maximum amount of time to wait in seconds before declaring initial BGP convergence for peers that do not establish session within a reasonable time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time</samp>](## "router_bgp.bgp.convergence.time") | Integer |  |  | Min: 1<br>Max: 3600 | Maximum amount of time to wait in seconds before declaring initial BGP convergence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "router_bgp.bgp.default") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_unicast</samp>](## "router_bgp.bgp.default.ipv4_unicast") | Boolean |  |  |  | Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_unicast_transport_ipv6</samp>](## "router_bgp.bgp.default.ipv4_unicast_transport_ipv6") | Boolean |  |  |  | Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False). |
@@ -151,6 +154,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "router_bgp.peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "router_bgp.peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "router_bgp.peer_groups.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.peer_groups.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "router_bgp.peer_groups.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;neighbors</samp>](## "router_bgp.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_group</samp>](## "router_bgp.neighbors.[].peer_group") | String |  |  |  |  |
@@ -229,6 +234,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "router_bgp.neighbors.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "router_bgp.neighbors.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "router_bgp.neighbors.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.neighbors.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "router_bgp.neighbors.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;neighbor_interfaces</samp>](## "router_bgp.neighbor_interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.neighbor_interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "router_bgp.neighbor_interfaces.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
@@ -508,6 +515,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].next_hop.address_family_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].next_hop.address_family_ipv6.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;originate</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].next_hop.address_family_ipv6.originate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].maximum_accepted_routes") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].maximum_accepted_routes.limit") | Integer | Required |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].maximum_accepted_routes.warning_limit") | Dictionary |  |  |  | Warning threshold for the maximum number of accepted routes. |
@@ -536,6 +545,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "router_bgp.address_family_ipv4.neighbors.[].next_hop.address_family_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4.neighbors.[].next_hop.address_family_ipv6.enabled") | Boolean | Required |  |  | Enables advertising the Extended Next Hop Encoding capability. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;originate</samp>](## "router_bgp.address_family_ipv4.neighbors.[].next_hop.address_family_ipv6.originate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.address_family_ipv4.neighbors.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "router_bgp.address_family_ipv4.neighbors.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "router_bgp.address_family_ipv4.neighbors.[].maximum_accepted_routes") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_ipv4.neighbors.[].maximum_accepted_routes.limit") | Integer | Required |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_bgp.address_family_ipv4.neighbors.[].maximum_accepted_routes.warning_limit") | Dictionary |  |  |  | Warning threshold for the maximum number of accepted routes. |
@@ -647,8 +658,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].graceful_restart") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].graceful_restart_helper") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stale_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].graceful_restart_helper.stale_route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for BGP Labeled-Unicast neighbor. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -682,8 +693,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].graceful_restart") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].graceful_restart_helper") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stale_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].graceful_restart_helper.stale_route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for BGP Labeled-Unicast neighbor. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -833,6 +844,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].default_originate.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].default_originate.always") | Boolean |  |  |  | Always advertise a default route to this peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].default_originate.route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].maximum_accepted_routes") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].maximum_accepted_routes.limit") | Integer | Required |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].maximum_accepted_routes.warning_limit") | Dictionary |  |  |  | Warning threshold for the maximum number of accepted routes. |
@@ -858,6 +871,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.address_family_ipv6.neighbors.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of advertised routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes_warning_limit</samp>](## "router_bgp.address_family_ipv6.neighbors.[].maximum_advertised_routes_warning_limit") | String |  |  |  | Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_accepted_routes</samp>](## "router_bgp.address_family_ipv6.neighbors.[].maximum_accepted_routes") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_ipv6.neighbors.[].maximum_accepted_routes.limit") | Integer | Required |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_bgp.address_family_ipv6.neighbors.[].maximum_accepted_routes.warning_limit") | Dictionary |  |  |  | Warning threshold for the maximum number of accepted routes. |
@@ -1767,6 +1782,13 @@
       bgp_defaults:
         - <str>
       bgp:
+        convergence:
+
+          # Maximum amount of time to wait in seconds before declaring initial BGP convergence for peers that do not establish session within a reasonable time.
+          slow_peer_time: <int; 1-3600>
+
+          # Maximum amount of time to wait in seconds before declaring initial BGP convergence.
+          time: <int; 1-3600>
         default:
 
           # Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True).
@@ -2006,6 +2028,13 @@
 
           # Maximum number of hops.
           ttl_maximum_hops: <int; 0-254>
+
+          # Maximum number of advertised routes (0 means unlimited).
+          maximum_advertised_routes: <int; 0-4294967294>
+
+          # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
+          # Percentage of maximum number of routes at which to warn ("<1-100> percent").
+          maximum_advertised_routes_warning_limit: <str>
       neighbors:
         - ip_address: <str; required; unique>
           peer_group: <str>
@@ -2173,6 +2202,13 @@
 
           # Maximum number of hops.
           ttl_maximum_hops: <int; 0-254>
+
+          # Maximum number of advertised routes (0 means unlimited).
+          maximum_advertised_routes: <int; 0-4294967294>
+
+          # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
+          # Percentage of maximum number of routes at which to warn ("<1-100> percent").
+          maximum_advertised_routes_warning_limit: <str>
       neighbor_interfaces:
 
           # Interface name.
@@ -2732,6 +2768,13 @@
               address_family_ipv6:
                 enabled: <bool; required>
                 originate: <bool>
+
+            # Maximum number of advertised routes (0 means unlimited).
+            maximum_advertised_routes: <int; 0-4294967294>
+
+            # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
+            # Percentage of maximum number of routes at which to warn ("<1-100> percent").
+            maximum_advertised_routes_warning_limit: <str>
             maximum_accepted_routes:
 
               # Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
@@ -2801,6 +2844,13 @@
                 # Enables advertising the Extended Next Hop Encoding capability.
                 enabled: <bool; required>
                 originate: <bool>
+
+            # Maximum number of advertised routes (0 means unlimited).
+            maximum_advertised_routes: <int; 0-4294967294>
+
+            # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
+            # Percentage of maximum number of routes at which to warn ("<1-100> percent").
+            maximum_advertised_routes_warning_limit: <str>
             maximum_accepted_routes:
 
               # Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
@@ -3034,10 +3084,10 @@
             graceful_restart_helper:
               stale_route_map: <str>
 
-            # Maximum number of routes (0 means unlimited).
+            # Maximum number of advertised routes (0 means unlimited).
             maximum_advertised_routes: <int; 0-4294967294>
 
-            # Maximum number of routes after which a warning is issued (0 means never warn) or
+            # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
             # Percentage of maximum number of routes at which to warn ("<1-100> percent").
             maximum_advertised_routes_warning_limit: <str>
 
@@ -3125,10 +3175,10 @@
             graceful_restart_helper:
               stale_route_map: <str>
 
-            # Maximum number of routes (0 means unlimited).
+            # Maximum number of advertised routes (0 means unlimited).
             maximum_advertised_routes: <int; 0-4294967294>
 
-            # Maximum number of routes after which a warning is issued (0 means never warn) or
+            # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
             # Percentage of maximum number of routes at which to warn ("<1-100> percent").
             maximum_advertised_routes_warning_limit: <str>
 
@@ -3464,6 +3514,13 @@
 
               # Route-map name.
               route_map: <str>
+
+            # Maximum number of advertised routes (0 means unlimited).
+            maximum_advertised_routes: <int; 0-4294967294>
+
+            # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
+            # Percentage of maximum number of routes at which to warn ("<1-100> percent").
+            maximum_advertised_routes_warning_limit: <str>
             maximum_accepted_routes:
 
               # Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
@@ -3532,6 +3589,13 @@
 
               # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
               send_limit: <int; 2-64>
+
+            # Maximum number of advertised routes (0 means unlimited).
+            maximum_advertised_routes: <int; 0-4294967294>
+
+            # Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
+            # Percentage of maximum number of routes at which to warn ("<1-100> percent").
+            maximum_advertised_routes_warning_limit: <str>
             maximum_accepted_routes:
 
               # Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.

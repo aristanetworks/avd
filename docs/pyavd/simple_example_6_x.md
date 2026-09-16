@@ -31,6 +31,7 @@ if TYPE_CHECKING:
 # This should be replaced with something that reads a proper inventory like the Ansible inventory.
 from generate_inventory import generate_hostvars
 
+
 def main() -> None:
     # Prepare output directories
     config_dir = Path(__file__).parent / "configs"
@@ -70,6 +71,7 @@ def main() -> None:
 
         print(".", end="", flush=True)
     print("")
+
 
 if __name__ == "__main__":
     main()

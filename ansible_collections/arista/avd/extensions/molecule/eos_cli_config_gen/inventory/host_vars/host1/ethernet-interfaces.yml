@@ -1121,6 +1121,10 @@ ethernet_interfaces:
     dot1x:
       host_mode:
         mode: single-host
+      authentication_failure:
+        action: allow
+        allow_vlan: 100
+        allow_access_list: ACL1
 
   - name: Ethernet37
     switchport:
@@ -1129,6 +1133,9 @@ ethernet_interfaces:
     dot1x:
       host_mode:
         mode: multi-host
+      authentication_failure:
+        action: allow
+        allow_access_list: Test_ACL
 
   - name: Ethernet38
     switchport:

@@ -10,11 +10,12 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._utils import remove_cached_property_type, unique
+from pyavd._utils.remove_cached_property_type import remove_cached_property_type
+from pyavd._utils.unique import unique
 from pyavd.j2filters import list_compress, natural_sort, range_expand
 
 if TYPE_CHECKING:
-    from . import EosDesignsFactsGeneratorProtocol
+    from .generator import EosDesignsFactsGeneratorProtocol
 
 
 class VlansMixin(EosDesignsFactsProtocol, Protocol):
