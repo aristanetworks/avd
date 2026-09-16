@@ -2282,12 +2282,13 @@ keys:
           type: str
           description: 'Inherit settings from a parent profile defined under `device_profiles`.
 
-            Max two levels of profile inheritance: device -> profile -> parent_profile
+            By default, profile inheritance is limited to two levels: device -> profile
+            -> parent_profile.
 
-            From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
-            is enabled,
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance`
+            to true
 
-            a profile can inherit settings across an infinite number of levels.'
+            allows profiles to inherit settings across any number of levels.'
         type:
           type: str
           description: 'Set the type of the device as defined under `node_type_keys`.
@@ -9962,12 +9963,13 @@ keys:
           type: str
           description: 'Parent profile is optional.
 
-            Port_profiles can refer to another port_profile to inherit settings in
-            up to two levels (adapter->profile->parent_profile).
+            By default port_profiles can refer to another port_profile to inherit
+            settings in up to two levels (adapter->profile->parent_profile).
 
-            From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
-            is enabled, a profile can inherit settings across an infinite number of
-            levels.
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             '
         port_channel:
@@ -10832,12 +10834,13 @@ keys:
           type: str
           description: 'Parent SVI profile name to apply.
 
-            svi_profiles can refer to another svi_profile to inherit settings in up
-            to two levels (svi -> svi_profile -> svi_parent_profile).
+            By default, profile inheritance is limited to two levels: svi -> svi_profile
+            -> parent_profile.
 
-            From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance`
-            is enabled, a profile can inherit settings across an infinite number of
-            levels.
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             '
   system_mac_address:

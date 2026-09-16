@@ -24,8 +24,9 @@ keys:
           type: str
           description: |
             Parent profile is optional.
-            Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
-            From AVD 6.5.0 onwards, if `avd_design_future.allow_infinite_inheritance` is enabled, a profile can inherit settings across an infinite number of levels.
+            By default port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+            allows profiles to inherit settings across any number of levels.
         port_channel:
           type: dict
           keys:
