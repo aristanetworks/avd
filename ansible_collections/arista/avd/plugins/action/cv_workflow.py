@@ -156,6 +156,18 @@ ARGUMENT_SPEC = {
 }
 
 
+def _validate_change_control_only(
+    workspace_id: str | None,
+    device_deployments: list[CVDeviceDeployment],
+    static_config_manifest: AvdManifest | None,
+) -> None:
+    """Validate inputs for Change-Control-only mode."""
+    static_config_manifest_has_content = bool(static_config_manifest and (static_config_manifest.containers or static_config_manifest.configlets))
+    if any((workspace_id, device_deployments, static_config_manifest_has_content)):
+        msg = "Change-Control-only mode cannot be combined with a Workspace or deployment inputs."
+        raise ValueError(msg)
+
+
 class ActionModule(ActionBase):
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         self._supports_check_mode = False
@@ -272,22 +284,20 @@ class ActionModule(ActionBase):
 
             change_control = CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={})))
 
-            if change_control.id is not None:
+            change_control_only = change_control.id is not None
+            if change_control_only:
                 workspace_id = get(validated_args, "workspace.id")
-                workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id)) if workspace_id is not None else None
+                _validate_change_control_only(workspace_id, device_deployments, static_config_manifest)
 
-                result_object = await deploy_to_cv(
-                    cloudvision=cloudvision,
-                    change_control=change_control,
-                    device_deployments=device_deployments,
-                    static_config_manifest=static_config_manifest,
-                    workspace=workspace,
-                )
-            elif work_to_do:
-                # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
-                workspace_args = get(validated_args, "workspace", default={})
-                if "build_warnings" in workspace_args:
-                    workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig.from_dict(workspace_args["build_warnings"])
+            if change_control_only or work_to_do:
+                if change_control_only:
+                    workspace = None
+                else:
+                    # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
+                    workspace_args = get(validated_args, "workspace", default={})
+                    if "build_warnings" in workspace_args:
+                        workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig.from_dict(workspace_args["build_warnings"])
+                    workspace = CVWorkspace(avd_workspace=AvdWorkspace(**workspace_args))
 
                 # Perform deployment of all objects, getting a DeployToCVResult object back.
                 result_object = await deploy_to_cv(
@@ -299,7 +309,7 @@ class ActionModule(ActionBase):
                     strict_system_mac_address=get(validated_args, "strict_system_mac_address"),
                     strict_tags=get(validated_args, "strict_tags"),
                     timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
-                    workspace=CVWorkspace(avd_workspace=AvdWorkspace(**workspace_args)),
+                    workspace=workspace,
                 )
             else:
                 result_object = DeployToCvResult(workspace=None)

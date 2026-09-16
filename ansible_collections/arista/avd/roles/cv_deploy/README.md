@@ -369,6 +369,9 @@ Setting `cv_change_control_requested_state` to `pending approval` prevents the w
 
 In both the regular deployment and Change-Control-only modes, `cv_change_control_name` and `cv_change_control_description` update the Change Control. `cv_change_control_approval_note` and `cv_change_control_start_note` control the notes used when the workflow performs the corresponding state transitions.
 
+!!! note
+    Although Change-Control-only mode does not read EOS or structured configuration files, the role still runs its standard input-validation task and the action plugin currently requires `configuration_dir`. Therefore, `eos_config_dir` and `structured_dir` must still be configured.
+
 **`cv_workspace_id`**
 
 By default, `cv_deploy` auto-generates new workspace ID on each run. Setting `cv_workspace_id` instructs the role to use a specific ID instead. If a workspace with that ID already exists in CloudVision and is in `pending` state, it will be reused (this may be useful for resuming an interrupted deployment). If the existing workspace is in any other state, the role will raise an error. If workspace with that ID does not yet exist - it will be created.

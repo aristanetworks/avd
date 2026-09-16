@@ -231,9 +231,12 @@ def test_deploy_rejects_device_deployments_with_existing_change_control(action_m
     with (
         patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[MagicMock()]),
         patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], [])),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock) as deploy_to_cv,
         pytest.raises(AnsibleActionFail, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
     ):
         asyncio.run(module.deploy(validated_args, {}))
+
+    deploy_to_cv.assert_not_called()
 
 
 def test_deploy_rejects_workspace_id_with_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
@@ -247,9 +250,12 @@ def test_deploy_rejects_workspace_id_with_existing_change_control(action_module:
 
     with (
         patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock) as deploy_to_cv,
         pytest.raises(AnsibleActionFail, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
     ):
         asyncio.run(module.deploy(validated_args, {}))
+
+    deploy_to_cv.assert_not_called()
 
 
 def test_deploy_rejects_static_config_manifest_with_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
@@ -263,9 +269,12 @@ def test_deploy_rejects_static_config_manifest_with_existing_change_control(acti
 
     with (
         patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock) as deploy_to_cv,
         pytest.raises(AnsibleActionFail, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
     ):
         asyncio.run(module.deploy(validated_args, {}))
+
+    deploy_to_cv.assert_not_called()
 
 
 # ---------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 # Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+# pylint: disable=too-many-lines
 from __future__ import annotations
 
 import tempfile
@@ -87,11 +88,24 @@ async def test_deploy_to_cv_manages_existing_change_control() -> None:
 
 
 @pytest.mark.asyncio
-async def test_deploy_to_cv_rejects_existing_change_control_with_workspace() -> None:
-    """Test that an existing Change Control cannot be combined with a Workspace."""
+@pytest.mark.parametrize(
+    "conflicting_inputs",
+    [
+        pytest.param({"workspace": CVWorkspace()}, id="WORKSPACE"),
+        pytest.param({"device_deployments": [MagicMock()]}, id="DEVICE_DEPLOYMENTS"),
+        pytest.param({"static_config_manifest": AvdManifest(configlets=(MagicMock(),))}, id="STATIC_CONFIG_MANIFEST"),
+        pytest.param({"studio_inputs": [MagicMock()]}, id="STUDIO_INPUTS"),
+    ],
+)
+async def test_deploy_to_cv_rejects_existing_change_control_with_deployment_inputs(conflicting_inputs: dict) -> None:
+    """Test that an existing Change Control cannot be combined with deployment inputs."""
     change_control = CVChangeControl(avd_change_control=AvdChangeControl(id="cc-id", requested_state="approved"))
+    mock_cv_client = AsyncMock()
 
-    with pytest.raises(ValueError, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"):
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        pytest.raises(ValueError, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
+    ):
         await deploy_to_cv(
             cloudvision=CloudVision(
                 servers="www.arista.io",
@@ -105,8 +119,10 @@ async def test_deploy_to_cv_rejects_existing_change_control_with_workspace() -> 
                 proxy_password=None,
             ),
             change_control=change_control,
-            workspace=CVWorkspace(),
+            **conflicting_inputs,
         )
+
+    mock_cv_client.assert_not_called()
 
 
 @pytest.mark.asyncio
