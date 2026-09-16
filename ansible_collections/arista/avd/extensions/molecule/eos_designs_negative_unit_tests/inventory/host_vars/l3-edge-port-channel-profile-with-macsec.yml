@@ -31,4 +31,5 @@ l3_edge:
             interfaces: [Ethernet1, Ethernet2]
             channel_id: 1
 
-expected_error_message: "'PortChannelInterfacesItem' object has no attribute 'mac_security'"
+expected_error_message: >-
+  'macsec_profile' cannot be inherited from l3_edge.p2p_links_profiles by a l3_edge.p2p_links entry with 'port_channel' configured.

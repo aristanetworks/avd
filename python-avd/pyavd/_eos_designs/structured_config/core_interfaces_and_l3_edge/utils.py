@@ -63,7 +63,15 @@ class UtilsMixin(Protocol):
             # Nothing to do
             return p2p_link._deepcopy()
 
-        profile_as_p2p_link_item = self.inputs_data.p2p_links_profiles[p2p_link.profile]._cast_as(type(p2p_link), ignore_extra_keys=True)
+        p2p_link_profile = self.inputs_data.p2p_links_profiles[p2p_link.profile]
+        if p2p_link.port_channel and p2p_link_profile.macsec_profile:
+            msg = (
+                f"'macsec_profile' cannot be inherited from {self.data_model}.p2p_links_profiles by a {self.data_model}.p2p_links entry with "
+                "'port_channel' configured."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        profile_as_p2p_link_item = p2p_link_profile._cast_as(type(p2p_link), ignore_extra_keys=True)
         return p2p_link._deepinherited(profile_as_p2p_link_item)
 
     def _resolve_p2p_ips(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> T_P2pLinksItem:
