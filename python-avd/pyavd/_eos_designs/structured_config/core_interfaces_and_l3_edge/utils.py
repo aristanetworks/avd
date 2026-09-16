@@ -63,15 +63,7 @@ class UtilsMixin(Protocol):
             # Nothing to do
             return p2p_link._deepcopy()
 
-        p2p_link_profile = self.inputs_data.p2p_links_profiles[p2p_link.profile]
-        if p2p_link.port_channel and p2p_link_profile.macsec_profile:
-            msg = (
-                f"'macsec_profile' cannot be inherited from {self.data_model}.p2p_links_profiles by a {self.data_model}.p2p_links entry with "
-                "'port_channel' configured."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-
-        profile_as_p2p_link_item = p2p_link_profile._cast_as(type(p2p_link), ignore_extra_keys=True)
+        profile_as_p2p_link_item = self.inputs_data.p2p_links_profiles[p2p_link.profile]._cast_as(type(p2p_link), ignore_extra_keys=True)
         return p2p_link._deepinherited(profile_as_p2p_link_item)
 
     def _resolve_p2p_ips(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> T_P2pLinksItem:
@@ -147,6 +139,10 @@ class UtilsMixin(Protocol):
         """
         if p2p_link.include_in_underlay_protocol and p2p_link.ipv6 and not (self.shared_utils.underlay_sr and self.shared_utils.underlay_ipv6):
             msg = f"{self.data_model}.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses except for ISIS-SR."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if p2p_link.port_channel and p2p_link.macsec_profile:
+            msg = f"'macsec_profile' is not supported for {self.data_model}.p2p_links[{p2p_link_index}] when 'port_channel' is configured."
             raise AristaAvdInvalidInputsError(msg)
 
         index = p2p_link.nodes.index(self.shared_utils.hostname)

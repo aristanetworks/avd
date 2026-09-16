@@ -1,1 +1,0 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'macsec_profile' cannot be inherited from l3_edge.p2p_links_profiles by a l3_edge.p2p_links entry with 'port_channel' configured.
