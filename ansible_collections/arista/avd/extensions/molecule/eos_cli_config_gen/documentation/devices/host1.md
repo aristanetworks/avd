@@ -2913,7 +2913,7 @@ mcs client
 | REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | - | aes | - | 42.42.42.42 | - | DEADBEEFCAFE123456 |
 | USER-AUTH-TYPE7 | GRP-READ | v3 | md5 | 7 | - | - | - | - | f5717f500000bb417100 |
 | USER-AUTH-PRIV-TYPE0 | GRP-WRITE | v3 | sha | 0 | aes | 0 | - | - | f5717f500000bb417100 |
-| USER-AUTH-PRIV-WITHOUT-LOCALIZED | GRP-WRITE | v3 | sha | 7 | aes256 | 7 | - | - | - |
+| USER-AUTH-PRIV-WITHOUT-LOCALIZED | GRP-WRITE | v3 | sha | - | aes256 | - | - | - | - |
 | USER-LOCALIZED-TYPE7 | GRP-WRITE | v3 | sha | 7 | aes | 7 | - | - | f5717f500000bb417100 |
 | USER-REMOTE-TYPE7 | GRP-REMOTE | v3 | md5 | 7 | des | 7 | 10.1.1.1 | - | f5717f500000bb417100 |
 
