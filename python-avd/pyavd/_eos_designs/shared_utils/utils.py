@@ -120,7 +120,7 @@ class UtilsMixin(Protocol):
                         f"Circular profile dependency detected: Profile '{port_profile.parent_profile}' "
                         f"cannot be assigned as the parent of '{port_profile.profile}' in 'port_profiles' because it would create a loop."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                 parent_profile = self.inputs.port_profiles[port_profile.parent_profile]._deepcopy()
                 port_profiles_chain.append(parent_profile)
                 port_profile = parent_profile

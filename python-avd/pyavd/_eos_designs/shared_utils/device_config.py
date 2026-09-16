@@ -55,7 +55,7 @@ class DeviceConfigMixin(Protocol):
                         f"Circular profile dependency detected: Profile '{device_profile.parent_profile}' "
                         f"cannot be assigned as the parent of '{device_profile.name}' in 'device_profiles' because it would create a loop."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                 parent_profile = device_parent_profile._deepcopy()
                 device_profiles_chain.append(parent_profile)
                 device_profile = parent_profile

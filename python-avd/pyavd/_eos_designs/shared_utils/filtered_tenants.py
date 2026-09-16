@@ -342,9 +342,9 @@ class FilteredTenantsMixin(Protocol):
                     if svi_profile.parent_profile in svi_profiles_chain or svi_profile.parent_profile == resolved_profile.profile:
                         msg = (
                             f"Circular profile dependency detected: Profile '{svi_profile.parent_profile}' cannot be applied as"
-                            f" the parent profile of '{svi_profile.profile}' as it would create a loop."
+                            f" the parent profile of '{svi_profile.profile}' in 'svi_profiles' as it would create a loop."
                         )
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                     svi_parent_profile = self.inputs.svi_profiles[svi_profile.parent_profile]._deepcopy()
                     svi_profiles_chain.append(svi_parent_profile)
                     svi_profile = svi_parent_profile
