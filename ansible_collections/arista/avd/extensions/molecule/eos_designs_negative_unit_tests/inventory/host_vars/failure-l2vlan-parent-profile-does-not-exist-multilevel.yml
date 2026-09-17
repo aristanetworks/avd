@@ -1,0 +1,37 @@
+---
+type: l3leaf
+
+avd_design_future:
+  allow_infinite_profile_inheritance: true
+
+l2vlan_profiles:
+  - profile: PROFILE-1
+    parent_profile: PROFILE-2
+  - profile: PROFILE-2
+    parent_profile: PROFILE-3
+  - profile: PROFILE-3
+    parent_profile: PROFILE-4
+
+l3leaf:
+  nodes:
+    - name: failure-l2vlan-parent-profile-does-not-exist-multilevel
+      loopback_ipv4_pool: 192.168.42.0/24
+      vtep_loopback_ipv4_pool: 192.168.255.0/24
+      bgp_as: 65042
+      filter:
+        tags: [research]
+      id: 1
+
+tenants:
+  - name: research
+    vlan_aware_bundle_number_base: 400
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 110
+        name: research1
+        tags: ['research']
+        profile: PROFILE-1
+
+
+expected_error_message: >-
+  Parent profile 'PROFILE-4' applied under 'PROFILE-3' does not exist in 'l2vlan_profiles'.

@@ -163,7 +163,30 @@ class FilteredTenantsMixin(Protocol):
             msg = f"Profile '{profile_name}' applied under l2vlan '{context}' does not exist in 'l2vlan_profiles'."
             raise AristaAvdInvalidInputsError(msg)
 
-        l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]
+        l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]._deepcopy()
+        l2vlans_profiles_chain = EosDesigns.L2vlanProfiles()
+        resolved_profile = self.inputs.l2vlan_profiles[profile_name]._deepcopy()
+        if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
+            while l2vlan_profile.parent_profile is not None:
+                if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
+                    msg = f"Parent profile '{l2vlan_profile.parent_profile}' applied under '{l2vlan_profile.profile}' does not exist in 'l2vlan_profiles'."
+                    raise AristaAvdInvalidInputsError(msg)
+                if l2vlan_profile.parent_profile in l2vlans_profiles_chain or l2vlan_profile.parent_profile == resolved_profile.profile:
+                    msg = (
+                        f"Circular profile dependency detected: Profile '{l2vlan_profile.parent_profile}' cannot be applied as"
+                        f" the parent profile of '{l2vlan_profile.profile}' in 'l2vlan_profiles' as it would create a loop."
+                    )
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+                l2vlan_parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]._deepcopy()
+                l2vlans_profiles_chain.append(l2vlan_parent_profile)
+                l2vlan_profile = l2vlan_parent_profile
+
+            for profile in l2vlans_profiles_chain:
+                resolved_profile = resolved_profile._deepinherited(profile)
+            if hasattr(resolved_profile, "parent_profile"):
+                delattr(resolved_profile, "parent_profile")
+            return resolved_profile
+
         if l2vlan_profile.parent_profile:
             if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
                 msg = f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{profile_name}' does not exist in 'l2vlan_profiles'."
