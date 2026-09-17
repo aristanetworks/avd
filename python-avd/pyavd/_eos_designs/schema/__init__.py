@@ -50495,7 +50495,7 @@ class EosDesigns(EosDesignsRootModel):
         class ClientSourceInterfacesItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"vrf": {"type": str}, "source_interface": {"type": str}}
+            _fields: ClassVar[dict] = {"vrf": {"type": str}, "interface": {"type": str}}
             vrf: str
             """
             VRF name.
@@ -50513,26 +50513,20 @@ class EosDesigns(EosDesignsRootModel):
             - Any other string will be used directly as the VRF
             name.
             """
-            source_interface: str | None
+            interface: str | None
             """
-            IP SSH client source interface.
-            The value will be interpreted according to these rules:
-            - If not
-            set, the source interface will be set automatically when VRF is set to `use_mgmt_interface_vrf`,
-            `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
-            - `use_mgmt_interface` will configure the
-            OOB management interface as the source interface.
-            - `use_inband_mgmt_interface` will configure the
-            `inband_mgmt_interface` as the source interface.
-            - `use_default_mgmt_method_interface` will
-            configure the source interface for one of the two options above depending on the value of
-            `default_mgmt_method`.
-            - Any other string will be used directly as the source interface.
+            Source interface to use for IP SSH Client in this VRF.
+            If set, the value is used directly as the
+            source interface name.
+            If not set, the source interface is derived automatically when `vrf` is set
+            to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+            For any other
+            `vrf` value, `interface` must be set.
             """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, vrf: str | UndefinedType = Undefined, source_interface: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, vrf: str | UndefinedType = Undefined, interface: str | UndefinedType | None = Undefined) -> None:
                     """
                     ClientSourceInterfacesItem.
 
@@ -50555,20 +50549,14 @@ class EosDesigns(EosDesignsRootModel):
                            depending on the value of `default_mgmt_method`.
                            - Any other string will be used directly as the VRF
                            name.
-                        source_interface:
-                           IP SSH client source interface.
-                           The value will be interpreted according to these rules:
-                           - If not
-                           set, the source interface will be set automatically when VRF is set to `use_mgmt_interface_vrf`,
-                           `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
-                           - `use_mgmt_interface` will configure the
-                           OOB management interface as the source interface.
-                           - `use_inband_mgmt_interface` will configure the
-                           `inband_mgmt_interface` as the source interface.
-                           - `use_default_mgmt_method_interface` will
-                           configure the source interface for one of the two options above depending on the value of
-                           `default_mgmt_method`.
-                           - Any other string will be used directly as the source interface.
+                        interface:
+                           Source interface to use for IP SSH Client in this VRF.
+                           If set, the value is used directly as the
+                           source interface name.
+                           If not set, the source interface is derived automatically when `vrf` is set
+                           to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                           For any other
+                           `vrf` value, `interface` must be set.
 
                     """
 

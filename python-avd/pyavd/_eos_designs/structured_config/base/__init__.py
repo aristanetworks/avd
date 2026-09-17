@@ -440,7 +440,7 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def ip_ssh_client(self) -> None:
-        """Parse ssh_settings.vrfs (or source_interfaces.ssh_client) and set list of source_interfaces."""
+        """Parse ssh_settings.client_source_interfaces (or source_interfaces.ssh_client) and set list of source_interfaces."""
         if self.inputs.ssh_settings.client_source_interfaces:
             source_interfaces = EosCliConfigGen.IpSshClient()
             for client_source in self.inputs.ssh_settings.client_source_interfaces._natural_sorted():
@@ -448,9 +448,13 @@ class AvdStructuredConfigBaseProtocol(
                     vrf_input=client_source.vrf,
                     context=f"ssh_settings.client_source_interfaces[vrf={client_source.vrf}]",
                 )
-                source_interface = self.shared_utils.get_source_interface(client_source.vrf, client_source.source_interface)
+                source_interface = self.shared_utils.get_source_interface(client_source.vrf, client_source.interface)
                 if source_interface is None:
-                    msg = "Unable to configure IP SSH Client source-interface since 'inband_mgmt_interface' is not set."
+                    msg = (
+                        f"Unable to configure IP SSH Client source-interface for VRF '{vrf_name}' since "
+                        f"'ssh_settings.client_source_interfaces[vrf={client_source.vrf}].interface' is not set. "
+                        "Set 'interface' for non-management VRF values."
+                    )
                     raise AristaAvdInvalidInputsError(msg)
 
                 if vrf_name == "default":
@@ -458,9 +462,8 @@ class AvdStructuredConfigBaseProtocol(
                 else:
                     source_interfaces.vrfs.append_new(name=vrf_name, source_interface=source_interface)
 
-            if source_interfaces:
-                self.structured_config.ip_ssh_client = source_interfaces
-                return
+            self.structured_config.ip_ssh_client = source_interfaces
+            return
 
         if not (inputs := self.inputs.source_interfaces.ssh_client):
             return
