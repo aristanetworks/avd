@@ -188,8 +188,8 @@ async def test_manage_approval_preserves_execution_state(
 
 
 @pytest.mark.asyncio
-async def test_manage_completed_failure_is_not_run_again(mock_cv_client: MagicMock, caplog: pytest.LogCaptureFixture) -> None:
-    """Test that an existing failed execution is reported but not run again."""
+async def test_manage_completed_failure_raises_without_running_again(mock_cv_client: MagicMock) -> None:
+    """Test that an existing failed execution raises without being run again."""
     local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="completed"))
     mock_cv_client.get_change_control.return_value = create_grpc_change_control(
         status=ChangeControlStatus.COMPLETED,
@@ -197,13 +197,16 @@ async def test_manage_completed_failure_is_not_run_again(mock_cv_client: MagicMo
         error="Previous execution failed",
     )
 
-    await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+    with pytest.raises(
+        CVChangeControlFailed,
+        match="Change Control 'cc_id_1' was already completed with errors before this workflow ran: Previous execution failed",
+    ):
+        await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
 
     mock_cv_client.start_change_control.assert_not_called()
     mock_cv_client.wait_for_change_control_state.assert_not_called()
     assert local_cc.state == "failed"
     assert local_cc.changed is False
-    assert "is already completed with errors and will not be run again: Previous execution failed" in caplog.text
 
 
 @pytest.mark.asyncio

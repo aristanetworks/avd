@@ -55,14 +55,15 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
     change_control.state = get_managed_change_control_state(cv_change_control)
     LOGGER.info("manage_change_control_on_cv: %s", change_control)
 
-    # TODO: Add support for stopping, unscheduling, unapproving, and deleting a Change Control
+    # TODO: Add support for stopping, unscheduling, unapproving, rolling back, and deleting a Change Control
     if change_control.requested_state == "pending approval":
         return
 
     # Do not restart a completed Change Control when the requested state is "completed"
     if change_control.requested_state == "completed" and cv_change_control.status == ChangeControlStatus.COMPLETED:
         if cv_change_control.error is not None:
-            LOGGER.warning("Change Control '%s' is already completed with errors and will not be run again: %s", change_control.id, cv_change_control.error)
+            msg = f"Change Control '{change_control.id}' was already completed with errors before this workflow ran: {cv_change_control.error}"
+            raise CVChangeControlFailed(msg)
         return
 
     if change_control.requested_state == "running" and cv_change_control.status == ChangeControlStatus.COMPLETED:
