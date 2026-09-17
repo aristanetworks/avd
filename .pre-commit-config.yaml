@@ -48,6 +48,7 @@ repos:
           (?x)
           (ansible_collections/arista/avd/extensions/molecule
           |pickle$
+          |^python-avd/pyavd/_schema/schemas\.rkyv$
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py
           )
@@ -163,7 +164,7 @@ repos:
           - 'gitpython>=3.1.57'
           - 'jinja2>=3.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.7'
+          - 'pyavd-utils==0.0.8'
           - 'pydantic>=2.3.0'
           - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
@@ -296,7 +297,14 @@ repos:
         language: python
         files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
-        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.16.6']
+        additional_dependencies:
+          - deepmerge>=1.1.0
+          - PyYAML>=6.0.0
+          - pyavd-utils==0.0.8
+          - pydantic>=2.3.0
+          - jsonschema-rs>=0.24
+          - referencing>=0.35.0
+          - ruff==0.16.6
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
@@ -319,7 +327,7 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.7', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.8', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -327,7 +335,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.7', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.8', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: b82a6c8896e491b9cb377a99ff3412131920681b  # frozen: v0.23.2
