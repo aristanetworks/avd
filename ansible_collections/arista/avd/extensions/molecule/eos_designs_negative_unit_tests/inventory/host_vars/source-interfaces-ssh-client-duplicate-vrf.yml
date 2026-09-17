@@ -11,13 +11,9 @@ l2leaf:
 mgmt_interface_vrf: VRF1
 
 ssh_settings:
-  vrfs:
-    - name: use_mgmt_interface_vrf
-      enabled: true
-      client_source_interface: use_mgmt_interface
-    - name: use_inband_mgmt_vrf
-      enabled: true
-      client_source_interface: use_inband_mgmt_interface
+  client_source_interfaces:
+    - vrf: use_mgmt_interface_vrf
+    - vrf: use_inband_mgmt_vrf
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Vrfs.

@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdError: Unable to configure multiple IP SSH Client source-interfaces for the same VRF 'VRF1'.
+pyavd._errors.AristaAvdDuplicateDataError: Found duplicate objects with conflicting data while generating configuration for Vrfs. {'name': 'VRF1', 'source_interface': 'Management1'} conflicts with {'name': 'VRF1', 'source_interface': 'Vlan4092'}.

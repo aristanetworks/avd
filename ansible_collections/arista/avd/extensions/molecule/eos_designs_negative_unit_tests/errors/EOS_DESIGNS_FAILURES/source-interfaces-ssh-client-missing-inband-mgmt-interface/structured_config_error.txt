@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: Unable to configure IP SSH Client source-interface since 'inband_mgmt_interface' is not set.
+pyavd._errors.AristaAvdInvalidInputsError: 'ssh_settings.client_source_interfaces[vrf=use_inband_mgmt_vrf]' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management.

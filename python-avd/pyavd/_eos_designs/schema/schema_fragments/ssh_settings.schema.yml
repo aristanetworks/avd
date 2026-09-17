@@ -35,15 +35,6 @@ keys:
               type: bool
               required: true
               description: Enable SSH in VRF.
-            client_source_interface:
-              type: str
-              description: |-
-                Source interface to use for IP SSH Client in this VRF.
-                The value will be interpreted according to these rules:
-                - `use_mgmt_interface` will configure the OOB management interface as the source interface.
-                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
-                - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
-                - Any other string will be used directly as the source interface.
             ipv4_acl:
               type: str
               convert_types:
@@ -57,3 +48,30 @@ keys:
       idle_timeout:
         type: int
         $ref: "eos_cli_config_gen#/keys/management_ssh/keys/idle_timeout"
+      client_source_interfaces:
+        type: list
+        items:
+          type: dict
+          keys:
+            vrf:
+              type: str
+              required: true
+              description: |-
+                VRF name.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure SSH for the VRF set with `mgmt_interface_vrf`.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure SSH for the VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+            source_interface:
+              type: str
+              description: |-
+                IP SSH client source interface.
+                The value will be interpreted according to these rules:
+                - If not set, the source interface will be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+                - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the source interface.

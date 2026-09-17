@@ -9,11 +9,9 @@ l2leaf:
       # inband_mgmt_vrf: INBANDMGMT
 
 ssh_settings:
-  vrfs:
-    - name: use_mgmt_interface_vrf
-      enabled: true
-      client_source_interface: use_mgmt_interface
+  client_source_interfaces:
+    - vrf: use_mgmt_interface_vrf
 
 expected_error_message: >-
   Error during plugin 'arista.avd.eos_designs_structured_config' execution:
-  'ssh_settings.vrfs[name=use_mgmt_interface_vrf]' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.
+  'ssh_settings.client_source_interfaces[vrf=use_mgmt_interface_vrf]' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.

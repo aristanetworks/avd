@@ -18,10 +18,6 @@ source_interfaces:
     inband_mgmt_interface: true
 
 ssh_settings:
-  vrfs:
-    - name: use_inband_mgmt_vrf
-      enabled: true
-      client_source_interface: use_inband_mgmt_interface
-    - name: use_mgmt_interface_vrf
-      enabled: true
-      client_source_interface: use_mgmt_interface
+  client_source_interfaces:
+    - vrf: use_mgmt_interface_vrf
+    - vrf: use_inband_mgmt_vrf

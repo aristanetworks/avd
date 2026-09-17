@@ -12,10 +12,12 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "ssh_settings.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ssh_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure SSH for the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure SSH for the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ssh_settings.vrfs.[].enabled") | Boolean | Required |  |  | Enable SSH in VRF. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_source_interface</samp>](## "ssh_settings.vrfs.[].client_source_interface") | String |  |  |  | Source interface to use for IP SSH Client in this VRF.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface` will configure the OOB management interface as the source interface.<br>- `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.<br>- `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "ssh_settings.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 access-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "ssh_settings.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access-list name. |
     | [<samp>&nbsp;&nbsp;idle_timeout</samp>](## "ssh_settings.idle_timeout") | Integer |  |  | Min: 0<br>Max: 86400 | Idle timeout in minutes. |
+    | [<samp>&nbsp;&nbsp;client_source_interfaces</samp>](## "ssh_settings.client_source_interfaces") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vrf</samp>](## "ssh_settings.client_source_interfaces.[].vrf") | String | Required |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure SSH for the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure SSH for the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "ssh_settings.client_source_interfaces.[].source_interface") | String |  |  |  | IP SSH client source interface.<br>The value will be interpreted according to these rules:<br>- If not set, the source interface will be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>- `use_mgmt_interface` will configure the OOB management interface as the source interface.<br>- `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.<br>- `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source interface. |
 
 === "YAML"
 
@@ -39,14 +41,6 @@
           # Enable SSH in VRF.
           enabled: <bool; required>
 
-          # Source interface to use for IP SSH Client in this VRF.
-          # The value will be interpreted according to these rules:
-          # - `use_mgmt_interface` will configure the OOB management interface as the source interface.
-          # - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
-          # - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
-          # - Any other string will be used directly as the source interface.
-          client_source_interface: <str>
-
           # IPv4 access-list name.
           ipv4_acl: <str>
 
@@ -55,4 +49,24 @@
 
       # Idle timeout in minutes.
       idle_timeout: <int; 0-86400>
+      client_source_interfaces:
+
+          # VRF name.
+          # The value will be interpreted according to these rules:
+          # - `use_mgmt_interface_vrf` will configure SSH for the VRF set with `mgmt_interface_vrf`.
+          #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+          # - `use_inband_mgmt_vrf` will configure SSH for the VRF set with `inband_mgmt_vrf`.
+          #   An error will be raised if inband management is not configured for the device.
+          # - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above depending on the value of `default_mgmt_method`.
+          # - Any other string will be used directly as the VRF name.
+        - vrf: <str; required>
+
+          # IP SSH client source interface.
+          # The value will be interpreted according to these rules:
+          # - If not set, the source interface will be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+          # - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+          # - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+          # - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+          # - Any other string will be used directly as the source interface.
+          source_interface: <str>
     ```

@@ -50422,13 +50422,7 @@ class EosDesigns(EosDesignsRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "name": {"type": str},
-                "enabled": {"type": bool},
-                "client_source_interface": {"type": str},
-                "ipv4_acl": {"type": str},
-                "ipv6_acl": {"type": str},
-            }
+            _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}, "ipv4_acl": {"type": str}, "ipv6_acl": {"type": str}}
             name: str
             """
             VRF name.
@@ -50448,20 +50442,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             enabled: bool
             """Enable SSH in VRF."""
-            client_source_interface: str | None
-            """
-            Source interface to use for IP SSH Client in this VRF.
-            The value will be interpreted according to
-            these rules:
-            - `use_mgmt_interface` will configure the OOB management interface as the source
-            interface.
-            - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source
-            interface.
-            - `use_default_mgmt_method_interface` will configure the source interface for one of the
-            two options above depending on the value of `default_mgmt_method`.
-            - Any other string will be used
-            directly as the source interface.
-            """
             ipv4_acl: str | None
             """IPv4 access-list name."""
             ipv6_acl: str | None
@@ -50474,7 +50454,6 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
-                    client_source_interface: str | UndefinedType | None = Undefined,
                     ipv4_acl: str | UndefinedType | None = Undefined,
                     ipv6_acl: str | UndefinedType | None = Undefined,
                 ) -> None:
@@ -50501,18 +50480,6 @@ class EosDesigns(EosDesignsRootModel):
                            - Any other string will be used directly as the VRF
                            name.
                         enabled: Enable SSH in VRF.
-                        client_source_interface:
-                           Source interface to use for IP SSH Client in this VRF.
-                           The value will be interpreted according to
-                           these rules:
-                           - `use_mgmt_interface` will configure the OOB management interface as the source
-                           interface.
-                           - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source
-                           interface.
-                           - `use_default_mgmt_method_interface` will configure the source interface for one of the
-                           two options above depending on the value of `default_mgmt_method`.
-                           - Any other string will be used
-                           directly as the source interface.
                         ipv4_acl: IPv4 access-list name.
                         ipv6_acl: IPv6 access-list name.
 
@@ -50525,7 +50492,97 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
+        class ClientSourceInterfacesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"vrf": {"type": str}, "source_interface": {"type": str}}
+            vrf: str
+            """
+            VRF name.
+            The value will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure SSH for the VRF set with `mgmt_interface_vrf`.
+              An error will be raised if `mgmt_ip` or
+            `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will configure SSH for the
+            VRF set with `inband_mgmt_vrf`.
+              An error will be raised if inband management is not configured for
+            the device.
+            - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above
+            depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as the VRF
+            name.
+            """
+            source_interface: str | None
+            """
+            IP SSH client source interface.
+            The value will be interpreted according to these rules:
+            - If not
+            set, the source interface will be set automatically when VRF is set to `use_mgmt_interface_vrf`,
+            `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+            - `use_mgmt_interface` will configure the
+            OOB management interface as the source interface.
+            - `use_inband_mgmt_interface` will configure the
+            `inband_mgmt_interface` as the source interface.
+            - `use_default_mgmt_method_interface` will
+            configure the source interface for one of the two options above depending on the value of
+            `default_mgmt_method`.
+            - Any other string will be used directly as the source interface.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, vrf: str | UndefinedType = Undefined, source_interface: str | UndefinedType | None = Undefined) -> None:
+                    """
+                    ClientSourceInterfacesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vrf:
+                           VRF name.
+                           The value will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure SSH for the VRF set with `mgmt_interface_vrf`.
+                             An error will be raised if `mgmt_ip` or
+                           `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will configure SSH for the
+                           VRF set with `inband_mgmt_vrf`.
+                             An error will be raised if inband management is not configured for
+                           the device.
+                           - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above
+                           depending on the value of `default_mgmt_method`.
+                           - Any other string will be used directly as the VRF
+                           name.
+                        source_interface:
+                           IP SSH client source interface.
+                           The value will be interpreted according to these rules:
+                           - If not
+                           set, the source interface will be set automatically when VRF is set to `use_mgmt_interface_vrf`,
+                           `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                           - `use_mgmt_interface` will configure the
+                           OOB management interface as the source interface.
+                           - `use_inband_mgmt_interface` will configure the
+                           `inband_mgmt_interface` as the source interface.
+                           - `use_default_mgmt_method_interface` will
+                           configure the source interface for one of the two options above depending on the value of
+                           `default_mgmt_method`.
+                           - Any other string will be used directly as the source interface.
+
+                    """
+
+        class ClientSourceInterfaces(AvdList[ClientSourceInterfacesItem]):
+            """Subclass of AvdList with `ClientSourceInterfacesItem` items."""
+
+        ClientSourceInterfaces._item_type = ClientSourceInterfacesItem
+
+        _fields: ClassVar[dict] = {
+            "enabled": {"type": bool},
+            "vrfs": {"type": Vrfs},
+            "idle_timeout": {"type": int},
+            "client_source_interfaces": {"type": ClientSourceInterfaces},
+        }
         enabled: bool | None
         """
         Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
@@ -50535,6 +50592,8 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         idle_timeout: int | None
         """Idle timeout in minutes."""
+        client_source_interfaces: ClientSourceInterfaces
+        """Subclass of AvdList with `ClientSourceInterfacesItem` items."""
 
         if TYPE_CHECKING:
 
@@ -50544,6 +50603,7 @@ class EosDesigns(EosDesignsRootModel):
                 enabled: bool | UndefinedType | None = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 idle_timeout: int | UndefinedType | None = Undefined,
+                client_source_interfaces: ClientSourceInterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 SshSettings.
@@ -50557,6 +50617,7 @@ class EosDesigns(EosDesignsRootModel):
                        all VRFs.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     idle_timeout: Idle timeout in minutes.
+                    client_source_interfaces: Subclass of AvdList with `ClientSourceInterfacesItem` items.
 
                 """
 

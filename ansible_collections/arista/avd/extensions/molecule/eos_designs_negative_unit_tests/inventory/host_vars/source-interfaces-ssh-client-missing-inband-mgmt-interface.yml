@@ -9,11 +9,9 @@ l2leaf:
       # inband_mgmt_vrf: INBANDMGMT
 
 ssh_settings:
-  vrfs:
-    - name: use_inband_mgmt_vrf
-      enabled: true
-      client_source_interface: use_inband_mgmt_interface
+  client_source_interfaces:
+    - vrf: use_inband_mgmt_vrf
 
 expected_error_message: >-
   Error during plugin 'arista.avd.eos_designs_structured_config' execution:
-  'ssh_settings.vrfs[name=use_inband_mgmt_vrf]' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management.
+  'ssh_settings.client_source_interfaces[vrf=use_inband_mgmt_vrf]' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management.

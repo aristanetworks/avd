@@ -23,12 +23,6 @@ management_interfaces:
   vrf: default
   ip_address: 192.168.0.2/24
   type: oob
-management_ssh:
-  vrfs:
-  - name: INBANDMGMT
-    enable: true
-  - name: default
-    enable: true
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
