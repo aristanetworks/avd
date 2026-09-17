@@ -50,6 +50,7 @@
         device_list: "{{ cv_devices }}"
         strict_tags: "{{ cv_strict_tags }}"
         skip_missing_devices: "{{ cv_skip_missing_devices }}"
+        inventory_mode: "{{ cv_inventory_mode }}"
         strict_system_mac_address: "{{ cv_strict_system_mac_address }}"
         configlet_name_template: "{{ cv_configlet_name_template | arista.avd.default }}"
         workspace:
