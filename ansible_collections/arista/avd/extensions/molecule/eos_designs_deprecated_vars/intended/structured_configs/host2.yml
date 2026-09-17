@@ -7,6 +7,11 @@ hostname: host2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
+ip_ssh_client:
+  source_interface: Vlan2014
+  vrfs:
+  - name: deprecated_mgmt_interface_vrf
+    source_interface: Management2
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -16,6 +21,13 @@ loopback_interfaces:
   isis_passive: true
   node_segment:
     ipv4_index: 102
+management_interfaces:
+- name: Management2
+  description: deprecated_mgmt_interface_description
+  shutdown: false
+  vrf: deprecated_mgmt_interface_vrf
+  ip_address: 10.20.30.50/24
+  type: oob
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS

@@ -12,3 +12,5 @@ pe:
   nodes:
     - name: host2
       id: 2
+      mgmt_ip: 10.20.30.50/24
+      inband_mgmt_interface: Vlan2014

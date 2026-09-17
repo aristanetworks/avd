@@ -440,7 +440,30 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def ip_ssh_client(self) -> None:
-        """Parse source_interfaces.ssh_client and return list of source_interfaces."""
+        """Parse ssh_settings.vrfs (or source_interfaces.ssh_client) and set list of source_interfaces."""
+        if self.inputs.ssh_settings:
+            source_interfaces = EosCliConfigGen.IpSshClient()
+            for vrf in self.inputs.ssh_settings.vrfs._natural_sorted():
+                vrf_name = self.shared_utils.get_vrf(
+                    vrf_input=vrf.name,
+                    context=f"ssh_settings.vrfs[name={vrf.name}]",
+                )
+                if vrf.client_source_interface is None:
+                    continue
+                source_interface = self.shared_utils.get_local_interface(vrf.client_source_interface)
+                if source_interface is None:
+                    msg = "Unable to configure IP SSH Client source-interface since 'inband_mgmt_interface' is not set."
+                    raise AristaAvdInvalidInputsError(msg)
+
+                if vrf_name == "default":
+                    source_interfaces.source_interface = source_interface
+                else:
+                    source_interfaces.vrfs.append_new(name=vrf_name, source_interface=source_interface)
+
+            if source_interfaces:
+                self.structured_config.ip_ssh_client = source_interfaces
+                return
+
         if not (inputs := self.inputs.source_interfaces.ssh_client):
             return
 

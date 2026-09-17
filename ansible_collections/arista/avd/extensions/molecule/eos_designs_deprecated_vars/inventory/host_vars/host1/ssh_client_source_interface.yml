@@ -1,0 +1,5 @@
+# Testing source_interfaces with inband_mgmt_vrf
+source_interfaces:
+  ssh_client:
+    mgmt_interface: true
+    inband_mgmt_interface: true

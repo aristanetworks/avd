@@ -10770,6 +10770,11 @@ keys:
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: ssh_settings.vrfs[].client_source_interface
       tacacs:
         type: dict
         deprecation:
@@ -10875,6 +10880,22 @@ keys:
               type: bool
               required: true
               description: Enable SSH in VRF.
+            client_source_interface:
+              type: str
+              description: 'Source interface to use for IP SSH Client in this VRF.
+
+                The value will be interpreted according to these rules:
+
+                - `use_mgmt_interface` will configure the OOB management interface
+                as the source interface.
+
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface`
+                as the source interface.
+
+                - `use_default_mgmt_method_interface` will configure the source interface
+                for one of the two options above depending on the value of `default_mgmt_method`.
+
+                - Any other string will be used directly as the source interface.'
             ipv4_acl:
               type: str
               convert_types:

@@ -16,6 +16,12 @@ source_interfaces:
   http_client:
     mgmt_interface: true
     inband_mgmt_interface: true
-  ssh_client:
-    mgmt_interface: true
-    inband_mgmt_interface: true
+
+ssh_settings:
+  vrfs:
+    - name: use_inband_mgmt_vrf
+      enabled: true
+      client_source_interface: use_inband_mgmt_interface
+    - name: use_mgmt_interface_vrf
+      enabled: true
+      client_source_interface: use_mgmt_interface

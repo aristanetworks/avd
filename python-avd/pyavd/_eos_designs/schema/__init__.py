@@ -50422,7 +50422,13 @@ class EosDesigns(EosDesignsRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}, "ipv4_acl": {"type": str}, "ipv6_acl": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enabled": {"type": bool},
+                "client_source_interface": {"type": str},
+                "ipv4_acl": {"type": str},
+                "ipv6_acl": {"type": str},
+            }
             name: str
             """
             VRF name.
@@ -50442,6 +50448,20 @@ class EosDesigns(EosDesignsRootModel):
             """
             enabled: bool
             """Enable SSH in VRF."""
+            client_source_interface: str | None
+            """
+            Source interface to use for IP SSH Client in this VRF.
+            The value will be interpreted according to
+            these rules:
+            - `use_mgmt_interface` will configure the OOB management interface as the source
+            interface.
+            - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source
+            interface.
+            - `use_default_mgmt_method_interface` will configure the source interface for one of the
+            two options above depending on the value of `default_mgmt_method`.
+            - Any other string will be used
+            directly as the source interface.
+            """
             ipv4_acl: str | None
             """IPv4 access-list name."""
             ipv6_acl: str | None
@@ -50454,6 +50474,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
+                    client_source_interface: str | UndefinedType | None = Undefined,
                     ipv4_acl: str | UndefinedType | None = Undefined,
                     ipv6_acl: str | UndefinedType | None = Undefined,
                 ) -> None:
@@ -50480,6 +50501,18 @@ class EosDesigns(EosDesignsRootModel):
                            - Any other string will be used directly as the VRF
                            name.
                         enabled: Enable SSH in VRF.
+                        client_source_interface:
+                           Source interface to use for IP SSH Client in this VRF.
+                           The value will be interpreted according to
+                           these rules:
+                           - `use_mgmt_interface` will configure the OOB management interface as the source
+                           interface.
+                           - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source
+                           interface.
+                           - `use_default_mgmt_method_interface` will configure the source interface for one of the
+                           two options above depending on the value of `default_mgmt_method`.
+                           - Any other string will be used
+                           directly as the source interface.
                         ipv4_acl: IPv4 access-list name.
                         ipv6_acl: IPv6 access-list name.
 
