@@ -166,6 +166,7 @@ repos:
           - 'pyavd-utils==0.0.7'
           - 'pydantic>=2.3.0'
           - 'pytest>=9.1.0'
+          - 'pytest-codspeed>=3.1.0'
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.35.0'
           - 'ruff==0.16.6'
