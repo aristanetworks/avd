@@ -35,7 +35,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_vlan</samp>](## "<network_services_keys.name>.[].l2vlans.[].private_vlan.primary_vlan") | Integer | Required |  |  | Primary VLAN ID. |
     | [<samp>l2vlan_profiles</samp>](## "l2vlan_profiles") | List, items: Dictionary |  |  |  | Profiles to inherit common settings for l2vlans defined under the network_services key. |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "l2vlan_profiles.[].profile") | String | Required, Unique |  |  | Profile name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "l2vlan_profiles.[].parent_profile") | String |  |  |  | Name of parent L2VLAN profile to apply.<br>l2vlan_profiles can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "l2vlan_profiles.[].parent_profile") | String |  |  |  | Name of parent L2VLAN profile to apply.<br>By default, profile inheritance is limited to two levels: (l2vlan -> l2vlan_profile -> parent_profile).<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "l2vlan_profiles.[].address_locking") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "l2vlan_profiles.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "l2vlan_profiles.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
@@ -179,7 +179,9 @@
       - profile: <str; required; unique>
 
         # Name of parent L2VLAN profile to apply.
-        # l2vlan_profiles can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+        # By default, profile inheritance is limited to two levels: (l2vlan -> l2vlan_profile -> parent_profile).
+        # From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+        # allows profiles to inherit settings across any number of levels.
         parent_profile: <str>
         address_locking:
 

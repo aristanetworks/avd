@@ -1037,7 +1037,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Available from AVD 6.5.0.
         Allow `parent_profile` to inherit from its own `parent_profile` in
-        `port_profiles`, `device_profiles` and `svi_profiles`.
+        `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`.
 
         Default value: `False`
         """
@@ -1191,7 +1191,7 @@ class EosDesigns(EosDesignsRootModel):
                     allow_infinite_profile_inheritance:
                        Available from AVD 6.5.0.
                        Allow `parent_profile` to inherit from its own `parent_profile` in
-                       `port_profiles`, `device_profiles` and `svi_profiles`.
+                       `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`.
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
@@ -24678,8 +24678,12 @@ class EosDesigns(EosDesignsRootModel):
         parent_profile: str | None
         """
         Name of parent L2VLAN profile to apply.
-        l2vlan_profiles can refer to another l2vlan_profile to
-        inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+        By default, profile inheritance is limited to two levels:
+        (l2vlan -> l2vlan_profile -> parent_profile).
+        From AVD 6.5.0 onwards, setting
+        `avd_design_future.allow_infinite_profile_inheritance` to true
+        allows profiles to inherit settings
+        across any number of levels.
         """
         address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
         vni_override: int | None
@@ -24809,8 +24813,12 @@ class EosDesigns(EosDesignsRootModel):
                     profile: Profile name.
                     parent_profile:
                        Name of parent L2VLAN profile to apply.
-                       l2vlan_profiles can refer to another l2vlan_profile to
-                       inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                       By default, profile inheritance is limited to two levels:
+                       (l2vlan -> l2vlan_profile -> parent_profile).
+                       From AVD 6.5.0 onwards, setting
+                       `avd_design_future.allow_infinite_profile_inheritance` to true
+                       allows profiles to inherit settings
+                       across any number of levels.
                     address_locking: address_locking
                     vni_override:
                        By default the VNI will be derived from mac_vrf_vni_base.
