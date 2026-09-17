@@ -3,19 +3,18 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypeVar, cast
-
-from pyavd._schema.models.avd_base import AvdBase
+from typing import TYPE_CHECKING, Any, cast
 
 from .constants import ACCEPTED_COERCION_MAP
-
-T = TypeVar("T", int, bool, str)
+from .models import is_avd_data_class_type
 
 if TYPE_CHECKING:
     from typing import NoReturn
 
+    from .models.type_vars import T_ItemType
 
-def coerce_type(value: Any, target_type: type[T]) -> T:
+
+def coerce_type(value: Any, target_type: type[T_ItemType]) -> T_ItemType:
     """
     Return a coerced variant of the given value to the target_type.
 
@@ -24,7 +23,7 @@ def coerce_type(value: Any, target_type: type[T]) -> T:
     If coercion cannot be done this will raise a TypeError.
     """
     if value is None:
-        if issubclass(target_type, AvdBase):
+        if is_avd_data_class_type(target_type):
             # None values are sometimes used to overwrite inherited profiles.
             return target_type._from_null()
 
@@ -39,10 +38,9 @@ def coerce_type(value: Any, target_type: type[T]) -> T:
         except ValueError as exception:
             raise_coerce_error(value, target_type, exception)
 
-    # Identify subclass of AvdModel without importing AvdModel (circular import)
-    elif issubclass(target_type, AvdBase):
+    elif is_avd_data_class_type(target_type):
         try:
-            return target_type._load(data=value)
+            return cast("T_ItemType", target_type._load(data=value))
         except TypeError as exception:
             raise_coerce_error(value, target_type, exception)
 
@@ -50,7 +48,7 @@ def coerce_type(value: Any, target_type: type[T]) -> T:
         raise_coerce_error(value, target_type)
 
     # All the pass brings us here to return the original value.
-    return cast("T", value)
+    return cast("T_ItemType", value)
 
 
 def raise_coerce_error(value: Any, target_type: type, exception: Exception | None = None) -> NoReturn:

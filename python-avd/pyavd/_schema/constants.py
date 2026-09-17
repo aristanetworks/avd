@@ -24,7 +24,7 @@ PICKLED_SCHEMAS = {
     "cv_deploy": CV_DEPLOY_PICKLED_SCHEMA_PATH,
 }
 
-ACCEPTED_COERCION_MAP = {
+ACCEPTED_COERCION_MAP: dict[type[int | str | bool], tuple[type[int | str | bool | float], ...]] = {
     int: (str, bool),
     str: (int, bool, float),
     bool: (str, int),
