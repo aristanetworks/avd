@@ -26,9 +26,9 @@ management_interfaces:
 management_ssh:
   vrfs:
   - name: MGMT
-    enable: false
+    enable: true
   - name: default
-    enable: false
+    enable: true
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
