@@ -548,6 +548,9 @@ router_bgp:
       route_map_out: TEST_OUT
       rcf_in: TEST_RCF_IN()
       rcf_out: TEST_RCF_OUT()
+      default_originate:
+        enabled: true
+        always: true
   vrfs:
   - name: Tenant_A_L3_VRF_Zone
     rd: 192.168.254.15:15
