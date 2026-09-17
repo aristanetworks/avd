@@ -5542,7 +5542,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -5732,7 +5732,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -6346,7 +6346,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -6536,7 +6536,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -25509,7 +25509,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -25699,7 +25699,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -26313,7 +26313,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -26503,7 +26503,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
