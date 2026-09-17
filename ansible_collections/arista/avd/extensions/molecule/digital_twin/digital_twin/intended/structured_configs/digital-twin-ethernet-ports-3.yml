@@ -48,6 +48,7 @@ metadata:
     node_type: third-party
     ip_addr: 192.169.3.3/32
     version: byod
+    instance_type: xlarge
     username: cvpadmin
     password: cvp123!
 prefix_lists:

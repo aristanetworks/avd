@@ -75,6 +75,7 @@ nodes:
     node_type: third-party
     ip_addr: 192.169.3.3/32
     version: byod
+    instance_type: xlarge
 - digital-twin-veos-no-mgmt:
     node_type: veos
     version: 4.33.1.1F
