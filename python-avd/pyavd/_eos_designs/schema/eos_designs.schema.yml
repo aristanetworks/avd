@@ -16561,7 +16561,8 @@ $defs:
           description: QOS service profile.
         macsec_profile:
           type: str
-          description: MAC security profile.
+          description: MAC security profile. Not supported when `port_channel` is
+            configured.
         port_channel:
           description: Port-channel parameters.
           type: dict
