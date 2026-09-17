@@ -47,6 +47,7 @@ repos:
         exclude: >-
           (?x)
           (ansible_collections/arista/avd/extensions/molecule
+          |(^|/)uv\.lock$
           |pickle$
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py
@@ -209,6 +210,7 @@ repos:
       - id: codespell
         name: Check for common misspellings in text files.
         args: [--config, .codespellrc]
+        exclude: (^|/)uv\.lock$
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
     rev: fa412071e4f5d44d44f9e365f4676f9df92456a2  # frozen: v1.30.1
