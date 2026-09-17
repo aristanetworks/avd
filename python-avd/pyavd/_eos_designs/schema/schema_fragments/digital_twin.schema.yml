@@ -56,6 +56,12 @@ keys:
               Set this to `true` to enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the default VRF and preserving this connectivity.
               This setting is only applicable to ACT `veos` and `cloudeos` node types.
             default: false
+          cv_settings:
+            type: dict
+            $ref: "eos_designs#/keys/cv_settings"
+            description: |-
+              CloudVision settings for Digital Twin deployment.
+              When set, overrides the global `cv_settings` for devices in Digital Twin mode.
       use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false
