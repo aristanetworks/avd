@@ -7,11 +7,6 @@ hostname: host2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-ip_ssh_client:
-  source_interface: Vlan2014
-  vrfs:
-  - name: deprecated_mgmt_interface_vrf
-    source_interface: Management2
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

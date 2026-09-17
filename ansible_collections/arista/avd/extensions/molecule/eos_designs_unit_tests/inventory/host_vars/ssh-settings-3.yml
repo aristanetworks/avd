@@ -15,5 +15,3 @@ ssh_settings:
     - name: default
       enabled: false
       ipv4_acl: ACL-SSH
-  client_source_interfaces:
-    - vrf: use_mgmt_interface_vrf
