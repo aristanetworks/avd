@@ -1,0 +1,21 @@
+---
+# --8<-- [start:tenants]
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 18000
+    vrfs:
+      - name: VRF_PROD
+        vrf_vni: 180
+        svis:
+          - id: 100
+            name: PROD_VLAN100
+            enabled: true
+            ip_address_virtual: 10.180.100.1/24
+          - id: 101
+            name: PROD_VLAN101
+            enabled: true
+            ip_address_virtual: 10.180.101.1/24
+    l2vlans:
+      - id: 200
+        name: L2_VLAN200
+# --8<-- [end:tenants]
