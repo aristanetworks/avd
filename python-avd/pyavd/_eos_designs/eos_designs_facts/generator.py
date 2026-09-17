@@ -76,6 +76,12 @@ class EosDesignsFactsGeneratorProtocol(
 
     @remove_cached_property_type
     @cached_property
+    def digital_twin(self) -> EosDesignsFactsProtocol.DigitalTwin:
+        """Exposed in avd_switch_facts."""
+        return EosDesignsFactsProtocol.DigitalTwin(act_legacy_eos_versioning=self.inputs.digital_twin.fabric.act_legacy_eos_versioning)
+
+    @remove_cached_property_type
+    @cached_property
     def serial_number(self) -> str | None:
         """Exposed in avd_switch_facts."""
         return self.shared_utils.serial_number
