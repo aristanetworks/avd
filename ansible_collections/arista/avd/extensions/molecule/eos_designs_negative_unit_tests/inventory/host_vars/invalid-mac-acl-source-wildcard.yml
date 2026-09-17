@@ -25,4 +25,4 @@ servers:
         mac_acl_in: acl1
 
 expected_error_message: >-
-  Can not set 'mac_acls[name=acl1].entries[0].source_wildcard' when source is 'any' for host invalid-mac-acl-source-wildcard.
+  Can not set 'mac_acls[name=acl1].entries[0].source_wildcard' when source is 'any' for host 'invalid-mac-acl-source-wildcard'.

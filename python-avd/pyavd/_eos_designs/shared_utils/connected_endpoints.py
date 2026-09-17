@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -51,7 +51,7 @@ class ConnectedEndpointsMixin(Protocol):
                             f" connected_endpoint '{connected_endpoint.name}' under '{connected_endpoints_key.key}'."
                             " Notice that some or all of these variables could be inherited from 'port_profiles'"
                         )
-                        raise AristaAvdError(msg)
+                        raise AristaAvdInvalidInputsError(msg)
 
                     filtered_adapters.append(adapter_settings)
 
