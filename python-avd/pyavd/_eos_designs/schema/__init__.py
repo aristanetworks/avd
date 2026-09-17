@@ -42807,6 +42807,34 @@ class EosDesigns(EosDesignsRootModel):
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
+            class Dot1x(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"protocol_bpdu_bypass": {"type": bool, "default": True}}
+                protocol_bpdu_bypass: bool
+                """
+                Support for 802.1X BPDU bypass.
+                The feature will be ignored on platforms where this is false.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, protocol_bpdu_bypass: bool | UndefinedType = Undefined) -> None:
+                        """
+                        Dot1x.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            protocol_bpdu_bypass:
+                               Support for 802.1X BPDU bypass.
+                               The feature will be ignored on platforms where this is false.
+
+                        """
+
             class AddressLocking(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -44044,6 +44072,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "dot1x": {"type": Dot1x},
                 "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -44070,6 +44099,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            dot1x: Dot1x
+            """Subclass of AvdModel."""
             address_locking: AddressLocking
             """Subclass of AvdModel."""
             queue_monitor: bool
@@ -44278,6 +44309,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    dot1x: Dot1x | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
@@ -44311,6 +44343,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        dot1x: Subclass of AvdModel.
                         address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
@@ -44653,6 +44686,34 @@ class EosDesigns(EosDesignsRootModel):
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
+            class Dot1x(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"protocol_bpdu_bypass": {"type": bool, "default": True}}
+                protocol_bpdu_bypass: bool
+                """
+                Support for 802.1X BPDU bypass.
+                The feature will be ignored on platforms where this is false.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, protocol_bpdu_bypass: bool | UndefinedType = Undefined) -> None:
+                        """
+                        Dot1x.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            protocol_bpdu_bypass:
+                               Support for 802.1X BPDU bypass.
+                               The feature will be ignored on platforms where this is false.
+
+                        """
+
             class AddressLocking(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -45890,6 +45951,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "dot1x": {"type": Dot1x},
                 "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -45916,6 +45978,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            dot1x: Dot1x
+            """Subclass of AvdModel."""
             address_locking: AddressLocking
             """Subclass of AvdModel."""
             queue_monitor: bool
@@ -46124,6 +46188,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    dot1x: Dot1x | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
@@ -46157,6 +46222,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        dot1x: Subclass of AvdModel.
                         address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
