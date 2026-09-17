@@ -420,6 +420,35 @@ def test_setup_anta_debug_mode_raises_when_anta_logger_absent() -> None:
         setup_anta_debug_mode(verbosity=0)
 
 
+@pytest.mark.parametrize(
+    ("device_vars_extra", "expected_use_session_auth"),
+    [
+        pytest.param({"anta_use_session_auth": True}, True, id="enabled"),
+        pytest.param({"anta_use_session_auth": False}, False, id="disabled"),
+        pytest.param({}, False, id="default_false"),
+    ],
+)
+def test_build_anta_device_passes_use_session_auth(
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    device_vars_extra: dict,
+    expected_use_session_auth: bool,
+) -> None:
+    """`anta_use_session_auth` from inventory is forwarded to AsyncEOSDevice as `use_session_auth`."""
+    device_vars = {
+        "inventory_hostname": "leaf1",
+        "ansible_host": "10.0.0.1",
+        "ansible_user": "admin",
+        "ansible_password": "secret",
+        **device_vars_extra,
+    }
+    monkeypatch.setattr(anta_module, "ANSIBLE_VARS", {"leaf1": device_vars})
+    monkeypatch.setattr(anta_module, "PLUGIN_ARGS", {"runner": {"timeout": 30.0}})
+    with patch(f"{MODULE_PATH}.AsyncEOSDevice") as mock_device:
+        build_anta_device("leaf1")
+    assert mock_device.call_args.kwargs["use_session_auth"] is expected_use_session_auth
+
+
 def test_build_anta_device_raises_when_required_settings_missing(monkeypatch: pytest.MonkeyPatch) -> None:
     """ValueError with the device name is raised when host, username, or password cannot be resolved."""
     monkeypatch.setattr(anta_module, "ANSIBLE_VARS", {"leaf1": {}})
