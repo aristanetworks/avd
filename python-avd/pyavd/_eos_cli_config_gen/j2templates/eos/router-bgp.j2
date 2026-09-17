@@ -1162,6 +1162,9 @@ router bgp {{ router_bgp.as }}
       bgp additional-paths send {{ router_bgp.address_family_ipv4.bgp.additional_paths.send }}
 {%             endif %}
 {%         endif %}
+{%         if router_bgp.address_family_ipv4.next_hop.resolution_disabled is arista.avd.defined(true) %}
+      next-hop resolution disabled
+{%         endif %}
 {%         for peer_group in router_bgp.address_family_ipv4.peer_groups | arista.avd.natural_sort(sort_key='name') %}
 {%             if peer_group.activate is arista.avd.defined(true) %}
       neighbor {{ peer_group.name }} activate
@@ -1571,6 +1574,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.neighbor_default.next_hop_self is arista.avd.defined(true) %}
       neighbor default next-hop-self
+{%         endif %}
+{%         if router_bgp.address_family_ipv4_labeled_unicast.next_hop.resolution_disabled is arista.avd.defined(true) %}
+      next-hop resolution disabled
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs is arista.avd.defined %}
 {%             set v4_bgp_lu_resolution_ribs = [] %}
@@ -2041,6 +2047,9 @@ router bgp {{ router_bgp.as }}
 {%             else %}
       bgp additional-paths send {{ router_bgp.address_family_ipv6.bgp.additional_paths.send }}
 {%             endif %}
+{%         endif %}
+{%         if router_bgp.address_family_ipv6.next_hop.resolution_disabled is arista.avd.defined(true) %}
+      next-hop resolution disabled
 {%         endif %}
 {%         for peer_group in router_bgp.address_family_ipv6.peer_groups | arista.avd.natural_sort(sort_key='name') %}
 {%             if peer_group.activate is arista.avd.defined(true) %}
@@ -2827,6 +2836,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv6.domain_identifier is arista.avd.defined %}
       domain identifier {{ router_bgp.address_family_vpn_ipv6.domain_identifier }}
+{%         endif %}
+{%         if router_bgp.address_family_vpn_ipv6.next_hop.resolution_disabled is arista.avd.defined(true) %}
+      next-hop resolution disabled
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv6.route.import_match_failure_action is arista.avd.defined('discard') %}
       route import match-failure action discard

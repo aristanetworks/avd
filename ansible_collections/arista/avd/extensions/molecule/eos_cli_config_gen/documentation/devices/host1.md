@@ -10304,6 +10304,7 @@ ASN Notation: asdot
 #### Router BGP VPN-IPv6 Address Family
 
 - VPN import pruning is **enabled**
+- Next-hop resolution is **disabled**
 
 ##### VPN-IPv6 Neighbors
 
@@ -10894,6 +10895,7 @@ router bgp 65101
       bgp additional-paths install
       bgp additional-paths receive
       bgp additional-paths send ecmp limit 20
+      next-hop resolution disabled
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor foo additional-paths receive
       neighbor foo prefix-list PL-BAR-v4-IN in
@@ -10980,6 +10982,7 @@ router bgp 65101
       bgp additional-paths send ecmp limit 20
       bgp next-hop-unchanged
       neighbor default next-hop-self
+      next-hop resolution disabled
       next-hop resolution ribs tunnel-rib colored system-colored-tunnel-rib tunnel-rib test-rib system-connected
       neighbor PG-BGP-LU activate
       neighbor PG-BGP-LU graceful-restart
@@ -11089,6 +11092,7 @@ router bgp 65101
       bgp additional-paths install ecmp-primary
       bgp additional-paths receive
       bgp additional-paths send any
+      next-hop resolution disabled
       neighbor baz additional-paths receive
       neighbor baz prefix-list PL-BAR-v6-IN in
       neighbor baz prefix-list PL-BAR-v6-OUT out
@@ -11294,6 +11298,7 @@ router bgp 65101
       neighbor 2001:cafe:192:168::5 default-route rcf Address_Family_VPN_IPV6_In()
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       domain identifier 65000:0
+      next-hop resolution disabled
       route import match-failure action discard
    !
    vrf BLUE-C1
