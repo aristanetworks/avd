@@ -47,9 +47,9 @@ class DeviceConfigMixin(Protocol):
             while device_profile.parent_profile is not None:
                 if not (device_parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
                     msg = (
-                        f"The Device Profile '{device_profile.parent_profile}' applied for the device '{self.hostname}' does not exist under 'device_profiles'."
+                        f"The parent device profile '{device_profile.parent_profile}' applied under the profile '{device_profile.name}' does not exist in 'device_profiles'."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                 if device_profile.parent_profile in device_profiles_chain or device_profile.parent_profile == device_profile_name:
                     msg = (
                         f"Circular profile dependency detected: Profile '{device_profile.parent_profile}' "
@@ -61,7 +61,7 @@ class DeviceConfigMixin(Protocol):
                 device_profile = parent_profile
 
             for profile in device_profiles_chain:
-                resolved_profile = resolved_profile._deepinherited(profile)
+                resolved_profile._deepinherit(profile)
             device_config._deepinherit(resolved_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
             return device_config
 

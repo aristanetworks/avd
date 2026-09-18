@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].address_locking") | Dictionary |  |  |  | To configure `address_locking.ipv4/v6`, you must define either `address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].profile") | String |  |  |  | SVI profile name to apply.<br>SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].profile") | String |  |  |  | SVI profile name to apply.<br>SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].tags") | List, items: String |  | `['all']` |  | Tags leveraged for networks services filtering.<br>Tags are matched against "filter.tags" defined under node type settings.<br>Tags are also matched against the "node_group" name under node type settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].tags.[]") | String |  |  |  | Tag value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].evpn_vlan_bundle") | String |  |  |  | Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.<br>This setting overrides "evpn_vlan_bundle" set at the VRF or tenant level.<br>The common option "evpn_vlan_aware_bundles" is disregarded for this option.<br> |
@@ -184,7 +184,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_services.[].vrfs.[].svis.[].address_locking") | Dictionary |  |  |  | To configure `address_locking.ipv4/v6`, you must define either `address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "network_services.[].vrfs.[].svis.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "network_services.[].vrfs.[].svis.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_services.[].vrfs.[].svis.[].profile") | String |  |  |  | SVI profile name to apply.<br>SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_services.[].vrfs.[].svis.[].profile") | String |  |  |  | SVI profile name to apply.<br>SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "network_services.[].vrfs.[].svis.[].tags") | List, items: String |  | `['all']` |  | Tags leveraged for networks services filtering.<br>Tags are matched against "filter.tags" defined under node type settings.<br>Tags are also matched against the "node_group" name under node type settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].svis.[].tags.[]") | String |  |  |  | Tag value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "network_services.[].vrfs.[].svis.[].evpn_vlan_bundle") | String |  |  |  | Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.<br>This setting overrides "evpn_vlan_bundle" set at the VRF or tenant level.<br>The common option "evpn_vlan_aware_bundles" is disregarded for this option.<br> |
@@ -384,6 +384,8 @@
 
                 # SVI profile name to apply.
                 # SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                # From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+                # allows profiles to inherit settings across any number of levels.
                 profile: <str>
 
                 # Tags leveraged for networks services filtering.
@@ -939,6 +941,8 @@
 
                 # SVI profile name to apply.
                 # SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                # From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+                # allows profiles to inherit settings across any number of levels.
                 profile: <str>
 
                 # Tags leveraged for networks services filtering.

@@ -125,7 +125,7 @@ class UtilsMixin(Protocol):
                 port_profiles_chain.append(parent_profile)
                 port_profile = parent_profile
             for profile in port_profiles_chain:
-                resolved_profile = resolved_profile._deepinherited(profile)
+                resolved_profile._deepinherit(profile)
             if hasattr(resolved_profile, "parent_profile"):
                 delattr(resolved_profile, "parent_profile")
             return resolved_profile
@@ -136,7 +136,7 @@ class UtilsMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             parent_profile = self.inputs.port_profiles[resolved_profile.parent_profile]._deepcopy()
-            resolved_profile = resolved_profile._deepinherited(parent_profile)
+            resolved_profile._deepinherit(parent_profile)
 
         # Parent_profile is not mentioned in port_profile.
         delattr(resolved_profile, "parent_profile")

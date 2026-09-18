@@ -12,7 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2vlans</samp>](## "<network_services_keys.name>.[].l2vlans") | List, items: Dictionary |  |  |  | Define L2 network services organized by VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].l2vlans.[].id") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<network_services_keys.name>.[].l2vlans.[].name") | String | Required |  |  | VLAN name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].l2vlans.[].profile") | String |  |  |  | L2VLAN profile name.<br>The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].l2vlans.[].profile") | String |  |  |  | L2VLAN profile name.<br>The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<network_services_keys.name>.[].l2vlans.[].tags") | List, items: String |  | `['all']` |  | Tags leveraged for networks services filtering.<br>Tags are matched against filter.tags defined under node type settings.<br>Tags are also matched against the node_group name under node type settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].l2vlans.[].tags.[]") | String |  | `all` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking") | Dictionary |  |  |  |  |
@@ -59,7 +59,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2vlans</samp>](## "network_services.[].l2vlans") | List, items: Dictionary |  |  |  | Define L2 network services organized by VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "network_services.[].l2vlans.[].id") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_services.[].l2vlans.[].name") | String | Required |  |  | VLAN name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_services.[].l2vlans.[].profile") | String |  |  |  | L2VLAN profile name.<br>The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_services.[].l2vlans.[].profile") | String |  |  |  | L2VLAN profile name.<br>The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "network_services.[].l2vlans.[].tags") | List, items: String |  | `['all']` |  | Tags leveraged for networks services filtering.<br>Tags are matched against filter.tags defined under node type settings.<br>Tags are also matched against the node_group name under node type settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].l2vlans.[].tags.[]") | String |  | `all` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_services.[].l2vlans.[].address_locking") | Dictionary |  |  |  |  |
@@ -102,6 +102,8 @@
 
             # L2VLAN profile name.
             # The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+            # From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+            # allows profiles to inherit settings across any number of levels.
             profile: <str>
 
             # Tags leveraged for networks services filtering.
@@ -263,6 +265,8 @@
 
             # L2VLAN profile name.
             # The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+            # From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+            # allows profiles to inherit settings across any number of levels.
             profile: <str>
 
             # Tags leveraged for networks services filtering.

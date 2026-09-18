@@ -2355,7 +2355,13 @@ keys:
       If the device is defined under `devices` it is recommended to set the `profile`
       there instead.
 
-      Max two levels of profile inheritance: device -> profile -> parent_profile'
+      By default, profile inheritance is limited to two levels: device -> device_profile
+      -> parent_profile.
+
+      From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance`
+      to true
+
+      allows profiles to inherit settings across any number of levels.'
   device_profiles:
     type: list
     primary_key: name
@@ -2407,7 +2413,13 @@ keys:
           type: str
           description: 'Inherit settings from a profile defined under `device_profiles`.
 
-            Max two levels of profile inheritance: device -> profile -> parent_profile
+            By default, profile inheritance is limited to two levels: device -> profile
+            -> parent_profile.
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             This takes precedence over the global `device_profile` key.'
         type:
@@ -6382,6 +6394,11 @@ keys:
                         another svi_profile to inherit settings in up to two levels
                         (svi -> svi_profile -> svi_parent_profile).
 
+                        From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance`
+                        to true
+
+                        allows profiles to inherit settings across any number of levels.
+
                         '
                     tags:
                       type: list
@@ -7585,7 +7602,12 @@ keys:
 
                   The profile must be defined under `l2vlan_profiles`. The profile
                   may refer to another l2vlan_profile as its `parent_profile` to inherit
-                  settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).'
+                  settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+
+                  From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance`
+                  to true
+
+                  allows profiles to inherit settings across any number of levels.'
               tags:
                 type: list
                 description: 'Tags leveraged for networks services filtering.

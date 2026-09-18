@@ -124,9 +124,6 @@ class FilteredTenantsMixin(Protocol):
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
         """
         Return structured config for one l2vlan after inheritance.
-
-        Handle inheritance of l2vlan_profiles in two levels:
-        l2vlan > l2vlan_profile > l2vlan_parent_profile --> l2vlan_cfg
         """
         if vlan.profile:
             l2vlan_profile = self.get_merged_l2vlan_profile(vlan.profile, f"{vlan.name}")
@@ -182,7 +179,7 @@ class FilteredTenantsMixin(Protocol):
                 l2vlan_profile = l2vlan_parent_profile
 
             for profile in l2vlans_profiles_chain:
-                resolved_profile = resolved_profile._deepinherited(profile)
+                resolved_profile._deepinherit(profile)
             if hasattr(resolved_profile, "parent_profile"):
                 delattr(resolved_profile, "parent_profile")
             return resolved_profile
@@ -343,7 +340,7 @@ class FilteredTenantsMixin(Protocol):
         Handle inheritance of node config as svi_profiles in two levels:
 
         First variables will be merged
-        svi > svi_profile > svi_parent_profile --> svi_cfg
+        svi > svi_profile > svi_parent_profile > svi_parent's_parent_profile --> ... --> svi_cfg
         &
         svi.nodes.<hostname> > svi_profile.nodes.<hostname> > svi_parent_profile.nodes.<hostname> --> svi_node_cfg
 
@@ -361,7 +358,7 @@ class FilteredTenantsMixin(Protocol):
                 while svi_profile.parent_profile is not None:
                     if svi_profile.parent_profile not in self.inputs.svi_profiles:
                         msg = f"Parent profile '{svi_profile.parent_profile}' applied under '{svi_profile.profile}' does not exist in 'svi_profiles'."
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                     if svi_profile.parent_profile in svi_profiles_chain or svi_profile.parent_profile == resolved_profile.profile:
                         msg = (
                             f"Circular profile dependency detected: Profile '{svi_profile.parent_profile}' cannot be applied as"
@@ -372,7 +369,7 @@ class FilteredTenantsMixin(Protocol):
                     svi_profiles_chain.append(svi_parent_profile)
                     svi_profile = svi_parent_profile
                 for profile in svi_profiles_chain:
-                    resolved_profile = resolved_profile._deepinherited(profile)
+                    resolved_profile._deepinherit(profile)
                 merged_svi = svi._deepinherited(
                     resolved_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
                 )
@@ -385,7 +382,7 @@ class FilteredTenantsMixin(Protocol):
                     )
                     raise AristaAvdInvalidInputsError(msg)
                 # Inherit from the parent profile
-                resolved_profile = resolved_profile._deepinherited(self.inputs.svi_profiles[resolved_profile.parent_profile])
+                resolved_profile._deepinherit(self.inputs.svi_profiles[resolved_profile.parent_profile])
                 # Inherit from the profile
                 merged_svi = svi._deepinherited(
                     resolved_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
