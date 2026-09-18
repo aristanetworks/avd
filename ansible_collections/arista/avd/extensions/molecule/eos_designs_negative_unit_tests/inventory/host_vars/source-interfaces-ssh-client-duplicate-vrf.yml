@@ -6,14 +6,15 @@ l2leaf:
       mgmt_ip: 192.168.0.2/24
       inband_mgmt_ip: 10.20.30.40/24
       inband_mgmt_gateway: 10.20.30.1
-      inband_mgmt_vrf: VRF1
+      inband_mgmt_vrf: default
 
-mgmt_interface_vrf: VRF1
+mgmt_interface_vrf: default
 
-source_interfaces:
-  ssh_client:
-    mgmt_interface: true
-    inband_mgmt_interface: true
+ssh_settings:
+  client_source_interfaces:
+    - vrf: use_mgmt_interface_vrf
+    - vrf: use_inband_mgmt_vrf
 
 expected_error_message: >-
-  Unable to configure multiple IP SSH Client source-interfaces for the same VRF 'VRF1'.
+  Duplicate resolved VRF 'default' found under 'ssh_settings.client_source_interfaces'.
+  Inputs resolving to this VRF: use_inband_mgmt_vrf, use_mgmt_interface_vrf. Use only one entry per resolved VRF.

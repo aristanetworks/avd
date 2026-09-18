@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdError: Unable to configure multiple IP SSH Client source-interfaces for the same VRF 'VRF1'.
+pyavd._errors.AristaAvdInvalidInputsError: Duplicate resolved VRF 'default' found under 'ssh_settings.client_source_interfaces'. Inputs resolving to this VRF: use_inband_mgmt_vrf, use_mgmt_interface_vrf. Use only one entry per resolved VRF.

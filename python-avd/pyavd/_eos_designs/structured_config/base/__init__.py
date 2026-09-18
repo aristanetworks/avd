@@ -440,7 +440,42 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def ip_ssh_client(self) -> None:
-        """Parse source_interfaces.ssh_client and return list of source_interfaces."""
+        """Parse ssh_settings.client_source_interfaces (or source_interfaces.ssh_client) and set list of source_interfaces."""
+        if self.inputs.ssh_settings.client_source_interfaces:
+            source_interfaces = EosCliConfigGen.IpSshClient()
+            default_vrf_input: str | None = None
+            for client_source in self.inputs.ssh_settings.client_source_interfaces._natural_sorted():
+                vrf_name = self.shared_utils.get_vrf(
+                    vrf_input=client_source.vrf,
+                    context=f"ssh_settings.client_source_interfaces[vrf={client_source.vrf}]",
+                )
+                source_interface = self.shared_utils.get_source_interface(client_source.vrf, client_source.interface)
+                if source_interface is None:
+                    msg = (
+                        f"Unable to configure IP SSH Client source-interface for VRF '{vrf_name}' since "
+                        f"'ssh_settings.client_source_interfaces[vrf={client_source.vrf}].interface' is not set. "
+                        "Set 'interface' for non-management VRF values."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+
+                if vrf_name == "default" and default_vrf_input is not None:
+                    duplicate_vrf_inputs = ", ".join(sorted({default_vrf_input, client_source.vrf}))
+                    msg = (
+                        f"Duplicate resolved VRF '{vrf_name}' found under 'ssh_settings.client_source_interfaces'. "
+                        f"Inputs resolving to this VRF: {duplicate_vrf_inputs}. "
+                        "Use only one entry per resolved VRF."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+
+                if vrf_name == "default":
+                    default_vrf_input = client_source.vrf
+                    source_interfaces.source_interface = source_interface
+                else:
+                    source_interfaces.vrfs.append_new(name=vrf_name, source_interface=source_interface)
+
+            self.structured_config.ip_ssh_client = source_interfaces
+            return
+
         if not (inputs := self.inputs.source_interfaces.ssh_client):
             return
 
