@@ -122,12 +122,7 @@ class FilteredTenantsMixin(Protocol):
         self: SharedUtilsProtocol,
         vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
-        """
-        Return structured config for one l2vlan after inheritance.
-
-        Handle inheritance of l2vlan_profiles in two levels:
-        l2vlan > l2vlan_profile > l2vlan_parent_profile --> l2vlan_cfg
-        """
+        """Return structured config for one l2vlan after inheritance."""
         if vlan.profile:
             l2vlan_profile = self.get_merged_l2vlan_profile(vlan.profile, f"{vlan.name}")
 
@@ -163,7 +158,30 @@ class FilteredTenantsMixin(Protocol):
             msg = f"Profile '{profile_name}' applied under l2vlan '{context}' does not exist in 'l2vlan_profiles'."
             raise AristaAvdInvalidInputsError(msg)
 
-        l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]
+        l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]._deepcopy()
+        l2vlans_profiles_chain = EosDesigns.L2vlanProfiles()
+        resolved_profile = self.inputs.l2vlan_profiles[profile_name]._deepcopy()
+        if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
+            while l2vlan_profile.parent_profile is not None:
+                if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
+                    msg = f"Parent profile '{l2vlan_profile.parent_profile}' applied under '{l2vlan_profile.profile}' does not exist in 'l2vlan_profiles'."
+                    raise AristaAvdInvalidInputsError(msg)
+                if l2vlan_profile.parent_profile in l2vlans_profiles_chain or l2vlan_profile.parent_profile == resolved_profile.profile:
+                    msg = (
+                        f"Circular profile dependency detected: Profile '{l2vlan_profile.parent_profile}' cannot be applied as"
+                        f" the parent profile of '{l2vlan_profile.profile}' in 'l2vlan_profiles' as it would create a loop."
+                    )
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+                l2vlan_parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]._deepcopy()
+                l2vlans_profiles_chain.append(l2vlan_parent_profile)
+                l2vlan_profile = l2vlan_parent_profile
+
+            for profile in l2vlans_profiles_chain:
+                resolved_profile._deepinherit(profile)
+            if hasattr(resolved_profile, "parent_profile"):
+                delattr(resolved_profile, "parent_profile")
+            return resolved_profile
+
         if l2vlan_profile.parent_profile:
             if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
                 msg = f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{profile_name}' does not exist in 'l2vlan_profiles'."
@@ -320,7 +338,7 @@ class FilteredTenantsMixin(Protocol):
         Handle inheritance of node config as svi_profiles in two levels:
 
         First variables will be merged
-        svi > svi_profile > svi_parent_profile --> svi_cfg
+        svi > svi_profile > svi_parent_profile > svi_parent's_parent_profile --> ... --> svi_cfg
         &
         svi.nodes.<hostname> > svi_profile.nodes.<hostname> > svi_parent_profile.nodes.<hostname> --> svi_node_cfg
 
@@ -331,30 +349,62 @@ class FilteredTenantsMixin(Protocol):
             if svi.profile not in self.inputs.svi_profiles:
                 msg = f"Profile '{svi.profile}' applied under SVI '{svi.name}' does not exist in `svi_profiles`."
                 raise AristaAvdInvalidInputsError(msg)
+            svi_profiles_chain = EosDesigns.SviProfiles()
             svi_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
-
-            if svi_profile.parent_profile:
-                if svi_profile.parent_profile not in self.inputs.svi_profiles:
-                    msg = f"Profile '{svi_profile.parent_profile}' applied under SVI Profile '{svi_profile.profile}' does not exist in `svi_profiles`."
+            resolved_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
+            if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
+                while svi_profile.parent_profile is not None:
+                    if svi_profile.parent_profile not in self.inputs.svi_profiles:
+                        msg = f"Parent profile '{svi_profile.parent_profile}' applied under '{svi_profile.profile}' does not exist in 'svi_profiles'."
+                        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+                    if svi_profile.parent_profile in svi_profiles_chain or svi_profile.parent_profile == resolved_profile.profile:
+                        msg = (
+                            f"Circular profile dependency detected: Profile '{svi_profile.parent_profile}' cannot be applied as"
+                            f" the parent profile of '{svi_profile.profile}' in 'svi_profiles' as it would create a loop."
+                        )
+                        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+                    svi_parent_profile = self.inputs.svi_profiles[svi_profile.parent_profile]._deepcopy()
+                    svi_profiles_chain.append(svi_parent_profile)
+                    svi_profile = svi_parent_profile
+                for profile in svi_profiles_chain:
+                    resolved_profile._deepinherit(profile)
+                merged_svi = svi._deepinherited(
+                    resolved_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
+                )
+                self._set_node_specific_config(merged_svi)
+                return merged_svi
+            if resolved_profile.parent_profile:
+                if resolved_profile.parent_profile not in self.inputs.svi_profiles:
+                    msg = (
+                        f"Profile '{resolved_profile.parent_profile}' applied under SVI Profile '{resolved_profile.profile}' does not exist in 'svi_profiles'."
+                    )
                     raise AristaAvdInvalidInputsError(msg)
-
                 # Inherit from the parent profile
-                svi_profile._deepinherit(self.inputs.svi_profiles[svi_profile.parent_profile])
-
-            # Inherit from the profile
+                resolved_profile._deepinherit(self.inputs.svi_profiles[resolved_profile.parent_profile])
+                # Inherit from the profile
+                merged_svi = svi._deepinherited(
+                    resolved_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
+                )
+                self._set_node_specific_config(merged_svi)
+                return merged_svi
             merged_svi = svi._deepinherited(
-                svi_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
+                resolved_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
             )
-        else:
-            merged_svi = svi
+            self._set_node_specific_config(merged_svi)
+            return merged_svi
+        merged_svi = svi
+        self._set_node_specific_config(merged_svi)
+        return merged_svi
 
+    def _set_node_specific_config(
+        self: SharedUtilsProtocol, merged_svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem:
         # Merge node specific SVI over the general SVI data.
         if self.hostname in merged_svi.nodes:
             node_specific_svi = merged_svi.nodes[self.hostname]._cast_as(
                 EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True
             )
             merged_svi._deepmerge(node_specific_svi, list_merge="replace")
-
         return merged_svi
 
     def filtered_svis(

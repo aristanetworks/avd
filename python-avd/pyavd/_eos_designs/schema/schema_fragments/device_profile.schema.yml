@@ -14,4 +14,6 @@ keys:
       PREVIEW - This datamodel is still under development and may change or get removed at any time.
       Inherit settings from a device profile defined under `device_profiles`.
       If the device is defined under `devices` it is recommended to set the `profile` there instead.
-      Max two levels of profile inheritance: device -> profile -> parent_profile
+      By default, profile inheritance is limited to two levels: device -> device_profile -> parent_profile.
+      From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+      allows profiles to inherit settings across any number of levels.

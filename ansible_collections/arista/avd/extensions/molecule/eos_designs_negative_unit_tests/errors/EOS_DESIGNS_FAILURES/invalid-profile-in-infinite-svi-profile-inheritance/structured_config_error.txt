@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Parent profile 'profile3' applied under 'profile2' does not exist in 'svi_profiles'.
