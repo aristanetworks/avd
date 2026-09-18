@@ -4216,6 +4216,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "grpcreadonly": {"type": bool},
             "ingestexclude": {"type": str},
             "smashexcludes": {"type": str},
+            "sysdbexcludes": {"type": str},
             "taillogs": {"type": str},
             "ecodhcpaddr": {"type": str},
             "ipfix": {"type": bool},
@@ -4296,6 +4297,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         Exclude paths from the shared memory table.
         e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+        """
+        sysdbexcludes: str | None
+        """
+        Exclude paths from Sysdb.
+        e.g. "/Sysdb/mcs/"
         """
         taillogs: str | None
         """
@@ -4381,6 +4387,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 grpcreadonly: bool | UndefinedType | None = Undefined,
                 ingestexclude: str | UndefinedType | None = Undefined,
                 smashexcludes: str | UndefinedType | None = Undefined,
+                sysdbexcludes: str | UndefinedType | None = Undefined,
                 taillogs: str | UndefinedType | None = Undefined,
                 ecodhcpaddr: str | UndefinedType | None = Undefined,
                 ipfix: bool | UndefinedType | None = Undefined,
@@ -4446,6 +4453,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     smashexcludes:
                        Exclude paths from the shared memory table.
                        e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+                    sysdbexcludes:
+                       Exclude paths from Sysdb.
+                       e.g. "/Sysdb/mcs/"
                     taillogs:
                        Enable log file collection; /var/log/messages is streamed by default if no path is set.
                        e.g.
@@ -28205,11 +28215,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             ServerHosts._item_type = str
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "shutdown": {"type": bool}, "server_hosts": {"type": ServerHosts}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "shutdown": {"type": bool},
+                "server_hosts": {"type": ServerHosts},
+                "vrf": {"type": str},
+                "source_interface": {"type": str},
+            }
             name: str | None
             shutdown: bool | None
             server_hosts: ServerHosts
             """Subclass of AvdList with `str` items."""
+            vrf: str | None
+            """VRF name."""
+            source_interface: str | None
+            """Source interface name."""
 
             if TYPE_CHECKING:
 
@@ -28219,6 +28239,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType | None = Undefined,
                     shutdown: bool | UndefinedType | None = Undefined,
                     server_hosts: ServerHosts | UndefinedType = Undefined,
+                    vrf: str | UndefinedType | None = Undefined,
+                    source_interface: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     CvxSecondary.
@@ -28230,6 +28252,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: name
                         shutdown: shutdown
                         server_hosts: Subclass of AvdList with `str` items.
+                        vrf: VRF name.
+                        source_interface: Source interface name.
 
                     """
 

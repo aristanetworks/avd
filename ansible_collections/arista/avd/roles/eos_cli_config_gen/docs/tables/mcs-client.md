@@ -14,6 +14,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "mcs_client.cvx_secondary.shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;server_hosts</samp>](## "mcs_client.cvx_secondary.server_hosts") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mcs_client.cvx_secondary.server_hosts.[]") | String |  |  |  | IP or hostname. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "mcs_client.cvx_secondary.vrf") | String |  |  |  | VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "mcs_client.cvx_secondary.source_interface") | String |  |  |  | Source interface name. |
 
 === "YAML"
 
@@ -27,4 +29,10 @@
 
             # IP or hostname.
           - <str>
+
+        # VRF name.
+        vrf: <str>
+
+        # Source interface name.
+        source_interface: <str>
     ```

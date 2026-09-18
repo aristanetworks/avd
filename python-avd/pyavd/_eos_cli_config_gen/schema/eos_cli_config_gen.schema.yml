@@ -1758,6 +1758,13 @@ keys:
           e.g. "ale,flexCounter,hardware,kni,pulse,strata"
 
           '
+      sysdbexcludes:
+        type: str
+        description: 'Exclude paths from Sysdb.
+
+          e.g. "/Sysdb/mcs/"
+
+          '
       taillogs:
         type: str
         description: 'Enable log file collection; /var/log/messages is streamed by
@@ -10864,6 +10871,12 @@ keys:
             items:
               type: str
               description: IP or hostname.
+          vrf:
+            type: str
+            description: VRF name.
+          source_interface:
+            type: str
+            description: Source interface name.
   metadata:
     type: dict
     description: 'The data under `metadata` is used for documentation, validation
