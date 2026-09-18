@@ -539,6 +539,33 @@ class FilteredTenantsMixin(Protocol):
             )
             self.update_ospf_authentication(config, svi, vrf, tenant)
 
+    @overload
+    def update_ospf_authentication(
+        self: SharedUtilsProtocol,
+        interface: EosCliConfigGen.EthernetInterfacesItem,
+        network_services_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None: ...
+
+    @overload
+    def update_ospf_authentication(
+        self: SharedUtilsProtocol,
+        interface: EosCliConfigGen.PortChannelInterfacesItem,
+        network_services_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None: ...
+
+    @overload
+    def update_ospf_authentication(
+        self: SharedUtilsProtocol,
+        interface: EosCliConfigGen.VlanInterfacesItem | EosCliConfigGen.EthernetInterfacesItem,
+        network_services_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None: ...
+
     def update_ospf_authentication(
         self: SharedUtilsProtocol,
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem | EosCliConfigGen.VlanInterfacesItem,
@@ -586,7 +613,10 @@ class FilteredTenantsMixin(Protocol):
                         case EosCliConfigGen.PortChannelInterfacesItem():
                             interface_ospf_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf"
                         case _:
-                            # This is EosCliConfigGen.VlanInterfacesItem
+                            # This is EosCliConfigGen.VlanInterfacesItem so input must be an SVI
+                            network_services_interface = cast(
+                                "EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem", network_services_interface
+                            )
                             interface_ospf_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf"
                     msg = (
                         f"`tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.cleartext_simple_auth_key` or `{interface_ospf_path}.simple_auth_key` "
@@ -627,7 +657,10 @@ class FilteredTenantsMixin(Protocol):
         if not ospf_key.id:
             return
         # VRF level does not have a 'key' attribute.
-        if hasattr(ospf_key, "key") and ospf_key.key is not None:
+        if (
+            not isinstance(ospf_key, EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ospf.MessageDigestKeysItem)
+            and ospf_key.key is not None
+        ):
             key = ospf_key.key
         elif ospf_key.cleartext_key is not None:
             # ospf_key.cleartext_key is not None
