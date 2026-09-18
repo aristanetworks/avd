@@ -27,6 +27,32 @@ The AVD collection has the following requirements:
 
 ## Installation
 
+### Red Hat Automation Hub
+
+The `arista.avd` collection is available as Red Hat Certified Content from [Red Hat Automation Hub](https://console.redhat.com/ansible/automation-hub).
+
+This requires:
+- Access to Red Hat Automation Hub
+- An active Red Hat Ansible Automation Platform subscription
+
+Configure access to Red Hat Automation Hub in `ansible.cfg`:
+
+```ini
+[galaxy]
+server_list = automation_hub
+
+[galaxy_server.automation_hub]
+url = https://console.redhat.com/api/automation-hub/content/published/
+auth_url = https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+token = YOUR_RH_AUTOMATION_HUB_TOKEN
+```
+### Ansible Galaxy
+
+It is also available from [Ansible Galaxy](https://galaxy.ansible.com/ui/repo/published/arista/avd/).
+
+
+### Collection Installation
+
 Follow the [installation guide](https://avd.arista.com/stable/docs/installation/collection-installation.html) to install the requirements.
 
 Before using this collection, you need to install it with the Ansible Galaxy command-line tool:
@@ -40,6 +66,7 @@ You can also include it in a `requirements.yml` file and install it with `ansibl
 ```yaml
 collections:
   - name: arista.avd
+    version: <version> # Optional
 ```
 
 Note that if you install the collection from Ansible Galaxy, it will not be upgraded automatically when you upgrade the Ansible package.
@@ -50,10 +77,10 @@ To upgrade the collection to the latest available version, run the following com
 ansible-galaxy collection install arista.avd --upgrade
 ```
 
-You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax to install version 4.7.1:
+You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax to install version 6.3.0:
 
 ```shell
-ansible-galaxy collection install arista.avd:==5.2.3
+ansible-galaxy collection install arista.avd:==6.3.0
 ```
 
 See [using Ansible collections](https://docs.ansible.com/ansible/devel/collections_guide/index.html) for more details.
@@ -92,10 +119,7 @@ You can also open an [issue](https://github.com/aristanetworks/avd/issues) to re
 
 ## Release Notes and Roadmap
 
-<!--
-  TODO: should we add a symlink to our latest release notes to make this link less useless?
--->
-Please see the [release notes](https://avd.arista.com) for the latest updates to the AVD collection.
+Please see the [release notes](https://avd.arista.com/stable/docs/release-notes/6.x.x.html) for the latest updates to the AVD collection.
 
 ## Related Information
 
