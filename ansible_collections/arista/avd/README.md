@@ -32,6 +32,7 @@ The AVD collection has the following requirements:
 The `arista.avd` collection is available as Red Hat Certified Content from [Red Hat Automation Hub](https://console.redhat.com/ansible/automation-hub).
 
 This requires:
+
 - Access to Red Hat Automation Hub
 - An active Red Hat Ansible Automation Platform subscription
 
@@ -46,10 +47,10 @@ url = https://console.redhat.com/api/automation-hub/content/published/
 auth_url = https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
 token = YOUR_RH_AUTOMATION_HUB_TOKEN
 ```
+
 ### Ansible Galaxy
 
 It is also available from [Ansible Galaxy](https://galaxy.ansible.com/ui/repo/published/arista/avd/).
-
 
 ### Collection Installation
 
