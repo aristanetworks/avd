@@ -122,9 +122,7 @@ class FilteredTenantsMixin(Protocol):
         self: SharedUtilsProtocol,
         vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
-        """
-        Return structured config for one l2vlan after inheritance.
-        """
+        """Return structured config for one l2vlan after inheritance."""
         if vlan.profile:
             l2vlan_profile = self.get_merged_l2vlan_profile(vlan.profile, f"{vlan.name}")
 
