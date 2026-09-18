@@ -77,6 +77,7 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
         *,
         removed: bool = False,
         conflict: bool = False,
+        msg: str | None = None,
     ) -> None:
         messages = []
         self.path = json_path_to_string(key)
@@ -85,22 +86,25 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
         self.removed = removed
         self.conflict = conflict
 
-        if removed:
-            messages.append(f"The input data model '{self.path}' was removed.")
-        elif conflict and new_key:
-            self.new_key_path = ".".join(item for item in [json_path_to_string(key[:-1]), new_key] if item)
-            messages.append(
-                f"The input data model '{self.path}' is deprecated and cannot be used in conjunction with the new data model '{self.new_key_path}'. "
-                "This usually happens when a data model has been updated and custom structured configuration still uses the old model."
-            )
+        if msg:
+            messages.append(msg)
         else:
-            messages.append(f"The input data model '{self.path}' is deprecated.")
+            if removed:
+                messages.append(f"The input data model '{self.path}' was removed.")
+            elif conflict and new_key:
+                self.new_key_path = ".".join(item for item in [json_path_to_string(key[:-1]), new_key] if item)
+                messages.append(
+                    f"The input data model '{self.path}' is deprecated and cannot be used in conjunction with the new data model '{self.new_key_path}'. "
+                    "This usually happens when a data model has been updated and custom structured configuration still uses the old model."
+                )
+            else:
+                messages.append(f"The input data model '{self.path}' is deprecated.")
 
-        if new_key and not conflict:
-            messages.append(f"Use '{new_key}' instead.")
+            if new_key and not conflict:
+                messages.append(f"Use '{new_key}' instead.")
 
-        if url:
-            messages.append(f"See {url} for details.")
+            if url:
+                messages.append(f"See {url} for details.")
 
         self.message = " ".join(messages)
         super().__init__(self.message)

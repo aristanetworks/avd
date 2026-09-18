@@ -1,0 +1,16 @@
+---
+servers:
+  - name: server-with-profile
+    adapters:
+      - switches: [host1]
+        switch_ports: [Ethernet12]
+        profile: grandchild
+
+port_profiles:
+  - profile: grandchild
+    parent_profile: parent
+  - profile: parent
+    parent_profile: grandparent
+  - profile: grandparent
+    link_tracking:
+      enabled: true
