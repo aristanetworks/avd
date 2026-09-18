@@ -10,17 +10,12 @@ svi_profiles:
     parent_profile: profile2
   - profile: profile2
     parent_profile: profile3
-    igmp_snooping_querier:
-      source_address: main_router_id
 
 l2vlan_profiles:
   - profile: profile1
     parent_profile: profile2
   - profile: profile2
     parent_profile: profile3
-    igmp_snooping_querier:
-      source_address: 2.2.2.2
-      version: 2
 
 tenants:
    # Test deprecated tenant-level igmp_snooping_querier key.
@@ -40,6 +35,9 @@ tenants:
         name: "VLAN_302"
         tags: ["test_l2"]
         profile: profile1
+        igmp_snooping_querier:
+          source_address: 2.2.2.2
+          version: 2
 
   # Test deprecated L2VLAN-level igmp_snooping_enabled key.
   - name: Tenant_H
@@ -61,3 +59,5 @@ tenants:
             enabled: true
             ip_address_virtual: 10.0.22.1/24
             profile: profile1
+            igmp_snooping_querier:
+              source_address: main_router_id
