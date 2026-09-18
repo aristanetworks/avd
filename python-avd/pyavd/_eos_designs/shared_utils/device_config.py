@@ -49,7 +49,7 @@ class DeviceConfigMixin(Protocol):
                         "does not exist under 'device_profiles'."
                     )
                     raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-
+                # self.raise_warning_for_grandparent_profile(device_profile, context="device_profiles")
                 device_config._deepinherit(parent_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
 
         return device_config
