@@ -459,7 +459,7 @@ class AvdStructuredConfigBaseProtocol(
                     raise AristaAvdInvalidInputsError(msg)
 
                 if vrf_name == "default" and default_vrf_input is not None:
-                    duplicate_vrf_inputs = ", ".join({default_vrf_input, client_source.vrf})
+                    duplicate_vrf_inputs = ", ".join(sorted({default_vrf_input, client_source.vrf}))
                     msg = (
                         f"Duplicate resolved VRF '{vrf_name}' found under 'ssh_settings.client_source_interfaces'. "
                         f"Inputs resolving to this VRF: {duplicate_vrf_inputs}. "
