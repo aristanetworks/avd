@@ -443,6 +443,7 @@ class AvdStructuredConfigBaseProtocol(
         """Parse ssh_settings.client_source_interfaces (or source_interfaces.ssh_client) and set list of source_interfaces."""
         if self.inputs.ssh_settings.client_source_interfaces:
             source_interfaces = EosCliConfigGen.IpSshClient()
+            default_vrf_input: str | None = None
             for client_source in self.inputs.ssh_settings.client_source_interfaces._natural_sorted():
                 vrf_name = self.shared_utils.get_vrf(
                     vrf_input=client_source.vrf,
@@ -457,7 +458,17 @@ class AvdStructuredConfigBaseProtocol(
                     )
                     raise AristaAvdInvalidInputsError(msg)
 
+                if vrf_name == "default" and default_vrf_input is not None:
+                    duplicate_vrf_inputs = ", ".join({default_vrf_input, client_source.vrf})
+                    msg = (
+                        f"Duplicate resolved VRF '{vrf_name}' found under 'ssh_settings.client_source_interfaces'. "
+                        f"Inputs resolving to this VRF: {duplicate_vrf_inputs}. "
+                        "Use only one entry per resolved VRF."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+
                 if vrf_name == "default":
+                    default_vrf_input = client_source.vrf
                     source_interfaces.source_interface = source_interface
                 else:
                     source_interfaces.vrfs.append_new(name=vrf_name, source_interface=source_interface)
