@@ -173,12 +173,19 @@
 {%             set row_remote_address = user.remote_address | arista.avd.default('-') %}
 {%             set row_udp_port = user.udp_port | arista.avd.default('-') %}
 {%             set row_engine_id = user.localized | arista.avd.default('-') %}
-{%             if user.localized is arista.avd.defined and user.version is arista.avd.defined("v3") %}
-{%                 set row_auth_type = user.auth_passphrase_type | arista.avd.default('-') %}
-{%                 set row_priv_type = user.priv_passphrase_type | arista.avd.default('-') %}
-{%             else %}
-{%                 set row_auth_type = '-' %}
-{%                 set row_priv_type = '-' %}
+{%             set row_auth_type = '-' %}
+{%             set row_priv_type = '-' %}
+{%             if user.auth is arista.avd.defined
+                  and user.version is arista.avd.defined("v3")
+                  and user.auth_key is arista.avd.defined
+                  and user.auth_key_type is arista.avd.defined
+                  and user.localized is arista.avd.defined %}
+{%                 set row_auth_type = user.auth_key_type %}
+{%                 if user.priv is arista.avd.defined
+                      and user.priv_key is arista.avd.defined
+                      and user.priv_key_type is arista.avd.defined %}
+{%                     set row_priv_type = user.priv_key_type %}
+{%                 endif %}
 {%             endif %}
 | {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_auth_type }} | {{ row_policy }} | {{ row_priv_type }} | {{ row_remote_address }} | {{ row_udp_port }} | {{ row_engine_id }} |
 {%         endfor %}

@@ -25614,21 +25614,22 @@ keys:
               description: Group name.
             remote_address:
               type: str
-              description: 'Hostname or ip of remote engine.
+              description: 'Hostname or IP address of the remote SNMP engine.
 
-                The remote_address and udp_port are used for remote users.
+                When set, this user is rendered as a remote SNMPv3 user and optional
+                `udp_port` is appended.
 
-                A `snmp_server.engine_ids.remotes` entry with a matching address is
-                required when this is set
-
-                and `localized` is not set.
+                If `localized` is not set, a matching `snmp_server.engine_ids.remotes[].address`
+                entry is required.
 
                 '
             udp_port:
               type: int
               convert_types:
               - str
-              description: 'udp_port will not be used if no remote_address is configured.
+              description: 'UDP port of the remote SNMP engine.
+
+                Only used when `remote_address` is set.
 
                 '
             version:
@@ -25647,23 +25648,27 @@ keys:
 
                 (RFC 2574, engine-ID specific) instead of cleartext passphrases.
 
+                Required to use `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
+
                 '
             auth:
               type: str
               description: 'Hash algorithm.
 
                 '
-            auth_passphrase_type:
+            auth_key_type:
               type: str
               valid_values:
               - '0'
               - '7'
               - 8a
-              description: 'Authentication passphrase type.
+              description: 'Authentication key type.
 
                 EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
 
-                Requires `localized` to be set.
+                Used with `auth_key`.
+
+                Requires `localized` and `auth_key` to be set.
 
                 - `0`: Key string is not encrypted.
 
@@ -25672,31 +25677,39 @@ keys:
                 - `8a`: AES-256-GCM encrypted key.
 
                 '
+            auth_key:
+              type: str
+              description: 'Authentication key.
+
+                Requires `localized` and `auth_key_type` to be set.
+
+                Takes precedence over `auth_passphrase` when both are set.'
             auth_passphrase:
               type: str
-              description: "Authentication passphrase or key value.\nInterpretation
-                depends on `localized` and `auth_passphrase_type`:\n- If `localized`
-                is not set: provide a cleartext authentication passphrase.\n- If `localized`
-                is set and `auth_passphrase_type` is omitted or `0`:\n  provide a
-                localized (RFC 2574 hashed) authentication key in hex.\n- If `localized`
-                is set and `auth_passphrase_type` is `7` or `8a`:\n  provide the corresponding
-                protected localized key.\n"
+              description: 'Hashed authentication passphrase if localized is used
+                else cleartext authentication passphrase.
+
+                Ignored when `auth_key_type` and `auth_key` are set with `localized`.
+
+                '
             priv:
               type: str
               description: 'Encryption algorithm.
 
                 '
-            priv_passphrase_type:
+            priv_key_type:
               type: str
               valid_values:
               - '0'
               - '7'
               - 8a
-              description: 'Privacy passphrase type.
+              description: 'Privacy key type.
 
                 EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
 
-                Requires `localized` to be set.
+                Used with `priv_key`.
+
+                Requires `localized` and `priv_key` to be set.
 
                 - `0`: Key string is not encrypted.
 
@@ -25705,15 +25718,21 @@ keys:
                 - `8a`: AES-256-GCM encrypted key.
 
                 '
+            priv_key:
+              type: str
+              description: 'Privacy key.
+
+                Requires `localized` and `priv_key_type` to be set.
+
+                Takes precedence over `priv_passphrase` when both are set.'
             priv_passphrase:
               type: str
-              description: "Privacy passphrase or key value.\nInterpretation depends
-                on `localized` and `priv_passphrase_type`:\n- If `localized` is not
-                set: provide a cleartext privacy passphrase.\n- If `localized` is
-                set and `priv_passphrase_type` is omitted or `0`:\n  provide a localized
-                (RFC 2574 hashed) privacy key in hex.\n- If `localized` is set and
-                `priv_passphrase_type` is `7` or `8a`:\n  provide the corresponding
-                protected localized key.\n"
+              description: 'Hashed privacy passphrase if localized is used else cleartext
+                privacy passphrase.
+
+                Ignored when `priv_key_type` and `priv_key` are set with `localized`.
+
+                '
       hosts:
         type: list
         items:
