@@ -5,6 +5,18 @@ mgmt_gateway: 192.168.200.1
 underlay_multicast_pim_sm: true
 evpn_multicast: true
 
+svi_profiles:
+  - profile: profile1
+    parent_profile: profile2
+  - profile: profile2
+    parent_profile: profile3
+
+l2vlan_profiles:
+  - profile: profile1
+    parent_profile: profile2
+  - profile: profile2
+    parent_profile: profile3
+
 tenants:
    # Test deprecated tenant-level igmp_snooping_querier key.
   - name: Tenant_G
@@ -22,6 +34,7 @@ tenants:
       - id: 302
         name: "VLAN_302"
         tags: ["test_l2"]
+        profile: profile1
         igmp_snooping_querier:
           source_address: 2.2.2.2
           version: 2
@@ -45,5 +58,6 @@ tenants:
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.0.22.1/24
+            profile: profile1
             igmp_snooping_querier:
               source_address: main_router_id

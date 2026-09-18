@@ -77,6 +77,7 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
         *,
         removed: bool = False,
         conflict: bool = False,
+        msg: str | None = None,
     ) -> None:
         messages = []
         self.path = json_path_to_string(key)

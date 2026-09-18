@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import warnings
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
@@ -43,13 +44,19 @@ class DeviceConfigMixin(Protocol):
             device_config._deepinherit(device_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
 
             if device_profile.parent_profile:
-                if not (parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
+                if not (parent_profile_item := self.inputs.device_profiles.get(device_profile.parent_profile)):
                     msg = (
                         f"Device Profile '{device_profile.parent_profile}' applied as 'parent_profile' on the profile '{device_profile.name}' "
                         "does not exist under 'device_profiles'."
                     )
                     raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-
-                device_config._deepinherit(parent_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
+                if parent_profile_item.parent_profile:
+                    msg = (
+                        f"A parent profile is being inherited from another profile. Enable 'avd_design_future.allow_infinite_profile_inheritance'"
+                        f" to properly inherit or remove the 'parent_profile' from 'device_profiles[profile={parent_profile_item.name}]'."
+                    )
+                    warnings.warn(msg, stacklevel=2)
+                # self.raise_warning_for_grandparent_profile(device_profile, context="device_profiles")
+                device_config._deepinherit(parent_profile_item._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
 
         return device_config
