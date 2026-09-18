@@ -71362,6 +71362,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
+            AuthKeyType: TypeAlias = Literal["0", "7", "8a"]
+            PrivKeyType: TypeAlias = Literal["0", "7", "8a"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "group": {"type": str},
@@ -71370,36 +71372,95 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "version": {"type": str},
                 "localized": {"type": str},
                 "auth": {"type": str},
+                "auth_key_type": {"type": str},
+                "auth_key": {"type": str},
                 "auth_passphrase": {"type": str},
                 "priv": {"type": str},
+                "priv_key_type": {"type": str},
+                "priv_key": {"type": str},
                 "priv_passphrase": {"type": str},
             }
             name: str | None
-            """Username."""
+            """
+            SNMP username.
+            Maximum length is 32 characters.
+            """
             group: str | None
             """Group name."""
             remote_address: str | None
             """
-            Hostname or ip of remote engine.
-            The remote_address and udp_port are used for remote users.
-            A
-            `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
-            and
-            `localized` is not set.
+            Hostname or IP address of the remote SNMP engine.
+            When set, this user is rendered as a remote SNMPv3
+            user and optional `udp_port` is appended.
+            If `localized` is not set, a matching
+            `snmp_server.engine_ids.remotes[].address` entry is required.
             """
             udp_port: int | None
-            """udp_port will not be used if no remote_address is configured."""
+            """
+            UDP port of the remote SNMP engine.
+            Only used when `remote_address` is set.
+            """
             version: Version | None
             localized: str | None
-            """Engine ID in hexadecimal for localizing auth and/or priv."""
+            """
+            Engine ID in hexadecimal.
+            When set, auth and priv values are interpreted as localized key material
+            (RFC 2574, engine-ID specific) instead of cleartext passphrases.
+            Required to use
+            `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
+            """
             auth: str | None
             """Hash algorithm."""
+            auth_key_type: AuthKeyType | None
+            """
+            Authentication key type.
+            EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+            Used with `auth_key`.
+            Requires `localized` and `auth_key` to be set.
+            - `0`: Key string is not
+            encrypted.
+            - `7`: Type-7 encrypted (HIDDEN) key.
+            - `8a`: AES-256-GCM encrypted key.
+            """
+            auth_key: str | None
+            """
+            Authentication key.
+            Requires `localized` and `auth_key_type` to be set.
+            Takes precedence over
+            `auth_passphrase` when both are set.
+            """
             auth_passphrase: str | None
-            """Hashed authentication passphrase if localized is used else cleartext authentication passphrase."""
+            """
+            Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+            Ignored when `auth_key_type` and `auth_key` are set with `localized`.
+            """
             priv: str | None
             """Encryption algorithm."""
+            priv_key_type: PrivKeyType | None
+            """
+            Privacy key type.
+            EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+            Used with
+            `priv_key`.
+            Requires `localized` and `priv_key` to be set.
+            - `0`: Key string is not encrypted.
+            -
+            `7`: Type-7 encrypted (HIDDEN) key.
+            - `8a`: AES-256-GCM encrypted key.
+            """
+            priv_key: str | None
+            """
+            Privacy key.
+            Requires `localized` and `priv_key_type` to be set.
+            Takes precedence over
+            `priv_passphrase` when both are set.
+            """
             priv_passphrase: str | None
-            """Hashed privacy passphrase if localized is used else cleartext privacy passphrase."""
+            """
+            Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+            Ignored when
+            `priv_key_type` and `priv_key` are set with `localized`.
+            """
 
             if TYPE_CHECKING:
 
@@ -71413,8 +71474,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     version: Version | UndefinedType | None = Undefined,
                     localized: str | UndefinedType | None = Undefined,
                     auth: str | UndefinedType | None = Undefined,
+                    auth_key_type: AuthKeyType | UndefinedType | None = Undefined,
+                    auth_key: str | UndefinedType | None = Undefined,
                     auth_passphrase: str | UndefinedType | None = Undefined,
                     priv: str | UndefinedType | None = Undefined,
+                    priv_key_type: PrivKeyType | UndefinedType | None = Undefined,
+                    priv_key: str | UndefinedType | None = Undefined,
                     priv_passphrase: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -71424,22 +71489,64 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: Username.
+                        name:
+                           SNMP username.
+                           Maximum length is 32 characters.
                         group: Group name.
                         remote_address:
-                           Hostname or ip of remote engine.
-                           The remote_address and udp_port are used for remote users.
-                           A
-                           `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
-                           and
-                           `localized` is not set.
-                        udp_port: udp_port will not be used if no remote_address is configured.
+                           Hostname or IP address of the remote SNMP engine.
+                           When set, this user is rendered as a remote SNMPv3
+                           user and optional `udp_port` is appended.
+                           If `localized` is not set, a matching
+                           `snmp_server.engine_ids.remotes[].address` entry is required.
+                        udp_port:
+                           UDP port of the remote SNMP engine.
+                           Only used when `remote_address` is set.
                         version: version
-                        localized: Engine ID in hexadecimal for localizing auth and/or priv.
+                        localized:
+                           Engine ID in hexadecimal.
+                           When set, auth and priv values are interpreted as localized key material
+                           (RFC 2574, engine-ID specific) instead of cleartext passphrases.
+                           Required to use
+                           `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
                         auth: Hash algorithm.
-                        auth_passphrase: Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+                        auth_key_type:
+                           Authentication key type.
+                           EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+                           Used with `auth_key`.
+                           Requires `localized` and `auth_key` to be set.
+                           - `0`: Key string is not
+                           encrypted.
+                           - `7`: Type-7 encrypted (HIDDEN) key.
+                           - `8a`: AES-256-GCM encrypted key.
+                        auth_key:
+                           Authentication key.
+                           Requires `localized` and `auth_key_type` to be set.
+                           Takes precedence over
+                           `auth_passphrase` when both are set.
+                        auth_passphrase:
+                           Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+                           Ignored when `auth_key_type` and `auth_key` are set with `localized`.
                         priv: Encryption algorithm.
-                        priv_passphrase: Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+                        priv_key_type:
+                           Privacy key type.
+                           EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+                           Used with
+                           `priv_key`.
+                           Requires `localized` and `priv_key` to be set.
+                           - `0`: Key string is not encrypted.
+                           -
+                           `7`: Type-7 encrypted (HIDDEN) key.
+                           - `8a`: AES-256-GCM encrypted key.
+                        priv_key:
+                           Privacy key.
+                           Requires `localized` and `priv_key_type` to be set.
+                           Takes precedence over
+                           `priv_passphrase` when both are set.
+                        priv_passphrase:
+                           Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+                           Ignored when
+                           `priv_key_type` and `priv_key` are set with `localized`.
 
                     """
 
