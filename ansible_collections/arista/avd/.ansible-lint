@@ -1,8 +1,8 @@
 ---
 profile: production
 
-# warn_list:
-#   - no-log-password
+enable_list:
+  - no-log-password
 
 mock_modules:
   # The following task files depend on other collections and ansible-lint is running in offline mode on galaxy/automation hub
