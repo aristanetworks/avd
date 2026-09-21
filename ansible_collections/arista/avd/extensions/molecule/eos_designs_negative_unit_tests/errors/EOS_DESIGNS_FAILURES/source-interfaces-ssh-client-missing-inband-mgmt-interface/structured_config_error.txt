@@ -1,1 +1,0 @@
-pyavd._errors.AristaAvdInvalidInputsError: Unable to configure IP SSH Client source-interface for VRF 'default' since 'ssh_settings.client_source_interfaces[vrf=default].interface' is not set. Set 'interface' for non-management VRF values.

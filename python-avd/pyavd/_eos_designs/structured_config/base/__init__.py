@@ -12,7 +12,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGeneratorProtocol,
     structured_config_contributor,
 )
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.default import default
 from pyavd._utils.get import get_v2
 from pyavd.j2filters import natural_sort
@@ -442,38 +442,34 @@ class AvdStructuredConfigBaseProtocol(
     def ip_ssh_client(self) -> None:
         """Parse ssh_settings.client_source_interfaces (or source_interfaces.ssh_client) and set list of source_interfaces."""
         if self.inputs.ssh_settings.client_source_interfaces:
-            source_interfaces = EosCliConfigGen.IpSshClient()
+            ip_ssh_client = EosCliConfigGen.IpSshClient()
             default_vrf_input: str | None = None
-            for client_source in self.inputs.ssh_settings.client_source_interfaces._natural_sorted():
+            for client_source in self.inputs.ssh_settings.client_source_interfaces:
                 vrf_name = self.shared_utils.get_vrf(
                     vrf_input=client_source.vrf,
                     context=f"ssh_settings.client_source_interfaces[vrf={client_source.vrf}]",
                 )
                 source_interface = self.shared_utils.get_source_interface(client_source.vrf, client_source.interface)
                 if source_interface is None:
-                    msg = (
-                        f"Unable to configure IP SSH Client source-interface for VRF '{vrf_name}' since "
-                        f"'ssh_settings.client_source_interfaces[vrf={client_source.vrf}].interface' is not set. "
-                        "Set 'interface' for non-management VRF values."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
+                    msg = f"ssh_settings.client_source_interfaces[vrf={client_source.vrf}].interface"
+                    raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
                 if vrf_name == "default" and default_vrf_input is not None:
                     duplicate_vrf_inputs = ", ".join(sorted({default_vrf_input, client_source.vrf}))
                     msg = (
                         f"Duplicate resolved VRF '{vrf_name}' found under 'ssh_settings.client_source_interfaces'. "
                         f"Inputs resolving to this VRF: {duplicate_vrf_inputs}. "
-                        "Use only one entry per resolved VRF."
+                        f"Use only one entry per resolved VRF for host '{self.shared_utils.hostname}'."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 if vrf_name == "default":
                     default_vrf_input = client_source.vrf
-                    source_interfaces.source_interface = source_interface
+                    ip_ssh_client.source_interface = source_interface
                 else:
-                    source_interfaces.vrfs.append_new(name=vrf_name, source_interface=source_interface)
+                    ip_ssh_client.vrfs.append_new(name=vrf_name, source_interface=source_interface)
 
-            self.structured_config.ip_ssh_client = source_interfaces
+            self.structured_config.ip_ssh_client = ip_ssh_client
             return
 
         if not (inputs := self.inputs.source_interfaces.ssh_client):

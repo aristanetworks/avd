@@ -10895,6 +10895,7 @@ keys:
         $ref: eos_cli_config_gen#/keys/management_ssh/keys/idle_timeout
       client_source_interfaces:
         type: list
+        primary_key: vrf
         items:
           type: dict
           keys:

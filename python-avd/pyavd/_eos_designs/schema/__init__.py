@@ -50560,8 +50560,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class ClientSourceInterfaces(AvdList[ClientSourceInterfacesItem]):
-            """Subclass of AvdList with `ClientSourceInterfacesItem` items."""
+        class ClientSourceInterfaces(AvdIndexedList[str, ClientSourceInterfacesItem]):
+            """Subclass of AvdIndexedList with `ClientSourceInterfacesItem` items. Primary key is `vrf` (`str`)."""
+
+            _primary_key: ClassVar[str] = "vrf"
 
         ClientSourceInterfaces._item_type = ClientSourceInterfacesItem
 
@@ -50581,7 +50583,7 @@ class EosDesigns(EosDesignsRootModel):
         idle_timeout: int | None
         """Idle timeout in minutes."""
         client_source_interfaces: ClientSourceInterfaces
-        """Subclass of AvdList with `ClientSourceInterfacesItem` items."""
+        """Subclass of AvdIndexedList with `ClientSourceInterfacesItem` items. Primary key is `vrf` (`str`)."""
 
         if TYPE_CHECKING:
 
@@ -50605,7 +50607,7 @@ class EosDesigns(EosDesignsRootModel):
                        all VRFs.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     idle_timeout: Idle timeout in minutes.
-                    client_source_interfaces: Subclass of AvdList with `ClientSourceInterfacesItem` items.
+                    client_source_interfaces: Subclass of AvdIndexedList with `ClientSourceInterfacesItem` items. Primary key is `vrf` (`str`).
 
                 """
 

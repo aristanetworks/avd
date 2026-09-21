@@ -1,7 +1,7 @@
 type: l2leaf
 l2leaf:
   nodes:
-    - name: source-interfaces-ssh-client-missing-inband-mgmt-interface
+    - name: source-interfaces-ssh-client-missing-interface
       id: 1
       mgmt_ip: 192.168.0.2/24
       # inband_mgmt_ip: 10.20.30.40/24
@@ -13,5 +13,4 @@ ssh_settings:
     - vrf: default
 
 expected_error_message: >-
-  Unable to configure IP SSH Client source-interface for VRF 'default' since 'ssh_settings.client_source_interfaces[vrf=default].interface' is not set.
-  Set 'interface' for non-management VRF values.
+  'ssh_settings.client_source_interfaces[vrf=default].interface' is required but was not found for host 'source-interfaces-ssh-client-missing-interface'.

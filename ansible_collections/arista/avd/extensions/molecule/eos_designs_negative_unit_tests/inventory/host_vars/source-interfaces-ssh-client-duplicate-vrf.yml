@@ -17,4 +17,5 @@ ssh_settings:
 
 expected_error_message: >-
   Duplicate resolved VRF 'default' found under 'ssh_settings.client_source_interfaces'.
-  Inputs resolving to this VRF: use_inband_mgmt_vrf, use_mgmt_interface_vrf. Use only one entry per resolved VRF.
+  Inputs resolving to this VRF: use_inband_mgmt_vrf, use_mgmt_interface_vrf.
+  Use only one entry per resolved VRF for host 'source-interfaces-ssh-client-duplicate-vrf'.
