@@ -50492,11 +50492,11 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        class ClientSourceInterfacesItem(AvdModel):
+        class ClientVrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"vrf": {"type": str}, "interface": {"type": str}}
-            vrf: str
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
             """
             VRF name.
             The value will be interpreted according to these rules:
@@ -50513,7 +50513,7 @@ class EosDesigns(EosDesignsRootModel):
             - Any other string will be used directly as the VRF
             name.
             """
-            interface: str | None
+            source_interface: str | None
             """
             Source interface to use for IP SSH Client in this VRF.
             If set, the value is used directly as the
@@ -50526,15 +50526,15 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, vrf: str | UndefinedType = Undefined, interface: str | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType | None = Undefined) -> None:
                     """
-                    ClientSourceInterfacesItem.
+                    ClientVrfsItem.
 
 
                     Subclass of AvdModel.
 
                     Args:
-                        vrf:
+                        name:
                            VRF name.
                            The value will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
@@ -50549,7 +50549,7 @@ class EosDesigns(EosDesignsRootModel):
                            depending on the value of `default_mgmt_method`.
                            - Any other string will be used directly as the VRF
                            name.
-                        interface:
+                        source_interface:
                            Source interface to use for IP SSH Client in this VRF.
                            If set, the value is used directly as the
                            source interface name.
@@ -50560,19 +50560,14 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class ClientSourceInterfaces(AvdIndexedList[str, ClientSourceInterfacesItem]):
-            """Subclass of AvdIndexedList with `ClientSourceInterfacesItem` items. Primary key is `vrf` (`str`)."""
+        class ClientVrfs(AvdIndexedList[str, ClientVrfsItem]):
+            """Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`)."""
 
-            _primary_key: ClassVar[str] = "vrf"
+            _primary_key: ClassVar[str] = "name"
 
-        ClientSourceInterfaces._item_type = ClientSourceInterfacesItem
+        ClientVrfs._item_type = ClientVrfsItem
 
-        _fields: ClassVar[dict] = {
-            "enabled": {"type": bool},
-            "vrfs": {"type": Vrfs},
-            "idle_timeout": {"type": int},
-            "client_source_interfaces": {"type": ClientSourceInterfaces},
-        }
+        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}, "client_vrfs": {"type": ClientVrfs}}
         enabled: bool | None
         """
         Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
@@ -50582,8 +50577,8 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         idle_timeout: int | None
         """Idle timeout in minutes."""
-        client_source_interfaces: ClientSourceInterfaces
-        """Subclass of AvdIndexedList with `ClientSourceInterfacesItem` items. Primary key is `vrf` (`str`)."""
+        client_vrfs: ClientVrfs
+        """Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`)."""
 
         if TYPE_CHECKING:
 
@@ -50593,7 +50588,7 @@ class EosDesigns(EosDesignsRootModel):
                 enabled: bool | UndefinedType | None = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 idle_timeout: int | UndefinedType | None = Undefined,
-                client_source_interfaces: ClientSourceInterfaces | UndefinedType = Undefined,
+                client_vrfs: ClientVrfs | UndefinedType = Undefined,
             ) -> None:
                 """
                 SshSettings.
@@ -50607,7 +50602,7 @@ class EosDesigns(EosDesignsRootModel):
                        all VRFs.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     idle_timeout: Idle timeout in minutes.
-                    client_source_interfaces: Subclass of AvdIndexedList with `ClientSourceInterfacesItem` items. Primary key is `vrf` (`str`).
+                    client_vrfs: Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`).
 
                 """
 

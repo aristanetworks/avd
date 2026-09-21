@@ -9,8 +9,8 @@ l2leaf:
       # inband_mgmt_vrf: INBANDMGMT
 
 ssh_settings:
-  client_source_interfaces:
-    - vrf: use_mgmt_interface_vrf
+  client_vrfs:
+    - name: use_mgmt_interface_vrf
 
 expected_error_message: >-
-  'ssh_settings.client_source_interfaces[vrf=use_mgmt_interface_vrf]' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.
+  'ssh_settings.client_vrfs[name=use_mgmt_interface_vrf]' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.

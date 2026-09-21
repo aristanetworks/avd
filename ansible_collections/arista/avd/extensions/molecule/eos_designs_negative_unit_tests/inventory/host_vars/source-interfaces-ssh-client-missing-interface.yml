@@ -9,8 +9,8 @@ l2leaf:
       # inband_mgmt_vrf: INBANDMGMT
 
 ssh_settings:
-  client_source_interfaces:
-    - vrf: default
+  client_vrfs:
+    - name: default
 
 expected_error_message: >-
-  'ssh_settings.client_source_interfaces[vrf=default].interface' is required but was not found for host 'source-interfaces-ssh-client-missing-interface'.
+  'ssh_settings.client_vrfs[name=default].source_interface' is required but was not found for host 'source-interfaces-ssh-client-missing-interface'.

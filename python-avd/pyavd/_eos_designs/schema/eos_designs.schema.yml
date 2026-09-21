@@ -10893,13 +10893,13 @@ keys:
       idle_timeout:
         type: int
         $ref: eos_cli_config_gen#/keys/management_ssh/keys/idle_timeout
-      client_source_interfaces:
+      client_vrfs:
         type: list
-        primary_key: vrf
+        primary_key: name
         items:
           type: dict
           keys:
-            vrf:
+            name:
               type: str
               required: true
               description: "VRF name.\nThe value will be interpreted according to
@@ -10911,7 +10911,7 @@ keys:
                 `use_default_mgmt_method_vrf` will configure the VRF for one of the
                 two options above depending on the value of `default_mgmt_method`.\n-
                 Any other string will be used directly as the VRF name."
-            interface:
+            source_interface:
               type: str
               description: 'Source interface to use for IP SSH Client in this VRF.
 

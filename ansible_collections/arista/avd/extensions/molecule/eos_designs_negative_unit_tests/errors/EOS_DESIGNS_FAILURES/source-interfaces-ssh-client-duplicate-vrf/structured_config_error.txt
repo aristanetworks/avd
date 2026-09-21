@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: Duplicate resolved VRF 'default' found under 'ssh_settings.client_source_interfaces'. Inputs resolving to this VRF: use_inband_mgmt_vrf, use_mgmt_interface_vrf. Use only one entry per resolved VRF for host 'source-interfaces-ssh-client-duplicate-vrf'.
+pyavd._errors.AristaAvdDuplicateDataError: Found duplicate objects with conflicting data while generating configuration for Vrfs. {'name': 'VRF1', 'source_interface': 'Vlan4092'} conflicts with {'name': 'VRF1', 'source_interface': 'Management1'}.

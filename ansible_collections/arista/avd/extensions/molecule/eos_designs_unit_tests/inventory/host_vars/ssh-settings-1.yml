@@ -30,8 +30,8 @@ ssh_settings:
       enabled: true
       ipv4_acl: ACL-SSH-MGMT-INTERFACE
   idle_timeout: 15
-  client_source_interfaces:
-    - vrf: use_mgmt_interface_vrf
-      interface: Loopback1
-    - vrf: VRF10
-      interface: Ethernet1
+  client_vrfs:
+    - name: use_mgmt_interface_vrf
+      source_interface: Loopback1
+    - name: VRF10
+      source_interface: Ethernet1
