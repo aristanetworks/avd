@@ -10941,10 +10941,16 @@ keys:
   tcam_profiles:
     type: list
     $ref: eos_cli_config_gen#/keys/tcam_profile/keys/profiles
-    description: 'TCAM profile definitions.
+    description: 'List of TCAM profile definitions that can be referenced by platform_settings.
 
-      Only the profile referenced by `custom_platform_settings[].tcam_profile`/`platform_settings[].tcam_profile`
-      for the device platform is configured.'
+      Profiles are configured in EOS based on platform_settings[].tcam_profile and
+      platform_settings[].additional_tcam_profiles.
+
+      All profiles in platform_settings[].additional_tcam_profiles (if defined in
+      this list) will be configured.
+
+      If a profile appears in both tcam_profile and additional_tcam_profiles, it will
+      only be configured once.'
   terminattr_disable_aaa:
     documentation_options:
       table: cloudvision-settings
@@ -16678,12 +16684,22 @@ $defs:
               description: In seconds.
         tcam_profile:
           type: str
+          description: 'TCAM profile name to activate as the system profile.
+
+            If the profile is defined under `tcam_profiles`, it will also be configured
+            in EOS.
+
+            Built-in profiles (e.g., system-profile) can be used without being defined
+            in `tcam_profiles`.'
         additional_tcam_profiles:
           type: list
           description: 'List of additional TCAM profile names that must be defined
             under `tcam_profiles`.
 
-            These profiles are always configured in EOS.'
+            These profiles are configured in EOS but are not set as the system profile.
+
+            If a profile is specified in both `tcam_profile` and `additional_tcam_profiles`,
+            it will be configured only once.'
           items:
             type: str
         lag_hardware_only:

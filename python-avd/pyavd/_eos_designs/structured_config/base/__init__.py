@@ -367,16 +367,31 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def tcam_profile(self) -> None:
         """Set TCAM profiles based on platform settings."""
-        if tcam_profile_name := self.shared_utils.platform_settings.tcam_profile:
+        tcam_profile_name = self.shared_utils.platform_settings.tcam_profile
+        additional_tcam_profile_names = self.shared_utils.platform_settings.additional_tcam_profiles
+
+        # Set system profile if configured
+        if tcam_profile_name:
             self.structured_config.tcam_profile.system = tcam_profile_name
 
-        # Configure additional profiles.
-        for additional_tcam_profile_name in self.shared_utils.platform_settings.additional_tcam_profiles:
-            # Every additional profile must reference a profile defined under `tcam_profiles`.
+        # Determine which profiles to configure
+        profiles_to_configure = []
+
+        # Add additional profiles first (in order specified), validating they are defined
+        for additional_tcam_profile_name in additional_tcam_profile_names:
             if additional_tcam_profile_name not in self.inputs.tcam_profiles:
                 msg = f"TCAM profile '{additional_tcam_profile_name}' referenced under 'additional_tcam_profiles' is not defined under 'tcam_profiles'."
                 raise AristaAvdInvalidInputsError(msg)
-            self.structured_config.tcam_profile.profiles.append(self.inputs.tcam_profiles[additional_tcam_profile_name])
+            if additional_tcam_profile_name != tcam_profile_name:
+                profiles_to_configure.append(additional_tcam_profile_name)
+
+        # Add the system profile if it's in tcam_profiles
+        if tcam_profile_name and tcam_profile_name in self.inputs.tcam_profiles:
+            profiles_to_configure.append(tcam_profile_name)
+
+        # Add profiles to structured config
+        for profile_name in profiles_to_configure:
+            self.structured_config.tcam_profile.profiles.append(self.inputs.tcam_profiles[profile_name])
 
     @structured_config_contributor
     def mac_address_table(self) -> None:

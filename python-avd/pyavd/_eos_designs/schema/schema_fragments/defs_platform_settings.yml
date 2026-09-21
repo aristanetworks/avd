@@ -39,11 +39,16 @@ $defs:
               description: In seconds.
         tcam_profile:
           type: str
+          description: |-
+            TCAM profile name to activate as the system profile.
+            If the profile is defined under `tcam_profiles`, it will also be configured in EOS.
+            Built-in profiles (e.g., system-profile) can be used without being defined in `tcam_profiles`.
         additional_tcam_profiles:
           type: list
           description: |-
             List of additional TCAM profile names that must be defined under `tcam_profiles`.
-            These profiles are always configured in EOS.
+            These profiles are configured in EOS but are not set as the system profile.
+            If a profile is specified in both `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
           items:
             type: str
         lag_hardware_only:

@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>tcam_profiles</samp>](## "tcam_profiles") | List, items: Dictionary |  |  |  | TCAM profile definitions.<br>Only the profile referenced by `custom_platform_settings[].tcam_profile`/`platform_settings[].tcam_profile` for the device platform is configured. |
+    | [<samp>tcam_profiles</samp>](## "tcam_profiles") | List, items: Dictionary |  |  |  | List of TCAM profile definitions that can be referenced by platform_settings.<br>Profiles are configured in EOS based on platform_settings[].tcam_profile and platform_settings[].additional_tcam_profiles.<br>All profiles in platform_settings[].additional_tcam_profiles (if defined in this list) will be configured.<br>If a profile appears in both tcam_profile and additional_tcam_profiles, it will only be configured once. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "tcam_profiles.[].name") | String | Required, Unique |  |  | Tcam-Profile Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;config</samp>](## "tcam_profiles.[].config") | String |  |  |  | TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.<br>Example: "{{ lookup('file', 'TCAM_TRAFFIC_POLICY.conf') }}"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "tcam_profiles.[].source") | String |  |  |  | TCAM profile local source path. Used to read the TCAM profile from a local path existing on the device.<br> |
@@ -15,8 +15,10 @@
 === "YAML"
 
     ```yaml
-    # TCAM profile definitions.
-    # Only the profile referenced by `custom_platform_settings[].tcam_profile`/`platform_settings[].tcam_profile` for the device platform is configured.
+    # List of TCAM profile definitions that can be referenced by platform_settings.
+    # Profiles are configured in EOS based on platform_settings[].tcam_profile and platform_settings[].additional_tcam_profiles.
+    # All profiles in platform_settings[].additional_tcam_profiles (if defined in this list) will be configured.
+    # If a profile appears in both tcam_profile and additional_tcam_profiles, it will only be configured once.
     tcam_profiles:
 
         # Tcam-Profile Name.

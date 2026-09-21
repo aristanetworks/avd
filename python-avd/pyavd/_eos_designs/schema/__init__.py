@@ -44527,13 +44527,23 @@ class EosDesigns(EosDesignsRootModel):
         reload_delay: ReloadDelay
         """Subclass of AvdModel."""
         tcam_profile: str | None
+        """
+        TCAM profile name to activate as the system profile.
+        If the profile is defined under
+        `tcam_profiles`, it will also be configured in EOS.
+        Built-in profiles (e.g., system-profile) can be
+        used without being defined in `tcam_profiles`.
+        """
         additional_tcam_profiles: AdditionalTcamProfiles
         """
         List of additional TCAM profile names that must be defined under `tcam_profiles`.
         These profiles are
-        always configured in EOS.
+        configured in EOS but are not set as the system profile.
+        If a profile is specified in both
+        `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
 
-        Subclass of AvdList with `str` items.
+        Subclass of AvdList
+        with `str` items.
         """
         lag_hardware_only: bool | None
         default_interface_mtu: int | None
@@ -44601,13 +44611,21 @@ class EosDesigns(EosDesignsRootModel):
                     platforms: Subclass of AvdList with `str` items.
                     trident_forwarding_table_partition: Only applied when evpn_multicast is true.
                     reload_delay: Subclass of AvdModel.
-                    tcam_profile: tcam_profile
+                    tcam_profile:
+                       TCAM profile name to activate as the system profile.
+                       If the profile is defined under
+                       `tcam_profiles`, it will also be configured in EOS.
+                       Built-in profiles (e.g., system-profile) can be
+                       used without being defined in `tcam_profiles`.
                     additional_tcam_profiles:
                        List of additional TCAM profile names that must be defined under `tcam_profiles`.
                        These profiles are
-                       always configured in EOS.
+                       configured in EOS but are not set as the system profile.
+                       If a profile is specified in both
+                       `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
 
-                       Subclass of AvdList with `str` items.
+                       Subclass of AvdList
+                       with `str` items.
                     lag_hardware_only: lag_hardware_only
                     default_interface_mtu:
                        Default interface MTU configured on EOS under "interface defaults".
@@ -46394,13 +46412,23 @@ class EosDesigns(EosDesignsRootModel):
         reload_delay: ReloadDelay
         """Subclass of AvdModel."""
         tcam_profile: str | None
+        """
+        TCAM profile name to activate as the system profile.
+        If the profile is defined under
+        `tcam_profiles`, it will also be configured in EOS.
+        Built-in profiles (e.g., system-profile) can be
+        used without being defined in `tcam_profiles`.
+        """
         additional_tcam_profiles: AdditionalTcamProfiles
         """
         List of additional TCAM profile names that must be defined under `tcam_profiles`.
         These profiles are
-        always configured in EOS.
+        configured in EOS but are not set as the system profile.
+        If a profile is specified in both
+        `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
 
-        Subclass of AvdList with `str` items.
+        Subclass of AvdList
+        with `str` items.
         """
         lag_hardware_only: bool | None
         default_interface_mtu: int | None
@@ -46468,13 +46496,21 @@ class EosDesigns(EosDesignsRootModel):
                     platforms: Subclass of AvdList with `str` items.
                     trident_forwarding_table_partition: Only applied when evpn_multicast is true.
                     reload_delay: Subclass of AvdModel.
-                    tcam_profile: tcam_profile
+                    tcam_profile:
+                       TCAM profile name to activate as the system profile.
+                       If the profile is defined under
+                       `tcam_profiles`, it will also be configured in EOS.
+                       Built-in profiles (e.g., system-profile) can be
+                       used without being defined in `tcam_profiles`.
                     additional_tcam_profiles:
                        List of additional TCAM profile names that must be defined under `tcam_profiles`.
                        These profiles are
-                       always configured in EOS.
+                       configured in EOS but are not set as the system profile.
+                       If a profile is specified in both
+                       `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
 
-                       Subclass of AvdList with `str` items.
+                       Subclass of AvdList
+                       with `str` items.
                     lag_hardware_only: lag_hardware_only
                     default_interface_mtu:
                        Default interface MTU configured on EOS under "interface defaults".
@@ -118643,10 +118679,14 @@ class EosDesigns(EosDesignsRootModel):
     """
     tcam_profiles: EosCliConfigGen.TcamProfile.Profiles
     """
-    TCAM profile definitions.
-    Only the profile referenced by
-    `custom_platform_settings[].tcam_profile`/`platform_settings[].tcam_profile` for the device platform
-    is configured.
+    List of TCAM profile definitions that can be referenced by platform_settings.
+    Profiles are
+    configured in EOS based on platform_settings[].tcam_profile and
+    platform_settings[].additional_tcam_profiles.
+    All profiles in
+    platform_settings[].additional_tcam_profiles (if defined in this list) will be configured.
+    If a
+    profile appears in both tcam_profile and additional_tcam_profiles, it will only be configured once.
     """
     timezone: str | None
     """Clock timezone like "CET" or "US/Pacific"."""
@@ -120608,10 +120648,14 @@ class EosDesigns(EosDesignsRootModel):
                    If both are set, the value under node type settings takes
                    precedence.
                 tcam_profiles:
-                   TCAM profile definitions.
-                   Only the profile referenced by
-                   `custom_platform_settings[].tcam_profile`/`platform_settings[].tcam_profile` for the device platform
-                   is configured.
+                   List of TCAM profile definitions that can be referenced by platform_settings.
+                   Profiles are
+                   configured in EOS based on platform_settings[].tcam_profile and
+                   platform_settings[].additional_tcam_profiles.
+                   All profiles in
+                   platform_settings[].additional_tcam_profiles (if defined in this list) will be configured.
+                   If a
+                   profile appears in both tcam_profile and additional_tcam_profiles, it will only be configured once.
                 timezone: Clock timezone like "CET" or "US/Pacific".
                 trunk_groups: Subclass of AvdModel.
                 type:
