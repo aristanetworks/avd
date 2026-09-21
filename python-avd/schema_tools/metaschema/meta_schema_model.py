@@ -359,8 +359,8 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     pattern: str | None = None
     """
     An AVD regular expression which will be matched against the complete variable value.
-    The supported dialect includes Unicode-aware Perl shorthand classes (`\\d`, `\\s`, and `\\w`, including their uppercase complements),
-    Unicode-safe wildcards and explicit character classes, lookarounds, and variable-length lookbehinds.
+    The supported dialect includes Unicode-aware Perl shorthand classes (`\\d`, `\\s`, and `\\w`, including their uppercase complements)
+    and word boundaries, Unicode-safe wildcards and explicit character classes, lookarounds, and variable-length lookbehinds.
     Broader Unicode properties and scripts such as `\\p{Greek}` are not supported.
     Remember to use double escapes.
     """

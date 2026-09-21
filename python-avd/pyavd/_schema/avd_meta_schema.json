@@ -142,7 +142,7 @@
             "pattern": {
               "type": "string",
               "format": "regex",
-              "description": " An AVD regular expression which will be matched against the complete variable value.\nThe supported dialect includes Unicode-aware Perl shorthand classes (`\\d`, `\\s`, and `\\w`, including their uppercase complements),\nUnicode-safe wildcards and explicit character classes, lookarounds, and variable-length lookbehinds.\nBroader Unicode properties and scripts such as `\\p{Greek}` are not supported.\nRemember to use double escapes."
+              "description": " An AVD regular expression which will be matched against the complete variable value.\nThe supported dialect includes Unicode-aware Perl shorthand classes (`\\d`, `\\s`, and `\\w`, including their uppercase complements)\nand word boundaries, Unicode-safe wildcards and explicit character classes, lookarounds, and variable-length lookbehinds.\nBroader Unicode properties and scripts such as `\\p{Greek}` are not supported.\nRemember to use double escapes."
             },
             "valid_values": {
               "type": "array",
