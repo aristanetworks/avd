@@ -1,7 +1,7 @@
 type: l2leaf
 l2leaf:
   nodes:
-    - name: source-interfaces-ssh-client-missing-interface
+    - name: ssh-settings-client-vrfs-missing-source-interface
       id: 1
       mgmt_ip: 192.168.0.2/24
       # inband_mgmt_ip: 10.20.30.40/24
@@ -13,4 +13,4 @@ ssh_settings:
     - name: default
 
 expected_error_message: >-
-  'ssh_settings.client_vrfs[name=default].source_interface' is required but was not found for host 'source-interfaces-ssh-client-missing-interface'.
+  'ssh_settings.client_vrfs[name=default].source_interface' is required but was not found for host 'ssh-settings-client-vrfs-missing-source-interface'.

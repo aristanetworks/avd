@@ -10,11 +10,10 @@ l2leaf:
 
 mgmt_interface_vrf: VRF1
 
-ssh_settings:
-  client_vrfs:
-    - name: use_mgmt_interface_vrf
-    - name: use_inband_mgmt_vrf
+source_interfaces:
+  ssh_client:
+    mgmt_interface: true
+    inband_mgmt_interface: true
 
 expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for Vrfs.
-  {'name': 'VRF1', 'source_interface': 'Vlan4092'} conflicts with {'name': 'VRF1', 'source_interface': 'Management1'}.
+  Unable to configure multiple IP SSH Client source-interfaces for the same VRF 'VRF1'.

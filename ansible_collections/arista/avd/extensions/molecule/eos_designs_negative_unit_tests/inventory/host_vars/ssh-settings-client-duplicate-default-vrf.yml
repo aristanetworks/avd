@@ -1,7 +1,7 @@
 type: l2leaf
 l2leaf:
   nodes:
-    - name: source-interfaces-ssh-client-duplicate-default-vrf
+    - name: ssh-settings-client-duplicate-default-vrf
       id: 1
       mgmt_ip: 192.168.0.2/24
       inband_mgmt_ip: 10.20.30.40/24

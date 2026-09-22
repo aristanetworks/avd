@@ -56,7 +56,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: |-
                 VRF name.
                 The value will be interpreted according to these rules:
@@ -72,4 +71,4 @@ keys:
                 Source interface to use for IP SSH Client in this VRF.
                 If set, the value is used directly as the source interface name.
                 If not set, the source interface is derived automatically when `vrf` is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
-                For any other `vrf` value, `interface` must be set.
+                For any other `vrf` value, `source_interface` must be set.

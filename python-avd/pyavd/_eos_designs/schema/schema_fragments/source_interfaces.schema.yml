@@ -52,7 +52,7 @@ keys:
           warning: true
           removed: false
           remove_in_version: 7.0.0
-          new_key: ssh_settings.client_source_interfaces
+          new_key: ssh_settings.client_vrfs
       tacacs:
         type: dict
         deprecation:
