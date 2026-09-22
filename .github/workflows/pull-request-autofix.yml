@@ -18,7 +18,8 @@ permissions:
 
 jobs:
   autofix:
-    name: Run pre-commit and commit back any changes
+    # Added in GitHub settings as a required check. Keep this name stable.
+    name: Autofix - run pre-commit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
