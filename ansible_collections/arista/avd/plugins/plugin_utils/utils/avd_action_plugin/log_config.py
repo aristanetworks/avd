@@ -12,6 +12,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.WARNING,
         "schema_tools": logging.WARNING,
         "anta": logging.WARNING,
+        "asynceapi": logging.WARNING,
         "external_libs": logging.WARNING,
     },
     1: {  # Verbosity: -v
@@ -19,6 +20,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.INFO,
         "schema_tools": logging.INFO,
         "anta": logging.WARNING,
+        "asynceapi": logging.WARNING,
         "external_libs": logging.WARNING,
     },
     2: {  # Verbosity: -vv
@@ -26,6 +28,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.DEBUG,
         "schema_tools": logging.DEBUG,
         "anta": logging.WARNING,
+        "asynceapi": logging.WARNING,
         "external_libs": logging.WARNING,
     },
     3: {  # Verbosity: -vvv
@@ -33,6 +36,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.DEBUG,
         "schema_tools": logging.DEBUG,
         "anta": logging.INFO,
+        "asynceapi": logging.INFO,
         "external_libs": logging.WARNING,
     },
     4: {  # Verbosity: -vvvv
@@ -40,6 +44,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.DEBUG,
         "schema_tools": logging.DEBUG,
         "anta": logging.DEBUG,
+        "asynceapi": logging.DEBUG,
         "external_libs": logging.WARNING,
     },
     5: {  # Verbosity: -vvvvv
@@ -47,6 +52,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.DEBUG,
         "schema_tools": logging.DEBUG,
         "anta": logging.DEBUG,
+        "asynceapi": logging.DEBUG,
         "external_libs": logging.INFO,
     },
     6: {  # Verbosity: -vvvvvv
@@ -54,6 +60,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.DEBUG,
         "schema_tools": logging.DEBUG,
         "anta": logging.DEBUG,
+        "asynceapi": logging.DEBUG,
         "external_libs": logging.DEBUG,
     },
 }
