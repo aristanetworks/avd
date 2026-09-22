@@ -32538,6 +32538,57 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class RedistributeOspfSettings(AvdModel):
+                """Subclass of AvdModel."""
+
+                Match: TypeAlias = Literal["internal", "external", "nssa-external"]
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "route_map": {"type": str}, "match": {"type": str}}
+                enabled: bool
+                """
+                Enable or disable redistribution of OSPF routes into BGP.
+
+                Default value: `True`
+                """
+                route_map: str | None
+                """Route-map name to apply to redistributed OSPF routes."""
+                match: Match | None
+                """
+                Redistribute only OSPF routes of the specified type.
+                - "internal": Redistribute OSPF internal
+                routes.
+                - "external": Redistribute OSPF external routes.
+                - "nssa-external": Redistribute OSPF NSSA
+                external routes.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        route_map: str | UndefinedType | None = Undefined,
+                        match: Match | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        RedistributeOspfSettings.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable or disable redistribution of OSPF routes into BGP.
+                            route_map: Route-map name to apply to redistributed OSPF routes.
+                            match:
+                               Redistribute only OSPF routes of the specified type.
+                               - "internal": Redistribute OSPF internal
+                               routes.
+                               - "external": Redistribute OSPF external routes.
+                               - "nssa-external": Redistribute OSPF NSSA
+                               external routes.
+
+                        """
+
             class EvpnL3Multicast(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -39181,6 +39232,7 @@ class EosDesigns(EosDesignsRootModel):
                 "vtep_diagnostic": {"type": VtepDiagnostic},
                 "ospf": {"type": Ospf},
                 "redistribute_ospf": {"type": bool, "default": True},
+                "redistribute_ospf_settings": {"type": RedistributeOspfSettings},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                 "pim_rp_addresses": {"type": PimRpAddresses},
                 "evpn_l2_multi_domain": {"type": bool},
@@ -39368,7 +39420,7 @@ class EosDesigns(EosDesignsRootModel):
             created on all leafs where the VRF is deployed. This
             will also cause automatic OSPF redistribution into BGP unless
             explicitly turned off with
-            "redistribute_ospf: false".
+            "redistribute_ospf: false" or "redistribute_ospf_settings.enabled: false".
 
 
             Subclass of AvdModel.
@@ -39376,8 +39428,19 @@ class EosDesigns(EosDesignsRootModel):
             redistribute_ospf: bool
             """
             Non-selectively enabling or disabling redistribute ospf inside the VRF.
+            Deprecated: Use
+            `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.
 
             Default value: `True`
+            """
+            redistribute_ospf_settings: RedistributeOspfSettings
+            """
+            Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.
+            When
+            `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`.
+
+            Subclass of
+            AvdModel.
             """
             evpn_l3_multicast: EvpnL3Multicast
             """
@@ -39545,6 +39608,7 @@ class EosDesigns(EosDesignsRootModel):
                     vtep_diagnostic: VtepDiagnostic | UndefinedType = Undefined,
                     ospf: Ospf | UndefinedType = Undefined,
                     redistribute_ospf: bool | UndefinedType = Undefined,
+                    redistribute_ospf_settings: RedistributeOspfSettings | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                     pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                     evpn_l2_multi_domain: bool | UndefinedType | None = Undefined,
@@ -39692,11 +39756,21 @@ class EosDesigns(EosDesignsRootModel):
                            created on all leafs where the VRF is deployed. This
                            will also cause automatic OSPF redistribution into BGP unless
                            explicitly turned off with
-                           "redistribute_ospf: false".
+                           "redistribute_ospf: false" or "redistribute_ospf_settings.enabled: false".
 
 
                            Subclass of AvdModel.
-                        redistribute_ospf: Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                        redistribute_ospf:
+                           Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                           Deprecated: Use
+                           `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.
+                        redistribute_ospf_settings:
+                           Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.
+                           When
+                           `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`.
+
+                           Subclass of
+                           AvdModel.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
                            `<network_services_key>.[].evpn_l3_multicast.enabled`.
@@ -84871,6 +84945,57 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class RedistributeOspfSettings(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Match: TypeAlias = Literal["internal", "external", "nssa-external"]
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "route_map": {"type": str}, "match": {"type": str}}
+                        enabled: bool
+                        """
+                        Enable or disable redistribution of OSPF routes into BGP.
+
+                        Default value: `True`
+                        """
+                        route_map: str | None
+                        """Route-map name to apply to redistributed OSPF routes."""
+                        match: Match | None
+                        """
+                        Redistribute only OSPF routes of the specified type.
+                        - "internal": Redistribute OSPF internal
+                        routes.
+                        - "external": Redistribute OSPF external routes.
+                        - "nssa-external": Redistribute OSPF NSSA
+                        external routes.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                match: Match | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                RedistributeOspfSettings.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Enable or disable redistribution of OSPF routes into BGP.
+                                    route_map: Route-map name to apply to redistributed OSPF routes.
+                                    match:
+                                       Redistribute only OSPF routes of the specified type.
+                                       - "internal": Redistribute OSPF internal
+                                       routes.
+                                       - "external": Redistribute OSPF external routes.
+                                       - "nssa-external": Redistribute OSPF NSSA
+                                       external routes.
+
+                                """
+
                     class EvpnL3Multicast(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -91546,6 +91671,7 @@ class EosDesigns(EosDesignsRootModel):
                         "vtep_diagnostic": {"type": VtepDiagnostic},
                         "ospf": {"type": Ospf},
                         "redistribute_ospf": {"type": bool, "default": True},
+                        "redistribute_ospf_settings": {"type": RedistributeOspfSettings},
                         "evpn_l3_multicast": {"type": EvpnL3Multicast},
                         "pim_rp_addresses": {"type": PimRpAddresses},
                         "evpn_l2_multi_domain": {"type": bool},
@@ -91733,7 +91859,7 @@ class EosDesigns(EosDesignsRootModel):
                     created on all leafs where the VRF is deployed. This
                     will also cause automatic OSPF redistribution into BGP unless
                     explicitly turned off with
-                    "redistribute_ospf: false".
+                    "redistribute_ospf: false" or "redistribute_ospf_settings.enabled: false".
 
 
                     Subclass of AvdModel.
@@ -91741,8 +91867,19 @@ class EosDesigns(EosDesignsRootModel):
                     redistribute_ospf: bool
                     """
                     Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                    Deprecated: Use
+                    `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.
 
                     Default value: `True`
+                    """
+                    redistribute_ospf_settings: RedistributeOspfSettings
+                    """
+                    Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.
+                    When
+                    `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`.
+
+                    Subclass of
+                    AvdModel.
                     """
                     evpn_l3_multicast: EvpnL3Multicast
                     """
@@ -91910,6 +92047,7 @@ class EosDesigns(EosDesignsRootModel):
                             vtep_diagnostic: VtepDiagnostic | UndefinedType = Undefined,
                             ospf: Ospf | UndefinedType = Undefined,
                             redistribute_ospf: bool | UndefinedType = Undefined,
+                            redistribute_ospf_settings: RedistributeOspfSettings | UndefinedType = Undefined,
                             evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                             pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                             evpn_l2_multi_domain: bool | UndefinedType | None = Undefined,
@@ -92057,11 +92195,21 @@ class EosDesigns(EosDesignsRootModel):
                                    created on all leafs where the VRF is deployed. This
                                    will also cause automatic OSPF redistribution into BGP unless
                                    explicitly turned off with
-                                   "redistribute_ospf: false".
+                                   "redistribute_ospf: false" or "redistribute_ospf_settings.enabled: false".
 
 
                                    Subclass of AvdModel.
-                                redistribute_ospf: Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                                redistribute_ospf:
+                                   Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                                   Deprecated: Use
+                                   `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.
+                                redistribute_ospf_settings:
+                                   Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.
+                                   When
+                                   `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`.
+
+                                   Subclass of
+                                   AvdModel.
                                 evpn_l3_multicast:
                                    Explicitly enable or disable evpn_l3_multicast to override setting of
                                    `<network_services_key>.[].evpn_l3_multicast.enabled`.
