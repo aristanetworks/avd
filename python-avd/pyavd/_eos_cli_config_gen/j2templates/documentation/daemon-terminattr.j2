@@ -10,7 +10,7 @@
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Sysdb Excludes | Bypass AAA |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
 {%     for cluster in daemon_terminattr.clusters | arista.avd.natural_sort('name') %}
 {%         set url = cluster.cvaddrs | arista.avd.default([]) | join(',') %}
@@ -31,7 +31,7 @@
 {%         else %}
 {%             set cvvrf = daemon_terminattr.cvvrf | arista.avd.default('-') %}
 {%         endif %}
-| gzip | {{ url }} | {{ cvvrf }} | {{ auth | arista.avd.default('-') }} | {{ daemon_terminattr.smashexcludes | arista.avd.default('-') }} | {{ daemon_terminattr.ingestexclude | arista.avd.default('-') }} | {{ daemon_terminattr.sysdbexcludes | arista.avd.default('-') }} | {{ daemon_terminattr.disable_aaa | arista.avd.default (false) }} |
+| gzip | {{ url }} | {{ cvvrf }} | {{ auth | arista.avd.default('-') }} | {{ daemon_terminattr.smashexcludes | arista.avd.default('-') }} | {{ daemon_terminattr.sysdbexcludes | arista.avd.default('-') }} | {{ daemon_terminattr.ingestexclude | arista.avd.default('-') }} | {{ daemon_terminattr.disable_aaa | arista.avd.default (false) }} |
 {%     endfor %}
 {%     if daemon_terminattr.cvaddrs is arista.avd.defined %}
 {%         set url = daemon_terminattr.cvaddrs | arista.avd.default([]) | join(',') %}

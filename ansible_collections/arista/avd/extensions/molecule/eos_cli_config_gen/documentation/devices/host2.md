@@ -576,7 +576,7 @@ dhcp relay
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Sysdb Excludes | Bypass AAA |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
 | gzip | 10.20.20.3:9910 | - | - | - | - | - | False |
 | gzip | 10.20.20.1:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt | - | - | - | False |
@@ -643,7 +643,7 @@ MCS client is shutdown
 
 | Secondary CVX cluster | Server Hosts | VRF | Source Interface | Enabled |
 | --------------------- | ------------ | --- | ---------------- | ------- |
-| default | - | - | - | False |
+| default | - | - | Management0 | False |
 
 #### MCS Client Device Configuration
 
@@ -654,6 +654,7 @@ mcs client
    !
    cvx secondary default
       shutdown
+      source-interface Management0
 ```
 
 ### SNMP
