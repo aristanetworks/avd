@@ -187,7 +187,7 @@ keys:
         type: str
         description: |
           Exclude paths from Sysdb.
-          e.g. "/Sysdb/mcs/"
+          e.g. "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
       taillogs:
         type: str
         description: |
