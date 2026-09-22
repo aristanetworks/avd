@@ -140,6 +140,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;node_type</samp>](## "metadata.digital_twin.node_type") | String |  |  |  | Digital Twin's internal device type used for deploying a replica of the fabric device.<br>Possible values depend on the target Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_addr</samp>](## "metadata.digital_twin.ip_addr") | String |  |  |  | Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "metadata.digital_twin.version") | String |  |  |  | OS version used for deploying a replica of the fabric device within the Digital Twin environment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;instance_type</samp>](## "metadata.digital_twin.instance_type") | String |  |  |  | ACT instance type used for deploying a replica of the fabric device within the Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "metadata.digital_twin.username") | String |  |  |  | Local username assigned to a replica of the fabric device within the Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "metadata.digital_twin.password") | String |  |  |  | Local password assigned to a replica of the fabric device within the Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internet_access</samp>](## "metadata.digital_twin.internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default. |
@@ -340,6 +341,9 @@
 
         # OS version used for deploying a replica of the fabric device within the Digital Twin environment.
         version: <str>
+
+        # ACT instance type used for deploying a replica of the fabric device within the Digital Twin environment.
+        instance_type: <str>
 
         # Local username assigned to a replica of the fabric device within the Digital Twin environment.
         username: <str>

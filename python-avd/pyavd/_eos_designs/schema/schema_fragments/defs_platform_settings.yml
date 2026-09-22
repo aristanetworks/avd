@@ -648,6 +648,9 @@ $defs:
                 - third-party
                 - tools-server
                 - veos
+            act_node_size:
+              type: str
+              description: ACT node size to use for the ACT `instance_type`.
         structured_config:
           type: dict
           relaxed_validation: true
