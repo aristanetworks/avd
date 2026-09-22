@@ -1586,6 +1586,10 @@ The default available keys is `tenants`.
 schemas/avd_design/docs/tables/network-services.md
 --8<--
 
+--8<--
+schemas/avd_design/docs/tables/new-network-services-bgp-vrf-config.md
+--8<--
+
 #### Network services VRFs configuration
 
 --8<--
