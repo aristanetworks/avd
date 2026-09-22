@@ -24,6 +24,7 @@ from ansible_collections.arista.avd.plugins.action.anta_workflow import (
     load_user_catalogs,
     run_anta,
     setup_anta_debug_mode,
+    setup_root_logger,
 )
 
 if TYPE_CHECKING:
@@ -184,6 +185,35 @@ def test_setup_anta_debug_mode_logs_debug_messages(
     with caplog.at_level(logging.DEBUG, logger=AVD_LOGGER_NAME):
         setup_anta_debug_mode(verbosity=verbosity)
     assert expected_msg in caplog.messages
+
+
+@pytest.mark.parametrize(
+    ("verbosity", "expected_root_level", "expected_asynceapi_level"),
+    [
+        pytest.param(1, logging.INFO, logging.WARNING, id="v1-asynceapi_warning"),
+        pytest.param(2, logging.INFO, logging.WARNING, id="v2-asynceapi_warning"),
+        pytest.param(3, logging.DEBUG, logging.INFO, id="v3-asynceapi_info"),
+        pytest.param(4, logging.DEBUG, None, id="v4-asynceapi_inherits_debug"),
+    ],
+)
+def test_setup_root_logger_sets_asynceapi_level(
+    *,
+    verbosity: int,
+    expected_root_level: int,
+    expected_asynceapi_level: int | None,
+) -> None:
+    """The ANTA workflow exposes asynceapi logs only at the intended Ansible verbosity."""
+    root_logger = MagicMock()
+    named_loggers = {logger_name: MagicMock() for logger_name in ("asyncio", "httpcore", "httpx", "anta", "asynceapi")}
+
+    with patch(f"{MODULE_PATH}.logging.getLogger", side_effect=lambda logger_name=None: root_logger if logger_name is None else named_loggers[logger_name]):
+        setup_root_logger(unique_id="test", log_queue=MagicMock(), verbosity=verbosity)
+
+    root_logger.setLevel.assert_called_once_with(expected_root_level)
+    if expected_asynceapi_level is None:
+        named_loggers["asynceapi"].setLevel.assert_not_called()
+    else:
+        named_loggers["asynceapi"].setLevel.assert_called_once_with(expected_asynceapi_level)
 
 
 def test_action_module_run_logs_warning_when_user_catalog_has_no_tests(action_module: Callable[..., ActionModule], caplog: pytest.LogCaptureFixture) -> None:
