@@ -50521,7 +50521,7 @@ class EosDesigns(EosDesignsRootModel):
             If not set, the source interface is derived automatically when `vrf` is set
             to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
             For any other
-            `vrf` value, `source_interface` must be set.
+            `name` value, `source_interface` must be set.
             """
 
             if TYPE_CHECKING:
@@ -50556,7 +50556,7 @@ class EosDesigns(EosDesignsRootModel):
                            If not set, the source interface is derived automatically when `vrf` is set
                            to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
                            For any other
-                           `vrf` value, `source_interface` must be set.
+                           `name` value, `source_interface` must be set.
 
                     """
 
