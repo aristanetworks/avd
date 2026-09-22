@@ -25668,7 +25668,8 @@ keys:
 
                 Used with `auth_key`.
 
-                Requires `localized` and `auth_key` to be set.
+                Requires `version` to be `v3`, and `localized` and `auth_key` to be
+                set.
 
                 - `0`: Key string is not encrypted.
 
@@ -25681,7 +25682,8 @@ keys:
               type: str
               description: 'Authentication key.
 
-                Requires `localized` and `auth_key_type` to be set.
+                Requires `version` to be `v3`, and `localized` and `auth_key_type`
+                to be set.
 
                 Takes precedence over `auth_passphrase` when both are set.'
             auth_passphrase:
@@ -25711,6 +25713,8 @@ keys:
 
                 Requires `localized` and `priv_key` to be set.
 
+                Rendered only when `auth_key_type` and `auth_key` are also set.
+
                 - `0`: Key string is not encrypted.
 
                 - `7`: Type-7 encrypted (HIDDEN) key.
@@ -25724,13 +25728,21 @@ keys:
 
                 Requires `localized` and `priv_key_type` to be set.
 
-                Takes precedence over `priv_passphrase` when both are set.'
+                Takes precedence over `priv_passphrase` when both are set.
+
+                Rendered only when `auth_key_type` and `auth_key` are also set.
+
+                Ignored when authentication is rendered from `auth_passphrase`.'
             priv_passphrase:
               type: str
               description: 'Hashed privacy passphrase if localized is used else cleartext
                 privacy passphrase.
 
+                Rendered only when authentication is rendered from `auth_passphrase`.
+
                 Ignored when `priv_key_type` and `priv_key` are set with `localized`.
+
+                Ignored when authentication is rendered from `auth_key_type`/`auth_key`.
 
                 '
       hosts:

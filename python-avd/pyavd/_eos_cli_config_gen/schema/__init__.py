@@ -71416,18 +71416,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Authentication key type.
             EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
             Used with `auth_key`.
-            Requires `localized` and `auth_key` to be set.
-            - `0`: Key string is not
-            encrypted.
+            Requires `version` to be `v3`, and `localized` and `auth_key` to be set.
+            -
+            `0`: Key string is not encrypted.
             - `7`: Type-7 encrypted (HIDDEN) key.
-            - `8a`: AES-256-GCM encrypted key.
+            - `8a`: AES-256-GCM
+            encrypted key.
             """
             auth_key: str | None
             """
             Authentication key.
-            Requires `localized` and `auth_key_type` to be set.
-            Takes precedence over
-            `auth_passphrase` when both are set.
+            Requires `version` to be `v3`, and `localized` and `auth_key_type` to be set.
+            Takes precedence over `auth_passphrase` when both are set.
             """
             auth_passphrase: str | None
             """
@@ -71443,10 +71443,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Used with
             `priv_key`.
             Requires `localized` and `priv_key` to be set.
+            Rendered only when `auth_key_type` and
+            `auth_key` are also set.
             - `0`: Key string is not encrypted.
+            - `7`: Type-7 encrypted (HIDDEN) key.
             -
-            `7`: Type-7 encrypted (HIDDEN) key.
-            - `8a`: AES-256-GCM encrypted key.
+            `8a`: AES-256-GCM encrypted key.
             """
             priv_key: str | None
             """
@@ -71454,12 +71456,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Requires `localized` and `priv_key_type` to be set.
             Takes precedence over
             `priv_passphrase` when both are set.
+            Rendered only when `auth_key_type` and `auth_key` are also set.
+            Ignored when authentication is rendered from `auth_passphrase`.
             """
             priv_passphrase: str | None
             """
             Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
-            Ignored when
-            `priv_key_type` and `priv_key` are set with `localized`.
+            Rendered only when
+            authentication is rendered from `auth_passphrase`.
+            Ignored when `priv_key_type` and `priv_key` are
+            set with `localized`.
+            Ignored when authentication is rendered from `auth_key_type`/`auth_key`.
             """
 
             if TYPE_CHECKING:
@@ -71514,16 +71521,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Authentication key type.
                            EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
                            Used with `auth_key`.
-                           Requires `localized` and `auth_key` to be set.
-                           - `0`: Key string is not
-                           encrypted.
+                           Requires `version` to be `v3`, and `localized` and `auth_key` to be set.
+                           -
+                           `0`: Key string is not encrypted.
                            - `7`: Type-7 encrypted (HIDDEN) key.
-                           - `8a`: AES-256-GCM encrypted key.
+                           - `8a`: AES-256-GCM
+                           encrypted key.
                         auth_key:
                            Authentication key.
-                           Requires `localized` and `auth_key_type` to be set.
-                           Takes precedence over
-                           `auth_passphrase` when both are set.
+                           Requires `version` to be `v3`, and `localized` and `auth_key_type` to be set.
+                           Takes precedence over `auth_passphrase` when both are set.
                         auth_passphrase:
                            Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
                            Ignored when `auth_key_type` and `auth_key` are set with `localized`.
@@ -71534,19 +71541,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Used with
                            `priv_key`.
                            Requires `localized` and `priv_key` to be set.
+                           Rendered only when `auth_key_type` and
+                           `auth_key` are also set.
                            - `0`: Key string is not encrypted.
+                           - `7`: Type-7 encrypted (HIDDEN) key.
                            -
-                           `7`: Type-7 encrypted (HIDDEN) key.
-                           - `8a`: AES-256-GCM encrypted key.
+                           `8a`: AES-256-GCM encrypted key.
                         priv_key:
                            Privacy key.
                            Requires `localized` and `priv_key_type` to be set.
                            Takes precedence over
                            `priv_passphrase` when both are set.
+                           Rendered only when `auth_key_type` and `auth_key` are also set.
+                           Ignored when authentication is rendered from `auth_passphrase`.
                         priv_passphrase:
                            Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
-                           Ignored when
-                           `priv_key_type` and `priv_key` are set with `localized`.
+                           Rendered only when
+                           authentication is rendered from `auth_passphrase`.
+                           Ignored when `priv_key_type` and `priv_key` are
+                           set with `localized`.
+                           Ignored when authentication is rendered from `auth_key_type`/`auth_key`.
 
                     """
 
