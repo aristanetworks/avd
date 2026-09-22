@@ -77,7 +77,7 @@ spine:
 Common PTP settings can be specified for the entire topology to greatly simplify the configuration of PTP:
 
 --8<--
-schemas/avd_design/docs/tables/ptp.md
+schemas/avd_design/docs/tables/ptp_settings.md
 --8<--
 
 These settings can also be defined on a more specific group_vars level, if the network design requires this.
