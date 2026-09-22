@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: Circular profile dependency detected: Profile 'PROFILE-1' cannot be applied as the parent profile of 'PROFILE-3' in 'l2vlan_profiles' as it would create a loop.
+pyavd._errors.AristaAvdInvalidInputsError: Circular profile dependency detected: Profile 'PROFILE-1' cannot be applied as the parent profile of 'PROFILE-3' in 'l2vlan_profiles' because it would create a loop.

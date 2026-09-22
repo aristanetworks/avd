@@ -169,7 +169,7 @@ class FilteredTenantsMixin(Protocol):
                 if l2vlan_profile.parent_profile in l2vlans_profiles_chain or l2vlan_profile.parent_profile == resolved_profile.profile:
                     msg = (
                         f"Circular profile dependency detected: Profile '{l2vlan_profile.parent_profile}' cannot be applied as"
-                        f" the parent profile of '{l2vlan_profile.profile}' in 'l2vlan_profiles' as it would create a loop."
+                        f" the parent profile of '{l2vlan_profile.profile}' in 'l2vlan_profiles' because it would create a loop."
                     )
                     raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                 l2vlan_parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]._deepcopy()
@@ -360,7 +360,7 @@ class FilteredTenantsMixin(Protocol):
                     if svi_profile.parent_profile in svi_profiles_chain or svi_profile.parent_profile == resolved_profile.profile:
                         msg = (
                             f"Circular profile dependency detected: Profile '{svi_profile.parent_profile}' cannot be applied as"
-                            f" the parent profile of '{svi_profile.profile}' in 'svi_profiles' as it would create a loop."
+                            f" the parent profile of '{svi_profile.profile}' in 'svi_profiles' because it would create a loop."
                         )
                         raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                     svi_parent_profile = self.inputs.svi_profiles[svi_profile.parent_profile]._deepcopy()
