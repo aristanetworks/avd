@@ -1,0 +1,21 @@
+---
+- name: Validate avd_design inputs with warn_eos_config_keys enabled
+  vars:
+    fabric_name: testgroup
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    input_dir: "{{ actual_output_dir }}/tmp_validate_inputs_warning_configuration_input"
+    input_suffix: json
+    read_from_input_dir: true
+    validation_configuration:
+      warn_eos_config_keys: true
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_validation_configuration"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+  register: result
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success

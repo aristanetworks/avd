@@ -1,0 +1,26 @@
+---
+- name: Validate inputs with templating worker failure on ansible-core >= 2.19
+  when: ansible_version.major > 2 or (ansible_version.major == 2 and ansible_version.minor >= 19)
+  vars:
+    fabric_name: testgroup
+    trigger_templating_worker_failure: "{{ missing_validate_inputs_variable_for_worker_failure }}"
+  block:
+    - name: Validate inputs with templating worker failure
+      arista.avd.validate_inputs:
+        schema_name: avd_design
+        read_from_input_dir: false
+        tmp_dir: "{{ actual_output_dir }}/tmp_validate_inputs_templating_worker_failure"
+      delegate_to: localhost
+      check_mode: false
+      run_once: true
+      ignore_errors: true
+      register: result
+
+    - name: Validate result
+      ansible.builtin.assert:
+        that:
+          - result is failed
+          - result.msg == expected_error
+      vars:
+        expected_error: >-
+          Error during plugin 'arista.avd.validate_inputs' execution: Unexpected errors occurred while processing 1 host(s): testhost.
