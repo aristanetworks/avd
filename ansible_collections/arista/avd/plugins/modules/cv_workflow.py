@@ -213,13 +213,9 @@ options:
         description: Optional description to use for the Change Control.
         type: str
       approval_note:
-        description: Note used when approving the Change Control.
+        description: Note used when approving or unapproving the Change Control.
         type: str
         default: Automatic approval by AVD
-      unapproval_note:
-        description: Note used when unapproving the Change Control.
-        type: str
-        default: Automatically unapproved by AVD
       start_note:
         description: Note used when starting the Change Control.
         type: str

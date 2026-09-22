@@ -61,7 +61,7 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
             await cv_client.unapprove_change_control(
                 change_control_id=change_control.id,
                 timestamp=cv_change_control.change.time,
-                description=change_control.avd_change_control.unapproval_note,
+                description=change_control.avd_change_control.approval_note,
             )
             change_control.state = get_managed_change_control_state(cv_change_control, approved=False)
             change_control.changed = True

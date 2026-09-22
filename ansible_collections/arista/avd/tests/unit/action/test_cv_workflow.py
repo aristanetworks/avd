@@ -201,7 +201,6 @@ def test_validate_argument_spec_materializes_change_control_note_defaults(action
     change_control = validated_args["change_control"]
 
     assert change_control["approval_note"] == "Automatic approval by AVD"
-    assert change_control["unapproval_note"] == "Automatically unapproved by AVD"
     assert change_control["start_note"] == "Automatically started by AVD"
 
 

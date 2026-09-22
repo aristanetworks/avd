@@ -105,9 +105,7 @@ class AvdChangeControl:
     - `"deleted"`: Create and delete the Change Control. Used for dry-run where no changes will be committed to the network.
     """
     approval_note: str = "Automatic approval by AVD"
-    """Note used when approving the Change Control."""
-    unapproval_note: str = "Automatically unapproved by AVD"
-    """Note used when unapproving the Change Control."""
+    """Note used when approving or unapproving the Change Control."""
     start_note: str = "Automatically started by AVD"
     """Note used when starting the Change Control."""
 

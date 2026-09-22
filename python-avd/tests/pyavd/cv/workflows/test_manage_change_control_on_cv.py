@@ -95,7 +95,7 @@ async def test_manage_unapproves_change_control(
         avd_change_control=AvdChangeControl(
             id="cc_id_1",
             requested_state="pending approval",
-            unapproval_note="Unapproved by operator",
+            approval_note="Unapproved by operator",
         ),
     )
     mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=status, approved=True, error=error)

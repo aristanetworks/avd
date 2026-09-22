@@ -129,7 +129,6 @@ ARGUMENT_SPEC = {
             "name": {"type": "str", "required": False},
             "description": {"type": "str", "required": False},
             "approval_note": {"type": "str", "required": False, "default": "Automatic approval by AVD"},
-            "unapproval_note": {"type": "str", "required": False, "default": "Automatically unapproved by AVD"},
             "start_note": {"type": "str", "required": False, "default": "Automatically started by AVD"},
             "requested_state": {
                 "type": "str",

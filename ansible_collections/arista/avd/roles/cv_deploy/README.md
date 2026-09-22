@@ -354,11 +354,8 @@ The optional settings below provide direct control over Workspace and Change Con
 # Set the ID of an existing Change Control to manage without performing a deployment.
 # cv_change_control_id: <str>
 
-# Set the note used when approving the Change Control. By default this will be "Automatic approval by AVD".
+# Set the note used when approving or unapproving the Change Control. By default this will be "Automatic approval by AVD".
 # cv_change_control_approval_note: <str>
-
-# Set the note used when unapproving the Change Control. By default this will be "Automatically unapproved by AVD".
-# cv_change_control_unapproval_note: <str>
 
 # Set the note used when starting the Change Control. By default this will be "Automatically started by AVD".
 # cv_change_control_start_note: <str>
@@ -372,7 +369,7 @@ If `cv_change_control_requested_state` is not set, the role derives the requeste
 
 Setting `cv_change_control_requested_state` to `pending approval` unapproves the existing Change Control if needed. The workflow does not start the Change Control.
 
-In both the regular deployment and Change-Control-only modes, `cv_change_control_name` and `cv_change_control_description` update the Change Control. `cv_change_control_approval_note` and `cv_change_control_start_note` control the notes used when either workflow performs the corresponding state transitions. In Change-Control-only mode, `cv_change_control_unapproval_note` controls the note used when unapproving the Change Control.
+In both the regular deployment and Change-Control-only modes, `cv_change_control_name` and `cv_change_control_description` update the Change Control. `cv_change_control_approval_note` controls the note used when approving or unapproving the Change Control. `cv_change_control_start_note` controls the note used when starting it.
 
 **`cv_workspace_id`**
 
