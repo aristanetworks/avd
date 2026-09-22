@@ -216,6 +216,10 @@ options:
         description: Note used when approving the Change Control.
         type: str
         default: Automatic approval by AVD
+      unapproval_note:
+        description: Note used when unapproving the Change Control.
+        type: str
+        default: Automatically unapproved by AVD
       start_note:
         description: Note used when starting the Change Control.
         type: str
@@ -224,7 +228,7 @@ options:
         description: |-
           The requested state for the Change Control.
 
-          - `pending approval` (default): Leave the Change Control in "pending approval" state.
+          - `pending approval` (default): Leave the Change Control in "pending approval" state, unapproving an existing Change Control if needed.
           - `approved`: Approve the Change Control but do not start.
           - `running`: Approve and start the Change Control. Do not wait for the Change Control to be completed or failed.
           - `completed`: Approve and start the Change Control. Wait for the Change Control to be completed.

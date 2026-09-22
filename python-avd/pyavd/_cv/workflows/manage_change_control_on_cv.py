@@ -55,8 +55,17 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
     change_control.state = get_managed_change_control_state(cv_change_control)
     LOGGER.info("manage_change_control_on_cv: %s", change_control)
 
-    # TODO: Add support for stopping, unscheduling, unapproving, rolling back, and deleting a Change Control
+    # TODO: Add support for stopping, unscheduling, rolling back, and deleting a Change Control
     if change_control.requested_state == "pending approval":
+        if cv_change_control.approve.value:
+            await cv_client.unapprove_change_control(
+                change_control_id=change_control.id,
+                timestamp=cv_change_control.change.time,
+                description=change_control.avd_change_control.unapproval_note,
+            )
+            change_control.state = get_managed_change_control_state(cv_change_control, approved=False)
+            change_control.changed = True
+            LOGGER.info("manage_change_control_on_cv: %s", change_control)
         return
 
     # Do not restart a completed Change Control when the requested state is "completed"

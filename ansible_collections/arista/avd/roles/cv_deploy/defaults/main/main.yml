@@ -105,6 +105,9 @@ cv_run_change_control: false
 # Set the note used when approving the Change Control. By default this will be "Automatic approval by AVD".
 # cv_change_control_approval_note: <str>
 
+# Set the note used when unapproving the Change Control. By default this will be "Automatically unapproved by AVD".
+# cv_change_control_unapproval_note: <str>
+
 # Set the note used when starting the Change Control. By default this will be "Automatically started by AVD".
 # cv_change_control_start_note: <str>
 

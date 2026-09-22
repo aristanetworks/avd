@@ -59,16 +59,58 @@ async def test_manage_running_with_custom_notes(mock_cv_client: MagicMock) -> No
 
 @pytest.mark.asyncio
 async def test_manage_pending_approval(mock_cv_client: MagicMock) -> None:
-    """Test that pending approval does not approve or start an existing Change Control."""
+    """Test that an unapproved Change Control remains pending approval."""
     local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="pending approval"))
     mock_cv_client.get_change_control.return_value = create_grpc_change_control()
 
     await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
 
     mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.unapprove_change_control.assert_not_called()
     mock_cv_client.start_change_control.assert_not_called()
     assert local_cc.state == "pending approval"
     assert local_cc.changed is False
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("status", "error", "expected_state"),
+    [
+        pytest.param(ChangeControlStatus.NOT_STARTED, None, "pending approval", id="not_started"),
+        pytest.param(ChangeControlStatus.SCHEDULED, None, "scheduled", id="scheduled"),
+        pytest.param(ChangeControlStatus.RUNNING, None, "running", id="running"),
+        pytest.param(ChangeControlStatus.COMPLETED, None, "completed", id="completed"),
+        pytest.param(ChangeControlStatus.COMPLETED, "Execution failed", "failed", id="failed"),
+        pytest.param(ChangeControlStatus.UNSPECIFIED, None, "pending approval", id="unspecified"),
+    ],
+)
+async def test_manage_unapproves_change_control(
+    mock_cv_client: MagicMock,
+    status: ChangeControlStatus,
+    error: str | None,
+    expected_state: str,
+) -> None:
+    """Test unapproving an existing Change Control while preserving its execution state."""
+    local_cc = CVChangeControl(
+        avd_change_control=AvdChangeControl(
+            id="cc_id_1",
+            requested_state="pending approval",
+            unapproval_note="Unapproved by operator",
+        ),
+    )
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=status, approved=True, error=error)
+
+    await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.unapprove_change_control.assert_called_once_with(
+        change_control_id="cc_id_1",
+        timestamp=DEFAULT_TIMESTAMP,
+        description="Unapproved by operator",
+    )
+    mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.start_change_control.assert_not_called()
+    assert local_cc.state == expected_state
+    assert local_cc.changed is True
 
 
 @pytest.mark.asyncio
