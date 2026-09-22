@@ -143,13 +143,13 @@ The topology file format depends on the target Digital Twin platform (e.g., `<FA
 
 Global Digital Twin settings are configured under the `digital_twin` key in the fabric variables.
 
-For a complete list of all available global Digital Twin configuration options, see the [Digital Twin Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#preview---digital-twin-configuration) section in the eos_designs data models documentation.
+For a complete list of all available global Digital Twin configuration options, see the [Digital Twin Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#preview-digital-twin-configuration) section in the eos_designs data models documentation.
 
 ### Per-Node Digital Twin Configuration
 
 In addition to global settings, Digital Twin settings can be configured per node type, node group or per individual node.
 
-For a complete list of all available per-node Digital Twin configuration options, see the [Node Type Digital Twin Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#preview---node-type-digital-twin-configuration) section in the eos_designs data models documentation.
+For a complete list of all available per-node Digital Twin configuration options, see the [Node Type Digital Twin Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#preview-node-type-digital-twin-configuration) section in the eos_designs data models documentation.
 
 ### Configuring the Digital Twin Environment
 
