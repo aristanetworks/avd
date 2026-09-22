@@ -42,6 +42,11 @@ ip_igmp_snooping:
   - id: 103
     querier:
       enabled: false
+  - id: 104
+    querier:
+      enabled: true
+      address: 10.0.104.2
+      version: 1
   - id: 11
     querier:
       enabled: true
@@ -91,6 +96,19 @@ ip_igmp_snooping:
   - id: 123
     querier:
       enabled: false
+  - id: 124
+    querier:
+      enabled: true
+      address: 10.0.124.2
+      version: 2
+  - id: 125
+    querier:
+      enabled: true
+      address: 10.0.125.2
+      version: 3
+  - id: 126
+    querier:
+      enabled: false
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 loopback_interfaces:
@@ -132,7 +150,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 1-3,11-12,21-23,101-103,111-113,121-123
+      allowed_vlan: 1-3,11-12,21-23,101-104,111-113,121-126
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -225,6 +243,16 @@ router_bgp:
     route_targets:
       both:
       - 10103:10103
+    redistribute_routes:
+    - learned
+  - id: 104
+    metadata:
+      tenants:
+      - Tenant_A
+    rd: 192.168.255.1:10104
+    route_targets:
+      both:
+      - 10104:10104
     redistribute_routes:
     - learned
   - id: 11
@@ -335,6 +363,36 @@ router_bgp:
     route_targets:
       both:
       - 40123:40123
+    redistribute_routes:
+    - learned
+  - id: 124
+    metadata:
+      tenants:
+      - Tenant_D
+    rd: 192.168.255.1:40124
+    route_targets:
+      both:
+      - 40124:40124
+    redistribute_routes:
+    - learned
+  - id: 125
+    metadata:
+      tenants:
+      - Tenant_D
+    rd: 192.168.255.1:40125
+    route_targets:
+      both:
+      - 40125:40125
+    redistribute_routes:
+    - learned
+  - id: 126
+    metadata:
+      tenants:
+      - Tenant_D
+    rd: 192.168.255.1:40126
+    route_targets:
+      both:
+      - 40126:40126
     redistribute_routes:
     - learned
   vrfs:
@@ -511,6 +569,11 @@ vlans:
   metadata:
     tenants:
     - Tenant_A
+- id: 104
+  name: VLAN_104
+  metadata:
+    tenants:
+    - Tenant_A
 - id: 11
   name: VLAN_11
   metadata:
@@ -566,6 +629,21 @@ vlans:
   metadata:
     tenants:
     - Tenant_D
+- id: 124
+  name: VLAN_124
+  metadata:
+    tenants:
+    - Tenant_D
+- id: 125
+  name: VLAN_125
+  metadata:
+    tenants:
+    - Tenant_D
+- id: 126
+  name: VLAN_126
+  metadata:
+    tenants:
+    - Tenant_D
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -606,6 +684,8 @@ vxlan_interface:
         vni: 10102
       - id: 103
         vni: 10103
+      - id: 104
+        vni: 10104
       - id: 11
         vni: 20011
       - id: 12
@@ -628,6 +708,12 @@ vxlan_interface:
         vni: 40122
       - id: 123
         vni: 40123
+      - id: 124
+        vni: 40124
+      - id: 125
+        vni: 40125
+      - id: 126
+        vni: 40126
       vrfs:
       - name: IGMP_QUERIER_TEST_1
         vni: 11

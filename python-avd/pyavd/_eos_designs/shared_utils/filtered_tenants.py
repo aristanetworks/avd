@@ -125,8 +125,11 @@ class FilteredTenantsMixin(Protocol):
         """
         Return structured config for one l2vlan after inheritance.
 
-        Handle inheritance of l2vlan_profiles in two levels:
+        Handle inheritance of l2vlan_profiles and node specific overrides:
         l2vlan > l2vlan_profile > l2vlan_parent_profile --> l2vlan_cfg
+        l2vlan.nodes.<hostname> > l2vlan_profile.nodes.<hostname> > l2vlan_parent_profile.nodes.<hostname> --> l2vlan_node_cfg
+
+        Then the l2vlan is updated with the result of merging l2vlan_node_cfg over l2vlan_cfg.
         """
         if vlan.profile:
             l2vlan_profile = self.get_merged_l2vlan_profile(vlan.profile, f"{vlan.name}")
@@ -137,6 +140,15 @@ class FilteredTenantsMixin(Protocol):
             )
         else:
             merged_vlan = vlan
+
+        if self.hostname in merged_vlan.nodes:
+            if not vlan.profile:
+                merged_vlan = vlan._deepcopy()
+            node_specific_l2vlan = merged_vlan.nodes[self.hostname]._cast_as(
+                EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem, ignore_extra_keys=True
+            )
+            merged_vlan._deepmerge(node_specific_l2vlan, list_merge="replace")
+
         return merged_vlan
 
     def get_merged_l2vlan_profile(self: SharedUtilsProtocol, profile_name: str, context: str) -> EosDesigns.L2vlanProfilesItem:
