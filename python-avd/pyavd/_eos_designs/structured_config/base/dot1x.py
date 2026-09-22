@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils.undefined import Undefined
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -86,9 +87,10 @@ class Dot1xMixin(Protocol):
 
     def _configure_dot1x_global_settings(self: AvdStructuredConfigBaseProtocol, dot1x_settings: EosDesigns.Dot1xSettings) -> None:
         """Configure 802.1X global settings."""
+        feature_support = self.shared_utils.platform_settings.feature_support
         self.structured_config.dot1x = EosCliConfigGen.Dot1x(
             system_auth_control=True,
-            protocol_bpdu_bypass=dot1x_settings.bypass_bpdu,
+            protocol_bpdu_bypass=dot1x_settings.bypass_bpdu if feature_support.dot1x.protocol_bpdu_bypass else Undefined,
             protocol_lldp_bypass=dot1x_settings.bypass_lldp,
             dynamic_authorization=dot1x_settings.dynamic_authorization.enabled,
         )
