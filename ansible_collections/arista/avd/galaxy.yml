@@ -66,8 +66,8 @@ build_ignore:
   - examples/**/documentation
   - examples/**/intended
   - extensions
-  - .gitignore
   - tests/integration
+  - tests/inventory
   - tests/unit
   - e2e-test.toml
   - "**/e2e-test.toml"
