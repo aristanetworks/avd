@@ -1,0 +1,11 @@
+---
+avd_design_future:
+  disable_sflow_subinterfaces_on_r_series_platforms: true
+
+custom_platform_settings:
+  - platforms:
+      - custom-r-series-platform
+    feature_support:
+      # The setting takes precedence over the future fallback.
+      sflow_subinterfaces: true
+      sflow_subinterfaces_future: false
