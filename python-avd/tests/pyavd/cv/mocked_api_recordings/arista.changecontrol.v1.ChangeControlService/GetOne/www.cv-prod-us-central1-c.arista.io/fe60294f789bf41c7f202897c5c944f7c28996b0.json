@@ -1,0 +1,76 @@
+{
+    "payload": {
+        "value": {
+            "key": {
+                "id": "qyUnE6mfxhuDHibRgrr6S"
+            },
+            "change": {
+                "name": "Change 2026-09-21-22-23-28",
+                "rootStageId": "WGIcr3e3Pk0jYikvbj4fs",
+                "stages": {
+                    "values": {
+                        "WGIcr3e3Pk0jYikvbj4fs": {
+                            "name": "Change 2026-09-21-22-23-28 Root",
+                            "rows": {
+                                "values": [
+                                    {
+                                        "values": [
+                                            "P-Jcj0gHz2P70s22JcvqQ"
+                                        ]
+                                    }
+                                ]
+                            },
+                            "status": "NOT_STARTED"
+                        },
+                        "P-Jcj0gHz2P70s22JcvqQ": {
+                            "name": "Set Image",
+                            "action": {
+                                "name": "setImage",
+                                "timeout": 3000,
+                                "args": {
+                                    "values": {
+                                        "Source": "DesignedImage",
+                                        "DeviceID": "2933A37F0B11257CE0A4D1A62C6B5425",
+                                        "Timestamp": "1790054830306000000",
+                                        "ReloadMode": "NormalReload"
+                                    }
+                                }
+                            },
+                            "rows": {},
+                            "status": "NOT_STARTED"
+                        }
+                    }
+                },
+                "notes": "",
+                "time": "2026-09-22T05:27:10.522805036",
+                "user": "agorbunov"
+            },
+            "approve": {
+                "value": true,
+                "notes": "Approval note",
+                "time": "2026-09-22T14:55:27.998812260",
+                "user": "agorbunov"
+            },
+            "status": "NOT_STARTED",
+            "deviceIds": {
+                "values": [
+                    "2933A37F0B11257CE0A4D1A62C6B5425"
+                ]
+            },
+            "deviceIdToStageIds": {
+                "values": {
+                    "2933A37F0B11257CE0A4D1A62C6B5425": {
+                        "values": [
+                            "P-Jcj0gHz2P70s22JcvqQ"
+                        ]
+                    }
+                }
+            },
+            "creation": {
+                "time": "2026-09-22T05:23:29.112436737",
+                "user": "agorbunov"
+            }
+        },
+        "time": "2026-09-22T14:55:27.998812320"
+    }
+}
