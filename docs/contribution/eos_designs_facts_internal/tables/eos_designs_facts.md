@@ -11,6 +11,8 @@
     | [<samp>type</samp>](## "type") | String | Required |  |  |  |
     | [<samp>platform</samp>](## "platform") | String |  |  |  |  |
     | [<samp>is_deployed</samp>](## "is_deployed") | Boolean | Required |  |  |  |
+    | [<samp>digital_twin</samp>](## "digital_twin") | Dictionary |  |  |  | Digital Twin fabric facts. |
+    | [<samp>&nbsp;&nbsp;act_legacy_eos_versioning</samp>](## "digital_twin.act_legacy_eos_versioning") | Boolean |  |  |  | ACT legacy EOS versioning fabric setting. |
     | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  |  |
     | [<samp>mgmt_interface</samp>](## "mgmt_interface") | String |  |  |  |  |
     | [<samp>mgmt_ip</samp>](## "mgmt_ip") | String |  |  |  |  |
@@ -182,6 +184,12 @@
     type: <str; required>
     platform: <str>
     is_deployed: <bool; required>
+
+    # Digital Twin fabric facts.
+    digital_twin:
+
+      # ACT legacy EOS versioning fabric setting.
+      act_legacy_eos_versioning: <bool>
     serial_number: <str>
     mgmt_interface: <str>
     mgmt_ip: <str>

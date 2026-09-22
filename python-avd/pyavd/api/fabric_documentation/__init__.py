@@ -17,6 +17,11 @@ class ActNodeTypeSettings:
 
 
 @dataclass(frozen=True)
+class ActSettings:
+    legacy_eos_versioning: bool | None
+
+
+@dataclass(frozen=True)
 class ActNodeSettings:
     node_type: str
     ip_addr: str | None
@@ -30,6 +35,7 @@ class ActNodeSettings:
 class ACTDigitalTwin:
     """ACT Digital Twin fabric documentation dataclass."""
 
+    settings: ActSettings | None
     nodes: tuple[dict[str, ActNodeSettings], ...]
     cloudeos: ActNodeTypeSettings | None = None
     cvp: ActNodeTypeSettings | None = None
