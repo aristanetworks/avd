@@ -376,7 +376,7 @@ class AvdStructuredConfigBaseProtocol(
         for additional_tcam_profile_name in additional_tcam_profile_names:
             if additional_tcam_profile_name not in self.inputs.tcam_profiles:
                 msg = f"TCAM profile '{additional_tcam_profile_name}' referenced under 'additional_tcam_profiles' is not defined under 'tcam_profiles'."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             if additional_tcam_profile_name != tcam_profile_name:
                 tcam_profiles.append(self.inputs.tcam_profiles[additional_tcam_profile_name])
 
