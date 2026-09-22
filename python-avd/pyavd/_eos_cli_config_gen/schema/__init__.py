@@ -4301,7 +4301,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         sysdbexcludes: str | None
         """
         Exclude paths from Sysdb.
-        e.g. "/Sysdb/mcs/"
+        e.g.
+        "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
         """
         taillogs: str | None
         """
@@ -4455,7 +4456,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        e.g. "ale,flexCounter,hardware,kni,pulse,strata"
                     sysdbexcludes:
                        Exclude paths from Sysdb.
-                       e.g. "/Sysdb/mcs/"
+                       e.g.
+                       "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
                     taillogs:
                        Enable log file collection; /var/log/messages is streamed by default if no path is set.
                        e.g.
