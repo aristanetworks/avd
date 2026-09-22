@@ -165,7 +165,7 @@ class FilteredTenantsMixin(Protocol):
             while l2vlan_profile.parent_profile is not None:
                 if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
                     msg = f"Parent profile '{l2vlan_profile.parent_profile}' applied under '{l2vlan_profile.profile}' does not exist in 'l2vlan_profiles'."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                 if l2vlan_profile.parent_profile in l2vlans_profiles_chain or l2vlan_profile.parent_profile == resolved_profile.profile:
                     msg = (
                         f"Circular profile dependency detected: Profile '{l2vlan_profile.parent_profile}' cannot be applied as"
