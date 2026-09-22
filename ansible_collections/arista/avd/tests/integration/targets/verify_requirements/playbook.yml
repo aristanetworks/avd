@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -82,6 +82,7 @@
         requirements:
           - "nonexistent-package-xyz-abc>=99.0.0"
         avd_ignore_requirements: false
+        save_logs: true
       ignore_errors: true
       register: result
       run_once: true
@@ -91,7 +92,12 @@
       ansible.builtin.assert:
         that:
           - result is failed
-          - result.failed
+          - result.msg == "If it is a false positive, set 'avd_ignore_requirements=True'."
+          - >-
+            result.logs.errors
+            | select("search", "Python library 'nonexistent-package-xyz-abc' required but not found")
+            | list
+            | length == 1
 
 # Test 5: Valid installed python requirement - covers _check_requirement happy path
 # (lines 100-107, 118-122, 161 in verify_requirements.py)
@@ -107,6 +113,7 @@
         requirements:
           - "jinja2>=0.0.0"
         avd_ignore_requirements: true
+        save_logs: true
       register: result
       run_once: true
       check_mode: false
@@ -114,7 +121,12 @@
     - name: Assert success
       ansible.builtin.assert:
         that:
-          - not result.failed
+          - result is succeeded
+          - >-
+            result.logs.errors
+            | select("search", "Python library 'jinja2'")
+            | list
+            | length == 0
 
 # Test 6: Installed python requirement with impossible version - covers _check_requirement mismatch path
 # (lines 153-159 in verify_requirements.py)
@@ -129,6 +141,7 @@
         requirements:
           - "jinja2>=999.0.0"
         avd_ignore_requirements: true
+        save_logs: true
       register: result
       run_once: true
       check_mode: false
@@ -136,7 +149,12 @@
     - name: Assert success (ignored due to avd_ignore_requirements)
       ansible.builtin.assert:
         that:
-          - not result.failed
+          - result is succeeded
+          - >-
+            result.logs.errors
+            | select("search", "Python library 'jinja2' version running .* - requirement is jinja2>=999.0.0")
+            | list
+            | length == 1
 
 # Test 7: avd_ignore_requirements passed as a string "true" instead of boolean True
 # Covers the string-to-bool conversion branch at line 412 of verify_requirements.py.
@@ -148,8 +166,10 @@
   tasks:
     - name: Run verify_requirements with avd_ignore_requirements as string true
       arista.avd.verify_requirements:
-        requirements: []
+        requirements:
+          - "nonexistent-package-xyz-abc>=99.0.0"
         avd_ignore_requirements: "true"
+        save_logs: true
       register: result
       run_once: true
       check_mode: false
@@ -157,4 +177,9 @@
     - name: Assert success
       ansible.builtin.assert:
         that:
-          - not result.failed
+          - result is succeeded
+          - >-
+            result.logs.errors
+            | select("search", "Python library 'nonexistent-package-xyz-abc' required but not found")
+            | list
+            | length == 1
