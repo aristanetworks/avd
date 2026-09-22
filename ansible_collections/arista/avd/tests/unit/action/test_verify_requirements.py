@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 
 import logging
+import warnings
 from importlib.metadata import PackageNotFoundError
 from itertools import repeat
 from pathlib import Path
@@ -215,6 +216,18 @@ def test__validate_ansible_version(mocked_running_version: str, deprecated_versi
     if expected_return is True and deprecated_version is True:
         # Check for depreecation of old Ansible versions (Not used right now)
         assert len(result["deprecations"]) == 1
+
+
+def test__validate_ansible_version_does_not_emit_obsolete_deprecation_warning() -> None:
+    """Supported Ansible versions must not emit the removed Ansible deprecation warning."""
+    info = {}
+    with warnings.catch_warnings(record=True) as recorded_warnings:
+        warnings.simplefilter("always", DeprecationWarning)
+        assert _validate_ansible_version("arista.avd", "2.16", info) is True
+
+    assert not any(
+        warning.category is DeprecationWarning and "ansible-core<2.14" in str(warning.message) for warning in recorded_warnings
+    )
 
 
 @pytest.mark.parametrize(
