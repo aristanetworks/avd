@@ -22,6 +22,7 @@
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-3 | - | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-4 | 192.168.1.4/32 | custom-platform | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-cloudeos-no-mgmt | - | CloudEOS | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-cv-instance-1 | 192.168.1.10/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2spine | digital-twin-default-interfaces-digital-twin-platform | 10.10.10.100/24 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-default-interfaces-original-platform | 10.10.10.101/24 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-1 | 192.168.0.1/32 | vEOS-lab | Provisioned | - |

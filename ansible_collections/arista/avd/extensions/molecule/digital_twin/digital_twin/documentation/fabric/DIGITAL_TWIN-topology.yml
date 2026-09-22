@@ -18,6 +18,10 @@ nodes:
 - digital-twin-cloudeos-no-mgmt:
     node_type: cloudeos
     version: 4.33.2F
+- digital-twin-cv-instance-1:
+    node_type: veos
+    ip_addr: 192.168.1.10/32
+    version: 4.33.1.1F
 - digital-twin-default-interfaces-digital-twin-platform:
     node_type: veos
     ip_addr: 10.10.10.100/24
