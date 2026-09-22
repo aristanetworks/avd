@@ -225,9 +225,7 @@ def test__validate_ansible_version_does_not_emit_obsolete_deprecation_warning() 
         warnings.simplefilter("always", DeprecationWarning)
         assert _validate_ansible_version("arista.avd", "2.16", info) is True
 
-    assert not any(
-        warning.category is DeprecationWarning and "ansible-core<2.14" in str(warning.message) for warning in recorded_warnings
-    )
+    assert not any(warning.category is DeprecationWarning and "ansible-core<2.14" in str(warning.message) for warning in recorded_warnings)
 
 
 @pytest.mark.parametrize(
