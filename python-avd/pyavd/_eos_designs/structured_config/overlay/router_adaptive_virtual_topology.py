@@ -3,12 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import AvdStructuredConfigOverlayProtocol
 
 
@@ -35,7 +37,8 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
             msg = "Could not find 'cv_pathfinder_region' so it is not possible to generate config for router_adaptive_virtual_topology."
             raise AristaAvdInvalidInputsError(msg)
 
-        if (wan_site := self.shared_utils.wan_site) is None:
+        # Since we know we are not a pathfinder we cannot be at a global site.
+        if (wan_site := cast("EosDesigns.CvPathfinderRegionsItem.SitesItem | None", self.shared_utils.wan_site)) is None:
             # Should never happen but just in case.
             msg = "Could not find 'cv_pathfinder_site' so it is not possible to generate config for router_adaptive_virtual_topology."
             raise AristaAvdInvalidInputsError(msg)
