@@ -71410,15 +71410,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
             """
             auth: str | None
-            """Hash algorithm."""
+            """
+            Hash algorithm.
+            Required for rendering any authentication or privacy credential.
+            """
             auth_key_type: AuthKeyType | None
             """
             Authentication key type.
             EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
             Used with `auth_key`.
-            Requires `version` to be `v3`, and `localized` and `auth_key` to be set.
-            -
-            `0`: Key string is not encrypted.
+            Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key` to be
+            set.
+            - `0`: Key string is not encrypted.
             - `7`: Type-7 encrypted (HIDDEN) key.
             - `8a`: AES-256-GCM
             encrypted key.
@@ -71426,16 +71429,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             auth_key: str | None
             """
             Authentication key.
-            Requires `version` to be `v3`, and `localized` and `auth_key_type` to be set.
+            Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type` to
+            be set.
             Takes precedence over `auth_passphrase` when both are set.
             """
             auth_passphrase: str | None
             """
             Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
-            Ignored when `auth_key_type` and `auth_key` are set with `localized`.
+            Rendered only when `auth` is set and `version` is `v3`.
+            Ignored when `auth_key_type` and `auth_key`
+            are set with `localized`.
             """
             priv: str | None
-            """Encryption algorithm."""
+            """
+            Encryption algorithm.
+            Required for rendering any privacy credential.
+            """
             priv_key_type: PrivKeyType | None
             """
             Privacy key type.
@@ -71443,12 +71452,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Used with
             `priv_key`.
             Requires `localized` and `priv_key` to be set.
-            Rendered only when `auth_key_type` and
-            `auth_key` are also set.
+            Rendered only when `priv`,
+            `auth_key_type`, and `auth_key` are also set.
             - `0`: Key string is not encrypted.
-            - `7`: Type-7 encrypted (HIDDEN) key.
-            -
-            `8a`: AES-256-GCM encrypted key.
+            - `7`: Type-7
+            encrypted (HIDDEN) key.
+            - `8a`: AES-256-GCM encrypted key.
             """
             priv_key: str | None
             """
@@ -71456,17 +71465,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Requires `localized` and `priv_key_type` to be set.
             Takes precedence over
             `priv_passphrase` when both are set.
-            Rendered only when `auth_key_type` and `auth_key` are also set.
+            Rendered only when `priv`, `auth_key_type`, and `auth_key` are
+            also set.
             Ignored when authentication is rendered from `auth_passphrase`.
             """
             priv_passphrase: str | None
             """
             Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
             Rendered only when
-            authentication is rendered from `auth_passphrase`.
-            Ignored when `priv_key_type` and `priv_key` are
-            set with `localized`.
-            Ignored when authentication is rendered from `auth_key_type`/`auth_key`.
+            `priv` is set and authentication is rendered from `auth_passphrase`.
+            Ignored when `priv_key_type`
+            and `priv_key` are set with `localized`.
+            Ignored when authentication is rendered from
+            `auth_key_type`/`auth_key`.
             """
 
             if TYPE_CHECKING:
@@ -71516,51 +71527,60 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            (RFC 2574, engine-ID specific) instead of cleartext passphrases.
                            Required to use
                            `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
-                        auth: Hash algorithm.
+                        auth:
+                           Hash algorithm.
+                           Required for rendering any authentication or privacy credential.
                         auth_key_type:
                            Authentication key type.
                            EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
                            Used with `auth_key`.
-                           Requires `version` to be `v3`, and `localized` and `auth_key` to be set.
-                           -
-                           `0`: Key string is not encrypted.
+                           Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key` to be
+                           set.
+                           - `0`: Key string is not encrypted.
                            - `7`: Type-7 encrypted (HIDDEN) key.
                            - `8a`: AES-256-GCM
                            encrypted key.
                         auth_key:
                            Authentication key.
-                           Requires `version` to be `v3`, and `localized` and `auth_key_type` to be set.
+                           Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type` to
+                           be set.
                            Takes precedence over `auth_passphrase` when both are set.
                         auth_passphrase:
                            Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
-                           Ignored when `auth_key_type` and `auth_key` are set with `localized`.
-                        priv: Encryption algorithm.
+                           Rendered only when `auth` is set and `version` is `v3`.
+                           Ignored when `auth_key_type` and `auth_key`
+                           are set with `localized`.
+                        priv:
+                           Encryption algorithm.
+                           Required for rendering any privacy credential.
                         priv_key_type:
                            Privacy key type.
                            EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
                            Used with
                            `priv_key`.
                            Requires `localized` and `priv_key` to be set.
-                           Rendered only when `auth_key_type` and
-                           `auth_key` are also set.
+                           Rendered only when `priv`,
+                           `auth_key_type`, and `auth_key` are also set.
                            - `0`: Key string is not encrypted.
-                           - `7`: Type-7 encrypted (HIDDEN) key.
-                           -
-                           `8a`: AES-256-GCM encrypted key.
+                           - `7`: Type-7
+                           encrypted (HIDDEN) key.
+                           - `8a`: AES-256-GCM encrypted key.
                         priv_key:
                            Privacy key.
                            Requires `localized` and `priv_key_type` to be set.
                            Takes precedence over
                            `priv_passphrase` when both are set.
-                           Rendered only when `auth_key_type` and `auth_key` are also set.
+                           Rendered only when `priv`, `auth_key_type`, and `auth_key` are
+                           also set.
                            Ignored when authentication is rendered from `auth_passphrase`.
                         priv_passphrase:
                            Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
                            Rendered only when
-                           authentication is rendered from `auth_passphrase`.
-                           Ignored when `priv_key_type` and `priv_key` are
-                           set with `localized`.
-                           Ignored when authentication is rendered from `auth_key_type`/`auth_key`.
+                           `priv` is set and authentication is rendered from `auth_passphrase`.
+                           Ignored when `priv_key_type`
+                           and `priv_key` are set with `localized`.
+                           Ignored when authentication is rendered from
+                           `auth_key_type`/`auth_key`.
 
                     """
 
