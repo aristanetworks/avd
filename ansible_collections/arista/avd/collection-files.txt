@@ -780,6 +780,7 @@ roles/eos_snapshot/templates/md_table_of_content.j2
 roles/eos_validate_state/README.md
 roles/eos_validate_state/meta/main.yml
 roles/eos_validate_state/tasks/main.yml
+tests/.gitignore
 tests/__init__.py
 tests/config.yml
 tests/inventory/eos_cli_config_gen_action/expected_output/testhost.cfg
