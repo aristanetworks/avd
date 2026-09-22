@@ -344,7 +344,7 @@ spine:
         mgmt_gateway: 192.168.1.1
 ```
 
-When `digital_twin.mgmt_gateway` is set, AVD uses it for the generated ACT OOB management configuration and adds a default route in the management VRF.
+When `digital_twin.mgmt_gateway` is set, AVD uses it as the next hop for either the default route or the routes listed under `mgmt_destination_networks`.
 If it is not set, AVD falls back to the regular management gateway configuration.
 
 #### ACT OS Version Configuration
@@ -390,7 +390,7 @@ When enabled, AVD makes the following adjustments to the generated Digital Twin 
 1. Enables eAPI over HTTPS in the default VRF
 2. Removes any IPv4 ACLs from the default VRF eAPI configuration (IPv6 ACLs are preserved)
 
-This setting only applies to ACT `veos` and `cloudeos` node types.
+This setting applies to all ACT node types.
 
 **Example - Production Configuration:**
 
