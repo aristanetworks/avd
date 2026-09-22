@@ -55,6 +55,8 @@ build_ignore:
   - .pytest_cache
   - .yamllint
   - CNAME
+  # Generated review inventory. It must not be included in the published collection.
+  - collection-files.txt
   - pytest.ini
   - changelogs/.plugin-cache.yaml
   - changelogs/fragments
