@@ -25,6 +25,7 @@ ci:
     - docs-plugin-lookup
     - docs-plugin-test
     - docs-plugin-vars
+    - collection-files
     - schemas
     - check-schema-tables-in-docs
     - sort-hosts-yml
@@ -238,6 +239,14 @@ repos:
 
   - repo: local
     hooks:
+
+      - id: collection-files
+        name: Check files included in the Ansible collection.
+        entry: python tools/generate_collection_files.py
+        language: python
+        files: ^(ansible_collections/arista/avd/|tools/generate_collection_files\.py$)
+        pass_filenames: false
+        additional_dependencies: ['ansible-core==2.16.0']
 
       - id: docs-plugin-modules
         name: Build documentation for collection modules and action plugins.

@@ -51,34 +51,27 @@ homepage: https://avd.arista.com
 # The URL to the collection issue tracker
 issues: https://github.com/aristanetworks/avd/issues
 
-# Ignore the following files in the collection
-# overriding the default because we want some dotfiles.
-manifest:
-  directives:
-    - include meta/*.yml
-    - include COPYING LICENSE *.rst
-    - global-include *.txt *.md
-    - recursive-include tests **
-    - recursive-include roles **.yml **.yaml **.json **.j2 **.py **.gif **.png
-    - recursive-include playbooks **.yml **.yaml
-    - recursive-include changelogs **.yml **.yaml
-    - recursive-include plugins **.py **.yml **.yaml
-    - recursive-exclude changelogs/fragments_backup **
-    - recursive-include examples **
-    # Excluding intended and documentation from examples in the collection
-    - recursive-exclude examples/**/intended **
-    - recursive-exclude examples/**/documentation **
-    - recursive-exclude extensions **
-    - include requirements.yml
-    - exclude galaxy.yml galaxy.yaml MANIFEST.json FILES.json <namespace>-<name>-*.tar.gz
-    - recursive-exclude .pytest_cache **
-    - recursive-exclude tests/integration **
-    - recursive-exclude tests/unit **
-    - recursive-exclude tests/output **
-    - global-exclude /.* /__pycache__ *.pyc *.pyo *.bak *~ *.swp e2e-test.toml
-    # Adding dotfiles
-    # TODO: see how we can reduce the two following dotfiles to avoid including them in the future
-    #       There may not be a way forward.
-    - include .ansible-lint
-    - include .ansible-lint-ignore
-  omit_default_directives: true
+# Ignore files which are not required in the built collection.
+build_ignore:
+  - .coverage
+  - .pytest_cache
+  - .yamllint
+  - CNAME
+  # Generated review inventory. It must not be included in the published collection.
+  - collection-files.txt
+  - pytest.ini
+  - changelogs/.plugin-cache.yaml
+  - changelogs/fragments
+  - changelogs/fragments_backup
+  - examples/**/documentation
+  - examples/**/intended
+  - extensions
+  - tests/integration
+  - tests/inventory
+  - tests/unit
+  - e2e-test.toml
+  - "**/e2e-test.toml"
+  - "*.pyo"
+  - "*.bak"
+  - "*~"
+  - "*.swp"
