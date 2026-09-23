@@ -158,6 +158,10 @@ ansible_httpapi_use_ssl: <bool; default=true>
 # Precedence: `anta_port` -> `ansible_httpapi_port` -> 80 or 443 depending on SSL.
 anta_port: <int>
 ansible_httpapi_port: <int; default=80 or 443 depending on anta_use_ssl or ansible_httpapi_use_ssl>
+
+# Use eAPI session-based authentication.
+# When enabled, ANTA logs in once with username/password and reuses the session cookie for subsequent requests.
+anta_use_session_auth: <bool; default=false>
 ```
 
 ### Directory Configuration
@@ -633,6 +637,9 @@ ansible-playbook playbooks/anta-runner.yml -vvv
 
 !!! tip
     Running `ansible-playbook` with `-vvv` is particularly helpful to troubleshoot why some specific AVD-generated tests are missing from a device's final catalog. PyAVD will output detailed information about skipped tests and the reasons for their exclusion.
+
+!!! tip
+    When debugging eAPI connectivity or session-based authentication (`anta_use_session_auth`), run with `-vvvv`. Logs from the `asynceapi` library (HTTP login, session cookies, and request flow) are emitted at DEBUG alongside ANTA logs.
 
 ### Understanding Log Output
 
