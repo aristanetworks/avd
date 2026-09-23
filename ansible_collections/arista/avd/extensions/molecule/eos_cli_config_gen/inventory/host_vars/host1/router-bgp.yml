@@ -37,6 +37,9 @@ router_bgp:
   neighbor_default:
     send_community: all
   bgp:
+    convergence: # Issue 7390
+      slow_peer_time: 500
+      time: 400
     default:
       ipv4_unicast: true
       ipv4_unicast_transport_ipv6: true

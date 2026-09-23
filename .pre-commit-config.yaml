@@ -25,6 +25,7 @@ ci:
     - docs-plugin-lookup
     - docs-plugin-test
     - docs-plugin-vars
+    - collection-files
     - schemas
     - check-schema-tables-in-docs
     - sort-hosts-yml
@@ -137,7 +138,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: 321478e58f4938179c6b86e4ddfa923d1547a49b  # frozen: v0.16.6
+    rev: 2eeb5678de71a00c0902cbda7105d328432f72cb  # frozen: v0.16.8
     hooks:
       # Run the linter.
       - id: ruff
@@ -147,7 +148,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: 392b6ba8e54be6d603e02e9f8d601d27b7a48d12  # frozen: v1.1.411
+    rev: 1aa6dfeb849ae43fb6f16fc17228bcbd358a19c3  # frozen: v1.1.414
     hooks:
       - id: pyright
         name: PyRight static type checker
@@ -168,7 +169,8 @@ repos:
           - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.35.0'
-          - 'ruff==0.16.4'
+          - 'ruff==0.16.8'
+          - 'setuptools>=82.0.1'
 
   - repo: https://github.com/pycqa/pylint
     rev: "4e1125d0149c638ca073c3dc7f1648a5c9459a3d"  # frozen: v4.0.8
@@ -211,7 +213,7 @@ repos:
         args: [--config, .codespellrc]
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: cef8b8350da46d8114c7e6b7272aebdccdf193ce  # frozen: v1.30.0
+    rev: fa412071e4f5d44d44f9e365f4676f9df92456a2  # frozen: v1.30.1
     hooks:
       - id: zizmor
         name: Check GitHub Actions with zizmor
@@ -220,7 +222,7 @@ repos:
         args: [".github"]
 
   - repo: https://github.com/pdm-project/pdm
-    rev: "d150b4e9b41f55df173f57582be3ecb35643c92b"  # frozen: 2.29.0
+    rev: "5c0dbc466ebc62637ced3863ece094349699ef2f"  # frozen: 2.29.2
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
@@ -237,6 +239,14 @@ repos:
 
   - repo: local
     hooks:
+
+      - id: collection-files
+        name: Check files included in the Ansible collection.
+        entry: python tools/generate_collection_files.py
+        language: python
+        files: ^(ansible_collections/arista/avd/|tools/generate_collection_files\.py$)
+        pass_filenames: false
+        additional_dependencies: ['ansible-core==2.16.0']
 
       - id: docs-plugin-modules
         name: Build documentation for collection modules and action plugins.
@@ -296,7 +306,7 @@ repos:
         language: python
         files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
-        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.16.4']
+        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.16.8']
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
@@ -330,7 +340,7 @@ repos:
         additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.7', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: b82a6c8896e491b9cb377a99ff3412131920681b  # frozen: v0.23.2
+    rev: 916ad0aaa108c64d294101002066f530ea170b10  # frozen: v0.23.3
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.markdownlint-cli2.yaml`.
