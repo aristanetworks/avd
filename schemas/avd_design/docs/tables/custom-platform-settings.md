@@ -14,8 +14,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;reload_delay</samp>](## "custom_platform_settings.[].reload_delay") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "custom_platform_settings.[].reload_delay.mlag") | Integer |  |  | Min: 0<br>Max: 86400 | In seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;non_mlag</samp>](## "custom_platform_settings.[].reload_delay.non_mlag") | Integer |  |  | Min: 0<br>Max: 86400 | In seconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tcam_profile</samp>](## "custom_platform_settings.[].tcam_profile") | String |  |  |  | TCAM profile name to activate as the system profile.<br>If the profile is defined under `tcam_profiles`, it will also be configured in EOS.<br>Built-in profiles (e.g., system-profile) can be used without being defined in `tcam_profiles`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;additional_tcam_profiles</samp>](## "custom_platform_settings.[].additional_tcam_profiles") | List, items: String |  |  |  | List of additional TCAM profile names that must be defined under `tcam_profiles`.<br>These profiles are configured in EOS but are not set as the system profile.<br>If a profile is specified in both `tcam_profile` and `additional_tcam_profiles`, it will be configured only once. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tcam_profile</samp>](## "custom_platform_settings.[].tcam_profile") | String |  |  |  | TCAM profile name to activate as the system profile.<br>If the profile is defined under `tcam_profiles`, it will also be configured in the device.<br>Built-in profiles (e.g., system-profile) can be used without being defined in `tcam_profiles`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;additional_tcam_profiles</samp>](## "custom_platform_settings.[].additional_tcam_profiles") | List, items: String |  |  |  | List of additional TCAM profile names that must be defined under `tcam_profiles`.<br>These profiles are configured in the device but are not set as the system profile.<br>If a profile is specified in both `tcam_profile` and `additional_tcam_profiles`, it will be configured only once. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "custom_platform_settings.[].additional_tcam_profiles.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lag_hardware_only</samp>](## "custom_platform_settings.[].lag_hardware_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "custom_platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
@@ -203,12 +203,12 @@
           non_mlag: <int; 0-86400>
 
         # TCAM profile name to activate as the system profile.
-        # If the profile is defined under `tcam_profiles`, it will also be configured in EOS.
+        # If the profile is defined under `tcam_profiles`, it will also be configured in the device.
         # Built-in profiles (e.g., system-profile) can be used without being defined in `tcam_profiles`.
         tcam_profile: <str>
 
         # List of additional TCAM profile names that must be defined under `tcam_profiles`.
-        # These profiles are configured in EOS but are not set as the system profile.
+        # These profiles are configured in the device but are not set as the system profile.
         # If a profile is specified in both `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
         additional_tcam_profiles:
           - <str>

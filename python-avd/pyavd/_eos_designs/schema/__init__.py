@@ -44530,15 +44530,15 @@ class EosDesigns(EosDesignsRootModel):
         """
         TCAM profile name to activate as the system profile.
         If the profile is defined under
-        `tcam_profiles`, it will also be configured in EOS.
-        Built-in profiles (e.g., system-profile) can be
-        used without being defined in `tcam_profiles`.
+        `tcam_profiles`, it will also be configured in the device.
+        Built-in profiles (e.g., system-profile)
+        can be used without being defined in `tcam_profiles`.
         """
         additional_tcam_profiles: AdditionalTcamProfiles
         """
         List of additional TCAM profile names that must be defined under `tcam_profiles`.
         These profiles are
-        configured in EOS but are not set as the system profile.
+        configured in the device but are not set as the system profile.
         If a profile is specified in both
         `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
 
@@ -44614,13 +44614,13 @@ class EosDesigns(EosDesignsRootModel):
                     tcam_profile:
                        TCAM profile name to activate as the system profile.
                        If the profile is defined under
-                       `tcam_profiles`, it will also be configured in EOS.
-                       Built-in profiles (e.g., system-profile) can be
-                       used without being defined in `tcam_profiles`.
+                       `tcam_profiles`, it will also be configured in the device.
+                       Built-in profiles (e.g., system-profile)
+                       can be used without being defined in `tcam_profiles`.
                     additional_tcam_profiles:
                        List of additional TCAM profile names that must be defined under `tcam_profiles`.
                        These profiles are
-                       configured in EOS but are not set as the system profile.
+                       configured in the device but are not set as the system profile.
                        If a profile is specified in both
                        `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
 
@@ -46415,15 +46415,15 @@ class EosDesigns(EosDesignsRootModel):
         """
         TCAM profile name to activate as the system profile.
         If the profile is defined under
-        `tcam_profiles`, it will also be configured in EOS.
-        Built-in profiles (e.g., system-profile) can be
-        used without being defined in `tcam_profiles`.
+        `tcam_profiles`, it will also be configured in the device.
+        Built-in profiles (e.g., system-profile)
+        can be used without being defined in `tcam_profiles`.
         """
         additional_tcam_profiles: AdditionalTcamProfiles
         """
         List of additional TCAM profile names that must be defined under `tcam_profiles`.
         These profiles are
-        configured in EOS but are not set as the system profile.
+        configured in the device but are not set as the system profile.
         If a profile is specified in both
         `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
 
@@ -46499,13 +46499,13 @@ class EosDesigns(EosDesignsRootModel):
                     tcam_profile:
                        TCAM profile name to activate as the system profile.
                        If the profile is defined under
-                       `tcam_profiles`, it will also be configured in EOS.
-                       Built-in profiles (e.g., system-profile) can be
-                       used without being defined in `tcam_profiles`.
+                       `tcam_profiles`, it will also be configured in the device.
+                       Built-in profiles (e.g., system-profile)
+                       can be used without being defined in `tcam_profiles`.
                     additional_tcam_profiles:
                        List of additional TCAM profile names that must be defined under `tcam_profiles`.
                        These profiles are
-                       configured in EOS but are not set as the system profile.
+                       configured in the device but are not set as the system profile.
                        If a profile is specified in both
                        `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
 
@@ -118681,7 +118681,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     List of TCAM profile definitions that can be referenced by platform_settings.
     Profiles are
-    configured in EOS based on platform_settings[].tcam_profile and
+    configured in the device based on platform_settings[].tcam_profile and
     platform_settings[].additional_tcam_profiles.
     All profiles in
     platform_settings[].additional_tcam_profiles (if defined in this list) will be configured.
@@ -120650,7 +120650,7 @@ class EosDesigns(EosDesignsRootModel):
                 tcam_profiles:
                    List of TCAM profile definitions that can be referenced by platform_settings.
                    Profiles are
-                   configured in EOS based on platform_settings[].tcam_profile and
+                   configured in the device based on platform_settings[].tcam_profile and
                    platform_settings[].additional_tcam_profiles.
                    All profiles in
                    platform_settings[].additional_tcam_profiles (if defined in this list) will be configured.
