@@ -1,0 +1,20 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ip software forwarding #}
+{% if ip_software_forwarding.mtu.exceed_action_drop is arista.avd.defined(true) %}
+
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+IP software forwarding MTU exceed action: Drop
+
+### IP Software Forwarding Configuration
+
+```eos
+{%     include 'eos/ip-software-forwarding.j2' %}
+```
+{% endif %}

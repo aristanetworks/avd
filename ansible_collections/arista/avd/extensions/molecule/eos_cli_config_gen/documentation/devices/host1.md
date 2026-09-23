@@ -286,6 +286,9 @@ Serial Number: DEADBEEFC0FFEW
 - [IP Hardware FIB](#ip-hardware-fib)
   - [IP Hardware FIB Summary](#ip-hardware-fib-summary)
   - [IP Hardware FIB Configuration](#ip-hardware-fib-configuration)
+- [IP Software Forwarding](#ip-software-forwarding)
+  - [IP Software Forwarding Summary](#ip-software-forwarding-summary)
+  - [IP Software Forwarding Configuration](#ip-software-forwarding-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
 - [MACsec](#macsec)
@@ -14398,6 +14401,18 @@ IP hardware FIB dynamic load balancing flow-set-size: 4
 ip hardware fib optimize prefixes profile urpf-internet
 ip hardware fib load-balance distribution dynamic
 ip hardware fib load-balance distribution dynamic flow-set-size 4
+```
+
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+IP software forwarding MTU exceed action: Drop
+
+### IP Software Forwarding Configuration
+
+```eos
+ip software forwarding mtu exceed action drop
 ```
 
 ## Errdisable

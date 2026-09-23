@@ -20128,6 +20128,55 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpSoftwareForwarding(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Mtu(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"exceed_action_drop": {"type": bool}}
+            exceed_action_drop: bool | None
+            """
+            Drop packets that exceed the MTU on software-forwarded paths.
+            Introduced in EOS 4.36.1F, 4.35.4M,
+            4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, exceed_action_drop: bool | UndefinedType | None = Undefined) -> None:
+                    """
+                    Mtu.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        exceed_action_drop:
+                           Drop packets that exceed the MTU on software-forwarded paths.
+                           Introduced in EOS 4.36.1F, 4.35.4M,
+                           4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+
+                    """
+
+        _fields: ClassVar[dict] = {"mtu": {"type": Mtu}}
+        mtu: Mtu
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, mtu: Mtu | UndefinedType = Undefined) -> None:
+                """
+                IpSoftwareForwarding.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    mtu: Subclass of AvdModel.
+
+                """
+
     class IpSshClient(AvdModel):
         """Subclass of AvdModel."""
 
@@ -79282,6 +79331,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_routing": {"type": bool},
         "ip_routing_ipv6_interfaces": {"type": bool},
         "ip_security": {"type": IpSecurity},
+        "ip_software_forwarding": {"type": IpSoftwareForwarding},
         "ip_ssh_client": {"type": IpSshClient},
         "ip_tacacs": {"type": IpTacacs},
         "ip_tacacs_source_interfaces": {"type": IpTacacsSourceInterfaces},
@@ -79721,6 +79771,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_routing_ipv6_interfaces: bool | None
     ip_security: IpSecurity
     """Subclass of AvdModel."""
+    ip_software_forwarding: IpSoftwareForwarding
+    """Subclass of AvdModel."""
     ip_ssh_client: IpSshClient
     """Subclass of AvdModel."""
     ip_tacacs: IpTacacs
@@ -80157,6 +80209,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_routing: bool | UndefinedType | None = Undefined,
             ip_routing_ipv6_interfaces: bool | UndefinedType | None = Undefined,
             ip_security: IpSecurity | UndefinedType = Undefined,
+            ip_software_forwarding: IpSoftwareForwarding | UndefinedType = Undefined,
             ip_ssh_client: IpSshClient | UndefinedType = Undefined,
             ip_tacacs: IpTacacs | UndefinedType = Undefined,
             ip_tacacs_source_interfaces: IpTacacsSourceInterfaces | UndefinedType = Undefined,
@@ -80497,6 +80550,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
                 ip_security: Subclass of AvdModel.
+                ip_software_forwarding: Subclass of AvdModel.
                 ip_ssh_client: Subclass of AvdModel.
                 ip_tacacs:
                    IP TACACS source interface configuration.

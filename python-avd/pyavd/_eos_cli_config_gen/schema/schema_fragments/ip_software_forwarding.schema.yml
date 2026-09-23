@@ -1,0 +1,19 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_software_forwarding:
+    type: dict
+    keys:
+      mtu:
+        type: dict
+        keys:
+          exceed_action_drop:
+            type: bool
+            description: |-
+              Drop packets that exceed the MTU on software-forwarded paths.
+              Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
