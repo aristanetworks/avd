@@ -995,7 +995,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
             "accept_ra_default_route_for_ipv6_mgmt_ip_auto_config": {"type": bool, "default": False},
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
-            "allow_infinite_profile_inheritance": {"type": bool, "default": False},
+            "allow_recursive_profile_inheritance": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
@@ -1033,7 +1033,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        allow_infinite_profile_inheritance: bool
+        allow_recursive_profile_inheritance: bool
         """
         Available from AVD 6.5.0.
         Allow `parent_profile` to inherit from its own `parent_profile` in
@@ -1155,7 +1155,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: bool | UndefinedType = Undefined,
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
-                allow_infinite_profile_inheritance: bool | UndefinedType = Undefined,
+                allow_recursive_profile_inheritance: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
@@ -1188,7 +1188,7 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.3.0.
                        Configure inband management interface to accept DHCP default route when
                        the inband management IP is set to 'dhcp'.
-                    allow_infinite_profile_inheritance:
+                    allow_recursive_profile_inheritance:
                        Available from AVD 6.5.0.
                        Allow `parent_profile` to inherit from its own `parent_profile` in
                        `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`.
@@ -11670,7 +11670,7 @@ class EosDesigns(EosDesignsRootModel):
         By default, profile
         inheritance is limited to two levels: device -> profile -> parent_profile.
         From AVD 6.5.0 onwards,
-        setting `avd_design_future.allow_infinite_profile_inheritance` to true
+        setting `avd_design_future.allow_recursive_profile_inheritance` to true
         allows profiles to inherit
         settings across any number of levels.
         """
@@ -12760,7 +12760,7 @@ class EosDesigns(EosDesignsRootModel):
                        By default, profile
                        inheritance is limited to two levels: device -> profile -> parent_profile.
                        From AVD 6.5.0 onwards,
-                       setting `avd_design_future.allow_infinite_profile_inheritance` to true
+                       setting `avd_design_future.allow_recursive_profile_inheritance` to true
                        allows profiles to inherit
                        settings across any number of levels.
                     type:
@@ -17195,7 +17195,7 @@ class EosDesigns(EosDesignsRootModel):
         By default, profile inheritance is
         limited to two levels: device -> profile -> parent_profile.
         From AVD 6.5.0 onwards, setting
-        `avd_design_future.allow_infinite_profile_inheritance` to true
+        `avd_design_future.allow_recursive_profile_inheritance` to true
         allows profiles to inherit settings
         across any number of levels.
         This takes precedence over the global `device_profile` key.
@@ -18295,7 +18295,7 @@ class EosDesigns(EosDesignsRootModel):
                        By default, profile inheritance is
                        limited to two levels: device -> profile -> parent_profile.
                        From AVD 6.5.0 onwards, setting
-                       `avd_design_future.allow_infinite_profile_inheritance` to true
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
                        allows profiles to inherit settings
                        across any number of levels.
                        This takes precedence over the global `device_profile` key.
@@ -24687,7 +24687,7 @@ class EosDesigns(EosDesignsRootModel):
         By default, profile inheritance is limited to two levels:
         (l2vlan -> l2vlan_profile -> parent_profile).
         From AVD 6.5.0 onwards, setting
-        `avd_design_future.allow_infinite_profile_inheritance` to true
+        `avd_design_future.allow_recursive_profile_inheritance` to true
         allows profiles to inherit settings
         across any number of levels.
         """
@@ -24822,7 +24822,7 @@ class EosDesigns(EosDesignsRootModel):
                        By default, profile inheritance is limited to two levels:
                        (l2vlan -> l2vlan_profile -> parent_profile).
                        From AVD 6.5.0 onwards, setting
-                       `avd_design_future.allow_infinite_profile_inheritance` to true
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
                        allows profiles to inherit settings
                        across any number of levels.
                     address_locking: address_locking
@@ -35157,7 +35157,7 @@ class EosDesigns(EosDesignsRootModel):
                 SVI can refer to one svi_profile which again can refer to another
                 svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
                 From
-                AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+                AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
                 allows
                 profiles to inherit settings across any number of levels.
                 """
@@ -35490,7 +35490,7 @@ class EosDesigns(EosDesignsRootModel):
                                SVI can refer to one svi_profile which again can refer to another
                                svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
                                From
-                               AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+                               AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
                                allows
                                profiles to inherit settings across any number of levels.
                             tags:
@@ -40158,7 +40158,7 @@ class EosDesigns(EosDesignsRootModel):
             another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
             l2vlan_profile -> l2vlan_parent_profile).
             From AVD 6.5.0 onwards, setting
-            `avd_design_future.allow_infinite_profile_inheritance` to true
+            `avd_design_future.allow_recursive_profile_inheritance` to true
             allows profiles to inherit settings
             across any number of levels.
             """
@@ -40307,7 +40307,7 @@ class EosDesigns(EosDesignsRootModel):
                            another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                            l2vlan_profile -> l2vlan_parent_profile).
                            From AVD 6.5.0 onwards, setting
-                           `avd_design_future.allow_infinite_profile_inheritance` to true
+                           `avd_design_future.allow_recursive_profile_inheritance` to true
                            allows profiles to inherit settings
                            across any number of levels.
                         tags:
@@ -48380,7 +48380,7 @@ class EosDesigns(EosDesignsRootModel):
         By default, profile inheritance is limited to two levels: adapter ->
         profile -> parent_profile.
         From AVD 6.5.0 onwards, setting
-        `avd_design_future.allow_infinite_profile_inheritance` to true
+        `avd_design_future.allow_recursive_profile_inheritance` to true
         allows profiles to inherit settings
         across any number of levels.
         """
@@ -48639,7 +48639,7 @@ class EosDesigns(EosDesignsRootModel):
                        By default, profile inheritance is limited to two levels: adapter ->
                        profile -> parent_profile.
                        From AVD 6.5.0 onwards, setting
-                       `avd_design_future.allow_infinite_profile_inheritance` to true
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
                        allows profiles to inherit settings
                        across any number of levels.
                     port_channel:
@@ -52936,7 +52936,7 @@ class EosDesigns(EosDesignsRootModel):
         By default, profile inheritance is limited to two levels: svi ->
         svi_profile -> parent_profile.
         From AVD 6.5.0 onwards, setting
-        `avd_design_future.allow_infinite_profile_inheritance` to true
+        `avd_design_future.allow_recursive_profile_inheritance` to true
         allows profiles to inherit settings
         across any number of levels.
         """
@@ -53245,7 +53245,7 @@ class EosDesigns(EosDesignsRootModel):
                        By default, profile inheritance is limited to two levels: svi ->
                        svi_profile -> parent_profile.
                        From AVD 6.5.0 onwards, setting
-                       `avd_design_future.allow_infinite_profile_inheritance` to true
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
                        allows profiles to inherit settings
                        across any number of levels.
                     nodes:
@@ -87537,7 +87537,7 @@ class EosDesigns(EosDesignsRootModel):
                         SVI can refer to one svi_profile which again can refer to another
                         svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
                         From
-                        AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+                        AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
                         allows
                         profiles to inherit settings across any number of levels.
                         """
@@ -87870,7 +87870,7 @@ class EosDesigns(EosDesignsRootModel):
                                        SVI can refer to one svi_profile which again can refer to another
                                        svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
                                        From
-                                       AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+                                       AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
                                        allows
                                        profiles to inherit settings across any number of levels.
                                     tags:
@@ -92560,7 +92560,7 @@ class EosDesigns(EosDesignsRootModel):
                     another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                     l2vlan_profile -> l2vlan_parent_profile).
                     From AVD 6.5.0 onwards, setting
-                    `avd_design_future.allow_infinite_profile_inheritance` to true
+                    `avd_design_future.allow_recursive_profile_inheritance` to true
                     allows profiles to inherit settings
                     across any number of levels.
                     """
@@ -92709,7 +92709,7 @@ class EosDesigns(EosDesignsRootModel):
                                    another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                                    l2vlan_profile -> l2vlan_parent_profile).
                                    From AVD 6.5.0 onwards, setting
-                                   `avd_design_future.allow_infinite_profile_inheritance` to true
+                                   `avd_design_future.allow_recursive_profile_inheritance` to true
                                    allows profiles to inherit settings
                                    across any number of levels.
                                 tags:
@@ -117480,7 +117480,7 @@ class EosDesigns(EosDesignsRootModel):
     By default, profile
     inheritance is limited to two levels: device -> device_profile -> parent_profile.
     From AVD 6.5.0
-    onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+    onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
     allows profiles to
     inherit settings across any number of levels.
     """
@@ -119775,7 +119775,7 @@ class EosDesigns(EosDesignsRootModel):
                    By default, profile
                    inheritance is limited to two levels: device -> device_profile -> parent_profile.
                    From AVD 6.5.0
-                   onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+                   onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
                    allows profiles to
                    inherit settings across any number of levels.
                 device_profiles:

@@ -43,7 +43,7 @@ class DeviceConfigMixin(Protocol):
 
         device_profiles_chain = EosDesigns.DeviceProfiles()
         resolved_profile = self.inputs.device_profiles[device_profile_name]._deepcopy()
-        if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
+        if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
             while device_profile.parent_profile is not None:
                 if not (device_parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
                     msg = (

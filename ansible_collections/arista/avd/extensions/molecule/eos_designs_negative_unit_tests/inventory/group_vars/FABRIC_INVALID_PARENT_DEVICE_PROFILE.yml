@@ -2,7 +2,7 @@
 fabric_name: FABRIC_INVALID_PARENT_DEVICE_PROFILE
 
 avd_design_future:
-  allow_infinite_profile_inheritance: true
+  allow_recursive_profile_inheritance: true
 
 devices:
   - name: fabric-invalid-parent-device-profile

@@ -161,7 +161,7 @@ class FilteredTenantsMixin(Protocol):
         l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]._deepcopy()
         l2vlans_profiles_chain = EosDesigns.L2vlanProfiles()
         resolved_profile = self.inputs.l2vlan_profiles[profile_name]._deepcopy()
-        if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
+        if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
             while l2vlan_profile.parent_profile is not None:
                 if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
                     msg = f"Parent profile '{l2vlan_profile.parent_profile}' applied under '{l2vlan_profile.profile}' does not exist in 'l2vlan_profiles'."
@@ -352,7 +352,7 @@ class FilteredTenantsMixin(Protocol):
             svi_profiles_chain = EosDesigns.SviProfiles()
             svi_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
             resolved_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
-            if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
+            if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
                 while svi_profile.parent_profile is not None:
                     if svi_profile.parent_profile not in self.inputs.svi_profiles:
                         msg = f"Parent profile '{svi_profile.parent_profile}' applied under '{svi_profile.profile}' does not exist in 'svi_profiles'."

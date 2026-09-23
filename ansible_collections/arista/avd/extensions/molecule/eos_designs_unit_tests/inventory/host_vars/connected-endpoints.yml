@@ -1,7 +1,7 @@
 loopback_ipv4_pool: 192.168.0.0/24
 
 avd_design_future:
-  allow_infinite_profile_inheritance: true
+  allow_recursive_profile_inheritance: true
 
 mac_acls:
   - name: acl-on-port-profile

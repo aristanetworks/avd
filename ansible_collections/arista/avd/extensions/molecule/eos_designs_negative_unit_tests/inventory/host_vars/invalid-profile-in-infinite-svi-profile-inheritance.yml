@@ -1,10 +1,10 @@
 ---
 mgmt_gateway: 192.168.200.5
 
-# This host raises when 'allow_infinite_profile_inheritance' is enabled
+# This host raises when 'allow_recursive_profile_inheritance' is enabled
 # and applied SVI profile is not present in 'svi_profiles'.
 avd_design_future:
-  allow_infinite_profile_inheritance: true
+  allow_recursive_profile_inheritance: true
 
 type: l3leaf
 

@@ -21,7 +21,7 @@ keys:
           description: |-
             Inherit settings from a profile defined under `device_profiles`.
             By default, profile inheritance is limited to two levels: device -> profile -> parent_profile.
-            From AVD 6.5.0 onwards, setting `avd_design_future.allow_infinite_profile_inheritance` to true
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
             allows profiles to inherit settings across any number of levels.
             This takes precedence over the global `device_profile` key.
         type:

@@ -29,7 +29,7 @@ keys:
         description: |-
           Available from AVD 6.3.0.
           Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'.
-      allow_infinite_profile_inheritance:
+      allow_recursive_profile_inheritance:
         type: bool
         default: false
         description: |-

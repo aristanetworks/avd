@@ -110,7 +110,7 @@ class UtilsMixin(Protocol):
         port_profiles_chain = EosDesigns.PortProfiles()
         port_profile = self.inputs.port_profiles[profile_name]._deepcopy()
         resolved_profile = self.inputs.port_profiles[profile_name]._deepcopy()
-        if self.inputs.avd_design_future.allow_infinite_profile_inheritance:
+        if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
             while port_profile.parent_profile is not None:
                 if port_profile.parent_profile not in self.inputs.port_profiles:
                     msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{port_profile.profile}' does not exist in 'port_profiles'."

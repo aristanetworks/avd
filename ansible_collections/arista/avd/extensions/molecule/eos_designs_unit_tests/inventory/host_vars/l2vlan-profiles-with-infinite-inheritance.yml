@@ -3,7 +3,7 @@
 type: l3leaf
 
 avd_design_future:
-  allow_infinite_profile_inheritance: true
+  allow_recursive_profile_inheritance: true
 
 l2vlan_profiles:
   - profile: research1

@@ -5,7 +5,7 @@
 mgmt_gateway: 192.168.200.5
 
 avd_design_future:
-  allow_infinite_profile_inheritance: true
+  allow_recursive_profile_inheritance: true
 
 svi_profiles:
   - profile: IGMP_QUERIER_PARENT

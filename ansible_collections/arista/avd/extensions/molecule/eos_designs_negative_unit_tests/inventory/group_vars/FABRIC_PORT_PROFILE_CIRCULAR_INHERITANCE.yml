@@ -2,7 +2,7 @@
 fabric_name: FABRIC_PORT_PROFILE_CIRCULAR_INHERITANCE
 
 avd_design_future:
-  allow_infinite_profile_inheritance: true
+  allow_recursive_profile_inheritance: true
 
 type: l2leaf
 l2leaf:
