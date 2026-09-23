@@ -215,10 +215,7 @@ class FabricDocumentationFacts(AvdFacts):
         # Build set of loopback_ipv4_pool for all devices
         pools_set = {facts.loopback_ipv4_pool for facts in self.avd_facts.values() if facts.loopback_ipv4_pool}
         networks = [network for pool in pools_set for network in get_networks_from_pool(pool) if network.version == 4]
-        ipv4_addresses = {facts.loopback_ipv4_address for facts in self.avd_facts.values() if facts.loopback_ipv4_address}
-        ipv4_networks = [IPv4Network(ipv4_address) for ipv4_address in ipv4_addresses]
-        networks.extend(ipv4_networks)
-        networks = list(set(networks))
+
         # Build list of ip addresses found in fabric switches
         ip_addresses = [
             IPv4Network(fabric_switch["loopback0_ip_address"], strict=False)
