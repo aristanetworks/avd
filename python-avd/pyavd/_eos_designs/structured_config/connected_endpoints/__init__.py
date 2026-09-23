@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from pyavd._eos_designs.connected_endpoints import (
     ConnectedEndpointsBuildContext,
@@ -23,6 +23,24 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
+
+
+def _get_interface_support(supported: bool, subinterfaces_supported: bool) -> Literal["none", "main_interfaces", "all_interfaces"]:
+    """Map platform feature flags to the interface support level consumed by the isolated builder."""
+    if not supported:
+        return "none"
+    if subinterfaces_supported:
+        return "all_interfaces"
+    return "main_interfaces"
+
+
+def _get_address_locking_support(supported: bool, ipv6_ethernet_interface: bool) -> Literal["none", "ipv4", "ipv4_ipv6"]:
+    """Map platform feature flags to the Ethernet address families supported for address locking."""
+    if not supported:
+        return "none"
+    if ipv6_ethernet_interface:
+        return "ipv4_ipv6"
+    return "ipv4"
 
 
 def get_connected_endpoints_build_context(
@@ -141,24 +159,22 @@ def get_connected_endpoints_build_context(
         ptp_profiles=inputs.ptp_profiles,
         ptp_profile_name=shared_utils.ptp_profile_name,
         link_tracking_group_default_name=next(iter(link_tracking_groups)).name if link_tracking_groups else None,
-        overlay_evpn=shared_utils.overlay_evpn,
-        overlay_vtep=shared_utils.overlay_vtep,
-        overlay_ler=shared_utils.overlay_ler,
+        evpn_ethernet_segments_enabled=shared_utils.overlay_evpn and (shared_utils.overlay_vtep or shared_utils.overlay_ler),
         mlag=shared_utils.mlag,
         is_campus_device=shared_utils.is_campus_device,
         digital_twin=shared_utils.digital_twin,
         platform_features=ConnectedEndpointsPlatformFeatures(
-            address_locking=feature_support.address_locking.supported,
-            address_locking_ipv6_ethernet_interface=feature_support.address_locking.ipv6_ethernet_interface,
+            address_locking_support=_get_address_locking_support(
+                feature_support.address_locking.supported,
+                feature_support.address_locking.ipv6_ethernet_interface,
+            ),
             interface_storm_control=feature_support.interface_storm_control,
             per_interface_l2_mru=feature_support.per_interface_l2_mru,
             per_interface_l2_mtu=feature_support.per_interface_l2_mtu,
-            per_interface_mtu=feature_support.per_interface_mtu,
+            mtu_support=_get_interface_support(feature_support.per_interface_mtu, feature_support.subinterface_mtu),
             poe=feature_support.poe,
             ptp=feature_support.ptp,
-            sflow=feature_support.sflow,
-            sflow_subinterfaces=feature_support.sflow_subinterfaces,
-            subinterface_mtu=feature_support.subinterface_mtu,
+            sflow_support=_get_interface_support(feature_support.sflow, feature_support.sflow_subinterfaces),
         ),
         render_ethernet_description=render_ethernet_description,
         render_port_channel_description=render_port_channel_description,

@@ -55,7 +55,7 @@ class UtilsMixin(Protocol):
         hash_extra_value: str = "",
     ) -> str | None:
         """Return short_esi for one adapter or subinterface."""
-        if not self.context.overlay_evpn or not (self.context.overlay_vtep or self.context.overlay_ler):
+        if not self.context.evpn_ethernet_segments_enabled:
             return None
 
         if (short_esi := (subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
@@ -241,7 +241,7 @@ class UtilsMixin(Protocol):
         output_type: type[T_AddressLocking],
     ) -> T_AddressLocking | UndefinedType:
         """Return address_locking for one adapter, mapping ipv4/ipv6 flags to address_family format."""
-        if not (adapter.address_locking and self.context.platform_features.address_locking):
+        if not adapter.address_locking or self.context.platform_features.address_locking_support == "none":
             return Undefined
 
         address_locking = output_type()
@@ -252,7 +252,7 @@ class UtilsMixin(Protocol):
                 address_locking.address_family.ipv6 = adapter.address_locking.ipv6
         else:  # EosCliConfigGen.EthernetInterfacesItem.AddressLocking
             address_locking.address_family.ipv4 = adapter.address_locking.ipv4
-            if self.context.platform_features.address_locking_ipv6_ethernet_interface:
+            if self.context.platform_features.address_locking_support == "ipv4_ipv6":
                 address_locking.address_family.ipv6 = adapter.address_locking.ipv6
         return address_locking
 
