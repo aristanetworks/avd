@@ -9,7 +9,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
-    from . import AvdStructuredConfigConnectedEndpointsProtocol
+    from . import AvdStructuredConfigConnectedEndpoints
 
 
 class MacAccessListsMixin(Protocol):
@@ -19,7 +19,7 @@ class MacAccessListsMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    def _set_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl_name: str) -> None:
+    def _set_mac_acl(self: AvdStructuredConfigConnectedEndpoints, acl_name: str) -> None:
         """
         Returns structured_config for mac_acl when mac_acl is referenced.
 

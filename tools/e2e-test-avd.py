@@ -140,6 +140,7 @@ class FabricConfigOverrides:
     """Optional config overrides."""
 
     avd_design: bool | None = None
+    build_target: typing.Literal["full", "connected_endpoints"] | None = None
     clean: bool | None = None
     device_configs: bool | None = None
     digital_twin: bool | None = None
@@ -158,6 +159,7 @@ class ProjectConfig:
 
     project_dir: pathlib.Path
     avd_design: bool = True
+    build_target: typing.Literal["full", "connected_endpoints"] = "full"
     clean: bool = True
     custom_templates: bool = False
     custom_path: str | None = None
@@ -188,6 +190,7 @@ class ScenarioConfig:
 
     # Base config which may override the settings project level.
     avd_design: bool
+    build_target: typing.Literal["full", "connected_endpoints"]
     clean: bool
     device_configs: bool
     digital_twin: bool
@@ -215,6 +218,7 @@ class ScenarioConfig:
             extra_vars=default(overrides.extra_vars, project.extra_vars),
             inventory_file=default(overrides.inventory_file, project.inventory_file),
             avd_design=default(overrides.avd_design, project.avd_design),
+            build_target=default(overrides.build_target, project.build_target),
             clean=default(overrides.clean, project.clean),
             device_configs=default(overrides.device_configs, project.device_configs),
             digital_twin=default(overrides.digital_twin, project.digital_twin),
@@ -281,6 +285,7 @@ class FabricConfig:
     # Base config which may override the settings project level,
     # except clean which is local for the fabric level.
     avd_design: bool
+    build_target: typing.Literal["full", "connected_endpoints"]
     device_configs: bool
     digital_twin: bool
     docs_dir: str
@@ -306,6 +311,7 @@ class FabricConfig:
             scenario=scenario,
             clean=overrides.clean if overrides.clean is not None else False,
             avd_design=default(overrides.avd_design, scenario.avd_design),
+            build_target=default(overrides.build_target, scenario.build_target),
             device_configs=default(overrides.device_configs, scenario.device_configs),
             digital_twin=default(overrides.digital_twin, scenario.digital_twin),
             docs_dir=default(overrides.docs_dir, scenario.docs_dir),
@@ -834,6 +840,50 @@ def validate_inputs_for_one_device(device: str, device_avd_inputs: dict, config:
     return DevicePyAVDUtilsValidatedDataResult(device, pyavd_utils_validated_data_result)
 
 
+def build_connected_endpoints_for_one_device(
+    device: str,
+    device_avd_validated_inputs: AVDDesign,
+    device_avd_validated_inputs_dict: dict,
+    avd_facts: dict,
+    config: FabricConfig,
+) -> dict:
+    """
+    Build only connected-endpoint and network-port interfaces for an e2e scenario.
+
+    External isolated-input mapping is intentionally not part of this runner yet.
+    Until that schema exists, scenarios use normal validated AVD inventory data to
+    construct the same narrow context used by regular builds, then invoke the
+    isolated builder directly with empty live interface collections.
+    """
+    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+    from pyavd._eos_designs.connected_endpoints import ConnectedEndpointsBuildTarget, build_connected_endpoints
+    from pyavd._eos_designs.shared_utils import SharedUtils
+    from pyavd._eos_designs.structured_config.connected_endpoints import get_connected_endpoints_build_context
+    from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
+    from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
+
+    shared_utils = SharedUtils(
+        hostname=device,
+        hostvars=device_avd_validated_inputs_dict,
+        inputs=device_avd_validated_inputs,
+        peer_facts=avd_facts,
+        templar=get_avd_templar(config),
+        digital_twin=config.digital_twin,
+    )
+    structured_config = EosCliConfigGen()
+    custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(device_avd_validated_inputs.custom_structured_configuration_list_merge)
+    target = ConnectedEndpointsBuildTarget(
+        ethernet_interfaces=structured_config.ethernet_interfaces,
+        port_channel_interfaces=structured_config.port_channel_interfaces,
+        custom_ethernet_interfaces=custom_structured_configs.nested.ethernet_interfaces,
+        custom_port_channel_interfaces=custom_structured_configs.nested.port_channel_interfaces,
+        parent_interfaces_tracker=ParentInterfacesTracker(),
+    )
+    context = get_connected_endpoints_build_context(device_avd_validated_inputs, avd_facts[device], shared_utils)
+    build_connected_endpoints(context, target)
+    return structured_config._as_dict()
+
+
 def build_validate_and_render_for_one_device(
     device: str,
     device_avd_validated_inputs: AVDDesign | None,
@@ -876,14 +926,23 @@ def build_validate_and_render_for_one_device(
 
         # Phase 1: Build structured config
         try:
-            eos_config = get_structured_config(
-                hostname=device,
-                inputs=device_avd_validated_inputs,
-                hostvars=device_avd_validated_inputs_dict,
-                all_facts=avd_facts,
-                templar=get_avd_templar(config),
-                digital_twin=config.digital_twin,
-            )._as_dict()
+            if config.build_target == "connected_endpoints":
+                eos_config = build_connected_endpoints_for_one_device(
+                    device,
+                    device_avd_validated_inputs,
+                    device_avd_validated_inputs_dict,
+                    avd_facts,
+                    config,
+                )
+            else:
+                eos_config = get_structured_config(
+                    hostname=device,
+                    inputs=device_avd_validated_inputs,
+                    hostvars=device_avd_validated_inputs_dict,
+                    all_facts=avd_facts,
+                    templar=get_avd_templar(config),
+                    digital_twin=config.digital_twin,
+                )._as_dict()
         except Exception as e:
             dump_exception(e, config, "structured_config", device)
             return False
@@ -892,10 +951,14 @@ def build_validate_and_render_for_one_device(
             del device_avd_validated_inputs
 
         # Phase 2: Serialize structured config
-        # TODO: Honor the config.structured_config_suffix setting
         config.structured_configs_dir.mkdir(parents=True, exist_ok=True)
-        with config.structured_configs_dir.joinpath(f"{device}.yml").open("w", encoding="utf-8") as stream:
-            yaml.dump(eos_config, stream=stream, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130)
+        structured_config_path = config.structured_configs_dir.joinpath(f"{device}.{config.structured_config_suffix}")
+        with structured_config_path.open("w", encoding="utf-8") as stream:
+            if config.structured_config_suffix == "json":
+                json.dump(eos_config, stream, indent=2)
+                stream.write("\n")
+            else:
+                yaml.dump(eos_config, stream=stream, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130)
 
         # Phase 3: Validate structured config
         validated_data_result = validate_structured_config(eos_config)
