@@ -15,4 +15,4 @@ core_router:
     - name: missing-loopback-ipv4-pool
       id: 1
 
-expected_error_message: "'loopback_ipv4_pool' is required but was not found for host 'missing-loopback-ipv4-pool'."
+expected_error_message: "'loopback_ipv4_pool or loopback_ipv4_address' is required but was not found for host 'missing-loopback-ipv4-pool'."
