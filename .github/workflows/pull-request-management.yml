@@ -583,8 +583,7 @@ jobs:
           persist-credentials: false
       - name: Install Python & Ansible requirements
         run: |
-          # distlib is required when using manifest
-          pip install "ansible-core<2.22.0" distlib --upgrade
+          pip install "ansible-core<2.22.0" --upgrade
       - name: Build Ansible collection
         run: |
           ansible-galaxy collection build -vvv --force ansible_collections/arista/avd
