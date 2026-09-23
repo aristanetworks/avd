@@ -32,8 +32,6 @@ keys:
     required: true
   evpn_multicast:
     type: bool
-  loopback_ipv4_address:
-    type: str
   loopback_ipv4_pool:
     type: str
   loopback_ipv6_pool:
