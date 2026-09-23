@@ -340,7 +340,7 @@ class FilteredTenantsMixin(Protocol):
         First variables will be merged
         svi > svi_profile > svi_parent_profile > svi_parent's_parent_profile --> ... --> svi_cfg
         &
-        svi.nodes.<hostname> > svi_profile.nodes.<hostname> > svi_parent_profile.nodes.<hostname> --> svi_node_cfg
+        svi.nodes.<hostname> > svi_profile.nodes.<hostname> > svi_parent_profile.nodes.<hostname> --> ... --> svi_node_cfg
 
         Then svi is updated with the result of merging svi_node_cfg over svi_cfg
         svi_node_cfg > svi_cfg --> svi
