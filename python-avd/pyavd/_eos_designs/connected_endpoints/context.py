@@ -25,11 +25,8 @@ if TYPE_CHECKING:
 class ConnectedEndpointsPlatformFeatures:
     """Platform capabilities used while building connected-endpoint interfaces."""
 
-    address_locking: bool
-    """Resolved ``platform_settings[].feature_support.address_locking.supported`` value."""
-
-    address_locking_ipv6_ethernet_interface: bool
-    """Resolved ``platform_settings[].feature_support.address_locking.ipv6_ethernet_interface`` value."""
+    address_locking_support: Literal["none", "ipv4", "ipv4_ipv6"]
+    """Address-locking support, including the address families supported on Ethernet interfaces."""
 
     interface_storm_control: bool
     """Resolved ``platform_settings[].feature_support.interface_storm_control`` value."""
@@ -40,8 +37,8 @@ class ConnectedEndpointsPlatformFeatures:
     per_interface_l2_mtu: bool
     """Resolved ``platform_settings[].feature_support.per_interface_l2_mtu`` value."""
 
-    per_interface_mtu: bool
-    """Resolved ``platform_settings[].feature_support.per_interface_mtu`` value."""
+    mtu_support: Literal["none", "main_interfaces", "all_interfaces"]
+    """MTU support for no interfaces, main Ethernet and Port-Channel interfaces, or all interfaces including subinterfaces."""
 
     poe: bool
     """Resolved ``platform_settings[].feature_support.poe`` value."""
@@ -49,14 +46,8 @@ class ConnectedEndpointsPlatformFeatures:
     ptp: bool
     """Resolved ``platform_settings[].feature_support.ptp`` value."""
 
-    sflow: bool
-    """Resolved ``platform_settings[].feature_support.sflow`` value."""
-
-    sflow_subinterfaces: bool
-    """Resolved ``platform_settings[].feature_support.sflow_subinterfaces`` value."""
-
-    subinterface_mtu: bool
-    """Resolved ``platform_settings[].feature_support.subinterface_mtu`` value."""
+    sflow_support: Literal["none", "main_interfaces", "all_interfaces"]
+    """sFlow support for no interfaces, main Ethernet and Port-Channel interfaces, or all interfaces including subinterfaces."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -155,14 +146,8 @@ class ConnectedEndpointsBuildContext:
     link_tracking_group_default_name: str | None
     """Name of the first resolved node link-tracking group, used as the adapter default."""
 
-    overlay_evpn: bool
-    """Whether EVPN is enabled for the node after resolving its overlay roles and address families."""
-
-    overlay_vtep: bool
-    """Whether the node is a VXLAN VTEP after resolving node type and network-services settings."""
-
-    overlay_ler: bool
-    """Whether the node is an MPLS label edge router carrying network services."""
+    evpn_ethernet_segments_enabled: bool
+    """Whether EVPN Ethernet segments may be configured on connected-endpoint interfaces."""
 
     mlag: bool
     """Whether MLAG is enabled for the node."""
@@ -187,17 +172,19 @@ class ConnectedEndpointsBuildContext:
 
     def get_interface_mtu(self, interface_name: str, configured_mtu: int | None) -> int | None:
         """Return the configured MTU when the target platform supports it."""
-        if not self.platform_features.per_interface_mtu:
+        if self.platform_features.mtu_support == "none":
             return None
-        if "." in interface_name and not self.platform_features.subinterface_mtu:
+        if "." in interface_name and self.platform_features.mtu_support != "all_interfaces":
             return None
         return configured_mtu
 
     def get_interface_sflow(self, interface_name: str, configured_sflow: bool | None) -> bool | None:
         """Return the per-interface sFlow state supported by the target platform."""
-        if self.platform_features.sflow and ("." not in interface_name or self.platform_features.sflow_subinterfaces):
-            return configured_sflow
-        return None
+        if self.platform_features.sflow_support == "none":
+            return None
+        if "." in interface_name and self.platform_features.sflow_support != "all_interfaces":
+            return None
+        return configured_sflow
 
     def get_interface_validate_state(self, user_input: bool | None) -> bool | UndefinedType:
         """Resolve interface state validation without depending on structured-config utilities."""
