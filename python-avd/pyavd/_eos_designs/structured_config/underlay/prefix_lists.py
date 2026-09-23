@@ -74,10 +74,7 @@ class PrefixListsMixin(Protocol):
             for index, network in enumerate(collapse_addresses(get_ipv4_networks_from_pool(self.shared_utils.loopback_ipv4_pool)), start=1):
                 sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq 32")
         elif self.shared_utils.node_config.loopback_ipv4_address:
-            sequence_numbers.append_new(sequence=10, action=f"permit {self.shared_utils.node_config.loopback_ipv4_address}/32 eq 32")
-        else:
-            msg = "loopback_ipv4_pool or loopback_ipv4_address"
-            raise AristaAvdMissingVariableError(msg)
+            sequence_numbers.append_new(sequence=10, action=f"permit {self.shared_utils.node_config.loopback_ipv4_address}/32")
 
         if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0" and not self.shared_utils.is_wan_router:
             for index, network in enumerate(

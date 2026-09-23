@@ -1109,6 +1109,7 @@ class EosDesignsFactsProtocol(Protocol):
         "mgmt_ip": {"type": str},
         "mpls_lsr": {"type": bool},
         "evpn_multicast": {"type": bool},
+        "loopback_ipv4_address": {"type": str},
         "loopback_ipv4_pool": {"type": str},
         "loopback_ipv6_pool": {"type": str},
         "uplink_ipv4_pool": {"type": str},
@@ -1169,6 +1170,7 @@ class EosDesignsFactsProtocol(Protocol):
     mgmt_ip: str | None
     mpls_lsr: bool
     evpn_multicast: bool | None
+    loopback_ipv4_address: str | None
     loopback_ipv4_pool: str | None
     loopback_ipv6_pool: str | None
     uplink_ipv4_pool: str | None
@@ -1341,6 +1343,7 @@ class EosDesignsFactsProtocol(Protocol):
             mgmt_ip: str | UndefinedType | None = Undefined,
             mpls_lsr: bool | UndefinedType = Undefined,
             evpn_multicast: bool | UndefinedType | None = Undefined,
+            loopback_ipv4_address: str | UndefinedType | None = Undefined,
             loopback_ipv4_pool: str | UndefinedType | None = Undefined,
             loopback_ipv6_pool: str | UndefinedType | None = Undefined,
             uplink_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -1408,6 +1411,7 @@ class EosDesignsFactsProtocol(Protocol):
                 mgmt_ip: mgmt_ip
                 mpls_lsr: mpls_lsr
                 evpn_multicast: evpn_multicast
+                loopback_ipv4_address: loopback_ipv4_address
                 loopback_ipv4_pool: loopback_ipv4_pool
                 loopback_ipv6_pool: loopback_ipv6_pool
                 uplink_ipv4_pool: uplink_ipv4_pool

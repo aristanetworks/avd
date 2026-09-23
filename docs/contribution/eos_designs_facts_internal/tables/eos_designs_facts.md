@@ -16,6 +16,7 @@
     | [<samp>mgmt_ip</samp>](## "mgmt_ip") | String |  |  |  |  |
     | [<samp>mpls_lsr</samp>](## "mpls_lsr") | Boolean | Required |  |  |  |
     | [<samp>evpn_multicast</samp>](## "evpn_multicast") | Boolean |  |  |  |  |
+    | [<samp>loopback_ipv4_address</samp>](## "loopback_ipv4_address") | String |  |  |  |  |
     | [<samp>loopback_ipv4_pool</samp>](## "loopback_ipv4_pool") | String |  |  |  |  |
     | [<samp>loopback_ipv6_pool</samp>](## "loopback_ipv6_pool") | String |  |  |  |  |
     | [<samp>uplink_ipv4_pool</samp>](## "uplink_ipv4_pool") | String |  |  |  |  |
@@ -187,6 +188,7 @@
     mgmt_ip: <str>
     mpls_lsr: <bool; required>
     evpn_multicast: <bool>
+    loopback_ipv4_address: <str>
     loopback_ipv4_pool: <str>
     loopback_ipv6_pool: <str>
     uplink_ipv4_pool: <str>

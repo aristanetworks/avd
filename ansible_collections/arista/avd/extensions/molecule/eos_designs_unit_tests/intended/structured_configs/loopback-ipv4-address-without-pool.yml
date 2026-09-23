@@ -17,7 +17,7 @@ prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 10.42.42.42/32 eq 32
+    action: permit 10.42.42.42/32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
