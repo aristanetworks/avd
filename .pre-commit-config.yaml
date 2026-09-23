@@ -306,7 +306,14 @@ repos:
         language: python
         files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
-        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.16.8']
+        additional_dependencies:
+          - 'deepmerge>=1.1.0'
+          - 'PyYAML>=6.0.0'
+          - 'pydantic>=2.3.0'
+          - 'jsonschema-rs>=0.24'
+          - 'referencing>=0.35.0'
+          - 'ruff==0.16.8'
+          - 'pyavd-utils==0.0.9'
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
