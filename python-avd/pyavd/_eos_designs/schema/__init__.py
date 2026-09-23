@@ -18991,8 +18991,6 @@ class EosDesigns(EosDesignsRootModel):
             Set this to `true` to
             enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
             default VRF and preserving this connectivity.
-            This setting is only applicable to ACT `veos` and
-            `cloudeos` node types.
 
             Default value: `False`
             """
@@ -19032,8 +19030,6 @@ class EosDesigns(EosDesignsRootModel):
                            Set this to `true` to
                            enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
                            default VRF and preserving this connectivity.
-                           This setting is only applicable to ACT `veos` and
-                           `cloudeos` node types.
 
                     """
 
