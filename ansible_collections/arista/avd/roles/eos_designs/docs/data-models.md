@@ -113,13 +113,13 @@ As per the diagram above, the topology hierarchy is the following:
 You **must** define the `fabric_name` variable and it **must** match the Ansible inventory group name covering all devices in scope of the fabric.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-topology.md
+schemas/avd_design/docs/tables/fabric-topology.md
 --8<--
 
 ## Fabric IP Addressing
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-ip-addressing.md
+schemas/avd_design/docs/tables/fabric-ip-addressing.md
 --8<--
 
 ## PREVIEW - Fabric Numbering
@@ -127,7 +127,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-ip-addressin
 Fabric Numbering controls how various numbers are derived across the fabric.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-numbering.md
+schemas/avd_design/docs/tables/fabric-numbering.md
 --8<--
 
 ### Node ID Algorithm
@@ -390,7 +390,7 @@ AVD provides the capability to customize your node types, supporting a variety o
     ```
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-keys.md
+schemas/avd_design/docs/tables/node-type-keys.md
 --8<--
 
 ### Context for ip_addressing templates
@@ -575,7 +575,7 @@ vtep_loopback_interface:
     ```
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/type-setting.md
+schemas/avd_design/docs/tables/type-setting.md
 --8<--
 
 ## Default node types settings
@@ -584,7 +584,7 @@ Node types can be defined statically on each node or in each group of nodes.  By
 on the hostname.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-node-types.md
+schemas/avd_design/docs/tables/default-node-types.md
 --8<--
 
 ## Node type settings
@@ -605,7 +605,7 @@ defaults <- node_group <- node_group.node <- node
     Define common node settings under defaults. This reduces user input requirements, limiting errors.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-structure.md
+schemas/avd_design/docs/tables/node-type-structure.md
 --8<--
 
 ### Node type common configuration
@@ -619,13 +619,13 @@ Define your nodes, id, management and common configuration elements.
     A static unique identifier (id) is assigned to each device. This is leveraged to derive the IP address assignment from each summary defined in the Fabric Underlay and Overlay Topology Variables.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-common-configuration.md
+schemas/avd_design/docs/tables/node-type-common-configuration.md
 --8<--
 
 ### Node type inband management
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-inband-management-configuration.md
+schemas/avd_design/docs/tables/node-type-inband-management-configuration.md
 --8<--
 
 ### Node type uplink management
@@ -637,7 +637,7 @@ Source uplink interfaces and parent interfaces are defined on the child.
     Leverage [`default_interfaces`](#default-interface-settings) data model to auto define uplink and downlink interfaces based on the node id.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-uplink-configuration.md
+schemas/avd_design/docs/tables/node-type-uplink-configuration.md
 --8<--
 
 ### Node type L2 and MLAG configuration
@@ -646,79 +646,79 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-uplink-co
     Alternate addressing schemes are available at [`fabric_ip_addressing`](#fabric-ip-addressing).
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l2-mlag-configuration.md
+schemas/avd_design/docs/tables/node-type-l2-mlag-configuration.md
 --8<--
 
 ### Node type Loopback and VTEP configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-loopback-vtep-configuration.md
+schemas/avd_design/docs/tables/node-type-loopback-vtep-configuration.md
 --8<--
 
 ### Node type L3 interfaces configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l3-interfaces-configuration.md
+schemas/avd_design/docs/tables/node-type-l3-interfaces-configuration.md
 --8<--
 
 ### Node type L3 port-channels configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l3-port-channels-configuration.md
+schemas/avd_design/docs/tables/node-type-l3-port-channels-configuration.md
 --8<--
 
 ### Node type BGP configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-bgp-configuration.md
+schemas/avd_design/docs/tables/node-type-bgp-configuration.md
 --8<--
 
 ### Node type Multicast configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast.md
+schemas/avd_design/docs/tables/node-type-multicast.md
 --8<--
 
 ### Node type network services configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-services-configuration.md
+schemas/avd_design/docs/tables/node-type-evpn-services-configuration.md
 --8<--
 
 ### Node type EVPN to MPLS IP-VPN gateway configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-ipvpn-gateway-configuration.md
+schemas/avd_design/docs/tables/node-type-evpn-ipvpn-gateway-configuration.md
 --8<--
 
 ### Node type EVPN multi-domain gateway configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-multi-domain-gateway-configuration.md
+schemas/avd_design/docs/tables/node-type-evpn-multi-domain-gateway-configuration.md
 --8<--
 
 ### Node type ISIS Configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-isis-configuration.md
+schemas/avd_design/docs/tables/node-type-isis-configuration.md
 --8<--
 
 ### Node type MPLS configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-mpls-configuration.md
+schemas/avd_design/docs/tables/node-type-mpls-configuration.md
 --8<--
 
 ### Node type WAN configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-wan-configuration.md
+schemas/avd_design/docs/tables/node-type-wan-configuration.md
 --8<--
 
 ### Node type PTP configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-ptp-configuration.md
+schemas/avd_design/docs/tables/node-type-ptp-configuration.md
 --8<--
 
 ## Default interface settings
@@ -749,7 +749,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-ptp-confi
     ```
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-interfaces.md
+schemas/avd_design/docs/tables/default-interfaces.md
 --8<--
 
 ## L3 edge and DCI settings
@@ -762,7 +762,7 @@ For BGP peerings the AS number must be specified. If the AS number is different 
 Make sure to configure the variables in a group_vars file covering all devices mentioned in the data model.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/l3-edge.md
+schemas/avd_design/docs/tables/l3-edge.md
 --8<--
 
 ## Core interfaces settings
@@ -775,7 +775,7 @@ For BGP peerings the AS number must be specified. If the AS number is different 
 Make sure to configure the variables in a group_vars file covering all devices mentioned in the data model.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/core-interfaces.md
+schemas/avd_design/docs/tables/core-interfaces.md
 --8<--
 
 ## Setting a device as not deployed
@@ -798,7 +798,7 @@ To maintain a clean operational state and ensure validation tests pass on the ac
     `anta_runner` will also **automatically skip all tests** for devices that are themselves marked as `is_deployed: false`.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/is-deployed.md
+schemas/avd_design/docs/tables/is-deployed.md
 --8<--
 
 ## Fabric settings
@@ -850,19 +850,19 @@ The following underlay routing protocols are supported:
     ![Figure: Enable only_local_vlan_trunk_groups](../../../../../../docs/_media/only_local_vlan_trunk_groups.png)
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-settings.md
+schemas/avd_design/docs/tables/fabric-settings.md
 --8<--
 
 ## BFD settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/bfd-settings.md
+schemas/avd_design/docs/tables/bfd-settings.md
 --8<--
 
 ## BGP settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-settings.md
+schemas/avd_design/docs/tables/bgp-settings.md
 --8<--
 
 ## Catalogs
@@ -870,55 +870,55 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-settings.md
 ### BGP Peer Filters Catalog
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-peer-filters-catalog.md
+schemas/avd_design/docs/tables/bgp-peer-filters-catalog.md
 --8<--
 
 ### IPv4 extended ACLs Catalog
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-acls.md
+schemas/avd_design/docs/tables/ipv4-acls.md
 --8<--
 
 ### IPv6 extended ACLs Catalog
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv6-acls.md
+schemas/avd_design/docs/tables/ipv6-acls.md
 --8<--
 
 ### IPv4 Standard ACLs Catalog
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-standard-acls.md
+schemas/avd_design/docs/tables/ipv4-standard-acls.md
 --8<--
 
 ### IPv4 Prefix-List Catalog
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-prefix-list-catalog.md
+schemas/avd_design/docs/tables/ipv4-prefix-list-catalog.md
 --8<--
 
 ### IPv6 Prefix-List Catalog
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv6-prefix-list-catalog.md
+schemas/avd_design/docs/tables/ipv6-prefix-list-catalog.md
 --8<--
 
 ### MAC ACLs Catalog
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/mac-acls.md
+schemas/avd_design/docs/tables/mac-acls.md
 --8<--
 
 ## OSPF settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/ospf-settings.md
+schemas/avd_design/docs/tables/ospf-settings.md
 --8<--
 
 ## ISIS settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/isis-settings.md
+schemas/avd_design/docs/tables/isis-settings.md
 --8<--
 
 ## Overlay settings
@@ -935,19 +935,19 @@ The following overlay routing protocols are supported:
 ² By setting `overlay_routing_protocol:HER`, Arista AVD will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/overlay-settings.md
+schemas/avd_design/docs/tables/overlay-settings.md
 --8<--
 
 ## EVPN settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/evpn-settings.md
+schemas/avd_design/docs/tables/evpn-settings.md
 --8<--
 
 ## Address locking settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/address-locking-settings.md
+schemas/avd_design/docs/tables/address-locking-settings.md
 --8<--
 
 ## WAN Settings
@@ -955,7 +955,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/address-locking-set
 ### WAN generic settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-settings.md
+schemas/avd_design/docs/tables/wan-settings.md
 --8<--
 
 ### WAN hierarchy
@@ -965,19 +965,19 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-settings.md
     This section is only relevant for CV Pathfinder and not for AutoVPN
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
+schemas/avd_design/docs/tables/wan-cv-pathfinder-regions.md
 --8<--
 
 ### WAN path-groups and carriers
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-path-groups-and-carriers.md
+schemas/avd_design/docs/tables/wan-path-groups-and-carriers.md
 --8<--
 
 ### WAN route-servers
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-route-servers.md
+schemas/avd_design/docs/tables/wan-route-servers.md
 --8<--
 
 ### WAN Virtual topologies
@@ -985,13 +985,13 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-route-servers.m
 WAN virtual topologies leverage Deep Packet Inspection Engine to match traffic.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-virtual-topologies.md
+schemas/avd_design/docs/tables/wan-virtual-topologies.md
 --8<--
 
 #### Application Classification
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/application-classification.md
+schemas/avd_design/docs/tables/application-classification.md
 --8<--
 
 #### Internet Exit policies
@@ -1001,7 +1001,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/application-classif
     This section is only relevant for CV Pathfinder and not for AutoVPN
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-pathfinder-internet-exit-policies.md
+schemas/avd_design/docs/tables/cv-pathfinder-internet-exit-policies.md
 --8<--
 
 ##### Zscaler Internet Exit
@@ -1012,13 +1012,13 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-pathfinder-inter
     See the top level key description for more information.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/zscaler-endpoints.md
+schemas/avd_design/docs/tables/zscaler-endpoints.md
 --8<--
 
 ### WAN Zscaler Integration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-zscaler-integration.md
+schemas/avd_design/docs/tables/wan-cv-pathfinder-zscaler-integration.md
 --8<--
 
 ## Management settings
@@ -1026,97 +1026,97 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-z
 ### AAA
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/aaa-settings.md
+schemas/avd_design/docs/tables/aaa-settings.md
 --8<--
 
 ### DNS
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/dns-settings.md
+schemas/avd_design/docs/tables/dns-settings.md
 --8<--
 
 ### Event handlers
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/event-handlers.md
+schemas/avd_design/docs/tables/event-handlers.md
 --8<--
 
 ### Flow tracking
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-flow-tracking-settings.md
+schemas/avd_design/docs/tables/management-flow-tracking-settings.md
 --8<--
 
 ### Logging
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/logging-settings.md
+schemas/avd_design/docs/tables/logging-settings.md
 --8<--
 
 ### Management eAPI
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-eapi.md
+schemas/avd_design/docs/tables/management-eapi.md
 --8<--
 
 ### Management interface
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-interface-settings.md
+schemas/avd_design/docs/tables/management-interface-settings.md
 --8<--
 
 ### Time configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/time-configuration.md
+schemas/avd_design/docs/tables/time-configuration.md
 --8<--
 
 ### sFlow
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-sflow-settings.md
+schemas/avd_design/docs/tables/management-sflow-settings.md
 --8<--
 
 ### Source-interfaces
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-source-interfaces-settings.md
+schemas/avd_design/docs/tables/management-source-interfaces-settings.md
 --8<--
 
 ### SNMP
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-snmp-settings.md
+schemas/avd_design/docs/tables/management-snmp-settings.md
 --8<--
 
 ### SSH
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/ssh-settings.md
+schemas/avd_design/docs/tables/ssh-settings.md
 --8<--
 
 ### ZTP
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/inband-ztp-bootstrap-file.md
+schemas/avd_design/docs/tables/inband-ztp-bootstrap-file.md
 --8<--
 
 ### Other management settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-settings.md
+schemas/avd_design/docs/tables/management-settings.md
 --8<--
 
 ## 802.1X Settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/dot1x-settings.md
+schemas/avd_design/docs/tables/dot1x-settings.md
 --8<--
 
 ## Spanning Tree settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/spanning-tree-settings.md
+schemas/avd_design/docs/tables/spanning-tree-settings.md
 --8<--
 
 ## Monitoring
@@ -1124,43 +1124,43 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/spanning-tree-setti
 ### Event monitor
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/event-monitor.md
+schemas/avd_design/docs/tables/event-monitor.md
 --8<--
 
 ### Load interval
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/load-interval.md
+schemas/avd_design/docs/tables/load-interval.md
 --8<--
 
 ### Latency Analyzer (LANZ)
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/latency-analyzer.md
+schemas/avd_design/docs/tables/latency-analyzer.md
 --8<--
 
 ### Monitor Connectivity
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/monitor-connectivity.md
+schemas/avd_design/docs/tables/monitor-connectivity.md
 --8<--
 
 ## System settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/system-settings.md
+schemas/avd_design/docs/tables/system-settings.md
 --8<--
 
 ## CloudVision Settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-settings.md
+schemas/avd_design/docs/tables/cloudvision-settings.md
 --8<--
 
 ## CloudVision Tags Settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-tags.md
+schemas/avd_design/docs/tables/cloudvision-tags.md
 --8<--
 
 ## Endpoint connectivity
@@ -1347,7 +1347,7 @@ Both data models support variable inheritance from profiles defined under [`port
     ```
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/connected-endpoints.md
+schemas/avd_design/docs/tables/connected-endpoints.md
 --8<--
 
 ### Connected endpoints default description or description template settings
@@ -1355,7 +1355,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/connected-endpoints
 Connected endpoints support the customization of generated descriptions with a static value or template.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-connected-endpoints-description.md
+schemas/avd_design/docs/tables/default-connected-endpoints-description.md
 --8<--
 
 ### Network ports settings
@@ -1514,7 +1514,7 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
         To leverage automatic channel-id computation and configure port-channel with multiple members, `connected_endpoints` should be used.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-ports.md
+schemas/avd_design/docs/tables/network-ports.md
 --8<--
 
 ### Network ports default description or description template settings
@@ -1522,7 +1522,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-ports.md
 Network ports support the customization of generated descriptions with a static value or template.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-network-ports-description.md
+schemas/avd_design/docs/tables/default-network-ports-description.md
 --8<--
 
 ### Port profiles settings
@@ -1533,7 +1533,7 @@ Keys are the same as used under endpoint adapters. Keys defined under endpoints 
 A port profile can refer to another port profile using `parent_profile` to inherit settings in up to two levels (adapter->profile->parent_profile).
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/port-profiles.md
+schemas/avd_design/docs/tables/port-profiles.md
 --8<--
 
 ### Connected endpoints keys settings
@@ -1549,7 +1549,7 @@ The keys can be customized to provide a better better organization or grouping o
     The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/connected-endpoints-keys.md
+schemas/avd_design/docs/tables/connected-endpoints-keys.md
 --8<--
 
 ## Network Services
@@ -1583,35 +1583,35 @@ The keys used to define network services are configurable using [`network_servic
 The default available keys is `tenants`.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services.md
+schemas/avd_design/docs/tables/network-services.md
 --8<--
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/new-network-services-bgp-vrf-config.md
+schemas/avd_design/docs/tables/new-network-services-bgp-vrf-config.md
 --8<--
 
 #### Network services VRFs configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-settings.md
+schemas/avd_design/docs/tables/network-services-vrfs-settings.md
 --8<--
 
 #### Network services VRF SVIs configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-svis-settings.md
+schemas/avd_design/docs/tables/network-services-vrfs-svis-settings.md
 --8<--
 
 #### Network services VRF L3 Interfaces configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
+schemas/avd_design/docs/tables/network-services-vrfs-l3-interfaces-settings.md
 --8<--
 
 #### Network services VRF L3 Port-Channels configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-port-channel-settings.md
+schemas/avd_design/docs/tables/network-services-vrfs-l3-port-channel-settings.md
 --8<--
 
 #### Network services VRF Loopbacks configuration
@@ -1622,37 +1622,37 @@ Loopbacks are usually configured with `vtep_diagnostic` which supports IP pools 
 IP addresses on individual nodes.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-loopbacks-settings.md
+schemas/avd_design/docs/tables/network-services-vrfs-loopbacks-settings.md
 --8<--
 
 #### Network services VRF BGP configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-bgp-settings.md
+schemas/avd_design/docs/tables/network-services-vrfs-bgp-settings.md
 --8<--
 
 #### Network services VRF OSPF configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-ospf-settings.md
+schemas/avd_design/docs/tables/network-services-vrfs-ospf-settings.md
 --8<--
 
 #### Network services L2 VLANs configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-l2vlans-settings.md
+schemas/avd_design/docs/tables/network-services-l2vlans-settings.md
 --8<--
 
 #### Network services point-to-point services configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-point-to-point-services-settings.md
+schemas/avd_design/docs/tables/network-services-point-to-point-services-settings.md
 --8<--
 
 #### Network services multicast configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-multicast-settings.md
+schemas/avd_design/docs/tables/network-services-multicast-settings.md
 --8<--
 
 ### SVI profiles settings
@@ -1671,7 +1671,7 @@ SVI profiles can be leveraged to share common settings between SVIs.
   6. svi_parent_profile.structured_config
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/svi-profiles.md
+schemas/avd_design/docs/tables/svi-profiles.md
 --8<--
 
 ### EVPN VLAN aware bundles settings
@@ -1681,7 +1681,7 @@ EVPN VLAN aware bundles referenced by name in `<network_services_key>[].evpn_vla
 An EVPN VLAN aware bundle will only be configured if at least one VLAN is associated with it.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/evpn-vlan-bundles.md
+schemas/avd_design/docs/tables/evpn-vlan-bundles.md
 --8<--
 
 ### Network services keys settings
@@ -1695,7 +1695,7 @@ The keys can be customized to provide a better better organization or grouping o
     The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-keys.md
+schemas/avd_design/docs/tables/network-services-keys.md
 --8<--
 
 ## Platform settings
@@ -1717,25 +1717,25 @@ Management interface is modified for specific platforms like modular platforms w
 ### Platform
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-settings.md
+schemas/avd_design/docs/tables/platform-settings.md
 --8<--
 
 ### Custom platform
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-platform-settings.md
+schemas/avd_design/docs/tables/custom-platform-settings.md
 --8<--
 
 ### Platform speed groups
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-speed-groups.md
+schemas/avd_design/docs/tables/platform-speed-groups.md
 --8<--
 
 ## Validation Profiles
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/validation-profiles.md
+schemas/avd_design/docs/tables/validation-profiles.md
 --8<--
 
 ## PTP settings
@@ -1743,7 +1743,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/validation-profiles
 See the [Configuring PTP](how-to/ptp.md) how-to for details.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/ptp_settings.md
+schemas/avd_design/docs/tables/ptp_settings.md
 --8<--
 
 ## Custom Structured Configuration
@@ -1751,7 +1751,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/ptp_settings.md
 See the [Custom Structured Configuration](how-to/custom-structured-configuration.md) how-to for details.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-structured-configuration.md
+schemas/avd_design/docs/tables/custom-structured-configuration.md
 --8<--
 
 ## CloudVision Topology settings
@@ -1824,7 +1824,7 @@ This feature currently provides the following configurations based on the given 
     ```
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-topology.md
+schemas/avd_design/docs/tables/cv-topology.md
 --8<--
 
 ## PREVIEW - Digital Twin settings
@@ -1918,13 +1918,13 @@ If not specified otherwise, AVD uses the following default values when generatin
 | act_password | password of the default account deployed on the replica device | `admin` | `digital_twin.fabric.act_password` |
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-configuration.md
+schemas/avd_design/docs/tables/digital-twin-configuration.md
 --8<--
 
 ### Node type Digital Twin configuration
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
+schemas/avd_design/docs/tables/node-type-digital-twin-configuration.md
 --8<--
 
 ## PREVIEW - New devices models
@@ -1932,7 +1932,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-t
 See the [Node type settings](#node-type-settings) section for available keys.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/devices.md
+schemas/avd_design/docs/tables/devices.md
 --8<--
 
 ## Future AVD Design Behaviors
@@ -1940,5 +1940,5 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/devices.md
 Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/avd-design-future.md
+schemas/avd_design/docs/tables/avd-design-future.md
 --8<--
