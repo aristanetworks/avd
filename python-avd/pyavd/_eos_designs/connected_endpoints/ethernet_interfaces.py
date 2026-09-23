@@ -8,29 +8,29 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 from pyavd._utils.strip_empties import strip_null_from_data
 from pyavd._utils.undefined import Undefined
-from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
+from .context import ConnectedEndpointsDescriptionData
+
 if TYPE_CHECKING:
-    from . import AvdStructuredConfigConnectedEndpointsProtocol
+    from .builder import ConnectedEndpointsBuilder
 
 
 class EthernetInterfacesMixin(Protocol):
     """
-    Mixin Class used to generate structured config for one key.
+    Ethernet-interface implementation mixed into ``ConnectedEndpointsBuilder``.
 
-    Class should only be used as Mixin to a AvdStructuredConfig class.
+    Keeping the implementation separate from orchestration makes the large
+    interface transformation easier to navigate without widening its context.
     """
 
-    @structured_config_contributor
-    def ethernet_interfaces(self: AvdStructuredConfigConnectedEndpointsProtocol) -> None:
+    def ethernet_interfaces(self: ConnectedEndpointsBuilder) -> None:
         """
         Return structured config for ethernet_interfaces.
 
@@ -39,26 +39,26 @@ class EthernetInterfacesMixin(Protocol):
         - Silently overwrite duplicate network_ports with connected_endpoints.
         - Do NOT overwrite connected_endpoints with other connected_endpoints. Instead we raise a duplicate error.
         """
-        for connected_endpoint in self.shared_utils.filtered_connected_endpoints:
+        for connected_endpoint in self.context.connected_endpoints:
             for adapter in connected_endpoint.adapters:
                 for node_index, node_name in enumerate(adapter.switches):
-                    if node_name != self.shared_utils.hostname:
+                    if node_name != self.context.hostname:
                         continue
 
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
 
-                    self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
+                    self.target.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
 
-                    self.structured_config.ethernet_interfaces.append(ethernet_interface)
+                    self.target.ethernet_interfaces.append(ethernet_interface)
                     if adapter.structured_config:
-                        self.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
-                            adapter.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                        self.target.custom_ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                            adapter.structured_config, list_merge=self.context.custom_structured_config_list_merge
                         )
 
                     for subinterface in adapter.subinterfaces:
                         ethernet_subinterface_name = f"{ethernet_interface.name}.{subinterface.number}"
-                        self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(ethernet_subinterface_name)
-                        self.structured_config.ethernet_interfaces.append(
+                        self.target.parent_interfaces_tracker.register_ethernet_subinterface(ethernet_subinterface_name)
+                        self.target.ethernet_interfaces.append(
                             self._get_ethernet_subinterface_cfg(
                                 subinterface,
                                 adapter,
@@ -71,7 +71,7 @@ class EthernetInterfacesMixin(Protocol):
         # We need this since network ports can override each other, so the last one "wins"
         # Values are the real structured config and the custom structured config for this interface.
         network_ports_ethernet_interfaces: dict[str, tuple[EosCliConfigGen.EthernetInterfacesItem, EosCliConfigGen.EthernetInterfacesItem]] = {}
-        for network_port in self.shared_utils.filtered_network_ports:
+        for network_port in self.context.network_ports:
             connected_endpoint = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem(name=network_port.endpoint or Undefined)
             connected_endpoint.type = "network_port"
             connected_endpoint._internal_data.context = "network_ports"
@@ -81,7 +81,7 @@ class EthernetInterfacesMixin(Protocol):
             network_port_as_adapter._internal_data.context = network_port._internal_data.context
             for ethernet_interface_name in range_expand(network_port.switch_ports):
                 # Skip the interface if it was already created by some other feature like connected endpoints or uplinks etc.
-                if ethernet_interface_name in self.structured_config.ethernet_interfaces:
+                if ethernet_interface_name in self.target.ethernet_interfaces:
                     continue
 
                 # Override switches and switch_ports to only render for a single interface
@@ -89,7 +89,7 @@ class EthernetInterfacesMixin(Protocol):
                     [ethernet_interface_name]
                 )
                 network_port_as_adapter.switches = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.Switches(
-                    [self.shared_utils.hostname]
+                    [self.context.hostname]
                 )
 
                 # Using __setitem__ to replace any previous network_port.
@@ -99,31 +99,32 @@ class EthernetInterfacesMixin(Protocol):
 
         # Now insert into the actual structured config and custom structured config
         for ethernet_interface, structured_config in network_ports_ethernet_interfaces.values():
-            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
+            self.target.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
 
-            self.structured_config.ethernet_interfaces.append(ethernet_interface)
+            self.target.ethernet_interfaces.append(ethernet_interface)
             if structured_config:
-                self.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
-                    structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                self.target.custom_ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                    structured_config, list_merge=self.context.custom_structured_config_list_merge
                 )
 
     def _update_ethernet_interface_cfg(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         ethernet_interface: EosCliConfigGen.EthernetInterfacesItem,
         connected_endpoint: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem,
     ) -> None:
         ethernet_interface._update(
-            mtu=self.shared_utils.get_interface_mtu(ethernet_interface.name, adapter.mtu),
+            mtu=self.context.get_interface_mtu(ethernet_interface.name, adapter.mtu),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.Ptp),
             address_locking=self._get_adapter_address_locking(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.AddressLocking),
             service_profile=adapter.qos_profile,
-            flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
+            flow_tracker=self.context.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.LinkTrackingGroups),
         )
-        ethernet_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
-            ethernet_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
-        )
+        configured_sflow = default(adapter.sflow, self.context.fabric_sflow_endpoints)
+        ethernet_interface.sflow.enable = self.context.get_interface_sflow(ethernet_interface.name, configured_sflow)
+        if ethernet_interface.sflow.enable:
+            self.target.sflow_required = True
 
         if adapter.subinterfaces:
             # TODO: Consider checking for switchport related inputs and error if we have conflicts instead of silently ignoring.
@@ -173,7 +174,7 @@ class EthernetInterfacesMixin(Protocol):
             self._set_mac_acl(adapter.mac_acl_out)
 
     def _get_ethernet_interface_cfg(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         node_index: int,
         connected_endpoint: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem,
@@ -216,9 +217,8 @@ class EthernetInterfacesMixin(Protocol):
         # Common ethernet_interface settings
         ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
             name=adapter.switch_ports[node_index],
-            description=self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interface(
-                InterfaceDescriptionData(
-                    shared_utils=self.shared_utils,
+            description=self.context.render_ethernet_description(
+                ConnectedEndpointsDescriptionData(
                     interface=adapter.switch_ports[node_index],
                     peer=peer,
                     peer_interface=peer_interface,
@@ -230,7 +230,7 @@ class EthernetInterfacesMixin(Protocol):
             or None,
             speed=adapter.speed,
             shutdown=not (adapter.enabled if adapter.enabled is not None else True),
-            poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
+            poe=adapter.poe if self.context.platform_features.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,
             metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
                 peer=peer,
@@ -239,7 +239,7 @@ class EthernetInterfacesMixin(Protocol):
                 port_profile=adapter.profile,
                 peer_key=connected_endpoint._internal_data.context,
                 # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file
-                validate_state=self.structured_config_utils.get_interface_validate_state(adapter.validate_state),
+                validate_state=self.context.get_interface_validate_state(adapter.validate_state),
                 validate_lldp=adapter.validate_lldp,
             ),
         )
@@ -258,7 +258,7 @@ class EthernetInterfacesMixin(Protocol):
             if adapter.port_channel.lacp_fallback.mode == "static":
                 ethernet_interface.lacp_port_priority = 8192 if node_index == 0 else 32768
 
-            elif individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(adapter):
+            elif individual_adapter_settings := self.context.individual_adapter_settings.get(adapter._internal_data.context):
                 # if fallback is set to individual a profile _or_ mode+vlans have to be defined
                 # Enforced here and not in facts or shared_utils to fail on the proper device.
                 if not (
@@ -295,13 +295,13 @@ class EthernetInterfacesMixin(Protocol):
             ethernet_interface.flowcontrol = adapter.flowcontrol
 
         # Propagate campus_link_type for campus devices
-        if self.shared_utils.is_campus_device and adapter.campus_link_type:
+        if self.context.is_campus_device and adapter.campus_link_type:
             ethernet_interface._internal_data.campus_link_type = list(adapter.campus_link_type)
 
         return ethernet_interface
 
     def _get_ethernet_subinterface_cfg(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         subinterface: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.SubinterfacesItem,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         connected_endpoint: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem,
@@ -313,13 +313,13 @@ class EthernetInterfacesMixin(Protocol):
                 f"'vlan_id' must be set for '{adapter._internal_data.context}.subinterfaces[number={subinterface.number}]'"
                 " since the subinterface number is above 4094."
             )
-            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+            raise AristaAvdInvalidInputsError(msg, host=self.context.hostname)
         if (dot1q_client_vlan := subinterface.encapsulation_vlan.client_dot1q or subinterface.number) > 4094:
             msg = (
                 f"'encapsulation_vlan.client_dot1q' must be set for '{adapter._internal_data.context}."
                 f"subinterfaces[number={subinterface.number}]' since the subinterface number is above 4094."
             )
-            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+            raise AristaAvdInvalidInputsError(msg, host=self.context.hostname)
 
         # Common ethernet_interface settings
         ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
@@ -348,13 +348,13 @@ class EthernetInterfacesMixin(Protocol):
             short_esi := self._get_short_esi(adapter, dummy_channel_group_id, subif_short_esi=subinterface.short_esi, hash_extra_value=str(subinterface.number))
         ) is not None:
             ethernet_interface.evpn_ethernet_segment._update(
-                identifier=f"{self.inputs.evpn_short_esi_prefix}{short_esi}",
+                identifier=f"{self.context.evpn_short_esi_prefix}{short_esi}",
                 route_target=short_esi_to_route_target(short_esi),
             )
 
         if subinterface.structured_config:
-            self.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_subinterface_name)._deepmerge(
-                subinterface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+            self.target.custom_ethernet_interfaces.obtain(ethernet_subinterface_name)._deepmerge(
+                subinterface.structured_config, list_merge=self.context.custom_structured_config_list_merge
             )
 
         return strip_null_from_data(ethernet_interface, strip_values_tuple=(None, ""))

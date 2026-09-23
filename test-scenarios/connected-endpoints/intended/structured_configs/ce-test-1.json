@@ -1,0 +1,204 @@
+{
+  "ethernet_interfaces": [
+    {
+      "name": "Ethernet1",
+      "description": "SERVER_single-attached-server_eth0",
+      "shutdown": false,
+      "speed": null,
+      "mtu": null,
+      "l2_mtu": null,
+      "l2_mru": null,
+      "service_profile": null,
+      "spanning_tree_bpdufilter": null,
+      "spanning_tree_bpduguard": null,
+      "spanning_tree_portfast": "edge",
+      "spanning_tree_link_type": null,
+      "metadata": {
+        "peer": "single-attached-server",
+        "peer_interface": "eth0",
+        "peer_type": "server",
+        "peer_key": "servers",
+        "port_profile": "ACCESS_PROFILE",
+        "validate_lldp": null
+      },
+      "sflow": {
+        "enable": null
+      },
+      "switchport": {
+        "enabled": true,
+        "mode": "access",
+        "access_vlan": 10
+      },
+      "eos_cli": null
+    },
+    {
+      "name": "Ethernet2",
+      "description": "SERVER_port-channel-server_eth0",
+      "shutdown": false,
+      "speed": null,
+      "channel_group": {
+        "id": 23,
+        "mode": "active"
+      },
+      "metadata": {
+        "peer": "port-channel-server",
+        "peer_interface": "eth0",
+        "peer_type": "server",
+        "peer_key": "servers",
+        "port_profile": "TRUNK_PROFILE",
+        "validate_lldp": null
+      },
+      "eos_cli": null
+    },
+    {
+      "name": "Ethernet3",
+      "description": "SERVER_port-channel-server_eth1",
+      "shutdown": false,
+      "speed": null,
+      "channel_group": {
+        "id": 23,
+        "mode": "active"
+      },
+      "metadata": {
+        "peer": "port-channel-server",
+        "peer_interface": "eth1",
+        "peer_type": "server",
+        "peer_key": "servers",
+        "port_profile": "TRUNK_PROFILE",
+        "validate_lldp": null
+      },
+      "eos_cli": null
+    },
+    {
+      "name": "Ethernet4",
+      "description": "SERVER_subinterface-router_eth0",
+      "shutdown": false,
+      "speed": null,
+      "mtu": null,
+      "service_profile": null,
+      "metadata": {
+        "peer": "subinterface-router",
+        "peer_interface": "eth0",
+        "peer_type": "server",
+        "peer_key": "servers",
+        "port_profile": null,
+        "validate_lldp": null
+      },
+      "sflow": {
+        "enable": null
+      },
+      "switchport": {
+        "enabled": false
+      },
+      "eos_cli": null
+    },
+    {
+      "name": "Ethernet4.100",
+      "description": "subinterface-router_Ethernet4.100",
+      "encapsulation_vlan": {
+        "client": {
+          "encapsulation": "dot1q",
+          "vlan": 100
+        },
+        "network": {
+          "encapsulation": "client"
+        }
+      },
+      "vlan_id": 10,
+      "eos_cli": null
+    },
+    {
+      "name": "Ethernet10",
+      "description": "network-port-range",
+      "shutdown": false,
+      "speed": null,
+      "mtu": null,
+      "l2_mtu": null,
+      "l2_mru": null,
+      "service_profile": null,
+      "spanning_tree_bpdufilter": null,
+      "spanning_tree_bpduguard": null,
+      "spanning_tree_portfast": "edge",
+      "spanning_tree_link_type": null,
+      "metadata": {
+        "peer": "network-port-range",
+        "peer_interface": null,
+        "peer_type": "network_port",
+        "peer_key": "network_ports",
+        "port_profile": "ACCESS_PROFILE",
+        "validate_lldp": null
+      },
+      "sflow": {
+        "enable": null
+      },
+      "switchport": {
+        "enabled": true,
+        "mode": "access",
+        "access_vlan": 10
+      },
+      "eos_cli": null
+    },
+    {
+      "name": "Ethernet11",
+      "description": "network-port-range",
+      "shutdown": false,
+      "speed": null,
+      "mtu": null,
+      "l2_mtu": null,
+      "l2_mru": null,
+      "service_profile": null,
+      "spanning_tree_bpdufilter": null,
+      "spanning_tree_bpduguard": null,
+      "spanning_tree_portfast": "edge",
+      "spanning_tree_link_type": null,
+      "metadata": {
+        "peer": "network-port-range",
+        "peer_interface": null,
+        "peer_type": "network_port",
+        "peer_key": "network_ports",
+        "port_profile": "ACCESS_PROFILE",
+        "validate_lldp": null
+      },
+      "sflow": {
+        "enable": null
+      },
+      "switchport": {
+        "enabled": true,
+        "mode": "access",
+        "access_vlan": 10
+      },
+      "eos_cli": null
+    }
+  ],
+  "port_channel_interfaces": [
+    {
+      "name": "Port-Channel23",
+      "description": "SERVER_port-channel-server",
+      "shutdown": false,
+      "l2_mtu": null,
+      "l2_mru": null,
+      "mtu": null,
+      "spanning_tree_bpdufilter": null,
+      "spanning_tree_bpduguard": null,
+      "spanning_tree_portfast": null,
+      "spanning_tree_link_type": null,
+      "service_profile": null,
+      "metadata": {
+        "validate_lldp": null
+      },
+      "sflow": {
+        "enable": null
+      },
+      "switchport": {
+        "enabled": true,
+        "mode": "trunk",
+        "trunk": {
+          "allowed_vlan": "10-12",
+          "native_vlan": null,
+          "native_vlan_tag": null
+        }
+      },
+      "eos_cli": null
+    }
+  ]
+}
