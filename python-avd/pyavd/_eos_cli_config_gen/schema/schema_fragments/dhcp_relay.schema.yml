@@ -36,3 +36,6 @@ keys:
                   - 2000,3000
               convert_types:
                 - int
+      reply_source_address_validation:
+        type: bool
+        description: Validate reply source address matches configured server.

@@ -1918,6 +1918,9 @@ keys:
                 1000\n  - 500-510\n  - 2000,3000"
               convert_types:
               - int
+      reply_source_address_validation:
+        type: bool
+        description: Validate reply source address matches configured server.
   dhcp_servers:
     type: list
     primary_key: vrf
