@@ -14,7 +14,7 @@ from pyavd._eos_designs.connected_endpoints import (
     ConnectedEndpointsPlatformFeatures,
     build_connected_endpoints,
 )
-from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs, StructuredConfigGenerator, structured_config_contributor
+from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 from .mac_access_lists import MacAccessListsMixin
@@ -178,9 +178,6 @@ def get_connected_endpoints_build_context(
         ),
         render_ethernet_description=render_ethernet_description,
         render_port_channel_description=render_port_channel_description,
-        custom_structured_config_list_merge=StructCfgs.new_from_ansible_list_merge_strategy(
-            inputs.custom_structured_configuration_list_merge
-        ).list_merge_strategy,
     )
 
 
@@ -225,7 +222,7 @@ class AvdStructuredConfigConnectedEndpoints(StructuredConfigGenerator, MacAccess
         """
         target = ConnectedEndpointsBuildTarget(
             structured_config=self.structured_config,
-            custom_structured_config=self.custom_structured_configs.nested,
+            custom_structured_configs=self.custom_structured_configs,
             parent_interfaces_tracker=self.structured_config_utils.parent_interfaces_tracker,
         )
         context = get_connected_endpoints_build_context(self.inputs, self.facts, self.shared_utils)

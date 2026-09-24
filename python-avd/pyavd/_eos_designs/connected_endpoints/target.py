@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Protocol
 if TYPE_CHECKING:
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
     from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
+    from pyavd._schema.models.avd_base import AvdListMergeStrategy
 
 
 class ConnectedEndpointsStructuredConfigProtocol(Protocol):
@@ -24,6 +25,20 @@ class ConnectedEndpointsStructuredConfigProtocol(Protocol):
     @property
     def port_channel_interfaces(self) -> EosCliConfigGen.PortChannelInterfaces:
         """Live Port-Channel interface list."""
+        ...  # pylint: disable=unnecessary-ellipsis
+
+
+class ConnectedEndpointsCustomStructuredConfigsProtocol(Protocol):
+    """Custom structured-config state used by the connected-endpoints builder."""
+
+    @property
+    def nested(self) -> ConnectedEndpointsStructuredConfigProtocol:
+        """Structured-config model receiving custom interface overlays."""
+        ...  # pylint: disable=unnecessary-ellipsis
+
+    @property
+    def list_merge_strategy(self) -> AvdListMergeStrategy:
+        """Normalized strategy used to merge custom interface configuration."""
         ...  # pylint: disable=unnecessary-ellipsis
 
 
@@ -51,8 +66,8 @@ class ConnectedEndpointsBuildTarget:
     structured_config: ConnectedEndpointsStructuredConfigProtocol
     """Live structured-config model receiving generated interface configuration."""
 
-    custom_structured_config: ConnectedEndpointsStructuredConfigProtocol
-    """Live structured-config model receiving custom interface overlays."""
+    custom_structured_configs: ConnectedEndpointsCustomStructuredConfigsProtocol
+    """Live custom structured-config state receiving interface overlays."""
 
     parent_interfaces_tracker: ParentInterfacesTracker
     """Live tracker receiving existing parents and parents required by generated subinterfaces."""

@@ -860,6 +860,7 @@ def build_connected_endpoints_for_one_device(
     from pyavd._eos_designs.shared_utils import SharedUtils
     from pyavd._eos_designs.structured_config.connected_endpoints import get_connected_endpoints_build_context
     from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
+    from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
 
     shared_utils = SharedUtils(
         hostname=device,
@@ -870,20 +871,20 @@ def build_connected_endpoints_for_one_device(
         digital_twin=config.digital_twin,
     )
     structured_config = EosCliConfigGen()
-    custom_structured_config = EosCliConfigGen()
+    custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(device_avd_validated_inputs.custom_structured_configuration_list_merge)
     target = ConnectedEndpointsBuildTarget(
         structured_config=structured_config,
-        custom_structured_config=custom_structured_config,
+        custom_structured_configs=custom_structured_configs,
         parent_interfaces_tracker=ParentInterfacesTracker(),
     )
     context = get_connected_endpoints_build_context(device_avd_validated_inputs, avd_facts[device], shared_utils)
     build_connected_endpoints(context, target)
 
     # Mirror the regular build finalization relevant to the isolated output.
-    # The context already maps the Ansible list strategy (for example,
-    # append_rp) to the strategy understood by AvdModel._deepmerge.
+    # StructCfgs maps the Ansible list strategy (for example, append_rp) to the
+    # strategy understood by AvdModel._deepmerge.
     structured_config._strip_empties()
-    structured_config._deepmerge(custom_structured_config, list_merge=context.custom_structured_config_list_merge)
+    structured_config._deepmerge(custom_structured_configs.nested, list_merge=custom_structured_configs.list_merge_strategy)
     return structured_config._as_dict()
 
 

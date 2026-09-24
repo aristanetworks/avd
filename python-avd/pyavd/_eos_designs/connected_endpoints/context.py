@@ -167,9 +167,6 @@ class ConnectedEndpointsBuildContext:
     render_port_channel_description: Callable[[ConnectedEndpointsDescriptionData], str | None]
     """Renderer for Port-Channel descriptions, including regular-build custom description classes."""
 
-    custom_structured_config_list_merge: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"]
-    """Input ``custom_structured_configuration_list_merge``, normalized to the internal merge-strategy names."""
-
     def get_interface_mtu(self, interface_name: str, configured_mtu: int | None) -> int | None:
         """Return the configured MTU when the target platform supports it."""
         if self.platform_features.mtu_support == "none":

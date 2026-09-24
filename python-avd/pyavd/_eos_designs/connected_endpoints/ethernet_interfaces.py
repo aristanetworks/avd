@@ -51,8 +51,8 @@ class EthernetInterfacesMixin(Protocol):
 
                     self.target.structured_config.ethernet_interfaces.append(ethernet_interface)
                     if adapter.structured_config:
-                        self.target.custom_structured_config.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
-                            adapter.structured_config, list_merge=self.context.custom_structured_config_list_merge
+                        self.target.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                            adapter.structured_config, list_merge=self.target.custom_structured_configs.list_merge_strategy
                         )
 
                     for subinterface in adapter.subinterfaces:
@@ -103,8 +103,8 @@ class EthernetInterfacesMixin(Protocol):
 
             self.target.structured_config.ethernet_interfaces.append(ethernet_interface)
             if structured_config:
-                self.target.custom_structured_config.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
-                    structured_config, list_merge=self.context.custom_structured_config_list_merge
+                self.target.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                    structured_config, list_merge=self.target.custom_structured_configs.list_merge_strategy
                 )
 
     def _update_ethernet_interface_cfg(
@@ -353,8 +353,8 @@ class EthernetInterfacesMixin(Protocol):
             )
 
         if subinterface.structured_config:
-            self.target.custom_structured_config.ethernet_interfaces.obtain(ethernet_subinterface_name)._deepmerge(
-                subinterface.structured_config, list_merge=self.context.custom_structured_config_list_merge
+            self.target.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_subinterface_name)._deepmerge(
+                subinterface.structured_config, list_merge=self.target.custom_structured_configs.list_merge_strategy
             )
 
         return strip_null_from_data(ethernet_interface, strip_values_tuple=(None, ""))

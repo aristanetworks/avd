@@ -18,11 +18,12 @@ the target for the caller to handle.
 
 from .builder import build_connected_endpoints
 from .context import ConnectedEndpointsBuildContext, ConnectedEndpointsDescriptionData, ConnectedEndpointsPlatformFeatures
-from .target import ConnectedEndpointsBuildTarget, ConnectedEndpointsStructuredConfigProtocol
+from .target import ConnectedEndpointsBuildTarget, ConnectedEndpointsCustomStructuredConfigsProtocol, ConnectedEndpointsStructuredConfigProtocol
 
 __all__ = [
     "ConnectedEndpointsBuildContext",
     "ConnectedEndpointsBuildTarget",
+    "ConnectedEndpointsCustomStructuredConfigsProtocol",
     "ConnectedEndpointsDescriptionData",
     "ConnectedEndpointsPlatformFeatures",
     "ConnectedEndpointsStructuredConfigProtocol",
