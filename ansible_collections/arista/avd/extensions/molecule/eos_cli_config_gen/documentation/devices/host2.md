@@ -576,16 +576,16 @@ dhcp relay
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 10.20.20.3:9910 | - | - | - | - | False |
-| gzip | 10.20.20.1:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt | - | - | False |
-| gzip | 10.30.30.1:9910 | mgt | key,<removed> | - | - | False |
-| gzip | 10.40.40.1:9910 | mgt | token,/tmp/tokenDC3 | - | - | False |
-| gzip | 10.40.40.1:9910 | mgt | token-secure,/tmp/tokenDC4 | - | - | False |
-| gzip | 10.20.20.2:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key | - | - | False |
-| gzip | 10.20.20.3:9910 | - | - | - | - | False |
-| gzip | apiserver.arista.io:443 | - | key,<removed> | - | - | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 10.20.20.3:9910 | - | - | - | - | - | False |
+| gzip | 10.20.20.1:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt | - | - | - | False |
+| gzip | 10.30.30.1:9910 | mgt | key,<removed> | - | - | - | False |
+| gzip | 10.40.40.1:9910 | mgt | token,/tmp/tokenDC3 | - | - | - | False |
+| gzip | 10.40.40.1:9910 | mgt | token-secure,/tmp/tokenDC4 | - | - | - | False |
+| gzip | 10.20.20.2:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key | - | - | - | False |
+| gzip | 10.20.20.3:9910 | - | - | - | - | - | False |
+| gzip | apiserver.arista.io:443 | - | key,<removed> | - | - | - | False |
 
 #### TerminAttr Daemon Device Configuration
 
@@ -641,9 +641,9 @@ logging event link-status global
 
 MCS client is shutdown
 
-| Secondary CVX cluster | Server Hosts | Enabled |
-| --------------------- | ------------ | ------- |
-| default | - | False |
+| Secondary CVX cluster | Server Hosts | VRF | Source Interface | Enabled |
+| --------------------- | ------------ | --- | ---------------- | ------- |
+| default | - | - | Management0 | False |
 
 #### MCS Client Device Configuration
 
@@ -654,6 +654,7 @@ mcs client
    !
    cvx secondary default
       shutdown
+      source-interface Management0
 ```
 
 ### SNMP

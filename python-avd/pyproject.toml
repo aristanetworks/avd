@@ -28,7 +28,7 @@ dependencies = [
     # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
     "grpclib>=0.4.8",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.7",
+    "pyavd-utils==0.0.9",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
@@ -45,8 +45,6 @@ ansible = [
 ]
 ansible-collection = [
     "netaddr>=0.7.19",
-    # distlib is required to install the collection from source as it is using manifest
-    "distlib>=0.3.9",
 ]
 
 [build-system]
@@ -54,11 +52,11 @@ requires = [
     "deepmerge>=1.1.0",
     "jinja2>=3.0",
     "jsonschema-rs>=0.24",
-    "pyavd-utils==0.0.7",
+    "pyavd-utils==0.0.9",
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
-    "ruff==0.16.6",
+    "ruff==0.16.7",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"

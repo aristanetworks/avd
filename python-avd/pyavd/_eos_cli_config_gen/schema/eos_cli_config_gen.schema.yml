@@ -1758,6 +1758,13 @@ keys:
           e.g. "ale,flexCounter,hardware,kni,pulse,strata"
 
           '
+      sysdbexcludes:
+        type: str
+        description: 'Exclude paths from Sysdb.
+
+          e.g. "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
+
+          '
       taillogs:
         type: str
         description: 'Enable log file collection; /var/log/messages is streamed by
@@ -10866,6 +10873,12 @@ keys:
             items:
               type: str
               description: IP or hostname.
+          vrf:
+            type: str
+            description: VRF name.
+          source_interface:
+            type: str
+            description: Source interface name.
   metadata:
     type: dict
     description: 'The data under `metadata` is used for documentation, validation
@@ -25663,7 +25676,6 @@ keys:
               valid_values:
               - '0'
               - '7'
-              - 8a
               description: 'Authentication key type.
 
                 EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
@@ -25676,8 +25688,6 @@ keys:
                 - `0`: Key string is not encrypted.
 
                 - `7`: Type-7 encrypted (HIDDEN) key.
-
-                - `8a`: AES-256-GCM encrypted key.
 
                 '
             auth_key:
@@ -25710,7 +25720,6 @@ keys:
               valid_values:
               - '0'
               - '7'
-              - 8a
               description: 'Privacy key type.
 
                 EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
@@ -25725,8 +25734,6 @@ keys:
                 - `0`: Key string is not encrypted.
 
                 - `7`: Type-7 encrypted (HIDDEN) key.
-
-                - `8a`: AES-256-GCM encrypted key.
 
                 '
             priv_key:

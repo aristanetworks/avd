@@ -4216,6 +4216,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "grpcreadonly": {"type": bool},
             "ingestexclude": {"type": str},
             "smashexcludes": {"type": str},
+            "sysdbexcludes": {"type": str},
             "taillogs": {"type": str},
             "ecodhcpaddr": {"type": str},
             "ipfix": {"type": bool},
@@ -4296,6 +4297,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         Exclude paths from the shared memory table.
         e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+        """
+        sysdbexcludes: str | None
+        """
+        Exclude paths from Sysdb.
+        e.g.
+        "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
         """
         taillogs: str | None
         """
@@ -4381,6 +4388,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 grpcreadonly: bool | UndefinedType | None = Undefined,
                 ingestexclude: str | UndefinedType | None = Undefined,
                 smashexcludes: str | UndefinedType | None = Undefined,
+                sysdbexcludes: str | UndefinedType | None = Undefined,
                 taillogs: str | UndefinedType | None = Undefined,
                 ecodhcpaddr: str | UndefinedType | None = Undefined,
                 ipfix: bool | UndefinedType | None = Undefined,
@@ -4446,6 +4454,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     smashexcludes:
                        Exclude paths from the shared memory table.
                        e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+                    sysdbexcludes:
+                       Exclude paths from Sysdb.
+                       e.g.
+                       "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
                     taillogs:
                        Enable log file collection; /var/log/messages is streamed by default if no path is set.
                        e.g.
@@ -28205,11 +28217,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             ServerHosts._item_type = str
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "shutdown": {"type": bool}, "server_hosts": {"type": ServerHosts}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "shutdown": {"type": bool},
+                "server_hosts": {"type": ServerHosts},
+                "vrf": {"type": str},
+                "source_interface": {"type": str},
+            }
             name: str | None
             shutdown: bool | None
             server_hosts: ServerHosts
             """Subclass of AvdList with `str` items."""
+            vrf: str | None
+            """VRF name."""
+            source_interface: str | None
+            """Source interface name."""
 
             if TYPE_CHECKING:
 
@@ -28219,6 +28241,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType | None = Undefined,
                     shutdown: bool | UndefinedType | None = Undefined,
                     server_hosts: ServerHosts | UndefinedType = Undefined,
+                    vrf: str | UndefinedType | None = Undefined,
+                    source_interface: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     CvxSecondary.
@@ -28230,6 +28254,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: name
                         shutdown: shutdown
                         server_hosts: Subclass of AvdList with `str` items.
+                        vrf: VRF name.
+                        source_interface: Source interface name.
 
                     """
 
@@ -71362,8 +71388,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
-            AuthKeyType: TypeAlias = Literal["0", "7", "8a"]
-            PrivKeyType: TypeAlias = Literal["0", "7", "8a"]
+            AuthKeyType: TypeAlias = Literal["0", "7"]
+            PrivKeyType: TypeAlias = Literal["0", "7"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "group": {"type": str},
@@ -71423,8 +71449,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             set.
             - `0`: Key string is not encrypted.
             - `7`: Type-7 encrypted (HIDDEN) key.
-            - `8a`: AES-256-GCM
-            encrypted key.
             """
             auth_key: str | None
             """
@@ -71457,7 +71481,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             - `0`: Key string is not encrypted.
             - `7`: Type-7
             encrypted (HIDDEN) key.
-            - `8a`: AES-256-GCM encrypted key.
             """
             priv_key: str | None
             """
@@ -71538,8 +71561,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            set.
                            - `0`: Key string is not encrypted.
                            - `7`: Type-7 encrypted (HIDDEN) key.
-                           - `8a`: AES-256-GCM
-                           encrypted key.
                         auth_key:
                            Authentication key.
                            Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type` to
@@ -71564,7 +71585,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            - `0`: Key string is not encrypted.
                            - `7`: Type-7
                            encrypted (HIDDEN) key.
-                           - `8a`: AES-256-GCM encrypted key.
                         priv_key:
                            Privacy key.
                            Requires `localized` and `priv_key_type` to be set.

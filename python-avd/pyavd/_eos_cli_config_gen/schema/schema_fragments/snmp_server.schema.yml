@@ -211,7 +211,7 @@ keys:
                 Required for rendering any authentication or privacy credential.
             auth_key_type:
               type: str
-              valid_values: ["0", "7", "8a"]
+              valid_values: ["0", "7"]
               description: |
                 Authentication key type.
                 EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
@@ -219,7 +219,6 @@ keys:
                 Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key` to be set.
                 - `0`: Key string is not encrypted.
                 - `7`: Type-7 encrypted (HIDDEN) key.
-                - `8a`: AES-256-GCM encrypted key.
             auth_key:
               type: str
               description: |-
@@ -239,7 +238,7 @@ keys:
                 Required for rendering any privacy credential.
             priv_key_type:
               type: str
-              valid_values: ["0", "7", "8a"]
+              valid_values: ["0", "7"]
               description: |
                 Privacy key type.
                 EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
@@ -248,7 +247,6 @@ keys:
                 Rendered only when `priv`, `auth_key_type`, and `auth_key` are also set.
                 - `0`: Key string is not encrypted.
                 - `7`: Type-7 encrypted (HIDDEN) key.
-                - `8a`: AES-256-GCM encrypted key.
             priv_key:
               type: str
               description: |-
