@@ -428,6 +428,8 @@ port_profiles:
     parent_profile: profile4
 
   - profile: profile4
+    # Regression test: An empty parent_profile is treated as unset with recursive inheritance enabled.
+    parent_profile: ""
     mode: trunk
     native_vlan: 42
     link_tracking:

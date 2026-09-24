@@ -274,7 +274,7 @@
       ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_DEVICE_PROFILE_INFINITE_INHERITANCE
+  hosts: FABRIC_DEVICE_PROFILE_RECURSIVE_INHERITANCE
   connection: local
   tasks:
     - name: Run failure scenario Test

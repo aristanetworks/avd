@@ -159,7 +159,7 @@ port_profiles:
     spanning_tree_link_type: point-to-point
     parent_profile: profile3
 
-    # profile3 is not inherited for profile1 as allow_infinite_profile_inheritence is set to false.
+    # profile3 is not inherited for profile1 as allow_recursive_profile_inheritance is set to false.
   - profile: profile3
     mode: trunk
     qos_profile: MYQOS

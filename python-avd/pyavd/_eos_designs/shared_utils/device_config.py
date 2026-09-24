@@ -41,13 +41,10 @@ class DeviceConfigMixin(Protocol):
             msg = f"The Device Profile '{device_profile_name}' applied for the device '{self.hostname}' does not exist under `device_profiles`."
             raise AristaAvdInvalidInputsError(msg)
 
-        device_profiles_chain = EosDesigns.DeviceProfiles()
         device_profile = self.inputs.device_profiles[device_profile_name]._deepcopy()
         resolved_profile = self.inputs.device_profiles[device_profile_name]._deepcopy()
         if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
-            resolved_profile_item = self.return_resolved_profile_for_multilevel_inheritance(
-                "device_profiles", device_profile, self.inputs.device_profiles, device_profiles_chain
-            )
+            resolved_profile_item = self.return_resolved_profile_for_multilevel_inheritance("device_profiles", device_profile, self.inputs.device_profiles)
             device_config._deepinherit(resolved_profile_item._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
             return device_config
 

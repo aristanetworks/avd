@@ -159,12 +159,9 @@ class FilteredTenantsMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]._deepcopy()
-        l2vlans_profiles_chain = EosDesigns.L2vlanProfiles()
         resolved_profile = self.inputs.l2vlan_profiles[profile_name]._deepcopy()
         if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
-            return self.return_resolved_profile_for_multilevel_inheritance(
-                "l2vlan_profiles", l2vlan_profile, self.inputs.l2vlan_profiles, l2vlans_profiles_chain
-            )
+            return self.return_resolved_profile_for_multilevel_inheritance("l2vlan_profiles", l2vlan_profile, self.inputs.l2vlan_profiles)
 
         if resolved_profile.parent_profile:
             if resolved_profile.parent_profile not in self.inputs.l2vlan_profiles:
@@ -319,7 +316,7 @@ class FilteredTenantsMixin(Protocol):
         """
         Return structured config for one svi after inheritance.
 
-        Handle inheritance of node config as svi_profiles in two levels:
+        Handle recursive inheritance of node config across the svi_profile parent chain:
 
         First variables will be merged
         svi > svi_profile > svi_parent_profile > svi_parent's_parent_profile --> ... --> svi_cfg
@@ -333,13 +330,10 @@ class FilteredTenantsMixin(Protocol):
             if svi.profile not in self.inputs.svi_profiles:
                 msg = f"Profile '{svi.profile}' applied under SVI '{svi.name}' does not exist in `svi_profiles`."
                 raise AristaAvdInvalidInputsError(msg)
-            svi_profiles_chain = EosDesigns.SviProfiles()
             svi_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
             resolved_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
             if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
-                resolved_pro = self.return_resolved_profile_for_multilevel_inheritance(
-                    "svi_profiles", svi_profile, self.inputs.svi_profiles, svi_profiles_chain
-                )
+                resolved_pro = self.return_resolved_profile_for_multilevel_inheritance("svi_profiles", svi_profile, self.inputs.svi_profiles)
                 merged_svi = svi._deepinherited(
                     resolved_pro._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
                 )

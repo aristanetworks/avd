@@ -1,11 +1,11 @@
 ---
-fabric_name: FABRIC_DEVICE_PROFILE_INFINITE_INHERITANCE
+fabric_name: FABRIC_DEVICE_PROFILE_RECURSIVE_INHERITANCE
 
 avd_design_future:
   allow_recursive_profile_inheritance: true
 
 devices:
-  - name: device-profile-infinite-inheritance
+  - name: device-profile-recursive-inheritance
     profile: L3LEAF1B
     type: l3leaf
     id: 1

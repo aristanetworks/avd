@@ -26,7 +26,7 @@ l3leaf:
     vtep_loopback: Loopback1
     evpn_services_l2_only: false
   nodes:
-    - name: l2vlan-profiles-with-infinite-inheritance
+    - name: l2vlan-profiles-with-recursive-inheritance
       id: 3
       bgp_as: 65101
       filter:

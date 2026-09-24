@@ -37,7 +37,7 @@ tenants:
   - name: Tenant_D
     mac_vrf_vni_base: 40000
     vrfs:
-      - name: infinite-inheritance
+      - name: recursive-inheritance
         vrf_vni: 41
         svis:
           - id: 24
