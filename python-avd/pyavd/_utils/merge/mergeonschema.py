@@ -28,7 +28,6 @@ class MergeOnSchema:
             raise ValueError(msg)
 
         self.schema_name = schema_name
-        self.get_list_primary_key = get_list_primary_key
 
         if self.schema_name:
             from pyavd._schema.store import init_store  # noqa: PLC0415
@@ -40,7 +39,7 @@ class MergeOnSchema:
             return None
 
         try:
-            return self.get_list_primary_key(PYAVD_UTILS_SCHEMA_NAME, [str(path_item) for path_item in path])
+            return get_list_primary_key(PYAVD_UTILS_SCHEMA_NAME, [str(path_item) for path_item in path])
         except Exception as error:
             msg = f"Unable to get the primary key for schema '{self.schema_name}' at schema path {path}."
             raise RuntimeError(msg) from error

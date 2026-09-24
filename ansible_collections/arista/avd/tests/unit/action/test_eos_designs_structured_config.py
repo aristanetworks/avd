@@ -108,8 +108,8 @@ def test_run_emits_no_warnings_baseline(action_module: Callable[..., ActionModul
     assert formatted == [], f"Unexpected warnings emitted by run(): {formatted}"
 
 
-def test_run_merges_custom_template_output_with_eos_config_schema_name(action_module: Callable[..., ActionModule]) -> None:
-    """Custom-template output is merged using the EOS Config schema name."""
+def test_run_merges_custom_template_output_with_eos_config_schema(action_module: Callable[..., ActionModule]) -> None:
+    """Custom-template output is merged using the EOS Config schema."""
     module = action_module(
         ActionModule,
         {

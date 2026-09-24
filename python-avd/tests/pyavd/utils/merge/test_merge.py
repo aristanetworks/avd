@@ -2,7 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from pathlib import Path
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 import yaml
@@ -52,20 +52,20 @@ class TestMergeOnSchema:
     def test_strategy_without_primary_key_returns_strategy_end(self) -> None:
         """Fall through to the next list strategy when the schema path has no primary key."""
         merge_on_schema = MergeOnSchema("eos_config")
-        merge_on_schema.get_list_primary_key = MagicMock(return_value=None)
 
-        assert merge_on_schema.strategy(MagicMock(), ["not_a_list_with_primary_key"], [], []) is STRATEGY_END
+        with patch("pyavd._utils.merge.mergeonschema.get_list_primary_key", return_value=None):
+            assert merge_on_schema.strategy(MagicMock(), ["not_a_list_with_primary_key"], [], []) is STRATEGY_END
 
     def test_strategy_skips_items_without_matching_primary_key(self) -> None:
         """Only merge dict list items with matching primary-key values and leave the rest for fallback strategies."""
         merge_on_schema = MergeOnSchema("eos_config")
-        merge_on_schema.get_list_primary_key = MagicMock(return_value="name")
         config = MagicMock()
         config.value_strategy.return_value = {"name": "base", "value": "merged"}
         base = [{}, {"name": "base"}]
         nxt = [{}, {"name": "new"}, {"name": "base", "value": "next"}]
 
-        assert merge_on_schema.strategy(config, ["access_lists"], base, nxt) is STRATEGY_END
+        with patch("pyavd._utils.merge.mergeonschema.get_list_primary_key", return_value="name"):
+            assert merge_on_schema.strategy(config, ["access_lists"], base, nxt) is STRATEGY_END
         assert base == [{}, {"name": "base", "value": "merged"}]
         assert nxt == [{}, {"name": "new"}]
         config.value_strategy.assert_called_once_with(["access_lists", "1"], {"name": "base"}, {"name": "base", "value": "next"})
@@ -73,31 +73,35 @@ class TestMergeOnSchema:
     def test_strategy_returns_base_when_all_next_items_are_merged(self) -> None:
         """Return the updated base immediately when every next item was merged by schema primary key."""
         merge_on_schema = MergeOnSchema("eos_config")
-        merge_on_schema.get_list_primary_key = MagicMock(return_value="name")
         config = MagicMock()
         config.value_strategy.return_value = {"name": "base", "value": "merged"}
         base = [{"name": "base"}]
         nxt = [{"name": "base", "value": "next"}]
 
-        assert merge_on_schema.strategy(config, ["access_lists"], base, nxt) is base
+        with patch("pyavd._utils.merge.mergeonschema.get_list_primary_key", return_value="name"):
+            assert merge_on_schema.strategy(config, ["access_lists"], base, nxt) is base
         assert base == [{"name": "base", "value": "merged"}]
 
     def test_get_primary_key_wraps_pyavd_utils_error(self) -> None:
         """Wrap pyavd-utils schema lookup errors with schema name and path context."""
         merge_on_schema = MergeOnSchema("eos_config")
-        merge_on_schema.get_list_primary_key = MagicMock(side_effect=ValueError("lookup failed"))
 
-        with pytest.raises(RuntimeError, match=r"Unable to get the primary key for schema 'eos_config' at schema path \['access_lists'\]"):
+        with (
+            patch("pyavd._utils.merge.mergeonschema.get_list_primary_key", side_effect=ValueError("lookup failed")),
+            pytest.raises(RuntimeError, match=r"Unable to get the primary key for schema 'eos_config' at schema path \['access_lists'\]"),
+        ):
             merge_on_schema._get_primary_key(["access_lists"])
 
     def test_strategy_wraps_merge_error(self) -> None:
         """Wrap errors raised while deep-merging matching list items."""
         merge_on_schema = MergeOnSchema("eos_config")
-        merge_on_schema.get_list_primary_key = MagicMock(return_value="name")
         config = MagicMock()
         config.value_strategy.side_effect = ValueError("merge failed")
 
-        with pytest.raises(RuntimeError, match="An issue occurred while trying to do schema-based deepmerge"):
+        with (
+            patch("pyavd._utils.merge.mergeonschema.get_list_primary_key", return_value="name"),
+            pytest.raises(RuntimeError, match="An issue occurred while trying to do schema-based deepmerge"),
+        ):
             merge_on_schema.strategy(config, ["access_lists"], [{"name": "base"}], [{"name": "base"}])
 
     def test_strategy_wraps_remaining_items_cleanup_error(self) -> None:
@@ -109,10 +113,12 @@ class TestMergeOnSchema:
                 raise ValueError(msg)
 
         merge_on_schema = MergeOnSchema("eos_config")
-        merge_on_schema.get_list_primary_key = MagicMock(return_value="name")
         config = MagicMock()
         config.value_strategy.return_value = {"name": "base", "value": "merged"}
         nxt = ListWithFailingDelete([{"name": "base"}, {"name": "new"}])
 
-        with pytest.raises(RuntimeError, match="An issue occurred after schema-based deepmerge"):
+        with (
+            patch("pyavd._utils.merge.mergeonschema.get_list_primary_key", return_value="name"),
+            pytest.raises(RuntimeError, match="An issue occurred after schema-based deepmerge"),
+        ):
             merge_on_schema.strategy(config, ["access_lists"], [{"name": "base"}], nxt)
