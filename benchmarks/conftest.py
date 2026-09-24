@@ -6,50 +6,100 @@
 from __future__ import annotations
 
 import logging
-from itertools import chain
+from dataclasses import dataclass
+from functools import cached_property
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pytest
-from tests.models import MoleculeHost, MoleculeScenario
+
+from pyavd.api.pool_manager import PoolManager
+from pyavd.api.schemas import AVDDesign
+from tools.e2e_test_avd import (
+    AvdBuildContext,
+    FabricConfig,
+    FabricConfigOverrides,
+    InlineExecutor,
+    group_devices_per_fabric,
+    load_config,
+)
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from _pytest.terminal import TerminalReporter
 
 logger = logging.getLogger(__name__)
 
-# Cache for MoleculeScenario instances (shared with main tests)
-MOLECULE_SCENARIOS: dict[str, MoleculeScenario] = {}
+E2E_PROJECT_DIR = Path(__file__).parents[1] / "ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests"
 
 
-@pytest.fixture(scope="session", autouse=True)
-def benchmark_schema_store() -> None:
-    """Load the PyAVD schema store once for the benchmark process."""
-    from pyavd._schema.store import init_store
+@dataclass(frozen=True)
+class BenchmarkFabric:
+    """Prepared in-process representation of an end-to-end fabric."""
 
-    init_store()
+    config: FabricConfig
+    inputs: dict[str, AVDDesign]
+    hostvars: dict[str, dict[str, Any]]
+    pool_manager: PoolManager
+
+    @cached_property
+    def avd_facts(self) -> dict[str, Any]:
+        """Return cached fabric facts for per-device benchmarks."""
+        from tools.e2e_test_avd import get_avd_facts_for_fabric
+
+        return get_avd_facts_for_fabric(self.config, self.inputs, self.hostvars, self.pool_manager)
+
+
+@dataclass(frozen=True)
+class BenchmarkProject:
+    """Prepared fabrics from an end-to-end project."""
+
+    fabrics: tuple[BenchmarkFabric, ...]
+
+    def fabric_for_device(self, device: str) -> BenchmarkFabric:
+        """Return the fabric containing the requested device."""
+        for fabric in self.fabrics:
+            if device in fabric.inputs:
+                return fabric
+
+        msg = f"Device {device} was not found in the benchmark project"
+        raise KeyError(msg)
 
 
 @pytest.fixture(scope="session")
-def benchmark_cache() -> dict:
-    """Cache for expensive operations across benchmark tests."""
-    return {
-        "molecule_scenarios": {},
-        "validated_inputs": {},
-        "avd_facts": {},
-    }
+def benchmark_project() -> Iterator[BenchmarkProject]:
+    """Load and validate the eos_designs_unit_tests project through the end-to-end framework."""
+    project = load_config(E2E_PROJECT_DIR)
+    scenario = next(scenario for scenario in project.scenarios if scenario.config.scenario_name == "main")
+    context = AvdBuildContext(scenario.config, executor=InlineExecutor())
+    try:
+        benchmark_fabrics = []
+        for fabric_name, devices in group_devices_per_fabric(context).items():
+            fabric_config = FabricConfig.from_scenario(
+                fabric_name,
+                scenario.config,
+                scenario.fabric_overrides.get(fabric_name, FabricConfigOverrides()),
+            )
+            all_inputs = {}
+            all_hostvars = {}
+            for device in devices:
+                hostvars = context.inventory.get_vars(device)
+                all_inputs[device] = AVDDesign._from_dict(hostvars)
+                all_hostvars[device] = hostvars
 
+            benchmark_fabrics.append(
+                BenchmarkFabric(
+                    config=fabric_config,
+                    inputs=all_inputs,
+                    hostvars=all_hostvars,
+                    pool_manager=PoolManager(fabric_config.full_output_dir),
+                )
+            )
 
-@pytest.fixture(scope="session")
-def molecule_scenario_cache() -> dict[str, MoleculeScenario]:
-    """Cache MoleculeScenario instances to avoid re-parsing."""
-    return {}
-
-
-@pytest.fixture(scope="session")
-def benchmark_data_dir() -> Path:
-    """Return the path to benchmark data directory."""
-    return Path(__file__).parent / "data"
+        yield BenchmarkProject(tuple(benchmark_fabrics))
+    finally:
+        context.close()
 
 
 def pytest_terminal_summary(terminalreporter: TerminalReporter) -> None:
@@ -59,7 +109,6 @@ def pytest_terminal_summary(terminalreporter: TerminalReporter) -> None:
 
 def pytest_configure(config: pytest.Config) -> None:
     """Configure pytest for benchmarking."""
-    # Disable logging during benchmarks to avoid timing overhead
     if config.getoption("--codspeed"):
         logging.disable(logging.CRITICAL)
 
@@ -68,54 +117,3 @@ def pytest_unconfigure(config: pytest.Config) -> None:
     """Re-enable logging after benchmarks."""
     if config.getoption("--codspeed"):
         logging.disable(logging.NOTSET)
-
-
-def get_test_id(fixture: MoleculeHost | MoleculeScenario) -> str:
-    match fixture:
-        case MoleculeScenario():
-            return f"{fixture.name}{'_digital_twin' if fixture.digital_twin else ''}__{fixture.name}"
-        case MoleculeHost():
-            return f"{fixture.scenario.name}{'_digital_twin' if fixture.scenario.digital_twin else ''}__{fixture.name}"
-
-
-def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
-    """
-    Generate MoleculeHost or MoleculeScenario instances for scenarios given with pytest.mark.molecule_scenarios(<scenario>, <scenario>, digital_twin=<bool>).
-
-    The generated objects are inserted with parametrize to generate a test case for each.
-
-    Reads/updates MOLECULE_SCENARIOS for caching.
-    """
-    molecule_scenarios: list[MoleculeScenario] = []
-    selected_hostnames: set[str] = set()
-    for marker in metafunc.definition.iter_markers(name="molecule_scenarios"):
-        hosts = marker.kwargs.get("hosts", ())
-        selected_hostnames.update((hosts,) if isinstance(hosts, str) else hosts)
-        for molecule_scenario_name in marker.args:
-            if molecule_scenario_name not in MOLECULE_SCENARIOS:
-                # Using this method since setdefault triggers init of the class which is expensive.
-                MOLECULE_SCENARIOS[molecule_scenario_name] = MoleculeScenario(molecule_scenario_name)
-            molecule_scenarios.append(MOLECULE_SCENARIOS[molecule_scenario_name])
-
-    for marker in metafunc.definition.iter_markers(name="digital_twin_molecule_scenarios"):
-        hosts = marker.kwargs.get("hosts", ())
-        selected_hostnames.update((hosts,) if isinstance(hosts, str) else hosts)
-        for molecule_scenario_name in marker.args:
-            molecule_scenario_extended_name = f"{molecule_scenario_name}_digital_twin"
-            if molecule_scenario_extended_name not in MOLECULE_SCENARIOS:
-                # Using this method since setdefault triggers init of the class which is expensive.
-                MOLECULE_SCENARIOS[molecule_scenario_extended_name] = MoleculeScenario(molecule_scenario_name, digital_twin=True)
-            molecule_scenarios.append(MOLECULE_SCENARIOS[molecule_scenario_extended_name])
-
-    if "molecule_host" in metafunc.fixturenames:
-        molecule_hosts = list(chain.from_iterable(scenario.hosts for scenario in molecule_scenarios))
-        if selected_hostnames:
-            available_hostnames = {host.name for host in molecule_hosts}
-            if unknown_hostnames := selected_hostnames - available_hostnames:
-                msg = f"Unknown molecule benchmark hosts: {', '.join(sorted(unknown_hostnames))}"
-                raise ValueError(msg)
-            molecule_hosts = [host for host in molecule_hosts if host.name in selected_hostnames]
-        metafunc.parametrize("molecule_host", molecule_hosts, ids=get_test_id)
-
-    if "molecule_scenario" in metafunc.fixturenames:
-        metafunc.parametrize("molecule_scenario", molecule_scenarios, ids=get_test_id)
