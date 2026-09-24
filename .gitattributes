@@ -6,8 +6,8 @@
 /python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py linguist-generated=true -merge -diff
 
 # Showing generated tables in PR diff by default by count as generated and automatically use the latest file on merge
-/ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*  linguist-generated=true -merge diff
-/ansible_collections/arista/avd/roles/eos_designs/docs/tables/*  linguist-generated=true -merge diff
+/schemas/eos_config/docs/tables/*  linguist-generated=true -merge diff
+/schemas/avd_design/docs/tables/*  linguist-generated=true -merge diff
 
 # Collapsing generated plugins doc from PR diff by default
 /ansible_collections/arista/avd/docs/plugins/*  linguist-generated=true
