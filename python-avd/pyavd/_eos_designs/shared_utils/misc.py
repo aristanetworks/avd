@@ -623,12 +623,12 @@ class MiscMixin(Protocol):
         )
 
         if not MAC_ADDRESS_PATTERN.fullmatch(mac_address):
-            msg = f"custom_system_mac_address template rendered '{mac_address}' which is not a valid EOS MAC (H.H.H format)."
+            msg = f"custom_system_mac_address rendered '{mac_address}' which is not a valid EOS MAC (H.H.H format)."
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         if int(mac_address[0:2], 16) & 1:
             msg = (
-                f"The provided 'custom_system_mac_address' template rendered multicast MAC address '{mac_address}' "
+                f"The provided 'custom_system_mac_address' rendered multicast MAC address '{mac_address}' "
                 f"for device '{self.hostname}'. "
                 "The rendered value must be a unicast MAC address (the least-significant bit of the first octet must be zero)."
             )

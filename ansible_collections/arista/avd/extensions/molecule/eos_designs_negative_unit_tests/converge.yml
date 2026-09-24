@@ -499,7 +499,14 @@
     - name: Run failure scenario Test
       ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
-- name: Converge Negative tests for custom system MAC address
+- name: Converge Negative tests for custom system MAC address with invalid format
+  hosts: custom-system-mac-address-invalid-format
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for custom multicast system MAC address
   hosts: custom-system-mac-address-multicast
   connection: local
   tasks:
