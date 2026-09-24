@@ -211,6 +211,7 @@ keys:
                 Required for rendering any authentication or privacy credential.
             auth_key_type:
               type: str
+              # TODO: EOS having bug with 8a key type, add 8a as valid value once fixed in EOS
               valid_values: ["0", "7"]
               description: |
                 Authentication key type.
@@ -238,6 +239,7 @@ keys:
                 Required for rendering any privacy credential.
             priv_key_type:
               type: str
+              # TODO: EOS having bug with 8a key type, add 8a as valid value once fixed in EOS
               valid_values: ["0", "7"]
               description: |
                 Privacy key type.
