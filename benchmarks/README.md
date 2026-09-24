@@ -13,17 +13,19 @@ This directory contains performance benchmarks for Arista AVD using
 
 The default CodSpeed suite is intentionally small and stable:
 
-- `test_molecule_scenarios.py` benchmarks per-host validation, structured config
-  generation, and EOS config rendering for representative hosts from the
-  `eos_designs_unit_tests` molecule scenario. Fabric facts are prepared outside
-  the timed path. It also benchmarks fabric-wide facts generation for the full
-  scenario.
+- `test_molecule_scenarios.py` loads the `eos_designs_unit_tests` project through
+  the end-to-end framework and benchmarks in-process structured config and EOS
+  config rendering for representative hosts. Fabric facts are prepared outside
+  the per-host timed path. It also benchmarks fabric-wide facts generation for
+  the full scenario.
 - `test_large_fabric_scaling.py` benchmarks a deterministic synthetic full
   workflow. The 15-device case runs in the default suite; the 150-device case is
   marked `benchmark_scale` and is only intended for full/manual runs.
 
 The benchmark suite does not invoke Molecule CLI, Docker, CloudVision, ANTA
-runner, or network services.
+runner, network services, or multiprocessing. Normal end-to-end runs continue
+to use multiprocessing; benchmarks execute the shared stages inline so CodSpeed
+can use deterministic CPU simulation instead of walltime.
 
 ## GitHub Actions
 
