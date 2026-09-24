@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: Profile 'profile3' applied under port profile 'profile2' does not exist in 'port_profiles' for host 'fabric-invalid-parent-port-profile'.
+pyavd._errors.AristaAvdInvalidInputsError: Parent profile 'profile3' applied under 'profile2' does not exist in 'port_profiles' for host 'fabric-invalid-parent-port-profile'.

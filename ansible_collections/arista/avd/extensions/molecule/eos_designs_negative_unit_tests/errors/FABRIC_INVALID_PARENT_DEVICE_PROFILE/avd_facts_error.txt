@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: The parent device profile 'invalid-profile' applied under the profile 'L3LEAF_PARENT_PROFILE' does not exist in 'device_profiles'.
+pyavd._errors.AristaAvdInvalidInputsError: Parent profile 'invalid-profile' applied under 'L3LEAF_PARENT_PROFILE' does not exist in 'device_profiles'.
