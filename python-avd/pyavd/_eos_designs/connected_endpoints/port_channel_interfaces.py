@@ -53,8 +53,8 @@ class PortChannelInterfacesMixin(Protocol):
 
                 self.target.structured_config.port_channel_interfaces.append(port_channel_interface)
                 if adapter.port_channel.structured_config:
-                    self.target.custom_structured_config.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
-                        adapter.port_channel.structured_config, list_merge=self.context.custom_structured_config_list_merge
+                    self.target.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
+                        adapter.port_channel.structured_config, list_merge=self.target.custom_structured_configs.list_merge_strategy
                     )
 
                 for subinterface in adapter.port_channel.subinterfaces:
@@ -114,8 +114,8 @@ class PortChannelInterfacesMixin(Protocol):
 
             self.target.structured_config.port_channel_interfaces.append(port_channel_interface)
             if structured_config:
-                self.target.custom_structured_config.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
-                    structured_config, list_merge=self.context.custom_structured_config_list_merge
+                self.target.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
+                    structured_config, list_merge=self.target.custom_structured_configs.list_merge_strategy
                 )
 
     def _get_port_channel_interface_cfg(
@@ -310,8 +310,8 @@ class PortChannelInterfacesMixin(Protocol):
             )
 
         if subinterface.structured_config:
-            self.target.custom_structured_config.port_channel_interfaces.obtain(port_channel_subinterface_name)._deepmerge(
-                subinterface.structured_config, list_merge=self.context.custom_structured_config_list_merge
+            self.target.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_subinterface_name)._deepmerge(
+                subinterface.structured_config, list_merge=self.target.custom_structured_configs.list_merge_strategy
             )
 
         return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))
