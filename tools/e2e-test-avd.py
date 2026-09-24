@@ -870,13 +870,20 @@ def build_connected_endpoints_for_one_device(
         digital_twin=config.digital_twin,
     )
     structured_config = EosCliConfigGen()
+    custom_structured_config = EosCliConfigGen()
     target = ConnectedEndpointsBuildTarget(
         structured_config=structured_config,
-        custom_structured_config=EosCliConfigGen(),
+        custom_structured_config=custom_structured_config,
         parent_interfaces_tracker=ParentInterfacesTracker(),
     )
     context = get_connected_endpoints_build_context(device_avd_validated_inputs, avd_facts[device], shared_utils)
     build_connected_endpoints(context, target)
+
+    # Mirror the regular build finalization relevant to the isolated output.
+    # The context already maps the Ansible list strategy (for example,
+    # append_rp) to the strategy understood by AvdModel._deepmerge.
+    structured_config._strip_empties()
+    structured_config._deepmerge(custom_structured_config, list_merge=context.custom_structured_config_list_merge)
     return structured_config._as_dict()
 
 
