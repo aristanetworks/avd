@@ -873,10 +873,8 @@ def build_connected_endpoints_for_one_device(
     structured_config = EosCliConfigGen()
     custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(device_avd_validated_inputs.custom_structured_configuration_list_merge)
     target = ConnectedEndpointsBuildTarget(
-        ethernet_interfaces=structured_config.ethernet_interfaces,
-        port_channel_interfaces=structured_config.port_channel_interfaces,
-        custom_ethernet_interfaces=custom_structured_configs.nested.ethernet_interfaces,
-        custom_port_channel_interfaces=custom_structured_configs.nested.port_channel_interfaces,
+        structured_config=structured_config,
+        custom_structured_config=custom_structured_configs.nested,
         parent_interfaces_tracker=ParentInterfacesTracker(),
     )
     context = get_connected_endpoints_build_context(device_avd_validated_inputs, avd_facts[device], shared_utils)

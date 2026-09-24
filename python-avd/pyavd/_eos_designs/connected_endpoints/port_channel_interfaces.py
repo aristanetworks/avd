@@ -51,9 +51,9 @@ class PortChannelInterfacesMixin(Protocol):
 
                 self.target.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface_name)
 
-                self.target.port_channel_interfaces.append(port_channel_interface)
+                self.target.structured_config.port_channel_interfaces.append(port_channel_interface)
                 if adapter.port_channel.structured_config:
-                    self.target.custom_port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
+                    self.target.custom_structured_config.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
                         adapter.port_channel.structured_config, list_merge=self.context.custom_structured_config_list_merge
                     )
 
@@ -62,7 +62,7 @@ class PortChannelInterfacesMixin(Protocol):
 
                     self.target.parent_interfaces_tracker.register_port_channel_subinterface(port_channel_subinterface_name)
 
-                    self.target.port_channel_interfaces.append(
+                    self.target.structured_config.port_channel_interfaces.append(
                         self._get_port_channel_subinterface_cfg(
                             subinterface,
                             adapter,
@@ -112,9 +112,9 @@ class PortChannelInterfacesMixin(Protocol):
         for port_channel_interface, structured_config in network_ports_port_channel_interfaces.values():
             self.target.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface.name)
 
-            self.target.port_channel_interfaces.append(port_channel_interface)
+            self.target.structured_config.port_channel_interfaces.append(port_channel_interface)
             if structured_config:
-                self.target.custom_port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
+                self.target.custom_structured_config.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
                     structured_config, list_merge=self.context.custom_structured_config_list_merge
                 )
 
@@ -310,7 +310,7 @@ class PortChannelInterfacesMixin(Protocol):
             )
 
         if subinterface.structured_config:
-            self.target.custom_port_channel_interfaces.obtain(port_channel_subinterface_name)._deepmerge(
+            self.target.custom_structured_config.port_channel_interfaces.obtain(port_channel_subinterface_name)._deepmerge(
                 subinterface.structured_config, list_merge=self.context.custom_structured_config_list_merge
             )
 
