@@ -162,39 +162,23 @@ class FilteredTenantsMixin(Protocol):
         l2vlans_profiles_chain = EosDesigns.L2vlanProfiles()
         resolved_profile = self.inputs.l2vlan_profiles[profile_name]._deepcopy()
         if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
-            while l2vlan_profile.parent_profile is not None:
-                if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
-                    msg = f"Parent profile '{l2vlan_profile.parent_profile}' applied under '{l2vlan_profile.profile}' does not exist in 'l2vlan_profiles'."
-                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-                if l2vlan_profile.parent_profile in l2vlans_profiles_chain or l2vlan_profile.parent_profile == resolved_profile.profile:
-                    msg = (
-                        f"Circular profile dependency detected: Profile '{l2vlan_profile.parent_profile}' cannot be applied as"
-                        f" the parent profile of '{l2vlan_profile.profile}' in 'l2vlan_profiles' because it would create a loop."
-                    )
-                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-                l2vlan_parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]._deepcopy()
-                l2vlans_profiles_chain.append(l2vlan_parent_profile)
-                l2vlan_profile = l2vlan_parent_profile
+            return self.return_resolved_profile_for_multilevel_inheritance(
+                "l2vlan_profiles", l2vlan_profile, self.inputs.l2vlan_profiles, l2vlans_profiles_chain
+            )
 
-            for profile in l2vlans_profiles_chain:
-                resolved_profile._deepinherit(profile)
-            if hasattr(resolved_profile, "parent_profile"):
-                delattr(resolved_profile, "parent_profile")
-            return resolved_profile
-
-        if l2vlan_profile.parent_profile:
-            if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
+        if resolved_profile.parent_profile:
+            if resolved_profile.parent_profile not in self.inputs.l2vlan_profiles:
                 msg = f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{profile_name}' does not exist in 'l2vlan_profiles'."
                 raise AristaAvdInvalidInputsError(msg)
 
-            parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]
+            parent_profile = self.inputs.l2vlan_profiles[resolved_profile.parent_profile]
 
             # Notice reuse of the same variable with the merged content.
-            l2vlan_profile = l2vlan_profile._deepinherited(parent_profile)
+            resolved_profile._deepinherit(parent_profile)
 
-        delattr(l2vlan_profile, "parent_profile")
+        delattr(resolved_profile, "parent_profile")
 
-        return l2vlan_profile
+        return resolved_profile
 
     def is_accepted_vlan(
         self: SharedUtilsProtocol,
@@ -353,23 +337,11 @@ class FilteredTenantsMixin(Protocol):
             svi_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
             resolved_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
             if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
-                while svi_profile.parent_profile is not None:
-                    if svi_profile.parent_profile not in self.inputs.svi_profiles:
-                        msg = f"Parent profile '{svi_profile.parent_profile}' applied under '{svi_profile.profile}' does not exist in 'svi_profiles'."
-                        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-                    if svi_profile.parent_profile in svi_profiles_chain or svi_profile.parent_profile == resolved_profile.profile:
-                        msg = (
-                            f"Circular profile dependency detected: Profile '{svi_profile.parent_profile}' cannot be applied as"
-                            f" the parent profile of '{svi_profile.profile}' in 'svi_profiles' because it would create a loop."
-                        )
-                        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-                    svi_parent_profile = self.inputs.svi_profiles[svi_profile.parent_profile]._deepcopy()
-                    svi_profiles_chain.append(svi_parent_profile)
-                    svi_profile = svi_parent_profile
-                for profile in svi_profiles_chain:
-                    resolved_profile._deepinherit(profile)
+                resolved_pro = self.return_resolved_profile_for_multilevel_inheritance(
+                    "svi_profiles", svi_profile, self.inputs.svi_profiles, svi_profiles_chain
+                )
                 merged_svi = svi._deepinherited(
-                    resolved_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
+                    resolved_pro._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
                 )
                 self._set_node_specific_config(merged_svi)
                 return merged_svi

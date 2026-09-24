@@ -42,28 +42,13 @@ class DeviceConfigMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         device_profiles_chain = EosDesigns.DeviceProfiles()
+        device_profile = self.inputs.device_profiles[device_profile_name]._deepcopy()
         resolved_profile = self.inputs.device_profiles[device_profile_name]._deepcopy()
         if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
-            while device_profile.parent_profile is not None:
-                if not (device_parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
-                    msg = (
-                        f"The parent device profile '{device_profile.parent_profile}' applied under the profile '{device_profile.name}'"
-                        " does not exist in 'device_profiles'."
-                    )
-                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-                if device_profile.parent_profile in device_profiles_chain or device_profile.parent_profile == device_profile_name:
-                    msg = (
-                        f"Circular profile dependency detected: Profile '{device_profile.parent_profile}' "
-                        f"cannot be assigned as the parent of '{device_profile.name}' in 'device_profiles' because it would create a loop."
-                    )
-                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-                parent_profile = device_parent_profile._deepcopy()
-                device_profiles_chain.append(parent_profile)
-                device_profile = parent_profile
-
-            for profile in device_profiles_chain:
-                resolved_profile._deepinherit(profile)
-            device_config._deepinherit(resolved_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
+            resolved_profile_item = self.return_resolved_profile_for_multilevel_inheritance(
+                "device_profiles", device_profile, self.inputs.device_profiles, device_profiles_chain
+            )
+            device_config._deepinherit(resolved_profile_item._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
             return device_config
 
         if device_profile.parent_profile:

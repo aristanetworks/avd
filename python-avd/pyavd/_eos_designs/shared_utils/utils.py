@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, overload
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils.template_var import template_var
+from pyavd._utils.undefined import Undefined
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
@@ -32,6 +33,17 @@ if TYPE_CHECKING:
         EosDesigns.SnmpSettings.Vrfs,
         EosDesigns.AaaSettings.Tacacs.Vrfs,
         EosDesigns.AaaSettings.Radius.Vrfs,
+    )
+    T_ProfileItem = TypeVar(
+        "T_ProfileItem", EosDesigns.PortProfilesItem, EosDesigns.DeviceProfilesItem, EosDesigns.L2vlanProfilesItem, EosDesigns.SviProfilesItem
+    )
+
+    T_ProfilesChain = TypeVar(
+        "T_ProfilesChain",
+        EosDesigns.PortProfiles,
+        EosDesigns.SviProfiles,
+        EosDesigns.L2vlanProfiles,
+        EosDesigns.DeviceProfiles,
     )
 
 
@@ -111,24 +123,7 @@ class UtilsMixin(Protocol):
         port_profile = self.inputs.port_profiles[profile_name]._deepcopy()
         resolved_profile = self.inputs.port_profiles[profile_name]._deepcopy()
         if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
-            while port_profile.parent_profile is not None:
-                if port_profile.parent_profile not in self.inputs.port_profiles:
-                    msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{port_profile.profile}' does not exist in 'port_profiles'."
-                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-                if port_profile.parent_profile in port_profiles_chain or port_profile.parent_profile == profile_name:
-                    msg = (
-                        f"Circular profile dependency detected: Profile '{port_profile.parent_profile}' "
-                        f"cannot be assigned as the parent of '{port_profile.profile}' in 'port_profiles' because it would create a loop."
-                    )
-                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-                parent_profile = self.inputs.port_profiles[port_profile.parent_profile]._deepcopy()
-                port_profiles_chain.append(parent_profile)
-                port_profile = parent_profile
-            for profile in port_profiles_chain:
-                resolved_profile._deepinherit(profile)
-            if hasattr(resolved_profile, "parent_profile"):
-                delattr(resolved_profile, "parent_profile")
-            return resolved_profile
+            return self.return_resolved_profile_for_multilevel_inheritance("port_profiles", port_profile, self.inputs.port_profiles, port_profiles_chain)
 
         if resolved_profile.parent_profile:
             if resolved_profile.parent_profile not in self.inputs.port_profiles:
@@ -346,3 +341,35 @@ class UtilsMixin(Protocol):
             case "use_inband_mgmt_interface":
                 return self.inband_mgmt_interface
         return input_interface
+
+    def return_resolved_profile_for_multilevel_inheritance(
+        self: SharedUtilsProtocol, context: str, profile_item: T_ProfileItem, profiles: T_ProfilesChain, profile_chain: T_ProfilesChain
+    ) -> T_ProfileItem:
+        """Returns resolved profile when 'allow_recursive_profile_inheritance' is set."""
+        resolved_profile = profile_item._deepcopy()
+        while profile_item.parent_profile:
+            # 'name' is the Primary key for device_profiles.
+            if isinstance(profile_item, EosDesigns.DeviceProfilesItem):
+                profile_name = profile_item.name
+                root_profile = resolved_profile.name  # pyright: ignore [reportAttributeAccessIssue]
+            else:
+                profile_name = profile_item.profile
+                root_profile = resolved_profile.profile  # pyright: ignore [reportAttributeAccessIssue]
+            if profile_item.parent_profile not in profiles:
+                msg = f"Parent profile '{profile_item.parent_profile}' applied under '{profile_name}' does not exist in '{context}'."
+                raise AristaAvdInvalidInputsError(msg)
+            if profile_item.parent_profile in profile_chain or profile_item.parent_profile == root_profile:
+                msg = (
+                    f"Circular profile dependency detected: Profile '{profile_item.parent_profile}' cannot be applied as"
+                    f" the parent profile of '{profile_name}' in 'l2vlan_profiles' as it would create a loop."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+            parent_profile_item = profiles[profile_item.parent_profile]._deepcopy()
+            profile_chain.append(parent_profile_item)  # type: ignore[reportArgumentType]
+            profile_item = parent_profile_item  # type: ignore[reportArgumentType]
+
+        for profile in profile_chain:
+            resolved_profile._deepinherit(profile)  # type: ignore[reportArgumentType]
+        if resolved_profile._get_defined_attr("parent_profile") is not Undefined:
+            delattr(resolved_profile, "parent_profile")
+        return resolved_profile
