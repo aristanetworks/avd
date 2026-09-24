@@ -34,9 +34,9 @@ def build_connected_endpoints(context: ConnectedEndpointsBuildContext, target: C
     Build connected-endpoint and network-port interfaces in place.
 
     Regular builds construct ``context`` from full eos-designs inputs and pass
-    their existing interface collections in ``target``. An isolated consumer can
-    construct the same context and choose empty or pre-populated target lists.
-    Only interface collections, interface custom-config overlays, the parent
-    tracker, and declared non-interface requirements are changed.
+    their existing structured-config models in ``target``. An isolated consumer
+    can construct the same context and choose empty or pre-populated target
+    models. Only interface collections, interface custom-config overlays, the
+    parent tracker, and declared non-interface requirements are changed.
     """
     ConnectedEndpointsBuilder(context, target).build()

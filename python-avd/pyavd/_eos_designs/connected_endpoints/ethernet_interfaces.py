@@ -49,16 +49,16 @@ class EthernetInterfacesMixin(Protocol):
 
                     self.target.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
 
-                    self.target.ethernet_interfaces.append(ethernet_interface)
+                    self.target.structured_config.ethernet_interfaces.append(ethernet_interface)
                     if adapter.structured_config:
-                        self.target.custom_ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                        self.target.custom_structured_config.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
                             adapter.structured_config, list_merge=self.context.custom_structured_config_list_merge
                         )
 
                     for subinterface in adapter.subinterfaces:
                         ethernet_subinterface_name = f"{ethernet_interface.name}.{subinterface.number}"
                         self.target.parent_interfaces_tracker.register_ethernet_subinterface(ethernet_subinterface_name)
-                        self.target.ethernet_interfaces.append(
+                        self.target.structured_config.ethernet_interfaces.append(
                             self._get_ethernet_subinterface_cfg(
                                 subinterface,
                                 adapter,
@@ -81,7 +81,7 @@ class EthernetInterfacesMixin(Protocol):
             network_port_as_adapter._internal_data.context = network_port._internal_data.context
             for ethernet_interface_name in range_expand(network_port.switch_ports):
                 # Skip the interface if it was already created by some other feature like connected endpoints or uplinks etc.
-                if ethernet_interface_name in self.target.ethernet_interfaces:
+                if ethernet_interface_name in self.target.structured_config.ethernet_interfaces:
                     continue
 
                 # Override switches and switch_ports to only render for a single interface
@@ -101,9 +101,9 @@ class EthernetInterfacesMixin(Protocol):
         for ethernet_interface, structured_config in network_ports_ethernet_interfaces.values():
             self.target.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
 
-            self.target.ethernet_interfaces.append(ethernet_interface)
+            self.target.structured_config.ethernet_interfaces.append(ethernet_interface)
             if structured_config:
-                self.target.custom_ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                self.target.custom_structured_config.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
                     structured_config, list_merge=self.context.custom_structured_config_list_merge
                 )
 
@@ -353,7 +353,7 @@ class EthernetInterfacesMixin(Protocol):
             )
 
         if subinterface.structured_config:
-            self.target.custom_ethernet_interfaces.obtain(ethernet_subinterface_name)._deepmerge(
+            self.target.custom_structured_config.ethernet_interfaces.obtain(ethernet_subinterface_name)._deepmerge(
                 subinterface.structured_config, list_merge=self.context.custom_structured_config_list_merge
             )
 

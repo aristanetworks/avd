@@ -224,10 +224,8 @@ class AvdStructuredConfigConnectedEndpoints(StructuredConfigGenerator, MacAccess
         behavior without widening the isolated builder's output contract.
         """
         target = ConnectedEndpointsBuildTarget(
-            ethernet_interfaces=self.structured_config.ethernet_interfaces,
-            port_channel_interfaces=self.structured_config.port_channel_interfaces,
-            custom_ethernet_interfaces=self.custom_structured_configs.nested.ethernet_interfaces,
-            custom_port_channel_interfaces=self.custom_structured_configs.nested.port_channel_interfaces,
+            structured_config=self.structured_config,
+            custom_structured_config=self.custom_structured_configs.nested,
             parent_interfaces_tracker=self.structured_config_utils.parent_interfaces_tracker,
         )
         context = get_connected_endpoints_build_context(self.inputs, self.facts, self.shared_utils)
