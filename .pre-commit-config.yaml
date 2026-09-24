@@ -25,6 +25,7 @@ ci:
     - docs-plugin-lookup
     - docs-plugin-test
     - docs-plugin-vars
+    - collection-files
     - schemas
     - check-schema-tables-in-docs
     - sort-hosts-yml
@@ -163,7 +164,7 @@ repos:
           - 'gitpython>=3.1.57'
           - 'jinja2>=3.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.7'
+          - 'pyavd-utils==0.0.9'
           - 'pydantic>=2.3.0'
           - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
@@ -238,6 +239,14 @@ repos:
 
   - repo: local
     hooks:
+
+      - id: collection-files
+        name: Check files included in the Ansible collection.
+        entry: python tools/generate_collection_files.py
+        language: python
+        files: ^(ansible_collections/arista/avd/|tools/generate_collection_files\.py$)
+        pass_filenames: false
+        additional_dependencies: ['ansible-core==2.16.0']
 
       - id: docs-plugin-modules
         name: Build documentation for collection modules and action plugins.
@@ -320,7 +329,7 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.7', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.9', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -328,7 +337,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.7', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.9', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: 916ad0aaa108c64d294101002066f530ea170b10  # frozen: v0.23.3

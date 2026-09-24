@@ -37,11 +37,11 @@ Any data validation issues will trigger errors - blocking further processing.
 The following settings can be leveraged to control generation of structured configuration and fabric documentation.
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-settings.md
+schemas/avd_design/docs/tables/role-settings.md
 --8<--
 
 ## Custom Templates
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-custom-templates.md
+schemas/avd_design/docs/tables/role-custom-templates.md
 --8<--
