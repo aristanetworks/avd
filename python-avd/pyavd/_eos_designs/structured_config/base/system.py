@@ -24,4 +24,5 @@ class SystemMixin(Protocol):
         if self.shared_utils.custom_system_mac_address is None:
             return
 
+        # system_mac_address returns the custom MAC normalized to hh:hh:hh:hh:hh:hh when custom_system_mac_address is set.
         self.structured_config.system.mac_address = self.shared_utils.system_mac_address

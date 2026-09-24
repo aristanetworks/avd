@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
@@ -116,17 +117,15 @@ class MiscMixin(Protocol):
         if self.inputs.custom_system_mac_address is None:
             return None
 
-        import re  # noqa: PLC0415
-
         mac_address = AvdStringFormatter().format(
             self.inputs.custom_system_mac_address,
             **strip_null_from_data({"device_id": self.id, "hostname": self.hostname}),
         )
 
         pattern = (
-            r"^([0-9A-Fa-f][02468ACEace][0-9A-Fa-f]{2}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}"
+            r"([0-9A-Fa-f][02468ACEace][0-9A-Fa-f]{2}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}"
             r"|[0-9A-Fa-f][02468ACEace](:[0-9A-Fa-f]{2}){5}"
-            r"|[0-9A-Fa-f][02468ACEace](-[0-9A-Fa-f]{2}){5})$"
+            r"|[0-9A-Fa-f][02468ACEace](-[0-9A-Fa-f]{2}){5})"
         )
         if not re.fullmatch(pattern, mac_address):
             msg = (
