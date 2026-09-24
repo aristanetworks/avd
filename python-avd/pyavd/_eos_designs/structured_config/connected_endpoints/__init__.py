@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Protocol
+from typing import TYPE_CHECKING, Literal
 
 from pyavd._eos_designs.connected_endpoints import (
     ConnectedEndpointsBuildContext,
@@ -14,14 +14,8 @@ from pyavd._eos_designs.connected_endpoints import (
     ConnectedEndpointsPlatformFeatures,
     build_connected_endpoints,
 )
-from pyavd._eos_designs.structured_config.structured_config_generator import (
-    StructuredConfigGenerator,
-    StructuredConfigGeneratorProtocol,
-    structured_config_contributor,
-)
+from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
-
-from .mac_access_lists import MacAccessListsMixin
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
@@ -185,7 +179,7 @@ def get_connected_endpoints_build_context(
     )
 
 
-class AvdStructuredConfigConnectedEndpointsProtocol(MacAccessListsMixin, StructuredConfigGeneratorProtocol, Protocol):
+class AvdStructuredConfigConnectedEndpoints(StructuredConfigGenerator):
     """
     Adapt a regular eos-designs build to the interface-only builder.
 
@@ -235,21 +229,10 @@ class AvdStructuredConfigConnectedEndpointsProtocol(MacAccessListsMixin, Structu
         # The isolated builder is interface-only. Regular builds retain their
         # established global output by consuming requirements at this boundary.
         for acl_name in target.referenced_mac_acls:
-            self._set_mac_acl(acl_name)
+            self.structured_config_utils._set_mac_acl(acl_name)
         for acl_name in target.referenced_ipv4_acls:
             self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[acl_name])
         for acl_name in target.referenced_ipv6_acls:
             self.structured_config_utils._set_ipv6_acl(self.inputs.ipv6_acls[acl_name])
         if target.sflow_required:
             self.structured_config_utils.set_once_sflow()
-
-
-class AvdStructuredConfigConnectedEndpoints(StructuredConfigGenerator, AvdStructuredConfigConnectedEndpointsProtocol):
-    """
-    Regular structured-config generator for connected endpoints.
-
-    The implementation is composed through ``AvdStructuredConfigConnectedEndpointsProtocol``
-    to retain the same protocol-and-mixins structure as the other structured-config
-    generators. The class itself is the single concrete generator instantiated by
-    the regular structured-config build.
-    """
