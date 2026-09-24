@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: custom_system_mac_address rendered 'not-a-mac-address' which is not a valid EOS MAC (H.H.H format).
+pyavd._errors.AristaAvdInvalidInputsError: custom_system_mac_address rendered 'not-a-mac-address' which is not a valid unicast EOS system MAC address. The value must be a unicast MAC address in hhhh.hhhh.hhhh, hh:hh:hh:hh:hh:hh or hh-hh-hh-hh-hh-hh format.

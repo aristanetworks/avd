@@ -9,6 +9,5 @@ l2leaf:
 custom_system_mac_address: 011c.7300.{device_id:04x}
 
 expected_error_message: >-
-  The provided 'custom_system_mac_address' rendered multicast MAC address '011c.7300.04d2' for device
-  'custom-system-mac-address-multicast'. The rendered value must be a unicast MAC address (the
-  least-significant bit of the first octet must be zero).
+  custom_system_mac_address rendered '011c.7300.04d2' which is not a valid unicast EOS system MAC address.
+  The value must be a unicast MAC address in hhhh.hhhh.hhhh, hh:hh:hh:hh:hh:hh or hh-hh-hh-hh-hh-hh format.

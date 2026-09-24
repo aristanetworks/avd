@@ -20,8 +20,8 @@ class SystemMixin(Protocol):
 
     @structured_config_contributor
     def system(self: AvdStructuredConfigBaseProtocol) -> None:
-        """Set the EOS system MAC address from a restricted format string."""
-        if self.inputs.custom_system_mac_address is None:
+        """Set the EOS system MAC address."""
+        if (custom_system_mac_address := self.shared_utils.custom_system_mac_address) is None:
             return
 
-        self.structured_config.system.mac_address = self.shared_utils.system_mac_address
+        self.structured_config.system.mac_address = custom_system_mac_address

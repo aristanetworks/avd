@@ -1,0 +1,12 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: custom-system-mac-address-colon
+      mgmt_ip: 192.168.0.10/24
+
+custom_system_mac_address: 02:1c:73:00:00:05
+
+snmp_settings:
+  compute_local_engineid: true
+  compute_local_engineid_source: system_mac

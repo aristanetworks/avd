@@ -26261,8 +26261,9 @@ keys:
       mac_address:
         type: str
         description: Unicast (the least-significant bit of the first octet must be
-          zero) system MAC address in H.H.H format.
-        pattern: '[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}'
+          zero) system MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh`
+          format (where `h` is a hexadecimal digit).
+        pattern: ([0-9A-Fa-f][02468ACEace][0-9A-Fa-f]{2}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}|[0-9A-Fa-f][02468ACEace](:[0-9A-Fa-f]{2}){5}|[0-9A-Fa-f][02468ACEace](-[0-9A-Fa-f]{2}){5})
   tacacs_servers:
     type: dict
     keys:

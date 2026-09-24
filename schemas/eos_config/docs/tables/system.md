@@ -23,7 +23,7 @@
     | [<samp>&nbsp;&nbsp;l1</samp>](## "system.l1") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_speed_action</samp>](## "system.l1.unsupported_speed_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_error_correction_action</samp>](## "system.l1.unsupported_error_correction_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
-    | [<samp>&nbsp;&nbsp;mac_address</samp>](## "system.mac_address") | String |  |  | Pattern: `[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}` | Unicast (the least-significant bit of the first octet must be zero) system MAC address in H.H.H format. |
+    | [<samp>&nbsp;&nbsp;mac_address</samp>](## "system.mac_address") | String |  |  | Pattern: `([0-9A-Fa-f][02468ACEace][0-9A-Fa-f]{2}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}|[0-9A-Fa-f][02468ACEace](:[0-9A-Fa-f]{2}){5}|[0-9A-Fa-f][02468ACEace](-[0-9A-Fa-f]{2}){5})` | Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a hexadecimal digit). |
 
 === "YAML"
 
@@ -53,6 +53,6 @@
         unsupported_speed_action: <str; "error" | "warn">
         unsupported_error_correction_action: <str; "error" | "warn">
 
-      # Unicast (the least-significant bit of the first octet must be zero) system MAC address in H.H.H format.
+      # Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a hexadecimal digit).
       mac_address: <str>
     ```

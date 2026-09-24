@@ -117175,8 +117175,9 @@ class EosDesigns(EosDesignsRootModel):
     If
     unset, the existing `system_mac_address` behavior is unchanged.
     The rendered value must be a unicast
-    MAC address in EOS dotted format (`H.H.H`).
-    This can be a template using the AVD string formatter
+    MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
+    hexadecimal digit).
+    This can be a plain MAC address or a template using the AVD string formatter
     syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-
     to/custom-descriptions-names.html#avd-string-formatter-syntax.
     Only the following template fields
@@ -119566,8 +119567,9 @@ class EosDesigns(EosDesignsRootModel):
                    If
                    unset, the existing `system_mac_address` behavior is unchanged.
                    The rendered value must be a unicast
-                   MAC address in EOS dotted format (`H.H.H`).
-                   This can be a template using the AVD string formatter
+                   MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
+                   hexadecimal digit).
+                   This can be a plain MAC address or a template using the AVD string formatter
                    syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-
                    to/custom-descriptions-names.html#avd-string-formatter-syntax.
                    Only the following template fields

@@ -1,0 +1,12 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: custom-system-mac-address-dash
+      mgmt_ip: 192.168.0.11/24
+
+custom_system_mac_address: 02-1c-73-00-00-06
+
+snmp_settings:
+  compute_local_engineid: true
+  compute_local_engineid_source: system_mac
