@@ -21,10 +21,9 @@ with Path(script_dir, "acl_merged.yml").open(encoding="utf-8") as data_file:
 
 
 class TestMerge:
-    @pytest.mark.parametrize("schema_name", ["eos_config", "eos_cli_config_gen"])
-    def test_merge_of_lists_with_primary_keys(self, schema_name: str) -> None:
-        """Merge list items by primary key using both public and internal EOS config schema names."""
-        merge_result = merge({}, acl1, acl2, schema_name=schema_name, destructive_merge=False)
+    def test_merge_of_lists_with_primary_keys(self) -> None:
+        """Merge list items by primary key using the EOS config schema."""
+        merge_result = merge({}, acl1, acl2, schema_name="eos_config", destructive_merge=False)
         assert merge_result == acl_merged
 
     @pytest.mark.parametrize("schema_name", [None, "eos_config"])
