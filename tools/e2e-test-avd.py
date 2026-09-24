@@ -860,7 +860,6 @@ def build_connected_endpoints_for_one_device(
     from pyavd._eos_designs.shared_utils import SharedUtils
     from pyavd._eos_designs.structured_config.connected_endpoints import get_connected_endpoints_build_context
     from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
-    from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
 
     shared_utils = SharedUtils(
         hostname=device,
@@ -871,10 +870,9 @@ def build_connected_endpoints_for_one_device(
         digital_twin=config.digital_twin,
     )
     structured_config = EosCliConfigGen()
-    custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(device_avd_validated_inputs.custom_structured_configuration_list_merge)
     target = ConnectedEndpointsBuildTarget(
         structured_config=structured_config,
-        custom_structured_config=custom_structured_configs.nested,
+        custom_structured_config=EosCliConfigGen(),
         parent_interfaces_tracker=ParentInterfacesTracker(),
     )
     context = get_connected_endpoints_build_context(device_avd_validated_inputs, avd_facts[device], shared_utils)

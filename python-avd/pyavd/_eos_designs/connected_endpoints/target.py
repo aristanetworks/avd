@@ -18,13 +18,13 @@ class ConnectedEndpointsStructuredConfigProtocol(Protocol):
 
     @property
     def ethernet_interfaces(self) -> EosCliConfigGen.EthernetInterfaces:
-        """Live Ethernet interface list, created by the model when first accessed."""
-        raise NotImplementedError
+        """Live Ethernet interface list."""
+        ...  # pylint: disable=unnecessary-ellipsis
 
     @property
     def port_channel_interfaces(self) -> EosCliConfigGen.PortChannelInterfaces:
-        """Live Port-Channel interface list, created by the model when first accessed."""
-        raise NotImplementedError
+        """Live Port-Channel interface list."""
+        ...  # pylint: disable=unnecessary-ellipsis
 
 
 @dataclass(slots=True)
