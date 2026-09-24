@@ -11,6 +11,7 @@ name: "Benchmarks"
       - "python-avd/pyavd/**"
       - "python-avd/tests/models.py"
       - "ansible_collections/arista/avd/extensions/molecule/**"
+      - "tools/e2e_test_avd.py"
   pull_request:
     types: [reopened, synchronize, labeled]
     branches: [devel]
