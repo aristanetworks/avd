@@ -358,8 +358,10 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     """Maximum string length"""
     pattern: str | None = None
     """
-    A regular expression which will be matched on the variable value.
-    The regular expression should be valid according to the ECMA 262 dialect.
+    An AVD regular expression which will be matched against the complete variable value.
+    The supported dialect includes Unicode-aware Perl shorthand classes (`\\d`, `\\s`, and `\\w`, including their uppercase complements)
+    and word boundaries, Unicode-safe wildcards and explicit character classes, lookarounds, and variable-length lookbehinds.
+    Broader Unicode properties and scripts such as `\\p{Greek}` are not supported.
     Remember to use double escapes.
     """
     valid_values: list[str] | None = None

@@ -366,9 +366,28 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def tcam_profile(self) -> None:
-        """tcam_profile set based on platform_settings.tcam_profile fact."""
-        if tcam_profile := self.shared_utils.platform_settings.tcam_profile:
-            self.structured_config.tcam_profile.system = tcam_profile
+        """Set TCAM profiles based on platform settings."""
+        tcam_profile_name = self.shared_utils.platform_settings.tcam_profile
+        additional_tcam_profile_names = self.shared_utils.platform_settings.additional_tcam_profiles
+
+        tcam_profiles = EosCliConfigGen.TcamProfile.Profiles()
+
+        # Add additional profiles first
+        for additional_tcam_profile_name in additional_tcam_profile_names:
+            if additional_tcam_profile_name not in self.inputs.tcam_profiles:
+                msg = f"TCAM profile '{additional_tcam_profile_name}' referenced under 'additional_tcam_profiles' is not defined under 'tcam_profiles'."
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+            if additional_tcam_profile_name != tcam_profile_name:
+                tcam_profiles.append(self.inputs.tcam_profiles[additional_tcam_profile_name])
+
+        # Set system profile if configured
+        if tcam_profile_name:
+            self.structured_config.tcam_profile.system = tcam_profile_name
+            # Add the system profile if it's in tcam_profiles
+            if tcam_profile_name in self.inputs.tcam_profiles:
+                tcam_profiles.append(self.inputs.tcam_profiles[tcam_profile_name])
+
+        self.structured_config.tcam_profile.profiles = tcam_profiles
 
     @structured_config_contributor
     def mac_address_table(self) -> None:
@@ -443,7 +462,6 @@ class AvdStructuredConfigBaseProtocol(
         """Parse ssh_settings.client_vrfs (or source_interfaces.ssh_client) and set list of source_interfaces."""
         if self.inputs.ssh_settings.client_vrfs:
             ip_ssh_client = EosCliConfigGen.IpSshClient()
-            default_vrf_source_interface: str | None = None
             for client_vrf in self.inputs.ssh_settings.client_vrfs:
                 vrf_name = self.shared_utils.get_vrf(
                     vrf_input=client_vrf.name,
@@ -454,16 +472,15 @@ class AvdStructuredConfigBaseProtocol(
                     msg = f"ssh_settings.client_vrfs[name={client_vrf.name}].source_interface"
                     raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
-                if vrf_name == "default" and default_vrf_source_interface is not None and source_interface != default_vrf_source_interface:
+                if vrf_name == "default" and ip_ssh_client.source_interface:
                     raise AristaAvdDuplicateDataError(
                         context="ssh_settings.client_vrfs",
                         context_item_a=str({"name": vrf_name, "source_interface": source_interface}),
-                        context_item_b=str({"name": vrf_name, "source_interface": default_vrf_source_interface}),
+                        context_item_b=str({"name": vrf_name, "source_interface": ip_ssh_client.source_interface}),
                         host=self.shared_utils.hostname,
                     )
 
                 if vrf_name == "default":
-                    default_vrf_source_interface = source_interface
                     ip_ssh_client.source_interface = source_interface
                 else:
                     ip_ssh_client.vrfs.append_new(name=vrf_name, source_interface=source_interface)

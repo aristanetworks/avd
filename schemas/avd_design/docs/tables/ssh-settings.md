@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;idle_timeout</samp>](## "ssh_settings.idle_timeout") | Integer |  |  | Min: 0<br>Max: 86400 | Idle timeout in minutes. |
     | [<samp>&nbsp;&nbsp;client_vrfs</samp>](## "ssh_settings.client_vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ssh_settings.client_vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure SSH for the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure SSH for the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "ssh_settings.client_vrfs.[].source_interface") | String |  |  |  | Source interface to use for IP SSH Client in this VRF.<br>If set, the value is used directly as the source interface name.<br>If not set, the source interface is derived automatically when `vrf` is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>For any other `name` value, `source_interface` must be set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "ssh_settings.client_vrfs.[].source_interface") | String |  |  |  | Source interface to use for IP SSH Client in this VRF.<br>If set, the value is used directly as the source interface name.<br>If not set, the source interface is derived automatically when `name` is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>For any other `name` value, `source_interface` must be set. |
 
 === "YAML"
 
@@ -63,7 +63,7 @@
 
           # Source interface to use for IP SSH Client in this VRF.
           # If set, the value is used directly as the source interface name.
-          # If not set, the source interface is derived automatically when `vrf` is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+          # If not set, the source interface is derived automatically when `name` is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
           # For any other `name` value, `source_interface` must be set.
           source_interface: <str>
     ```
