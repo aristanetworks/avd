@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 from deepmerge.strategy.core import STRATEGY_END
 from pyavd_utils.schema_store import get_list_primary_key
 
-VALID_SCHEMA_NAMES = frozenset(("eos_config", "eos_cli_config_gen"))
+VALID_SCHEMA_NAMES = frozenset(("eos_config",))
 PYAVD_UTILS_SCHEMA_NAME: Literal["eos_config"] = "eos_config"
 
 
