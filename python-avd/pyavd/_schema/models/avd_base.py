@@ -14,8 +14,8 @@ if TYPE_CHECKING:
 
     from .type_vars import T_AvdBase
 
-# Strategies accepted by AvdBase._deepmerge for nested AvdList and AvdIndexedList values.
 AvdListMergeStrategy: TypeAlias = Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"]
+"""Strategies accepted by AvdBase._deepmerge for nested AvdList and AvdIndexedList values."""
 
 
 class InternalData:
