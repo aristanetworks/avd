@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: OSPFv3 IPv6 address family is enabled on SVI 'VLAN_21' but 'ipv6_enable' is not set under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST_SVI].svis[id=21]'.

@@ -32538,72 +32538,232 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class Ipv6Ospf(AvdModel):
+            class Ospfv3(AvdModel):
                 """Subclass of AvdModel."""
 
-                class RedistributeBgp(AvdModel):
+                class AddressFamilyIpv4(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
-                    enabled: bool
-                    """Default value: `True`"""
-                    route_map: str | None
-                    """Route-map name."""
-                    include_leaked: bool | None
-                    """Include leaked routes while redistributing."""
+                    class RedistributeBgp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Default value: `True`"""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                RedistributeBgp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: Route-map name.
+
+                                """
+
+                    class RedistributeConnected(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Default value: `False`"""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                RedistributeConnected.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: Route-map name.
+
+                                """
+
+                    class RedistributeStatic(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Default value: `False`"""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                RedistributeStatic.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: Route-map name.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "enabled": {"type": bool},
+                        "redistribute_bgp": {"type": RedistributeBgp},
+                        "redistribute_connected": {"type": RedistributeConnected},
+                        "redistribute_static": {"type": RedistributeStatic},
+                    }
+                    enabled: bool | None
+                    redistribute_bgp: RedistributeBgp
+                    """Subclass of AvdModel."""
+                    redistribute_connected: RedistributeConnected
+                    """Subclass of AvdModel."""
+                    redistribute_static: RedistributeStatic
+                    """Subclass of AvdModel."""
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            enabled: bool | UndefinedType | None = Undefined,
+                            redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
+                            redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                            redistribute_static: RedistributeStatic | UndefinedType = Undefined,
                         ) -> None:
                             """
-                            RedistributeBgp.
+                            AddressFamilyIpv4.
 
 
                             Subclass of AvdModel.
 
                             Args:
                                 enabled: enabled
-                                route_map: Route-map name.
-                                include_leaked: Include leaked routes while redistributing.
+                                redistribute_bgp: Subclass of AvdModel.
+                                redistribute_connected: Subclass of AvdModel.
+                                redistribute_static: Subclass of AvdModel.
 
                             """
 
-                class RedistributeConnected(AvdModel):
+                class AddressFamilyIpv6(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
-                    enabled: bool
-                    """Default value: `False`"""
-                    route_map: str | None
-                    """Route-map name."""
-                    include_leaked: bool | None
-                    """Include leaked routes while redistributing."""
+                    class RedistributeBgp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Default value: `True`"""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                RedistributeBgp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: Route-map name.
+
+                                """
+
+                    class RedistributeConnected(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Default value: `False`"""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                RedistributeConnected.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: Route-map name.
+
+                                """
+
+                    class RedistributeStatic(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Default value: `False`"""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                RedistributeStatic.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: Route-map name.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "enabled": {"type": bool},
+                        "redistribute_bgp": {"type": RedistributeBgp},
+                        "redistribute_connected": {"type": RedistributeConnected},
+                        "redistribute_static": {"type": RedistributeStatic},
+                    }
+                    enabled: bool | None
+                    redistribute_bgp: RedistributeBgp
+                    """Subclass of AvdModel."""
+                    redistribute_connected: RedistributeConnected
+                    """Subclass of AvdModel."""
+                    redistribute_static: RedistributeStatic
+                    """Subclass of AvdModel."""
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType = Undefined,
-                            route_map: str | UndefinedType | None = Undefined,
-                            include_leaked: bool | UndefinedType | None = Undefined,
+                            enabled: bool | UndefinedType | None = Undefined,
+                            redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
+                            redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                            redistribute_static: RedistributeStatic | UndefinedType = Undefined,
                         ) -> None:
                             """
-                            RedistributeConnected.
+                            AddressFamilyIpv6.
 
 
                             Subclass of AvdModel.
 
                             Args:
                                 enabled: enabled
-                                route_map: Route-map name.
-                                include_leaked: Include leaked routes while redistributing.
+                                redistribute_bgp: Subclass of AvdModel.
+                                redistribute_connected: Subclass of AvdModel.
+                                redistribute_static: Subclass of AvdModel.
 
                             """
 
@@ -32614,16 +32774,14 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
-                    "process_id": {"type": int},
                     "router_id": {"type": str, "default": "main_router_id"},
-                    "auto_cost_reference_bandwidth": {"type": int},
-                    "redistribute_bgp": {"type": RedistributeBgp},
-                    "redistribute_connected": {"type": RedistributeConnected},
+                    "passive_interface_default": {"type": bool, "default": True},
+                    "address_family_ipv4": {"type": AddressFamilyIpv4},
+                    "address_family_ipv6": {"type": AddressFamilyIpv6},
                     "nodes": {"type": Nodes},
+                    "structured_config": {"type": EosCliConfigGen.RouterOspfv3.VrfsItem},
                 }
                 enabled: bool | None
-                process_id: int | None
-                """If not set, "vrf_id" will be used."""
                 router_id: str
                 """
                 Router ID to use for OSPFv3 in this VRF.
@@ -32638,14 +32796,28 @@ class EosDesigns(EosDesignsRootModel):
 
                 Default value: `"main_router_id"`
                 """
-                auto_cost_reference_bandwidth: int | None
-                """Bandwidth in mbps."""
-                redistribute_bgp: RedistributeBgp
-                """Subclass of AvdModel."""
-                redistribute_connected: RedistributeConnected
-                """Subclass of AvdModel."""
+                passive_interface_default: bool
+                """
+                Set passive-interface default.
+
+                Default value: `True`
+                """
+                address_family_ipv4: AddressFamilyIpv4
+                """
+                OSPFv3 IPv4 address family configuration.
+
+                Subclass of AvdModel.
+                """
+                address_family_ipv6: AddressFamilyIpv6
+                """
+                OSPFv3 IPv6 address family configuration.
+
+                Subclass of AvdModel.
+                """
                 nodes: Nodes
                 """Subclass of AvdList with `str` items."""
+                structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem
+                """Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema."""
 
                 if TYPE_CHECKING:
 
@@ -32653,22 +32825,21 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType | None = Undefined,
-                        process_id: int | UndefinedType | None = Undefined,
                         router_id: str | UndefinedType = Undefined,
-                        auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
-                        redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
-                        redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                        passive_interface_default: bool | UndefinedType = Undefined,
+                        address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
+                        address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                         nodes: Nodes | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem | UndefinedType = Undefined,
                     ) -> None:
                         """
-                        Ipv6Ospf.
+                        Ospfv3.
 
 
                         Subclass of AvdModel.
 
                         Args:
                             enabled: enabled
-                            process_id: If not set, "vrf_id" will be used.
                             router_id:
                                Router ID to use for OSPFv3 in this VRF.
                                This can be an IPv4 address, "main_router_id", "none" or
@@ -32679,10 +32850,17 @@ class EosDesigns(EosDesignsRootModel):
                                Router ID for this VRF. EOS will use the main OSPF Router ID.
                                - "diagnostic_loopback" will use the
                                IP address of the VRF Diagnostic Loopback interface.
-                            auto_cost_reference_bandwidth: Bandwidth in mbps.
-                            redistribute_bgp: Subclass of AvdModel.
-                            redistribute_connected: Subclass of AvdModel.
+                            passive_interface_default: Set passive-interface default.
+                            address_family_ipv4:
+                               OSPFv3 IPv4 address family configuration.
+
+                               Subclass of AvdModel.
+                            address_family_ipv6:
+                               OSPFv3 IPv6 address family configuration.
+
+                               Subclass of AvdModel.
                             nodes: Subclass of AvdList with `str` items.
+                            structured_config: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
 
                         """
 
@@ -33747,22 +33925,90 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    class Ipv6Ospf(AvdModel):
+                    class Ospfv3(AvdModel):
                         """Subclass of AvdModel."""
+
+                        class AddressFamilyIpv4(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                            enabled: bool | None
+                            area: str
+                            """
+                            OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                            Default value: `"0.0.0.0"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                                    """
+                                    AddressFamilyIpv4.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                    """
+
+                        class AddressFamilyIpv6(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                            enabled: bool | None
+                            area: str
+                            """
+                            OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                            Default value: `"0.0.0.0"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                                    """
+                                    AddressFamilyIpv6.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                    """
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
-                            "area": {"type": str, "default": "0.0.0.0"},
-                            "point_to_point": {"type": bool, "default": False},
+                            "address_family_ipv4": {"type": AddressFamilyIpv4},
+                            "address_family_ipv6": {"type": AddressFamilyIpv6},
+                            "passive_interface": {"type": bool, "default": False},
+                            "network_point_to_point": {"type": bool, "default": False},
                         }
                         enabled: bool | None
-                        area: str
+                        address_family_ipv4: AddressFamilyIpv4
                         """
-                        OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                        OSPFv3 IPv4 address family configuration on the interface.
 
-                        Default value: `"0.0.0.0"`
+                        Subclass of AvdModel.
                         """
-                        point_to_point: bool
+                        address_family_ipv6: AddressFamilyIpv6
+                        """
+                        OSPFv3 IPv6 address family configuration on the interface.
+
+                        Subclass of AvdModel.
+                        """
+                        passive_interface: bool
+                        """
+                        Include interface but without actively running OSPF.
+
+                        Default value: `False`
+                        """
+                        network_point_to_point: bool
                         """Default value: `False`"""
 
                         if TYPE_CHECKING:
@@ -33771,19 +34017,29 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType | None = Undefined,
-                                area: str | UndefinedType = Undefined,
-                                point_to_point: bool | UndefinedType = Undefined,
+                                address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
+                                address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                                passive_interface: bool | UndefinedType = Undefined,
+                                network_point_to_point: bool | UndefinedType = Undefined,
                             ) -> None:
                                 """
-                                Ipv6Ospf.
+                                Ospfv3.
 
 
                                 Subclass of AvdModel.
 
                                 Args:
                                     enabled: enabled
-                                    area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-                                    point_to_point: point_to_point
+                                    address_family_ipv4:
+                                       OSPFv3 IPv4 address family configuration on the interface.
+
+                                       Subclass of AvdModel.
+                                    address_family_ipv6:
+                                       OSPFv3 IPv6 address family configuration on the interface.
+
+                                       Subclass of AvdModel.
+                                    passive_interface: Include interface but without actively running OSPF.
+                                    network_point_to_point: network_point_to_point
 
                                 """
 
@@ -33863,7 +34119,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_priority": {"type": int},
                         "mtu": {"type": int},
                         "ospf": {"type": Ospf},
-                        "ipv6_ospf": {"type": Ipv6Ospf},
+                        "ospfv3": {"type": Ospfv3},
                         "bgp": {"type": Bgp},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -34096,7 +34352,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
-                    ipv6_ospf: Ipv6Ospf
+                    ospfv3: Ospfv3
                     """
                     OSPFv3 interface configuration.
 
@@ -34163,7 +34419,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_priority: int | UndefinedType | None = Undefined,
                             mtu: int | UndefinedType | None = Undefined,
                             ospf: Ospf | UndefinedType = Undefined,
-                            ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                            ospfv3: Ospfv3 | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
                             raw_eos_cli: str | UndefinedType | None = Undefined,
                             structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -34333,7 +34589,7 @@ class EosDesigns(EosDesignsRootModel):
                                    OSPF interface configuration.
 
                                    Subclass of AvdModel.
-                                ipv6_ospf:
+                                ospfv3:
                                    OSPFv3 interface configuration.
 
                                    Subclass of AvdModel.
@@ -35220,22 +35476,90 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
-                class Ipv6Ospf(AvdModel):
+                class Ospfv3(AvdModel):
                     """Subclass of AvdModel."""
+
+                    class AddressFamilyIpv4(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                        enabled: bool | None
+                        area: str
+                        """
+                        OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                        Default value: `"0.0.0.0"`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                                """
+                                AddressFamilyIpv4.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                """
+
+                    class AddressFamilyIpv6(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                        enabled: bool | None
+                        area: str
+                        """
+                        OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                        Default value: `"0.0.0.0"`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                                """
+                                AddressFamilyIpv6.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                """
 
                     _fields: ClassVar[dict] = {
                         "enabled": {"type": bool},
-                        "area": {"type": str, "default": "0.0.0.0"},
-                        "point_to_point": {"type": bool, "default": False},
+                        "address_family_ipv4": {"type": AddressFamilyIpv4},
+                        "address_family_ipv6": {"type": AddressFamilyIpv6},
+                        "passive_interface": {"type": bool, "default": False},
+                        "network_point_to_point": {"type": bool, "default": False},
                     }
                     enabled: bool | None
-                    area: str
+                    address_family_ipv4: AddressFamilyIpv4
                     """
-                    OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                    OSPFv3 IPv4 address family configuration on the interface.
 
-                    Default value: `"0.0.0.0"`
+                    Subclass of AvdModel.
                     """
-                    point_to_point: bool
+                    address_family_ipv6: AddressFamilyIpv6
+                    """
+                    OSPFv3 IPv6 address family configuration on the interface.
+
+                    Subclass of AvdModel.
+                    """
+                    passive_interface: bool
+                    """
+                    Include interface but without actively running OSPF.
+
+                    Default value: `False`
+                    """
+                    network_point_to_point: bool
                     """Default value: `False`"""
 
                     if TYPE_CHECKING:
@@ -35244,19 +35568,29 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType | None = Undefined,
-                            area: str | UndefinedType = Undefined,
-                            point_to_point: bool | UndefinedType = Undefined,
+                            address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
+                            address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                            passive_interface: bool | UndefinedType = Undefined,
+                            network_point_to_point: bool | UndefinedType = Undefined,
                         ) -> None:
                             """
-                            Ipv6Ospf.
+                            Ospfv3.
 
 
                             Subclass of AvdModel.
 
                             Args:
                                 enabled: enabled
-                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-                                point_to_point: point_to_point
+                                address_family_ipv4:
+                                   OSPFv3 IPv4 address family configuration on the interface.
+
+                                   Subclass of AvdModel.
+                                address_family_ipv6:
+                                   OSPFv3 IPv6 address family configuration on the interface.
+
+                                   Subclass of AvdModel.
+                                passive_interface: Include interface but without actively running OSPF.
+                                network_point_to_point: network_point_to_point
 
                             """
 
@@ -35340,7 +35674,7 @@ class EosDesigns(EosDesignsRootModel):
                     "spanning_tree_priority": {"type": int},
                     "mtu": {"type": int},
                     "ospf": {"type": Ospf},
-                    "ipv6_ospf": {"type": Ipv6Ospf},
+                    "ospfv3": {"type": Ospfv3},
                     "bgp": {"type": Bgp},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -35603,7 +35937,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
-                ipv6_ospf: Ipv6Ospf
+                ospfv3: Ospfv3
                 """
                 OSPFv3 interface configuration.
 
@@ -35674,7 +36008,7 @@ class EosDesigns(EosDesignsRootModel):
                         spanning_tree_priority: int | UndefinedType | None = Undefined,
                         mtu: int | UndefinedType | None = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
-                        ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                        ospfv3: Ospfv3 | UndefinedType = Undefined,
                         bgp: Bgp | UndefinedType = Undefined,
                         raw_eos_cli: str | UndefinedType | None = Undefined,
                         structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -35866,7 +36200,7 @@ class EosDesigns(EosDesignsRootModel):
                                OSPF interface configuration.
 
                                Subclass of AvdModel.
-                            ipv6_ospf:
+                            ospfv3:
                                OSPFv3 interface configuration.
 
                                Subclass of AvdModel.
@@ -39432,7 +39766,7 @@ class EosDesigns(EosDesignsRootModel):
                 "mlag_ibgp_peering_vlan": {"type": int},
                 "vtep_diagnostic": {"type": VtepDiagnostic},
                 "ospf": {"type": Ospf},
-                "ipv6_ospf": {"type": Ipv6Ospf},
+                "ospfv3": {"type": Ospfv3},
                 "redistribute_ospf": {"type": bool, "default": True},
                 "redistribute_ospfv3": {"type": bool, "default": True},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
@@ -39627,7 +39961,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            ipv6_ospf: Ipv6Ospf
+            ospfv3: Ospfv3
             """
             Router OSPFv3 configuration.
             This will create an OSPFv3 routing instance in the tenant VRF. If there
@@ -39817,7 +40151,7 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_ibgp_peering_vlan: int | UndefinedType | None = Undefined,
                     vtep_diagnostic: VtepDiagnostic | UndefinedType = Undefined,
                     ospf: Ospf | UndefinedType = Undefined,
-                    ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                    ospfv3: Ospfv3 | UndefinedType = Undefined,
                     redistribute_ospf: bool | UndefinedType = Undefined,
                     redistribute_ospfv3: bool | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
@@ -39971,7 +40305,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdModel.
-                        ipv6_ospf:
+                        ospfv3:
                            Router OSPFv3 configuration.
                            This will create an OSPFv3 routing instance in the tenant VRF. If there
                            is no nodes definition, the OSPF instance will be
@@ -51677,22 +52011,90 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class Ipv6Ospf(AvdModel):
+            class Ospfv3(AvdModel):
                 """Subclass of AvdModel."""
+
+                class AddressFamilyIpv4(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                    enabled: bool | None
+                    area: str
+                    """
+                    OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                    Default value: `"0.0.0.0"`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                            """
+                            AddressFamilyIpv4.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                            """
+
+                class AddressFamilyIpv6(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                    enabled: bool | None
+                    area: str
+                    """
+                    OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                    Default value: `"0.0.0.0"`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                            """
+                            AddressFamilyIpv6.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                            """
 
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
-                    "area": {"type": str, "default": "0.0.0.0"},
-                    "point_to_point": {"type": bool, "default": False},
+                    "address_family_ipv4": {"type": AddressFamilyIpv4},
+                    "address_family_ipv6": {"type": AddressFamilyIpv6},
+                    "passive_interface": {"type": bool, "default": False},
+                    "network_point_to_point": {"type": bool, "default": False},
                 }
                 enabled: bool | None
-                area: str
+                address_family_ipv4: AddressFamilyIpv4
                 """
-                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                OSPFv3 IPv4 address family configuration on the interface.
 
-                Default value: `"0.0.0.0"`
+                Subclass of AvdModel.
                 """
-                point_to_point: bool
+                address_family_ipv6: AddressFamilyIpv6
+                """
+                OSPFv3 IPv6 address family configuration on the interface.
+
+                Subclass of AvdModel.
+                """
+                passive_interface: bool
+                """
+                Include interface but without actively running OSPF.
+
+                Default value: `False`
+                """
+                network_point_to_point: bool
                 """Default value: `False`"""
 
                 if TYPE_CHECKING:
@@ -51701,19 +52103,29 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType | None = Undefined,
-                        area: str | UndefinedType = Undefined,
-                        point_to_point: bool | UndefinedType = Undefined,
+                        address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
+                        address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                        passive_interface: bool | UndefinedType = Undefined,
+                        network_point_to_point: bool | UndefinedType = Undefined,
                     ) -> None:
                         """
-                        Ipv6Ospf.
+                        Ospfv3.
 
 
                         Subclass of AvdModel.
 
                         Args:
                             enabled: enabled
-                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-                            point_to_point: point_to_point
+                            address_family_ipv4:
+                               OSPFv3 IPv4 address family configuration on the interface.
+
+                               Subclass of AvdModel.
+                            address_family_ipv6:
+                               OSPFv3 IPv6 address family configuration on the interface.
+
+                               Subclass of AvdModel.
+                            passive_interface: Include interface but without actively running OSPF.
+                            network_point_to_point: network_point_to_point
 
                         """
 
@@ -51792,7 +52204,7 @@ class EosDesigns(EosDesignsRootModel):
                 "spanning_tree_priority": {"type": int},
                 "mtu": {"type": int},
                 "ospf": {"type": Ospf},
-                "ipv6_ospf": {"type": Ipv6Ospf},
+                "ospfv3": {"type": Ospfv3},
                 "bgp": {"type": Bgp},
                 "raw_eos_cli": {"type": str},
                 "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -52015,7 +52427,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            ipv6_ospf: Ipv6Ospf
+            ospfv3: Ospfv3
             """
             OSPFv3 interface configuration.
 
@@ -52081,7 +52493,7 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_priority: int | UndefinedType | None = Undefined,
                     mtu: int | UndefinedType | None = Undefined,
                     ospf: Ospf | UndefinedType = Undefined,
-                    ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                    ospfv3: Ospfv3 | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     raw_eos_cli: str | UndefinedType | None = Undefined,
                     structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -52245,7 +52657,7 @@ class EosDesigns(EosDesignsRootModel):
                            OSPF interface configuration.
 
                            Subclass of AvdModel.
-                        ipv6_ospf:
+                        ospfv3:
                            OSPFv3 interface configuration.
 
                            Subclass of AvdModel.
@@ -53125,22 +53537,90 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Ipv6Ospf(AvdModel):
+        class Ospfv3(AvdModel):
             """Subclass of AvdModel."""
+
+            class AddressFamilyIpv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                enabled: bool | None
+                area: str
+                """
+                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                Default value: `"0.0.0.0"`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        AddressFamilyIpv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                        """
+
+            class AddressFamilyIpv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                enabled: bool | None
+                area: str
+                """
+                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                Default value: `"0.0.0.0"`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        AddressFamilyIpv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                        """
 
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool},
-                "area": {"type": str, "default": "0.0.0.0"},
-                "point_to_point": {"type": bool, "default": False},
+                "address_family_ipv4": {"type": AddressFamilyIpv4},
+                "address_family_ipv6": {"type": AddressFamilyIpv6},
+                "passive_interface": {"type": bool, "default": False},
+                "network_point_to_point": {"type": bool, "default": False},
             }
             enabled: bool | None
-            area: str
+            address_family_ipv4: AddressFamilyIpv4
             """
-            OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+            OSPFv3 IPv4 address family configuration on the interface.
 
-            Default value: `"0.0.0.0"`
+            Subclass of AvdModel.
             """
-            point_to_point: bool
+            address_family_ipv6: AddressFamilyIpv6
+            """
+            OSPFv3 IPv6 address family configuration on the interface.
+
+            Subclass of AvdModel.
+            """
+            passive_interface: bool
+            """
+            Include interface but without actively running OSPF.
+
+            Default value: `False`
+            """
+            network_point_to_point: bool
             """Default value: `False`"""
 
             if TYPE_CHECKING:
@@ -53149,19 +53629,29 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType | None = Undefined,
-                    area: str | UndefinedType = Undefined,
-                    point_to_point: bool | UndefinedType = Undefined,
+                    address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
+                    address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                    passive_interface: bool | UndefinedType = Undefined,
+                    network_point_to_point: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    Ipv6Ospf.
+                    Ospfv3.
 
 
                     Subclass of AvdModel.
 
                     Args:
                         enabled: enabled
-                        area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-                        point_to_point: point_to_point
+                        address_family_ipv4:
+                           OSPFv3 IPv4 address family configuration on the interface.
+
+                           Subclass of AvdModel.
+                        address_family_ipv6:
+                           OSPFv3 IPv6 address family configuration on the interface.
+
+                           Subclass of AvdModel.
+                        passive_interface: Include interface but without actively running OSPF.
+                        network_point_to_point: network_point_to_point
 
                     """
 
@@ -53242,7 +53732,7 @@ class EosDesigns(EosDesignsRootModel):
             "spanning_tree_priority": {"type": int},
             "mtu": {"type": int},
             "ospf": {"type": Ospf},
-            "ipv6_ospf": {"type": Ipv6Ospf},
+            "ospfv3": {"type": Ospfv3},
             "bgp": {"type": Bgp},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -53481,7 +53971,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        ipv6_ospf: Ipv6Ospf
+        ospfv3: Ospfv3
         """
         OSPFv3 interface configuration.
 
@@ -53549,7 +54039,7 @@ class EosDesigns(EosDesignsRootModel):
                 spanning_tree_priority: int | UndefinedType | None = Undefined,
                 mtu: int | UndefinedType | None = Undefined,
                 ospf: Ospf | UndefinedType = Undefined,
-                ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                ospfv3: Ospfv3 | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 raw_eos_cli: str | UndefinedType | None = Undefined,
                 structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -53725,7 +54215,7 @@ class EosDesigns(EosDesignsRootModel):
                        OSPF interface configuration.
 
                        Subclass of AvdModel.
-                    ipv6_ospf:
+                    ospfv3:
                        OSPFv3 interface configuration.
 
                        Subclass of AvdModel.
@@ -85262,76 +85752,232 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    class Ipv6Ospf(AvdModel):
+                    class Ospfv3(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class RedistributeBgp(AvdModel):
+                        class AddressFamilyIpv4(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
-                            enabled: bool
-                            """Default value: `True`"""
-                            route_map: str | None
-                            """Route-map name."""
-                            include_leaked: bool | None
-                            """Include leaked routes while redistributing."""
+                            class RedistributeBgp(AvdModel):
+                                """Subclass of AvdModel."""
 
-                            if TYPE_CHECKING:
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "route_map": {"type": str}}
+                                enabled: bool
+                                """Default value: `True`"""
+                                route_map: str | None
+                                """Route-map name."""
 
-                                def __init__(
-                                    self,
-                                    *,
-                                    enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
-                                ) -> None:
-                                    """
-                                    RedistributeBgp.
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                        """
+                                        RedistributeBgp.
 
 
-                                    Subclass of AvdModel.
+                                        Subclass of AvdModel.
 
-                                    Args:
-                                        enabled: enabled
-                                        route_map: Route-map name.
-                                        include_leaked: Include leaked routes while redistributing.
+                                        Args:
+                                            enabled: enabled
+                                            route_map: Route-map name.
 
-                                    """
+                                        """
 
-                        class RedistributeConnected(AvdModel):
-                            """Subclass of AvdModel."""
+                            class RedistributeConnected(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
+                                enabled: bool
+                                """Default value: `False`"""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                        """
+                                        RedistributeConnected.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            route_map: Route-map name.
+
+                                        """
+
+                            class RedistributeStatic(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
+                                enabled: bool
+                                """Default value: `False`"""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                        """
+                                        RedistributeStatic.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            route_map: Route-map name.
+
+                                        """
 
                             _fields: ClassVar[dict] = {
-                                "enabled": {"type": bool, "default": False},
-                                "route_map": {"type": str},
-                                "include_leaked": {"type": bool},
+                                "enabled": {"type": bool},
+                                "redistribute_bgp": {"type": RedistributeBgp},
+                                "redistribute_connected": {"type": RedistributeConnected},
+                                "redistribute_static": {"type": RedistributeStatic},
                             }
-                            enabled: bool
-                            """Default value: `False`"""
-                            route_map: str | None
-                            """Route-map name."""
-                            include_leaked: bool | None
-                            """Include leaked routes while redistributing."""
+                            enabled: bool | None
+                            redistribute_bgp: RedistributeBgp
+                            """Subclass of AvdModel."""
+                            redistribute_connected: RedistributeConnected
+                            """Subclass of AvdModel."""
+                            redistribute_static: RedistributeStatic
+                            """Subclass of AvdModel."""
 
                             if TYPE_CHECKING:
 
                                 def __init__(
                                     self,
                                     *,
-                                    enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | UndefinedType | None = Undefined,
-                                    include_leaked: bool | UndefinedType | None = Undefined,
+                                    enabled: bool | UndefinedType | None = Undefined,
+                                    redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
+                                    redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                                    redistribute_static: RedistributeStatic | UndefinedType = Undefined,
                                 ) -> None:
                                     """
-                                    RedistributeConnected.
+                                    AddressFamilyIpv4.
 
 
                                     Subclass of AvdModel.
 
                                     Args:
                                         enabled: enabled
-                                        route_map: Route-map name.
-                                        include_leaked: Include leaked routes while redistributing.
+                                        redistribute_bgp: Subclass of AvdModel.
+                                        redistribute_connected: Subclass of AvdModel.
+                                        redistribute_static: Subclass of AvdModel.
+
+                                    """
+
+                        class AddressFamilyIpv6(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class RedistributeBgp(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "route_map": {"type": str}}
+                                enabled: bool
+                                """Default value: `True`"""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                        """
+                                        RedistributeBgp.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            route_map: Route-map name.
+
+                                        """
+
+                            class RedistributeConnected(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
+                                enabled: bool
+                                """Default value: `False`"""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                        """
+                                        RedistributeConnected.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            route_map: Route-map name.
+
+                                        """
+
+                            class RedistributeStatic(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
+                                enabled: bool
+                                """Default value: `False`"""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                        """
+                                        RedistributeStatic.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            route_map: Route-map name.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "redistribute_bgp": {"type": RedistributeBgp},
+                                "redistribute_connected": {"type": RedistributeConnected},
+                                "redistribute_static": {"type": RedistributeStatic},
+                            }
+                            enabled: bool | None
+                            redistribute_bgp: RedistributeBgp
+                            """Subclass of AvdModel."""
+                            redistribute_connected: RedistributeConnected
+                            """Subclass of AvdModel."""
+                            redistribute_static: RedistributeStatic
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType | None = Undefined,
+                                    redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
+                                    redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                                    redistribute_static: RedistributeStatic | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    AddressFamilyIpv6.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        redistribute_bgp: Subclass of AvdModel.
+                                        redistribute_connected: Subclass of AvdModel.
+                                        redistribute_static: Subclass of AvdModel.
 
                                     """
 
@@ -85342,16 +85988,14 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
-                            "process_id": {"type": int},
                             "router_id": {"type": str, "default": "main_router_id"},
-                            "auto_cost_reference_bandwidth": {"type": int},
-                            "redistribute_bgp": {"type": RedistributeBgp},
-                            "redistribute_connected": {"type": RedistributeConnected},
+                            "passive_interface_default": {"type": bool, "default": True},
+                            "address_family_ipv4": {"type": AddressFamilyIpv4},
+                            "address_family_ipv6": {"type": AddressFamilyIpv6},
                             "nodes": {"type": Nodes},
+                            "structured_config": {"type": EosCliConfigGen.RouterOspfv3.VrfsItem},
                         }
                         enabled: bool | None
-                        process_id: int | None
-                        """If not set, "vrf_id" will be used."""
                         router_id: str
                         """
                         Router ID to use for OSPFv3 in this VRF.
@@ -85366,14 +86010,28 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `"main_router_id"`
                         """
-                        auto_cost_reference_bandwidth: int | None
-                        """Bandwidth in mbps."""
-                        redistribute_bgp: RedistributeBgp
-                        """Subclass of AvdModel."""
-                        redistribute_connected: RedistributeConnected
-                        """Subclass of AvdModel."""
+                        passive_interface_default: bool
+                        """
+                        Set passive-interface default.
+
+                        Default value: `True`
+                        """
+                        address_family_ipv4: AddressFamilyIpv4
+                        """
+                        OSPFv3 IPv4 address family configuration.
+
+                        Subclass of AvdModel.
+                        """
+                        address_family_ipv6: AddressFamilyIpv6
+                        """
+                        OSPFv3 IPv6 address family configuration.
+
+                        Subclass of AvdModel.
+                        """
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
+                        structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem
+                        """Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema."""
 
                         if TYPE_CHECKING:
 
@@ -85381,22 +86039,21 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType | None = Undefined,
-                                process_id: int | UndefinedType | None = Undefined,
                                 router_id: str | UndefinedType = Undefined,
-                                auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
-                                redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
-                                redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                                passive_interface_default: bool | UndefinedType = Undefined,
+                                address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
+                                address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem | UndefinedType = Undefined,
                             ) -> None:
                                 """
-                                Ipv6Ospf.
+                                Ospfv3.
 
 
                                 Subclass of AvdModel.
 
                                 Args:
                                     enabled: enabled
-                                    process_id: If not set, "vrf_id" will be used.
                                     router_id:
                                        Router ID to use for OSPFv3 in this VRF.
                                        This can be an IPv4 address, "main_router_id", "none" or
@@ -85407,10 +86064,17 @@ class EosDesigns(EosDesignsRootModel):
                                        Router ID for this VRF. EOS will use the main OSPF Router ID.
                                        - "diagnostic_loopback" will use the
                                        IP address of the VRF Diagnostic Loopback interface.
-                                    auto_cost_reference_bandwidth: Bandwidth in mbps.
-                                    redistribute_bgp: Subclass of AvdModel.
-                                    redistribute_connected: Subclass of AvdModel.
+                                    passive_interface_default: Set passive-interface default.
+                                    address_family_ipv4:
+                                       OSPFv3 IPv4 address family configuration.
+
+                                       Subclass of AvdModel.
+                                    address_family_ipv6:
+                                       OSPFv3 IPv6 address family configuration.
+
+                                       Subclass of AvdModel.
                                     nodes: Subclass of AvdList with `str` items.
+                                    structured_config: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
 
                                 """
 
@@ -86488,22 +87152,90 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class Ipv6Ospf(AvdModel):
+                            class Ospfv3(AvdModel):
                                 """Subclass of AvdModel."""
+
+                                class AddressFamilyIpv4(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                                    enabled: bool | None
+                                    area: str
+                                    """
+                                    OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                    Default value: `"0.0.0.0"`
+                                    """
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                                            """
+                                            AddressFamilyIpv4.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                enabled: enabled
+                                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                            """
+
+                                class AddressFamilyIpv6(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                                    enabled: bool | None
+                                    area: str
+                                    """
+                                    OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                    Default value: `"0.0.0.0"`
+                                    """
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                                            """
+                                            AddressFamilyIpv6.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                enabled: enabled
+                                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                            """
 
                                 _fields: ClassVar[dict] = {
                                     "enabled": {"type": bool},
-                                    "area": {"type": str, "default": "0.0.0.0"},
-                                    "point_to_point": {"type": bool, "default": False},
+                                    "address_family_ipv4": {"type": AddressFamilyIpv4},
+                                    "address_family_ipv6": {"type": AddressFamilyIpv6},
+                                    "passive_interface": {"type": bool, "default": False},
+                                    "network_point_to_point": {"type": bool, "default": False},
                                 }
                                 enabled: bool | None
-                                area: str
+                                address_family_ipv4: AddressFamilyIpv4
                                 """
-                                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                OSPFv3 IPv4 address family configuration on the interface.
 
-                                Default value: `"0.0.0.0"`
+                                Subclass of AvdModel.
                                 """
-                                point_to_point: bool
+                                address_family_ipv6: AddressFamilyIpv6
+                                """
+                                OSPFv3 IPv6 address family configuration on the interface.
+
+                                Subclass of AvdModel.
+                                """
+                                passive_interface: bool
+                                """
+                                Include interface but without actively running OSPF.
+
+                                Default value: `False`
+                                """
+                                network_point_to_point: bool
                                 """Default value: `False`"""
 
                                 if TYPE_CHECKING:
@@ -86512,19 +87244,29 @@ class EosDesigns(EosDesignsRootModel):
                                         self,
                                         *,
                                         enabled: bool | UndefinedType | None = Undefined,
-                                        area: str | UndefinedType = Undefined,
-                                        point_to_point: bool | UndefinedType = Undefined,
+                                        address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
+                                        address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                                        passive_interface: bool | UndefinedType = Undefined,
+                                        network_point_to_point: bool | UndefinedType = Undefined,
                                     ) -> None:
                                         """
-                                        Ipv6Ospf.
+                                        Ospfv3.
 
 
                                         Subclass of AvdModel.
 
                                         Args:
                                             enabled: enabled
-                                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-                                            point_to_point: point_to_point
+                                            address_family_ipv4:
+                                               OSPFv3 IPv4 address family configuration on the interface.
+
+                                               Subclass of AvdModel.
+                                            address_family_ipv6:
+                                               OSPFv3 IPv6 address family configuration on the interface.
+
+                                               Subclass of AvdModel.
+                                            passive_interface: Include interface but without actively running OSPF.
+                                            network_point_to_point: network_point_to_point
 
                                         """
 
@@ -86604,7 +87346,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "spanning_tree_priority": {"type": int},
                                 "mtu": {"type": int},
                                 "ospf": {"type": Ospf},
-                                "ipv6_ospf": {"type": Ipv6Ospf},
+                                "ospfv3": {"type": Ospfv3},
                                 "bgp": {"type": Bgp},
                                 "raw_eos_cli": {"type": str},
                                 "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -86837,7 +87579,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
-                            ipv6_ospf: Ipv6Ospf
+                            ospfv3: Ospfv3
                             """
                             OSPFv3 interface configuration.
 
@@ -86904,7 +87646,7 @@ class EosDesigns(EosDesignsRootModel):
                                     spanning_tree_priority: int | UndefinedType | None = Undefined,
                                     mtu: int | UndefinedType | None = Undefined,
                                     ospf: Ospf | UndefinedType = Undefined,
-                                    ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                                    ospfv3: Ospfv3 | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     raw_eos_cli: str | UndefinedType | None = Undefined,
                                     structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -87074,7 +87816,7 @@ class EosDesigns(EosDesignsRootModel):
                                            OSPF interface configuration.
 
                                            Subclass of AvdModel.
-                                        ipv6_ospf:
+                                        ospfv3:
                                            OSPFv3 interface configuration.
 
                                            Subclass of AvdModel.
@@ -87963,22 +88705,90 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Ipv6Ospf(AvdModel):
+                        class Ospfv3(AvdModel):
                             """Subclass of AvdModel."""
+
+                            class AddressFamilyIpv4(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                                enabled: bool | None
+                                area: str
+                                """
+                                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                Default value: `"0.0.0.0"`
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                                        """
+                                        AddressFamilyIpv4.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                        """
+
+                            class AddressFamilyIpv6(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str, "default": "0.0.0.0"}}
+                                enabled: bool | None
+                                area: str
+                                """
+                                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                Default value: `"0.0.0.0"`
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                                        """
+                                        AddressFamilyIpv6.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                        """
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool},
-                                "area": {"type": str, "default": "0.0.0.0"},
-                                "point_to_point": {"type": bool, "default": False},
+                                "address_family_ipv4": {"type": AddressFamilyIpv4},
+                                "address_family_ipv6": {"type": AddressFamilyIpv6},
+                                "passive_interface": {"type": bool, "default": False},
+                                "network_point_to_point": {"type": bool, "default": False},
                             }
                             enabled: bool | None
-                            area: str
+                            address_family_ipv4: AddressFamilyIpv4
                             """
-                            OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                            OSPFv3 IPv4 address family configuration on the interface.
 
-                            Default value: `"0.0.0.0"`
+                            Subclass of AvdModel.
                             """
-                            point_to_point: bool
+                            address_family_ipv6: AddressFamilyIpv6
+                            """
+                            OSPFv3 IPv6 address family configuration on the interface.
+
+                            Subclass of AvdModel.
+                            """
+                            passive_interface: bool
+                            """
+                            Include interface but without actively running OSPF.
+
+                            Default value: `False`
+                            """
+                            network_point_to_point: bool
                             """Default value: `False`"""
 
                             if TYPE_CHECKING:
@@ -87987,19 +88797,29 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType | None = Undefined,
-                                    area: str | UndefinedType = Undefined,
-                                    point_to_point: bool | UndefinedType = Undefined,
+                                    address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
+                                    address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                                    passive_interface: bool | UndefinedType = Undefined,
+                                    network_point_to_point: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
-                                    Ipv6Ospf.
+                                    Ospfv3.
 
 
                                     Subclass of AvdModel.
 
                                     Args:
                                         enabled: enabled
-                                        area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-                                        point_to_point: point_to_point
+                                        address_family_ipv4:
+                                           OSPFv3 IPv4 address family configuration on the interface.
+
+                                           Subclass of AvdModel.
+                                        address_family_ipv6:
+                                           OSPFv3 IPv6 address family configuration on the interface.
+
+                                           Subclass of AvdModel.
+                                        passive_interface: Include interface but without actively running OSPF.
+                                        network_point_to_point: network_point_to_point
 
                                     """
 
@@ -88083,7 +88903,7 @@ class EosDesigns(EosDesignsRootModel):
                             "spanning_tree_priority": {"type": int},
                             "mtu": {"type": int},
                             "ospf": {"type": Ospf},
-                            "ipv6_ospf": {"type": Ipv6Ospf},
+                            "ospfv3": {"type": Ospfv3},
                             "bgp": {"type": Bgp},
                             "raw_eos_cli": {"type": str},
                             "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -88346,7 +89166,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
-                        ipv6_ospf: Ipv6Ospf
+                        ospfv3: Ospfv3
                         """
                         OSPFv3 interface configuration.
 
@@ -88417,7 +89237,7 @@ class EosDesigns(EosDesignsRootModel):
                                 spanning_tree_priority: int | UndefinedType | None = Undefined,
                                 mtu: int | UndefinedType | None = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
-                                ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                                ospfv3: Ospfv3 | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 raw_eos_cli: str | UndefinedType | None = Undefined,
                                 structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -88609,7 +89429,7 @@ class EosDesigns(EosDesignsRootModel):
                                        OSPF interface configuration.
 
                                        Subclass of AvdModel.
-                                    ipv6_ospf:
+                                    ospfv3:
                                        OSPFv3 interface configuration.
 
                                        Subclass of AvdModel.
@@ -92192,7 +93012,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_ibgp_peering_vlan": {"type": int},
                         "vtep_diagnostic": {"type": VtepDiagnostic},
                         "ospf": {"type": Ospf},
-                        "ipv6_ospf": {"type": Ipv6Ospf},
+                        "ospfv3": {"type": Ospfv3},
                         "redistribute_ospf": {"type": bool, "default": True},
                         "redistribute_ospfv3": {"type": bool, "default": True},
                         "evpn_l3_multicast": {"type": EvpnL3Multicast},
@@ -92387,7 +93207,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
-                    ipv6_ospf: Ipv6Ospf
+                    ospfv3: Ospfv3
                     """
                     Router OSPFv3 configuration.
                     This will create an OSPFv3 routing instance in the tenant VRF. If there
@@ -92577,7 +93397,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_ibgp_peering_vlan: int | UndefinedType | None = Undefined,
                             vtep_diagnostic: VtepDiagnostic | UndefinedType = Undefined,
                             ospf: Ospf | UndefinedType = Undefined,
-                            ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                            ospfv3: Ospfv3 | UndefinedType = Undefined,
                             redistribute_ospf: bool | UndefinedType = Undefined,
                             redistribute_ospfv3: bool | UndefinedType = Undefined,
                             evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
@@ -92731,7 +93551,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
-                                ipv6_ospf:
+                                ospfv3:
                                    Router OSPFv3 configuration.
                                    This will create an OSPFv3 routing instance in the tenant VRF. If there
                                    is no nodes definition, the OSPF instance will be

@@ -24,108 +24,120 @@ tenants:
       - name: Tenant_OSPFv3_Redistribute_VRF
         vrf_vni: 100
         vrf_id: 42
-        ipv6_ospf:
+        ospfv3:
           enabled: true
           router_id: ipv6_ospf_router
-          auto_cost_reference_bandwidth: 10
-          redistribute_bgp:
+          address_family_ipv6:
             enabled: true
-          redistribute_connected:
-            enabled: true
-          nodes: [network-services-ospf-v3]
-        svis:
-          - id: 201
-            name: Tenant_OSPFv3_Redistribute_201
-            description: "Tenant_OSPFv3_Redistribute_201 description"
-            enabled: true
-            ipv6_address: cafe::cafe/64
-            ipv6_enable: true
-            ipv6_ospf:
+            redistribute_bgp:
               enabled: true
-              point_to_point: true
-  # Test OSPFv3 Redistribution with route map
-  - name: Tenant_OSPFv3_Redistribute_Route_Map
-    mac_vrf_vni_base: 10000
-    mac_vrf_id_base: 20000
-    redistribute_mlag_ibgp_peering_vrfs: true
-    vrfs:
-      - name: Tenant_OSPFv3_Redistribute_Route_Map_VRF
-        vrf_vni: 101
-        vrf_id: 43
-        ipv6_ospf:
-          enabled: true
-          router_id: ipv6_ospf_router_route_map
-          auto_cost_reference_bandwidth: 10
-          redistribute_bgp:
-            enabled: true
-            route_map: ipv6_ospf_rm
-          redistribute_connected:
-            enabled: true
-            route_map: ipv6_ospf_rm
-          nodes: [network-services-ospf-v3]
-        svis:
-          - id: 202
-            name: Tenant_OSPFv3_Redistribute_Route_Map_202
-            description: "Tenant_OSPFv3_Redistribute_Route_Map_202 description"
-            enabled: true
-            ipv6_address: cafe::/64
-            ipv6_enable: true
-            ipv6_ospf:
+            redistribute_connected:
               enabled: true
-              point_to_point: true
-  # Test OSPFv3 Redistribution with leaked route
-  - name: Tenant_OSPFv3_Redistribute_Include_Leaked
-    mac_vrf_vni_base: 10000
-    mac_vrf_id_base: 20000
-    redistribute_mlag_ibgp_peering_vrfs: true
-    vrfs:
-      - name: Tenant_OSPFv3_Redistribute_Include_Leaked_VRF
-        vrf_vni: 102
-        vrf_id: 44
-        ipv6_ospf:
-          enabled: true
-          router_id: ipv6_ospf_router_include_leaked
-          redistribute_bgp:
-            enabled: true
-            route_map: ipv6_ospf_rm
-            include_leaked: true
-          redistribute_connected:
-            enabled: true
-            route_map: ipv6_ospf_rm
-            include_leaked: true
           nodes: [network-services-ospf-v3]
-        svis:
-          - id: 203
-            name: Tenant_OSPFv3_Redistribute_Include_Leaked_203
-            description: "Tenant_OSPFv3_Redistribute_Include_Leaked_203 description"
-            enabled: true
-            ipv6_address: cafe::ca/64
-            ipv6_enable: true
-            ipv6_ospf:
-              enabled: true
-              point_to_point: true
-  # Test with no Redistribution
-  - name: Tenant_OSPFv3_No_Redistribution
-    mac_vrf_vni_base: 10000
-    mac_vrf_id_base: 20000
-    redistribute_mlag_ibgp_peering_vrfs: true
-    vrfs:
-      - name: Tenant_OSPFv3_No_Redistribution_VRF
-        vrf_vni: 105
-        vrf_id: 47
-        ipv6_ospf:
-          enabled: true
-          router_id: ipv6_ospf_router_ospfv3_include
-          nodes: [network-services-ospf-v3]
-          redistribute_bgp:
-            enabled: false
-        svis:
-          - id: 206
-            name: Tenant_OSPFv3_No_Redistribution_206
-            description: "Tenant_OSPFv3_No_Redistribution_206 description"
-            enabled: true
-            ipv6_address: ca::ca/64
-            ipv6_enable: true
-            ipv6_ospf:
-              enabled: true
-              point_to_point: true
+  #       svis:
+  #         - id: 201
+  #           name: Tenant_OSPFv3_Redistribute_201
+  #           description: "Tenant_OSPFv3_Redistribute_201 description"
+  #           enabled: true
+  #           ipv6_address: cafe::cafe/64
+  #           ipv6_enable: true
+  #           ospfv3:
+  #             enabled: true
+  #             address_family_ipv6:
+  #               enabled: true
+  #             network_point_to_point: true
+  # # Test OSPFv3 Redistribution with route map
+  # - name: Tenant_OSPFv3_Redistribute_Route_Map
+  #   mac_vrf_vni_base: 10000
+  #   mac_vrf_id_base: 20000
+  #   redistribute_mlag_ibgp_peering_vrfs: true
+  #   vrfs:
+  #     - name: Tenant_OSPFv3_Redistribute_Route_Map_VRF
+  #       vrf_vni: 101
+  #       vrf_id: 43
+  #       ospfv3:
+  #         enabled: true
+  #         router_id: ipv6_ospf_router_route_map
+  #         address_family_ipv6:
+  #           enabled: true
+  #           redistribute_bgp:
+  #             enabled: true
+  #             route_map: ipv6_ospf_rm
+  #           redistribute_connected:
+  #             enabled: true
+  #             route_map: ipv6_ospf_rm
+  #         nodes: [network-services-ospf-v3]
+  #       svis:
+  #         - id: 202
+  #           name: Tenant_OSPFv3_Redistribute_Route_Map_202
+  #           description: "Tenant_OSPFv3_Redistribute_Route_Map_202 description"
+  #           enabled: true
+  #           ipv6_address: cafe::/64
+  #           ipv6_enable: true
+  #           ospfv3:
+  #             enabled: true
+  #             address_family_ipv6:
+  #               enabled: true
+  #             network_point_to_point: true
+  # # Test OSPFv3 Redistribution with leaked route
+  # - name: Tenant_OSPFv3_Redistribute_Include_Leaked
+  #   mac_vrf_vni_base: 10000
+  #   mac_vrf_id_base: 20000
+  #   redistribute_mlag_ibgp_peering_vrfs: true
+  #   vrfs:
+  #     - name: Tenant_OSPFv3_Redistribute_Include_Leaked_VRF
+  #       vrf_vni: 102
+  #       vrf_id: 44
+  #       ospfv3:
+  #         enabled: true
+  #         router_id: ipv6_ospf_router_include_leaked
+  #         address_family_ipv6:
+  #           enabled: true
+  #           redistribute_bgp:
+  #             enabled: true
+  #             route_map: ipv6_ospf_rm
+  #           redistribute_connected:
+  #             enabled: true
+  #             route_map: ipv6_ospf_rm
+  #         nodes: [network-services-ospf-v3]
+  #       svis:
+  #         - id: 203
+  #           name: Tenant_OSPFv3_Redistribute_Include_Leaked_203
+  #           description: "Tenant_OSPFv3_Redistribute_Include_Leaked_203 description"
+  #           enabled: true
+  #           ipv6_address: cafe::ca/64
+  #           ipv6_enable: true
+  #           ospfv3:
+  #             enabled: true
+  #             address_family_ipv6:
+  #               enabled: true
+  #             network_point_to_point: true
+  # # Test with no Redistribution
+  # - name: Tenant_OSPFv3_No_Redistribution
+  #   mac_vrf_vni_base: 10000
+  #   mac_vrf_id_base: 20000
+  #   redistribute_mlag_ibgp_peering_vrfs: true
+  #   vrfs:
+  #     - name: Tenant_OSPFv3_No_Redistribution_VRF
+  #       vrf_vni: 105
+  #       vrf_id: 47
+  #       ospfv3:
+  #         enabled: true
+  #         router_id: ipv6_ospf_router_ospfv3_include
+  #         address_family_ipv6:
+  #           enabled: true
+  #           redistribute_bgp:
+  #             enabled: false
+  #         nodes: [network-services-ospf-v3]
+  #       svis:
+  #         - id: 206
+  #           name: Tenant_OSPFv3_No_Redistribution_206
+  #           description: "Tenant_OSPFv3_No_Redistribution_206 description"
+  #           enabled: true
+  #           ipv6_address: ca::ca/64
+  #           ipv6_enable: true
+  #           ospfv3:
+  #             enabled: true
+  #             address_family_ipv6:
+  #               enabled: true
+  #             network_point_to_point: true

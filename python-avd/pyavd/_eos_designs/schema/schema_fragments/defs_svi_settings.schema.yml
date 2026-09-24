@@ -464,7 +464,7 @@ $defs:
                     To protect the password at rest it is strongly recommended to make use of a vault or similar.
                   min_length: 1
                   max_length: 16
-      ipv6_ospf:
+      ospfv3:
         documentation_options:
           table: network-services-vrfs-ospfv3-settings
         type: dict
@@ -472,13 +472,35 @@ $defs:
         keys:
           enabled:
             type: bool
-          area:
-            type: str
-            description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-            convert_types:
-              - int
-            default: "0.0.0.0"
-          point_to_point:
+          address_family_ipv4:
+            type: dict
+            description: OSPFv3 IPv4 address family configuration on the interface.
+            keys:
+              enabled:
+                type: bool
+              area:
+                type: str
+                description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                convert_types:
+                  - int
+                default: "0.0.0.0"
+          address_family_ipv6:
+            type: dict
+            description: OSPFv3 IPv6 address family configuration on the interface.
+            keys:
+              enabled:
+                type: bool
+              area:
+                type: str
+                description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                convert_types:
+                  - int
+                default: "0.0.0.0"
+          passive_interface:
+            type: bool
+            default: false
+            description: Include interface but without actively running OSPF.
+          network_point_to_point:
             type: bool
             default: false
       bgp:

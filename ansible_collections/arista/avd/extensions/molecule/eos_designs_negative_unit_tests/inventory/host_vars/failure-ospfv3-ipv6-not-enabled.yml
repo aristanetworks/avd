@@ -19,15 +19,18 @@ tenants:
       - name: OSPFv3_TEST_SVI
         description: "IGMP_QUERIER_TEST_3"
         vrf_vni: 41
-        ipv6_ospf:
+        ospfv3:
           enabled: true
           router_id: ipv6_ospf_router
-          auto_cost_reference_bandwidth: 10
+          address_family_ipv6:
+            enabled: true
         svis:
           - id: 21
             name: "VLAN_21"
-            ipv6_ospf:
+            ospfv3:
               enabled: true
+              address_family_ipv6:
+                enabled: true
 
 expected_error_message: >-
-  OSPFv3 is enabled on SVI 'VLAN_21' but 'ipv6_enable' is not set under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST_SVI].svis[id=21]'.
+  OSPFv3 IPv6 address family is enabled on SVI 'VLAN_21' but 'ipv6_enable' is not set under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST_SVI].svis[id=21]'.

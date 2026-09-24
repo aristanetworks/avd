@@ -785,7 +785,7 @@ keys:
                     documentation_options:
                       hide_keys: true
                     $ref: "eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items"
-              ipv6_ospf:
+              ospfv3:
                 documentation_options:
                   table: network-services-vrfs-ospfv3-settings
                 type: dict
@@ -797,11 +797,6 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                  process_id:
-                    type: int
-                    convert_types:
-                      - str
-                    description: If not set, "vrf_id" will be used.
                   router_id:
                     type: str
                     description: |-
@@ -811,42 +806,87 @@ keys:
                       - "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
                     default: main_router_id
-                  auto_cost_reference_bandwidth:
-                    type: int
-                    convert_types:
-                      - str
-                    description: Bandwidth in mbps.
-                    min: 1
-                    max: 4294967
-                  redistribute_bgp:
+                  passive_interface_default:
+                    type: bool
+                    default: true
+                    description: Set passive-interface default.
+                  address_family_ipv4:
                     type: dict
+                    description: OSPFv3 IPv4 address family configuration.
                     keys:
                       enabled:
                         type: bool
-                        default: true
-                      route_map:
-                        type: str
-                        description: Route-map name.
-                      include_leaked:
-                        type: bool
-                        description: Include leaked routes while redistributing.
-                  redistribute_connected:
+                      redistribute_bgp:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: true
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      redistribute_connected:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      redistribute_static:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                  address_family_ipv6:
                     type: dict
+                    description: OSPFv3 IPv6 address family configuration.
                     keys:
                       enabled:
                         type: bool
-                        default: false
-                      route_map:
-                        type: str
-                        description: Route-map name.
-                      include_leaked:
-                        type: bool
-                        description: Include leaked routes while redistributing.
+                      redistribute_bgp:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: true
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      redistribute_connected:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      redistribute_static:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                          route_map:
+                            type: str
+                            description: Route-map name.
                   nodes:
                     type: list
                     items:
                       type: str
                       description: Hostname.
+                  structured_config:
+                    type: dict
+                    description: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/vrfs/items"
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings

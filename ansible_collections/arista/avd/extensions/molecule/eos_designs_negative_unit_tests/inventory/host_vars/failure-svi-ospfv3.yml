@@ -22,8 +22,10 @@ tenants:
           - id: 21
             name: "VLAN_21"
             ipv6_enable: true
-            ipv6_ospf:
+            ospfv3:
               enabled: true
+              address_family_ipv6:
+                enabled: true
 
 expected_error_message: >-
   OSPFv3 is enabled on SVI 'VLAN_21' but not under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST_SVI]'.

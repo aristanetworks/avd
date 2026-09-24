@@ -306,6 +306,16 @@ class FilteredTenantsMixin(Protocol):
 
             vrf.additional_route_targets = vrf.additional_route_targets._filtered(lambda rt: bool(not rt.nodes or self.hostname in rt.nodes))
 
+            if vrf.ospfv3.enabled:
+                ipv4_enabled = vrf.ospfv3.address_family_ipv4.enabled
+                ipv6_enabled = vrf.ospfv3.address_family_ipv6.enabled
+                if not ipv4_enabled and not ipv6_enabled:
+                    msg = (
+                        f"OSPFv3 is enabled on vrf '{vrf.name}' but neither 'address_family_ipv4' nor 'address_family_ipv6' "
+                        f"is enabled under 'tenants[name={tenant.name}].vrfs[name={vrf.name}].ospfv3'."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+
             if vrf.svis or vrf.l3_interfaces or vrf.loopbacks or vrf.l3_port_channels or self.is_forced_vrf(vrf, tenant.name):
                 filtered_vrfs.append(vrf)
 
@@ -539,24 +549,25 @@ class FilteredTenantsMixin(Protocol):
             )
             self.update_ospf_authentication(config, svi, vrf, tenant)
 
-        if svi.ipv6_ospf.enabled:
-            if not svi.ipv6_enable:
-                msg = (
-                    f"OSPFv3 is enabled on SVI '{svi.name}' but 'ipv6_enable' is not set under"
-                    f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
-                )
-                raise AristaAvdError(msg)
-            if not vrf.ipv6_ospf.enabled:
+        if isinstance(config, EosCliConfigGen.VlanInterfacesItem) and svi.ospfv3.enabled:
+            if not vrf.ospfv3.enabled:
                 msg = f"OSPFv3 is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
                 raise AristaAvdError(msg)
-            if process_id := default(vrf.ipv6_ospf.process_id, vrf.vrf_id):
-                config.ipv6_ospf.process._update(
-                    id=process_id,
-                    area=svi.ipv6_ospf.area,
-                )
-                config.ipv6_ospf._update(
-                    network_point_to_point=svi.ipv6_ospf.point_to_point,
-                )
+            if svi.ospfv3.address_family_ipv4.enabled:
+                config.ospfv3.ipv4.area = svi.ospfv3.address_family_ipv4.area
+            if svi.ospfv3.address_family_ipv6.enabled:
+                if not svi.ipv6_enable:
+                    msg = (
+                        f"OSPFv3 IPv6 address family is enabled on SVI '{svi.name}' but 'ipv6_enable' is not set under"
+                        f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
+                    )
+                    raise AristaAvdError(msg)
+                config.ospfv3.ipv6.area = svi.ospfv3.address_family_ipv6.area
+            config.ospfv3._update(
+                passive_interface=svi.ospfv3.passive_interface,
+                network_point_to_point=svi.ospfv3.network_point_to_point,
+            )
+
     @overload
     def update_ospf_authentication(
         self: SharedUtilsProtocol,
