@@ -119,6 +119,7 @@ jobs:
               - '.github/workflows/pull-request-management.yml'
               - 'Makefile'
               - 'tools/e2e-test-avd.py'
+              - 'tools/e2e_test_avd.py'
               - '**/e2e-test.toml'
       - name: Find all e2e-test.toml file
         id: e2e_test_matrix
