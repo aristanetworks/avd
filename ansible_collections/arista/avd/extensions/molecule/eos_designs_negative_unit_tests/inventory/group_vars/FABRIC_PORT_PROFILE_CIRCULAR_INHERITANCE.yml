@@ -56,5 +56,5 @@ port_profiles:
       enabled: true
 
 expected_error_message: >-
-  Circular profile dependency detected: Profile 'profile2' cannot be assigned
-  as the parent of 'profile4' in 'port_profiles' because it would create a loop for host 'port-profiles-circular-reference'.
+  Circular profile dependency detected: Profile 'profile2' cannot be applied
+  as the parent profile of 'profile4' in 'port_profiles' because it would create a loop for host 'port-profiles-circular-reference'.

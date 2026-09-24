@@ -356,8 +356,8 @@ class UtilsMixin(Protocol):
                 profile_name = profile_item.profile
                 root_profile = resolved_profile.profile  # pyright: ignore [reportAttributeAccessIssue]
             if profile_item.parent_profile not in profiles:
-                msg = f"Parent profile '{profile_item.parent_profile}' applied under '{profile_name}' does not exist in '{context}'."
-                raise AristaAvdInvalidInputsError(msg)
+                msg = f"Parent profile '{profile_item.parent_profile}' applied under profile '{profile_name}' does not exist in '{context}'."
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             if profile_item.parent_profile in profile_chain or profile_item.parent_profile == root_profile:
                 msg = (
                     f"Circular profile dependency detected: Profile '{profile_item.parent_profile}' cannot be applied as"

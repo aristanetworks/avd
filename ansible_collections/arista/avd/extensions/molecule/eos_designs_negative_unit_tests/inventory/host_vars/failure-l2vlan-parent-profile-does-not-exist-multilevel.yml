@@ -33,4 +33,4 @@ tenants:
         profile: PROFILE-1
 
 expected_error_message: >-
-  Parent profile 'PROFILE-4' applied under 'PROFILE-3' does not exist in 'l2vlan_profiles'.
+  Parent profile 'PROFILE-4' applied under profile 'PROFILE-3' does not exist in 'l2vlan_profiles'.

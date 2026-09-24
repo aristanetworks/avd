@@ -39,4 +39,4 @@ port_profiles:
     parent_profile: profile3
 
 expected_error_message: >-
-  Profile 'profile3' applied under port profile 'profile2' does not exist in 'port_profiles' for host 'fabric-invalid-parent-port-profile'.
+  Parent profile 'profile3' applied under profile 'profile2' does not exist in 'port_profiles' for host 'fabric-invalid-parent-port-profile'.
