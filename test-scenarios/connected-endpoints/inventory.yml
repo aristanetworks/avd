@@ -23,6 +23,9 @@ all:
           children:
             CONNECTED_ENDPOINT_SWITCHES:
           vars:
+            custom_structured_configuration_list_merge: append_rp
+            enable_trunk_groups: true
+
             connected_endpoints_keys:
               - key: servers
                 type: server
@@ -35,6 +38,7 @@ all:
               - profile: TRUNK_PROFILE
                 mode: trunk
                 vlans: "10-12"
+                trunk_groups: [BASE, SHARED]
 
             servers:
               - name: single-attached-server
@@ -43,6 +47,8 @@ all:
                     switch_ports: [Ethernet1]
                     switches: [ce-test-1]
                     profile: ACCESS_PROFILE
+                    structured_config:
+                      description: CUSTOM_single-attached-server
               - name: port-channel-server
                 adapters:
                   - endpoint_ports: [eth0, eth1]
@@ -52,6 +58,10 @@ all:
                     port_channel:
                       mode: active
                       channel_id: 23
+                      structured_config:
+                        switchport:
+                          trunk:
+                            groups: [SHARED, CUSTOM]
               - name: subinterface-router
                 adapters:
                   - endpoint_ports: [eth0]
