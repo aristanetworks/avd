@@ -15,30 +15,32 @@ their trade-offs are essential to understanding a decision; a rule without its a
 
 ## Decision domains
 
-Numbering restarts in each domain. Always qualify an ADR reference with its domain, for example `schema/0006` or `versioning/0003`.
+Numbering restarts in each domain. Always qualify an ADR reference with its domain, for example `schema/0006` or `versioning/0003`. The filename also
+includes the domain, such as `schema/schema-0006-reuse-schema-definitions-with-refs.md`, so the decision area remains visible when a file is linked,
+downloaded, or copied outside its domain directory.
 
 | Domain | Purpose | Current state |
 | ------ | ------- | ------------- |
-| [Versioning](versioning/README.md) | Product versioning, SemVer surfaces, deprecation, and planned future behavior | Initial records proposed |
+| [Versioning](versioning/README.md) | Product lifecycle, versioning, SemVer surfaces, deprecation, and planned future behavior | Initial records proposed |
 | [Schema](schema/README.md) | AVD Schema authoring, composition, validation, generation, and evolution | Initial records proposed |
+| [Data modelling](data-modeling/README.md) | Representation boundaries, ownership, normalization, serialization, and cross-area modelling rules | Backlog |
 | [Code](code/README.md) | Python architecture and authoring boundaries | Backlog |
 | [Jinja2](jinja2/README.md) | Template responsibilities, compilation, ordering, and extension points | Backlog |
 | [CI](ci/README.md) | Test-layer selection, generated artifacts, compatibility matrices, and release validation | Backlog |
 | [Dependencies](dependencies/README.md) | Dependency sources, constraints, automation, exceptions, and supply-chain pinning | Backlog |
-| [Ansible collection](ansible-collection/README.md) | Controller execution, PyAVD delegation, public interfaces, packaging, and support | Backlog |
+| [Ansible collection](ansible-collection/README.md) | Controller execution, PyAVD delegation, public interfaces, packaging, testing, and support | Backlog |
 
 ## When to write an ADR
 
-Write an ADR when a choice has a measurable effect on one or more of the following:
+Use an ADR when all of these conditions are true:
 
-- AVD component boundaries or direction of dependencies.
-- A public compatibility, versioning, or extension contract.
-- Schema, generated output, or data-processing semantics.
-- Supported runtime or dependency constraints.
-- A quality gate needed to preserve an architectural property.
+- There are multiple viable alternatives, and selecting between them requires an architectural trade-off rather than a local implementation choice.
+- The outcome is intended to guide more than one implementation or change, or it establishes a public or cross-component contract.
+- Reversing the outcome would require coordinated migration, compatibility handling, or changes across components.
 
-Keep formatting rules, naming preferences, command recipes, and ordinary review checklists in contributor documentation. If reversing a choice would
-not meaningfully affect AVD's structure or qualities, it probably does not need an ADR.
+Keep local and readily reversible implementation details, formatting rules, naming preferences, command recipes, and ordinary review checklists in
+contributor documentation, source comments, or code review. Implementing an accepted ADR does not require another ADR unless the implementation
+introduces a distinct decision that passes the test above.
 
 ## Lifecycle
 
@@ -58,12 +60,20 @@ repository evidence and frame its alternatives as a present-day evaluation. It m
 
 ## Authoring and review
 
-1. Copy [the template](template.md) into the appropriate domain using the next four-digit number.
-2. Keep the record focused on one decision and give every viable alternative a fair treatment.
-3. Add the record to the domain index and link any related ADRs with qualified identifiers.
-4. Describe how conformance can be confirmed in code, tests, generated artifacts, or review.
-5. State future direction and objective revisit triggers without making unsupported roadmap commitments.
-6. Submit the proposed ADR for maintainer review before treating it as policy.
+1. Copy [the template](template.md) into the appropriate domain directory using `<domain>-<four-digit-number>-<short-title>.md`.
+2. Keep the record focused on one decision and give every viable alternative a fair treatment. If its boundary with an adjacent decision is easy to
+   confuse, state that boundary briefly in the context.
+3. Describe the selected outcome's effects neutrally under Consequences; reserve `Good` and `Bad` comparisons for the option analysis.
+4. Add a focused example when it clarifies input, output, processing order, or accepted and rejected behavior.
+5. Add the record to the domain index and link any related ADRs with qualified identifiers.
+6. Describe how conformance can be confirmed in code, tests, generated artifacts, or review.
+7. State future direction and objective revisit triggers without making unsupported roadmap commitments.
+8. Submit the proposed ADR for maintainer review before treating it as policy.
 
-Released user and contributor documentation remains the normative description of released AVD behavior. The decision log follows `devel` and can
-contain proposed or future decisions that do not apply to a released version yet.
+The template follows MADR 4.0 by placing the concise Decision Outcome before the detailed option comparison. This makes accepted records fast to
+scan; it does not imply that authors choose an outcome before evaluating alternatives. The Considered Options and Decision Drivers establish the
+comparison, and Pros and Cons records the detailed trade-offs that justify the outcome.
+
+Released user and contributor documentation remains the normative description of released AVD behavior. The repository decision log follows `devel`
+and can contain proposed or future decisions that do not apply to a released version yet. ADRs remain in the repository instead of the versioned
+documentation site because their evidence links and review context follow the source tree.

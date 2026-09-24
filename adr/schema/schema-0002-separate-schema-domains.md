@@ -20,6 +20,9 @@ AVD models user design intent, EOS structured configuration, internal facts prot
 owners and stability promises, but some EOS Designs fields deliberately reuse EOS CLI Config Gen shapes because EOS Designs produces that structured
 configuration. Should all data share one schema graph or remain in separate domains?
 
+This record governs ownership and dependency direction between named schema domains. It does not define local `$ref` merge behavior (`schema/0006`)
+or determine whether an individual field is a stable public contract.
+
 ## Decision Drivers
 
 - Intent models and rendered structured configuration evolve for different reasons.
@@ -45,15 +48,25 @@ Cross-domain references follow `schema/0006` and must not create a cycle.
 
 ### Consequences
 
-- Good, because each processing stage retains a clear model and stability boundary.
-- Good, because exact producer-to-consumer reuse is possible without duplication.
-- Bad, because moving or changing a referenced shape can affect another domain.
-- Bad, because reviewers must assess the dependency graph rather than only the edited file.
+- Each processing stage retains a named model, owner, and stability boundary while allowing exact producer-to-consumer reuse.
+- A referenced-shape change can affect consumers outside the edited domain and therefore requires dependency-aware review.
+- Schema tooling and reviewers must preserve an acyclic dependency graph rather than assess each fragment in isolation.
+
+### Risks and Mitigations
+
+- **Risk:** Convenient cross-domain references gradually create cycles or erase ownership boundaries.
+  **Mitigation:** Permit only directionally justified edges and add an automated cycle check when manual graph inspection is no longer reliable.
 
 ### Confirmation
 
 Schema build tooling must resolve named-domain references and fail on missing targets. Review must verify the owner and direction of every new
 cross-domain reference. A dependency-cycle check should be added if the graph becomes too large to inspect reliably.
+
+## Examples or Expected Semantics
+
+- `eos_designs` may reference an `eos_cli_config_gen` shape when the design input intentionally embeds the exact structured configuration it produces.
+- The reverse dependency is rejected because rendering structured configuration must not depend on fabric-design intent.
+- A new edge is rejected when following existing references would lead back to its source domain.
 
 ## Pros and Cons of the Options
 

@@ -20,6 +20,9 @@ External YAML and Ansible variables begin as untrusted dictionaries, while PyAVD
 validating loose data inside feature logic would mix user-boundary concerns with domain generation. Loading unchecked dictionaries directly into core
 logic would instead produce late and inconsistent failures. Where should validation occur, and what representation should the core use?
 
+This record governs conversion, schema validation, and model loading at public input boundaries. It does not assign cross-field or runtime-dependent
+domain invariants to the static schema, and it does not define output rendering policy.
+
 ## Decision Drivers
 
 - Users need complete, contextual validation errors before generation proceeds.
@@ -43,15 +46,25 @@ Model loading must preserve the states defined by `schema/0011`; it is not permi
 
 ### Consequences
 
-- Good, because users receive early and consistent validation results.
-- Good, because core code can rely on typed access instead of defensive dictionary traversal.
-- Bad, because entry points must share or faithfully delegate to the same boundary pipeline.
-- Bad, because domain validation still needs a clear home when constraints depend on multiple fields or runtime context.
+- Users receive boundary diagnostics before generation, while core code operates on typed schema-derived models.
+- Every public adapter must share or faithfully delegate to the same conversion and validation pipeline.
+- Constraints that depend on several fields or runtime context remain explicit domain-validation responsibilities.
+
+### Risks and Mitigations
+
+- **Risk:** Ansible and direct PyAVD entry points accept or normalize the same input differently.
+  **Mitigation:** Reuse one boundary implementation and maintain parity cases for every public entry point.
 
 ### Confirmation
 
 Public Ansible and PyAVD entry points must exercise the common conversion and validation semantics before generation. Core feature code should accept
 generated models rather than independently parsing raw role variables. Tests must compare diagnostics across entry points where both are public.
+
+## Examples or Expected Semantics
+
+The processing sequence is `raw YAML or Python data -> declared type conversion -> schema validation -> model loading -> domain invariants`. An invalid
+external value is rejected before model-backed generation begins. A relationship that is valid by shape but inconsistent across several fields is
+checked after model loading by the owning domain.
 
 ## Pros and Cons of the Options
 

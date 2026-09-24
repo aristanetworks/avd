@@ -17,7 +17,8 @@ informed: [People kept informed of the decision]
 ## Context and Problem Statement
 
 Describe the architecturally significant problem or question. For a retrospective ADR, distinguish observable repository evidence from rationale
-reconstructed during the current review.
+reconstructed during the current review. When readers could reasonably confuse this decision with an adjacent one, add a short boundary sentence here
+instead of a separate scope or non-goals section.
 
 ## Decision Drivers
 
@@ -35,12 +36,23 @@ Chosen option: **Chosen option**, because it best addresses the decision drivers
 
 ### Consequences
 
-- Good, because the desired quality is improved.
-- Bad, because an explicit cost or limitation is accepted.
+Describe the architectural and operational effects of the selected option in neutral terms. Do not repeat the option comparison below.
+
+### Risks and Mitigations
+
+Use this optional subsection when the selected option introduces a concrete failure mode or maintenance risk.
+
+- **Risk:** Describe a concrete failure mode or maintenance cost introduced by the decision.
+  **Mitigation:** Describe how design constraints, review, tests, or documentation contain that risk.
 
 ### Confirmation
 
 Describe how code review, tests, generated artifacts, documentation, or another check demonstrates conformance.
+
+## Examples or Expected Semantics
+
+Use this optional section for a small input/output example, processing sequence, or concrete accepted/rejected case when it materially clarifies the
+decision.
 
 ## Pros and Cons of the Options
 

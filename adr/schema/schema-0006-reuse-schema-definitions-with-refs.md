@@ -20,6 +20,9 @@ AVD schemas repeat structures such as interfaces, source-interface-per-VRF setti
 makes local files self-contained but allows constraints to diverge. Unrestricted deep references reduce duplication but can couple unrelated features
 to incidental schema layout. When should `$defs` and `$ref` be used?
 
+This record governs exact semantic reuse and AVD's merge behavior at a `$ref` site. It does not make similar-looking concepts identical, create a
+global shared-type domain, or relax the dependency direction established by `schema/0002`.
+
 ## Decision Drivers
 
 - One semantic concept should not acquire contradictory copied definitions.
@@ -42,19 +45,44 @@ Place reusable shapes without independent top-level meaning under the owning sch
 identity, and future evolution. A similar-looking structure expected to diverge should be defined separately.
 
 References must follow `schema/0002`, must not form cycles, and must resolve through the common schema store. Local description, documentation, or
-deprecation metadata may specialize a reference only where resolver semantics define that merge unambiguously.
+deprecation metadata may specialize a reference only where resolver semantics define that merge unambiguously. The referring schema may also extend
+the referenced shape with additional fields. The resolver deep-merges same-level schema data, keeps explicitly declared local values on conflicts,
+and rejects incompatible types. Local extension changes the resolved referring shape; it does not modify the owned base definition.
 
 ### Consequences
 
-- Good, because shared constraints and generated types remain aligned.
-- Good, because cross-domain reuse communicates a real producer-to-consumer relationship.
-- Bad, because changes to a referenced definition have a wider review and compatibility impact.
-- Bad, because deep paths can create coupling to the target's organization.
+- One owned definition supplies shared constraints and generated types while a consumer may add fields or specialize supported local metadata.
+- Changes to a referenced definition have a wider review and compatibility impact across every resolved consumer.
+- Deep reference paths couple consumers to the target schema's organization as well as its semantic contract.
+
+### Risks and Mitigations
+
+- **Risk:** A local override weakens a base constraint or turns exact reuse into an undocumented fork.
+  **Mitigation:** Require compatible types, review the merged shape, and test both the shared fields and every local extension.
 
 ### Confirmation
 
 Schema builds must resolve all references and validate compatible types. Reviewers must inspect reference consumers when changing a shared definition
 and reject references chosen only to avoid a small amount of duplication.
+
+## Examples or Expected Semantics
+
+The following referring list inherits the base list and item shape, changes local identity to `profile`, and adds a `profile` field to the referenced
+item keys:
+
+```yaml
+l3_interface_profiles:
+  type: list
+  primary_key: profile
+  $ref: "eos_designs#/$defs/node_type_l3_interfaces"
+  items:
+    type: dict
+    keys:
+      profile:
+        type: str
+```
+
+The resolved `l3_interface_profiles` shape contains both the referenced item keys and the added `profile` key. The `$defs` target remains unchanged.
 
 ## Pros and Cons of the Options
 

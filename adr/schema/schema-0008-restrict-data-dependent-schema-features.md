@@ -20,6 +20,9 @@ Some AVD namespaces are declared by user data: node-type keys, connected-endpoin
 AVD dialect therefore supports `dynamic_keys` and `dynamic_valid_values`. General data-dependent validation is difficult to reproduce in editors,
 documentation, generated models, and multiple entry points. How much dynamic behavior belongs in a schema?
 
+This record governs declarative schema behavior derived from other values in the same normalized input. It does not permit arbitrary expressions,
+external lookups, device-capability checks, or general cross-field domain validation inside the schema.
+
 ## Decision Drivers
 
 - Genuine user-defined catalogs must be representable without opening an untyped mapping.
@@ -45,15 +48,25 @@ Rules involving multiple semantic fields, device capabilities, or external state
 
 ### Consequences
 
-- Good, because AVD can model user-defined namespaces without accepting arbitrary unvalidated content.
-- Good, because the dynamic vocabulary remains bounded by the meta-schema.
-- Bad, because editor tooling may provide less complete assistance before the companion data is known.
-- Bad, because some constraints require a separate domain-validation phase.
+- User-defined namespaces and catalogs remain typed through a bounded set of meta-schema features.
+- Editors may provide incomplete assistance until the companion input that declares the namespace is available.
+- Cross-field, capability-dependent, and external-state constraints remain in a later domain-validation phase.
+
+### Risks and Mitigations
+
+- **Risk:** Consumers evaluate dynamic paths from different input states or in different orders.
+  **Mitigation:** Resolve from the same complete normalized input, including defaults, and maintain parity coverage across consumers.
 
 ### Confirmation
 
 Every new dynamic feature use must include positive and negative validation cases, default-path coverage, and generated-model coverage. Reviewers must
 confirm that a static schema cannot express the use case and that all consumers implement the same lookup.
+
+## Examples or Expected Semantics
+
+If a user catalog declares a node type named `l3leaf`, `dynamic_keys` may add `l3leaf` as a valid key with a predefined value shape. It does not make
+all arbitrary keys valid. Whether a particular device platform supports the resulting feature is external state and remains a domain-validation
+question rather than a dynamic schema callback.
 
 ## Pros and Cons of the Options
 

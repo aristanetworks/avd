@@ -19,6 +19,9 @@ informed: [AVD users and contributors]
 Rejecting unknown mapping keys catches misspellings and unsupported input early. AVD nevertheless consumes top-level Ansible variable namespaces and
 supports deliberate custom-data or integration boundaries where unrelated keys must coexist. Should dictionary schemas reject or retain unknown keys?
 
+This record governs unknown keys in owned mappings and shared integration boundaries. It does not define data-declared key names, which use the
+bounded dynamic mechanisms in `schema/0008`, or authorize untyped mappings as a shortcut for incomplete schema work.
+
 ## Decision Drivers
 
 - Misspelled nested settings must not be silently ignored.
@@ -43,15 +46,25 @@ arbitrary keys with a common value shape should use a documented dynamic-key mec
 
 ### Consequences
 
-- Good, because invalid nested AVD keys fail early instead of disappearing from output.
-- Good, because intentional integration boundaries remain possible.
-- Bad, because adding a supported nested setting always requires a schema change.
-- Bad, because open roots cannot detect every top-level typo without knowing which project owns the key.
+- Unknown nested AVD settings fail validation, and adding a supported setting requires a schema change.
+- Shared inventory and documented custom-data boundaries may retain keys owned outside the local schema.
+- An open root cannot classify every unknown top-level key as a typo because ownership may belong to another integration.
+
+### Risks and Mitigations
+
+- **Risk:** A broadly open mapping hides misspelled AVD settings.
+  **Mitigation:** Require a stated external owner or extension contract, keep controlled descendants closed, and test each new open boundary.
 
 ### Confirmation
 
 The meta-schema default for `allow_other_keys` remains false. Reviewers must require a stated external owner or extension contract for each true value.
 Validation tests must cover both rejection in a controlled mapping and retention at each new open boundary.
+
+## Examples or Expected Semantics
+
+A misspelled key such as `uplnk_type` inside an AVD-controlled node setting is rejected. An unrelated variable at a documented shared inventory root
+is retained because AVD does not own that namespace. A mapping whose key names come from a user-defined catalog remains typed through `dynamic_keys`
+instead of setting `allow_other_keys: true`.
 
 ## Pros and Cons of the Options
 

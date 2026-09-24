@@ -20,6 +20,9 @@ AVD combines list data from defaults, profiles, fabric variables, node variables
 the same interface, peer, VLAN, or policy across those sources. Comparing entire dictionaries also fails once two sources contribute different fields
 to the same object. How should list items acquire stable identity for merging and inheritance?
 
+This record governs lists whose dictionary items merge by logical identity across input sources. It does not require primary keys for ordered
+sequences, atomic replace-only lists, or lists whose documented behavior is append-only.
+
 ## Decision Drivers
 
 - The same logical item must merge independent of its position.
@@ -45,15 +48,25 @@ semantic and must not be used for lists expected to merge by identity.
 
 ### Consequences
 
-- Good, because items from different sources combine predictably without depending on order.
-- Good, because duplicate identifiers are detectable and lookup is efficient.
-- Bad, because schema authors must choose an identity that remains stable for the life of the public model.
-- Bad, because changing a primary key is a structural and potentially breaking migration.
+- Mergeable items combine independently of position, duplicate identity is detectable, and generated models support efficient keyed lookup.
+- The chosen primary key becomes structural identity that must remain stable for the life of the public model.
+- Lists without identity require an explicit ordered, append, or replace semantic instead of receiving heuristic merge behavior.
+
+### Risks and Mitigations
+
+- **Risk:** A convenient but unstable field is selected as identity and later requires a breaking migration.
+  **Mitigation:** Review keys for domain-level permanence and require migration planning before changing an established primary key.
 
 ### Confirmation
 
 Reviews must identify the merge behavior of every new list of dictionaries. Mergeable lists require primary-key presence and uniqueness tests plus
 merge and inheritance coverage. Generated-class tests must confirm indexed-list generation.
+
+## Examples or Expected Semantics
+
+Given `primary_key: name`, one source may define `{name: Ethernet1, description: Uplink}` and another may define
+`{name: Ethernet1, shutdown: false}`. They resolve as one logical item containing both contributed fields, regardless of list position. Two items with
+`name: Ethernet1` in the same uniqueness scope are rejected rather than silently overwriting one another.
 
 ## Pros and Cons of the Options
 

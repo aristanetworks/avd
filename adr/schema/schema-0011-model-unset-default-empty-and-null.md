@@ -20,6 +20,9 @@ AVD combines schema defaults, inherited data, explicit user values, and structur
 default, an explicitly empty collection, and YAML `null` can express different intent. Collapsing them into Python false-like values loses information
 needed for inheritance, deletion, rendering, and serialization. Which states must the schema model preserve?
 
+This record governs presence states in schema-derived models and operations where presence affects merge or inheritance. It does not prescribe whether
+every output renderer must emit empty or defaulted values; each public output contract decides which equivalent states it serializes.
+
 ## Decision Drivers
 
 - Inheritance needs to distinguish “not specified” from “specified as empty.”
@@ -47,15 +50,28 @@ them as equivalent.
 
 ### Consequences
 
-- Good, because inheritance and deletion preserve user intent.
-- Good, because defaults can evolve without being serialized as if supplied by the user.
-- Bad, because generated models require sentinels and state flags beyond ordinary Python values.
-- Bad, because authors must decide whether empty and null are meaningful for each data path.
+- Inheritance, deletion, and default access preserve whether a value was absent or explicitly supplied.
+- Generated models require presence sentinels and state-aware access beyond ordinary Python false-like values.
+- Schema and feature authors must define when empty and null have distinct meaning along each data path.
+
+### Risks and Mitigations
+
+- **Risk:** Generic truth testing collapses valid `false`, zero, empty, null, and unset states.
+  **Mitigation:** Use presence-aware model helpers and cover construction, merge, inheritance, and serialization for each meaningful state.
 
 ### Confirmation
 
 Model tests must cover construction, default access, serialization, deep merge, and inheritance for all relevant states. Feature tests must use explicit
 presence checks rather than truth checks when `false`, zero, empty, or null have distinct meanings.
+
+## Examples or Expected Semantics
+
+| Input state | Expected model meaning |
+| ----------- | ---------------------- |
+| Key absent | Unset; inheritance or lazy schema default may still apply. |
+| Schema default read | Available as a fallback without becoming explicit user input. |
+| `items: []` | Explicitly empty; may block inherited list content. |
+| `items: null` | Explicit null sentinel; may clear or block inheritance according to the documented merge contract. |
 
 ## Pros and Cons of the Options
 

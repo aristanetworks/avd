@@ -6,7 +6,8 @@
 
 # Ansible Collection Decision Backlog
 
-This domain covers the architectural boundary between the `arista.avd` collection, Ansible runtime, and PyAVD.
+This domain covers the architectural boundary between the `arista.avd` collection, Ansible runtime, and PyAVD, including the testing and packaging
+contracts needed to support that boundary.
 
 | ID | Proposed decision question | Why it is architecturally significant |
 | -- | -------------------------- | ------------------------------------- |

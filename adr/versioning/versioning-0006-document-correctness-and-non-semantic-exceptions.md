@@ -20,6 +20,9 @@ Strictly preserving every observable output can also preserve defects or prevent
 rare breaking changes when correcting bugs and permits EOS CLI reordering that does not affect resulting device configuration. Without a narrow rule,
 however, these exceptions could undermine the SemVer guarantees defined by `versioning/0002` and `versioning/0003`.
 
+This record governs narrow corrections that can change stable generated behavior before a major release. It does not permit removal of accepted inputs,
+replacement of one valid policy with another preferred policy, or a newly asserted safety goal to bypass deprecation and future-flag requirements.
+
 ## Decision Drivers
 
 - Incorrect configuration or validation should not be preserved solely because users observed it.
@@ -39,24 +42,43 @@ Chosen option: **Permit narrowly evidenced and documented exceptions**.
 
 A stable output may change in a minor or patch release only when at least one of these is demonstrated:
 
-- The old behavior is objectively incorrect against the documented input contract, EOS semantics, or a required safety property.
+- The old behavior objectively contradicts a documented AVD input contract or authoritative EOS semantics.
+- The old behavior violates an explicit, testable safety invariant stated in released AVD documentation or authoritative EOS documentation. The
+  change must cite that normative source, reproduce the violation, and add regression coverage for the corrected result.
 - A textual ordering or formatting change produces equivalent effective EOS configuration and does not break a separately documented textual or
   machine-readable contract.
 
 The change must include regression evidence and release-note disclosure proportional to user impact. Input removal, intentional policy change, and
 replacement of one valid behavior with another valid preference are not exceptions; they follow `versioning/0004` or `versioning/0005`.
 
+A general claim that new behavior is “safer” is insufficient. If the safety invariant was not already normative, the change establishes a new policy
+and must use deprecation, a future flag, or a major release. The pull request must name the applicable exception criterion, and approving maintainers
+must explicitly confirm that classification during review.
+
 ### Consequences
 
-- Good, because AVD can correct unsafe or invalid output without preserving it until a major release.
-- Good, because templates can adopt semantically equivalent EOS ordering improvements.
-- Bad, because semantic equivalence can require expert judgment and careful regression testing.
-- Bad, because some users comparing raw text can still observe churn even when device state is equivalent.
+- Demonstrably invalid or unsafe output can be corrected without preserving it until a major release.
+- Semantically equivalent ordering or formatting may change while separately documented textual and machine-readable contracts remain protected.
+- Exception classification requires normative evidence, explicit maintainer judgment, regression coverage, and user-impact disclosure.
+
+### Risks and Mitigations
+
+- **Risk:** A feature redesign is presented as a correction and weakens the SemVer contract.
+  **Mitigation:** Require a cited prior contract, reproducible evidence, regression coverage, and explicit maintainer confirmation of the criterion.
 
 ### Confirmation
 
-The pull request must identify the violated contract or demonstrate EOS equivalence, add or update focused expected-output coverage, and call out observable
-changes in release notes when users may need to react. Reviewers must explicitly confirm that the change is not an unannounced design preference.
+The pull request must identify the violated normative contract or demonstrate EOS equivalence, add or update focused expected-output coverage, and call
+out observable changes in release notes when users may need to react. Reviewers must explicitly confirm both the exception criterion and that the
+change is not an unannounced design preference.
+
+## Examples or Expected Semantics
+
+- A correction is eligible when released documentation promises one result, the current implementation reproducibly emits a contradictory result,
+  and a regression case proves that the change restores the documented contract.
+- A formatting change is eligible when EOS semantic evidence shows the effective configuration is identical and no stable textual contract is changed.
+- Replacing valid output with a newly preferred or broadly described “safer” design is not eligible without a previously documented safety invariant;
+  it follows `versioning/0004` or `versioning/0005` instead.
 
 ## Pros and Cons of the Options
 

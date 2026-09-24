@@ -20,6 +20,9 @@ AVD schemas are both implementation inputs and user-facing contracts. New EOS an
 retyping, narrowing, or removing an accepted input can break inventory before generation begins. How should stable schema surfaces change within and
 between major releases?
 
+This record governs accepted stable public input schemas across releases. It does not grant stability to internal facts or explicitly unstable
+representations, and it delegates generated-output behavior and narrow correctness exceptions to the versioning ADRs.
+
 ## Decision Drivers
 
 - Role inputs and public API inputs are covered by the SemVer boundary in `versioning/0002`.
@@ -49,15 +52,25 @@ published stability classification rather than acquiring stability merely becaus
 
 ### Consequences
 
-- Good, because most features can be added without invalidating existing inventory.
-- Good, because migrations are machine-detectable and documented before removal.
-- Bad, because renamed structures require temporary compatibility code and tests.
-- Bad, because schemas can carry deprecated vocabulary until the next major cleanup.
+- Compatible features normally enter as optional fields or behavior-preserving defaults without invalidating existing inventory.
+- Renames and replacements require a period where old and new models, warnings, conflict rules, and tests coexist.
+- Deprecated vocabulary remains until a major-version cleanup satisfies the published removal contract.
+
+### Risks and Mitigations
+
+- **Risk:** Temporary compatibility paths become permanent and leave several competing input models.
+  **Mitigation:** Record the replacement and earliest removal version, test conflicts, and remove expired paths during major-version preparation.
 
 ### Confirmation
 
 Schema review must classify the affected surface using the released SemVer documentation. Deprecations require warnings, replacement links, conflict
 coverage, and deprecated-input regression tests. Removals require evidence of prior released deprecation and porting-guide documentation.
+
+## Examples or Expected Semantics
+
+Adding an optional field in a minor release is compatible when omission preserves existing effective behavior. Renaming `old_setting` to `new_setting`
+requires adding the new field, deprecating the old field, documenting precedence or conflict when both are supplied, and retaining the old field until
+the declared major-release removal. Making an existing optional field required is breaking even when most current inventories already set it.
 
 ## Pros and Cons of the Options
 
