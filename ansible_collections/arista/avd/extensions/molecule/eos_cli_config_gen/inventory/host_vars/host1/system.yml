@@ -1,4 +1,5 @@
 system:
+  mac_address: 001c.7300.0001
   control_plane:
     tcp_mss:
       ipv4: 1344

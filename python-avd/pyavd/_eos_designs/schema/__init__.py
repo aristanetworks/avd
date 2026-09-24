@@ -115641,6 +115641,7 @@ class EosDesigns(EosDesignsRootModel):
             "type": CustomStructuredConfigurationPrefix,
             "default": lambda cls: coerce_type(["custom_structured_configuration_"], target_type=cls),
         },
+        "custom_system_mac_address": {"type": str},
         "cv_pathfinder_global_sites": {"type": CvPathfinderGlobalSites},
         "cv_pathfinder_internet_exit_policies": {"type": CvPathfinderInternetExitPolicies},
         "cv_pathfinder_regions": {"type": CvPathfinderRegions},
@@ -117162,6 +117163,30 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of AvdList with `str` items.
 
     Default value: `lambda cls: coerce_type(["custom_structured_configuration_"], target_type=cls)`
+    """
+    custom_system_mac_address: str | None
+    """
+    Set a custom EOS system MAC address using an AVD string formatter template.
+    When set, the rendered
+    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+    CloudVision-based Zscaler integration.
+    This value takes precedence over `system_mac_address`.
+    If
+    unset, the existing `system_mac_address` behavior is unchanged.
+    The rendered value must be a unicast
+    MAC address in EOS dotted format (`H.H.H`).
+    This can be a template using the AVD string formatter
+    syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-
+    to/custom-descriptions-names.html#avd-string-formatter-syntax.
+    Only the following template fields
+    are supported:
+      - `device_id`: The AVD node ID as an integer. The field is only available when an
+    AVD node ID is resolved. Python format specifications can be used, for example `{device_id:04x}`.
+    - `hostname`: The inventory hostname.
+
+    For example, template `021c.7300.{device_id:04x}` will
+    produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
     """
     cv_pathfinder_global_sites: CvPathfinderGlobalSites
     """
@@ -119116,6 +119141,7 @@ class EosDesigns(EosDesignsRootModel):
             core_interfaces: CoreInterfaces | UndefinedType = Undefined,
             custom_structured_configuration_list_merge: CustomStructuredConfigurationListMerge | UndefinedType = Undefined,
             custom_structured_configuration_prefix: CustomStructuredConfigurationPrefix | UndefinedType = Undefined,
+            custom_system_mac_address: str | UndefinedType | None = Undefined,
             cv_pathfinder_global_sites: CvPathfinderGlobalSites | UndefinedType = Undefined,
             cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies | UndefinedType = Undefined,
             cv_pathfinder_regions: CvPathfinderRegions | UndefinedType = Undefined,
@@ -119530,6 +119556,28 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdList with `str` items.
+                custom_system_mac_address:
+                   Set a custom EOS system MAC address using an AVD string formatter template.
+                   When set, the rendered
+                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                   CloudVision-based Zscaler integration.
+                   This value takes precedence over `system_mac_address`.
+                   If
+                   unset, the existing `system_mac_address` behavior is unchanged.
+                   The rendered value must be a unicast
+                   MAC address in EOS dotted format (`H.H.H`).
+                   This can be a template using the AVD string formatter
+                   syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-
+                   to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                   Only the following template fields
+                   are supported:
+                     - `device_id`: The AVD node ID as an integer. The field is only available when an
+                   AVD node ID is resolved. Python format specifications can be used, for example `{device_id:04x}`.
+                   - `hostname`: The inventory hostname.
+
+                   For example, template `021c.7300.{device_id:04x}` will
+                   produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
                 cv_pathfinder_global_sites:
                    Define sites that are outside of the CV Pathfinder hierarchy.
                    This is used to arrange pathfinders in

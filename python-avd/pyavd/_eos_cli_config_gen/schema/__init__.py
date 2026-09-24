@@ -72826,15 +72826,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"control_plane": {"type": ControlPlane}, "l1": {"type": L1}}
+        _fields: ClassVar[dict] = {"control_plane": {"type": ControlPlane}, "l1": {"type": L1}, "mac_address": {"type": str}}
         control_plane: ControlPlane
         """Subclass of AvdModel."""
         l1: L1
         """Subclass of AvdModel."""
+        mac_address: str | None
+        """
+        Unicast (the least-significant bit of the first octet must be zero) system MAC address in H.H.H
+        format.
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, control_plane: ControlPlane | UndefinedType = Undefined, l1: L1 | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                control_plane: ControlPlane | UndefinedType = Undefined,
+                l1: L1 | UndefinedType = Undefined,
+                mac_address: str | UndefinedType | None = Undefined,
+            ) -> None:
                 """
                 System.
 
@@ -72844,6 +72855,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     control_plane: Subclass of AvdModel.
                     l1: Subclass of AvdModel.
+                    mac_address:
+                       Unicast (the least-significant bit of the first octet must be zero) system MAC address in H.H.H
+                       format.
 
                 """
 

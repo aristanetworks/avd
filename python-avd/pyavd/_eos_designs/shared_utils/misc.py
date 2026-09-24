@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
@@ -11,7 +12,9 @@ from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.password_utils.password import simple_7_encrypt
+from pyavd._utils.strip_empties import strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
@@ -20,6 +23,9 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
     from . import SharedUtilsProtocol
+
+
+MAC_ADDRESS_PATTERN = re.compile(r"^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$")
 
 
 class MiscMixin(Protocol):
@@ -110,9 +116,13 @@ class MiscMixin(Protocol):
         system_mac_address.
 
         system_mac_address is inherited from
-        Fabric Topology data model system_mac_address ->
-            Host variable var system_mac_address ->.
+        Host variable var custom_system_mac_address ->
+            Fabric Topology data model system_mac_address ->
+                Host variable var system_mac_address ->.
         """
+        if self.inputs.custom_system_mac_address is not None:
+            return self._format_custom_system_mac_address(self.inputs.custom_system_mac_address)
+
         return default(self.node_config.system_mac_address, self.inputs.system_mac_address)
 
     @cached_property
@@ -604,3 +614,24 @@ class MiscMixin(Protocol):
     def is_campus_device(self: SharedUtilsProtocol) -> bool:
         """Return True if generation of the Campus tags is globally enabled and current device is a Campus device."""
         return bool(self.inputs.generate_cv_tags.campus_fabric and default(self.node_config.campus, self.inputs.campus))
+
+    def _format_custom_system_mac_address(self: SharedUtilsProtocol, format_string: str) -> str:
+        """Format and validate the custom system MAC address."""
+        mac_address = AvdStringFormatter().format(
+            format_string,
+            **strip_null_from_data({"device_id": self.id, "hostname": self.hostname}),
+        )
+
+        if not MAC_ADDRESS_PATTERN.fullmatch(mac_address):
+            msg = f"custom_system_mac_address template rendered '{mac_address}' which is not a valid EOS MAC (H.H.H format)."
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+
+        if int(mac_address[0:2], 16) & 1:
+            msg = (
+                f"The provided 'custom_system_mac_address' template rendered multicast MAC address '{mac_address}' "
+                f"for device '{self.hostname}'. "
+                "The rendered value must be a unicast MAC address (the least-significant bit of the first octet must be zero)."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+
+        return mac_address

@@ -1,0 +1,14 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: custom-system-mac-address-multicast
+      id: 1234
+      mgmt_ip: 192.168.0.2/24
+
+custom_system_mac_address: 011c.7300.{device_id:04x}
+
+expected_error_message: >-
+  The provided 'custom_system_mac_address' template rendered multicast MAC address '011c.7300.04d2' for device
+  'custom-system-mac-address-multicast'. The rendered value must be a unicast MAC address (the
+  least-significant bit of the first octet must be zero).

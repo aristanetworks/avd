@@ -69,3 +69,7 @@ keys:
             valid_values:
               - "error"
               - "warn"
+      mac_address:
+        type: str
+        description: Unicast (the least-significant bit of the first octet must be zero) system MAC address in H.H.H format.
+        pattern: "[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}"

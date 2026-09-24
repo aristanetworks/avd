@@ -1,0 +1,10 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: custom-system-mac-address
+      id: 1234
+      mgmt_ip: 192.168.0.2/24
+
+custom_system_mac_address: 021c.7300.{device_id:04x}
+system_mac_address: 661c.7300.0001

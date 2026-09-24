@@ -120,6 +120,8 @@ class SnmpServerMixin(Protocol):
         if not self.inputs.snmp_settings.compute_local_engineid:
             return
 
+        mac_separator = "." if self.inputs.custom_system_mac_address is not None else ":"
+
         match self.inputs.snmp_settings.compute_local_engineid_source:
             case "rfc3411_type5":
                 # prefix with Enterprise Id + 05 to adhere to RCF3411 and RFC5343
@@ -139,13 +141,13 @@ class SnmpServerMixin(Protocol):
                 if self.shared_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: rfc3411_type3' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
-                local_engine_id = f"8000757103{str(self.shared_utils.system_mac_address).replace(':', '').lower()}"
+                local_engine_id = f"8000757103{str(self.shared_utils.system_mac_address).replace(mac_separator, '').lower()}"
             case "system_mac" | _:
                 # This is the default value of the engine ID on EOS. Note that is is not RFC3411 compliant.
                 if self.shared_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
-                local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
+                local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(mac_separator, '').lower()}00"
 
         self.structured_config.snmp_server.engine_ids.local = local_engine_id
 

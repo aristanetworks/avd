@@ -34,6 +34,7 @@ from .ptp import PtpMixin
 from .router_bgp import RouterBgpMixin
 from .router_general import RouterGeneralMixin
 from .snmp_server import SnmpServerMixin
+from .system import SystemMixin
 from .utils import UtilsMixin
 
 
@@ -51,6 +52,7 @@ class AvdStructuredConfigBaseProtocol(
     NtpMixin,
     PtpMixin,
     SnmpServerMixin,
+    SystemMixin,
     RouterBgpMixin,
     RouterGeneralMixin,
     PlatformMixin,
