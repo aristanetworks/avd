@@ -361,7 +361,7 @@ class UtilsMixin(Protocol):
             if profile_item.parent_profile in profile_chain or profile_item.parent_profile == root_profile:
                 msg = (
                     f"Circular profile dependency detected: Profile '{profile_item.parent_profile}' cannot be applied as"
-                    f" the parent profile of '{profile_name}' in '{context}' as it would create a loop."
+                    f" the parent profile of '{profile_name}' in '{context}' because it would create a loop."
                 )
                 raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             parent_profile_item = profiles[profile_item.parent_profile]._deepcopy()
