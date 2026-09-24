@@ -20146,7 +20146,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Mtu(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"exceed_action_drop": {"type": bool}}
+            _fields: ClassVar[dict] = {"size": {"type": int}, "exceed_action_drop": {"type": bool}}
+            size: int | None
+            """
+            MTU threshold in bytes for software-forwarded packets.
+            Set to match the interface MTU on jumbo-MTU
+            links when `exceed_action_drop` is enabled.
+            EOS default is 1500.
+            """
             exceed_action_drop: bool | None
             """
             Drop packets that exceed the MTU on software-forwarded paths.
@@ -20156,7 +20163,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, exceed_action_drop: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(self, *, size: int | UndefinedType | None = Undefined, exceed_action_drop: bool | UndefinedType | None = Undefined) -> None:
                     """
                     Mtu.
 
@@ -20164,6 +20171,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        size:
+                           MTU threshold in bytes for software-forwarded packets.
+                           Set to match the interface MTU on jumbo-MTU
+                           links when `exceed_action_drop` is enabled.
+                           EOS default is 1500.
                         exceed_action_drop:
                            Drop packets that exceed the MTU on software-forwarded paths.
                            Introduced in EOS 4.36.1F, 4.35.4M,

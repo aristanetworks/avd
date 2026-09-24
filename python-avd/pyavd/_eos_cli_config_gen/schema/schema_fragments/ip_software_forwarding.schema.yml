@@ -12,6 +12,16 @@ keys:
       mtu:
         type: dict
         keys:
+          size:
+            type: int
+            convert_types:
+              - str
+            min: 68
+            max: 65535
+            description: |-
+              MTU threshold in bytes for software-forwarded packets.
+              Set to match the interface MTU on jumbo-MTU links when `exceed_action_drop` is enabled.
+              EOS default is 1500.
           exceed_action_drop:
             type: bool
             description: |-

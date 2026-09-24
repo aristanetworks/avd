@@ -2,4 +2,5 @@
 # IP Software Forwarding
 ip_software_forwarding:
   mtu:
+    size: 9000
     exceed_action_drop: true

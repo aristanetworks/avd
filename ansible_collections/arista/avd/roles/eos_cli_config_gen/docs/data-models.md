@@ -1148,16 +1148,16 @@ schemas/eos_config/docs/tables/hardware-counters.md
 schemas/eos_config/docs/tables/hardware.md
 --8<--
 
-### IP hardware
-
---8<--
-schemas/eos_config/docs/tables/ip-hardware.md
---8<--
-
 ### IP software forwarding
 
 --8<--
 schemas/eos_config/docs/tables/ip-software-forwarding.md
+--8<--
+
+### IP hardware
+
+--8<--
+schemas/eos_config/docs/tables/ip-hardware.md
 --8<--
 
 ### IPv6 hardware
