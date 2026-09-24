@@ -147,8 +147,8 @@ class MiscMixin(Protocol):
             Fabric Topology data model system_mac_address ->
                 Host variable var system_mac_address ->.
         """
-        if (custom_system_mac_address := self.custom_system_mac_address) is not None:
-            return custom_system_mac_address
+        if self.custom_system_mac_address is not None:
+            return self.custom_system_mac_address
 
         return default(self.node_config.system_mac_address, self.inputs.system_mac_address)
 

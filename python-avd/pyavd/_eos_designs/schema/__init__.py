@@ -117177,17 +117177,21 @@ class EosDesigns(EosDesignsRootModel):
     The rendered value must be a unicast
     MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
     hexadecimal digit).
-    This can be a plain MAC address or a template using the AVD string formatter
-    syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-
-    to/custom-descriptions-names.html#avd-string-formatter-syntax.
-    Only the following template fields
-    are supported:
-      - `device_id`: The AVD node ID as an integer. The field is only available when an
-    AVD node ID is resolved. Python format specifications can be used, for example `{device_id:04x}`.
-    - `hostname`: The inventory hostname.
+    The `hh:hh:hh:hh:hh:hh` format is recommended for compatibility with the
+    CloudVision API when using the system MAC address for device identification.
+    This can be a plain MAC
+    address or a template using the AVD string formatter syntax:
+    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+    descriptions-names.html#avd-string-formatter-syntax.
+    Only the following template fields are
+    supported:
+      - `device_id`: The AVD node ID as an integer. The field is only available when an AVD
+    node ID is resolved. Python format specifications can be used, for example `{device_id:04x}`.
+      -
+    `hostname`: The inventory hostname.
 
-    For example, template `021c.7300.{device_id:04x}` will
-    produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+    For example, template `021c.7300.{device_id:04x}` will produce
+    `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
     """
     cv_pathfinder_global_sites: CvPathfinderGlobalSites
     """
@@ -119569,17 +119573,21 @@ class EosDesigns(EosDesignsRootModel):
                    The rendered value must be a unicast
                    MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
                    hexadecimal digit).
-                   This can be a plain MAC address or a template using the AVD string formatter
-                   syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-
-                   to/custom-descriptions-names.html#avd-string-formatter-syntax.
-                   Only the following template fields
-                   are supported:
-                     - `device_id`: The AVD node ID as an integer. The field is only available when an
-                   AVD node ID is resolved. Python format specifications can be used, for example `{device_id:04x}`.
-                   - `hostname`: The inventory hostname.
+                   The `hh:hh:hh:hh:hh:hh` format is recommended for compatibility with the
+                   CloudVision API when using the system MAC address for device identification.
+                   This can be a plain MAC
+                   address or a template using the AVD string formatter syntax:
+                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                   descriptions-names.html#avd-string-formatter-syntax.
+                   Only the following template fields are
+                   supported:
+                     - `device_id`: The AVD node ID as an integer. The field is only available when an AVD
+                   node ID is resolved. Python format specifications can be used, for example `{device_id:04x}`.
+                     -
+                   `hostname`: The inventory hostname.
 
-                   For example, template `021c.7300.{device_id:04x}` will
-                   produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+                   For example, template `021c.7300.{device_id:04x}` will produce
+                   `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
                 cv_pathfinder_global_sites:
                    Define sites that are outside of the CV Pathfinder hierarchy.
                    This is used to arrange pathfinders in

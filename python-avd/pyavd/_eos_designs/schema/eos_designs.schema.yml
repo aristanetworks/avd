@@ -1643,9 +1643,10 @@ keys:
       Zscaler integration.\nThis value takes precedence over `system_mac_address`.\nIf
       unset, the existing `system_mac_address` behavior is unchanged.\nThe rendered
       value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
-      or `hh-hh-hh-hh-hh-hh` format (where `h` is a hexadecimal digit).\nThis can
-      be a plain MAC address or a template using the AVD string formatter syntax:
-      https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nOnly
+      or `hh-hh-hh-hh-hh-hh` format (where `h` is a hexadecimal digit).\nThe `hh:hh:hh:hh:hh:hh`
+      format is recommended for compatibility with the CloudVision API when using
+      the system MAC address for device identification.\nThis can be a plain MAC address
+      or a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nOnly
       the following template fields are supported:\n  - `device_id`: The AVD node
       ID as an integer. The field is only available when an AVD node ID is resolved.
       Python format specifications can be used, for example `{device_id:04x}`.\n  -
