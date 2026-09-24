@@ -184,9 +184,10 @@ class ConnectedEndpointsBuildContext:
         return configured_sflow
 
     def get_interface_validate_state(self, user_input: bool | None) -> bool | UndefinedType:
-        """Resolve interface state validation without depending on structured-config utilities."""
+        """Resolve state validation for an interface connected to a device outside the fabric."""
         if self.digital_twin:
-            return False if user_input is False else Undefined
+            # Connected endpoints are not deployed in the digital twin, so their interfaces will be down.
+            return False
         return Undefined if user_input is None else user_input
 
     def get_flow_tracker(
