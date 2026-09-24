@@ -15,11 +15,11 @@ management_interfaces:
   type: oob
 metadata:
   is_deployed: true
-  system_mac_address: 021c.7300.04d2
+  system_mac_address: 02:1c:73:00:04:d2
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 system:
-  mac_address: 021c.7300.04d2
+  mac_address: 02:1c:73:00:04:d2
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

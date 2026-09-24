@@ -117177,10 +117177,10 @@ class EosDesigns(EosDesignsRootModel):
     The rendered value must be a unicast
     MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
     hexadecimal digit).
-    The `hh:hh:hh:hh:hh:hh` format is recommended for compatibility with the
-    CloudVision API when using the system MAC address for device identification.
-    This can be a plain MAC
-    address or a template using the AVD string formatter syntax:
+    Regardless of the input format, the MAC address is normalized to
+    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+    This can be a plain
+    MAC address or a template using the AVD string formatter syntax:
     https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
     descriptions-names.html#avd-string-formatter-syntax.
     Only the following template fields are
@@ -119573,10 +119573,10 @@ class EosDesigns(EosDesignsRootModel):
                    The rendered value must be a unicast
                    MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
                    hexadecimal digit).
-                   The `hh:hh:hh:hh:hh:hh` format is recommended for compatibility with the
-                   CloudVision API when using the system MAC address for device identification.
-                   This can be a plain MAC
-                   address or a template using the AVD string formatter syntax:
+                   Regardless of the input format, the MAC address is normalized to
+                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                   This can be a plain
+                   MAC address or a template using the AVD string formatter syntax:
                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
                    descriptions-names.html#avd-string-formatter-syntax.
                    Only the following template fields are

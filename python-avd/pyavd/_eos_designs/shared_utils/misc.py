@@ -146,9 +146,12 @@ class MiscMixin(Protocol):
         Host variable var custom_system_mac_address ->
             Fabric Topology data model system_mac_address ->
                 Host variable var system_mac_address ->.
+
+        When custom_system_mac_address is set the value is normalized to hh:hh:hh:hh:hh:hh format.
         """
-        if self.custom_system_mac_address is not None:
-            return self.custom_system_mac_address
+        if (custom := self.custom_system_mac_address) is not None:
+            raw = custom.replace(".", "").replace(":", "").replace("-", "")
+            return ":".join(raw[i : i + 2] for i in range(0, 12, 2))
 
         return default(self.node_config.system_mac_address, self.inputs.system_mac_address)
 
