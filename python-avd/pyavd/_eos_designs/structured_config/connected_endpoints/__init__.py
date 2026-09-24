@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_designs.connected_endpoints import (
     ConnectedEndpointsBuildContext,
@@ -14,7 +14,11 @@ from pyavd._eos_designs.connected_endpoints import (
     ConnectedEndpointsPlatformFeatures,
     build_connected_endpoints,
 )
-from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
+from pyavd._eos_designs.structured_config.structured_config_generator import (
+    StructuredConfigGenerator,
+    StructuredConfigGeneratorProtocol,
+    structured_config_contributor,
+)
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 from .mac_access_lists import MacAccessListsMixin
@@ -181,7 +185,7 @@ def get_connected_endpoints_build_context(
     )
 
 
-class AvdStructuredConfigConnectedEndpoints(StructuredConfigGenerator, MacAccessListsMixin):
+class AvdStructuredConfigConnectedEndpointsProtocol(MacAccessListsMixin, StructuredConfigGeneratorProtocol, Protocol):
     """
     Adapt a regular eos-designs build to the interface-only builder.
 
@@ -238,3 +242,14 @@ class AvdStructuredConfigConnectedEndpoints(StructuredConfigGenerator, MacAccess
             self.structured_config_utils._set_ipv6_acl(self.inputs.ipv6_acls[acl_name])
         if target.sflow_required:
             self.structured_config_utils.set_once_sflow()
+
+
+class AvdStructuredConfigConnectedEndpoints(StructuredConfigGenerator, AvdStructuredConfigConnectedEndpointsProtocol):
+    """
+    Regular structured-config generator for connected endpoints.
+
+    The implementation is composed through ``AvdStructuredConfigConnectedEndpointsProtocol``
+    to retain the same protocol-and-mixins structure as the other structured-config
+    generators. The class itself is the single concrete generator instantiated by
+    the regular structured-config build.
+    """
