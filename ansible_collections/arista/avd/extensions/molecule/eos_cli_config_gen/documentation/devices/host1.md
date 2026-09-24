@@ -10202,6 +10202,7 @@ ASN Notation: asdot
 | LFIB entry installation skipped | True |
 | Label local-termination | implicit-null |
 | Neighbor default next-hop-self | True |
+| Next-hop resolution | Disabled |
 
 ##### IPv4 BGP-LU Peer-groups
 

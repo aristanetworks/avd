@@ -817,6 +817,9 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.neighbor_default.next_hop_self is arista.avd.defined(true) %}
 | Neighbor default next-hop-self | True |
 {%         endif %}
+{%         if router_bgp.address_family_ipv4_labeled_unicast.next_hop.resolution_disabled is arista.avd.defined(true) %}
+| Next-hop resolution | Disabled |
+{%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.peer_groups is arista.avd.defined %}
 
 ##### IPv4 BGP-LU Peer-groups
