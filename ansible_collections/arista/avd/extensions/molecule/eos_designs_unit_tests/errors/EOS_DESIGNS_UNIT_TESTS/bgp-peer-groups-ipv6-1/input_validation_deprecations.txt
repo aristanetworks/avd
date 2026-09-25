@@ -1,0 +1,1 @@
+[['bgp_peer_groups', 'ipv4_underlay_peers']]: 'The input data model 'bgp_peer_groups.ipv4_underlay_peers' is deprecated and will be removed in AVD version 7.0.0. Use 'underlay_peers' instead.'

@@ -128,20 +128,31 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: MLAG-IPv4-UNDERLAY-PEER
+  - name: MLAG-IPV6-UNDERLAY-PEER-NEW
+    metadata:
+      type: ipv4
+    remote_as: '65101'
+    description: ipv6-numbered-vtep-loopback0-leaf1b
+    bfd: true
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 22222
+    route_map_in: RM-MLAG-PEER-IN
+  - name: MLAG-IPV6-VRFS-PEER-NEW
     metadata:
       type: ipv4
     remote_as: '65101'
     description: ipv6-numbered-vtep-loopback0-leaf1b
     next_hop_self: true
     send_community: all
-    maximum_routes: 256000
+    maximum_routes: 33333
     route_map_in: RM-MLAG-PEER-IN
-  - name: IPv4-UNDERLAY-PEERS
+  - name: IPV6-UNDERLAY-PEERS-NEW
     metadata:
       type: ipv6
+    bfd: true
     send_community: all
-    maximum_routes: 256000
+    maximum_routes: 11111
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -152,12 +163,12 @@ router_bgp:
     maximum_routes: 0
   neighbors:
   - ip_address: 2001:db8:4::2
-    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer_group: MLAG-IPV6-UNDERLAY-PEER-NEW
     metadata:
       peer: ipv6-numbered-vtep-loopback0-leaf1b
     description: ipv6-numbered-vtep-loopback0-leaf1b_Vlan4093
   - ip_address: 2001:db8:2::1
-    peer_group: IPv4-UNDERLAY-PEERS
+    peer_group: IPV6-UNDERLAY-PEERS-NEW
     remote_as: '65100'
     metadata:
       peer: ipv6-numbered-vtep-loopback0-spine
@@ -199,13 +210,15 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
+    - name: MLAG-IPV6-VRFS-PEER-NEW
+      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   address_family_ipv6:
     peer_groups:
-    - name: MLAG-IPv4-UNDERLAY-PEER
+    - name: MLAG-IPV6-UNDERLAY-PEER-NEW
       activate: true
-    - name: IPv4-UNDERLAY-PEERS
+    - name: IPV6-UNDERLAY-PEERS-NEW
       activate: true
   vrfs:
   - name: VRF10
@@ -222,7 +235,7 @@ router_bgp:
     router_id: 10.255.1.1
     neighbors:
     - ip_address: 2001:db8:4::2
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      peer_group: MLAG-IPV6-VRFS-PEER-NEW
       description: ipv6-numbered-vtep-loopback0-leaf1b_Vlan3009
     redistribute:
       connected:

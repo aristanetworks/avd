@@ -1,0 +1,19 @@
+---
+# Test new underlay/MLAG peer-group keys in IPv6 numbered underlay mode.
+# New keys should take precedence over deprecated ipv4-named keys when both are set.
+bgp_peer_groups:
+  underlay_peers:
+    name: IPV6-UNDERLAY-PEERS-NEW
+    bfd: true
+    maximum_routes: 11111
+
+  mlag_underlay_peer:
+    name: MLAG-IPV6-UNDERLAY-PEER-NEW
+    bfd: true
+    maximum_routes: 22222
+
+  mlag_vrfs_peer:
+    name: MLAG-IPV6-VRFS-PEER-NEW
+    bfd: false
+    maximum_routes: 33333
+
