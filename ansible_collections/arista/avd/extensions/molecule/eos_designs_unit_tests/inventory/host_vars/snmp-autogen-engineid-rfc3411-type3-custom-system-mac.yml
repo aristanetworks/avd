@@ -1,0 +1,13 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-autogen-engineid-rfc3411-type3-custom-system-mac
+      id: 44
+      mgmt_ip: 192.168.0.44/24
+
+custom_system_mac_address: 021c.7300.002c
+
+snmp_settings:
+  compute_local_engineid: true
+  compute_local_engineid_source: rfc3411_type3

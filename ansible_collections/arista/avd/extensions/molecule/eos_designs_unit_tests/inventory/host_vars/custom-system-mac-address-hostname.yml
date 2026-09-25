@@ -1,0 +1,9 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: custom-system-mac-address-hostname
+      id: 1
+      mgmt_ip: 192.168.0.5/24
+
+custom_system_mac_address: 021c.7300.{hostname[0]}{hostname[15]}{hostname[19]}{hostname[20]}

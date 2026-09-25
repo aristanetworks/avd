@@ -7,6 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>custom_system_mac_address</samp>](## "custom_system_mac_address") | String |  |  |  | Set a custom EOS system MAC address using an AVD string formatter template.<br>When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.<br>This value takes precedence over `system_mac_address`.<br>If unset, the existing `system_mac_address` behavior is unchanged.<br>The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a hexadecimal digit). The all-zero address (`0000.0000.0000`) is reserved and not accepted by EOS.<br>Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.<br>This can be a plain MAC address or a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>Only the following template fields are supported:<br>  - `device_id`: The AVD node ID as an integer. The field is only available when an AVD node ID is resolved. Python format specifications can be used, for example `{device_id:04x}`.<br>  - `hostname`: The inventory hostname.<br><br>For example:<br>  - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.<br>  - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address). |
     | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | `True` |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
     | [<samp>default_interface_mtu</samp>](## "default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Can be overridden per platform under platform settings.<br> |
     | [<samp>errdisable_settings</samp>](## "errdisable_settings") | Dictionary |  |  |  | Errdisable settings for the device.<br>Causes are filtered based on platform feature support defined in<br>`platform_settings.feature_support.errdisable_causes.<cause>.detection` and<br>`platform_settings.feature_support.errdisable_causes.<cause>.recovery`. |
@@ -183,6 +184,22 @@
 === "YAML"
 
     ```yaml
+    # Set a custom EOS system MAC address using an AVD string formatter template.
+    # When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.
+    # This value takes precedence over `system_mac_address`.
+    # If unset, the existing `system_mac_address` behavior is unchanged.
+    # The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a hexadecimal digit). The all-zero address (`0000.0000.0000`) is reserved and not accepted by EOS.
+    # Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+    # This can be a plain MAC address or a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+    # Only the following template fields are supported:
+    #   - `device_id`: The AVD node ID as an integer. The field is only available when an AVD node ID is resolved. Python format specifications can be used, for example `{device_id:04x}`.
+    #   - `hostname`: The inventory hostname.
+    #
+    # For example:
+    #   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+    #   - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address).
+    custom_system_mac_address: <str>
+
     # When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.
     default_igmp_snooping_enabled: <bool; default=True>
 

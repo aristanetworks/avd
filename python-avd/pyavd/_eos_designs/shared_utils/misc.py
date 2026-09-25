@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
@@ -11,7 +12,9 @@ from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.password_utils.password import simple_7_encrypt
+from pyavd._utils.strip_empties import strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
@@ -105,14 +108,51 @@ class MiscMixin(Protocol):
         return self.inputs.enable_trunk_groups and self.inputs.only_local_vlan_trunk_groups
 
     @cached_property
+    def custom_system_mac_address(self: SharedUtilsProtocol) -> str | None:
+        """
+        Return the rendered and validated custom system MAC address, or None if not set.
+
+        The returned value preserves the original format (hhhh.hhhh.hhhh, hh:hh:hh:hh:hh:hh or hh-hh-hh-hh-hh-hh).
+        """
+        if self.inputs.custom_system_mac_address is None:
+            return None
+
+        mac_address = AvdStringFormatter().format(
+            self.inputs.custom_system_mac_address,
+            **strip_null_from_data({"device_id": self.id, "hostname": self.hostname}),
+        )
+
+        pattern = (
+            r"([0-9A-Fa-f][02468ACEace][0-9A-Fa-f]{2}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}"
+            r"|[0-9A-Fa-f][02468ACEace](:[0-9A-Fa-f]{2}){5}"
+            r"|[0-9A-Fa-f][02468ACEace](-[0-9A-Fa-f]{2}){5})"
+        )
+        normalized = mac_address.replace(".", "").replace(":", "").replace("-", "").lower()
+        if not re.fullmatch(pattern, mac_address) or normalized == "0" * 12:
+            msg = (
+                f"custom_system_mac_address rendered '{mac_address}' which is not a valid unicast EOS system MAC address. "
+                "The value must be a unicast MAC address in hhhh.hhhh.hhhh, hh:hh:hh:hh:hh:hh or hh-hh-hh-hh-hh-hh format."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+
+        return mac_address
+
+    @cached_property
     def system_mac_address(self: SharedUtilsProtocol) -> str | None:
         """
         system_mac_address.
 
         system_mac_address is inherited from
-        Fabric Topology data model system_mac_address ->
-            Host variable var system_mac_address ->.
+        Host variable var custom_system_mac_address ->
+            Fabric Topology data model system_mac_address ->
+                Host variable var system_mac_address ->.
+
+        When custom_system_mac_address is set the value is normalized to hh:hh:hh:hh:hh:hh format.
         """
+        if (custom := self.custom_system_mac_address) is not None:
+            raw = custom.replace(".", "").replace(":", "").replace("-", "")
+            return ":".join(raw[i : i + 2] for i in range(0, 12, 2))
+
         return default(self.node_config.system_mac_address, self.inputs.system_mac_address)
 
     @cached_property
