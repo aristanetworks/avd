@@ -60,6 +60,12 @@ cv_devices: "{{ ansible_play_hosts }}"
 # If false, the deployment will fail if any devices are missing (excempting devices where 'is_deployed' is set to false).
 cv_skip_missing_devices: false
 
+# Controls how devices with 'is_deployed: false' are handled.
+# Accepted values: "loose", "controlled".
+# "loose" (default): devices with 'is_deployed: false' are silently skipped.
+# "controlled": devices with 'is_deployed: false' are decommissioned from CloudVision. Requires CloudVision 2025.1.0 or later.
+cv_inventory_mode: "loose"
+
 # If false, only warn if two or more devices have the same `system_mac_address` and unique `serial_number` values.
 # If true - raise an exception.
 cv_strict_system_mac_address: false
