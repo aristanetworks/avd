@@ -117260,11 +117260,11 @@ class EosDesigns(EosDesignsRootModel):
     unset, the existing `system_mac_address` behavior is unchanged.
     The rendered value must be a unicast
     MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
-    hexadecimal digit).
-    Regardless of the input format, the MAC address is normalized to
-    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
-    This can be a plain
-    MAC address or a template using the AVD string formatter syntax:
+    hexadecimal digit). The all-zero address (`0000.0000.0000`) is reserved and not accepted by EOS.
+    Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the
+    generated EOS configuration and AVD metadata.
+    This can be a plain MAC address or a template using
+    the AVD string formatter syntax:
     https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
     descriptions-names.html#avd-string-formatter-syntax.
     Only the following template fields are
@@ -117274,8 +117274,14 @@ class EosDesigns(EosDesignsRootModel):
       -
     `hostname`: The inventory hostname.
 
-    For example, template `021c.7300.{device_id:04x}` will produce
-    `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+    For example:
+      - template `021c.7300.{device_id:04x}` will
+    produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+      -
+    template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID
+    1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a
+    numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of
+    the generated MAC address).
     """
     cv_pathfinder_global_sites: CvPathfinderGlobalSites
     """
@@ -119665,11 +119671,11 @@ class EosDesigns(EosDesignsRootModel):
                    unset, the existing `system_mac_address` behavior is unchanged.
                    The rendered value must be a unicast
                    MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
-                   hexadecimal digit).
-                   Regardless of the input format, the MAC address is normalized to
-                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
-                   This can be a plain
-                   MAC address or a template using the AVD string formatter syntax:
+                   hexadecimal digit). The all-zero address (`0000.0000.0000`) is reserved and not accepted by EOS.
+                   Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the
+                   generated EOS configuration and AVD metadata.
+                   This can be a plain MAC address or a template using
+                   the AVD string formatter syntax:
                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
                    descriptions-names.html#avd-string-formatter-syntax.
                    Only the following template fields are
@@ -119679,8 +119685,14 @@ class EosDesigns(EosDesignsRootModel):
                      -
                    `hostname`: The inventory hostname.
 
-                   For example, template `021c.7300.{device_id:04x}` will produce
-                   `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+                   For example:
+                     - template `021c.7300.{device_id:04x}` will
+                   produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+                     -
+                   template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID
+                   1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a
+                   numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of
+                   the generated MAC address).
                 cv_pathfinder_global_sites:
                    Define sites that are outside of the CV Pathfinder hierarchy.
                    This is used to arrange pathfinders in
