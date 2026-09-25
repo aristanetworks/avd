@@ -166,6 +166,7 @@ router_bgp:
           include_leaked: true
           route_map: RM-REDISTRIBUTE-OSPF-NSSA-EXTERNAL
   address_family_vpn_ipv6:
+    domain_identifier: "65000:0"
     next_hop:
       resolution_disabled: false
   address_family_ipv4_multicast:
