@@ -63,6 +63,7 @@ pytest = [
 schema-tools = [
     "deepmerge>=1.1.0",
     "jsonschema-rs>=0.46.0",
+    "pyavd-utils==0.0.9",
     "pydantic>=2.11.10",
     "pyyaml>=6.0.0",
     "referencing>=0.37.0",
