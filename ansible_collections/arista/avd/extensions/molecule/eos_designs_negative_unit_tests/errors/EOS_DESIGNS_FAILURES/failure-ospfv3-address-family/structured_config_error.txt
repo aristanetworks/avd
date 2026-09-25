@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: OSPFv3 is enabled on vrf 'OSPFv3_TEST_SVI' but neither 'address_family_ipv4' nor 'address_family_ipv6' is enabled under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST_SVI].ospfv3'.

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: OSPFv3 is enabled on SVI 'VLAN_21' but not under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST_SVI]'.
