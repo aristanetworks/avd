@@ -4,7 +4,6 @@
 # Regenerate with: pre-commit run collection-files --all-files
 # Do not edit manually.
 .ansible-lint
-.ansible-lint-ignore
 CHANGELOG.rst
 FILES.json
 LICENSE
@@ -343,6 +342,7 @@ plugins/action/eos_cli_config_gen.py
 plugins/action/eos_designs_documentation.py
 plugins/action/eos_designs_facts.py
 plugins/action/eos_designs_structured_config.py
+plugins/action/legacy_role_vars.py
 plugins/action/set_vars.py
 plugins/action/validate_inputs.py
 plugins/action/verify_requirements.py
@@ -365,6 +365,7 @@ plugins/modules/eos_cli_config_gen.py
 plugins/modules/eos_designs_documentation.py
 plugins/modules/eos_designs_facts.py
 plugins/modules/eos_designs_structured_config.py
+plugins/modules/legacy_role_vars.py
 plugins/modules/set_vars.py
 plugins/modules/validate_inputs.py
 plugins/modules/verify_requirements.py
@@ -405,15 +406,18 @@ roles/anta_runner/defaults/main/directories.yml
 roles/anta_runner/defaults/main/main.yml
 roles/anta_runner/meta/main.yml
 roles/anta_runner/tasks/main.yml
+roles/anta_runner/vars/main.yml
 roles/build_output_folders/README.md
 roles/build_output_folders/defaults/main.yml
 roles/build_output_folders/meta/main.yml
 roles/build_output_folders/tasks/main.yml
+roles/build_output_folders/vars/main.yml
 roles/cv_deploy/README.md
 roles/cv_deploy/defaults/main/directories.yml
 roles/cv_deploy/defaults/main/main.yml
 roles/cv_deploy/meta/main.yml
 roles/cv_deploy/tasks/main.yml
+roles/cv_deploy/vars/main.yml
 roles/cvp_configlet_upload/README.md
 roles/cvp_configlet_upload/meta/main.yml
 roles/cvp_configlet_upload/tasks/main.yml
@@ -441,6 +445,7 @@ roles/eos_config_deploy_eapi/handlers/main.yml
 roles/eos_config_deploy_eapi/media/role_eos_config_deploy_eapi.gif
 roles/eos_config_deploy_eapi/meta/main.yml
 roles/eos_config_deploy_eapi/tasks/main.yml
+roles/eos_config_deploy_eapi/vars/main.yml
 roles/eos_designs/README.md
 roles/eos_designs/defaults/main/main.yml
 roles/eos_designs/defaults/main/output_directories.yml
@@ -467,6 +472,7 @@ roles/eos_snapshot/templates/fabric_json_output.j2
 roles/eos_snapshot/templates/fabric_yaml_output.j2
 roles/eos_snapshot/templates/md_report.j2
 roles/eos_snapshot/templates/md_table_of_content.j2
+roles/eos_snapshot/vars/main.yml
 roles/eos_validate_state/README.md
 roles/eos_validate_state/meta/main.yml
 roles/eos_validate_state/tasks/main.yml

@@ -2,16 +2,25 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
+- name: Validate legacy role variables
+  arista.avd.legacy_role_vars:
+    role_name: eos_snapshot
+    aliases: "{{ eos_snapshot_internal_legacy_var_aliases }}"
+    mode: "{{ avd_legacy_role_vars_mode | default('warning') }}"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+
 - name: Verify Requirements
   delegate_to: localhost
-  when: avd_requirements is not defined and avd_verify_requirements | default(true)
+  when: eos_snapshot_requirements is not defined and avd_verify_requirements | default(true)
   arista.avd.verify_requirements:
     requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
     avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
   vars:
     requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
   run_once: true
-  register: avd_requirements
+  register: eos_snapshot_requirements
 
 - name: Create required output directories if not present
   delegate_to: localhost
@@ -21,65 +30,65 @@
     state: directory
     mode: "0o775"
   loop:
-    - "{{ snapshots_backup_dir }}"
+    - "{{ eos_snapshot_internal_backup_dir }}"
   run_once: true
 
 - name: Create output directory for each EOS device
   delegate_to: localhost
   ansible.builtin.file:
-    path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}"
+    path: "{{ eos_snapshot_internal_backup_dir }}/{{ inventory_hostname }}"
     state: directory
     mode: "0o775"
   when: avd_create_directories | arista.avd.default(true) and
-        (('text' in output_format) or ('markdown' in output_format))
+        (('text' in eos_snapshot_internal_output_formats) or ('markdown' in eos_snapshot_internal_output_formats))
 
 - name: Run show commands on remote EOS devices with text output
   arista.eos.eos_command:
     commands: "{{ item }}"
-  with_items: "{{ commands_list }}"
+  with_items: "{{ eos_snapshot_internal_commands }}"
   failed_when: false
-  register: cli_output
-  when: ('text' in output_format) or
-        ('markdown' in output_format)
+  register: eos_snapshot_cli_output
+  when: ('text' in eos_snapshot_internal_output_formats) or
+        ('markdown' in eos_snapshot_internal_output_formats)
 
 - name: Run show commands on remote EOS devices with json output
   arista.eos.eos_command:
     commands:
       - command: "{{ item }}"
         output: json
-  with_items: "{{ commands_list }}"
+  with_items: "{{ eos_snapshot_internal_commands }}"
   failed_when: false
-  register: cli_output_json
-  when: ('json' in output_format) or
-        ('yaml' in output_format)
+  register: eos_snapshot_cli_output_json
+  when: ('json' in eos_snapshot_internal_output_formats) or
+        ('yaml' in eos_snapshot_internal_output_formats)
 
 - name: Save collected commands in text files
   delegate_to: localhost
   ansible.builtin.template:
     src: device_text_command.j2
-    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/{{ item.item | replace('/', '_') }}.txt"
+    dest: "{{ eos_snapshot_internal_backup_dir }}/{{ inventory_hostname }}/{{ item.item | replace('/', '_') }}.txt"
     mode: "0o664"
-  loop: "{{ cli_output.results }}"
-  when: ('text' in output_format)
+  loop: "{{ eos_snapshot_cli_output.results }}"
+  when: ('text' in eos_snapshot_internal_output_formats)
 
 - name: Generate json report for fabric
   delegate_to: localhost
   ansible.builtin.template:
     src: fabric_json_output.j2
-    dest: "{{ snapshots_backup_dir }}/report.json"
+    dest: "{{ eos_snapshot_internal_backup_dir }}/report.json"
     mode: "0o664"
   run_once: true
-  when: ('json' in output_format)
+  when: ('json' in eos_snapshot_internal_output_formats)
 
 - name: Generate yaml report for fabric
   delegate_to: localhost
   ansible.builtin.template:
     src: fabric_yaml_output.j2
-    dest: "{{ snapshots_backup_dir }}/report.yaml"
+    dest: "{{ eos_snapshot_internal_backup_dir }}/report.yaml"
     mode: "0o664"
   run_once: true
-  when: ('yaml' in output_format)
+  when: ('yaml' in eos_snapshot_internal_output_formats)
 
 - name: Generate markdown report for fabric
   ansible.builtin.include_tasks: "markdown.yml"
-  when: ('markdown' in output_format)
+  when: ('markdown' in eos_snapshot_internal_output_formats)

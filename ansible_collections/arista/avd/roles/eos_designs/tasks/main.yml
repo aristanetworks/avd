@@ -2,16 +2,25 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
+- name: Validate legacy role variables
+  arista.avd.legacy_role_vars:
+    role_name: eos_designs
+    aliases: "{{ eos_designs_internal_legacy_var_aliases }}"
+    mode: "{{ avd_legacy_role_vars_mode | default('warning') }}"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+
 - name: Verify Requirements
   delegate_to: localhost
-  when: avd_requirements is not defined and avd_verify_requirements | default(true)
+  when: eos_designs_requirements is not defined and avd_verify_requirements | default(true)
   arista.avd.verify_requirements:
     requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
     avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
   vars:
     requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
   run_once: true
-  register: avd_requirements
+  register: eos_designs_requirements
 
 - name: Create required output directories if not present
   when: avd_create_directories | arista.avd.default(true)
@@ -20,8 +29,8 @@
     state: directory
     mode: "0o775"
   loop:
-    - "{{ structured_dir }}"
-    - "{{ fabric_dir }}"
+    - "{{ eos_designs_internal_structured_dir }}"
+    - "{{ eos_designs_internal_fabric_dir }}"
   delegate_to: localhost
   run_once: true
 
@@ -34,7 +43,7 @@
         schema_name: avd_design
         fail_on_validation_errors: true
         validation_configuration: "{{ eos_designs_validation_configuration }}"
-        vault_id: "{{ avd_vault_id }}"
+        vault_id: "{{ eos_designs_internal_vault_id }}"
         template_with_multiprocessing: "{{ eos_designs_validate_inputs_template_with_multiprocessing | arista.avd.default(true) }}"
       delegate_to: localhost
       check_mode: false
@@ -45,47 +54,47 @@
         tmp_dir: "{{ eos_designs_tmp_dir }}"
         # cprofile_file: "eos_designs_facts.prof"
         template_output: true
-        output_dir: "{{ output_dir }}"
-        digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+        output_dir: "{{ eos_designs_internal_output_dir }}"
+        digital_twin: "{{ eos_designs_internal_digital_twin_mode }}"
       delegate_to: localhost
       check_mode: false
       run_once: true
 
     - name: Generate device configuration in structured format
-      when: avd_eos_designs_structured_config | arista.avd.default(true)
+      when: eos_designs_internal_structured_config
       arista.avd.eos_designs_structured_config:
         tmp_dir: "{{ eos_designs_tmp_dir }}"
         eos_designs_custom_templates: "{{ eos_designs_custom_templates | arista.avd.default([]) }}"
-        dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+        dest: "{{ eos_designs_internal_structured_dir }}/{{ inventory_hostname }}.{{ eos_designs_internal_structured_config_file_format }}"
         # cprofile_file: "structured-{{inventory_hostname}}.prof"
         template_output: true
-        structured_config: "{{ avd_eos_designs_structured_config | arista.avd.default(true) }}"
-        digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+        structured_config: "{{ eos_designs_internal_structured_config }}"
+        digital_twin: "{{ eos_designs_internal_digital_twin_mode }}"
         return_structured_config: "{{ eos_designs_return_structured_config | arista.avd.default(false) }}"
       delegate_to: localhost
       check_mode: false
-      register: structured_config
+      register: eos_designs_structured_config_result
 
     - name: Generate fabric documentation
       when: |-
         eos_designs_documentation.enable | arista.avd.default(true)
         or eos_designs_documentation.topology_csv | arista.avd.default(false)
         or eos_designs_documentation.p2p_links_csv | arista.avd.default(false)
-        or avd_digital_twin_mode | arista.avd.default(false)
+        or eos_designs_internal_digital_twin_mode
       arista.avd.eos_designs_documentation:
         tmp_dir: "{{ eos_designs_tmp_dir }}"
-        structured_config_dir: "{{ structured_dir }}"
-        structured_config_suffix: "{{ avd_structured_config_file_format }}"
-        fabric_documentation_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
+        structured_config_dir: "{{ eos_designs_internal_structured_dir }}"
+        structured_config_suffix: "{{ eos_designs_internal_structured_config_file_format }}"
+        fabric_documentation_file: "{{ eos_designs_internal_fabric_dir }}/{{ fabric_name }}-documentation.md"
         fabric_documentation: "{{ eos_designs_documentation.enable | arista.avd.default(true) }}"
         include_connected_endpoints: "{{ eos_designs_documentation.connected_endpoints | arista.avd.default(false) }}"
-        topology_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
+        topology_csv_file: "{{ eos_designs_internal_fabric_dir }}/{{ fabric_name }}-topology.csv"
         topology_csv: "{{ eos_designs_documentation.topology_csv | arista.avd.default(false) }}"
-        p2p_links_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-p2p-links.csv"
+        p2p_links_csv_file: "{{ eos_designs_internal_fabric_dir }}/{{ fabric_name }}-p2p-links.csv"
         p2p_links_csv: "{{ eos_designs_documentation.p2p_links_csv | arista.avd.default(false) }}"
         toc: "{{ eos_designs_documentation.toc | arista.avd.default(true) }}"
-        digital_twin_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.yml"
-        digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+        digital_twin_file: "{{ eos_designs_internal_fabric_dir }}/{{ fabric_name }}-topology.yml"
+        digital_twin: "{{ eos_designs_internal_digital_twin_mode }}"
         mode: "0o664"
       delegate_to: localhost
       check_mode: false

@@ -4,81 +4,90 @@
 ---
 # tasks file for build_directories
 
-- name: "Cleanup existing folders in {{ output_dir }}"
+- name: Validate legacy role variables
+  arista.avd.legacy_role_vars:
+    role_name: build_output_folders
+    aliases: "{{ build_output_folders_internal_legacy_var_aliases }}"
+    mode: "{{ avd_legacy_role_vars_mode | default('warning') }}"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+
+- name: "Cleanup existing folders in {{ build_output_folders_internal_output_dir }}"
   ansible.builtin.file:
-    path: "{{ output_dir }}"
+    path: "{{ build_output_folders_internal_output_dir }}"
     state: absent
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ output_dir }}"
+- name: "Create folder {{ build_output_folders_internal_output_dir }}"
   ansible.builtin.file:
-    path: "{{ output_dir }}"
+    path: "{{ build_output_folders_internal_output_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for structured YAML files {{ structured_dir_name }}"
+- name: "Create folder for structured YAML files {{ build_output_folders_internal_structured_dir_name }}"
   ansible.builtin.file:
-    path: "{{ structured_dir }}"
+    path: "{{ build_output_folders_internal_structured_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for EOS Configuration files {{ eos_config_dir_name }}"
+- name: "Create folder for EOS Configuration files {{ build_output_folders_internal_eos_config_dir_name }}"
   ansible.builtin.file:
-    path: "{{ eos_config_dir }}"
+    path: "{{ build_output_folders_internal_eos_config_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for CVP structured YAML files {{ structured_cvp_dir_name }}"
+- name: "Create folder for CVP structured YAML files {{ build_output_folders_internal_structured_cvp_dir_name }}"
   ansible.builtin.file:
-    path: "{{ structured_cvp_dir }}"
+    path: "{{ build_output_folders_internal_structured_cvp_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create documentation folder {{ documentation_dir_name }}"
+- name: "Create documentation folder {{ build_output_folders_internal_documentation_dir_name }}"
   ansible.builtin.file:
-    path: "{{ documentation_dir }}"
+    path: "{{ build_output_folders_internal_documentation_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for Fabric documentation {{ fabric_dir_name }}"
+- name: "Create folder for Fabric documentation {{ build_output_folders_internal_fabric_dir_name }}"
   ansible.builtin.file:
-    path: "{{ fabric_dir }}"
+    path: "{{ build_output_folders_internal_fabric_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for EOS documentation {{ devices_dir_name }}"
+- name: "Create folder for EOS documentation {{ build_output_folders_internal_devices_dir_name }}"
   ansible.builtin.file:
-    path: "{{ devices_dir }}"
+    path: "{{ build_output_folders_internal_devices_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for EOS post backup dir {{ post_running_config_backup_dir }}"
+- name: "Create folder for EOS post backup dir {{ build_output_folders_internal_post_running_config_backup_dir }}"
   ansible.builtin.file:
-    path: "{{ post_running_config_backup_dir }}"
+    path: "{{ build_output_folders_internal_post_running_config_backup_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for EOS pre backup dir {{ pre_running_config_backup_dir }}"
+- name: "Create folder for EOS pre backup dir {{ build_output_folders_internal_pre_running_config_backup_dir }}"
   ansible.builtin.file:
-    path: "{{ pre_running_config_backup_dir }}"
+    path: "{{ build_output_folders_internal_pre_running_config_backup_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
@@ -86,7 +95,7 @@
 
 - name: Create output directory for each EOS device
   ansible.builtin.file:
-    path: "{{ snapshots_backup_dir }}"
+    path: "{{ build_output_folders_internal_snapshots_backup_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
@@ -94,50 +103,51 @@
 
 # anta_runner directories
 
-- name: "Cleanup existing folders in {{ anta_dir_name ~ ', preserving ' ~ user_catalogs_dir_name }}"
+- name: >-
+    Cleanup existing folders in {{ build_output_folders_internal_anta_dir_name ~ ', preserving ' ~ build_output_folders_internal_user_catalogs_dir_name }}
   ansible.builtin.find:
-    paths: "{{ anta_dir }}"
+    paths: "{{ build_output_folders_internal_anta_dir }}"
     file_type: directory
-    excludes: "{{ user_catalogs_dir_name }}"
-  register: dirs_to_clean
+    excludes: "{{ build_output_folders_internal_user_catalogs_dir_name }}"
+  register: build_output_folders_dirs_to_clean
   delegate_to: localhost
   run_once: true
 
-- name: "Remove found directories in {{ anta_dir_name }}"
+- name: "Remove found directories in {{ build_output_folders_internal_anta_dir_name }}"
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
-  loop: "{{ dirs_to_clean.files }}"
+  loop: "{{ build_output_folders_dirs_to_clean.files }}"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for ANTA {{ anta_dir_name }}"
+- name: "Create folder for ANTA {{ build_output_folders_internal_anta_dir_name }}"
   ansible.builtin.file:
-    path: "{{ anta_dir }}"
+    path: "{{ build_output_folders_internal_anta_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for ANTA user-defined catalogs {{ user_catalogs_dir_name }}"
+- name: "Create folder for ANTA user-defined catalogs {{ build_output_folders_internal_user_catalogs_dir_name }}"
   ansible.builtin.file:
-    path: "{{ user_catalogs_dir }}"
+    path: "{{ build_output_folders_internal_user_catalogs_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for ANTA AVD generated catalogs {{ avd_catalogs_dir_name }}"
+- name: "Create folder for ANTA AVD generated catalogs {{ build_output_folders_internal_avd_catalogs_dir_name }}"
   ansible.builtin.file:
-    path: "{{ avd_catalogs_dir }}"
+    path: "{{ build_output_folders_internal_avd_catalogs_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder for ANTA reports {{ anta_reports_dir_name }}"
+- name: "Create folder for ANTA reports {{ build_output_folders_internal_anta_reports_dir_name }}"
   ansible.builtin.file:
-    path: "{{ anta_reports_dir }}"
+    path: "{{ build_output_folders_internal_anta_reports_dir }}"
     state: directory
     mode: "0o775"
   delegate_to: localhost

@@ -439,8 +439,8 @@ If you want to push to switches in the entire fabric using CloudVision, your pla
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
       vars:
-        cv_server: 192.168.1.12
-        cv_token: <insert service_account token here - use Ansible Vault>
+        cv_deploy_server: 192.168.1.12
+        cv_deploy_token: <insert service_account token here - use Ansible Vault>
 ```
 
 You would execute it using the same command:
