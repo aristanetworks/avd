@@ -119,6 +119,7 @@ jobs:
               - '.github/workflows/pull-request-management.yml'
               - 'Makefile'
               - 'tools/e2e-test-avd.py'
+              - 'tools/e2e_test_avd.py'
               - '**/e2e-test.toml'
       - name: Find all e2e-test.toml file
         id: e2e_test_matrix
@@ -155,7 +156,7 @@ jobs:
           python-version: "3.12"
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install --group dev --group coverage --upgrade
+          pip install --group dev --group coverage --group benchmark --upgrade
       - name: PyRight static type checker
         # Specific SHA as allowed by github org admins
         uses: jakebailey/pyright-action@8ec14b5cfe41f26e5f41686a31eb6012758217ef # v3.0.2
