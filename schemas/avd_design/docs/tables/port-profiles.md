@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>port_profiles</samp>](## "port_profiles") | List, items: Dictionary |  |  |  | Optional profiles to share common settings for connected_endpoints and/or network_ports.<br>Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "port_profiles.[].profile") | String | Required, Unique |  |  | Port profile name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "port_profiles.[].parent_profile") | String |  |  |  | Parent profile is optional.<br>Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "port_profiles.[].parent_profile") | String |  |  |  | Parent profile is optional.<br>By default, profile inheritance is limited to two levels: adapter -> profile -> parent_profile.<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "port_profiles.[].port_channel") | Dictionary |  |  |  | Used for port-channel adapter. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "port_profiles.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces.<br>Only applicable for connected-endpoints. `Subinterfaces` key cannot be used with `network_ports`<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>Setting `short_esi: auto` generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting `short_esi: auto`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "port_profiles.[].port_channel.subinterfaces.[].number") | Integer | Required, Unique |  | Min: 1<br>Max: 1048575 | Subinterface number. |
@@ -204,7 +204,9 @@
       - profile: <str; required; unique>
 
         # Parent profile is optional.
-        # Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
+        # By default, profile inheritance is limited to two levels: adapter -> profile -> parent_profile.
+        # From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+        # allows profiles to inherit settings across any number of levels.
         parent_profile: <str>
 
         # Used for port-channel adapter.

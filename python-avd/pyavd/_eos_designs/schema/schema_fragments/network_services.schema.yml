@@ -897,6 +897,8 @@ keys:
                       description: |
                         SVI profile name to apply.
                         SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                        From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                        allows profiles to inherit settings across any number of levels.
                     tags:
                       type: list
                       description: |
@@ -1897,6 +1899,8 @@ keys:
                 description: |-
                   L2VLAN profile name.
                   The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                  From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                  allows profiles to inherit settings across any number of levels.
               tags:
                 type: list
                 description: |
