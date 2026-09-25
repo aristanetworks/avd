@@ -102,8 +102,8 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
           ansible.builtin.import_role:
             name: arista.avd.cv_deploy
           vars:
-            cv_server: <hostname or IP address of CloudVision host>
-            cv_token: <insert service_account token here - use Ansible Vault>
+            cv_deploy_server: <hostname or IP address of CloudVision host>
+            cv_deploy_token: <insert service_account token here - use Ansible Vault>
 
     ```
 
@@ -111,7 +111,7 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
 
 ## Authentication
 
-We recommend using the `cv_server` and `cv_token` keys for CloudVision authentication. Generate the `cv_token` from a service account with the required permissions. Refer to the `cv_deploy` role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) for step-by-step instructions on creating these tokens.
+We recommend using `cv_deploy_server` and `cv_deploy_token` for CloudVision authentication. Generate `cv_deploy_token` from a service account with the required permissions. Refer to the `cv_deploy` role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) for step-by-step instructions on creating these tokens.
 
 ```yaml hl_lines="6 7 9 10"
   tasks:
@@ -119,16 +119,16 @@ We recommend using the `cv_server` and `cv_token` keys for CloudVision authentic
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
       vars:
-        cv_server: <hostname or IP address of CloudVision host>
-        cv_token: <insert service_account token here - use Ansible Vault>
+        cv_deploy_server: <hostname or IP address of CloudVision host>
+        cv_deploy_token: <insert service_account token here - use Ansible Vault>
 ```
 
 !!! info
-    You may use the combination of `cv_username` and `cv_password` instead of `cv_token`, but this is only supported for on-prem CloudVision. **CVaaS only supports token-based authentication.**
+    You may use `cv_deploy_username` and `cv_deploy_password` instead of `cv_deploy_token`, but this is only supported for on-prem CloudVision. **CVaaS only supports token-based authentication.**
 
 ## Provisioning
 
-`cv_deploy` leverages the CloudVision Studios Workflows for network provisioning, specifically with the Static Configuration Studio. When running playbooks to provision a network, the change control will remain pending (similar to the previous `eos_config_deploy_cvp` role). We can override this default with the `cv_run_change_control` key.
+`cv_deploy` leverages the CloudVision Studios Workflows for network provisioning, specifically with the Static Configuration Studio. When running playbooks to provision a network, the change control will remain pending (similar to the previous `eos_config_deploy_cvp` role). We can override this default with `cv_deploy_run_change_control`.
 
 ```yaml hl_lines="13"
 ---
@@ -141,9 +141,9 @@ We recommend using the `cv_server` and `cv_token` keys for CloudVision authentic
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
       vars:
-        cv_server: <hostname or IP address of CloudVision host>
-        cv_token: <insert service_account token here - use Ansible Vault>
-        cv_run_change_control: true
+        cv_deploy_server: <hostname or IP address of CloudVision host>
+        cv_deploy_token: <insert service_account token here - use Ansible Vault>
+        cv_deploy_run_change_control: true
 
 ```
 
@@ -192,7 +192,7 @@ Use this approach when your playbook deploys AVD-generated configurations to Clo
 
 === "cv_deploy (Single Task)"
 
-    With `cv_deploy`, you define a **"manifest"** using `cv_static_config_manifest` within the same task that deploys your device configurations.
+    With `cv_deploy`, you define a **"manifest"** using `cv_deploy_static_config_manifest` within the same task that deploys your device configurations.
 
     ```yaml hl_lines="15-20"
     ---
@@ -205,11 +205,11 @@ Use this approach when your playbook deploys AVD-generated configurations to Clo
           ansible.builtin.import_role:
             name: arista.avd.cv_deploy
           vars:
-            cv_server: <hostname or IP address of CloudVision host>
-            cv_token: <insert service_account token here - use Ansible Vault>
+            cv_deploy_server: <hostname or IP address of CloudVision host>
+            cv_deploy_token: <insert service_account token here - use Ansible Vault>
 
             # The manifest is deployed alongside device configurations in the Static Configuration Studio
-            cv_static_config_manifest:
+            cv_deploy_static_config_manifest:
               configlets:
                 - name: "DC1-AVD_access_lists"
                   file: "configlets/access_lists.txt"
@@ -247,7 +247,7 @@ Use this approach to replace a playbook whose **only** job was to upload configl
 
 === "cv_deploy"
 
-    By setting `cv_devices: []`, it instructs the role to skip all device-specific operations and only process the manifest.
+    By setting `cv_deploy_devices: []`, it instructs the role to skip all device-specific operations and only process the manifest.
 
     ```yaml hl_lines="14-15"
     ---
@@ -260,13 +260,13 @@ Use this approach to replace a playbook whose **only** job was to upload configl
           ansible.builtin.import_role:
             name: arista.avd.cv_deploy
           vars:
-            cv_server: <hostname or IP address of CloudVision host>
-            cv_token: <insert service_account token here - use Ansible Vault>
+            cv_deploy_server: <hostname or IP address of CloudVision host>
+            cv_deploy_token: <insert service_account token here - use Ansible Vault>
 
             # Enable manifest-only mode
-            cv_devices: []
+            cv_deploy_devices: []
 
-            cv_static_config_manifest:
+            cv_deploy_static_config_manifest:
               configlets:
                 - name: "DC1-AVD_access_lists"
                   file: "configlets/access_lists.txt"

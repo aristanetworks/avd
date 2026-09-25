@@ -918,7 +918,7 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_structured_config_file_format:
+  eos_cli_config_gen_structured_config_file_format:
     documentation_options:
       table: role-settings
     type: str
@@ -930,7 +930,18 @@ keys:
     description: 'The file format to use when loading structured configuration files.
 
       '
-  avd_vault_id:
+  avd_structured_config_file_format:
+    documentation_options:
+      table: legacy-role-settings
+    type: str
+    valid_values:
+    - yml
+    - yaml
+    - json
+    description: 'Legacy alias for `eos_cli_config_gen_structured_config_file_format`.
+
+      '
+  eos_cli_config_gen_vault_id:
     documentation_options:
       table: role-settings
     type: str
@@ -938,9 +949,15 @@ keys:
       Ansible Vault is not configured, this parameter has no effect and files are
       written as plain JSON.\nWhen Ansible Vault is configured, AVD encrypts files
       containing templated and validated data\nto prevent sensitive information from
-      being exposed in the temporary directories.\n  * When `avd_vault_id` is not
-      specified, AVD uses the *first* Vault ID in the list for encryption.\n  * When
-      `avd_vault_id` is specified, AVD uses the specified Vault ID for encryption."
+      being exposed in the temporary directories.\n  * When `eos_cli_config_gen_vault_id`
+      is not specified, AVD uses the *first* Vault ID in the list for encryption.\n
+      \ * When `eos_cli_config_gen_vault_id` is specified, AVD uses the specified
+      Vault ID for encryption."
+  avd_vault_id:
+    documentation_options:
+      table: legacy-role-settings
+    type: str
+    description: Legacy alias for `eos_cli_config_gen_vault_id`.
   banners:
     type: dict
     keys:
@@ -1368,7 +1385,9 @@ keys:
     type: bool
     description: Render `end` at the end of the configuration.
     default: false
-  custom_templates:
+  eos_cli_config_gen_custom_templates:
+    documentation_options:
+      table: custom-templates
     type: list
     display_name: Extensibility with Custom Templates
     description: "- Custom templates can be added below the playbook directory.\n-
@@ -1378,10 +1397,17 @@ keys:
       \ ```\n\n- The output will be rendered at the end of the configuration.\n- The
       order of custom templates in the list can be important if they overlap.\n- It
       is recommended to use a `!` delimiter at the top of each custom template.\n\nAdd
-      `custom_templates` to group/host variables:\n"
+      `eos_cli_config_gen_custom_templates` to group/host variables:\n"
     items:
       type: str
       description: Template relative path below playbook directory.
+  custom_templates:
+    documentation_options:
+      table: legacy-role-settings
+    type: list
+    description: Legacy alias for `eos_cli_config_gen_custom_templates`.
+    items:
+      type: str
   cvx:
     type: dict
     description: CVX server features are not supported on physical switches. See `management_cvx`
@@ -16454,16 +16480,21 @@ keys:
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
-  read_structured_config_from_file:
+  eos_cli_config_gen_read_structured_config_from_file:
     documentation_options:
       table: role-settings
     type: bool
     default: true
-    description: 'Read structured configuration from files in `structured_dir` (default
-      directory also used by the `eos_designs` role).
+    description: 'Read structured configuration from files in `eos_cli_config_gen_structured_dir`.
 
-      If set to false, `eos_cli_config_gen` will read structured configuration from
-      hostvars.
+      If set to false, `eos_cli_config_gen` reads structured configuration from hostvars.
+
+      '
+  read_structured_config_from_file:
+    documentation_options:
+      table: legacy-role-settings
+    type: bool
+    description: 'Legacy alias for `eos_cli_config_gen_read_structured_config_from_file`.
 
       '
   redundancy:

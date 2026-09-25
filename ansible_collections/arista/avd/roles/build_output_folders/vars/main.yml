@@ -1,0 +1,150 @@
+---
+build_output_folders_internal_legacy_var_aliases:
+  anta_dir: build_output_folders_anta_dir
+  anta_dir_name: build_output_folders_anta_dir_name
+  anta_reports_dir: build_output_folders_anta_reports_dir
+  anta_reports_dir_name: build_output_folders_anta_reports_dir_name
+  avd_catalogs_dir: build_output_folders_avd_catalogs_dir
+  avd_catalogs_dir_name: build_output_folders_avd_catalogs_dir_name
+  devices_dir: build_output_folders_devices_dir
+  devices_dir_name: build_output_folders_devices_dir_name
+  documentation_dir: build_output_folders_documentation_dir
+  documentation_dir_name: build_output_folders_documentation_dir_name
+  eos_config_dir: build_output_folders_eos_config_dir
+  eos_config_dir_name: build_output_folders_eos_config_dir_name
+  fabric_dir: build_output_folders_fabric_dir
+  fabric_dir_name: build_output_folders_fabric_dir_name
+  output_dir: build_output_folders_output_dir
+  output_dir_name: build_output_folders_output_dir_name
+  post_running_config_backup_dir: build_output_folders_post_running_config_backup_dir
+  post_running_config_backup_dir_name: build_output_folders_post_running_config_backup_dir_name
+  pre_running_config_backup_dir: build_output_folders_pre_running_config_backup_dir
+  pre_running_config_backup_dir_name: build_output_folders_pre_running_config_backup_dir_name
+  root_dir: build_output_folders_root_dir
+  snapshots_backup_dir: build_output_folders_snapshots_backup_dir
+  snapshots_backup_dir_name: build_output_folders_snapshots_backup_dir_name
+  structured_cvp_dir: build_output_folders_structured_cvp_dir
+  structured_cvp_dir_name: build_output_folders_structured_cvp_dir_name
+  structured_dir: build_output_folders_structured_dir
+  structured_dir_name: build_output_folders_structured_dir_name
+  user_catalogs_dir: build_output_folders_user_catalogs_dir
+  user_catalogs_dir_name: build_output_folders_user_catalogs_dir_name
+
+build_output_folders_internal_root_dir: "{{ build_output_folders_root_dir | default(root_dir | default(inventory_dir)) }}"
+build_output_folders_internal_output_dir_name: "{{ build_output_folders_output_dir_name | default(output_dir_name | default('intended')) }}"
+build_output_folders_internal_output_dir: >-
+  {{
+    build_output_folders_output_dir
+    | default(output_dir | default(
+        build_output_folders_internal_root_dir ~ '/' ~ build_output_folders_internal_output_dir_name
+      ))
+  }}
+build_output_folders_internal_structured_dir_name: >-
+  {{ build_output_folders_structured_dir_name | default(structured_dir_name | default('structured_configs')) }}
+build_output_folders_internal_structured_dir: >-
+  {{
+    build_output_folders_structured_dir
+    | default(structured_dir | default(
+        build_output_folders_internal_output_dir ~ '/' ~ build_output_folders_internal_structured_dir_name
+      ))
+  }}
+build_output_folders_internal_structured_cvp_dir_name: >-
+  {{ build_output_folders_structured_cvp_dir_name | default(structured_cvp_dir_name | default('cvp')) }}
+build_output_folders_internal_structured_cvp_dir: >-
+  {{
+    build_output_folders_structured_cvp_dir
+    | default(structured_cvp_dir | default(
+        build_output_folders_internal_structured_dir ~ '/' ~ build_output_folders_internal_structured_cvp_dir_name
+      ))
+  }}
+build_output_folders_internal_eos_config_dir_name: >-
+  {{ build_output_folders_eos_config_dir_name | default(eos_config_dir_name | default('configs')) }}
+build_output_folders_internal_eos_config_dir: >-
+  {{
+    build_output_folders_eos_config_dir
+    | default(eos_config_dir | default(
+        build_output_folders_internal_output_dir ~ '/' ~ build_output_folders_internal_eos_config_dir_name
+      ))
+  }}
+build_output_folders_internal_documentation_dir_name: >-
+  {{ build_output_folders_documentation_dir_name | default(documentation_dir_name | default('documentation')) }}
+build_output_folders_internal_documentation_dir: >-
+  {{
+    build_output_folders_documentation_dir
+    | default(documentation_dir | default(
+        build_output_folders_internal_root_dir ~ '/' ~ build_output_folders_internal_documentation_dir_name
+      ))
+  }}
+build_output_folders_internal_fabric_dir_name: "{{ build_output_folders_fabric_dir_name | default(fabric_dir_name | default('fabric')) }}"
+build_output_folders_internal_fabric_dir: >-
+  {{
+    build_output_folders_fabric_dir
+    | default(fabric_dir | default(
+        build_output_folders_internal_documentation_dir ~ '/' ~ build_output_folders_internal_fabric_dir_name
+      ))
+  }}
+build_output_folders_internal_devices_dir_name: "{{ build_output_folders_devices_dir_name | default(devices_dir_name | default('devices')) }}"
+build_output_folders_internal_devices_dir: >-
+  {{
+    build_output_folders_devices_dir
+    | default(devices_dir | default(
+        build_output_folders_internal_documentation_dir ~ '/' ~ build_output_folders_internal_devices_dir_name
+      ))
+  }}
+build_output_folders_internal_post_running_config_backup_dir_name: >-
+  {{ build_output_folders_post_running_config_backup_dir_name | default(post_running_config_backup_dir_name | default('config_backup')) }}
+build_output_folders_internal_post_running_config_backup_dir: >-
+  {{
+    build_output_folders_post_running_config_backup_dir
+    | default(post_running_config_backup_dir | default(
+        build_output_folders_internal_root_dir ~ '/' ~ build_output_folders_internal_post_running_config_backup_dir_name
+      ))
+  }}
+build_output_folders_internal_pre_running_config_backup_dir_name: >-
+  {{ build_output_folders_pre_running_config_backup_dir_name | default(pre_running_config_backup_dir_name | default('config_backup')) }}
+build_output_folders_internal_pre_running_config_backup_dir: >-
+  {{
+    build_output_folders_pre_running_config_backup_dir
+    | default(pre_running_config_backup_dir | default(
+        build_output_folders_internal_root_dir ~ '/' ~ build_output_folders_internal_pre_running_config_backup_dir_name
+      ))
+  }}
+build_output_folders_internal_snapshots_backup_dir_name: >-
+  {{ build_output_folders_snapshots_backup_dir_name | default(snapshots_backup_dir_name | default('snapshots')) }}
+build_output_folders_internal_snapshots_backup_dir: >-
+  {{
+    build_output_folders_snapshots_backup_dir
+    | default(snapshots_backup_dir | default(
+        build_output_folders_internal_root_dir ~ '/' ~ build_output_folders_internal_snapshots_backup_dir_name
+      ))
+  }}
+build_output_folders_internal_anta_dir_name: "{{ build_output_folders_anta_dir_name | default(anta_dir_name | default('anta')) }}"
+build_output_folders_internal_anta_dir: >-
+  {{ build_output_folders_anta_dir | default(anta_dir | default(build_output_folders_internal_root_dir ~ '/' ~ build_output_folders_internal_anta_dir_name)) }}
+build_output_folders_internal_user_catalogs_dir_name: >-
+  {{ build_output_folders_user_catalogs_dir_name | default(user_catalogs_dir_name | default('user_catalogs')) }}
+build_output_folders_internal_user_catalogs_dir: >-
+  {{
+    build_output_folders_user_catalogs_dir
+    | default(user_catalogs_dir | default(
+        build_output_folders_internal_anta_dir ~ '/' ~ build_output_folders_internal_user_catalogs_dir_name
+      ))
+  }}
+build_output_folders_internal_avd_catalogs_dir_name: >-
+  {{ build_output_folders_avd_catalogs_dir_name | default(avd_catalogs_dir_name | default('avd_catalogs')) }}
+build_output_folders_internal_avd_catalogs_dir: >-
+  {{
+    build_output_folders_avd_catalogs_dir
+    | default(avd_catalogs_dir | default(
+        build_output_folders_internal_anta_dir ~ '/' ~ build_output_folders_internal_avd_catalogs_dir_name
+      ))
+  }}
+build_output_folders_internal_anta_reports_dir_name: >-
+  {{ build_output_folders_anta_reports_dir_name | default(anta_reports_dir_name | default('reports')) }}
+build_output_folders_internal_anta_reports_dir: >-
+  {{
+    build_output_folders_anta_reports_dir
+    | default(anta_reports_dir | default(
+        build_output_folders_internal_anta_dir ~ '/' ~ build_output_folders_internal_anta_reports_dir_name
+      ))
+  }}

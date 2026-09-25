@@ -568,7 +568,7 @@ keys:
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
           IPv4 is activated by default instead of always deactivating it.'
         default: false
-  avd_digital_twin_mode:
+  eos_designs_digital_twin_mode:
     documentation_options:
       table: role-settings
     type: bool
@@ -582,10 +582,17 @@ keys:
       and EOS configuration, device and fabric documentation) will replace original
       fabric artifacts.
 
-      To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name`
-      variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated
-      output location.'
+      To keep Digital Twin artifacts separate, adjust `eos_designs_output_dir_name`,
+      `eos_designs_documentation_dir_name`,
+
+      `eos_cli_config_gen_output_dir_name`, and `eos_cli_config_gen_documentation_dir_name`
+      to point to dedicated output locations.'
     default: false
+  avd_digital_twin_mode:
+    documentation_options:
+      table: legacy-role-settings
+    type: bool
+    description: Legacy alias for `eos_designs_digital_twin_mode`.
   avd_eos_designs_debug:
     documentation_options:
       table: role-settings
@@ -603,12 +610,17 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_eos_designs_structured_config:
+  eos_designs_structured_config:
     documentation_options:
       table: role-settings
     type: bool
     default: true
     description: Generate structured configuration per device.
+  avd_eos_designs_structured_config:
+    documentation_options:
+      table: legacy-role-settings
+    type: bool
+    description: Legacy alias for `eos_designs_structured_config`.
   avd_eos_designs_unset_facts:
     documentation_options:
       table: role-settings
@@ -617,7 +629,7 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_structured_config_file_format:
+  eos_designs_structured_config_file_format:
     documentation_options:
       table: role-settings
     type: str
@@ -627,6 +639,17 @@ keys:
     - yaml
     - json
     description: 'The file format to use when dumping structured configuration files.
+
+      '
+  avd_structured_config_file_format:
+    documentation_options:
+      table: legacy-role-settings
+    type: str
+    valid_values:
+    - yml
+    - yaml
+    - json
+    description: 'Legacy alias for `eos_designs_structured_config_file_format`.
 
       '
   eos_designs_validation_configuration:
@@ -640,11 +663,16 @@ keys:
         default: true
         description: Emit a warning when EOS Config keys are detected in the AVD Design
           inputs.
-  avd_vault_id:
+  eos_designs_vault_id:
     documentation_options:
       table: role-settings
     type: str
-    $ref: eos_cli_config_gen#/keys/avd_vault_id
+    $ref: eos_cli_config_gen#/keys/eos_cli_config_gen_vault_id
+  avd_vault_id:
+    documentation_options:
+      table: legacy-role-settings
+    type: str
+    description: Legacy alias for `eos_designs_vault_id`.
   bfd_multihop:
     documentation_options:
       table: bfd-settings

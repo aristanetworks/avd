@@ -2,16 +2,25 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
+- name: Validate legacy role variables
+  arista.avd.legacy_role_vars:
+    role_name: eos_config_deploy_eapi
+    aliases: "{{ eos_config_deploy_eapi_internal_legacy_var_aliases }}"
+    mode: "{{ avd_legacy_role_vars_mode | default('warning') }}"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+
 - name: Verify Requirements
   delegate_to: localhost
-  when: avd_requirements is not defined and avd_verify_requirements | default(true)
+  when: eos_config_deploy_eapi_requirements is not defined and avd_verify_requirements | default(true)
   arista.avd.verify_requirements:
     requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
     avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
   vars:
     requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
   run_once: true
-  register: avd_requirements
+  register: eos_config_deploy_eapi_requirements
 
 - name: Create required output directories if not present
   when: avd_create_directories | arista.avd.default(true)
@@ -20,18 +29,18 @@
     state: directory
     mode: "0o775"
   loop:
-    - "{{ post_running_config_backup_dir }}"
-    - "{{ pre_running_config_backup_dir }}"
+    - "{{ eos_config_deploy_eapi_internal_post_running_config_backup_dir }}"
+    - "{{ eos_config_deploy_eapi_internal_pre_running_config_backup_dir }}"
   delegate_to: localhost
   run_once: true
 
 - name: Replace configuration with intended configuration
   arista.eos.eos_config:
-    src: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
+    src: "{{ eos_config_deploy_eapi_internal_config_dir }}/{{ inventory_hostname }}.cfg"
     replace: config
     save_when: modified
     backup: "{{ eos_config_deploy_eapi_pre_running_config_backup }}"
     backup_options:
-      filename: "{{ pre_running_config_backup_filename }}"
-      dir_path: "{{ pre_running_config_backup_dir }}"
+      filename: "{{ eos_config_deploy_eapi_internal_pre_running_config_backup_filename }}"
+      dir_path: "{{ eos_config_deploy_eapi_internal_pre_running_config_backup_dir }}"
   notify: "backup config"

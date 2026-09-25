@@ -1,20 +1,34 @@
-# Schema folders
-# Main schemas folder
-role_schema_dir_name: "schemas"
-role_schema_dir: "{{ role_path }}/{{ role_schema_dir_name }}"
-# Main Schema file
-role_schema_file_name: "{{ role_name }}.schema.yml"
-role_schema_path: "{{ role_schema_dir }}/{{ role_schema_file_name }}"
-# Schema fragments folder
-role_schema_fragments_dir_name: "schema_fragments"
-role_schema_fragments_dir: "{{ role_schema_dir }}/{{ role_schema_fragments_dir_name }}"
-# Schema fragments glob
-role_schema_fragments_file_glob: "*.schema.yml"
-role_schema_fragments_glob: "{{ role_schema_fragments_dir }}/{{ role_schema_fragments_file_glob }}"
+---
+eos_designs_internal_legacy_var_aliases:
+  avd_digital_twin_mode: eos_designs_digital_twin_mode
+  avd_eos_designs_structured_config: eos_designs_structured_config
+  avd_structured_config_file_format: eos_designs_structured_config_file_format
+  avd_vault_id: eos_designs_vault_id
+  documentation_dir: eos_designs_documentation_dir
+  documentation_dir_name: eos_designs_documentation_dir_name
+  fabric_dir: eos_designs_fabric_dir
+  fabric_dir_name: eos_designs_fabric_dir_name
+  output_dir: eos_designs_output_dir
+  output_dir_name: eos_designs_output_dir_name
+  root_dir: eos_designs_root_dir
+  structured_dir: eos_designs_structured_dir
+  structured_dir_name: eos_designs_structured_dir_name
 
-# Documentation folder
-role_documentation_dir_name: "docs"
-role_documentation_dir: "{{ role_path }}/{{ role_documentation_dir_name }}"
-
-# Schema Docs fragments folder
-role_schema_docs_fragments_dir: "{{ role_schema_dir }}/doc_fragments"
+eos_designs_internal_digital_twin_mode: "{{ eos_designs_digital_twin_mode | default(avd_digital_twin_mode | default(false)) }}"
+eos_designs_internal_structured_config: "{{ eos_designs_structured_config | default(avd_eos_designs_structured_config | default(true)) }}"
+eos_designs_internal_structured_config_file_format: >-
+  {{ eos_designs_structured_config_file_format | default(avd_structured_config_file_format | default('yml')) }}
+eos_designs_internal_vault_id: "{{ eos_designs_vault_id | default(avd_vault_id | default(None)) }}"
+eos_designs_internal_root_dir: "{{ eos_designs_root_dir | default(root_dir | default(inventory_dir)) }}"
+eos_designs_internal_documentation_dir_name: "{{ eos_designs_documentation_dir_name | default(documentation_dir_name | default('documentation')) }}"
+eos_designs_internal_documentation_dir: >-
+  {{ eos_designs_documentation_dir | default(documentation_dir | default(eos_designs_internal_root_dir ~ '/' ~ eos_designs_internal_documentation_dir_name)) }}
+eos_designs_internal_fabric_dir_name: "{{ eos_designs_fabric_dir_name | default(fabric_dir_name | default('fabric')) }}"
+eos_designs_internal_fabric_dir: >-
+  {{ eos_designs_fabric_dir | default(fabric_dir | default(eos_designs_internal_documentation_dir ~ '/' ~ eos_designs_internal_fabric_dir_name)) }}
+eos_designs_internal_output_dir_name: "{{ eos_designs_output_dir_name | default(output_dir_name | default('intended')) }}"
+eos_designs_internal_output_dir: >-
+  {{ eos_designs_output_dir | default(output_dir | default(eos_designs_internal_root_dir ~ '/' ~ eos_designs_internal_output_dir_name)) }}
+eos_designs_internal_structured_dir_name: "{{ eos_designs_structured_dir_name | default(structured_dir_name | default('structured_configs')) }}"
+eos_designs_internal_structured_dir: >-
+  {{ eos_designs_structured_dir | default(structured_dir | default(eos_designs_internal_output_dir ~ '/' ~ eos_designs_internal_structured_dir_name)) }}
