@@ -473,6 +473,13 @@ keys:
 
           Configure inband management interface to accept DHCP default route when
           the inband management IP is set to ''dhcp''.'
+      allow_recursive_profile_inheritance:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Allow `parent_profile` to inherit from its own `parent_profile` in `port_profiles`,
+          `device_profiles`, `svi_profiles` and `l2vlan_profiles`.'
       configure_inband_mgmt_ipv6_vrf:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -2348,7 +2355,13 @@ keys:
       If the device is defined under `devices` it is recommended to set the `profile`
       there instead.
 
-      Max two levels of profile inheritance: device -> profile -> parent_profile'
+      By default, profile inheritance is limited to two levels: device -> device_profile
+      -> parent_profile.
+
+      From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+      to true
+
+      allows profiles to inherit settings across any number of levels.'
   device_profiles:
     type: list
     primary_key: name
@@ -2367,7 +2380,13 @@ keys:
           type: str
           description: 'Inherit settings from a parent profile defined under `device_profiles`.
 
-            Max two levels of profile inheritance: device -> profile -> parent_profile'
+            By default, profile inheritance is limited to two levels: device -> profile
+            -> parent_profile.
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.'
         type:
           type: str
           description: 'Set the type of the device as defined under `node_type_keys`.
@@ -2394,7 +2413,13 @@ keys:
           type: str
           description: 'Inherit settings from a profile defined under `device_profiles`.
 
-            Max two levels of profile inheritance: device -> profile -> parent_profile
+            By default, profile inheritance is limited to two levels: device -> profile
+            -> parent_profile.
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             This takes precedence over the global `device_profile` key.'
         type:
@@ -4439,8 +4464,13 @@ keys:
           type: str
           description: 'Name of parent L2VLAN profile to apply.
 
-            l2vlan_profiles can refer to another l2vlan_profile to inherit settings
-            in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+            By default, profile inheritance is limited to two levels: (l2vlan -> l2vlan_profile
+            -> parent_profile).
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             '
   l3_edge:
@@ -6364,6 +6394,11 @@ keys:
                         another svi_profile to inherit settings in up to two levels
                         (svi -> svi_profile -> svi_parent_profile).
 
+                        From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+                        to true
+
+                        allows profiles to inherit settings across any number of levels.
+
                         '
                     tags:
                       type: list
@@ -7567,7 +7602,12 @@ keys:
 
                   The profile must be defined under `l2vlan_profiles`. The profile
                   may refer to another l2vlan_profile as its `parent_profile` to inherit
-                  settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).'
+                  settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+
+                  From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+                  to true
+
+                  allows profiles to inherit settings across any number of levels.'
               tags:
                 type: list
                 description: 'Tags leveraged for networks services filtering.
@@ -10056,8 +10096,13 @@ keys:
           type: str
           description: 'Parent profile is optional.
 
-            Port_profiles can refer to another port_profile to inherit settings in
-            up to two levels (adapter->profile->parent_profile).
+            By default, profile inheritance is limited to two levels: adapter -> profile
+            -> parent_profile.
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             '
         port_channel:
@@ -10904,11 +10949,17 @@ keys:
 
       3. svi_parent_profile.nodes[inventory_hostname].structured_config
 
-      4. svi.structured_config
+      4. Further ancestor profiles'' nodes[inventory_hostname].structured_config in
+      nearest-to-farthest order (when recursive inheritance is enabled)
 
-      5. svi_profile.structured_config
+      5. svi.structured_config
 
-      6. svi_parent_profile.structured_config
+      6. svi_profile.structured_config
+
+      7. svi_parent_profile.structured_config
+
+      8. Further ancestor profiles'' structured_config in nearest-to-farthest order
+      (when recursive inheritance is enabled)
 
       '
     items:
@@ -10922,8 +10973,13 @@ keys:
           type: str
           description: 'Parent SVI profile name to apply.
 
-            svi_profiles can refer to another svi_profile to inherit settings in up
-            to two levels (svi -> svi_profile -> svi_parent_profile).
+            By default, profile inheritance is limited to two levels: svi -> svi_profile
+            -> parent_profile.
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             '
   system_mac_address:
