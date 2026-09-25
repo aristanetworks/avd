@@ -25,7 +25,8 @@ The default CodSpeed suite is intentionally small and stable:
 The benchmark suite does not invoke Molecule CLI, Docker, CloudVision, ANTA
 runner, network services, or multiprocessing. Normal end-to-end runs continue
 to use multiprocessing; benchmarks execute the shared stages inline so CodSpeed
-can use deterministic CPU simulation instead of walltime.
+can use deterministic CPU simulation and memory instrumentation instead of
+walltime.
 
 ## GitHub Actions
 
@@ -45,6 +46,9 @@ python -m pytest --codspeed \
   -m "not benchmark_scale" \
   -q
 ```
+
+CodSpeed runs this suite in both simulation and memory modes. The memory run
+also records peak physical memory on supported runners.
 
 Local full-suite runs include the 150-device scale benchmark. They do not add an
 all-host render benchmark for the full molecule scenario; that kind of load test
