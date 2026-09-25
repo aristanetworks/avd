@@ -51,9 +51,10 @@ jobs:
           make -C python-avd dep
 
       - name: Run default benchmarks
-        uses: CodSpeedHQ/action@c0179f10961f7a08defab9f862e9a09562d674d0 # v4
+        uses: CodSpeedHQ/action@373d6868929f444bc08d901fd0eb0ad52a8875ea # v5.2.1
         with:
-          mode: simulation
+          mode: simulation,memory
+          experimental-memory-track-physical: true
           run: |
             python -m pytest --codspeed \
               benchmarks/test_molecule_scenarios.py \
