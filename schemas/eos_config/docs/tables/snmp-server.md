@@ -49,16 +49,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write</samp>](## "snmp_server.groups.[].write") | String |  |  |  | Write view. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;notify</samp>](## "snmp_server.groups.[].notify") | String |  |  |  | Notify view. |
     | [<samp>&nbsp;&nbsp;users</samp>](## "snmp_server.users") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.users.[].name") | String |  |  |  | Username. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.users.[].name") | String |  |  |  | SNMP username.<br>Maximum length is 32 characters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "snmp_server.users.[].group") | String |  |  |  | Group name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_address</samp>](## "snmp_server.users.[].remote_address") | String |  |  |  | Hostname or ip of remote engine.<br>The remote_address and udp_port are used for remote users.<br>A `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set<br>and `localized` is not set.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "snmp_server.users.[].udp_port") | Integer |  |  |  | udp_port will not be used if no remote_address is configured.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_address</samp>](## "snmp_server.users.[].remote_address") | String |  |  |  | Hostname or IP address of the remote SNMP engine.<br>When set, this user is rendered as a remote SNMPv3 user and optional `udp_port` is appended.<br>If `localized` is not set, a matching `snmp_server.engine_ids.remotes[].address` entry is required.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "snmp_server.users.[].udp_port") | Integer |  |  |  | UDP port of the remote SNMP engine.<br>Only used when `remote_address` is set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_server.users.[].version") | String |  |  | Valid Values:<br>- <code>v1</code><br>- <code>v2c</code><br>- <code>v3</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localized</samp>](## "snmp_server.users.[].localized") | String |  |  |  | Engine ID in hexadecimal for localizing auth and/or priv.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_server.users.[].auth") | String |  |  |  | Hash algorithm.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_server.users.[].auth_passphrase") | String |  |  |  | Hashed authentication passphrase if localized is used else cleartext authentication passphrase.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_server.users.[].priv") | String |  |  |  | Encryption algorithm.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_server.users.[].priv_passphrase") | String |  |  |  | Hashed privacy passphrase if localized is used else cleartext privacy passphrase.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localized</samp>](## "snmp_server.users.[].localized") | String |  |  |  | Engine ID in hexadecimal.<br>When set, auth and priv values are interpreted as localized key material<br>(RFC 2574, engine-ID specific) instead of cleartext passphrases.<br>Required to use `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_server.users.[].auth") | String |  |  |  | Hash algorithm.<br>Required for rendering any authentication or privacy credential.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_key_type</samp>](## "snmp_server.users.[].auth_key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code> | Authentication key type.<br>EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.<br>Used with `auth_key`.<br>Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key` to be set.<br>- `0`: Key string is not encrypted.<br>- `7`: Type-7 encrypted (HIDDEN) key.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_key</samp>](## "snmp_server.users.[].auth_key") | String |  |  |  | Authentication key.<br>Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type` to be set.<br>Takes precedence over `auth_passphrase` when both are set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_server.users.[].auth_passphrase") | String |  |  |  | Hashed authentication passphrase if localized is used else cleartext authentication passphrase.<br>Rendered only when `auth` is set and `version` is `v3`.<br>Ignored when `auth_key_type` and `auth_key` are set with `localized`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_server.users.[].priv") | String |  |  |  | Encryption algorithm.<br>Required for rendering any privacy credential.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_key_type</samp>](## "snmp_server.users.[].priv_key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code> | Privacy key type.<br>EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.<br>Used with `priv_key`.<br>Requires `localized` and `priv_key` to be set.<br>Rendered only when `priv`, `auth_key_type`, and `auth_key` are also set.<br>- `0`: Key string is not encrypted.<br>- `7`: Type-7 encrypted (HIDDEN) key.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_key</samp>](## "snmp_server.users.[].priv_key") | String |  |  |  | Privacy key.<br>Requires `localized` and `priv_key_type` to be set.<br>Takes precedence over `priv_passphrase` when both are set.<br>Rendered only when `priv`, `auth_key_type`, and `auth_key` are also set.<br>Ignored when authentication is rendered from `auth_passphrase`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_server.users.[].priv_passphrase") | String |  |  |  | Hashed privacy passphrase if localized is used else cleartext privacy passphrase.<br>Rendered only when `priv` is set and authentication is rendered from `auth_passphrase`.<br>Ignored when `priv_key_type` and `priv_key` are set with `localized`.<br>Ignored when authentication is rendered from `auth_key_type`/`auth_key`.<br> |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "snmp_server.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "snmp_server.hosts.[].host") | String |  |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.hosts.[].vrf") | String |  |  |  |  |
@@ -162,35 +166,75 @@
           notify: <str>
       users:
 
-          # Username.
+          # SNMP username.
+          # Maximum length is 32 characters.
         - name: <str>
 
           # Group name.
           group: <str>
 
-          # Hostname or ip of remote engine.
-          # The remote_address and udp_port are used for remote users.
-          # A `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
-          # and `localized` is not set.
+          # Hostname or IP address of the remote SNMP engine.
+          # When set, this user is rendered as a remote SNMPv3 user and optional `udp_port` is appended.
+          # If `localized` is not set, a matching `snmp_server.engine_ids.remotes[].address` entry is required.
           remote_address: <str>
 
-          # udp_port will not be used if no remote_address is configured.
+          # UDP port of the remote SNMP engine.
+          # Only used when `remote_address` is set.
           udp_port: <int>
           version: <str; "v1" | "v2c" | "v3">
 
-          # Engine ID in hexadecimal for localizing auth and/or priv.
+          # Engine ID in hexadecimal.
+          # When set, auth and priv values are interpreted as localized key material
+          # (RFC 2574, engine-ID specific) instead of cleartext passphrases.
+          # Required to use `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
           localized: <str>
 
           # Hash algorithm.
+          # Required for rendering any authentication or privacy credential.
           auth: <str>
 
+          # Authentication key type.
+          # EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+          # Used with `auth_key`.
+          # Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key` to be set.
+          # - `0`: Key string is not encrypted.
+          # - `7`: Type-7 encrypted (HIDDEN) key.
+          auth_key_type: <str; "0" | "7">
+
+          # Authentication key.
+          # Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type` to be set.
+          # Takes precedence over `auth_passphrase` when both are set.
+          auth_key: <str>
+
           # Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+          # Rendered only when `auth` is set and `version` is `v3`.
+          # Ignored when `auth_key_type` and `auth_key` are set with `localized`.
           auth_passphrase: <str>
 
           # Encryption algorithm.
+          # Required for rendering any privacy credential.
           priv: <str>
 
+          # Privacy key type.
+          # EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+          # Used with `priv_key`.
+          # Requires `localized` and `priv_key` to be set.
+          # Rendered only when `priv`, `auth_key_type`, and `auth_key` are also set.
+          # - `0`: Key string is not encrypted.
+          # - `7`: Type-7 encrypted (HIDDEN) key.
+          priv_key_type: <str; "0" | "7">
+
+          # Privacy key.
+          # Requires `localized` and `priv_key_type` to be set.
+          # Takes precedence over `priv_passphrase` when both are set.
+          # Rendered only when `priv`, `auth_key_type`, and `auth_key` are also set.
+          # Ignored when authentication is rendered from `auth_passphrase`.
+          priv_key: <str>
+
           # Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+          # Rendered only when `priv` is set and authentication is rendered from `auth_passphrase`.
+          # Ignored when `priv_key_type` and `priv_key` are set with `localized`.
+          # Ignored when authentication is rendered from `auth_key_type`/`auth_key`.
           priv_passphrase: <str>
       hosts:
 
