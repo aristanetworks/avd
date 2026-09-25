@@ -1,0 +1,1 @@
+[['bgp_peer_groups', 'mlag_ipv4_vrfs_peer']]: 'The input data model 'bgp_peer_groups.mlag_ipv4_vrfs_peer' is deprecated and will be removed in AVD version 7.0.0. Use 'mlag_vrfs_peer' instead.'

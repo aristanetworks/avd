@@ -27,6 +27,7 @@ class RouterBgpMixin(Protocol):
         """Set the structured config for router_bgp."""
         if not self.shared_utils.underlay_bgp:
             return
+        underlay_bgp_peer_group_name = self.shared_utils.underlay_bgp_peer_group_name
         for p2p_link, p2p_link_data in self._filtered_p2p_links:
             if not p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol != "ebgp":
                 continue
@@ -46,7 +47,7 @@ class RouterBgpMixin(Protocol):
                     remote_as=self.shared_utils.get_asn(p2p_link_data["peer_bgp_as"]),
                     metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=p2p_link_data["peer"]),
                     description=p2p_link_data["peer"],
-                    peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                    peer_group=underlay_bgp_peer_group_name,
                 )
                 continue
 
@@ -60,7 +61,7 @@ class RouterBgpMixin(Protocol):
                 remote_as=self.shared_utils.get_asn(p2p_link_data["peer_bgp_as"]),
                 metadata=EosCliConfigGen.RouterBgp.NeighborsItem.Metadata(peer=p2p_link_data["peer"]),
                 description=p2p_link_data["peer"],
-                peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name if p2p_link.include_in_underlay_protocol else Undefined,
+                peer_group=underlay_bgp_peer_group_name if p2p_link.include_in_underlay_protocol else Undefined,
                 bfd=p2p_link.bfd,
                 local_as=self.shared_utils.get_asn(p2p_link_data["bgp_as"])
                 if self.shared_utils.get_asn(p2p_link_data["bgp_as"]) != self.shared_utils.formatted_bgp_as
