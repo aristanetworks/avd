@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import functools
 from hashlib import sha1
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
@@ -11,9 +12,12 @@ from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvd
 from pyavd._utils.password_utils.password import radius_encrypt, tacacs_encrypt
 
 if TYPE_CHECKING:
-    from typing import TypeVar
+    from collections.abc import Callable
+    from typing import TypeAlias, TypeVar
 
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+    from pyavd._schema.models.avd_indexed_list import AvdIndexedList
+    from pyavd._schema.models.avd_model import AvdModel
 
     from . import AvdStructuredConfigBaseProtocol
 
@@ -24,6 +28,12 @@ if TYPE_CHECKING:
     )
 
     T_RadiusOrTacacsServer = TypeVar("T_RadiusOrTacacsServer", EosDesigns.AaaSettings.Radius.ServersItem, EosDesigns.AaaSettings.Tacacs.ServersItem)
+
+    T_AvdStructuredConfigBase = TypeVar(
+        "T_AvdStructuredConfigBase",
+        bound="AvdStructuredConfigBaseProtocol",
+    )
+    StructuredConfigMethod: TypeAlias = Callable[[T_AvdStructuredConfigBase], None]
 
 
 class UtilsMixin(Protocol):
@@ -166,3 +176,141 @@ class UtilsMixin(Protocol):
                 address_only=host.address_only,
                 url=host.url,
             )
+
+
+class Profileable:
+    def __init__(self, catalog: str, profile_field: str, target_field: str) -> None:
+        """
+        Initialize profile handling for a structured config contributor.
+
+        Args:
+            catalog: attribute in the root of eos_designs schema from where the profile list is taken
+            profile_field: attribute within node_config that selects which profile to apply
+            target_field: attribute in the root of eos_desings schema where the target would be merged
+                To ensure data is not lost, the original field is preserved and restored once the function exit
+        """
+        self._catalog = catalog
+        self._profile_field = profile_field
+        self._target_field = target_field
+
+    def __call__(
+        self,
+        func: StructuredConfigMethod[T_AvdStructuredConfigBase],
+    ) -> StructuredConfigMethod[T_AvdStructuredConfigBase]:
+        catalog = self._catalog
+        profile_field = self._profile_field
+        target_field = self._target_field
+
+        @functools.wraps(func)
+        def wrapper(self: T_AvdStructuredConfigBase) -> None:
+            profile_list = getattr(self.inputs, catalog)
+            profile_id = getattr(self.shared_utils.node_config, profile_field)
+            if not profile_id:
+                func(self)
+                return
+
+            backup = getattr(self.inputs, target_field)
+            graph = ProfileGraph._from_profile_list(profile_list, backup)
+            setattr(self.inputs, target_field, graph._get_profile(profile_id))
+            try:
+                func(self)
+            finally:
+                setattr(self.inputs, target_field, backup)
+
+        return wrapper
+
+
+class ProfileGraphNode:
+    def __init__(self, profile_id: str, data: AvdModel | None = None) -> None:
+        self.profile_id: str = profile_id
+        self.profile: AvdModel | None = data
+        self.parent: ProfileGraphNode | None = None
+        self.children: list[ProfileGraphNode] = []
+
+    @property
+    def id(self) -> str | None:
+        return None if not self.profile_id else self.profile_id
+
+    @functools.cached_property
+    def data(self) -> AvdModel:
+        # Access data through this property to avoid overwriting an original data. Also, this
+        # makes data copy a lazy operation, i.e. it's only executed if that's really needed to
+        # resolve profile
+        if not self.profile:
+            msg = f"Profile '{self.profile_id}' is missing"
+            raise AristaAvdInvalidInputsError(msg)
+        return self.profile._deepcopy()
+
+
+class ProfileGraph:
+    """Catalog graph used to resolve selected profiles and their parent profiles once per selector."""
+
+    def __init__(self, target_object_cls: type[AvdModel]) -> None:
+        self.nodes: dict[str, ProfileGraphNode] = {}
+        # Cache ensures that the profile is loaded only when it's needed, and it's resolved exactly once
+        self._lazy_load_profile: Callable[[str], AvdModel] = functools.cache(self._get_profile)
+        self._target_object_cls = target_object_cls
+
+    @classmethod
+    def _from_profile_list(cls, catalog_list: AvdIndexedList, target_object: AvdModel) -> ProfileGraph:
+        target_cls = type(target_object)
+        graph = ProfileGraph(target_cls)
+
+        # Initialize the synthetic root profile. Profiles without parent_profile inherit from this empty root.
+        graph.nodes[""] = ProfileGraphNode("", target_object)
+
+        for profile_id, profile_data in catalog_list.items():
+            # setdefault ensures each profile id gets a single graph node, even if it was referenced as a parent first.
+            node = graph.nodes.setdefault(profile_id, ProfileGraphNode(profile_id, profile_data))
+            parent_node = graph.nodes.setdefault(
+                profile_data.parent_profile, ProfileGraphNode(profile_data.parent_profile)
+            )
+
+            node.profile = profile_data
+            parent_node.children.append(node)
+            node.parent = parent_node
+
+        graph._check_all_profiles_resolved()
+        graph._check_cycles()
+        return graph
+
+    def _check_all_profiles_resolved(self) -> None:
+        # Catch profiles referenced as parent_profile but not defined in the catalog.
+        uninitialized = set()
+        for profile_id, profile_node in self.nodes.items():
+            if not profile_id:
+                # Skip the synthetic root node.
+                continue
+            if not profile_node.profile:
+                uninitialized.add(profile_id)
+        if uninitialized:
+            msg = f"Unresolved `parent_profile` references: {uninitialized}"
+            raise AristaAvdInvalidInputsError(msg)
+
+    def _check_cycles(self) -> None:
+        """Detect cycles in parent_profile references."""
+        def _check_node(node: ProfileGraphNode, path: list[str]) -> None:
+            if node.id in path:
+                cycle_path = [*path[path.index(node.id) :], cast("str", node.id)]
+                msg = "Cycle detected: " + " -> ".join(cycle_path)
+                raise AristaAvdInvalidInputsError(msg)
+
+            if node.id is not None:
+                path = [*path, node.id]
+
+            for child in node.children:
+                _check_node(child, path)
+
+        for node in self.nodes.values():
+            _check_node(node, [])
+
+    def _get_profile(self, profile_id: str) -> AvdModel:
+        node = self.nodes.get(profile_id)
+        if node is None:
+            msg = f"Profile '{profile_id}' is missing"
+            raise AristaAvdInvalidInputsError(msg)
+        if node.parent and node.parent.id:
+            sub_model = self._lazy_load_profile(node.parent.id)
+            # Current profile values are preferred over parent profile values.
+            node.data._deepinherit(sub_model)
+        return node.data

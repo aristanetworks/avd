@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from .utils import Profileable
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol
@@ -20,6 +21,7 @@ class DnsSettingsMixin(Protocol):
     """
 
     @structured_config_contributor
+    @Profileable("dns_settings_profiles", "dns_settings_profile", "dns_settings")
     def dns_settings(self: AvdStructuredConfigBaseProtocol) -> None:
         """
         Configure DNS settings from the dns_settings input model.

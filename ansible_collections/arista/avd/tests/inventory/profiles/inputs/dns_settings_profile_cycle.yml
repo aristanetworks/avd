@@ -1,0 +1,20 @@
+---
+fabric_name: all
+devices:
+  - name: testhost
+    type: l2leaf
+    dns_settings_profile: p4
+avd_switch_facts:
+  testhost:
+    id: 1
+    vlans: ""
+    uplinks: []
+dns_settings_profiles:
+  - profile: p1
+    parent_profile: p4
+  - profile: p2
+    parent_profile: p1
+  - profile: p3
+    parent_profile: p2
+  - profile: p4
+    parent_profile: p3

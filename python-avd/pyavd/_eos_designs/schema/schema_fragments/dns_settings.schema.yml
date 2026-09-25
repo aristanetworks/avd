@@ -9,67 +9,31 @@ keys:
   dns_settings:
     type: dict
     description: |-
-      DNS settings
-    keys:
-      domain:
-        type: str
-        description: DNS domain name like 'fabric.local'
-      domain_list:
-        type: list
-        $ref: "eos_cli_config_gen#/keys/domain_list"
-      servers:
-        type: list
-        required: true
-        min_length: 1
-        items:
-          type: dict
-          keys:
-            vrf:
-              type: str
-              default: use_default_mgmt_method_vrf
-              description: |-
-                The value of `vrf` will be interpreted according to these rules:
-                - `use_mgmt_interface_vrf` will configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as DNS lookup source-interface.
-                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-                - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
-                  An error will be raised if inband management is not configured for the device.
-                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
-                - Any other string will be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
-              convert_types:
-                - int
-            ip_address:
-              type: str
-              required: true
-              description: IPv4 or IPv6 address for DNS server.
-            priority:
-              description: Priority value (lower is first).
-              type: int
-              convert_types:
-                - str
-              min: 0
-              max: 4
-      vrfs:
-        type: list
-        primary_key: name
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              convert_types:
-                - int
-              description: VRF name.
-            source_interface:
-              type: str
-              description: |-
-                Source interface to use for DNS lookups in this VRF.
-                If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
-      set_source_interfaces:
-        type: bool
-        default: true
-        description: |-
-          Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
-          Can be set to `false` to avoid changes when migrating from the old `name_servers` model.
-      ip_hosts:
-        type: list
-        $ref: "eos_cli_config_gen#/keys/ip_hosts"
+      Global DNS settings applied to all devices unless overridden by a DNS settings profile.
+    $ref: "eos_designs#/$defs/dns_settings"
+  dns_settings_profiles:
+    type: list
+    primary_key: profile
+    description: |-
+      List of DNS settings profiles that can be applied to devices using `dns_settings_profile` under node definitions.
+      Profiles support inheritance using `parent_profile`, allowing common DNS settings to be shared and selectively overridden per profile.
+    items:
+      type: dict
+      $ref: "eos_designs#/$defs/dns_settings"
+      keys:
+        profile:
+          type: str
+          description: DNS settings profile name.
+        parent_profile:
+          type: str
+          default: ""
+          description: |-
+            Inherit settings from a parent profile defined under `dns_settings_profiles`.
+            The settings from this profile override settings inherited from the parent profile.
+        servers:
+          type: list
+          description: |-
+            DNS servers for this profile.
+            If omitted, servers are inherited from `parent_profile` or from global `dns_settings.servers`.
+            At least one DNS server must be available after profile inheritance is resolved.
+          required: false
