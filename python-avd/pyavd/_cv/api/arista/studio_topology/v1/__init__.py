@@ -310,6 +310,11 @@ class DeviceStatus(aristaproto.Enum):
     data to CloudVision.
     """
 
+    DECOMMISSIONED = 4
+    """
+    DEVICE_STATUS_DECOMMISSIONED indicates a device that has been previously decommissioned.
+    """
+
 
 class DecommissionStatus(aristaproto.Enum):
     """
