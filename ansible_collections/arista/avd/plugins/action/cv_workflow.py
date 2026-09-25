@@ -79,7 +79,7 @@ ARGUMENT_SPEC = {
             "permit_without_calls": {"type": "bool", "required": False, "default": False},
         },
     },
-    # TODO: Make configuration_dir optional for users using the manifest to push device configs.
+    # TODO: Make configuration_dir optional for Change-Control-only and static config manifest workflows.
     "configuration_dir": {"type": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": False},
     "structured_config_suffix": {"type": "str", "default": "yml"},
@@ -125,9 +125,16 @@ ARGUMENT_SPEC = {
     "change_control": {
         "type": "dict",
         "options": {
+            "id": {"type": "str", "required": False},
             "name": {"type": "str", "required": False},
             "description": {"type": "str", "required": False},
-            "requested_state": {"type": "str", "default": "pending approval", "choices": ["pending approval", "approved", "running", "completed"]},
+            "approval_note": {"type": "str", "required": False, "default": "Automatic approval by AVD"},
+            "start_note": {"type": "str", "required": False, "default": "Automatically started by AVD"},
+            "requested_state": {
+                "type": "str",
+                "default": "pending approval",
+                "choices": ["pending approval", "approved", "running", "completed"],
+            },
         },
     },
     "timeouts": {
@@ -147,6 +154,18 @@ ARGUMENT_SPEC = {
     },
     "return_details": {"type": "bool", "required": False, "default": False},
 }
+
+
+def _validate_change_control_only(
+    workspace_id: str | None,
+    device_deployments: list[CVDeviceDeployment],
+    static_config_manifest: AvdManifest | None,
+) -> None:
+    """Validate inputs for Change-Control-only mode."""
+    static_config_manifest_has_content = bool(static_config_manifest and (static_config_manifest.containers or static_config_manifest.configlets))
+    if any((workspace_id, device_deployments, static_config_manifest_has_content)):
+        msg = "Change-Control-only mode cannot be combined with a Workspace or deployment inputs."
+        raise ValueError(msg)
 
 
 class ActionModule(ActionBase):
@@ -263,15 +282,26 @@ class ActionModule(ActionBase):
                 ]
             )
 
-            if work_to_do:
-                # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
-                workspace_args = get(validated_args, "workspace", default={})
-                if "build_warnings" in workspace_args:
-                    workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig.from_dict(workspace_args["build_warnings"])
+            change_control = CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={})))
+
+            change_control_only = change_control.id is not None
+            if change_control_only:
+                workspace_id = get(validated_args, "workspace.id")
+                _validate_change_control_only(workspace_id, device_deployments, static_config_manifest)
+
+            if change_control_only or work_to_do:
+                if change_control_only:
+                    workspace = None
+                else:
+                    # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
+                    workspace_args = get(validated_args, "workspace", default={})
+                    if "build_warnings" in workspace_args:
+                        workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig.from_dict(workspace_args["build_warnings"])
+                    workspace = CVWorkspace(avd_workspace=AvdWorkspace(**workspace_args))
 
                 # Perform deployment of all objects, getting a DeployToCVResult object back.
                 result_object = await deploy_to_cv(
-                    change_control=CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={}))),
+                    change_control=change_control,
                     cloudvision=cloudvision,
                     device_deployments=device_deployments,
                     static_config_manifest=static_config_manifest,
@@ -279,17 +309,18 @@ class ActionModule(ActionBase):
                     strict_system_mac_address=get(validated_args, "strict_system_mac_address"),
                     strict_tags=get(validated_args, "strict_tags"),
                     timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
-                    workspace=CVWorkspace(avd_workspace=AvdWorkspace(**workspace_args)),
+                    workspace=workspace,
                 )
-                # Errors and warnings are converted to JSON compatible strings.
-                result_object.errors = [str(error) for error in result_object.errors]
-                result_object.warnings = [str(warning) for warning in result_object.warnings]
-
-                # Add warnings caught by the logger.
-                result_object.warnings.extend(result.get("warnings", []))
             else:
                 result_object = DeployToCvResult(workspace=None)
                 result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
+
+            # Add warnings caught by the logger.
+            result_object.warnings.extend(result.get("warnings", []))
+
+            # Errors and warnings are converted to JSON compatible strings.
+            result_object.errors = [str(error) for error in result_object.errors]
+            result_object.warnings = [str(warning) for warning in result_object.warnings]
 
             # Add either all return data or only warnings, errors, failed.
             if validated_args["return_details"]:
@@ -306,6 +337,7 @@ class ActionModule(ActionBase):
 
             # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
             change_indicators = [
+                result_object.change_control is not None and result_object.change_control.changed,
                 result_object.deployed_configs,
                 result_object.deployed_static_config_containers,
                 result_object.deployed_static_config_configlets,

@@ -1,6 +1,7 @@
 # Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+# pylint: disable=too-many-lines
 from __future__ import annotations
 
 import tempfile
@@ -21,7 +22,9 @@ from pyavd._cv.client.models import CVTagAssignment
 from pyavd._cv.client.versioning import CvVersion
 from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, deploy_to_cv
 from pyavd._cv.workflows.models import (
+    AvdChangeControl,
     AvdDevice,
+    AvdManifest,
     AvdWorkspace,
     CloudVision,
     CVChangeControl,
@@ -49,6 +52,77 @@ LOGGER = getLogger(__name__)
 
 if TYPE_CHECKING:
     from pyavd._cv.api.arista.workspace.v1 import Response, Workspace, WorkspaceConfig
+
+
+@pytest.mark.asyncio
+async def test_deploy_to_cv_manages_existing_change_control() -> None:
+    """Test that an existing Change Control is managed with the empty static config manifest supplied by the role."""
+    mock_cv_client = AsyncMock()
+    entered_cv_client = AsyncMock()
+    mock_cv_client.__aenter__.return_value = entered_cv_client
+    change_control = CVChangeControl(avd_change_control=AvdChangeControl(requested_state="approved"), id="cc-id")
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.manage_change_control_on_cv", new_callable=AsyncMock) as manage_change_control,
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            change_control=change_control,
+            static_config_manifest=AvdManifest(),
+        )
+
+    manage_change_control.assert_called_once_with(change_control=change_control, cv_client=entered_cv_client)
+    assert result.workspace is None
+    assert result.change_control is change_control
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "conflicting_inputs",
+    [
+        pytest.param({"workspace": CVWorkspace()}, id="WORKSPACE"),
+        pytest.param({"device_deployments": [MagicMock()]}, id="DEVICE_DEPLOYMENTS"),
+        pytest.param({"static_config_manifest": AvdManifest(configlets=(MagicMock(),))}, id="STATIC_CONFIG_MANIFEST"),
+        pytest.param({"studio_inputs": [MagicMock()]}, id="STUDIO_INPUTS"),
+    ],
+)
+async def test_deploy_to_cv_rejects_existing_change_control_with_deployment_inputs(conflicting_inputs: dict) -> None:
+    """Test that an existing Change Control cannot be combined with deployment inputs."""
+    change_control = CVChangeControl(avd_change_control=AvdChangeControl(id="cc-id", requested_state="approved"))
+    mock_cv_client = AsyncMock()
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        pytest.raises(ValueError, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
+    ):
+        await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            change_control=change_control,
+            **conflicting_inputs,
+        )
+
+    mock_cv_client.assert_not_called()
 
 
 @pytest.mark.asyncio
@@ -321,14 +395,16 @@ async def test_deploy_to_cv_deploy_future_use_system_certs(
 
 
 @pytest.mark.asyncio
-async def test_finalize_change_control_with_id(mock_cv_client: MagicMock) -> None:
-    """Tests that _finalize_change_control calls finalize_change_control_on_cv when change_control.id is set."""
-    result = DeployToCvResult(workspace=CVWorkspace(), change_control=CVChangeControl(id="cc-123"))
+async def test_finalize_change_control_created_by_workspace(mock_cv_client: MagicMock) -> None:
+    """Tests that _finalize_change_control finalizes the Change Control created by the Workspace."""
+    result = DeployToCvResult(workspace=CVWorkspace(change_control_id="cc-123"))
 
     mock_finalize = AsyncMock()
     with patch("pyavd._cv.workflows.deploy_to_cv.finalize_change_control_on_cv", mock_finalize):
         await _finalize_change_control(result, mock_cv_client)
 
+    assert result.change_control is not None
+    assert result.change_control.id == "cc-123"
     mock_finalize.assert_called_once_with(change_control=result.change_control, cv_client=mock_cv_client)
 
 
