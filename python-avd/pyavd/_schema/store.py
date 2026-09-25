@@ -7,7 +7,7 @@ from pickle import load
 from typing import Any
 
 from pyavd._utils.run_once import run_once
-from pyavd.constants import SCHEMA_STORE_GZ_FILE
+from pyavd.constants import SCHEMA_STORE_ARCHIVE_FILE
 
 from .constants import PICKLED_SCHEMAS
 
@@ -37,4 +37,4 @@ def init_store() -> None:
     """
     from pyavd_utils.schema_store import init_store_from_file  # noqa: PLC0415
 
-    init_store_from_file(SCHEMA_STORE_GZ_FILE)
+    init_store_from_file(SCHEMA_STORE_ARCHIVE_FILE)
