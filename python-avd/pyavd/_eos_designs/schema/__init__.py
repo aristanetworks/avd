@@ -18986,13 +18986,11 @@ class EosDesigns(EosDesignsRootModel):
             """
             Ensures eAPI remains accessible for automation and testing via ACT.
             Clients connecting to device
-            eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+            eAPI through ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
             management VRF, this primary eAPI connectivity can be unintentionally broken.
             Set this to `true` to
             enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
             default VRF and preserving this connectivity.
-            This setting is only applicable to ACT `veos` and
-            `cloudeos` node types.
 
             Default value: `False`
             """
@@ -19027,13 +19025,11 @@ class EosDesigns(EosDesignsRootModel):
                         act_ensure_eapi_access:
                            Ensures eAPI remains accessible for automation and testing via ACT.
                            Clients connecting to device
-                           eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+                           eAPI through ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
                            management VRF, this primary eAPI connectivity can be unintentionally broken.
                            Set this to `true` to
                            enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
                            default VRF and preserving this connectivity.
-                           This setting is only applicable to ACT `veos` and
-                           `cloudeos` node types.
 
                     """
 
