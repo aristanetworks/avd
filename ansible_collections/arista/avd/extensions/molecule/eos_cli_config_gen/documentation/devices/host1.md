@@ -2364,7 +2364,7 @@ alias siib show ip interface brief
 
 - DHCP Relay is disabled for tunnelled requests
 - DHCP Relay is disabled for MLAG peer-link requests
-- DHCP Relay is enabled for validate reply source address matches configured server
+- DHCP Relay reply source-address validation is enabled
 - Client requests flooding suppression for VLANs: 500-510,1000,2000,3000
 
 | DHCP Relay Servers |
