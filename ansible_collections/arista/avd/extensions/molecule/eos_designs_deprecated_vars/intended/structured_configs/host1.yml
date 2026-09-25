@@ -72,6 +72,16 @@ ethernet_interfaces:
     peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet12
+  description: SERVER_server-with-profile
+  shutdown: false
+  metadata:
+    peer: server-with-profile
+    peer_type: server
+    peer_key: servers
+    port_profile: grandchild
+  switchport:
+    enabled: true
 hostname: host1
 ip_access_lists:
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1
