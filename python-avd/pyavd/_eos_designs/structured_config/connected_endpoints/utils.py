@@ -8,7 +8,7 @@ from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.get import get_v2
 from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 from pyavd._utils.undefined import Undefined, UndefinedType
@@ -77,7 +77,7 @@ class UtilsMixin(Protocol):
 
         if len(short_esi.split(":")) != 3:
             msg = f"Invalid 'short_esi': '{short_esi}' on connected endpoints adapter. Must be in the format xxxx:xxxx:xxxx"
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         return short_esi
 
@@ -213,7 +213,7 @@ class UtilsMixin(Protocol):
         # Verify that "mode" is set to "trunk phone"
         if adapter.mode != "trunk phone":
             msg = f"Setting 'phone_vlan' requires 'mode: trunk phone' to be set on connected endpoint '{connected_endpoint.name}'."
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         # Verify that "vlans" is not set, since data vlan is picked up from 'native_vlan'.
         if adapter.vlans:
@@ -221,7 +221,7 @@ class UtilsMixin(Protocol):
                 "With 'phone_vlan' and 'mode: trunk phone' the data VLAN is set via 'native_vlan' instead of 'vlans'. Found 'vlans' on connected endpoint"
                 f" '{connected_endpoint.name}'."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         return output_type(trunk=adapter.phone_trunk_mode, vlan=adapter.phone_vlan)
 
