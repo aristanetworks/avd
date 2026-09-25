@@ -178,6 +178,13 @@ class ElementSubType(aristaproto.Enum):
     a service but not vice-versa.
     """
 
+    CONNECTIVITY_MONITOR_PROBE = 6
+    """
+    ELEMENT_SUB_TYPE_CONNECTIVITY_MONITOR_PROBE is used for connectivity monitor probe tags.
+    A connectivity monitor probe represents a configured probe (ICMP, HTTP, or TCP) that
+    monitors connectivity to a specific target from a device.
+    """
+
 
 class CreatorType(aristaproto.Enum):
     """
@@ -607,8 +614,6 @@ class ElementStreamRequest(aristaproto.Message):
         until end.
         * Each Element response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
 
@@ -666,8 +671,6 @@ class ElementBatchedStreamRequest(aristaproto.Message):
         until end.
         * Each Element response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -780,8 +783,6 @@ class TagStreamRequest(aristaproto.Message):
         until end.
         * Each Tag response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
 
@@ -832,8 +833,6 @@ class TagBatchedStreamRequest(aristaproto.Message):
         until end.
         * Each Tag response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -946,8 +945,6 @@ class TagAssignmentStreamRequest(aristaproto.Message):
         until end.
         * Each TagAssignment response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
 
@@ -998,8 +995,6 @@ class TagAssignmentBatchedStreamRequest(aristaproto.Message):
         until end.
         * Each TagAssignment response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1112,8 +1107,6 @@ class TagAssignmentConfigStreamRequest(aristaproto.Message):
         until end.
         * Each TagAssignmentConfig response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
 
@@ -1166,8 +1159,6 @@ class TagAssignmentConfigBatchedStreamRequest(aristaproto.Message):
         until end.
         * Each TagAssignmentConfig response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1396,8 +1387,6 @@ class TagConfigStreamRequest(aristaproto.Message):
         until end.
         * Each TagConfig response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
 
@@ -1448,8 +1437,6 @@ class TagConfigBatchedStreamRequest(aristaproto.Message):
         until end.
         * Each TagConfig response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
