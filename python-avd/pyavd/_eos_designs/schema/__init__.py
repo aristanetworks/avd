@@ -118669,14 +118669,19 @@ class EosDesigns(EosDesignsRootModel):
     svi_profile.nodes[inventory_hostname].structured_config
     3.
     svi_parent_profile.nodes[inventory_hostname].structured_config
-    4. svi.structured_config
-    5.
-    svi_profile.structured_config
-    6. svi_parent_profile.structured_config
+    4. Further ancestor profiles'
+    nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance
+    is enabled)
+    5. svi.structured_config
+    6. svi_profile.structured_config
+    7.
+    svi_parent_profile.structured_config
+    8. Further ancestor profiles' structured_config in nearest-to-
+    farthest order (when recursive inheritance is enabled)
 
 
-    Subclass of AvdIndexedList
-    with `SviProfilesItem` items. Primary key is `profile` (`str`).
+    Subclass of AvdIndexedList with
+    `SviProfilesItem` items. Primary key is `profile` (`str`).
     """
     system_mac_address: str | None
     """
@@ -120634,14 +120639,19 @@ class EosDesigns(EosDesignsRootModel):
                    svi_profile.nodes[inventory_hostname].structured_config
                    3.
                    svi_parent_profile.nodes[inventory_hostname].structured_config
-                   4. svi.structured_config
-                   5.
-                   svi_profile.structured_config
-                   6. svi_parent_profile.structured_config
+                   4. Further ancestor profiles'
+                   nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance
+                   is enabled)
+                   5. svi.structured_config
+                   6. svi_profile.structured_config
+                   7.
+                   svi_parent_profile.structured_config
+                   8. Further ancestor profiles' structured_config in nearest-to-
+                   farthest order (when recursive inheritance is enabled)
 
 
-                   Subclass of AvdIndexedList
-                   with `SviProfilesItem` items. Primary key is `profile` (`str`).
+                   Subclass of AvdIndexedList with
+                   `SviProfilesItem` items. Primary key is `profile` (`str`).
                 system_mac_address:
                    Set to the same MAC address as available in "show version" on the device.
                    "system_mac_address" can
