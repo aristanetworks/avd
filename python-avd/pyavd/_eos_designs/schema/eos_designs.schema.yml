@@ -10770,6 +10770,11 @@ keys:
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: ssh_settings.client_vrfs
       tacacs:
         type: dict
         deprecation:
@@ -10888,6 +10893,33 @@ keys:
       idle_timeout:
         type: int
         $ref: eos_cli_config_gen#/keys/management_ssh/keys/idle_timeout
+      client_vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: "VRF name.\nThe value will be interpreted according to
+                these rules:\n- `use_mgmt_interface_vrf` will configure SSH for the
+                VRF set with `mgmt_interface_vrf`.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure SSH for the VRF set with `inband_mgmt_vrf`.\n  An error
+                will be raised if inband management is not configured for the device.\n-
+                `use_default_mgmt_method_vrf` will configure the VRF for one of the
+                two options above depending on the value of `default_mgmt_method`.\n-
+                Any other string will be used directly as the VRF name."
+            source_interface:
+              type: str
+              description: 'Source interface to use for IP SSH Client in this VRF.
+
+                If set, the value is used directly as the source interface name.
+
+                If not set, the source interface is derived automatically when `name`
+                is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+
+                For any other `name` value, `source_interface` must be set.'
   svi_profiles:
     type: list
     primary_key: profile

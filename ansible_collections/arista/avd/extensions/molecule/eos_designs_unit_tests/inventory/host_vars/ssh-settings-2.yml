@@ -19,3 +19,7 @@ ssh_settings:
     - name: default
       enabled: true
       ipv4_acl: IPv4-ACL-SSH-INBAND-MGMT
+  client_vrfs:
+    - name: VRF10
+      source_interface: Ethernet1
+    - name: use_default_mgmt_method_vrf

@@ -16,6 +16,13 @@ loopback_interfaces:
   isis_passive: true
   node_segment:
     ipv4_index: 102
+management_interfaces:
+- name: Management2
+  description: deprecated_mgmt_interface_description
+  shutdown: false
+  vrf: deprecated_mgmt_interface_vrf
+  ip_address: 10.20.30.50/24
+  type: oob
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
