@@ -14393,8 +14393,10 @@ ip nat synchronization
 
 ### IP Software Forwarding Summary
 
-IP software forwarding MTU: 9000
-IP software forwarding MTU exceed action: Drop
+| Setting | Value |
+| ------- | ----- |
+| MTU Size | 9000 |
+| MTU Exceed Action | Drop |
 
 ### IP Software Forwarding Configuration
 

@@ -10,11 +10,13 @@
 
 ### IP Software Forwarding Summary
 
+| Setting | Value |
+| ------- | ----- |
 {%     if ip_software_forwarding.mtu.size is arista.avd.defined %}
-IP software forwarding MTU: {{ ip_software_forwarding.mtu.size }}
+| MTU Size | {{ ip_software_forwarding.mtu.size }} |
 {%     endif %}
 {%     if ip_software_forwarding.mtu.exceed_action_drop is arista.avd.defined(true) %}
-IP software forwarding MTU exceed action: Drop
+| MTU Exceed Action | Drop |
 {%     endif %}
 
 ### IP Software Forwarding Configuration
