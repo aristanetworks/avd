@@ -333,9 +333,9 @@ class FilteredTenantsMixin(Protocol):
             svi_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
             resolved_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
             if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
-                resolved_pro = self.return_resolved_profile_for_multilevel_inheritance("svi_profiles", svi_profile, self.inputs.svi_profiles)
+                resolved_profile_item = self.return_resolved_profile_for_multilevel_inheritance("svi_profiles", svi_profile, self.inputs.svi_profiles)
                 merged_svi = svi._deepinherited(
-                    resolved_pro._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
+                    resolved_profile_item._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
                 )
                 self._set_node_specific_config(merged_svi)
                 return merged_svi
