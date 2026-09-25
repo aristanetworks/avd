@@ -33676,6 +33676,7 @@ class EosDesigns(EosDesignsRootModel):
                         "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                         "name": {"type": str},
                         "enabled": {"type": bool},
+                        "autostate": {"type": bool},
                         "description": {"type": str},
                         "arp_gratuitous_accept": {"type": bool},
                         "ip_address": {"type": str},
@@ -33732,6 +33733,8 @@ class EosDesigns(EosDesignsRootModel):
                     """VLAN name."""
                     enabled: bool | None
                     """Enable or disable interface."""
+                    autostate: bool | None
+                    """Enable or disable autostate."""
                     description: str | None
                     """SVI description. By default set to VLAN name."""
                     arp_gratuitous_accept: bool | None
@@ -33969,6 +33972,7 @@ class EosDesigns(EosDesignsRootModel):
                             tags: Tags | UndefinedType = Undefined,
                             name: str | UndefinedType | None = Undefined,
                             enabled: bool | UndefinedType | None = Undefined,
+                            autostate: bool | UndefinedType | None = Undefined,
                             description: str | UndefinedType | None = Undefined,
                             arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                             ip_address: str | UndefinedType | None = Undefined,
@@ -34025,6 +34029,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with `str` items.
                                 name: VLAN name.
                                 enabled: Enable or disable interface.
+                                autostate: Enable or disable autostate.
                                 description: SVI description. By default set to VLAN name.
                                 arp_gratuitous_accept: Accept gratuitous ARP.
                                 ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -35101,6 +35106,7 @@ class EosDesigns(EosDesignsRootModel):
                     "evpn_vlan_bundle": {"type": str},
                     "nodes": {"type": Nodes},
                     "enabled": {"type": bool},
+                    "autostate": {"type": bool},
                     "description": {"type": str},
                     "arp_gratuitous_accept": {"type": bool},
                     "ip_address": {"type": str},
@@ -35191,6 +35197,8 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 enabled: bool | None
                 """Enable or disable interface."""
+                autostate: bool | None
+                """Enable or disable autostate."""
                 description: str | None
                 """SVI description. By default set to VLAN name."""
                 arp_gratuitous_accept: bool | None
@@ -35432,6 +35440,7 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_vlan_bundle: str | UndefinedType | None = Undefined,
                         nodes: Nodes | UndefinedType = Undefined,
                         enabled: bool | UndefinedType | None = Undefined,
+                        autostate: bool | UndefinedType | None = Undefined,
                         description: str | UndefinedType | None = Undefined,
                         arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                         ip_address: str | UndefinedType | None = Undefined,
@@ -35514,6 +35523,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                             enabled: Enable or disable interface.
+                            autostate: Enable or disable autostate.
                             description: SVI description. By default set to VLAN name.
                             arp_gratuitous_accept: Accept gratuitous ARP.
                             ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -51568,6 +51578,7 @@ class EosDesigns(EosDesignsRootModel):
                 "node": {"type": str},
                 "name": {"type": str},
                 "enabled": {"type": bool},
+                "autostate": {"type": bool},
                 "description": {"type": str},
                 "arp_gratuitous_accept": {"type": bool},
                 "ip_address": {"type": str},
@@ -51614,6 +51625,8 @@ class EosDesigns(EosDesignsRootModel):
             """VLAN name."""
             enabled: bool | None
             """Enable or disable interface."""
+            autostate: bool | None
+            """Enable or disable autostate."""
             description: str | None
             """SVI description. By default set to VLAN name."""
             arp_gratuitous_accept: bool | None
@@ -51850,6 +51863,7 @@ class EosDesigns(EosDesignsRootModel):
                     node: str | UndefinedType = Undefined,
                     name: str | UndefinedType | None = Undefined,
                     enabled: bool | UndefinedType | None = Undefined,
+                    autostate: bool | UndefinedType | None = Undefined,
                     description: str | UndefinedType | None = Undefined,
                     arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                     ip_address: str | UndefinedType | None = Undefined,
@@ -51900,6 +51914,7 @@ class EosDesigns(EosDesignsRootModel):
                         node: Node inventory hostname.
                         name: VLAN name.
                         enabled: Enable or disable interface.
+                        autostate: Enable or disable autostate.
                         description: SVI description. By default set to VLAN name.
                         arp_gratuitous_accept: Accept gratuitous ARP.
                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -52966,6 +52981,7 @@ class EosDesigns(EosDesignsRootModel):
             "nodes": {"type": Nodes},
             "name": {"type": str},
             "enabled": {"type": bool},
+            "autostate": {"type": bool},
             "description": {"type": str},
             "arp_gratuitous_accept": {"type": bool},
             "ip_address": {"type": str},
@@ -53032,6 +53048,8 @@ class EosDesigns(EosDesignsRootModel):
         """VLAN name."""
         enabled: bool | None
         """Enable or disable interface."""
+        autostate: bool | None
+        """Enable or disable autostate."""
         description: str | None
         """SVI description. By default set to VLAN name."""
         arp_gratuitous_accept: bool | None
@@ -53270,6 +53288,7 @@ class EosDesigns(EosDesignsRootModel):
                 nodes: Nodes | UndefinedType = Undefined,
                 name: str | UndefinedType | None = Undefined,
                 enabled: bool | UndefinedType | None = Undefined,
+                autostate: bool | UndefinedType | None = Undefined,
                 description: str | UndefinedType | None = Undefined,
                 arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                 ip_address: str | UndefinedType | None = Undefined,
@@ -53336,6 +53355,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                     name: VLAN name.
                     enabled: Enable or disable interface.
+                    autostate: Enable or disable autostate.
                     description: SVI description. By default set to VLAN name.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -86132,6 +86152,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                                 "name": {"type": str},
                                 "enabled": {"type": bool},
+                                "autostate": {"type": bool},
                                 "description": {"type": str},
                                 "arp_gratuitous_accept": {"type": bool},
                                 "ip_address": {"type": str},
@@ -86188,6 +86209,8 @@ class EosDesigns(EosDesignsRootModel):
                             """VLAN name."""
                             enabled: bool | None
                             """Enable or disable interface."""
+                            autostate: bool | None
+                            """Enable or disable autostate."""
                             description: str | None
                             """SVI description. By default set to VLAN name."""
                             arp_gratuitous_accept: bool | None
@@ -86425,6 +86448,7 @@ class EosDesigns(EosDesignsRootModel):
                                     tags: Tags | UndefinedType = Undefined,
                                     name: str | UndefinedType | None = Undefined,
                                     enabled: bool | UndefinedType | None = Undefined,
+                                    autostate: bool | UndefinedType | None = Undefined,
                                     description: str | UndefinedType | None = Undefined,
                                     arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                                     ip_address: str | UndefinedType | None = Undefined,
@@ -86481,6 +86505,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         name: VLAN name.
                                         enabled: Enable or disable interface.
+                                        autostate: Enable or disable autostate.
                                         description: SVI description. By default set to VLAN name.
                                         arp_gratuitous_accept: Accept gratuitous ARP.
                                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -87559,6 +87584,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_vlan_bundle": {"type": str},
                             "nodes": {"type": Nodes},
                             "enabled": {"type": bool},
+                            "autostate": {"type": bool},
                             "description": {"type": str},
                             "arp_gratuitous_accept": {"type": bool},
                             "ip_address": {"type": str},
@@ -87649,6 +87675,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         enabled: bool | None
                         """Enable or disable interface."""
+                        autostate: bool | None
+                        """Enable or disable autostate."""
                         description: str | None
                         """SVI description. By default set to VLAN name."""
                         arp_gratuitous_accept: bool | None
@@ -87890,6 +87918,7 @@ class EosDesigns(EosDesignsRootModel):
                                 evpn_vlan_bundle: str | UndefinedType | None = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType | None = Undefined,
+                                autostate: bool | UndefinedType | None = Undefined,
                                 description: str | UndefinedType | None = Undefined,
                                 arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                                 ip_address: str | UndefinedType | None = Undefined,
@@ -87972,6 +88001,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                                     enabled: Enable or disable interface.
+                                    autostate: Enable or disable autostate.
                                     description: SVI description. By default set to VLAN name.
                                     arp_gratuitous_accept: Accept gratuitous ARP.
                                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.

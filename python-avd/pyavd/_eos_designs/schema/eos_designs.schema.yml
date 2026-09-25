@@ -17529,6 +17529,9 @@ $defs:
       enabled:
         type: bool
         description: Enable or disable interface.
+      autostate:
+        type: bool
+        description: Enable or disable autostate.
       description:
         type: str
         description: 'SVI description. By default set to VLAN name.
