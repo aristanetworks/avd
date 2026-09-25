@@ -7843,6 +7843,30 @@ keys:
       connection_tx_interface_match_source_ip:
         type: bool
         description: Match source interface of the IPsec connection.
+  ip_software_forwarding:
+    type: dict
+    keys:
+      mtu:
+        type: dict
+        keys:
+          size:
+            type: int
+            convert_types:
+            - str
+            min: 68
+            max: 65535
+            description: 'MTU threshold in bytes for software-forwarded packets.
+
+              Set to match the interface MTU on jumbo-MTU links when `exceed_action_drop`
+              is enabled.
+
+              EOS default is 1500.'
+          exceed_action_drop:
+            type: bool
+            description: 'Drop packets that exceed the MTU on software-forwarded paths.
+
+              Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate
+              Security Advisory 0142.'
   ip_ssh_client:
     type: dict
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf

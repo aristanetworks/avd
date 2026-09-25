@@ -283,6 +283,9 @@ Serial Number: DEADBEEFC0FFEW
   - [NAT Synchronization](#nat-synchronization)
   - [NAT Translation Settings](#nat-translation-settings)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
+- [IP Software Forwarding](#ip-software-forwarding)
+  - [IP Software Forwarding Summary](#ip-software-forwarding-summary)
+  - [IP Software Forwarding Configuration](#ip-software-forwarding-configuration)
 - [IP Hardware FIB](#ip-hardware-fib)
   - [IP Hardware FIB Summary](#ip-hardware-fib-summary)
   - [IP Hardware FIB Configuration](#ip-hardware-fib-configuration)
@@ -14390,6 +14393,22 @@ ip nat synchronization
    local-interface Ethernet1
    port-range 1024 65535
    port-range split disabled
+```
+
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+| Setting | Value |
+| ------- | ----- |
+| MTU Size | 9000 |
+| MTU Exceed Action | Drop |
+
+### IP Software Forwarding Configuration
+
+```eos
+ip software forwarding mtu 9000
+ip software forwarding mtu exceed action drop
 ```
 
 ## IP Hardware FIB
