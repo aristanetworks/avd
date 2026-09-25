@@ -1,0 +1,17 @@
+---
+dns_domain: common.example.com
+domain_list:
+  - regional.example.com
+ip_name_server:
+  vrfs:
+    - name: default
+      servers:
+        - ip_address: 192.0.2.53
+          priority: 1
+ip_domain_lookup:
+  source_interfaces:
+    - name: Loopback0
+ip_hosts:
+  - hostname: child-host
+    ipv4_addresses:
+      - 192.0.2.10

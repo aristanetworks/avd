@@ -1,0 +1,36 @@
+---
+- name: Load dns_settings missing profile test inputs
+  ansible.builtin.include_vars:
+    file: "{{ input_dir }}/dns_settings_profile_missing_profile.yml"
+
+- name: Validate eos_designs inputs for missing dns_settings profile test
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_profiles"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts for missing dns_settings profile test
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_profiles"
+  check_mode: false
+  run_once: true
+
+- name: Attempt to build structured config with missing dns_settings profile
+  arista.avd.eos_designs_structured_config:
+    return_structured_config: true
+    tmp_dir: "{{ actual_output_dir }}/tmp_profiles"
+  ignore_errors: true
+  register: result
+
+- name: Validate missing dns_settings profile is rejected
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == expected_error
+  vars:
+    expected_error: >-
+      Error during plugin 'arista.avd.eos_designs_structured_config' execution: Profile 'missing_profile' is missing

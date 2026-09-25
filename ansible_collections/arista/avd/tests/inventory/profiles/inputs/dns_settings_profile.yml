@@ -1,0 +1,16 @@
+---
+fabric_name: all
+devices:
+  - name: testhost
+    type: l2leaf
+    dns_settings_profile: leaf1_dns_profile
+avd_switch_facts:
+  testhost:
+    id: 1
+    vlans: ""
+    uplinks: []
+dns_settings_profiles:
+  - profile: leaf1_dns_profile
+    domain: leaf1.example.com
+    domain_list:
+      - leaf1.example.com

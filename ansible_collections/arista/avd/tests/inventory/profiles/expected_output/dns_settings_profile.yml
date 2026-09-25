@@ -1,0 +1,4 @@
+---
+dns_domain: leaf1.example.com
+domain_list:
+  - leaf1.example.com

@@ -1,0 +1,88 @@
+---
+- name: Add second device for per-device profile testing
+  ansible.builtin.add_host:
+    name: testhost2
+    groups: testgroup
+    ansible_connection: local
+    ansible_pipelining: true
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
+    ansible_sudo_chdir: /
+
+- name: Load per-device dns_settings profile test inputs
+  ansible.builtin.include_vars:
+    file: "{{ input_dir }}/dns_settings_profile_per_device.yml"
+  delegate_to: "{{ device }}"
+  delegate_facts: true
+  loop: "{{ groups.testgroup }}"
+  loop_control:
+    loop_var: device
+
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_profiles"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_profiles"
+  check_mode: false
+  run_once: true
+
+- name: Build structured config for both devices
+  ansible.builtin.command:
+    argv:
+      - "{{ ansible_playbook_python }}"
+      - -c
+      - |
+        import json
+        from pathlib import Path
+
+        import yaml
+
+        from pyavd import get_avd_facts, get_device_structured_config
+
+        inputs = yaml.safe_load(Path("{{ input_dir }}/dns_settings_profile_per_device.yml").read_text(encoding="utf-8"))
+        all_inputs = {"testhost": inputs, "testhost2": inputs}
+        avd_facts = get_avd_facts(all_inputs=all_inputs, all_hostvars=None)
+        structured_configs = {
+            hostname: get_device_structured_config(hostname, inputs, avd_facts)
+            for hostname in all_inputs
+        }
+        print(
+            json.dumps(
+                {
+                    hostname: {
+                        "dns_domain": structured_config.dns_domain,
+                        "domain_list": list(structured_config.domain_list),
+                    }
+                    for hostname, structured_config in structured_configs.items()
+                }
+            )
+        )
+  changed_when: false
+  environment:
+    PYTHONPATH: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATH') }}/python-avd"
+  register: result
+
+- name: Set actual dns_settings
+  ansible.builtin.set_fact:
+    actual_dns_settings_per_device: "{{ result.stdout | from_json }}"
+
+- name: Load expected dns_settings
+  ansible.builtin.include_vars:
+    name: expected_dns_settings_per_device
+    file: "{{ expected_output_dir }}/dns_settings_profile_per_device.yml"
+
+- name: Validate each device gets its selected dns_settings profile
+  ansible.builtin.assert:
+    that:
+      - actual_dns_settings_per_device[device].dns_domain == expected_dns_settings_per_device[device].dns_domain
+      - actual_dns_settings_per_device[device].domain_list == expected_dns_settings_per_device[device].domain_list
+  loop: "{{ expected_dns_settings_per_device.keys() | list }}"
+  loop_control:
+    loop_var: device

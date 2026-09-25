@@ -1,0 +1,38 @@
+---
+- name: Load dns_settings profile test inputs
+  ansible.builtin.include_vars:
+    file: "{{ input_dir }}/dns_settings_profile.yml"
+
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_profiles"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_profiles"
+  check_mode: false
+  run_once: true
+
+- name: Build structured config
+  arista.avd.eos_designs_structured_config:
+    return_structured_config: true
+    tmp_dir: "{{ actual_output_dir }}/tmp_profiles"
+  register: result
+
+- name: Load expected dns_settings
+  ansible.builtin.include_vars:
+    name: expected_dns_settings
+    file: "{{ expected_output_dir }}/dns_settings_profile.yml"
+
+- name: Validate dns_settings profile is applied
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.ansible_facts.dns_domain == expected_dns_settings.dns_domain
+      - result.ansible_facts.domain_list == expected_dns_settings.domain_list

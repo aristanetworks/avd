@@ -1035,6 +1035,68 @@ schemas/avd_design/docs/tables/aaa-settings.md
 schemas/avd_design/docs/tables/dns-settings.md
 --8<--
 
+It is possible to define DNS settings profiles and apply them from node type defaults, node groups, nodes, devices, or device profiles.
+
+In this example, `leaf1` uses `leaf1_dns_profile`, which inherits from `common_dns_profile`. The common profile inherits the DNS server from the global `dns_settings`.
+
+```yaml
+fabric_name: FABRIC
+
+dns_settings:
+  servers:
+    - ip_address: 192.0.2.53
+      vrf: default
+      priority: 1
+
+dns_settings_profiles:
+  - profile: common_dns_profile
+    domain: example.com
+    vrfs:
+      - name: default
+        source_interface: Loopback0
+
+  - profile: leaf1_dns_profile
+    parent_profile: common_dns_profile
+    domain_list:
+      - leaf1.example.com
+    ip_hosts:
+      - hostname: leaf1
+        ipv4_addresses:
+          - 192.0.2.10
+
+l3leaf:
+  defaults:
+    dns_settings_profile: common_dns_profile
+  nodes:
+    - name: leaf1
+      dns_settings_profile: leaf1_dns_profile
+```
+
+The DNS-related structured configuration generated for `leaf1` is:
+
+```yaml
+dns_domain: example.com
+domain_list:
+  - leaf1.example.com
+ip_name_server:
+  vrfs:
+    - name: default
+      servers:
+        - ip_address: 192.0.2.53
+          priority: 1
+ip_domain_lookup:
+  source_interfaces:
+    - name: Loopback0
+ip_hosts:
+  - hostname: leaf1
+    ipv4_addresses:
+      - 192.0.2.10
+```
+
+--8<--
+schemas/avd_design/docs/tables/dns-settings-profiles.md
+--8<--
+
 ### Event handlers
 
 --8<--
