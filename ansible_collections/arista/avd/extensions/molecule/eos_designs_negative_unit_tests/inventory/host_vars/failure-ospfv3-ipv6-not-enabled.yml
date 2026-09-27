@@ -21,7 +21,9 @@ tenants:
         vrf_vni: 41
         ospfv3:
           enabled: true
-          router_id: ipv6_ospf_router
+          router_id: 192.168.255.1
+          address_family_ipv4:
+            enabled: true
           address_family_ipv6:
             enabled: true
         svis:

@@ -24,6 +24,8 @@ tenants:
             ipv6_enable: true
             ospfv3:
               enabled: true
+              address_family_ipv4:
+                enabled: true
               address_family_ipv6:
                 enabled: true
 

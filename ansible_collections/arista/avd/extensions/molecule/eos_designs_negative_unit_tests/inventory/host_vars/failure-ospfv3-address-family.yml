@@ -20,6 +20,11 @@ tenants:
         vrf_vni: 41
         ospfv3:
           enabled: true
+          router_id: 192.168.255.2
+          address_family_ipv4:
+            enabled: false
+          address_family_ipv6:
+            enabled: false
         svis:
           - id: 21
             name: "VLAN_21"
