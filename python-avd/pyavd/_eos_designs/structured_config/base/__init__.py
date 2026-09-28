@@ -12,7 +12,12 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGeneratorProtocol,
     structured_config_contributor,
 )
-from pyavd._errors import AristaAvdDuplicateDataError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import (
+    AristaAvdDuplicateDataError,
+    AristaAvdInvalidInputsError,
+    AristaAvdMissingVariableError,
+    AvdDeprecationWarning,
+)
 from pyavd._utils.default import default
 from pyavd._utils.get import get_v2
 from pyavd.j2filters import natural_sort
@@ -460,6 +465,13 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def ip_ssh_client(self) -> None:
         """Parse ssh_settings.client_vrfs (or source_interfaces.ssh_client) and set list of source_interfaces."""
+        if self.inputs.ssh_settings.client_vrfs and self.inputs.source_interfaces.ssh_client:
+            raise AvdDeprecationWarning(
+                key=["source_interfaces.ssh_client"],
+                new_key="ssh_settings.client_vrfs",
+                conflict=True,
+            )
+
         if self.inputs.ssh_settings.client_vrfs:
             ip_ssh_client = EosCliConfigGen.IpSshClient()
             for client_vrf in self.inputs.ssh_settings.client_vrfs:
