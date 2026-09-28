@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import importlib.util
+import types
 from pathlib import Path
 
 import pytest
@@ -14,9 +15,10 @@ AVD_ROOT = Path(__file__).resolve().parents[3]
 HOOK_PATH = AVD_ROOT / "tools" / "schema-explorer" / "mkdocs_hook.py"
 
 
-def _load_hook_module():
+def _load_hook_module() -> types.ModuleType:
     spec = importlib.util.spec_from_file_location("schema_explorer_mkdocs_hook_under_test", HOOK_PATH)
-    assert spec is not None and spec.loader is not None
+    assert spec is not None
+    assert spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -59,5 +61,5 @@ def test_copy_expected_build_artifacts_fails_when_required_sqlite_missing(tmp_pa
     (build_dir / "data" / "schema.sqlite").unlink()
     monkeypatch.setattr(module, "BUILD_DIR", build_dir)
 
-    with pytest.raises(FileNotFoundError, match="schema.sqlite"):
+    with pytest.raises(FileNotFoundError, match=r"schema\.sqlite"):
         module._copy_expected_build_artifacts(dest_dir)

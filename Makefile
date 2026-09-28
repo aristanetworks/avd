@@ -150,10 +150,12 @@ schema-explorer-check: ## Syntax-check, test, and smoke-build the Schema Explore
 	node --check $(SCHEMA_EXPLORER_SRC)/static/js/app.js
 	node --test $(SCHEMA_EXPLORER_SRC)/tests/test_sanitize.mjs
 	uv run --group doc --group pytest pytest tools/schema-explorer/tests -q
-	@tmpdir=$$(mktemp -d); \
-	uv run --group doc python $(SCHEMA_EXPLORER_SRC)/generate.py --avd-root . --site-dir $$tmpdir; \
-	test -f $$tmpdir/data/schema.sqlite; \
-	rm -rf $$tmpdir
+	@bash -euo pipefail -c '\
+	  tmpdir=$$(mktemp -d); \
+	  trap "rm -rf \"$$tmpdir\"" EXIT; \
+	  uv run --group doc python $(SCHEMA_EXPLORER_SRC)/generate.py --avd-root . --site-dir "$$tmpdir"; \
+	  test -f "$$tmpdir/data/schema.sqlite"; \
+	'
 
 .PHONY: docs-serve
 docs-serve: ## Run `mkdocs serve` on http://127.0.0.1:8000. The Schema Explorer hook builds its own cache outside the watched repo tree.
