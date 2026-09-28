@@ -169,7 +169,8 @@ class FilteredTenantsMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             parent_profile_item = self.inputs.l2vlan_profiles[resolved_profile.parent_profile]
-            self.raise_warning_for_grandparent_profile(parent_profile_item, context="l2vlan_profiles")
+            if parent_profile_item.parent_profile:
+                self.raise_warning_for_grandparent_profile(parent_profile_item.profile, context="l2vlan_profiles")
             # Notice reuse of the same variable with the merged content.
             resolved_profile._deepinherit(parent_profile_item)
 
@@ -347,7 +348,9 @@ class FilteredTenantsMixin(Protocol):
                         f"Profile '{resolved_profile.parent_profile}' applied under SVI Profile '{resolved_profile.profile}' does not exist in 'svi_profiles'."
                     )
                     raise AristaAvdInvalidInputsError(msg)
-                self.raise_warning_for_grandparent_profile(svi_profile, context="svi_profiles")
+                parent_profile_item = self.inputs.svi_profiles[resolved_profile.parent_profile]
+                if parent_profile_item.parent_profile:
+                    self.raise_warning_for_grandparent_profile(svi_profile.profile, context="svi_profiles")
                 # Inherit from the parent profile
                 resolved_profile._deepinherit(self.inputs.svi_profiles[resolved_profile.parent_profile])
                 # Inherit from the profile

@@ -134,16 +134,17 @@ class UtilsMixin(Protocol):
         if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
             return self.return_resolved_profile_for_multilevel_inheritance("port_profiles", port_profile, self.inputs.port_profiles)
 
-        if resolved_profile.parent_profile:
-            if resolved_profile.parent_profile not in self.inputs.port_profiles:
-                msg = f"Profile '{resolved_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
+        if port_profile.parent_profile:
+            if port_profile.parent_profile not in self.inputs.port_profiles:
+                msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
                 raise AristaAvdInvalidInputsError(msg)
 
-            parent_profile_item = self.inputs.port_profiles[resolved_profile.parent_profile]._deepcopy()
-            self.raise_warning_for_grandparent_profile(parent_profile_item, context="port_profiles")
+            parent_profile_item = self.inputs.port_profiles[port_profile.parent_profile]._deepcopy()
+            if parent_profile_item.parent_profile:
+                self.raise_warning_for_grandparent_profile(parent_profile_item.profile, context="port_profiles")
             # Warn if parent profile has a parent profile set.
             # Notice reuse of the same variable with the merged content.
-            port_profile = port_profile._deepinherited(parent_profile_item)
+            port_profile._deepinherit(parent_profile_item)
 
         delattr(port_profile, "parent_profile")
 
@@ -384,13 +385,10 @@ class UtilsMixin(Protocol):
             delattr(resolved_profile, "parent_profile")
         return resolved_profile
 
-    def raise_warning_for_grandparent_profile(
-        self: SharedUtilsProtocol, parent_profile: EosDesigns.PortProfilesItem | EosDesigns.L2vlanProfilesItem | EosDesigns.SviProfilesItem, context: str
-    ) -> None:
+    def raise_warning_for_grandparent_profile(self: SharedUtilsProtocol, parent_profile: str, context: str) -> None:
         """Raise warning when parent_profile is mentioned for a parent profile but 'avd_design_future.allow_infinite_profile_inheritance' is not set."""
-        if parent_profile.parent_profile is not None:
-            msg = (
-                f"A parent profile is being inherited from another profile. Enable 'avd_design_future.allow_infinite_profile_inheritance'"
-                f" to properly inherit or remove the 'parent_profile' from '{context}[profile={parent_profile.profile}]'."
-            )
-            warnings.warn(msg, stacklevel=2)
+        msg = (
+            f"A parent profile is being inherited from another profile. Enable 'avd_design_future.allow_infinite_profile_inheritance'"
+            f" to properly inherit or remove the 'parent_profile' from '{context}[profile={parent_profile}]'."
+        )
+        warnings.warn(msg, stacklevel=2)
