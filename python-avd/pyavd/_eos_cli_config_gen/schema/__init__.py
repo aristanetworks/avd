@@ -20148,17 +20148,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"size": {"type": int}, "exceed_action_drop": {"type": bool}}
             size: int | None
-            """
-            MTU threshold in bytes for software-forwarded packets.
-            Set to match the interface MTU on jumbo-MTU
-            links when `exceed_action_drop` is enabled.
-            EOS default is 1500.
-            """
+            """Maximum transmission unit in bytes."""
             exceed_action_drop: bool | None
             """
-            Drop packets that exceed the MTU on software-forwarded paths.
-            Introduced in EOS 4.36.1F, 4.35.4M,
-            4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+            Drop MTU exceeding IPv4 packet in software.
+            Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M,
+            4.32.11M to mitigate Security Advisory 0142.
             """
 
             if TYPE_CHECKING:
@@ -20171,15 +20166,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        size:
-                           MTU threshold in bytes for software-forwarded packets.
-                           Set to match the interface MTU on jumbo-MTU
-                           links when `exceed_action_drop` is enabled.
-                           EOS default is 1500.
+                        size: Maximum transmission unit in bytes.
                         exceed_action_drop:
-                           Drop packets that exceed the MTU on software-forwarded paths.
-                           Introduced in EOS 4.36.1F, 4.35.4M,
-                           4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+                           Drop MTU exceeding IPv4 packet in software.
+                           Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M,
+                           4.32.11M to mitigate Security Advisory 0142.
 
                     """
 

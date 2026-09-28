@@ -9,8 +9,8 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ip_software_forwarding</samp>](## "ip_software_forwarding") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;mtu</samp>](## "ip_software_forwarding.mtu") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "ip_software_forwarding.mtu.size") | Integer |  |  | Min: 68<br>Max: 65535 | MTU threshold in bytes for software-forwarded packets.<br>Set to match the interface MTU on jumbo-MTU links when `exceed_action_drop` is enabled.<br>EOS default is 1500. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_drop</samp>](## "ip_software_forwarding.mtu.exceed_action_drop") | Boolean |  |  |  | Drop packets that exceed the MTU on software-forwarded paths.<br>Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "ip_software_forwarding.mtu.size") | Integer |  |  | Min: 68<br>Max: 65535 | Maximum transmission unit in bytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_drop</samp>](## "ip_software_forwarding.mtu.exceed_action_drop") | Boolean |  |  |  | Drop MTU exceeding IPv4 packet in software.<br>Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142. |
 
 === "YAML"
 
@@ -18,12 +18,10 @@
     ip_software_forwarding:
       mtu:
 
-        # MTU threshold in bytes for software-forwarded packets.
-        # Set to match the interface MTU on jumbo-MTU links when `exceed_action_drop` is enabled.
-        # EOS default is 1500.
+        # Maximum transmission unit in bytes.
         size: <int; 68-65535>
 
-        # Drop packets that exceed the MTU on software-forwarded paths.
+        # Drop MTU exceeding IPv4 packet in software.
         # Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
         exceed_action_drop: <bool>
     ```

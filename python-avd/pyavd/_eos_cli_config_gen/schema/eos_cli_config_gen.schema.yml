@@ -7855,15 +7855,10 @@ keys:
             - str
             min: 68
             max: 65535
-            description: 'MTU threshold in bytes for software-forwarded packets.
-
-              Set to match the interface MTU on jumbo-MTU links when `exceed_action_drop`
-              is enabled.
-
-              EOS default is 1500.'
+            description: Maximum transmission unit in bytes.
           exceed_action_drop:
             type: bool
-            description: 'Drop packets that exceed the MTU on software-forwarded paths.
+            description: 'Drop MTU exceeding IPv4 packet in software.
 
               Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate
               Security Advisory 0142.'
