@@ -43,8 +43,7 @@ REPRESENTATIVE_BENCHMARK_HOSTS = (
     "trunk-group-tests-l3leaf1a",
     "uplink-p2p-vrfs-tests-leaf1",
     # WAN/CV Pathfinder coverage.
-    "cv-pathfinder-pathfinder1",
-    "cv-pathfinder-edge1",
+    # Temporarily excluded until repeated rendering no longer mutates shared inputs. See #7490.
     "cv-pathfinder-transit1a",
 )
 
