@@ -57,7 +57,10 @@ ASSET_SUBPATH = "_assets/schema-explorer"
 # underlines, heading sizes, line-height) would leak into Material's chrome
 # on every docs page even those without an embed.
 CSS_FILES = (f"{ASSET_SUBPATH}/css/style.css",)
-JS_FILES = (f"{ASSET_SUBPATH}/js/app.js",)
+JS_FILES = (
+    f"{ASSET_SUBPATH}/js/sanitize.js",
+    f"{ASSET_SUBPATH}/js/app.js",
+)
 
 
 def _iter_static_files() -> tuple[Path, ...]:

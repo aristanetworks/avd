@@ -171,6 +171,22 @@ make schema-explorer-build
 The MkDocs hook freshness check only sees the compiled schema files, so
 fragment-only edits can look stale until that regeneration step runs.
 
+## Vendored runtime dependencies
+
+Same-origin copies under `static/vendor/`. See [SECURITY.md](SECURITY.md) for
+threat model and update expectations.
+
+| Asset | Version | Source | Loaded from |
+| ----- | ------- | ------ | ----------- |
+| Bootstrap CSS/JS | 5.3.3 | [getbootstrap.com](https://getbootstrap.com/) | Standalone `index.html`; JS lazy-loaded in embeds |
+| Bootstrap Icons | 1.11.3 | [icons.getbootstrap.com](https://icons.getbootstrap.com/) | Lazy-loaded when an explorer mounts |
+| sql.js (WASM) | Vendored build (`sql-wasm.js` + `sql-wasm.wasm`) | [sql-js/sql.js releases](https://github.com/sql-js/sql.js/releases) | Lazy-loaded when an explorer mounts |
+
+**Update policy:** bump vendored files deliberately (not via live CDN), refresh
+`integrity=` attributes in `static/index.html` and `RUNTIME_DEPS` in
+`static/js/app.js`, document the version in this table, and run
+`make schema-explorer-check`.
+
 ## Architecture decisions
 
 See `aristanetworks/avd-internal#503` for the full thread. Short version:

@@ -855,7 +855,7 @@ function renderVarDetail(db, module, key_path) {
         <div class="card border-0 shadow-sm mb-4"><div class="table-responsive">
           <table class="table table-sm align-middle mb-0"><tbody>
             ${propertyRows}
-            ${v.cross_ref ? renderCrossRefRow(v.cross_ref) : ""}
+            ${v.cross_ref ? SchemaExplorerSanitize.renderCrossRefRow(v.cross_ref, SCHEMA_MODULES) : ""}
             ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}" class="link-brand"><code class="schema-key-code">${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
             ${dynamicSource ? `<tr><td class="px-3 fw-semibold small text-muted">Dynamic key</td><td><code class="schema-key-code">${escapeHtml(dynamicSource)}</code></td></tr>` : ""}
           </tbody></table>
@@ -870,41 +870,8 @@ function renderVarDetail(db, module, key_path) {
     </div>`;
 }
 
-// ── cross-schema reference helper ───────────────────────────────────────────
-// Schema $ref strings look like "eos_cli_config_gen#/keys/foo/keys/bar".
-// Convert into a SchemaExplorer hash link to the equivalent flattened key_path
-// in the target module so users can jump straight there.
-function renderCrossRefRow(ref) {
-  const [target, jsonPointer] = String(ref).split("#", 2);
-  if (!target || !jsonPointer) return "";
-  if (!Object.prototype.hasOwnProperty.call(SCHEMA_MODULES, target)) return "";
-  const segments = jsonPointer.split("/").filter(Boolean);
-  const parts = [];
-  for (let i = 0; i < segments.length; i++) {
-    const seg = segments[i];
-    if (seg === "keys") {
-      // skip — next segment is the key name
-    } else if (seg === "items") {
-      if (parts.length) parts[parts.length - 1] += "[]";
-    } else {
-      parts.push(seg);
-    }
-  }
-  const keyPath = parts.join(".");
-  const encodedTarget = encodeURIComponent(target);
-  const encodedKeyPath = keyPath.split("/").map(encodeURIComponent).join("/");
-  const link = keyPath
-    ? `#/${encodedTarget}/${encodedKeyPath}`
-    : `#/${encodedTarget}`;
-  return `<tr><td class="px-3 fw-semibold small text-muted">Cross-schema</td><td><a href="${escapeAttr(link)}" class="link-brand"><code>${escapeHtml(target)}</code> → <code>${escapeHtml(keyPath || "(root)")}</code></a></td></tr>`;
-}
-
 // ── utils ────────────────────────────────────────────────────────────────────
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]));
-}
-function escapeAttr(s) { return escapeHtml(s).replace(/"/g, "&quot;"); }
+// escapeHtml / escapeAttr / cross-ref row rendering live in sanitize.js
 
 function highlight(text, q) {
   if (!q || q.length < 2 || !text) return escapeHtml(text || "-");
