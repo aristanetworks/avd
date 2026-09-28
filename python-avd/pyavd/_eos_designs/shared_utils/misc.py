@@ -112,7 +112,7 @@ class MiscMixin(Protocol):
         """
         Return the rendered and validated custom system MAC address, or None if not set.
 
-        The returned value preserves the original format (hhhh.hhhh.hhhh, hh:hh:hh:hh:hh:hh or hh-hh-hh-hh-hh-hh).
+        The returned value preserves the original format (hhhh.hhhh.hhhh, hh:hh:hh:hh:hh:hh or hhhhhhhhhhhh).
         """
         if self.inputs.custom_system_mac_address is None:
             return None
@@ -162,7 +162,7 @@ class MiscMixin(Protocol):
         When custom_system_mac_address is set the value is normalized to hh:hh:hh:hh:hh:hh format.
         """
         if (custom := self.custom_system_mac_address) is not None:
-            raw = custom.replace(".", "").replace(":", "").replace("-", "")
+            raw = custom.replace(".", "").replace(":", "")
             return ":".join(raw[i : i + 2] for i in range(0, 12, 2))
 
         return default(self.node_config.system_mac_address, self.inputs.system_mac_address)
