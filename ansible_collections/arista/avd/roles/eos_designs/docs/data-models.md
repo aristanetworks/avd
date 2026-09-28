@@ -1728,6 +1728,12 @@ schemas/avd_design/docs/tables/custom-platform-settings.md
 schemas/avd_design/docs/tables/platform-speed-groups.md
 --8<--
 
+### TCAM profiles
+
+--8<--
+schemas/avd_design/docs/tables/tcam-profiles.md
+--8<--
+
 ## Validation Profiles
 
 --8<--
