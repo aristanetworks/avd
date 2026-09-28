@@ -117255,11 +117255,11 @@ class EosDesigns(EosDesignsRootModel):
     value is configured with `system mac-address` and used as the effective system MAC address for EOS
     configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
     CloudVision-based Zscaler integration.
-    This value takes precedence over `system_mac_address`.
-    If
-    unset, the existing `system_mac_address` behavior is unchanged.
-    The rendered value must be a unicast
-    MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
+    Mutually exclusive with `system_mac_address`.
+    If unset, the
+    existing `system_mac_address` behavior is unchanged.
+    The rendered value must be a unicast MAC
+    address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
     hexadecimal digit). The all-zero address (`0000.0000.0000`) is reserved and not accepted by EOS.
     Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the
     generated EOS configuration and AVD metadata.
@@ -118805,6 +118805,7 @@ class EosDesigns(EosDesignsRootModel):
     also be set under node type settings.
     If both are set, the value under node type settings takes
     precedence.
+    Mutually exclusive with "custom_system_mac_address".
     """
     tcam_profiles: EosCliConfigGen.TcamProfile.Profiles
     """
@@ -119666,11 +119667,11 @@ class EosDesigns(EosDesignsRootModel):
                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
                    CloudVision-based Zscaler integration.
-                   This value takes precedence over `system_mac_address`.
-                   If
-                   unset, the existing `system_mac_address` behavior is unchanged.
-                   The rendered value must be a unicast
-                   MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
+                   Mutually exclusive with `system_mac_address`.
+                   If unset, the
+                   existing `system_mac_address` behavior is unchanged.
+                   The rendered value must be a unicast MAC
+                   address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
                    hexadecimal digit). The all-zero address (`0000.0000.0000`) is reserved and not accepted by EOS.
                    Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the
                    generated EOS configuration and AVD metadata.
@@ -120819,6 +120820,7 @@ class EosDesigns(EosDesignsRootModel):
                    also be set under node type settings.
                    If both are set, the value under node type settings takes
                    precedence.
+                   Mutually exclusive with "custom_system_mac_address".
                 tcam_profiles:
                    List of TCAM profile definitions that can be referenced by platform_settings.
                    Profiles are

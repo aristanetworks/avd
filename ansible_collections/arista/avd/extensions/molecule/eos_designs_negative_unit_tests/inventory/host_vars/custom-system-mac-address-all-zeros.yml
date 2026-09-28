@@ -3,12 +3,12 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    - name: custom-system-mac-address-invalid-format
+    - name: custom-system-mac-address-all-zeros
       id: 1
       mgmt_ip: 192.168.0.2/24
 
-custom_system_mac_address: not-a-mac-address
+custom_system_mac_address: 0000.0000.0000
 
 expected_error_message: >-
-  'custom_system_mac_address' rendered 'not-a-mac-address' which is not a valid unicast EOS system MAC address.
+  'custom_system_mac_address' rendered '0000.0000.0000' which is not a valid unicast EOS system MAC address.
   The value must be a unicast MAC address in 'hhhh.hhhh.hhhh', 'hh:hh:hh:hh:hh:hh' or 'hh-hh-hh-hh-hh-hh' format.

@@ -117,10 +117,22 @@ class MiscMixin(Protocol):
         if self.inputs.custom_system_mac_address is None:
             return None
 
-        mac_address = AvdStringFormatter().format(
-            self.inputs.custom_system_mac_address,
-            **strip_null_from_data({"device_id": self.id, "hostname": self.hostname}),
-        )
+        if default(self.node_config.system_mac_address, self.inputs.system_mac_address) is not None:
+            msg = "'custom_system_mac_address' and 'system_mac_address' cannot both be set. Remove 'system_mac_address' when using 'custom_system_mac_address'."
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+
+        try:
+            mac_address = AvdStringFormatter().format(
+                self.inputs.custom_system_mac_address,
+                **strip_null_from_data({"device_id": self.id, "hostname": self.hostname}),
+            )
+        except KeyError as error:
+            field_name = error.args[0]
+            msg = (
+                f"'custom_system_mac_address' uses formatter field '{field_name}', but no AVD node ID could be resolved for host '{self.hostname}'. "
+                "Configure a node ID for this host or remove the field from the template."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname) from error
 
         pattern = (
             r"([0-9A-Fa-f][02468ACEace][0-9A-Fa-f]{2}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}"
@@ -130,8 +142,8 @@ class MiscMixin(Protocol):
         normalized = mac_address.replace(".", "").replace(":", "").replace("-", "").lower()
         if not re.fullmatch(pattern, mac_address) or normalized == "0" * 12:
             msg = (
-                f"custom_system_mac_address rendered '{mac_address}' which is not a valid unicast EOS system MAC address. "
-                "The value must be a unicast MAC address in hhhh.hhhh.hhhh, hh:hh:hh:hh:hh:hh or hh-hh-hh-hh-hh-hh format."
+                f"'custom_system_mac_address' rendered '{mac_address}' which is not a valid unicast EOS system MAC address. "
+                "The value must be a unicast MAC address in 'hhhh.hhhh.hhhh', 'hh:hh:hh:hh:hh:hh' or 'hh-hh-hh-hh-hh-hh' format."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
