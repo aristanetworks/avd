@@ -6,16 +6,19 @@
 from __future__ import annotations
 
 import importlib.util
-import types
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
+
+if TYPE_CHECKING:
+    from types import ModuleType
 
 AVD_ROOT = Path(__file__).resolve().parents[3]
 HOOK_PATH = AVD_ROOT / "tools" / "schema-explorer" / "mkdocs_hook.py"
 
 
-def _load_hook_module() -> types.ModuleType:
+def _load_hook_module() -> ModuleType:
     spec = importlib.util.spec_from_file_location("schema_explorer_mkdocs_hook_under_test", HOOK_PATH)
     assert spec is not None
     assert spec.loader is not None
