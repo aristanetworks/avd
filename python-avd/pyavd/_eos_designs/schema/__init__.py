@@ -118467,11 +118467,11 @@ class EosDesigns(EosDesignsRootModel):
     """
     overlay_routing_protocol_address_family: OverlayRoutingProtocolAddressFamily
     """
-    Set to `ipv6` to use IPv6 addresses for overlay EVPN peering with an RFC5549 underlay.
-    This requires
-    both `underlay_ipv6: true` and `underlay_rfc5549: true`.
+    Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
+    Setting this to `ipv6` requires both
+    `underlay_ipv6: true` and `underlay_rfc5549: true`.
     When `underlay_ipv6_numbered: true`, IPv6
-    overlay peering is enabled automatically, and this setting is not required.
+    overlay peering is enabled automatically, and this setting has no effect.
 
     Default value: `"ipv4"`
     """
@@ -120499,11 +120499,11 @@ class EosDesigns(EosDesignsRootModel):
                      If not set, the
                    default_overlay_routing_protocol defined under the node_type_keys will be used (default is "ebgp").
                 overlay_routing_protocol_address_family:
-                   Set to `ipv6` to use IPv6 addresses for overlay EVPN peering with an RFC5549 underlay.
-                   This requires
-                   both `underlay_ipv6: true` and `underlay_rfc5549: true`.
+                   Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
+                   Setting this to `ipv6` requires both
+                   `underlay_ipv6: true` and `underlay_rfc5549: true`.
                    When `underlay_ipv6_numbered: true`, IPv6
-                   overlay peering is enabled automatically, and this setting is not required.
+                   overlay peering is enabled automatically, and this setting has no effect.
                 overlay_rt_type:
                    Configuration options for the Administrator subfield (first part of RT) and the Assigned Number
                    subfield (second part of RT).
