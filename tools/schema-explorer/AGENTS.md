@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2026 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # Schema Explorer maintenance rules
 
 These rules apply to `tools/schema-explorer/`, `tools/schema_explorer_markdown.py`,

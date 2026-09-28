@@ -44,6 +44,6 @@ def test_schema_explorer_fence_validates_allowed_options(source: str, expected_f
 
 def test_schema_explorer_fence_escapes_attribute_values() -> None:
     module = _load_formatter_module()
-    html = module.schema_explorer_fence_format('root: \'"><img src=x onerror=alert(1)>\'\n', "schema-explorer", "", {}, None)
+    html = module.schema_explorer_fence_format("root: '\"><img src=x onerror=alert(1)>'\n", "schema-explorer", "", {}, None)
     assert '"><img' not in html
     assert "&quot;&gt;&lt;img" in html or "&lt;img" in html
