@@ -11,4 +11,4 @@ custom_system_mac_address: 0000.0000.0000
 
 expected_error_message: >-
   'custom_system_mac_address' rendered '0000.0000.0000' which is not a valid unicast EOS system MAC address.
-  The value must be a unicast MAC address in 'hhhh.hhhh.hhhh', 'hh:hh:hh:hh:hh:hh' or 'hh-hh-hh-hh-hh-hh' format.
+  The value must be a unicast MAC address in 'hhhh.hhhh.hhhh', 'hh:hh:hh:hh:hh:hh' or 'hhhhhhhhhhhh' format.

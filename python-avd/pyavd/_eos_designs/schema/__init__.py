@@ -117259,12 +117259,13 @@ class EosDesigns(EosDesignsRootModel):
     If unset, the
     existing `system_mac_address` behavior is unchanged.
     The rendered value must be a unicast MAC
-    address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
-    hexadecimal digit). The all-zero address (`0000.0000.0000`) is reserved and not accepted by EOS.
-    Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the
-    generated EOS configuration and AVD metadata.
-    This can be a plain MAC address or a template using
-    the AVD string formatter syntax:
+    address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a
+    hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+    Regardless of the
+    input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS
+    configuration and AVD metadata.
+    This can be a plain MAC address or a template using the AVD string
+    formatter syntax:
     https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
     descriptions-names.html#avd-string-formatter-syntax.
     Only the following template fields are
@@ -119671,12 +119672,13 @@ class EosDesigns(EosDesignsRootModel):
                    If unset, the
                    existing `system_mac_address` behavior is unchanged.
                    The rendered value must be a unicast MAC
-                   address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a
-                   hexadecimal digit). The all-zero address (`0000.0000.0000`) is reserved and not accepted by EOS.
-                   Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the
-                   generated EOS configuration and AVD metadata.
-                   This can be a plain MAC address or a template using
-                   the AVD string formatter syntax:
+                   address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a
+                   hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+                   Regardless of the
+                   input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS
+                   configuration and AVD metadata.
+                   This can be a plain MAC address or a template using the AVD string
+                   formatter syntax:
                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
                    descriptions-names.html#avd-string-formatter-syntax.
                    Only the following template fields are

@@ -72934,8 +72934,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         mac_address: str | None
         """
         Unicast (the least-significant bit of the first octet must be zero) system MAC address in
-        `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a hexadecimal
-        digit).
+        `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit).
         """
 
         if TYPE_CHECKING:
@@ -72958,8 +72957,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     l1: Subclass of AvdModel.
                     mac_address:
                        Unicast (the least-significant bit of the first octet must be zero) system MAC address in
-                       `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hh-hh-hh-hh-hh-hh` format (where `h` is a hexadecimal
-                       digit).
+                       `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit).
 
                 """
 

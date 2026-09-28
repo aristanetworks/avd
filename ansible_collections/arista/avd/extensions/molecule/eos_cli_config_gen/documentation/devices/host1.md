@@ -826,7 +826,7 @@ ptp monitor threshold missing-message announce 201 sequence-ids
 
 ### System MAC Address
 
-**MAC address:** 001c.7300.0001
+**MAC address:** 00:1c:73:00:00:01
 
 ### System Control-Plane
 

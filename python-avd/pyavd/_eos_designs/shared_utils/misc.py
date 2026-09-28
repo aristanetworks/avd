@@ -137,13 +137,13 @@ class MiscMixin(Protocol):
         pattern = (
             r"([0-9A-Fa-f][02468ACEace][0-9A-Fa-f]{2}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}"
             r"|[0-9A-Fa-f][02468ACEace](:[0-9A-Fa-f]{2}){5}"
-            r"|[0-9A-Fa-f][02468ACEace](-[0-9A-Fa-f]{2}){5})"
+            r"|[0-9A-Fa-f][02468ACEace][0-9A-Fa-f]{10})"
         )
-        normalized = mac_address.replace(".", "").replace(":", "").replace("-", "").lower()
+        normalized = mac_address.replace(".", "").replace(":", "").lower()
         if not re.fullmatch(pattern, mac_address) or normalized == "0" * 12:
             msg = (
                 f"'custom_system_mac_address' rendered '{mac_address}' which is not a valid unicast EOS system MAC address. "
-                "The value must be a unicast MAC address in 'hhhh.hhhh.hhhh', 'hh:hh:hh:hh:hh:hh' or 'hh-hh-hh-hh-hh-hh' format."
+                "The value must be a unicast MAC address in 'hhhh.hhhh.hhhh', 'hh:hh:hh:hh:hh:hh' or 'hhhhhhhhhhhh' format."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 

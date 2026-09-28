@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: custom-system-mac-address-dash
+hostname: custom-system-mac-address-raw
 ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:
@@ -15,14 +15,14 @@ management_interfaces:
   type: oob
 metadata:
   is_deployed: true
-  system_mac_address: 02:1c:73:00:00:06
+  system_mac_address: 02:1c:00:01:00:00
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 snmp_server:
   engine_ids:
-    local: f5717f021c7300000600
+    local: f5717f021c0001000000
 system:
-  mac_address: 02:1c:73:00:00:06
+  mac_address: 02:1c:00:01:00:00
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
