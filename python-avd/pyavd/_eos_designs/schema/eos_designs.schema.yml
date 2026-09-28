@@ -6278,8 +6278,8 @@ keys:
                       common `router general` Router ID if `use_router_general_for_router_id`
                       is set."
 
-                      - "none" will not configure a OSPF Router ID for this VRF. EOS
-                      will use the main OSPF Router ID.
+                      - "none" will not configure an OSPF Router ID for this VRF.
+                      EOS will use the main OSPF Router ID.
 
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic
                       Loopback interface.'
@@ -6378,8 +6378,7 @@ keys:
                   table: network-services-vrfs-ospfv3-settings
                 type: bool
                 default: true
-                description: Non-selectively enabling or disabling redistribute ospfv3
-                  inside the VRF.
+                description: Enable BGP redistribution of OSPFv3 routes for this VRF.
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -18208,7 +18207,7 @@ $defs:
                 type: bool
               area:
                 type: str
-                description: OSPF Area ID. Can be an integer (0-4294967295) or IP
+                description: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP
                   address format (0.0.0.0).
                 convert_types:
                 - int
@@ -18221,7 +18220,7 @@ $defs:
                 type: bool
               area:
                 type: str
-                description: OSPF Area ID. Can be an integer (0-4294967295) or IP
+                description: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP
                   address format (0.0.0.0).
                 convert_types:
                 - int

@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3") | Dictionary |  |  |  | Router OSPFv3 configuration.<br>This will create an OSPFv3 routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be<br>created on all leafs where the VRF is deployed. This will also cause automatic OSPFv3 redistribution into BGP unless<br>explicitly turned off with "redistribute_ospfv3: false".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure an OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.passive_interface_default") | Boolean |  | `True` |  | Set passive-interface default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.address_family_ipv4") | Dictionary |  |  |  | OSPFv3 IPv4 address family configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.address_family_ipv4.enabled") | Boolean |  |  |  |  |
@@ -40,7 +40,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.nodes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.nodes.[]") | String |  |  |  | Hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospfv3") | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospfv3 inside the VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospfv3") | Boolean |  | `True` |  | Enable BGP redistribution of OSPFv3 routes for this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "<network_services_keys.name>.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
@@ -49,20 +49,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv4") | Dictionary |  |  |  | OSPFv3 IPv4 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv4.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv6") | Dictionary |  |  |  | OSPFv3 IPv6 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv6.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.passive_interface") | Boolean |  | `False` |  | Include interface but without actively running OSPF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospfv3.network_point_to_point") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3") | Dictionary |  |  |  | OSPFv3 interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.address_family_ipv4") | Dictionary |  |  |  | OSPFv3 IPv4 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.address_family_ipv4.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.address_family_ipv6") | Dictionary |  |  |  | OSPFv3 IPv6 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.address_family_ipv6.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.passive_interface") | Boolean |  | `False` |  | Include interface but without actively running OSPF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospfv3.network_point_to_point") | Boolean |  | `False` |  |  |
     | [<samp>network_services</samp>](## "network_services") | List, items: Dictionary |  |  |  |  |
@@ -71,7 +71,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "network_services.[].vrfs.[].ospfv3") | Dictionary |  |  |  | Router OSPFv3 configuration.<br>This will create an OSPFv3 routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be<br>created on all leafs where the VRF is deployed. This will also cause automatic OSPFv3 redistribution into BGP unless<br>explicitly turned off with "redistribute_ospfv3: false".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].ospfv3.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "network_services.[].vrfs.[].ospfv3.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "network_services.[].vrfs.[].ospfv3.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure an OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "network_services.[].vrfs.[].ospfv3.passive_interface_default") | Boolean |  | `True` |  | Set passive-interface default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "network_services.[].vrfs.[].ospfv3.address_family_ipv4") | Dictionary |  |  |  | OSPFv3 IPv4 address family configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].ospfv3.address_family_ipv4.enabled") | Boolean |  |  |  |  |
@@ -98,7 +98,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "network_services.[].vrfs.[].ospfv3.nodes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].ospfv3.nodes.[]") | String |  |  |  | Hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_services.[].vrfs.[].ospfv3.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "network_services.[].vrfs.[].redistribute_ospfv3") | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospfv3 inside the VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "network_services.[].vrfs.[].redistribute_ospfv3") | Boolean |  | `True` |  | Enable BGP redistribution of OSPFv3 routes for this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "network_services.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "network_services.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "network_services.[].vrfs.[].svis.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
@@ -107,20 +107,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv4") | Dictionary |  |  |  | OSPFv3 IPv4 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv4.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv6") | Dictionary |  |  |  | OSPFv3 IPv6 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv6.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.passive_interface") | Boolean |  | `False` |  | Include interface but without actively running OSPF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "network_services.[].vrfs.[].svis.[].nodes.[].ospfv3.network_point_to_point") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3") | Dictionary |  |  |  | OSPFv3 interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.address_family_ipv4") | Dictionary |  |  |  | OSPFv3 IPv4 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.address_family_ipv4.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.address_family_ipv6") | Dictionary |  |  |  | OSPFv3 IPv6 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.address_family_ipv6.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.passive_interface") | Boolean |  | `False` |  | Include interface but without actively running OSPF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "network_services.[].vrfs.[].svis.[].ospfv3.network_point_to_point") | Boolean |  | `False` |  |  |
     | [<samp>svi_profiles</samp>](## "svi_profiles") | List, items: Dictionary |  |  |  | Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.<br>Keys are the same used under SVIs. Keys defined under SVIs take precedence.<br>Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:<br>1. svi.nodes[inventory_hostname].structured_config<br>2. svi_profile.nodes[inventory_hostname].structured_config<br>3. svi_parent_profile.nodes[inventory_hostname].structured_config<br>4. Further ancestor profiles' nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance is enabled)<br>5. svi.structured_config<br>6. svi_profile.structured_config<br>7. svi_parent_profile.structured_config<br>8. Further ancestor profiles' structured_config in nearest-to-farthest order (when recursive inheritance is enabled)<br> |
@@ -131,20 +131,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].ospfv3.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "svi_profiles.[].nodes.[].ospfv3.address_family_ipv4") | Dictionary |  |  |  | OSPFv3 IPv4 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].ospfv3.address_family_ipv4.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].nodes.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].nodes.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "svi_profiles.[].nodes.[].ospfv3.address_family_ipv6") | Dictionary |  |  |  | OSPFv3 IPv6 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].ospfv3.address_family_ipv6.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].nodes.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].nodes.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "svi_profiles.[].nodes.[].ospfv3.passive_interface") | Boolean |  | `False` |  | Include interface but without actively running OSPF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "svi_profiles.[].nodes.[].ospfv3.network_point_to_point") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "svi_profiles.[].ospfv3") | Dictionary |  |  |  | OSPFv3 interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].ospfv3.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "svi_profiles.[].ospfv3.address_family_ipv4") | Dictionary |  |  |  | OSPFv3 IPv4 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].ospfv3.address_family_ipv4.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].ospfv3.address_family_ipv4.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "svi_profiles.[].ospfv3.address_family_ipv6") | Dictionary |  |  |  | OSPFv3 IPv6 address family configuration on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].ospfv3.address_family_ipv6.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].ospfv3.address_family_ipv6.area") | String |  | `0.0.0.0` |  | OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "svi_profiles.[].ospfv3.passive_interface") | Boolean |  | `False` |  | Include interface but without actively running OSPF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "svi_profiles.[].ospfv3.network_point_to_point") | Boolean |  | `False` |  |  |
 
@@ -179,7 +179,7 @@
               # Router ID to use for OSPFv3 in this VRF.
               # This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".
               # - "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."
-              # - "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+              # - "none" will not configure an OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
               # - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
               router_id: <str; default="main_router_id">
 
@@ -231,7 +231,7 @@
               # Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
               structured_config: <dict>
 
-            # Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
+            # Enable BGP redistribution of OSPFv3 routes for this VRF.
             redistribute_ospfv3: <bool; default=True>
 
             # List of SVIs.
@@ -256,14 +256,14 @@
                       address_family_ipv4:
                         enabled: <bool>
 
-                        # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                        # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                         area: <str; default="0.0.0.0">
 
                       # OSPFv3 IPv6 address family configuration on the interface.
                       address_family_ipv6:
                         enabled: <bool>
 
-                        # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                        # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                         area: <str; default="0.0.0.0">
 
                       # Include interface but without actively running OSPF.
@@ -278,14 +278,14 @@
                   address_family_ipv4:
                     enabled: <bool>
 
-                    # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                    # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                     area: <str; default="0.0.0.0">
 
                   # OSPFv3 IPv6 address family configuration on the interface.
                   address_family_ipv6:
                     enabled: <bool>
 
-                    # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                    # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                     area: <str; default="0.0.0.0">
 
                   # Include interface but without actively running OSPF.
@@ -319,7 +319,7 @@
               # Router ID to use for OSPFv3 in this VRF.
               # This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".
               # - "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."
-              # - "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+              # - "none" will not configure an OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
               # - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
               router_id: <str; default="main_router_id">
 
@@ -371,7 +371,7 @@
               # Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
               structured_config: <dict>
 
-            # Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
+            # Enable BGP redistribution of OSPFv3 routes for this VRF.
             redistribute_ospfv3: <bool; default=True>
 
             # List of SVIs.
@@ -396,14 +396,14 @@
                       address_family_ipv4:
                         enabled: <bool>
 
-                        # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                        # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                         area: <str; default="0.0.0.0">
 
                       # OSPFv3 IPv6 address family configuration on the interface.
                       address_family_ipv6:
                         enabled: <bool>
 
-                        # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                        # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                         area: <str; default="0.0.0.0">
 
                       # Include interface but without actively running OSPF.
@@ -418,14 +418,14 @@
                   address_family_ipv4:
                     enabled: <bool>
 
-                    # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                    # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                     area: <str; default="0.0.0.0">
 
                   # OSPFv3 IPv6 address family configuration on the interface.
                   address_family_ipv6:
                     enabled: <bool>
 
-                    # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                    # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                     area: <str; default="0.0.0.0">
 
                   # Include interface but without actively running OSPF.
@@ -463,14 +463,14 @@
               address_family_ipv4:
                 enabled: <bool>
 
-                # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                 area: <str; default="0.0.0.0">
 
               # OSPFv3 IPv6 address family configuration on the interface.
               address_family_ipv6:
                 enabled: <bool>
 
-                # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                 area: <str; default="0.0.0.0">
 
               # Include interface but without actively running OSPF.
@@ -485,14 +485,14 @@
           address_family_ipv4:
             enabled: <bool>
 
-            # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+            # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
             area: <str; default="0.0.0.0">
 
           # OSPFv3 IPv6 address family configuration on the interface.
           address_family_ipv6:
             enabled: <bool>
 
-            # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+            # OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
             area: <str; default="0.0.0.0">
 
           # Include interface but without actively running OSPF.

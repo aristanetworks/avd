@@ -199,10 +199,9 @@ router_ospfv3:
       redistribute:
         bgp:
           enabled: true
-          route_map: ipv4_ospf_rm
-        connected:
+        static:
           enabled: true
-          route_map: ipv4_ospf_rm
+          route_map: ipv6_ospf_rm
   - name: Tenant_OSPFv3_Redistribute_IPv6
     router_id: 192.168.255.104
     passive_interface_default: true
@@ -210,10 +209,6 @@ router_ospfv3:
       redistribute:
         bgp:
           enabled: true
-          route_map: ipv6_ospf_rm
-        connected:
-          enabled: true
-          route_map: ipv6_ospf_rm
         static:
           enabled: true
           route_map: ipv6_ospf_rm
@@ -266,7 +261,7 @@ vlan_interfaces:
     tenants:
     - Tenant_OSPFv3_Redistribute
 - name: Vlan203
-  description: Tenant_OSPFv3_Redistribute_Include_Leaked_203 description
+  description: Tenant_OSPFv3_Redistribute_IPv4_203 description
   shutdown: false
   vrf: Tenant_OSPFv3_Redistribute_IPv4
   ipv6_enable: true
@@ -283,7 +278,7 @@ vlan_interfaces:
     tenants:
     - Tenant_OSPFv3_Redistribute_IPv4
 - name: Vlan206
-  description: Tenant_OSPFv3_No_Redistribution_206 description
+  description: Tenant_OSPFv3_Redistribute_IPv6_206 description
   shutdown: false
   vrf: Tenant_OSPFv3_Redistribute_IPv6
   ipv6_enable: true
@@ -321,12 +316,12 @@ vlans:
     tenants:
     - Tenant_OSPFv3_Redistribute
 - id: 203
-  name: Tenant_OSPFv3_Redistribute_Include_Leaked_203
+  name: Tenant_OSPFv3_Redistribute_IPv4_203
   metadata:
     tenants:
     - Tenant_OSPFv3_Redistribute_IPv4
 - id: 206
-  name: Tenant_OSPFv3_No_Redistribution_206
+  name: Tenant_OSPFv3_Redistribute_IPv6_206
   metadata:
     tenants:
     - Tenant_OSPFv3_Redistribute_IPv6

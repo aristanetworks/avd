@@ -32825,10 +32825,10 @@ class EosDesigns(EosDesignsRootModel):
                 "diagnostic_loopback".
                 - "main_router_id" will use the IP address of Loopback0 or the common `router
                 general` Router ID if `use_router_general_for_router_id` is set."
-                - "none" will not configure a OSPF
-                Router ID for this VRF. EOS will use the main OSPF Router ID.
-                - "diagnostic_loopback" will use the
-                IP address of the VRF Diagnostic Loopback interface.
+                - "none" will not configure an
+                OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+                - "diagnostic_loopback" will use
+                the IP address of the VRF Diagnostic Loopback interface.
 
                 Default value: `"main_router_id"`
                 """
@@ -32882,10 +32882,10 @@ class EosDesigns(EosDesignsRootModel):
                                "diagnostic_loopback".
                                - "main_router_id" will use the IP address of Loopback0 or the common `router
                                general` Router ID if `use_router_general_for_router_id` is set."
-                               - "none" will not configure a OSPF
-                               Router ID for this VRF. EOS will use the main OSPF Router ID.
-                               - "diagnostic_loopback" will use the
-                               IP address of the VRF Diagnostic Loopback interface.
+                               - "none" will not configure an
+                               OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+                               - "diagnostic_loopback" will use
+                               the IP address of the VRF Diagnostic Loopback interface.
                             passive_interface_default: Set passive-interface default.
                             address_family_ipv4:
                                OSPFv3 IPv4 address family configuration.
@@ -33971,7 +33971,7 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool | None
                             area: str
                             """
-                            OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                            OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                             Default value: `"0.0.0.0"`
                             """
@@ -33987,7 +33987,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                        area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                     """
 
@@ -33998,7 +33998,7 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool | None
                             area: str
                             """
-                            OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                            OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                             Default value: `"0.0.0.0"`
                             """
@@ -34014,7 +34014,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                        area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                     """
 
@@ -35522,7 +35522,7 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool | None
                         area: str
                         """
-                        OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                        OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                         Default value: `"0.0.0.0"`
                         """
@@ -35538,7 +35538,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                    area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                 """
 
@@ -35549,7 +35549,7 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool | None
                         area: str
                         """
-                        OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                        OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                         Default value: `"0.0.0.0"`
                         """
@@ -35565,7 +35565,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                    area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                 """
 
@@ -40026,7 +40026,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             redistribute_ospfv3: bool
             """
-            Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
+            Enable BGP redistribution of OSPFv3 routes for this VRF.
 
             Default value: `True`
             """
@@ -40361,7 +40361,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         redistribute_ospf: Non-selectively enabling or disabling redistribute ospf inside the VRF.
-                        redistribute_ospfv3: Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
+                        redistribute_ospfv3: Enable BGP redistribution of OSPFv3 routes for this VRF.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
                            `<network_services_key>.[].evpn_l3_multicast.enabled`.
@@ -52159,7 +52159,7 @@ class EosDesigns(EosDesignsRootModel):
                     enabled: bool | None
                     area: str
                     """
-                    OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                    OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                     Default value: `"0.0.0.0"`
                     """
@@ -52175,7 +52175,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 enabled: enabled
-                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                             """
 
@@ -52186,7 +52186,7 @@ class EosDesigns(EosDesignsRootModel):
                     enabled: bool | None
                     area: str
                     """
-                    OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                    OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                     Default value: `"0.0.0.0"`
                     """
@@ -52202,7 +52202,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 enabled: enabled
-                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                             """
 
@@ -53685,7 +53685,7 @@ class EosDesigns(EosDesignsRootModel):
                 enabled: bool | None
                 area: str
                 """
-                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                 Default value: `"0.0.0.0"`
                 """
@@ -53701,7 +53701,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             enabled: enabled
-                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                            area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                         """
 
@@ -53712,7 +53712,7 @@ class EosDesigns(EosDesignsRootModel):
                 enabled: bool | None
                 area: str
                 """
-                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                 Default value: `"0.0.0.0"`
                 """
@@ -53728,7 +53728,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             enabled: enabled
-                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                            area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                         """
 
@@ -86149,10 +86149,10 @@ class EosDesigns(EosDesignsRootModel):
                         "diagnostic_loopback".
                         - "main_router_id" will use the IP address of Loopback0 or the common `router
                         general` Router ID if `use_router_general_for_router_id` is set."
-                        - "none" will not configure a OSPF
-                        Router ID for this VRF. EOS will use the main OSPF Router ID.
-                        - "diagnostic_loopback" will use the
-                        IP address of the VRF Diagnostic Loopback interface.
+                        - "none" will not configure an
+                        OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+                        - "diagnostic_loopback" will use
+                        the IP address of the VRF Diagnostic Loopback interface.
 
                         Default value: `"main_router_id"`
                         """
@@ -86206,10 +86206,10 @@ class EosDesigns(EosDesignsRootModel):
                                        "diagnostic_loopback".
                                        - "main_router_id" will use the IP address of Loopback0 or the common `router
                                        general` Router ID if `use_router_general_for_router_id` is set."
-                                       - "none" will not configure a OSPF
-                                       Router ID for this VRF. EOS will use the main OSPF Router ID.
-                                       - "diagnostic_loopback" will use the
-                                       IP address of the VRF Diagnostic Loopback interface.
+                                       - "none" will not configure an
+                                       OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+                                       - "diagnostic_loopback" will use
+                                       the IP address of the VRF Diagnostic Loopback interface.
                                     passive_interface_default: Set passive-interface default.
                                     address_family_ipv4:
                                        OSPFv3 IPv4 address family configuration.
@@ -87308,7 +87308,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None
                                     area: str
                                     """
-                                    OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                    OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                     Default value: `"0.0.0.0"`
                                     """
@@ -87324,7 +87324,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                             Args:
                                                 enabled: enabled
-                                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                                area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                             """
 
@@ -87335,7 +87335,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None
                                     area: str
                                     """
-                                    OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                    OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                     Default value: `"0.0.0.0"`
                                     """
@@ -87351,7 +87351,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                             Args:
                                                 enabled: enabled
-                                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                                area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                             """
 
@@ -88861,7 +88861,7 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: bool | None
                                 area: str
                                 """
-                                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                 Default value: `"0.0.0.0"`
                                 """
@@ -88877,7 +88877,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             enabled: enabled
-                                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                            area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                         """
 
@@ -88888,7 +88888,7 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: bool | None
                                 area: str
                                 """
-                                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                 Default value: `"0.0.0.0"`
                                 """
@@ -88904,7 +88904,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             enabled: enabled
-                                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                                            area: OSPFv3 Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
 
                                         """
 
@@ -93382,7 +93382,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     redistribute_ospfv3: bool
                     """
-                    Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
+                    Enable BGP redistribution of OSPFv3 routes for this VRF.
 
                     Default value: `True`
                     """
@@ -93717,7 +93717,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 redistribute_ospf: Non-selectively enabling or disabling redistribute ospf inside the VRF.
-                                redistribute_ospfv3: Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
+                                redistribute_ospfv3: Enable BGP redistribution of OSPFv3 routes for this VRF.
                                 evpn_l3_multicast:
                                    Explicitly enable or disable evpn_l3_multicast to override setting of
                                    `<network_services_key>.[].evpn_l3_multicast.enabled`.

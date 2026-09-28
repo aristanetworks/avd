@@ -803,7 +803,7 @@ keys:
                       Router ID to use for OSPFv3 in this VRF.
                       This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".
                       - "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."
-                      - "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+                      - "none" will not configure an OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
                     default: main_router_id
                   passive_interface_default:
@@ -898,7 +898,7 @@ keys:
                   table: network-services-vrfs-ospfv3-settings
                 type: bool
                 default: true
-                description: Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
+                description: Enable BGP redistribution of OSPFv3 routes for this VRF.
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings

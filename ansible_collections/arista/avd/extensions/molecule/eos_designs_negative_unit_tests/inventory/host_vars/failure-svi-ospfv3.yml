@@ -16,7 +16,7 @@ tenants:
     mac_vrf_vni_base: 10000
     vrfs:
       - name: OSPFv3_TEST_SVI
-        description: "IGMP_QUERIER_TEST_3"
+        description: "OSPFv3_TEST_SVI description"
         vrf_vni: 41
         svis:
           - id: 21

@@ -16,8 +16,8 @@ tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
     vrfs:
-      - name: OSPFv3_TEST_SVI
-        description: "IGMP_QUERIER_TEST_3"
+      - name: OSPFv3_TEST
+        description: "OSPFv3_TEST description"
         vrf_vni: 41
         ospfv3:
           enabled: true
@@ -35,4 +35,4 @@ tenants:
                 enabled: true
 
 expected_error_message: >-
-  OSPFv3 IPv6 address family is enabled on SVI 'VLAN_21' but 'ipv6_enable' is not set under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST_SVI].svis[id=21]'.
+  OSPFv3 is enabled on SVI 'VLAN_21' but neither 'ipv6_enable' nor 'ipv6_address' is set under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST].svis[id=21]'.

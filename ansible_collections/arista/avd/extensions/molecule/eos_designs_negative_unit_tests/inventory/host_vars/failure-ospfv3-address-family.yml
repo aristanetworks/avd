@@ -15,8 +15,8 @@ tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
     vrfs:
-      - name: OSPFv3_TEST_SVI
-        description: "IGMP_QUERIER_TEST_3"
+      - name: OSPFv3_TEST
+        description: "OSPFv3_TEST description"
         vrf_vni: 41
         ospfv3:
           enabled: true
@@ -36,4 +36,4 @@ tenants:
 
 expected_error_message: >-
   OSPFv3 is enabled on vrf 'OSPFv3_TEST_SVI' but neither 'address_family_ipv4' nor 'address_family_ipv6'
-  is enabled under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST_SVI].ospfv3'.
+  is enabled under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST].ospfv3'.

@@ -571,15 +571,15 @@ class FilteredTenantsMixin(Protocol):
             if not vrf.ospfv3.enabled:
                 msg = f"OSPFv3 is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
                 raise AristaAvdError(msg)
+            if not svi.ipv6_enable and not svi.ipv6_address:
+                msg = (
+                    f"OSPFv3 is enabled on SVI '{svi.name}' but neither 'ipv6_enable' nor 'ipv6_address' is set under"
+                    f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
+                )
+                raise AristaAvdError(msg)
             if svi.ospfv3.address_family_ipv4.enabled:
                 config.ospfv3.ipv4.area = svi.ospfv3.address_family_ipv4.area
             if svi.ospfv3.address_family_ipv6.enabled:
-                if not svi.ipv6_enable:
-                    msg = (
-                        f"OSPFv3 IPv6 address family is enabled on SVI '{svi.name}' but 'ipv6_enable' is not set under"
-                        f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
-                    )
-                    raise AristaAvdError(msg)
                 config.ospfv3.ipv6.area = svi.ospfv3.address_family_ipv6.area
             config.ospfv3._update(
                 passive_interface=svi.ospfv3.passive_interface,
