@@ -20,4 +20,7 @@ source_interfaces:
 ssh_settings:
   client_vrfs:
     - name: use_mgmt_interface_vrf
+    # This resolves to the same default VRF and source interface as the entry above.
+    - name: default
+      source_interface: Management1
     - name: use_inband_mgmt_vrf

@@ -472,7 +472,7 @@ class AvdStructuredConfigBaseProtocol(
                     msg = f"ssh_settings.client_vrfs[name={client_vrf.name}].source_interface"
                     raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
-                if vrf_name == "default" and ip_ssh_client.source_interface:
+                if vrf_name == "default" and ip_ssh_client.source_interface and ip_ssh_client.source_interface != source_interface:
                     raise AristaAvdDuplicateDataError(
                         context="ssh_settings.client_vrfs",
                         context_item_a=str({"name": vrf_name, "source_interface": source_interface}),
