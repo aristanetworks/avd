@@ -558,4 +558,3 @@ See the [Node type settings](#node-type-settings) section for available keys.
 --8<--
 schemas/avd_design/docs/tables/devices.md
 --8<--
-
