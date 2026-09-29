@@ -6,6 +6,8 @@ import warnings
 from abc import abstractmethod
 from collections.abc import Generator
 from contextlib import contextmanager
+from logging.handlers import QueueHandler, QueueListener
+from multiprocessing import get_context
 from typing import Any, ClassVar, final
 
 from ansible.plugins.action import ActionBase
@@ -13,7 +15,7 @@ from ansible.plugins.action import ActionBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.raise_action_fail import raise_action_fail
 
 from .log_config import AVDLoggingConfig, LoggerState, get_avd_log_level
-from .log_handlers import AnsibleDisplayHandler, ContextFilter, SaveToResultHandler
+from .log_handlers import AnsibleDisplayHandler, ContextFilter, ErrorTrackingHandler, LogContextFilter, LoggingOutcome, SaveToResultHandler, log_context
 
 
 def _handle_captured_warnings(captured_warnings: list[warnings.WarningMessage], result: dict[str, Any]) -> None:
@@ -68,6 +70,9 @@ class AVDActionPlugin(ActionBase):
         Update the `self.result` dictionary attribute in-place to return data to Ansible.
         """
 
+    def _handle_logging_outcome(self, logging_outcome: LoggingOutcome) -> None:
+        """Allow subclasses to apply plugin-specific policy after all log records are handled."""
+
     @final
     def run(self, tmp: Any = None, task_vars: dict[str, Any] | None = None) -> dict[str, Any]:
         """Ansible Action entry point."""
@@ -78,7 +83,10 @@ class AVDActionPlugin(ActionBase):
         del tmp  # tmp no longer has any effect
 
         # Prepare handlers, filters, and format based on logging config and task arguments
+        logging_outcome = LoggingOutcome() if self._logging_config.track_log_errors else None
         temp_handlers: list[logging.Handler] = []
+        if logging_outcome is not None:
+            temp_handlers.append(ErrorTrackingHandler(logging_outcome))
         if self._task.args.get("save_logs", False):
             temp_handlers.append(SaveToResultHandler(result_dict=self.result))
         if self._task.args.get("live_display", True):
@@ -93,17 +101,26 @@ class AVDActionPlugin(ActionBase):
         if self._logging_config.add_hostname_context:
             context_data["hostname"] = task_vars.get("inventory_hostname")
             format_parts.append("<%(hostname)s>")
+        if self._logging_config.log_context is not None:
+            format_parts.append("[%(avd_log_context)s]")
 
         format_parts.append("%(message)s")
         log_format = " ".join(format_parts)
 
         temp_filters: list[logging.Filter] = [ContextFilter(context_data)] if context_data else []
+        producer_filters: list[logging.Filter] = [LogContextFilter()] if self._logging_config.log_context is not None else []
 
         try:
             # Use the context manager to apply changes and ensure cleanup
             with (
                 warnings.catch_warnings(record=True) as captured_warnings,
-                self._logging_context(temp_handlers=temp_handlers, temp_filters=temp_filters, log_format=log_format),
+                log_context(self._logging_config.log_context),
+                self._logging_context(
+                    temp_handlers=temp_handlers,
+                    temp_filters=temp_filters,
+                    producer_filters=producer_filters,
+                    log_format=log_format,
+                ),
             ):
                 # DeprecationWarning is ignored by default
                 # NOTE: This will override PYTHONWARNINGS environment variable
@@ -112,6 +129,10 @@ class AVDActionPlugin(ActionBase):
                 # Run the plugin
                 self.main(task_vars)
 
+            if logging_outcome is not None:
+                # QueueListener.stop() has drained multiprocessing records before this hook runs.
+                # Logging observation is centralized here, while each plugin owns any result policy.
+                self._handle_logging_outcome(logging_outcome)
             _handle_captured_warnings(captured_warnings, self.result)
 
         except Exception as exc:
@@ -126,6 +147,7 @@ class AVDActionPlugin(ActionBase):
         self,
         temp_handlers: list[logging.Handler],
         temp_filters: list[logging.Filter],
+        producer_filters: list[logging.Filter],
         log_format: str,
     ) -> Generator[None, None, None]:
         """
@@ -138,6 +160,7 @@ class AVDActionPlugin(ActionBase):
         Args:
             temp_handlers: A list of temporary handler instances to add to the loggers.
             temp_filters: A list of temporary filter instances to add to the handlers.
+            producer_filters: Filters applied before records enter a multiprocessing queue.
             log_format: The format string to apply to the temporary handlers.
 
         Yields:
@@ -154,6 +177,20 @@ class AVDActionPlugin(ActionBase):
         original_states: dict[str, LoggerState] = {}
         target_loggers = [logging.getLogger(name) for name in self._logging_config.target_loggers]
 
+        log_queue = None
+        queue_listener = None
+        configured_handlers = temp_handlers
+        if self._logging_config.use_multiprocessing_queue and temp_handlers:
+            # The action plugins using queue logging create their process pools with the
+            # explicit "fork" context, so the queue must come from the same context.
+            log_queue = get_context("fork").Queue()
+            configured_handlers = [QueueHandler(log_queue)]
+            queue_listener = QueueListener(log_queue, *temp_handlers, respect_handler_level=True)
+
+        for configured_handler in configured_handlers:
+            for producer_filter in producer_filters:
+                configured_handler.addFilter(producer_filter)
+
         for logger in target_loggers:
             # Save original state (level, handlers, propagation)
             original_states[logger.name] = LoggerState(level=logger.level, handlers=tuple(logger.handlers), propagate=logger.propagate)
@@ -167,18 +204,47 @@ class AVDActionPlugin(ActionBase):
             # Apply new configuration
             desired_level = get_avd_log_level(logger.name)
             logger.setLevel(desired_level)
-            for temp_handler in temp_handlers:
-                logger.addHandler(temp_handler)
+            for configured_handler in configured_handlers:
+                logger.addHandler(configured_handler)
 
+        active_exception: BaseException | None = None
+        listener_started = False
         try:
+            if queue_listener is not None:
+                queue_listener.start()
+                listener_started = True
             yield
+        except BaseException as exc:
+            active_exception = exc
+            raise
         finally:
             for logger in target_loggers:
                 # The temporary handlers are the only one present, so clear them
                 logger.handlers.clear()
 
+            cleanup_exceptions: list[Exception] = []
+            if listener_started and queue_listener is not None:
+                try:
+                    # QueueListener.stop() places a sentinel after all queued records
+                    # and waits for the listener thread, so records are drained before
+                    # the action returns.
+                    queue_listener.stop()
+                except Exception as exc:  # pragma: no cover - defensive cleanup
+                    cleanup_exceptions.append(exc)
+
+            if log_queue is not None:
+                try:
+                    log_queue.close()
+                    log_queue.join_thread()
+                except Exception as exc:  # pragma: no cover - defensive cleanup
+                    cleanup_exceptions.append(exc)
+
+            for logger in target_loggers:
                 # Restore the original state from before we started
                 original_state = original_states[logger.name]
                 logger.setLevel(original_state.level)
                 logger.handlers.extend(original_state.handlers)
                 logger.propagate = original_state.propagate
+
+            if cleanup_exceptions and active_exception is None:
+                raise cleanup_exceptions[0]
