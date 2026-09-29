@@ -16,7 +16,7 @@ PyAVD does not provide inventory or variable management, however it can serve as
 
 Supported features:
 
-- Validation of inputs based on the [AVD Design data models](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md).
+- Validation of inputs based on the [AVD Design data models](../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/data-models.md).
 - Generation of "avd_facts" and "structured config" to be used in other PyAVD functions.
 - Validation of "structured config" based on the [EOS Config data models](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md).
 - Generation of device configuration.

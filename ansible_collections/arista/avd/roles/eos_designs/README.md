@@ -18,7 +18,7 @@ The **eos_designs** role:
 
 - Enables network engineers to deploy Arista Leaf & Spine fabrics with underlay and overlay network services effectively and with consistency.
 - Designed to be extended easily, leveraging a ***"stackable template architecture."***
-  - Enabled by the [eos_designs_custom_templates](docs/role-configuration.md#custom-templates) data model.
+  - Enabled by the [eos_designs_custom_templates](docs/user-manual/role-configuration.md#custom-templates) data model.
 - Designed to be used with the [eos_cli_config_gen](../eos_cli_config_gen/README.md) role to generate a complete switch configuration and applied using a config replace strategy with either
   - [eos_config_deploy_eapi](../eos_config_deploy_eapi/README.md) role.
   - [cv_deploy](../cv_deploy/README.md)  role.
@@ -35,7 +35,7 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 
 **Inputs:**
 
-- [AVD Design](./docs/data-models.md) inputs according to supported data models.
+- [AVD Design](./docs/user-manual/data-models.md) inputs according to supported data models.
 - Desired variables are defined in: role defaults, group_vars, and host_vars variables.
 - If desired, the role can be extended to leverage data from dynamic sources such as an IPAM or CMDB.
 
@@ -153,13 +153,13 @@ Requirements are located in the [collection installation guide](../../../../../d
 
 ## Input Variables
 
-The input variables are documented in the [Input Variables](docs/data-models.md) section.
+The input variables are documented in the [Input Variables](docs/user-manual/data-models.md) section.
 
 Input variables are grouped by configuration elements and are typically stored in different group_vars files.
 
 ## Role Configuration
 
-The role configuration are documented in the [Role Configuration](docs/role-configuration.md) section.
+The role configuration are documented in the [Role Configuration](docs/user-manual/role-configuration.md) section.
 
 Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
 

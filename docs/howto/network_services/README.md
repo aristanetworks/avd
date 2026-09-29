@@ -220,6 +220,6 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 
 For complete details on all available properties, see:
 
-- [Network Services Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#network-services)
-- [SVI Profiles Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#svi-profiles-settings)
-- [Node Type Network Services Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-network-services-configuration)
+- [Network Services Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/network-services.md#network-services)
+- [SVI Profiles Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/network-services.md#svi-profiles-settings)
+- [Node Type Network Services Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/node-type.md#node-type-network-services-configuration)
