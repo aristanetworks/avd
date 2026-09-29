@@ -45,6 +45,28 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
     - `loopback_ipv6_pool` defined for each node type
     - `router_id_pool` for BGP Router ID (IPv4 format required by BGP)
 
+## Optional BGP Peer-Group Naming
+
+When using `underlay_ipv6: true` and `underlay_ipv6_numbered: true`, you can use IPv6-friendly BGP peer-group names under `bgp_peer_groups`.
+
+Use the new keys below to override the legacy IPv4-named keys:
+
+- `bgp_peer_groups.underlay_peers` (takes precedence over `bgp_peer_groups.ipv4_underlay_peers`)
+- `bgp_peer_groups.mlag_underlay_peer` (takes precedence over `bgp_peer_groups.mlag_ipv4_underlay_peer`)
+- `bgp_peer_groups.mlag_vrfs_peer` (takes precedence over `bgp_peer_groups.mlag_ipv4_vrfs_peer`)
+
+The new keys do not have a default `name`, so setting `name` is the signal to use them.
+
+```yaml title="IPv6-friendly peer-group names"
+bgp_peer_groups:
+  underlay_peers:
+    name: UNDERLAY-PEERS
+  mlag_underlay_peer:
+    name: MLAG-UNDERLAY-PEER
+  mlag_vrfs_peer:
+    name: MLAG-VRFS-PEER
+```
+
 ## IPv6 Pool Types
 
 AVD uses several IPv6 pools for different purposes:

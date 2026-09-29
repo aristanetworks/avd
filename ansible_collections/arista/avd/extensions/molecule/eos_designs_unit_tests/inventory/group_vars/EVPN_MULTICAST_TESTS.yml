@@ -21,7 +21,7 @@ fabric_sflow:
   l3_interfaces: true
 
 bgp_peer_groups:
-  mlag_ipv4_vrfs_peer:
+  mlag_vrfs_peer:
     name: MLAG-IPv4-VRFS-PEER
 
 tenants:

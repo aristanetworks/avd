@@ -38,13 +38,14 @@ class RouterBgpMixin(Protocol):
             return
         # Adding the peer-group as we know we either have neighbors or neighbor_interfaces to configure
         self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers()
+        underlay_bgp_peer_group_name = self.shared_utils.underlay_bgp_peer_group_name
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:
             for link in self._underlay_p2p_links:
                 self.structured_config.router_bgp.neighbor_interfaces.append_new(
                     name=link.interface,
-                    peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                    peer_group=underlay_bgp_peer_group_name,
                     remote_as=self.shared_utils.get_asn(link.peer_bgp_as),
                     metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=link.peer),
                     description=f"{link.peer}_{link.peer_interface}",
@@ -57,7 +58,7 @@ class RouterBgpMixin(Protocol):
 
                     self.structured_config.router_bgp.vrfs[subinterface.vrf].neighbor_interfaces.append_new(
                         name=subinterface.interface,
-                        peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                        peer_group=underlay_bgp_peer_group_name,
                         remote_as=self.shared_utils.get_asn(link.peer_bgp_as),
                         # TODO: - implement some centralized way to generate these descriptions
                         description=f"{link.peer}_{subinterface.peer_interface}_vrf_{subinterface.vrf}",
@@ -68,7 +69,7 @@ class RouterBgpMixin(Protocol):
             for link in self._underlay_p2p_links:
                 neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
                     ip_address=cast("str", link.peer_ip_address),
-                    peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                    peer_group=underlay_bgp_peer_group_name,
                     remote_as=self.shared_utils.get_asn(link.peer_bgp_as),
                     description=f"{link.peer}_{link.peer_interface}",
                     bfd=link.bfd,
@@ -94,7 +95,7 @@ class RouterBgpMixin(Protocol):
                     if subinterface.peer_ipv6_address is not None:
                         self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
                             ip_address=cast("str", subinterface.peer_ipv6_address),
-                            peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                            peer_group=underlay_bgp_peer_group_name,
                             remote_as=self.shared_utils.get_asn(link.peer_bgp_as),
                             description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                             bfd=link.bfd,
@@ -102,7 +103,7 @@ class RouterBgpMixin(Protocol):
                     else:
                         self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
                             ip_address=cast("str", subinterface.peer_ip_address),
-                            peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                            peer_group=underlay_bgp_peer_group_name,
                             remote_as=self.shared_utils.get_asn(link.peer_bgp_as),
                             description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                             bfd=link.bfd,

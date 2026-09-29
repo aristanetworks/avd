@@ -33,10 +33,10 @@ bgp_peer_groups:
   # all passwords set to "arista"
   evpn_overlay_peers:
     password: Q4fqtbqcZ7oQuKfuWtNGRQ==
-  ipv4_underlay_peers:
+  underlay_peers:
     name: IPv6-UNDERLAY-PEERS
     password: F0bdF6JLcJtagc6PCN8W0Q==
-  mlag_ipv4_underlay_peer:
+  mlag_underlay_peer:
     name: MLAG-IPv6-UNDERLAY-PEER
     password: GNtuK+/vTwZwSZiwj1FK/Q==
 
