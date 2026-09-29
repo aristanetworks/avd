@@ -10,7 +10,7 @@ title: AVD Design data models for endpoint connectivity
 
 # Endpoint connectivity
 
-Model how servers and other endpoints attach to the fabric using connected endpoints, network ports, and shared port profiles.
+Model how servers and other endpoints attach to the fabric using connected endpoints, network ports, shared port profiles, and related access control features such as 802.1X and address locking.
 
 ## Endpoint connectivity
 
@@ -399,4 +399,16 @@ The keys can be customized to provide a better better organization or grouping o
 
 --8<--
 schemas/avd_design/docs/tables/connected-endpoints-keys.md
+--8<--
+
+## 802.1X Settings
+
+--8<--
+schemas/avd_design/docs/tables/dot1x-settings.md
+--8<--
+
+## Address locking settings
+
+--8<--
+schemas/avd_design/docs/tables/address-locking-settings.md
 --8<--
