@@ -4585,6 +4585,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "tunnel_requests_disabled": {"type": bool},
             "mlag_peerlink_requests_disabled": {"type": bool},
             "client_requests": {"type": ClientRequests},
+            "reply_source_address_validation": {"type": bool},
         }
         servers: Servers
         """Subclass of AvdList with `str` items."""
@@ -4596,6 +4597,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
+        reply_source_address_validation: bool | None
+        """Validate reply source address matches configured server."""
 
         if TYPE_CHECKING:
 
@@ -4606,6 +4609,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 tunnel_requests_disabled: bool | UndefinedType | None = Undefined,
                 mlag_peerlink_requests_disabled: bool | UndefinedType | None = Undefined,
                 client_requests: ClientRequests | UndefinedType = Undefined,
+                reply_source_address_validation: bool | UndefinedType | None = Undefined,
             ) -> None:
                 """
                 DhcpRelay.
@@ -4621,6 +4625,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Configure DHCP client request settings.
 
                        Subclass of AvdModel.
+                    reply_source_address_validation: Validate reply source address matches configured server.
 
                 """
 
