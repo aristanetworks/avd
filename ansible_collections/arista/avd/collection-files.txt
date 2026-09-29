@@ -452,7 +452,6 @@ roles/eos_designs/docs/how-to/ptp.md
 roles/eos_designs/docs/how-to/wan.md
 roles/eos_designs/docs/node-type-variables.md
 roles/eos_designs/docs/role-configuration.md
-roles/eos_designs/docs/user-manual/access-and-control.md
 roles/eos_designs/docs/user-manual/anta-runner.md
 roles/eos_designs/docs/user-manual/catalog.md
 roles/eos_designs/docs/user-manual/cloudvision.md

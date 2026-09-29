@@ -253,7 +253,6 @@ nav:
               - Catalogs: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/catalog.md
               - ANTA Runner: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/anta-runner.md
               - Future Behaviors: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/future-behaviors.md
-              - Access and Control: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/access-and-control.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
           - Schema Explorer: docs/schema-explorer.md
       - Ansible and AVD: docs/user-manual/intro-to-ansible-and-avd.md
