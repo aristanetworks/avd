@@ -215,7 +215,6 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
     """
     collection_meta = _get_collection_metadata(collection_name)
     specifiers_set = SpecifierSet(collection_meta.get("requires_ansible", ""))
-    deprecation_specifiers_set = SpecifierSet()
     info["ansible_version"] = running_version
 
     if len(specifiers_set) > 0:
@@ -223,14 +222,6 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
     if not specifiers_set.contains(running_version):
         LOGGER.error("Ansible Version running %s - Requirement is %s", running_version, str(specifiers_set))
         return False
-    # Keeping this for next deprecation - set the value of deprecation_specifiers_set when needed and adjust message
-    if not deprecation_specifiers_set.contains(running_version):
-        msg = (
-            f"You are currently running ansible-core {running_version}. The next minor release of AVD after November 6th 2023 will drop support for"
-            " ansible-core<2.14. Python 3.8 support will be dropped at the same time as ansible-core>=2.14 does not support it. See the following link"
-            " for more details: https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix"
-        )
-        warnings.warn(msg, DeprecationWarning, stacklevel=2)
 
     return True
 

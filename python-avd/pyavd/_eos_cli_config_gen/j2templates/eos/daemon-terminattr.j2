@@ -81,6 +81,9 @@ daemon TerminAttr
 {%     if daemon_terminattr.smashexcludes is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -smashexcludes=" ~ daemon_terminattr.smashexcludes %}
 {%     endif %}
+{%     if daemon_terminattr.sysdbexcludes is arista.avd.defined %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -sysdbexcludes=" ~ daemon_terminattr.sysdbexcludes %}
+{%     endif %}
 {%     if daemon_terminattr.ingestexclude is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ingestexclude=" ~ daemon_terminattr.ingestexclude %}
 {%     endif %}
