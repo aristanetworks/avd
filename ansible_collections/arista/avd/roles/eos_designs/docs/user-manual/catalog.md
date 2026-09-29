@@ -8,6 +8,10 @@ title: AVD Design data models for catalogs
   ~ that can be found in the LICENSE file.
   -->
 
+# Catalogs
+
+Define reusable objects—ACLs, prefix lists, BGP peer filters, and similar constructs—and reference them from other data models instead of repeating the same policy on every device.
+
 ## Catalogs
 
 ### BGP Peer Filters Catalog

@@ -8,6 +8,10 @@ title: AVD Design data models for anta runner
   ~ that can be found in the LICENSE file.
   -->
 
+# ANTA validation profiles
+
+Configure validation profiles generated for the [`anta_runner`](../../../anta_runner/README.md) role so post-deployment checks match your fabric design and operational expectations.
+
 ## Validation Profiles
 
 --8<--
