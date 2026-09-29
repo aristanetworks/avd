@@ -30420,7 +30420,7 @@ class EosDesigns(EosDesignsRootModel):
 
         For more
         details and examples of the `range_expand` syntax, see the [`arista.avd.range_expand`
-        documentation](../../../../../../docs/plugins/Filter_plugins/range_expand.md).
+        documentation](https://avd.arista.com/stable/docs/plugins/Filter_plugins/range_expand.html).
 
 
         Subclass of AvdList
@@ -30718,7 +30718,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        For more
                        details and examples of the `range_expand` syntax, see the [`arista.avd.range_expand`
-                       documentation](../../../../../../docs/plugins/Filter_plugins/range_expand.md).
+                       documentation](https://avd.arista.com/stable/docs/plugins/Filter_plugins/range_expand.html).
 
 
                        Subclass of AvdList
