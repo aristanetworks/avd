@@ -129,6 +129,9 @@
   - [NAT Pools](#nat-pools)
   - [NAT Synchronization](#nat-synchronization)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
+- [IP Software Forwarding](#ip-software-forwarding)
+  - [IP Software Forwarding Summary](#ip-software-forwarding-summary)
+  - [IP Software Forwarding Configuration](#ip-software-forwarding-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
 - [MACsec](#macsec)
@@ -1666,6 +1669,8 @@ ASN Notation: asplain
 | IP | True | RM-test2 |
 | Tunnel | True | - |
 
+#### Router BGP VPN-IPv6 Address Family
+
 #### Router BGP Path-Selection Address Family
 
 #### Router BGP VRFs
@@ -1755,6 +1760,9 @@ router bgp 65101
    !
    address-family path-selection
       no bgp additional-paths send
+   !
+   address-family vpn-ipv6
+      domain identifier 65000:0
    !
    vrf VRF01
       rd evpn domain all 10.50.64.15:30003
@@ -2224,6 +2232,20 @@ ip dhcp snooping information option circuit-id type 10 format %h:%p
 !
 ip nat pool host2-pool prefix-length 32
 ip nat synchronization
+```
+
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+| Setting | Value |
+| ------- | ----- |
+| MTU Size | 9000 |
+
+### IP Software Forwarding Configuration
+
+```eos
+ip software forwarding mtu 9000
 ```
 
 ## Errdisable
