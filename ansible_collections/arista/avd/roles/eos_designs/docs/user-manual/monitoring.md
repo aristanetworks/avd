@@ -33,4 +33,3 @@ schemas/avd_design/docs/tables/latency-analyzer.md
 --8<--
 schemas/avd_design/docs/tables/monitor-connectivity.md
 --8<--
-

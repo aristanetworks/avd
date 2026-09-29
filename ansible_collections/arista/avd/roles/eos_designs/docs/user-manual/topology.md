@@ -31,8 +31,6 @@ To maintain a clean operational state and ensure validation tests pass on the ac
 schemas/avd_design/docs/tables/is-deployed.md
 --8<--
 
-
-
 ## Supported designs
 
 Arista AVD supports multiple network design types such as L3LS-EVPN with 3-stage, 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend Arista AVD to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
@@ -184,7 +182,6 @@ The pool manager stores data in a YAML file per fabric. The default path is `<ro
     It is possible to override the automatic assignments by editing the data files manually.
     Just make sure to have a backup or use source control like Git and rerun AVD after changing the file.
 
-
 ## Default interface settings
 
 - Set default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
@@ -279,7 +276,6 @@ schemas/avd_design/docs/tables/bfd-settings.md
 --8<--
 schemas/avd_design/docs/tables/bgp-settings.md
 --8<--
-
 
 ## OSPF settings
 
