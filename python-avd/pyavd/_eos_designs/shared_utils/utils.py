@@ -130,7 +130,6 @@ class UtilsMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         port_profile = self.inputs.port_profiles[profile_name]._deepcopy()
-        resolved_profile = self.inputs.port_profiles[profile_name]._deepcopy()
         if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
             return self.return_resolved_profile_for_multilevel_inheritance("port_profiles", port_profile, self.inputs.port_profiles)
 
