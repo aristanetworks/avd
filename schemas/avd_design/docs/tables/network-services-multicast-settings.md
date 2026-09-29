@@ -269,7 +269,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "network_services.[].l2vlans.[].igmp_snooping_querier.source_address") | String |  |  |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF tied to an L2VLAN.<br>- An IPv4 address will be used directly as the source address.<br>Overrides `<network_services_key>[].igmp_snooping_querier.source_address`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "network_services.[].l2vlans.[].igmp_snooping_querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "network_services.[].l2vlans.[].igmp_snooping_querier.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
-    | [<samp>svi_profiles</samp>](## "svi_profiles") | List, items: Dictionary |  |  |  | Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.<br>Keys are the same used under SVIs. Keys defined under SVIs take precedence.<br>Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:<br>1. svi.nodes[inventory_hostname].structured_config<br>2. svi_profile.nodes[inventory_hostname].structured_config<br>3. svi_parent_profile.nodes[inventory_hostname].structured_config<br>4. svi.structured_config<br>5. svi_profile.structured_config<br>6. svi_parent_profile.structured_config<br> |
+    | [<samp>svi_profiles</samp>](## "svi_profiles") | List, items: Dictionary |  |  |  | Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.<br>Keys are the same used under SVIs. Keys defined under SVIs take precedence.<br>Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:<br>1. svi.nodes[inventory_hostname].structured_config<br>2. svi_profile.nodes[inventory_hostname].structured_config<br>3. svi_parent_profile.nodes[inventory_hostname].structured_config<br>4. Further ancestor profiles' nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance is enabled)<br>5. svi.structured_config<br>6. svi_profile.structured_config<br>7. svi_parent_profile.structured_config<br>8. Further ancestor profiles' structured_config in nearest-to-farthest order (when recursive inheritance is enabled)<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "svi_profiles.[].profile") | String | Required, Unique |  |  | Profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "svi_profiles.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "svi_profiles.[].nodes.[].node") | String | Required, Unique |  |  | Node inventory hostname. |
@@ -1228,9 +1228,11 @@
     # 1. svi.nodes[inventory_hostname].structured_config
     # 2. svi_profile.nodes[inventory_hostname].structured_config
     # 3. svi_parent_profile.nodes[inventory_hostname].structured_config
-    # 4. svi.structured_config
-    # 5. svi_profile.structured_config
-    # 6. svi_parent_profile.structured_config
+    # 4. Further ancestor profiles' nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance is enabled)
+    # 5. svi.structured_config
+    # 6. svi_profile.structured_config
+    # 7. svi_parent_profile.structured_config
+    # 8. Further ancestor profiles' structured_config in nearest-to-farthest order (when recursive inheritance is enabled)
     svi_profiles:
 
         # Profile name.
