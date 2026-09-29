@@ -49,6 +49,7 @@ repos:
           (?x)
           (ansible_collections/arista/avd/extensions/molecule
           |pickle$
+          |^python-avd/pyavd/_schema/schemas\.rkyv$
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py
           )
@@ -138,7 +139,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: 2eeb5678de71a00c0902cbda7105d328432f72cb  # frozen: v0.16.8
+    rev: a56c0b927e6465d37cae3e97d35d4d18ab2b96cd  # frozen: v0.16.9
     hooks:
       # Run the linter.
       - id: ruff
@@ -164,7 +165,7 @@ repos:
           - 'gitpython>=3.1.57'
           - 'jinja2>=3.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.9'
+          - 'pyavd-utils==0.0.10'
           - 'pydantic>=2.3.0'
           - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
@@ -173,7 +174,7 @@ repos:
           - 'setuptools>=82.0.1'
 
   - repo: https://github.com/pycqa/pylint
-    rev: "4e1125d0149c638ca073c3dc7f1648a5c9459a3d"  # frozen: v4.0.8
+    rev: "2754353f422a9984015937c5effe831cc7a168ca"  # frozen: v4.0.9
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
@@ -307,13 +308,13 @@ repos:
         files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
         additional_dependencies:
-          - 'deepmerge>=1.1.0'
-          - 'PyYAML>=6.0.0'
-          - 'pydantic>=2.3.0'
-          - 'jsonschema-rs>=0.24'
-          - 'referencing>=0.35.0'
-          - 'ruff==0.16.8'
-          - 'pyavd-utils==0.0.9'
+          - deepmerge>=1.1.0
+          - PyYAML>=6.0.0
+          - pyavd-utils==0.0.10
+          - pydantic>=2.3.0
+          - jsonschema-rs>=0.24
+          - referencing>=0.35.0
+          - ruff==0.16.8
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
@@ -336,7 +337,7 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.9', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.10', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -344,7 +345,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.9', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.10', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: 916ad0aaa108c64d294101002066f530ea170b10  # frozen: v0.23.3
