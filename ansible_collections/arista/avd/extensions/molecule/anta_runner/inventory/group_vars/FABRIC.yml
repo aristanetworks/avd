@@ -45,9 +45,9 @@ bgp_peer_groups:
     password: Q4fqtbqcZ7oQuKfuWtNGRQ==
   underlay_peers:
     name: IPv4-UNDERLAY-PEERS
-
     password: 7x4B4rnJhZB438m9+BrBfQ==
   mlag_underlay_peer:
+    name: MLAG-IPv4-UNDERLAY-PEER
     password: 4b21pAdCvWeAqpcKDFMdWw==
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
