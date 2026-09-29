@@ -10,11 +10,11 @@ title: AVD Design data models (eos_designs)
 
 # AVD Design data models (eos_designs)
 
-AVD Design data models provide opinionated yet flexible network-wide data models expressing the intent of your network design and configuration. AVD Design data models are transformed by the Arista AVD framework to generate configuration, documentation and tests. You can extend or override Arista AVD's behaviour by leveraging "structured config" or [custom structured configuration](../../eos_designs/docs/how-to/custom-structured-configuration.md) with data models described in [EOS Config](../../eos_cli_config_gen/docs/data-models.md).
+AVD Design data models provide opinionated yet flexible network-wide data models expressing the intent of your network design and configuration. AVD Design data models are transformed by the Arista AVD framework to generate configuration, documentation and tests. You can extend or override Arista AVD's behaviour by leveraging "structured config" or [custom structured configuration](../how-to/custom-structured-configuration.md) with data models described in [EOS Config](../../../eos_cli_config_gen/docs/data-models.md).
 
 For Ansible users this document describes the supported input variables for the role `arista.avd.eos_designs`.
 
-Since several data models have changed between AVD versions 5.x and 6.x, it is recommended to study the [Porting Guide for AVD 6.x.x](../../../../../../docs/porting-guides/6.x.x.md) for existing deployments.
+Since several data models have changed between AVD versions 5.x and 6.x, it is recommended to study the [Porting Guide for AVD 6.x.x](../../../../../../../docs/porting-guides/6.x.x.md) for existing deployments.
 
 The data models are documented below in tables and YAML.
 
@@ -29,7 +29,7 @@ The data models are documented below in tables and YAML.
 
 ## Custom Structured Configuration
 
-See the [Custom Structured Configuration](how-to/custom-structured-configuration.md) how-to for details.
+See the [Custom Structured Configuration](../how-to/custom-structured-configuration.md) how-to for details.
 
 --8<--
 schemas/avd_design/docs/tables/custom-structured-configuration.md

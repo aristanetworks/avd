@@ -121,7 +121,7 @@ leaf:
     inband_mgmt_vlan: 10
 ```
 
-Details on this feature can be found [here](../../roles/eos_designs/docs/data-models.md#node-type-inband-management).
+Details on this feature can be found [here](../../roles/eos_designs/docs/user-manual/data-models.md#node-type-inband-management).
 
 | Node | Management0 | Vlan10 |
 | ---- | ----------- | ------ |
@@ -243,7 +243,7 @@ AVD provides a way to standardize and reuse port profiles through a compact data
 
 ![Figure: 3](images/dot1x_ports.svg)
 
-The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see the documentation for [`port_profiles`](../../roles/eos_designs/docs/data-models.md#port-profiles-settings) and [`network_ports`](../../roles/eos_designs/docs/data-models.md#network-ports-settings).
+The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see the documentation for [`port_profiles`](../../roles/eos_designs/docs/user-manual/data-models.md#port-profiles-settings) and [`network_ports`](../../roles/eos_designs/docs/user-manual/data-models.md#network-ports-settings).
 
 ## WAN/Core Edge
 

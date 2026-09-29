@@ -13,7 +13,7 @@ title: Custom descriptions and names
 The `eos_designs` role provides the capability to customize various field descriptions and names leveraging the following methods:
 
 - [AVD string formatter syntax](#avd-string-formatter-syntax) (Recommended).
-- [Node type customization](../data-models.md#node-type-customization) with custom Jinja2 template or Python class.
+- [Node type customization](../user-manual/node-type.md#node-type-customization) with custom Jinja2 template or Python class.
 
 ## AVD string formatter syntax
 

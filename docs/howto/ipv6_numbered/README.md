@@ -339,6 +339,6 @@ Some AVD features are not yet supported with IPv6 numbered underlay:
 
 ## Reference
 
-- [Node Type VTEP and Loopback Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-loopback-and-vtep-configuration)
-- [Fabric IP Addressing](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#fabric-ip-addressing)
-- [MLAG Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-l2-and-mlag-configuration)
+- [Node Type VTEP and Loopback Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/node-type.md#node-type-loopback-and-vtep-configuration)
+- [Fabric IP Addressing](../../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/topology.md#fabric-ip-addressing)
+- [MLAG Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/node-type.md#node-type-l2-and-mlag-configuration)

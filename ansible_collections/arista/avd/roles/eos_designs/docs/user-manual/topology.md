@@ -42,8 +42,8 @@ Arista AVD supports multiple network design types such as L3LS-EVPN with 3-stage
 
 See the following examples:
 
-- [AVD example for a single data center using L3LS](../../../examples/single-dc-l3ls/README.md).
-- [AVD example for a dual data center using L3LS](../../../examples/dual-dc-l3ls/README.md).
+- [AVD example for a single data center using L3LS](../../../../examples/single-dc-l3ls/README.md).
+- [AVD example for a dual data center using L3LS](../../../../examples/dual-dc-l3ls/README.md).
 
 ### 5-stage clos topology support (Super Spine)
 
@@ -59,8 +59,8 @@ See the following examples:
 
 See the following examples:
 
-- [Example for L2LS Fabric](../../../examples/l2ls-fabric/README.md).
-- [Example for Campus Fabric](../../../examples/campus-fabric/README.md).
+- [Example for L2LS Fabric](../../../../examples/l2ls-fabric/README.md).
+- [Example for Campus Fabric](../../../../examples/campus-fabric/README.md).
 
 ### MPLS
 
@@ -89,7 +89,7 @@ The MPLS design supports most fabric topology variables already supported by l3l
 
 See the following example:
 
-- [AVD example for a MPLS-VPN based WAN Network](../../../examples/isis-ldp-ipvpn/README.md).
+- [AVD example for a MPLS-VPN based WAN Network](../../../../examples/isis-ldp-ipvpn/README.md).
 
 ### WAN - AutoVPN and CV Pathfinder
 
@@ -100,12 +100,12 @@ The following overlay routing protocols are supported:
 
 - IBGP (default)
 
-For more information please read the [WAN how-to guide](./how-to/wan.md).
+For more information please read the [WAN how-to guide](../how-to/wan.md).
 
 ## Fabric topology hierarchy
 
 <div style="text-align:center">
-  <img src="../../../../../../docs/_media/5-stage-topology.gif" alt="5 stage topology"/>
+  <img src="../../../../../../../docs/_media/5-stage-topology.gif" alt="5 stage topology"/>
 </div>
 
 As per the diagram above, the topology hierarchy is the following:
@@ -243,7 +243,7 @@ The following underlay routing protocols are supported:
       - The port-channel towards the L2 switch will be assigned to this trunk group only
       - Add `UPLINK` Trunk Group to all vlans on the L2 Switch and assign this to the uplink port-channel
 
-    ![Figure: Enable Trunk Groups](../../../../../../docs/_media/enable_trunk_groups.png)
+    ![Figure: Enable Trunk Groups](../../../../../../../docs/_media/enable_trunk_groups.png)
 
     While it is recommended for consistency to set `enable_trunk_groups` for all devices in the fabric,
     it can also be set in group_vars or host_vars since trunk-groups are only local to a switch.
@@ -259,7 +259,7 @@ The following underlay routing protocols are supported:
     Using the figure under [Details on `enable_trunk_groups`](#details-on-enable_trunk_groups) as basis
     enabling with feature would remove the unmatched trunk groups like this:
 
-    ![Figure: Enable only_local_vlan_trunk_groups](../../../../../../docs/_media/only_local_vlan_trunk_groups.png)
+    ![Figure: Enable only_local_vlan_trunk_groups](../../../../../../../docs/_media/only_local_vlan_trunk_groups.png)
 
 --8<--
 schemas/avd_design/docs/tables/fabric-settings.md
@@ -320,7 +320,7 @@ schemas/avd_design/docs/tables/spanning-tree-settings.md
 
 ## PTP settings
 
-See the [Configuring PTP](how-to/ptp.md) how-to for details.
+See the [Configuring PTP](../how-to/ptp.md) how-to for details.
 
 --8<--
 schemas/avd_design/docs/tables/ptp_settings.md
