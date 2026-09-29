@@ -20148,12 +20148,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"size": {"type": int}, "exceed_action_drop": {"type": bool}}
             size: int | None
-            """Maximum transmission unit in bytes."""
+            """
+            IPv4 software-forwarding MTU threshold in bytes.
+            Defaults to 1500 on EOS. This setting alone does
+            not enable dropping.
+            """
             exceed_action_drop: bool | None
             """
-            Drop MTU exceeding IPv4 packet in software.
-            Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M,
-            4.32.11M to mitigate Security Advisory 0142.
+            Drop IPv4 packets larger than `mtu.size` in software.
+            Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M,
+            4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
             """
 
             if TYPE_CHECKING:
@@ -20166,11 +20170,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        size: Maximum transmission unit in bytes.
+                        size:
+                           IPv4 software-forwarding MTU threshold in bytes.
+                           Defaults to 1500 on EOS. This setting alone does
+                           not enable dropping.
                         exceed_action_drop:
-                           Drop MTU exceeding IPv4 packet in software.
-                           Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M,
-                           4.32.11M to mitigate Security Advisory 0142.
+                           Drop IPv4 packets larger than `mtu.size` in software.
+                           Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M,
+                           4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
 
                     """
 
