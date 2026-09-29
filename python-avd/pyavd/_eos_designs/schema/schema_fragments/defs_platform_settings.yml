@@ -75,6 +75,7 @@ $defs:
         feature_support:
           type: dict
           keys:
+            # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
             dot1x_bpdu_bypass:
               type: bool
               default: true
