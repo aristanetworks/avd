@@ -16,7 +16,7 @@ or used in searches/filters to select devices based on tags values.
 ## Available Input Variables
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-tags.md
+schemas/avd_design/docs/tables/cloudvision-tags.md
 --8<--
 
 ## CloudVision Topology Tags

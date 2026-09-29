@@ -473,6 +473,13 @@ keys:
 
           Configure inband management interface to accept DHCP default route when
           the inband management IP is set to ''dhcp''.'
+      allow_recursive_profile_inheritance:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Allow `parent_profile` to inherit from its own `parent_profile` in `port_profiles`,
+          `device_profiles`, `svi_profiles` and `l2vlan_profiles`.'
       configure_inband_mgmt_ipv6_vrf:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -2381,7 +2388,13 @@ keys:
       If the device is defined under `devices` it is recommended to set the `profile`
       there instead.
 
-      Max two levels of profile inheritance: device -> profile -> parent_profile'
+      By default, profile inheritance is limited to two levels: device -> device_profile
+      -> parent_profile.
+
+      From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+      to true
+
+      allows profiles to inherit settings across any number of levels.'
   device_profiles:
     type: list
     primary_key: name
@@ -2400,7 +2413,13 @@ keys:
           type: str
           description: 'Inherit settings from a parent profile defined under `device_profiles`.
 
-            Max two levels of profile inheritance: device -> profile -> parent_profile'
+            By default, profile inheritance is limited to two levels: device -> profile
+            -> parent_profile.
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.'
         type:
           type: str
           description: 'Set the type of the device as defined under `node_type_keys`.
@@ -2427,7 +2446,13 @@ keys:
           type: str
           description: 'Inherit settings from a profile defined under `device_profiles`.
 
-            Max two levels of profile inheritance: device -> profile -> parent_profile
+            By default, profile inheritance is limited to two levels: device -> profile
+            -> parent_profile.
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             This takes precedence over the global `device_profile` key.'
         type:
@@ -2489,15 +2514,13 @@ keys:
             description: 'Ensures eAPI remains accessible for automation and testing
               via ACT.
 
-              Clients connecting to device eAPI though ACT rely on access in the default
-              VRF. If eAPI is reconfigured for a dedicated management VRF, this primary
-              eAPI connectivity can be unintentionally broken.
+              Clients connecting to device eAPI through ACT rely on access in the
+              default VRF. If eAPI is reconfigured for a dedicated management VRF,
+              this primary eAPI connectivity can be unintentionally broken.
 
               Set this to `true` to enforce the required EOS configuration, guaranteeing
               eAPI over HTTPS is always enabled in the default VRF and preserving
-              this connectivity.
-
-              This setting is only applicable to ACT `veos` and `cloudeos` node types.'
+              this connectivity.'
             default: false
       use_default_interfaces_of_digital_twin_platform:
         type: bool
@@ -4472,8 +4495,13 @@ keys:
           type: str
           description: 'Name of parent L2VLAN profile to apply.
 
-            l2vlan_profiles can refer to another l2vlan_profile to inherit settings
-            in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+            By default, profile inheritance is limited to two levels: (l2vlan -> l2vlan_profile
+            -> parent_profile).
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             '
   l3_edge:
@@ -6397,6 +6425,11 @@ keys:
                         another svi_profile to inherit settings in up to two levels
                         (svi -> svi_profile -> svi_parent_profile).
 
+                        From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+                        to true
+
+                        allows profiles to inherit settings across any number of levels.
+
                         '
                     tags:
                       type: list
@@ -7600,7 +7633,12 @@ keys:
 
                   The profile must be defined under `l2vlan_profiles`. The profile
                   may refer to another l2vlan_profile as its `parent_profile` to inherit
-                  settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).'
+                  settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+
+                  From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+                  to true
+
+                  allows profiles to inherit settings across any number of levels.'
               tags:
                 type: list
                 description: 'Tags leveraged for networks services filtering.
@@ -8305,10 +8343,13 @@ keys:
     documentation_options:
       table: overlay-settings
     type: str
-    description: 'When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
+    description: 'Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
 
-      This feature depends on underlay_ipv6 variable. As of today, only RFC5549 is
-      capable to transport IPv6 in the underlay.
+      Setting this to `ipv6` requires both `underlay_ipv6: true` and `underlay_rfc5549:
+      true`.
+
+      When `underlay_ipv6_numbered: true`, this setting is not required. IPv6 overlay
+      peering is enabled automatically.
 
       '
     valid_values:
@@ -10097,8 +10138,13 @@ keys:
           type: str
           description: 'Parent profile is optional.
 
-            Port_profiles can refer to another port_profile to inherit settings in
-            up to two levels (adapter->profile->parent_profile).
+            By default, profile inheritance is limited to two levels: adapter -> profile
+            -> parent_profile.
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             '
         port_channel:
@@ -10811,6 +10857,11 @@ keys:
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: ssh_settings.client_vrfs
       tacacs:
         type: dict
         deprecation:
@@ -10929,6 +10980,33 @@ keys:
       idle_timeout:
         type: int
         $ref: eos_cli_config_gen#/keys/management_ssh/keys/idle_timeout
+      client_vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: "VRF name.\nThe value will be interpreted according to
+                these rules:\n- `use_mgmt_interface_vrf` will configure SSH for the
+                VRF set with `mgmt_interface_vrf`.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure SSH for the VRF set with `inband_mgmt_vrf`.\n  An error
+                will be raised if inband management is not configured for the device.\n-
+                `use_default_mgmt_method_vrf` will configure the VRF for one of the
+                two options above depending on the value of `default_mgmt_method`.\n-
+                Any other string will be used directly as the VRF name."
+            source_interface:
+              type: str
+              description: 'Source interface to use for IP SSH Client in this VRF.
+
+                If set, the value is used directly as the source interface name.
+
+                If not set, the source interface is derived automatically when `name`
+                is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+
+                For any other `name` value, `source_interface` must be set.'
   svi_profiles:
     type: list
     primary_key: profile
@@ -10945,11 +11023,17 @@ keys:
 
       3. svi_parent_profile.nodes[inventory_hostname].structured_config
 
-      4. svi.structured_config
+      4. Further ancestor profiles'' nodes[inventory_hostname].structured_config in
+      nearest-to-farthest order (when recursive inheritance is enabled)
 
-      5. svi_profile.structured_config
+      5. svi.structured_config
 
-      6. svi_parent_profile.structured_config
+      6. svi_profile.structured_config
+
+      7. svi_parent_profile.structured_config
+
+      8. Further ancestor profiles'' structured_config in nearest-to-farthest order
+      (when recursive inheritance is enabled)
 
       '
     items:
@@ -10963,8 +11047,13 @@ keys:
           type: str
           description: 'Parent SVI profile name to apply.
 
-            svi_profiles can refer to another svi_profile to inherit settings in up
-            to two levels (svi -> svi_profile -> svi_parent_profile).
+            By default, profile inheritance is limited to two levels: svi -> svi_profile
+            -> parent_profile.
+
+            From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance`
+            to true
+
+            allows profiles to inherit settings across any number of levels.
 
             '
   system_mac_address:
@@ -10979,6 +11068,19 @@ keys:
       If both are set, the value under node type settings takes precedence.
 
       '
+  tcam_profiles:
+    type: list
+    $ref: eos_cli_config_gen#/keys/tcam_profile/keys/profiles
+    description: 'List of TCAM profile definitions that can be referenced by platform_settings.
+
+      Profiles are configured in the device based on platform_settings[].tcam_profile
+      and platform_settings[].additional_tcam_profiles.
+
+      All profiles in platform_settings[].additional_tcam_profiles (if defined in
+      this list) will be configured.
+
+      If a profile appears in both tcam_profile and additional_tcam_profiles, it will
+      only be configured once.'
   terminattr_disable_aaa:
     documentation_options:
       table: cloudvision-settings
@@ -16712,6 +16814,25 @@ $defs:
               description: In seconds.
         tcam_profile:
           type: str
+          description: 'TCAM profile name to activate as the system profile.
+
+            If the profile is defined under `tcam_profiles`, it will also be configured
+            in the device.
+
+            Built-in profiles (e.g., system-profile) can be used without being defined
+            in `tcam_profiles`.'
+        additional_tcam_profiles:
+          type: list
+          description: 'List of additional TCAM profile names that must be defined
+            under `tcam_profiles`.
+
+            These profiles are configured in the device but are not set as the system
+            profile.
+
+            If a profile is specified in both `tcam_profile` and `additional_tcam_profiles`,
+            it will be configured only once.'
+          items:
+            type: str
         lag_hardware_only:
           type: bool
         default_interface_mtu:

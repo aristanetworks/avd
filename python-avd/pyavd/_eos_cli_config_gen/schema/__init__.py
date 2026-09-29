@@ -4216,6 +4216,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "grpcreadonly": {"type": bool},
             "ingestexclude": {"type": str},
             "smashexcludes": {"type": str},
+            "sysdbexcludes": {"type": str},
             "taillogs": {"type": str},
             "ecodhcpaddr": {"type": str},
             "ipfix": {"type": bool},
@@ -4296,6 +4297,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         Exclude paths from the shared memory table.
         e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+        """
+        sysdbexcludes: str | None
+        """
+        Exclude paths from Sysdb.
+        e.g.
+        "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
         """
         taillogs: str | None
         """
@@ -4381,6 +4388,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 grpcreadonly: bool | UndefinedType | None = Undefined,
                 ingestexclude: str | UndefinedType | None = Undefined,
                 smashexcludes: str | UndefinedType | None = Undefined,
+                sysdbexcludes: str | UndefinedType | None = Undefined,
                 taillogs: str | UndefinedType | None = Undefined,
                 ecodhcpaddr: str | UndefinedType | None = Undefined,
                 ipfix: bool | UndefinedType | None = Undefined,
@@ -4446,6 +4454,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     smashexcludes:
                        Exclude paths from the shared memory table.
                        e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+                    sysdbexcludes:
+                       Exclude paths from Sysdb.
+                       e.g.
+                       "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
                     taillogs:
                        Enable log file collection; /var/log/messages is streamed by default if no path is set.
                        e.g.
@@ -4573,6 +4585,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "tunnel_requests_disabled": {"type": bool},
             "mlag_peerlink_requests_disabled": {"type": bool},
             "client_requests": {"type": ClientRequests},
+            "reply_source_address_validation": {"type": bool},
         }
         servers: Servers
         """Subclass of AvdList with `str` items."""
@@ -4584,6 +4597,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
+        reply_source_address_validation: bool | None
+        """Validate reply source address matches configured server."""
 
         if TYPE_CHECKING:
 
@@ -4594,6 +4609,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 tunnel_requests_disabled: bool | UndefinedType | None = Undefined,
                 mlag_peerlink_requests_disabled: bool | UndefinedType | None = Undefined,
                 client_requests: ClientRequests | UndefinedType = Undefined,
+                reply_source_address_validation: bool | UndefinedType | None = Undefined,
             ) -> None:
                 """
                 DhcpRelay.
@@ -4609,6 +4625,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Configure DHCP client request settings.
 
                        Subclass of AvdModel.
+                    reply_source_address_validation: Validate reply source address matches configured server.
 
                 """
 
@@ -20128,6 +20145,65 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpSoftwareForwarding(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Mtu(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"size": {"type": int}, "exceed_action_drop": {"type": bool}}
+            size: int | None
+            """
+            IPv4 software-forwarding MTU threshold in bytes.
+            Defaults to 1500 on EOS. This setting alone does
+            not enable dropping.
+            """
+            exceed_action_drop: bool | None
+            """
+            Drop IPv4 packets larger than `mtu.size` in software.
+            Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M,
+            4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, size: int | UndefinedType | None = Undefined, exceed_action_drop: bool | UndefinedType | None = Undefined) -> None:
+                    """
+                    Mtu.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        size:
+                           IPv4 software-forwarding MTU threshold in bytes.
+                           Defaults to 1500 on EOS. This setting alone does
+                           not enable dropping.
+                        exceed_action_drop:
+                           Drop IPv4 packets larger than `mtu.size` in software.
+                           Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M,
+                           4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+
+                    """
+
+        _fields: ClassVar[dict] = {"mtu": {"type": Mtu}}
+        mtu: Mtu
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, mtu: Mtu | UndefinedType = Undefined) -> None:
+                """
+                IpSoftwareForwarding.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    mtu: Subclass of AvdModel.
+
+                """
+
     class IpSshClient(AvdModel):
         """Subclass of AvdModel."""
 
@@ -28205,11 +28281,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             ServerHosts._item_type = str
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "shutdown": {"type": bool}, "server_hosts": {"type": ServerHosts}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "shutdown": {"type": bool},
+                "server_hosts": {"type": ServerHosts},
+                "vrf": {"type": str},
+                "source_interface": {"type": str},
+            }
             name: str | None
             shutdown: bool | None
             server_hosts: ServerHosts
             """Subclass of AvdList with `str` items."""
+            vrf: str | None
+            """VRF name."""
+            source_interface: str | None
+            """Source interface name."""
 
             if TYPE_CHECKING:
 
@@ -28219,6 +28305,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType | None = Undefined,
                     shutdown: bool | UndefinedType | None = Undefined,
                     server_hosts: ServerHosts | UndefinedType = Undefined,
+                    vrf: str | UndefinedType | None = Undefined,
+                    source_interface: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     CvxSecondary.
@@ -28230,6 +28318,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: name
                         shutdown: shutdown
                         server_hosts: Subclass of AvdList with `str` items.
+                        vrf: VRF name.
+                        source_interface: Source interface name.
 
                     """
 
@@ -50549,12 +50639,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "networks": {"type": Networks},
                 "bgp": {"type": Bgp},
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "redistribute": {"type": Redistribute},
+                "next_hop": {"type": NextHop},
             }
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
@@ -50570,6 +50681,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
+            next_hop: NextHop
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -50581,6 +50694,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv4.
@@ -50597,6 +50711,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 
@@ -51624,6 +51739,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Networks._item_type = NetworksItem
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             class NextHopsItem(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -51734,6 +51869,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "networks": {"type": Networks},
+                "next_hop": {"type": NextHop},
                 "next_hops": {"type": NextHops},
                 "next_hop_resolution_ribs": {"type": NextHopResolutionRibs},
                 "tunnel_source_protocols": {"type": TunnelSourceProtocols},
@@ -51755,6 +51891,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`)."""
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
+            next_hop: NextHop
+            """Subclass of AvdModel."""
             next_hops: NextHops
             """Subclass of AvdIndexedList with `NextHopsItem` items. Primary key is `ip_address` (`str`)."""
             next_hop_resolution_ribs: NextHopResolutionRibs
@@ -51786,6 +51924,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     networks: Networks | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                     next_hops: NextHops | UndefinedType = Undefined,
                     next_hop_resolution_ribs: NextHopResolutionRibs | UndefinedType = Undefined,
                     tunnel_source_protocols: TunnelSourceProtocols | UndefinedType = Undefined,
@@ -51807,6 +51946,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_groups: Subclass of AvdIndexedList with `PeerGroupsItem` items. Primary key is `name` (`str`).
                         neighbors: Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`).
                         networks: Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`).
+                        next_hop: Subclass of AvdModel.
                         next_hops: Subclass of AvdIndexedList with `NextHopsItem` items. Primary key is `ip_address` (`str`).
                         next_hop_resolution_ribs:
                            Specify the RIBs used to resolve next-hops. The order of this list determines the order of RIB
@@ -53895,12 +54035,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "networks": {"type": Networks},
                 "bgp": {"type": Bgp},
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "redistribute": {"type": Redistribute},
+                "next_hop": {"type": NextHop},
             }
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
@@ -53916,6 +54077,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
+            next_hop: NextHop
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -53927,6 +54090,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv6.
@@ -53943,6 +54107,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 
@@ -56308,12 +56473,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "domain_identifier": {"type": str},
                 "peer_groups": {"type": PeerGroups},
                 "route": {"type": Route},
                 "neighbors": {"type": Neighbors},
                 "neighbor_default_encapsulation_mpls_next_hop_self": {"type": NeighborDefaultEncapsulationMplsNextHopSelf},
+                "next_hop": {"type": NextHop},
             }
             domain_identifier: str | None
             peer_groups: PeerGroups
@@ -56323,6 +56509,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             neighbors: Neighbors
             """Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`)."""
             neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf
+            """Subclass of AvdModel."""
+            next_hop: NextHop
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
@@ -56335,6 +56523,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     route: Route | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyVpnIpv6.
@@ -56348,6 +56537,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         route: Subclass of AvdModel.
                         neighbors: Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`).
                         neighbor_default_encapsulation_mpls_next_hop_self: Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 
@@ -71362,6 +71552,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
+            AuthKeyType: TypeAlias = Literal["0", "7"]
+            PrivKeyType: TypeAlias = Literal["0", "7"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "group": {"type": str},
@@ -71370,36 +71562,110 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "version": {"type": str},
                 "localized": {"type": str},
                 "auth": {"type": str},
+                "auth_key_type": {"type": str},
+                "auth_key": {"type": str},
                 "auth_passphrase": {"type": str},
                 "priv": {"type": str},
+                "priv_key_type": {"type": str},
+                "priv_key": {"type": str},
                 "priv_passphrase": {"type": str},
             }
             name: str | None
-            """Username."""
+            """
+            SNMP username.
+            Maximum length is 32 characters.
+            """
             group: str | None
             """Group name."""
             remote_address: str | None
             """
-            Hostname or ip of remote engine.
-            The remote_address and udp_port are used for remote users.
-            A
-            `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
-            and
-            `localized` is not set.
+            Hostname or IP address of the remote SNMP engine.
+            When set, this user is rendered as a remote SNMPv3
+            user and optional `udp_port` is appended.
+            If `localized` is not set, a matching
+            `snmp_server.engine_ids.remotes[].address` entry is required.
             """
             udp_port: int | None
-            """udp_port will not be used if no remote_address is configured."""
+            """
+            UDP port of the remote SNMP engine.
+            Only used when `remote_address` is set.
+            """
             version: Version | None
             localized: str | None
-            """Engine ID in hexadecimal for localizing auth and/or priv."""
+            """
+            Engine ID in hexadecimal.
+            When set, auth and priv values are interpreted as localized key material
+            (RFC 2574, engine-ID specific) instead of cleartext passphrases.
+            Required to use
+            `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
+            """
             auth: str | None
-            """Hash algorithm."""
+            """
+            Hash algorithm.
+            Required for rendering any authentication or privacy credential.
+            """
+            auth_key_type: AuthKeyType | None
+            """
+            Authentication key type.
+            EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+            4.36.2F.
+            Used with `auth_key`.
+            Requires `version` to be `v3`, and `auth`, `localized`, and
+            `auth_key` to be set.
+            - `0`: Key string is not encrypted.
+            - `7`: Type-7 encrypted (HIDDEN) key.
+            """
+            auth_key: str | None
+            """
+            Authentication key.
+            Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type` to
+            be set.
+            Takes precedence over `auth_passphrase` when both are set.
+            """
             auth_passphrase: str | None
-            """Hashed authentication passphrase if localized is used else cleartext authentication passphrase."""
+            """
+            Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+            Rendered only when `auth` is set and `version` is `v3`.
+            Ignored when `auth_key_type` and `auth_key`
+            are set with `localized`.
+            """
             priv: str | None
-            """Encryption algorithm."""
+            """
+            Encryption algorithm.
+            Required for rendering any privacy credential.
+            """
+            priv_key_type: PrivKeyType | None
+            """
+            Privacy key type.
+            EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+            Used with `priv_key`.
+            Requires `localized` and `priv_key` to be set.
+            Rendered only when `priv`,
+            `auth_key_type`, and `auth_key` are also set.
+            - `0`: Key string is not encrypted.
+            - `7`: Type-7
+            encrypted (HIDDEN) key.
+            """
+            priv_key: str | None
+            """
+            Privacy key.
+            Requires `localized` and `priv_key_type` to be set.
+            Takes precedence over
+            `priv_passphrase` when both are set.
+            Rendered only when `priv`, `auth_key_type`, and `auth_key` are
+            also set.
+            Ignored when authentication is rendered from `auth_passphrase`.
+            """
             priv_passphrase: str | None
-            """Hashed privacy passphrase if localized is used else cleartext privacy passphrase."""
+            """
+            Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+            Rendered only when
+            `priv` is set and authentication is rendered from `auth_passphrase`.
+            Ignored when `priv_key_type`
+            and `priv_key` are set with `localized`.
+            Ignored when authentication is rendered from
+            `auth_key_type`/`auth_key`.
+            """
 
             if TYPE_CHECKING:
 
@@ -71413,8 +71679,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     version: Version | UndefinedType | None = Undefined,
                     localized: str | UndefinedType | None = Undefined,
                     auth: str | UndefinedType | None = Undefined,
+                    auth_key_type: AuthKeyType | UndefinedType | None = Undefined,
+                    auth_key: str | UndefinedType | None = Undefined,
                     auth_passphrase: str | UndefinedType | None = Undefined,
                     priv: str | UndefinedType | None = Undefined,
+                    priv_key_type: PrivKeyType | UndefinedType | None = Undefined,
+                    priv_key: str | UndefinedType | None = Undefined,
                     priv_passphrase: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -71424,22 +71694,77 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: Username.
+                        name:
+                           SNMP username.
+                           Maximum length is 32 characters.
                         group: Group name.
                         remote_address:
-                           Hostname or ip of remote engine.
-                           The remote_address and udp_port are used for remote users.
-                           A
-                           `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
-                           and
-                           `localized` is not set.
-                        udp_port: udp_port will not be used if no remote_address is configured.
+                           Hostname or IP address of the remote SNMP engine.
+                           When set, this user is rendered as a remote SNMPv3
+                           user and optional `udp_port` is appended.
+                           If `localized` is not set, a matching
+                           `snmp_server.engine_ids.remotes[].address` entry is required.
+                        udp_port:
+                           UDP port of the remote SNMP engine.
+                           Only used when `remote_address` is set.
                         version: version
-                        localized: Engine ID in hexadecimal for localizing auth and/or priv.
-                        auth: Hash algorithm.
-                        auth_passphrase: Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
-                        priv: Encryption algorithm.
-                        priv_passphrase: Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+                        localized:
+                           Engine ID in hexadecimal.
+                           When set, auth and priv values are interpreted as localized key material
+                           (RFC 2574, engine-ID specific) instead of cleartext passphrases.
+                           Required to use
+                           `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
+                        auth:
+                           Hash algorithm.
+                           Required for rendering any authentication or privacy credential.
+                        auth_key_type:
+                           Authentication key type.
+                           EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+                           4.36.2F.
+                           Used with `auth_key`.
+                           Requires `version` to be `v3`, and `auth`, `localized`, and
+                           `auth_key` to be set.
+                           - `0`: Key string is not encrypted.
+                           - `7`: Type-7 encrypted (HIDDEN) key.
+                        auth_key:
+                           Authentication key.
+                           Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type` to
+                           be set.
+                           Takes precedence over `auth_passphrase` when both are set.
+                        auth_passphrase:
+                           Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+                           Rendered only when `auth` is set and `version` is `v3`.
+                           Ignored when `auth_key_type` and `auth_key`
+                           are set with `localized`.
+                        priv:
+                           Encryption algorithm.
+                           Required for rendering any privacy credential.
+                        priv_key_type:
+                           Privacy key type.
+                           EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+                           Used with `priv_key`.
+                           Requires `localized` and `priv_key` to be set.
+                           Rendered only when `priv`,
+                           `auth_key_type`, and `auth_key` are also set.
+                           - `0`: Key string is not encrypted.
+                           - `7`: Type-7
+                           encrypted (HIDDEN) key.
+                        priv_key:
+                           Privacy key.
+                           Requires `localized` and `priv_key_type` to be set.
+                           Takes precedence over
+                           `priv_passphrase` when both are set.
+                           Rendered only when `priv`, `auth_key_type`, and `auth_key` are
+                           also set.
+                           Ignored when authentication is rendered from `auth_passphrase`.
+                        priv_passphrase:
+                           Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+                           Rendered only when
+                           `priv` is set and authentication is rendered from `auth_passphrase`.
+                           Ignored when `priv_key_type`
+                           and `priv_key` are set with `localized`.
+                           Ignored when authentication is rendered from
+                           `auth_key_type`/`auth_key`.
 
                     """
 
@@ -79282,6 +79607,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_routing": {"type": bool},
         "ip_routing_ipv6_interfaces": {"type": bool},
         "ip_security": {"type": IpSecurity},
+        "ip_software_forwarding": {"type": IpSoftwareForwarding},
         "ip_ssh_client": {"type": IpSshClient},
         "ip_tacacs": {"type": IpTacacs},
         "ip_tacacs_source_interfaces": {"type": IpTacacsSourceInterfaces},
@@ -79721,6 +80047,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_routing_ipv6_interfaces: bool | None
     ip_security: IpSecurity
     """Subclass of AvdModel."""
+    ip_software_forwarding: IpSoftwareForwarding
+    """Subclass of AvdModel."""
     ip_ssh_client: IpSshClient
     """Subclass of AvdModel."""
     ip_tacacs: IpTacacs
@@ -80157,6 +80485,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_routing: bool | UndefinedType | None = Undefined,
             ip_routing_ipv6_interfaces: bool | UndefinedType | None = Undefined,
             ip_security: IpSecurity | UndefinedType = Undefined,
+            ip_software_forwarding: IpSoftwareForwarding | UndefinedType = Undefined,
             ip_ssh_client: IpSshClient | UndefinedType = Undefined,
             ip_tacacs: IpTacacs | UndefinedType = Undefined,
             ip_tacacs_source_interfaces: IpTacacsSourceInterfaces | UndefinedType = Undefined,
@@ -80497,6 +80826,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
                 ip_security: Subclass of AvdModel.
+                ip_software_forwarding: Subclass of AvdModel.
                 ip_ssh_client: Subclass of AvdModel.
                 ip_tacacs:
                    IP TACACS source interface configuration.
