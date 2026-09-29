@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdError: OSPFv3 is enabled on SVI 'VLAN_21' but neither 'ipv6_enable' nor 'ipv6_address' is set under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST].svis[id=21]'.
+pyavd._errors.AristaAvdInvalidInputsError: OSPFv3 is enabled on SVI 'VLAN_21' but neither 'ipv6_enable' nor 'ipv6_address' is set under 'tenants[name=Tenant_A].vrfs[name=OSPFv3_TEST].svis[id=21]'.

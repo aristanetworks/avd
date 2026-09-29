@@ -570,13 +570,13 @@ class FilteredTenantsMixin(Protocol):
         if isinstance(config, EosCliConfigGen.VlanInterfacesItem) and svi.ospfv3.enabled:
             if not vrf.ospfv3.enabled:
                 msg = f"OSPFv3 is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             if not svi.ipv6_enable and not svi.ipv6_address:
                 msg = (
                     f"OSPFv3 is enabled on SVI '{svi.name}' but neither 'ipv6_enable' nor 'ipv6_address' is set under"
                     f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             if svi.ospfv3.address_family_ipv4.enabled:
                 config.ospfv3.ipv4.area = svi.ospfv3.address_family_ipv4.area
             if svi.ospfv3.address_family_ipv6.enabled:
