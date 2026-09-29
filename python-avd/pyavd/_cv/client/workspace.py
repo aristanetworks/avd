@@ -33,7 +33,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
 
 from .async_decorators import GRPCRequestHandler, LimitCvVersion
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import CVResourceNotFound, CVTimeoutError, CVWorkspaceFailed
+from .exceptions import CVTimeoutError, CVWorkspaceFailed
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -344,10 +344,7 @@ class WorkspaceMixin(Protocol):
                 request_id,
             )
 
-        msg = (
-            f"Timed out waiting for a terminal response for request '{request_id}' of the Workspace '{workspace_id}' "
-            f"after {timeout} seconds."
-        )
+        msg = f"Timed out waiting for a terminal response for request '{request_id}' of the Workspace '{workspace_id}' after {timeout} seconds."
         raise CVTimeoutError(msg)
 
     @GRPCRequestHandler(retry_on_stream_reset=True)
