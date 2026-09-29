@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Literal, cast
 
 if TYPE_CHECKING:
     from deepmerge.merger import Merger
@@ -11,8 +11,8 @@ if TYPE_CHECKING:
 from deepmerge.strategy.core import STRATEGY_END
 from pyavd_utils.schema_store import get_list_primary_key
 
-VALID_SCHEMA_NAMES = frozenset(("eos_config",))
-PYAVD_UTILS_SCHEMA_NAME: Literal["eos_config"] = "eos_config"
+SchemaName = Literal["eos_config", "avd_design"]
+VALID_SCHEMA_NAMES: frozenset[SchemaName] = frozenset(("eos_config", "avd_design"))
 
 
 class MergeOnSchema:
@@ -39,7 +39,7 @@ class MergeOnSchema:
             return None
 
         try:
-            return get_list_primary_key(PYAVD_UTILS_SCHEMA_NAME, [str(path_item) for path_item in path])
+            return get_list_primary_key(cast("SchemaName", self.schema_name), [str(path_item) for path_item in path])
         except Exception as error:
             msg = f"Unable to get the primary key for schema '{self.schema_name}' at schema path {path}."
             raise RuntimeError(msg) from error

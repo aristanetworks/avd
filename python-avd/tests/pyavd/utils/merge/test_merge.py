@@ -19,12 +19,33 @@ with Path(script_dir, "acl2.yml").open(encoding="utf-8") as data_file:
 with Path(script_dir, "acl_merged.yml").open(encoding="utf-8") as data_file:
     acl_merged = yaml.load(data_file, Loader=yaml.SafeLoader)
 
+avd_design1 = {"node_type_keys": [{"key": "l3leaf", "type": "l3leaf"}]}
+avd_design2 = {
+    "node_type_keys": [
+        {"key": "l3leaf", "description": "Layer 3 leaf switches"},
+        {"key": "spine", "type": "spine"},
+    ]
+}
+avd_design_merged = {
+    "node_type_keys": [
+        {"key": "l3leaf", "type": "l3leaf", "description": "Layer 3 leaf switches"},
+        {"key": "spine", "type": "spine"},
+    ]
+}
+
 
 class TestMerge:
-    def test_merge_of_lists_with_primary_keys(self) -> None:
-        """Merge list items by primary key using the EOS config schema."""
-        merge_result = merge({}, acl1, acl2, schema_name="eos_config", destructive_merge=False)
-        assert merge_result == acl_merged
+    @pytest.mark.parametrize(
+        ("schema_name", "base", "nxt", "expected"),
+        [
+            pytest.param("eos_config", acl1, acl2, acl_merged, id="eos_config"),
+            pytest.param("avd_design", avd_design1, avd_design2, avd_design_merged, id="avd_design"),
+        ],
+    )
+    def test_merge_of_lists_with_primary_keys(self, schema_name: str, base: dict, nxt: dict, expected: dict) -> None:
+        """Merge list items by primary key using the selected schema."""
+        merge_result = merge({}, base, nxt, schema_name=schema_name, destructive_merge=False)
+        assert merge_result == expected
 
     @pytest.mark.parametrize("schema_name", [None, "eos_config"])
     def test_list_merge_replace(self, schema_name: str | None) -> None:
@@ -48,12 +69,14 @@ class TestMergeOnSchema:
         """Fall through to the next list strategy when no schema name is configured."""
         assert MergeOnSchema().strategy(MagicMock(), [], [], []) is STRATEGY_END
 
-    def test_strategy_without_primary_key_returns_strategy_end(self) -> None:
+    @pytest.mark.parametrize("schema_name", ["eos_config", "avd_design"])
+    def test_strategy_without_primary_key_returns_strategy_end(self, schema_name: str) -> None:
         """Fall through to the next list strategy when the schema path has no primary key."""
-        merge_on_schema = MergeOnSchema("eos_config")
+        merge_on_schema = MergeOnSchema(schema_name)
 
-        with patch("pyavd._utils.merge.mergeonschema.get_list_primary_key", return_value=None):
+        with patch("pyavd._utils.merge.mergeonschema.get_list_primary_key", return_value=None) as get_primary_key:
             assert merge_on_schema.strategy(MagicMock(), ["not_a_list_with_primary_key"], [], []) is STRATEGY_END
+        get_primary_key.assert_called_once_with(schema_name, ["not_a_list_with_primary_key"])
 
     def test_strategy_skips_items_without_matching_primary_key(self) -> None:
         """Only merge dict list items with matching primary-key values and leave the rest for fallback strategies."""
