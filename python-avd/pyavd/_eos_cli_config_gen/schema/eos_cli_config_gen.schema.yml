@@ -28073,6 +28073,18 @@ keys:
               description: Key only used for documentation or validation purposes.
               items:
                 type: str
+  vrrp:
+    type: dict
+    description: Global VRRP configuration.
+    keys:
+      ipv4:
+        type: dict
+        description: VRRPv2 IPv4 Authentication configuration.
+        keys:
+          authentication_anti_replay:
+            type: bool
+            required: true
+            description: Enable AH sequence number validation.
   vxlan_interface:
     type: dict
     keys:
