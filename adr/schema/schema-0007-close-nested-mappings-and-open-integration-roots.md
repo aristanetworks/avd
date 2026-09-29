@@ -14,79 +14,43 @@ informed: [AVD users and contributors]
 
 # Close controlled mappings and open only integration roots
 
-## Context and Problem Statement
+## Context and Current State
 
-Rejecting unknown mapping keys catches misspellings and unsupported input early. AVD nevertheless consumes top-level Ansible variable namespaces and
-supports deliberate custom-data or integration boundaries where unrelated keys must coexist. Should dictionary schemas reject or retain unknown keys?
+AVD rejects unknown keys in controlled mappings to catch misspellings and unsupported input early. It also consumes top-level Ansible variable
+namespaces and supports deliberate custom-data or integration boundaries where unrelated keys must coexist.
 
-This record governs unknown keys in owned mappings and shared integration boundaries. It does not define data-declared key names, which use the
-bounded dynamic mechanisms in `schema/0008`, or authorize untyped mappings as a shortcut for incomplete schema work.
+This record governs unknown keys in owned mappings and shared integration boundaries. It does not define data-declared key names, which use the bounded
+dynamic mechanisms in `schema/0008`, or authorize untyped mappings as a shortcut for incomplete schema work.
 
-## Decision Drivers
+## Implemented Decision
 
-- Misspelled nested settings must not be silently ignored.
-- AVD must coexist with inventory variables owned by Ansible, other collections, and user integrations.
-- Generated models need to know whether unknown data should be discarded, retained, or rejected.
-- Openness should be an explicit extension contract, not a convenience used to avoid schema authoring.
+Dictionary schemas reject undeclared keys by default. `allow_other_keys: true` is used only where the mapping intentionally contains data owned
+outside that schema, such as a role-variable root or documented custom-data boundary. It is not used to defer modeling supported AVD settings.
 
-## Considered Options
+Reserved underscore-prefixed custom keys may coexist where documented, but AVD does not assign behavior to unknown custom keys. A mapping whose key
+names come from a user-defined catalog uses a documented dynamic-key mechanism under `schema/0008` instead of becoming untyped.
 
-- Close controlled nested mappings and explicitly open only integration roots.
-- Reject unknown keys everywhere.
-- Allow unknown keys in every mapping.
-
-## Decision Outcome
-
-Chosen option: **Close controlled nested mappings and explicitly open only integration roots**. Dictionary schemas reject undeclared keys by default.
-Use `allow_other_keys: true` only where the mapping intentionally contains data owned outside that schema, such as a role-variable root or documented
-custom-data boundary. It must not be used merely to defer modeling supported AVD settings.
-
-Reserved underscore-prefixed custom keys may coexist where documented, but AVD must not assign behavior to unknown custom keys. A mapping that accepts
-arbitrary keys with a common value shape should use a documented dynamic-key mechanism under `schema/0008` instead of becoming untyped.
-
-### Consequences
+## Consequences and Boundaries
 
 - Unknown nested AVD settings fail validation, and adding a supported setting requires a schema change.
 - Shared inventory and documented custom-data boundaries may retain keys owned outside the local schema.
 - An open root cannot classify every unknown top-level key as a typo because ownership may belong to another integration.
+- Each open boundary requires a stated external owner or extension contract.
 
-### Risks and Mitigations
+## Risks and Mitigations
 
-- **Risk:** A broadly open mapping hides misspelled AVD settings.
-  **Mitigation:** Require a stated external owner or extension contract, keep controlled descendants closed, and test each new open boundary.
+A broadly open mapping can hide misspelled AVD settings. Requiring an external owner or extension contract, keeping controlled descendants closed, and
+testing each new open boundary contain that risk.
 
-### Confirmation
+## Confirmation
 
-The meta-schema default for `allow_other_keys` remains false. Reviewers must require a stated external owner or extension contract for each true value.
-Validation tests must cover both rejection in a controlled mapping and retention at each new open boundary.
+The meta-schema default for `allow_other_keys` is false. Reviews require a stated external owner or extension contract for each true value. Validation
+tests cover rejection in controlled mappings and retention at documented open boundaries.
 
 ## Examples or Expected Semantics
 
-A misspelled key such as `uplnk_type` inside an AVD-controlled node setting is rejected. An unrelated variable at a documented shared inventory root
-is retained because AVD does not own that namespace. A mapping whose key names come from a user-defined catalog remains typed through `dynamic_keys`
-instead of setting `allow_other_keys: true`.
-
-## Pros and Cons of the Options
-
-### Closed mappings with explicit open roots
-
-- Good, because strictness follows ownership.
-- Bad, because the validation rule depends on knowing the boundary's purpose.
-
-### Closed everywhere
-
-- Good, because every typo is detectable.
-- Bad, because AVD could not safely consume shared Ansible inventory namespaces or extensible custom data.
-
-### Open everywhere
-
-- Good, because schemas never block new keys.
-- Bad, because typos and unsupported settings appear valid and can silently change generated results.
-
-## Future Direction and Revisit Triggers
-
-Reduce open surface as ownership becomes more precise, but do not close shared integration roots without a migration path. Revisit underscore-prefixed
-custom keys if AVD introduces a formally namespaced metadata or extension model.
+A misspelled key such as `uplnk_type` inside an AVD-controlled node setting is rejected. An unrelated variable at a documented shared inventory root is
+retained because AVD does not own that namespace. A mapping whose key names come from a user-defined catalog remains typed through `dynamic_keys`.
 
 ## Evidence
 

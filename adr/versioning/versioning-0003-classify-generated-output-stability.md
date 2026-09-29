@@ -14,69 +14,29 @@ informed: [AVD users and contributors]
 
 # Classify generated-output stability
 
-## Context and Problem Statement
+## Context and Current State
 
-AVD produces EOS configuration, structured configuration, fabric and device documentation, facts, reports, and deployment payloads. Users apply some
-outputs directly to production devices while other outputs are intermediate or informational representations that must evolve as features are added.
-Should every output have the same Semantic Versioning guarantee?
+AVD produces EOS configuration, structured configuration, fabric and device documentation, facts, reports, and deployment payloads. The released
+Semantic Versioning documentation classifies these outputs according to their role and published contract.
 
-## Decision Drivers
+## Implemented Decision
 
-- Generated EOS configuration and deployment intent can directly change network state.
-- Internal representations must evolve without requiring a major release for every structural improvement.
-- Users need an explicit warning before building integrations on unstable artifacts.
-- Stability concerns effective behavior, not necessarily byte-for-byte formatting.
+Generated EOS configuration and documented deployment outputs are SemVer-stable in their effective behavior, subject to `versioning/0006`.
+Structured configuration, internal facts, generated documentation, catalogs, and reports are stable only where released documentation explicitly says
+so. Formatting or ordering may change when it does not change effective EOS behavior or a separately documented machine-readable contract.
 
-## Considered Options
+## Consequences and Boundaries
 
-- Classify outputs by their role and published contract.
-- Treat every generated artifact as SemVer-stable.
-- Treat every generated artifact as unstable and best-effort.
+- Operationally significant output receives a strong compatibility promise.
+- Intermediate data models and human-oriented documents can evolve during minor releases when they are not published as stable interfaces.
+- Users consult the stability table before treating an artifact as an integration API.
+- Reviews of stable output compare effective behavior and generated fixtures, not only Python APIs.
+- Determining semantic equivalence can require EOS expertise and regression evidence.
 
-## Decision Outcome
+## Confirmation
 
-Chosen option: **Classify outputs by their role and published contract**.
-
-- Generated EOS configuration and documented deployment outputs are SemVer-stable in their effective behavior, subject to `versioning/0006`.
-- Structured configuration, internal facts, generated documentation, catalogs, and reports are stable only where the released documentation explicitly
-  says so.
-- Formatting or ordering may change when it does not change effective EOS behavior or a separately documented machine-readable contract.
-
-### Consequences
-
-- Good, because operationally significant output receives a strong compatibility promise.
-- Good, because intermediate data models and human-oriented documents can evolve during minor releases.
-- Bad, because users must consult the stability table before treating an artifact as an integration API.
-- Bad, because determining semantic equivalence can require EOS expertise and regression evidence.
-
-### Confirmation
-
-Any new generated artifact must be classified in released documentation before it is presented as a public integration surface. Reviews of changes to
-stable output must compare effective behavior and generated fixtures, not only Python APIs. Tests must not accidentally imply stability for artifacts
-that the public contract marks unstable.
-
-## Pros and Cons of the Options
-
-### Stability by output role
-
-- Good, because guarantees align with user impact.
-- Good, because internal models retain room to improve.
-- Bad, because the contract is more nuanced than a single project-wide rule.
-
-### All outputs stable
-
-- Good, because the rule is simple for consumers.
-- Bad, because internal structures and human-readable documents become de facto permanent APIs.
-
-### All outputs unstable
-
-- Good, because generation can evolve freely.
-- Bad, because a minor upgrade could unexpectedly change production configuration or deployment behavior.
-
-## Future Direction and Revisit Triggers
-
-Preserve the tiered contract. Revisit the classification of an individual output when AVD deliberately publishes a versioned machine-readable format or
-when users are explicitly encouraged to consume an existing internal artifact as an API.
+Any new generated artifact is classified in released documentation before it is presented as a public integration surface. Tests do not imply stability
+for artifacts that the public contract marks unstable.
 
 ## Evidence
 

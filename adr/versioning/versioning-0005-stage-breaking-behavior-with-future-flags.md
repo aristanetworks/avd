@@ -14,75 +14,34 @@ informed: [AVD users and contributors]
 
 # Stage planned breaking behavior with future flags
 
-## Context and Problem Statement
+## Context and Current State
 
-Some corrections and design improvements intentionally change generated configuration or validation in a way that is unsuitable as the default in a
-minor release. AVD currently exposes individual opt-ins below `avd_design_future` and `eos_config_future`, with legacy behavior remaining the default.
-What lifecycle turns these flags into a predictable migration mechanism instead of permanent compatibility switches?
+AVD exposes individual opt-ins below `avd_design_future` and `eos_config_future` for behavior changes that are not suitable as the default during the
+current major release. Legacy behavior remains the default until the planned transition.
 
-## Decision Drivers
+## Implemented Decision
 
-- Existing deployments need stable defaults throughout a major release.
-- New deployments and willing users should be able to adopt and test the next behavior early.
-- Both paths need regression coverage before the next major release.
-- Compatibility branches and public inputs must not remain indefinitely.
+Each future flag names one independently understandable behavior, defaults to `false` during the current major release, documents its introduction and
+intended future-major transition, exercises both legacy and future paths in tests, and is removed when the future behavior becomes unconditional.
 
-## Considered Options
+`avd_design_future` covers intent-to-structured-configuration behavior and `eos_config_future` covers structured-configuration-to-EOS rendering
+behavior. Future flags are not used for additive features that can remain optional indefinitely or for changes safe under `versioning/0006`.
 
-- Stage each planned breaking behavior behind an individually documented future flag.
-- Change behavior immediately and describe it in release notes.
-- Preserve old and new behavior as permanent user-selected profiles.
+The current 6.x flags are intended to graduate in a future major release, and each flag's documentation identifies its specific target before the
+transition.
 
-## Decision Outcome
+## Consequences and Boundaries
 
-Chosen option: **Stage each planned breaking behavior behind an individually documented future flag**.
+- Users can preview major-release behavior without moving their entire deployment to a prerelease.
+- Legacy and future implementations and expected outputs coexist temporarily.
+- Maintainers receive regression coverage for the future path before it becomes mandatory.
+- Every flag is a short-lived public input requiring documentation, tests, and removal discipline.
+- Major-release preparation enumerates remaining flags, makes their behavior unconditional, and removes legacy paths, schemas, and tests.
 
-Each flag must:
+## Confirmation
 
-1. Name one independently understandable behavior.
-2. Default to `false` during the current major release.
-3. Document the version in which it became available and the intended future-major transition.
-4. Exercise both legacy and future paths in tests.
-5. Become unconditional in the target major release, at which point the legacy path and flag are removed.
-
-Use `avd_design_future` for intent-to-structured-configuration behavior and `eos_config_future` for structured-configuration-to-EOS rendering behavior.
-Do not use a future flag for an additive feature that can remain optional indefinitely or for a change safe under `versioning/0006`.
-
-### Consequences
-
-- Good, because users can preview major-release behavior without moving their entire deployment to a prerelease.
-- Good, because maintainers receive real test coverage for the future path before it becomes mandatory.
-- Bad, because both implementations and expected outputs must coexist temporarily.
-- Bad, because every flag is itself a short-lived public input requiring documentation and removal discipline.
-
-### Confirmation
-
-Review must reject a future flag without a stated transition, separate legacy/future coverage, and release documentation. Major-release preparation must
-enumerate all remaining flags, make their behavior unconditional, remove legacy branches, and remove the flag schemas and tests.
-
-## Pros and Cons of the Options
-
-### Individual future flags
-
-- Good, because migrations can be tested incrementally.
-- Good, because intent generation and CLI rendering have separate, understandable namespaces.
-- Bad, because temporary branches increase maintenance and test cost.
-
-### Immediate behavior changes
-
-- Good, because there is only one implementation path.
-- Bad, because a minor upgrade can change production output without an opt-in.
-
-### Permanent behavior profiles
-
-- Good, because users choose when or whether to migrate.
-- Bad, because AVD would accumulate combinatorial behavior modes and could never complete architectural transitions.
-
-## Future Direction and Revisit Triggers
-
-The current 6.x flags are intended to graduate in a future major release; each flag's documentation must identify the specific target before acceptance.
-Revisit this mechanism if AVD introduces a single versioned compatibility profile that can provide the same incremental testing without creating a
-combinatorial matrix or indefinite legacy support.
+Future-flag reviews verify a stated transition, separate legacy/future coverage, and release documentation. The release process verifies removal of the
+flag and legacy behavior when the target major transition occurs.
 
 ## Evidence
 

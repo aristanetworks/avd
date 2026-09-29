@@ -14,81 +14,46 @@ informed: [AVD users and contributors]
 
 # Separate schema domains with one-way dependencies
 
-## Context and Problem Statement
+## Context and Current State
 
-AVD models user design intent, EOS structured configuration, internal facts protocols, and CloudVision deployment inputs. These models have different
-owners and stability promises, but some EOS Designs fields deliberately reuse EOS CLI Config Gen shapes because EOS Designs produces that structured
-configuration. Should all data share one schema graph or remain in separate domains?
+AVD models user design intent, EOS structured configuration, internal facts protocols, and CloudVision deployment inputs in separate named schema
+domains. Some EOS Designs fields reuse EOS CLI Config Gen shapes because EOS Designs produces that structured configuration.
 
 This record governs ownership and dependency direction between named schema domains. It does not define local `$ref` merge behavior (`schema/0006`)
 or determine whether an individual field is a stable public contract.
 
-## Decision Drivers
+## Implemented Decision
 
-- Intent models and rendered structured configuration evolve for different reasons.
-- Domain ownership and public stability need to remain visible.
-- Legitimate semantic reuse should not require copied definitions.
-- Circular references would couple generation stages and complicate generated classes.
+Each domain owns its roots and reusable definitions. Cross-domain references are permitted only when the producer-to-consumer relationship is justified,
+directional, and acyclic. EOS Designs may reference EOS CLI Config Gen when the design input intentionally uses the exact structured-configuration
+shape it produces; EOS CLI Config Gen does not depend on EOS Designs.
 
-## Considered Options
+Internal facts and deployment schemas remain separate unless an explicit producer-to-consumer relationship justifies a new one-way edge. References
+follow `schema/0006` and must not create a cycle.
 
-- Keep separate named schema domains and permit only acyclic, directionally justified references.
-- Combine all AVD data into one global schema.
-- Forbid all cross-domain references and copy shared structures.
-
-## Decision Outcome
-
-Chosen option: **Keep separate named schema domains and permit only acyclic, directionally justified references**.
-
-Each domain owns its roots and reusable definitions. Self-references are allowed. EOS Designs may reference EOS CLI Config Gen when design input
-intentionally uses the exact structured-configuration shape it will produce. EOS CLI Config Gen must not depend on EOS Designs. Internal facts and
-deployment schemas remain separate unless an explicit producer-to-consumer relationship justifies a new one-way edge.
-
-Cross-domain references follow `schema/0006` and must not create a cycle.
-
-### Consequences
+## Consequences and Boundaries
 
 - Each processing stage retains a named model, owner, and stability boundary while allowing exact producer-to-consumer reuse.
-- A referenced-shape change can affect consumers outside the edited domain and therefore requires dependency-aware review.
-- Schema tooling and reviewers must preserve an acyclic dependency graph rather than assess each fragment in isolation.
+- A referenced-shape change can affect consumers outside the edited domain and requires dependency-aware review.
+- Schema tooling and reviewers preserve the dependency direction rather than assessing each fragment in isolation.
+- Similar structures remain separate when they do not represent the same semantic concept.
+- Cross-domain compatibility still requires coordination when a referenced shape changes.
 
-### Risks and Mitigations
+## Risks and Mitigations
 
-- **Risk:** Convenient cross-domain references gradually create cycles or erase ownership boundaries.
-  **Mitigation:** Permit only directionally justified edges and add an automated cycle check when manual graph inspection is no longer reliable.
+Convenient cross-domain references can create cycles or erase ownership boundaries. Directionally justified edges, owner review, and cycle rejection
+contain that risk.
 
-### Confirmation
+## Confirmation
 
-Schema build tooling must resolve named-domain references and fail on missing targets. Review must verify the owner and direction of every new
-cross-domain reference. A dependency-cycle check should be added if the graph becomes too large to inspect reliably.
+Schema build tooling resolves named-domain references and fails on missing targets. Reviews verify the owner and direction of every new cross-domain
+reference and reject edges that would create a cycle.
 
 ## Examples or Expected Semantics
 
-- `eos_designs` may reference an `eos_cli_config_gen` shape when the design input intentionally embeds the exact structured configuration it produces.
+- `eos_designs` may reference an `eos_cli_config_gen` shape when the design input embeds the exact structured configuration it produces.
 - The reverse dependency is rejected because rendering structured configuration must not depend on fabric-design intent.
 - A new edge is rejected when following existing references would lead back to its source domain.
-
-## Pros and Cons of the Options
-
-### Separate domains with acyclic references
-
-- Good, because domain boundaries and legitimate reuse coexist.
-- Bad, because cross-domain compatibility still needs coordination.
-
-### One global schema
-
-- Good, because any definition is directly reusable.
-- Bad, because intent, intermediate, output, and deployment models lose distinct ownership and stability.
-
-### No cross-domain references
-
-- Good, because domains can change independently.
-- Bad, because identical concepts are copied and eventually diverge.
-
-## Future Direction and Revisit Triggers
-
-Preserve the current direction from EOS Designs intent toward EOS CLI Config Gen structured configuration. Revisit an edge when a referenced structure
-stops representing the same semantic concept, or when a new shared domain with independent ownership would remove repeated justified references.
 
 ## Evidence
 

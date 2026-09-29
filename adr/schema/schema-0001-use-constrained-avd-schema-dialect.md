@@ -14,89 +14,44 @@ informed: [AVD users and contributors]
 
 # Use a constrained AVD schema dialect
 
-## Context and Problem Statement
+## Context and Current State
 
-AVD needs one model to drive input validation, type conversion, inheritance and merge behavior, generated Python classes, and data-model documentation.
-General-purpose formats such as JSON Schema and Ansible argument specifications cover parts of this problem but do not directly express every AVD
-semantic. Should AVD adopt one of those formats directly or retain a purpose-built dialect?
-
-This retrospective ADR ratifies the proprietary schema format described by the current meta-schema and contributor documentation. It does not claim
-that the options below reproduce the original adoption discussion.
+AVD uses one schema model for input validation, type conversion, inheritance and merge behavior, generated Python classes, and data-model
+documentation. General-purpose formats such as JSON Schema and Ansible argument specifications cover only parts of these semantics. The current
+meta-schema defines a finite AVD-specific vocabulary for the consumers.
 
 This record governs the authoring language and supported vocabulary of AVD Schema. It does not decide physical fragment layout (`schema/0003`),
 dependency direction between schema domains (`schema/0002`), or compatibility rules for individual public fields (`schema/0012`).
 
-## Decision Drivers
+## Implemented Decision
 
-- One authored model should serve validation, code generation, merge semantics, and documentation.
-- The supported vocabulary must be finite and mechanically validated.
-- AVD-specific concepts such as primary-keyed lists, centralized type coercion, dynamic keys, and deprecation conflicts must be representable.
-- Schema authors need YAML editor assistance and clear generated documentation.
+AVD uses a constrained schema dialect governed by a JSON Schema meta-schema. Only vocabulary defined by the AVD meta-schema is supported; an arbitrary
+JSON Schema keyword is not supported merely because a third-party validator understands it. The dialect may be inspired by other schema systems
+without claiming full compatibility with them.
 
-## Considered Options
+New vocabulary is described together with its affected consumers and observable semantics under `schema/0004` before it becomes supported.
 
-- Use a constrained AVD schema dialect governed by a JSON Schema meta-schema.
-- Use standard JSON Schema directly.
-- Use Ansible argument specifications as the source model.
-- Maintain independent models for each consumer.
+## Consequences and Boundaries
 
-## Decision Outcome
-
-Chosen option: **Use a constrained AVD schema dialect governed by a JSON Schema meta-schema**. Only vocabulary defined by the AVD meta-schema is
-supported. The dialect may be inspired by other schema systems without claiming full compatibility with them.
-
-New vocabulary must first define its affected consumers and observable semantics under `schema/0004`; placing an arbitrary JSON Schema keyword in an
-AVD schema does not make it supported.
-
-### Consequences
-
-- AVD owns the dialect specification and the validator, model generator, documentation generator, and compatibility behavior that consume it.
-- Contributors must use the finite vocabulary declared by the meta-schema rather than assume that arbitrary JSON Schema keywords are supported.
+- AVD owns the dialect specification, validator, model generator, documentation generator, and compatibility behavior that consume it.
+- Contributors use the finite vocabulary declared by the meta-schema rather than assuming arbitrary JSON Schema compatibility.
 - Integrations requiring standard JSON Schema need a converter or a deliberately reduced representation of AVD-specific semantics.
+- A proprietary keyword must have one defined meaning across the consumers covered by its contract.
 
-### Risks and Mitigations
+## Risks and Mitigations
 
-- **Risk:** A proprietary keyword develops different meanings in separate consumers.
-  **Mitigation:** Apply the consumer-scope contract in `schema/0004` and reject vocabulary not declared by the meta-schema.
+A proprietary keyword can develop different meanings in separate consumers. The consumer-scope contract in `schema/0004` and the meta-schema's
+undeclared-vocabulary rejection contain that risk.
 
-### Confirmation
+## Confirmation
 
-Schema files must validate against `avd_meta_schema.json`. Contributor documentation and generated tables must list the same supported types and
-options. Reviews must reject undeclared vocabulary even when a general JSON Schema implementation would understand it.
+Schema files are validated against `avd_meta_schema.json`. Contributor documentation and generated tables describe the supported types and options,
+and reviews reject undeclared vocabulary.
 
 ## Examples or Expected Semantics
 
-A schema containing a standard JSON Schema keyword that is absent from the AVD meta-schema is invalid, even if an editor or third-party validator
-understands it. A new AVD keyword becomes valid only after the meta-schema, relevant consumers, documentation, and confirmation coverage define one
-explicit contract for it.
-
-## Pros and Cons of the Options
-
-### Constrained AVD schema dialect
-
-- Good, because one language can express the full AVD generation model.
-- Good, because supported features remain intentionally bounded.
-- Bad, because AVD owns the validator, model generator, documentation generator, and compatibility burden.
-
-### Standard JSON Schema
-
-- Good, because it has broad tooling and a published specification.
-- Bad, because AVD merge, conversion, and generation metadata would require extensions whose semantics are still project-specific.
-
-### Ansible argument specifications
-
-- Good, because they are familiar to collection contributors.
-- Bad, because PyAVD is also a direct Python library and needs typed models and semantics not owned by the Ansible runtime.
-
-### Independent consumer models
-
-- Good, because each consumer can use its native representation.
-- Bad, because duplicated constraints inevitably drift and produce contradictory behavior.
-
-## Future Direction and Revisit Triggers
-
-Keep the dialect constrained. Revisit only if a standard schema language can represent AVD's required validation, conversion, merge, generation, and
-documentation semantics without parallel sources or substantial proprietary extensions.
+A schema containing a standard JSON Schema keyword absent from the AVD meta-schema is invalid, even if an editor or third-party validator understands
+it. A new AVD keyword becomes valid only after its meta-schema entry, consumer semantics, documentation, and confirmation coverage are defined.
 
 ## Evidence
 

@@ -16,9 +16,8 @@ informed: [People kept informed of the decision]
 
 ## Context and Problem Statement
 
-Describe the architecturally significant problem or question. For a retrospective ADR, distinguish observable repository evidence from rationale
-reconstructed during the current review. When readers could reasonably confuse this decision with an adjacent one, add a short boundary sentence here
-instead of a separate scope or non-goals section.
+Describe the architecturally significant problem or question. When readers could reasonably confuse this decision with an adjacent one, add a short
+boundary sentence here instead of a separate scope or non-goals section.
 
 ## Decision Drivers
 

@@ -14,86 +14,44 @@ informed: [AVD users and contributors]
 
 # Require primary keys for mergeable lists
 
-## Context and Problem Statement
+## Context and Current State
 
-AVD combines list data from defaults, profiles, fabric variables, node variables, and structured-configuration contributors. Position does not identify
-the same interface, peer, VLAN, or policy across those sources. Comparing entire dictionaries also fails once two sources contribute different fields
-to the same object. How should list items acquire stable identity for merging and inheritance?
+AVD combines list data from defaults, profiles, fabric variables, node variables, and structured-configuration contributors. Mergeable dictionary
+items use a stable semantic identity rather than list position or a comparison of complete dictionaries.
 
 This record governs lists whose dictionary items merge by logical identity across input sources. It does not require primary keys for ordered
 sequences, atomic replace-only lists, or lists whose documented behavior is append-only.
 
-## Decision Drivers
+## Implemented Decision
 
-- The same logical item must merge independent of its position.
-- Duplicate identity should fail instead of silently overwriting data.
-- Generated models need efficient keyed access and deterministic ordering.
-- Some lists are intentionally ordered sequences and should not be merged by identity.
+Lists merged by item identity require a schema-declared primary key. The key must be present on every item and unique by default. Generated models use
+the primary key for lookup, merge, inheritance, and duplicate detection.
 
-## Considered Options
+An unkeyed list is used only when it is an ordered sequence or an atomic replace/append value. `allow_duplicate_primary_key` is an explicit exceptional
+semantic and is not used for lists expected to merge by identity.
 
-- Require a schema-declared primary key for lists merged by item identity.
-- Merge list items by position.
-- Infer identity from all item fields or feature-specific heuristics.
-- Treat every list as replace-only.
+## Consequences and Boundaries
 
-## Decision Outcome
+- Mergeable items combine independently of position and duplicate identity is detectable.
+- The chosen primary key becomes structural identity and must remain stable for the life of the public model.
+- Lists without identity require an explicit ordered, append, or replace semantic instead of heuristic merge behavior.
+- Some domains without a natural single-field identity require a deliberately constructed key.
 
-Chosen option: **Require a schema-declared primary key for lists merged by item identity**. The key must represent stable semantic identity, be present
-on every item, and be unique by default. Generated models represent these lists as indexed collections and use the primary key for lookup, merge,
-inheritance, and duplicate detection.
+## Risks and Mitigations
 
-Use an unkeyed list only when it is an ordered sequence or an atomic replace/append value. `allow_duplicate_primary_key` is an explicit exceptional
-semantic and must not be used for lists expected to merge by identity.
+A convenient but unstable field can be selected as identity and later require a breaking migration. Review keys for domain-level permanence and require
+migration planning before changing an established primary key.
 
-### Consequences
+## Confirmation
 
-- Mergeable items combine independently of position, duplicate identity is detectable, and generated models support efficient keyed lookup.
-- The chosen primary key becomes structural identity that must remain stable for the life of the public model.
-- Lists without identity require an explicit ordered, append, or replace semantic instead of receiving heuristic merge behavior.
-
-### Risks and Mitigations
-
-- **Risk:** A convenient but unstable field is selected as identity and later requires a breaking migration.
-  **Mitigation:** Review keys for domain-level permanence and require migration planning before changing an established primary key.
-
-### Confirmation
-
-Reviews must identify the merge behavior of every new list of dictionaries. Mergeable lists require primary-key presence and uniqueness tests plus
-merge and inheritance coverage. Generated-class tests must confirm indexed-list generation.
+Reviews identify the merge behavior of every new list of dictionaries. Mergeable lists have primary-key presence and uniqueness coverage, merge and
+inheritance coverage, and generated indexed-list models.
 
 ## Examples or Expected Semantics
 
-Given `primary_key: name`, one source may define `{name: Ethernet1, description: Uplink}` and another may define
-`{name: Ethernet1, shutdown: false}`. They resolve as one logical item containing both contributed fields, regardless of list position. Two items with
-`name: Ethernet1` in the same uniqueness scope are rejected rather than silently overwriting one another.
-
-## Pros and Cons of the Options
-
-### Schema-declared primary key
-
-- Good, because identity is explicit and shared by validation, models, and merge logic.
-- Bad, because some domains have no natural single-field identity and may require a deliberately constructed key.
-
-### Positional merge
-
-- Good, because no additional schema metadata is required.
-- Bad, because inserting or reordering an item changes which objects merge.
-
-### Inferred or heuristic identity
-
-- Good, because schemas stay concise.
-- Bad, because identity becomes feature-specific, unstable, and difficult for users to predict.
-
-### Replace-only lists
-
-- Good, because semantics are simple.
-- Bad, because profiles and contributors cannot safely add fields to existing logical items.
-
-## Future Direction and Revisit Triggers
-
-Keep single-field primary keys as the normal identity mechanism. Revisit if repeated domains require composite identity; any composite-key design must
-remain declarative, stable, and supported identically by validation, documentation, and generated models.
+Given `primary_key: name`, one source may define `{name: Ethernet1, description: Uplink}` and another may define `{name: Ethernet1, shutdown: false}`.
+They resolve as one logical item containing both contributed fields, regardless of list position. Duplicate `name: Ethernet1` items in one uniqueness scope
+are rejected instead of silently overwriting one another.
 
 ## Evidence
 
