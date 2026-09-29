@@ -6,8 +6,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from .utils import Profileable
+from pyavd._errors import AristaAvdInvalidInputsError
+
+from .utils import resolve_profile
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol
@@ -21,30 +24,38 @@ class DnsSettingsMixin(Protocol):
     """
 
     @structured_config_contributor
-    @Profileable("dns_settings_profiles", "dns_settings_profile", "dns_settings")
     def dns_settings(self: AvdStructuredConfigBaseProtocol) -> None:
         """
         Configure DNS settings from the dns_settings input model.
 
         Sets IP name servers (with VRF and priority), IP hosts, DNS domain, domain list, and domain-lookup source interfaces per VRF.
         """
-        if not self.inputs.dns_settings:
+        dns_settings = resolve_profile(
+            self.inputs.dns_settings or EosDesigns.DnsSettings(),
+            self.inputs.dns_settings_profiles,
+            self.shared_utils.node_config.dns_settings_profile,
+        )
+        if not dns_settings:
             return
 
-        if self.inputs.dns_settings.ip_hosts:
-            self.structured_config.ip_hosts = self.inputs.dns_settings.ip_hosts
+        if not dns_settings.servers:
+            msg = "At least one server must be provided in DNS configuration"
+            raise AristaAvdInvalidInputsError(msg)
 
-        if self.inputs.dns_settings.domain:
-            self.structured_config.dns_domain = self.inputs.dns_settings.domain
+        if dns_settings.ip_hosts:
+            self.structured_config.ip_hosts = dns_settings.ip_hosts
 
-        self.structured_config.domain_list = EosCliConfigGen.DomainList(self.inputs.dns_settings.domain_list)
+        if dns_settings.domain:
+            self.structured_config.dns_domain = dns_settings.domain
 
-        vrfs = self.inputs.dns_settings.vrfs
-        for server in self.inputs.dns_settings.servers:
+        self.structured_config.domain_list = EosCliConfigGen.DomainList(dns_settings.domain_list)
+
+        vrfs = dns_settings.vrfs
+        for server in dns_settings.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
                 vrfs=vrfs,
-                set_source_interfaces=self.inputs.dns_settings.set_source_interfaces,
+                set_source_interfaces=dns_settings.set_source_interfaces,
                 context=f"dns_settings.servers[ip_address={server.ip_address}].vrf",
             )
             if source_interface:

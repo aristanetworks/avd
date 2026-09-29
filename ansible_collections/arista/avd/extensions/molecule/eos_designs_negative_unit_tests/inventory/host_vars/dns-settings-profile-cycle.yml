@@ -1,14 +1,9 @@
 ---
-fabric_name: all
 devices:
-  - name: testhost
+  - name: dns-settings-profile-cycle
     type: l2leaf
     dns_settings_profile: p4
-avd_switch_facts:
-  testhost:
-    id: 1
-    vlans: ""
-    uplinks: []
+
 dns_settings_profiles:
   - profile: p1
     parent_profile: p4
@@ -18,3 +13,6 @@ dns_settings_profiles:
     parent_profile: p2
   - profile: p4
     parent_profile: p3
+
+expected_error_message: >-
+  Cycle detected while trying to resolve profiles for EosDesigns.DnsSettings: p1 -> p2 -> p3 -> p4 -> p1

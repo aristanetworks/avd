@@ -1,0 +1,36 @@
+aaa_root:
+  disabled: true
+config_end: true
+dns_domain: l3leaf.example.com
+domain_list:
+- l3leaf.example.com
+enable_password:
+  disabled: true
+hostname: dns-settings-profile-per-device-l3leaf
+ip_igmp_snooping:
+  globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 192.0.2.53
+      priority: 1
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.0.2.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

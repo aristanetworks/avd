@@ -2496,9 +2496,81 @@ keys:
           of the original or the digital twin platform (as set in `platform_settings.[].digital_twin.platform`).
   dns_settings:
     type: dict
-    description: Global DNS settings applied to all devices unless overridden by a
-      DNS settings profile.
-    $ref: eos_designs#/$defs/dns_settings
+    description: DNS settings
+    keys:
+      domain:
+        type: str
+        description: DNS domain name like 'fabric.local'
+      domain_list:
+        type: list
+        $ref: eos_cli_config_gen#/keys/domain_list
+      servers:
+        type: list
+        min_length: 1
+        description: List of DNS servers to configure.
+        items:
+          type: dict
+          keys:
+            vrf:
+              type: str
+              default: use_default_mgmt_method_vrf
+              description: "The value of `vrf` will be interpreted according to these
+                rules:\n- `use_mgmt_interface_vrf` will configure the DNS server under
+                the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
+                as DNS lookup source-interface.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure the DNS server under the VRF set with `inband_mgmt_vrf`
+                and set the `inband_mgmt_interface` as DNS lookup source-interface.\n
+                \ An error will be raised if inband management is not configured for
+                the device.\n- `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on
+                the value of `default_mgmt_method`.\n- Any other string will be used
+                directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface`
+                if needed."
+              convert_types:
+              - int
+            ip_address:
+              type: str
+              required: true
+              description: IPv4 or IPv6 address for DNS server.
+            priority:
+              description: Priority value (lower is first).
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 4
+      vrfs:
+        type: list
+        primary_key: name
+        description: Per-VRF DNS lookup source-interface settings.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+              - int
+              description: VRF name.
+            source_interface:
+              type: str
+              description: 'Source interface to use for DNS lookups in this VRF.
+
+                If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
+                this setting will take precedence.'
+      set_source_interfaces:
+        type: bool
+        default: true
+        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+          `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+
+          Can be set to `false` to avoid changes when migrating from the old `name_servers`
+          model.'
+      ip_hosts:
+        type: list
+        $ref: eos_cli_config_gen#/keys/ip_hosts
+        description: Static hostname-to-IP address mappings to configure in the local
+          host table.
   dns_settings_profiles:
     type: list
     primary_key: profile
@@ -2509,10 +2581,12 @@ keys:
       to be shared and selectively overridden per profile.'
     items:
       type: dict
-      $ref: eos_designs#/$defs/dns_settings
+      $ref: eos_designs#/keys/dns_settings
       keys:
         profile:
           type: str
+          min_length: 1
+          required: true
           description: DNS settings profile name.
         parent_profile:
           type: str
@@ -2521,16 +2595,6 @@ keys:
 
             The settings from this profile override settings inherited from the parent
             profile.'
-        servers:
-          type: list
-          description: 'DNS servers for this profile.
-
-            If omitted, servers are inherited from `parent_profile` or from global
-            `dns_settings.servers`.
-
-            At least one DNS server must be available after profile inheritance is
-            resolved.'
-          required: false
   dot1x_settings:
     documentation_options:
       table: dot1x-settings
@@ -12757,84 +12821,6 @@ $defs:
         description:
           type: str
           description: Description used for documentation.
-  dns_settings:
-    type: dict
-    description: DNS settings
-    keys:
-      domain:
-        type: str
-        description: DNS domain name like 'fabric.local'
-      domain_list:
-        type: list
-        $ref: eos_cli_config_gen#/keys/domain_list
-      servers:
-        type: list
-        required: true
-        min_length: 1
-        description: List of DNS servers to configure.
-        items:
-          type: dict
-          keys:
-            vrf:
-              type: str
-              default: use_default_mgmt_method_vrf
-              description: "The value of `vrf` will be interpreted according to these
-                rules:\n- `use_mgmt_interface_vrf` will configure the DNS server under
-                the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
-                as DNS lookup source-interface.\n  An error will be raised if `mgmt_ip`
-                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
-                will configure the DNS server under the VRF set with `inband_mgmt_vrf`
-                and set the `inband_mgmt_interface` as DNS lookup source-interface.\n
-                \ An error will be raised if inband management is not configured for
-                the device.\n- `use_default_mgmt_method_vrf` will configure the VRF
-                and source-interface for one of the two options above depending on
-                the value of `default_mgmt_method`.\n- Any other string will be used
-                directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface`
-                if needed."
-              convert_types:
-              - int
-            ip_address:
-              type: str
-              required: true
-              description: IPv4 or IPv6 address for DNS server.
-            priority:
-              description: Priority value (lower is first).
-              type: int
-              convert_types:
-              - str
-              min: 0
-              max: 4
-      vrfs:
-        type: list
-        primary_key: name
-        description: Per-VRF DNS lookup source-interface settings.
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              convert_types:
-              - int
-              description: VRF name.
-            source_interface:
-              type: str
-              description: 'Source interface to use for DNS lookups in this VRF.
-
-                If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
-                this setting will take precedence.'
-      set_source_interfaces:
-        type: bool
-        default: true
-        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
-          `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
-
-          Can be set to `false` to avoid changes when migrating from the old `name_servers`
-          model.'
-      ip_hosts:
-        type: list
-        $ref: eos_cli_config_gen#/keys/ip_hosts
-        description: Static hostname-to-IP address mappings to configure in the local
-          host table.
   errdisable_settings:
     type: dict
     keys:

@@ -1,9 +1,0 @@
----
-testhost:
-  dns_domain: l3leaf.example.com
-  domain_list:
-    - l3leaf.example.com
-testhost2:
-  dns_domain: l3spine.example.com
-  domain_list:
-    - l3spine.example.com

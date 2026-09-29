@@ -19336,6 +19336,11 @@ class EosDesigns(EosDesignsRootModel):
     class DnsSettingsProfilesItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class DomainList(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DomainList._item_type = str
+
         class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -19403,11 +19408,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Servers._item_type = ServersItem
 
-        class DomainList(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
-
-        DomainList._item_type = str
-
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -19449,9 +19449,9 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "profile": {"type": str},
             "parent_profile": {"type": str, "default": ""},
-            "servers": {"type": Servers},
             "domain": {"type": str},
             "domain_list": {"type": DomainList},
+            "servers": {"type": Servers},
             "vrfs": {"type": Vrfs},
             "set_source_interfaces": {"type": bool, "default": True},
             "ip_hosts": {"type": EosCliConfigGen.IpHosts},
@@ -19466,16 +19466,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `""`
         """
-        servers: Servers
-        """
-        DNS servers for this profile.
-        If omitted, servers are inherited from `parent_profile` or from global
-        `dns_settings.servers`.
-        At least one DNS server must be available after profile inheritance is
-        resolved.
-
-        Subclass of AvdList with `ServersItem` items.
-        """
         domain: str | None
         """DNS domain name like 'fabric.local'"""
         domain_list: DomainList
@@ -19483,6 +19473,12 @@ class EosDesigns(EosDesignsRootModel):
         Domain names to complete unqualified host names.
 
         Subclass of AvdList with `str` items.
+        """
+        servers: Servers
+        """
+        List of DNS servers to configure.
+
+        Subclass of AvdList with `ServersItem` items.
         """
         vrfs: Vrfs
         """
@@ -19510,9 +19506,9 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 profile: str | UndefinedType = Undefined,
                 parent_profile: str | UndefinedType = Undefined,
-                servers: Servers | UndefinedType = Undefined,
                 domain: str | UndefinedType | None = Undefined,
                 domain_list: DomainList | UndefinedType = Undefined,
+                servers: Servers | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 set_source_interfaces: bool | UndefinedType = Undefined,
                 ip_hosts: EosCliConfigGen.IpHosts | UndefinedType = Undefined,
@@ -19529,19 +19525,15 @@ class EosDesigns(EosDesignsRootModel):
                        Inherit settings from a parent profile defined under `dns_settings_profiles`.
                        The settings from this
                        profile override settings inherited from the parent profile.
-                    servers:
-                       DNS servers for this profile.
-                       If omitted, servers are inherited from `parent_profile` or from global
-                       `dns_settings.servers`.
-                       At least one DNS server must be available after profile inheritance is
-                       resolved.
-
-                       Subclass of AvdList with `ServersItem` items.
                     domain: DNS domain name like 'fabric.local'
                     domain_list:
                        Domain names to complete unqualified host names.
 
                        Subclass of AvdList with `str` items.
+                    servers:
+                       List of DNS servers to configure.
+
+                       Subclass of AvdList with `ServersItem` items.
                     vrfs:
                        Per-VRF DNS lookup source-interface settings.
 
@@ -118081,10 +118073,9 @@ class EosDesigns(EosDesignsRootModel):
     """
     dns_settings: DnsSettings
     """
-    Global DNS settings applied to all devices unless overridden by a DNS settings profile.
+    DNS settings
 
-    Subclass of
-    AvdModel.
+    Subclass of AvdModel.
     """
     dns_settings_profiles: DnsSettingsProfiles
     """
@@ -120399,10 +120390,9 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of
                    AvdModel.
                 dns_settings:
-                   Global DNS settings applied to all devices unless overridden by a DNS settings profile.
+                   DNS settings
 
-                   Subclass of
-                   AvdModel.
+                   Subclass of AvdModel.
                 dns_settings_profiles:
                    List of DNS settings profiles that can be applied to devices using `dns_settings_profile` under node
                    definitions.

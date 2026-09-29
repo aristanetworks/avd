@@ -1,0 +1,37 @@
+aaa_root:
+  disabled: true
+config_end: true
+dns_domain: common.example.com
+domain_list:
+- regional.example.com
+enable_password:
+  disabled: true
+hostname: dns-settings-profile-parent-chain
+ip_domain_lookup:
+  source_interfaces:
+  - name: Loopback0
+ip_hosts:
+- hostname: child-host
+  ipv4_addresses:
+  - 192.0.2.10
+ip_igmp_snooping:
+  globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 192.0.2.53
+      priority: 1
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
