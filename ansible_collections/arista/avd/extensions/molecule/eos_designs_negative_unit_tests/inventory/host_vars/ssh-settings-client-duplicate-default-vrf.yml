@@ -8,7 +8,8 @@ l2leaf:
       inband_mgmt_gateway: 10.20.30.1
       inband_mgmt_vrf: default
 
-mgmt_interface_vrf: default
+mgmt_interface_settings:
+  vrf: default
 
 ssh_settings:
   client_vrfs:
