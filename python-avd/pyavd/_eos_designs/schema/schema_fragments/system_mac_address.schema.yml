@@ -14,4 +14,4 @@ keys:
       Set to the same MAC address as available in "show version" on the device.
       "system_mac_address" can also be set under node type settings.
       If both are set, the value under node type settings takes precedence.
-      Mutually exclusive with "custom_system_mac_address".
+      Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.

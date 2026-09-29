@@ -114,7 +114,8 @@ class MiscMixin(Protocol):
 
         The returned value preserves the original format (hhhh.hhhh.hhhh, hh:hh:hh:hh:hh:hh or hhhhhhhhhhhh).
         """
-        if self.inputs.custom_system_mac_address is None:
+        custom_system_mac_address = default(self.node_config.custom_system_mac_address, self.inputs.custom_system_mac_address)
+        if custom_system_mac_address is None:
             return None
 
         if default(self.node_config.system_mac_address, self.inputs.system_mac_address) is not None:
@@ -123,7 +124,7 @@ class MiscMixin(Protocol):
 
         try:
             mac_address = AvdStringFormatter().format(
-                self.inputs.custom_system_mac_address,
+                custom_system_mac_address,
                 **strip_null_from_data({"device_id": self.id, "hostname": self.hostname}),
             )
         except KeyError as error:
