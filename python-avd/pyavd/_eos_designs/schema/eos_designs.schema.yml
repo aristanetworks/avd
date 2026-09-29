@@ -8277,8 +8277,8 @@ keys:
       Setting this to `ipv6` requires both `underlay_ipv6: true` and `underlay_rfc5549:
       true`.
 
-      When `underlay_ipv6_numbered: true`, leave this setting at its default value.
-      IPv6 overlay peering is enabled automatically.
+      When `underlay_ipv6_numbered: true`, this setting is not required. IPv6 overlay
+      peering is enabled automatically.
 
       '
     valid_values:

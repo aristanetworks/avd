@@ -118470,8 +118470,8 @@ class EosDesigns(EosDesignsRootModel):
     Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
     Setting this to `ipv6` requires both
     `underlay_ipv6: true` and `underlay_rfc5549: true`.
-    When `underlay_ipv6_numbered: true`, leave this
-    setting at its default value. IPv6 overlay peering is enabled automatically.
+    When `underlay_ipv6_numbered: true`, this
+    setting is not required. IPv6 overlay peering is enabled automatically.
 
     Default value: `"ipv4"`
     """
@@ -120502,8 +120502,8 @@ class EosDesigns(EosDesignsRootModel):
                    Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
                    Setting this to `ipv6` requires both
                    `underlay_ipv6: true` and `underlay_rfc5549: true`.
-                   When `underlay_ipv6_numbered: true`, leave this
-                   setting at its default value. IPv6 overlay peering is enabled automatically.
+                   When `underlay_ipv6_numbered: true`, this
+                   setting is not required. IPv6 overlay peering is enabled automatically.
                 overlay_rt_type:
                    Configuration options for the Administrator subfield (first part of RT) and the Assigned Number
                    subfield (second part of RT).
