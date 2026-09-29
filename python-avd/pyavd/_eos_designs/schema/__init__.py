@@ -23370,6 +23370,65 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class IpSoftwareForwarding(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Mtu(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"size": {"type": int, "default": 1500}, "exceed_action_drop": {"type": bool}}
+            size: int
+            """
+            IPv4 software-forwarding MTU threshold in bytes.
+            This setting alone does not enable dropping.
+
+            Default value: `1500`
+            """
+            exceed_action_drop: bool | None
+            """
+            Drop IPv4 packets larger than `mtu.size` in software.
+            Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M,
+            4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, size: int | UndefinedType = Undefined, exceed_action_drop: bool | UndefinedType | None = Undefined) -> None:
+                    """
+                    Mtu.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        size:
+                           IPv4 software-forwarding MTU threshold in bytes.
+                           This setting alone does not enable dropping.
+                        exceed_action_drop:
+                           Drop IPv4 packets larger than `mtu.size` in software.
+                           Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M,
+                           4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+
+                    """
+
+        _fields: ClassVar[dict] = {"mtu": {"type": Mtu}}
+        mtu: Mtu
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, mtu: Mtu | UndefinedType = Undefined) -> None:
+                """
+                IpSoftwareForwarding.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    mtu: Subclass of AvdModel.
+
+                """
+
     class IpsecSettings(AvdModel):
         """Subclass of AvdModel."""
 
@@ -115787,6 +115846,7 @@ class EosDesigns(EosDesignsRootModel):
             "type": InternalVlanOrder,
             "default": lambda cls: coerce_type({"allocation": "ascending", "range": {"beginning": 1006, "ending": 1199}}, target_type=cls),
         },
+        "ip_software_forwarding": {"type": IpSoftwareForwarding},
         "ipsec_settings": {"type": IpsecSettings},
         "ipv4_acls": {"type": Ipv4Acls},
         "ipv4_prefix_list_catalog": {"type": Ipv4PrefixListCatalog},
@@ -117882,6 +117942,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `lambda cls: coerce_type({"allocation": "ascending", "range": {"beginning": 1006, "ending": 1199}}, target_type=cls)`
     """
+    ip_software_forwarding: IpSoftwareForwarding
+    """Subclass of AvdModel."""
     ipsec_settings: IpsecSettings
     """
     Settings applicable to all IPsec connections.
@@ -119268,6 +119330,7 @@ class EosDesigns(EosDesignsRootModel):
             hardware_counters: EosCliConfigGen.HardwareCounters | UndefinedType = Undefined,
             inband_ztp_bootstrap_file: str | UndefinedType | None = Undefined,
             internal_vlan_order: InternalVlanOrder | UndefinedType = Undefined,
+            ip_software_forwarding: IpSoftwareForwarding | UndefinedType = Undefined,
             ipsec_settings: IpsecSettings | UndefinedType = Undefined,
             ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
             ipv4_prefix_list_catalog: Ipv4PrefixListCatalog | UndefinedType = Undefined,
@@ -120088,6 +120151,7 @@ class EosDesigns(EosDesignsRootModel):
                    Internal vlan allocation order and range.
 
                    Subclass of AvdModel.
+                ip_software_forwarding: Subclass of AvdModel.
                 ipsec_settings:
                    Settings applicable to all IPsec connections.
 

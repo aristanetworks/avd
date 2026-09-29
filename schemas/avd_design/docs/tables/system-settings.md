@@ -162,6 +162,10 @@
     | [<samp>&nbsp;&nbsp;range</samp>](## "internal_vlan_order.range") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;beginning</samp>](## "internal_vlan_order.range.beginning") | Integer | Required |  | Min: 2<br>Max: 4094 | First VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ending</samp>](## "internal_vlan_order.range.ending") | Integer | Required |  | Min: 2<br>Max: 4094 | Last VLAN ID. |
+    | [<samp>ip_software_forwarding</samp>](## "ip_software_forwarding") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;mtu</samp>](## "ip_software_forwarding.mtu") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "ip_software_forwarding.mtu.size") | Integer |  | `1500` |  | IPv4 software-forwarding MTU threshold in bytes.<br>This setting alone does not enable dropping. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_drop</samp>](## "ip_software_forwarding.mtu.exceed_action_drop") | Boolean |  |  |  | Drop IPv4 packets larger than `mtu.size` in software.<br>Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142. |
     | [<samp>mac_address_table</samp>](## "mac_address_table") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;aging_time</samp>](## "mac_address_table.aging_time") | Integer |  |  | Min: 0<br>Max: 1000000 | Aging time in seconds 10-1000000.<br>Enter 0 to disable aging.<br> |
     | [<samp>&nbsp;&nbsp;notification_host_flap</samp>](## "mac_address_table.notification_host_flap") | Dictionary |  |  |  |  |
@@ -499,6 +503,16 @@
 
         # Last VLAN ID.
         ending: <int; 2-4094; required>
+    ip_software_forwarding:
+      mtu:
+
+        # IPv4 software-forwarding MTU threshold in bytes.
+        # This setting alone does not enable dropping.
+        size: <int; default=1500>
+
+        # Drop IPv4 packets larger than `mtu.size` in software.
+        # Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+        exceed_action_drop: <bool>
     mac_address_table:
 
       # Aging time in seconds 10-1000000.
