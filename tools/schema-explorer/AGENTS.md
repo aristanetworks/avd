@@ -15,7 +15,7 @@ and any MkDocs or CI wiring that publishes Schema Explorer assets.
    rendering HTML**.
 3. Prefer DOM APIs for new interactive rendering. If string templates are used,
    every dynamic value must pass through `escapeHtml`, `escapeAttr`, or URL
-   encoding as appropriate (`static/js/sanitize.js`).
+   encoding as appropriate (`static/js/app.js`, sanitize helper block).
 4. Do not use raw `innerHTML` with unescaped dynamic values.
 5. Do not load new third-party runtime assets from CDNs without explicit
    maintainer review and SECURITY.md updates.

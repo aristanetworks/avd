@@ -1,48 +1,54 @@
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 import vm from "node:vm";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const sanitizePath = join(here, "..", "static", "js", "sanitize.js");
+const appPath = join(here, "..", "static", "js", "app.js");
+const HELPERS_START = "// sanitize-helpers-start";
+const HELPERS_END = "// sanitize-helpers-end";
 
-function loadSanitize() {
+function loadSanitizeHelpers() {
+  const source = readFileSync(appPath, "utf8");
+  const start = source.indexOf(HELPERS_START);
+  const end = source.indexOf(HELPERS_END);
+  assert.notEqual(start, -1, "sanitize helper block start marker missing from app.js");
+  assert.notEqual(end, -1, "sanitize helper block end marker missing from app.js");
+  assert.ok(end > start, "sanitize helper markers out of order in app.js");
+  const helperSource = source.slice(start + HELPERS_START.length, end);
   const context = { globalThis: {} };
   context.globalThis = context;
   vm.createContext(context);
-  vm.runInContext(readFileSync(sanitizePath, "utf8"), context);
+  vm.runInContext(
+    `${helperSource}\n;globalThis.SchemaExplorerSanitize = { escapeHtml, escapeAttr, renderCrossRefRow };`,
+    context,
+  );
   return context.SchemaExplorerSanitize;
 }
 
 test("escapeHtml neutralizes HTML metacharacters", () => {
-  const { escapeHtml } = loadSanitize();
+  const { escapeHtml } = loadSanitizeHelpers();
   assert.equal(escapeHtml(`<img src=x onerror=alert(1)>"'&`), "&lt;img src=x onerror=alert(1)&gt;&quot;&#39;&amp;");
 });
 
 test("escapeAttr escapes quotes for attribute contexts", () => {
-  const { escapeAttr } = loadSanitize();
+  const { escapeAttr } = loadSanitizeHelpers();
   assert.equal(escapeAttr(`"><script`), "&quot;&gt;&lt;script");
 });
 
 test("renderCrossRefRow builds encoded hash links and escapes labels", () => {
-  const { renderCrossRefRow } = loadSanitize();
+  const { renderCrossRefRow } = loadSanitizeHelpers();
   const modules = { eos_cli_config_gen: {}, eos_designs: {} };
-  const row = renderCrossRefRow('eos_cli_config_gen#/keys/router_bgp/keys/neighbors', modules);
+  const row = renderCrossRefRow("eos_cli_config_gen#/keys/router_bgp/keys/neighbors", modules);
   assert.match(row, /href="#\/eos_cli_config_gen\/router_bgp\.neighbors"/);
   assert.match(row, /<code>eos_cli_config_gen<\/code>/);
   assert.doesNotMatch(row, /<script/);
 });
 
 test("renderCrossRefRow rejects unknown modules and javascript: refs", () => {
-  const { renderCrossRefRow } = loadSanitize();
+  const { renderCrossRefRow } = loadSanitizeHelpers();
   assert.equal(renderCrossRefRow("evil_module#/keys/foo", { eos_designs: {} }), "");
-  assert.equal(renderCrossRefRow('javascript:alert(1)#/', { eos_designs: {} }), "");
-});
-
-test("sanitize.js passes node syntax check", () => {
-  const result = spawnSync("node", ["--check", sanitizePath], { encoding: "utf8" });
-  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(renderCrossRefRow("javascript:alert(1)#/", { eos_designs: {} }), "");
 });

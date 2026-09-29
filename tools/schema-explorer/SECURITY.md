@@ -42,7 +42,7 @@ injection (there is no server query surface).
    concatenation of user input into SQL text.
 6. **Escaped dynamic HTML** — Schema-derived strings, search highlights, fence
    attributes, and cross-schema links must pass through `escapeHtml` /
-   `escapeAttr` (see `static/js/sanitize.js`) or safe URL encoding before
+   `escapeAttr` (see `static/js/app.js`, sanitize helper block) or safe URL encoding before
    assignment to `innerHTML` or attribute templates.
 
 ## Untrusted inputs at render time

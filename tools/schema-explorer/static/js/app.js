@@ -4,6 +4,47 @@
  * landing / module-browse / var-detail views via hash routing. No backend.
  */
 
+// HTML escaping and cross-schema link helpers (extracted for test_sanitize.mjs).
+// sanitize-helpers-start
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[character]));
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value).replace(/"/g, "&quot;");
+}
+
+/** Convert a schema $ref into a hash-routed table row with escaped text and href. */
+function renderCrossRefRow(ref, allowedModules) {
+  const [target, jsonPointer] = String(ref).split("#", 2);
+  if (!target || !jsonPointer) return "";
+  if (!allowedModules || !Object.prototype.hasOwnProperty.call(allowedModules, target)) return "";
+  const segments = jsonPointer.split("/").filter(Boolean);
+  const parts = [];
+  for (let index = 0; index < segments.length; index += 1) {
+    const segment = segments[index];
+    if (segment === "keys") {
+      // skip — next segment is the key name
+    } else if (segment === "items") {
+      if (parts.length) parts[parts.length - 1] += "[]";
+    } else {
+      parts.push(segment);
+    }
+  }
+  const keyPath = parts.join(".");
+  const encodedTarget = encodeURIComponent(target);
+  const encodedKeyPath = keyPath.split("/").map(encodeURIComponent).join("/");
+  const link = keyPath ? `#/${encodedTarget}/${encodedKeyPath}` : `#/${encodedTarget}`;
+  return `<tr><td class="px-3 fw-semibold small text-muted">Cross-schema</td><td><a href="${escapeAttr(link)}" class="link-brand"><code>${escapeHtml(target)}</code> → <code>${escapeHtml(keyPath || "(root)")}</code></a></td></tr>`;
+}
+// sanitize-helpers-end
+
 // Split a key_path on "." while treating `<...>` placeholders as atomic, so
 // `<connected_endpoints_keys.key>.foo.bar` → ["<connected_endpoints_keys.key>", "foo", "bar"]
 // instead of the naive split's ["<connected_endpoints_keys", "key>", "foo", "bar"].
@@ -855,7 +896,7 @@ function renderVarDetail(db, module, key_path) {
         <div class="card border-0 shadow-sm mb-4"><div class="table-responsive">
           <table class="table table-sm align-middle mb-0"><tbody>
             ${propertyRows}
-            ${v.cross_ref ? SchemaExplorerSanitize.renderCrossRefRow(v.cross_ref, SCHEMA_MODULES) : ""}
+            ${v.cross_ref ? renderCrossRefRow(v.cross_ref, SCHEMA_MODULES) : ""}
             ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}" class="link-brand"><code class="schema-key-code">${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
             ${dynamicSource ? `<tr><td class="px-3 fw-semibold small text-muted">Dynamic key</td><td><code class="schema-key-code">${escapeHtml(dynamicSource)}</code></td></tr>` : ""}
           </tbody></table>
@@ -871,7 +912,6 @@ function renderVarDetail(db, module, key_path) {
 }
 
 // ── utils ────────────────────────────────────────────────────────────────────
-// escapeHtml / escapeAttr / cross-ref row rendering live in sanitize.js
 
 function highlight(text, q) {
   if (!q || q.length < 2 || !text) return escapeHtml(text || "-");

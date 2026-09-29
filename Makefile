@@ -146,7 +146,6 @@ schema-explorer-build: ## Build the Schema Explorer (static assets + SQLite) int
 
 .PHONY: schema-explorer-check
 schema-explorer-check: ## Syntax-check, test, and smoke-build the Schema Explorer guardrails.
-	node --check $(SCHEMA_EXPLORER_SRC)/static/js/sanitize.js
 	node --check $(SCHEMA_EXPLORER_SRC)/static/js/app.js
 	node --test $(SCHEMA_EXPLORER_SRC)/tests/test_sanitize.mjs
 	uv run --group doc --group pytest pytest tools/schema-explorer/tests -q
