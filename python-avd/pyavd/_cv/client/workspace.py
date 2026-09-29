@@ -4,8 +4,11 @@
 from __future__ import annotations
 
 from logging import getLogger
+from time import monotonic
 from typing import TYPE_CHECKING, Literal, Protocol
 from uuid import uuid4
+
+from grpclib.exceptions import StreamTerminatedError
 
 from pyavd._cv.api.arista.workspace.v1 import (
     Request,
@@ -30,7 +33,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
 
 from .async_decorators import GRPCRequestHandler, LimitCvVersion
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import CVResourceNotFound, CVWorkspaceFailed
+from .exceptions import CVResourceNotFound, CVTimeoutError, CVWorkspaceFailed
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -59,6 +62,21 @@ WORKSPACE_STATE_MAP = {
 }
 
 WORKSPACE_RESPONSE_TERMINAL_STATUSES = frozenset({ResponseStatus.SUCCESS, ResponseStatus.FAIL})
+
+
+def _workspace_response_still_in_progress(response: Response) -> bool:
+    """Return True when the server indicates the request has not reached a final outcome yet."""
+    if response.status in (ResponseStatus.IN_PROGRESS, ResponseStatus.UNSPECIFIED):
+        return True
+    if response.status not in WORKSPACE_RESPONSE_TERMINAL_STATUSES:
+        return True
+    message = (response.message or "").lower()
+    return "in progress" in message
+
+
+def _workspace_response_is_complete(response: Response) -> bool:
+    """Return True when the response should end wait_for_workspace_response polling."""
+    return not _workspace_response_still_in_progress(response)
 
 
 class WorkspaceMixin(Protocol):
@@ -277,7 +295,7 @@ class WorkspaceMixin(Protocol):
         Monitor a Workspace using arista.workspace.v1.WorkspaceService.Subscribe API for a response to the given request_id.
 
         Blocks until a response in a terminal state (ResponseStatus.SUCCESS or ResponseStatus.FAIL) is returned or timed out.
-        Responses in any state other than ResponseStatus.SUCCESS or ResponseStatus.FAIL are logged only.
+        Non-terminal responses are ignored until the stream ends, then Subscribe is retried until timeout.
 
         Parameters:
             workspace_id: Unique identifier for the Workspace.
@@ -295,24 +313,42 @@ class WorkspaceMixin(Protocol):
             ],
         )
         client = WorkspaceServiceStub(self._channel)
-        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
-        async for response in responses:
-            if request_id in response.value.responses.values:
-                LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
-                if response.value.responses.values[request_id].status in WORKSPACE_RESPONSE_TERMINAL_STATUSES:
-                    return response.value.responses.values[request_id], response.value
-            else:
-                LOGGER.debug(
-                    "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s. Received responses: %s",
-                    request_id,
-                    response.value.state,
-                    response.value.responses.values,
-                )
+        deadline = monotonic() + timeout
 
-        # Use case where stream completed without getting a response for the expected request_id
-        msg = f"Failed to get a response for request '{request_id}' of the Workspace '{workspace_id}'."
-        # TODO: Consider raising a more specific CVWorkspaceFailed exception.
-        raise CVResourceNotFound(msg)
+        while monotonic() < deadline:
+            remaining = deadline - monotonic()
+            responses = client.subscribe(request, metadata=self._metadata, timeout=remaining)
+            try:
+                async for response in responses:
+                    if request_id in response.value.responses.values:
+                        workspace_response = response.value.responses.values[request_id]
+                        LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, workspace_response)
+                        if _workspace_response_is_complete(workspace_response):
+                            return workspace_response, response.value
+                    else:
+                        LOGGER.debug(
+                            "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s. Received responses: %s",
+                            request_id,
+                            response.value.state,
+                            response.value.responses.values,
+                        )
+            except StreamTerminatedError:
+                LOGGER.debug(
+                    "wait_for_workspace_response: Subscribe stream terminated before terminal response for request '%s'. Resubscribing.",
+                    request_id,
+                )
+                continue
+
+            LOGGER.debug(
+                "wait_for_workspace_response: Subscribe stream ended before terminal response for request '%s'. Resubscribing.",
+                request_id,
+            )
+
+        msg = (
+            f"Timed out waiting for a terminal response for request '{request_id}' of the Workspace '{workspace_id}' "
+            f"after {timeout} seconds."
+        )
+        raise CVTimeoutError(msg)
 
     @GRPCRequestHandler(retry_on_stream_reset=True)
     async def wait_for_workspace_state(

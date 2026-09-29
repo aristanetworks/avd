@@ -131,3 +131,44 @@ async def test_wait_for_workspace_response_ignores_non_terminal_statuses(cv_clie
 
     assert response.status == terminal_status
     assert workspace.key.workspace_id == MOCKED_WORKSPACE_ID
+
+
+@pytest.mark.asyncio
+async def test_wait_for_workspace_response_resubscribes_after_non_terminal_stream_end(cv_client: CVClient) -> None:
+    """Resubscribe when the server closes the stream before the workspace request reaches a terminal state."""
+    request_id = "req-test"
+    subscribe_calls = 0
+
+    async def first_stream() -> AsyncIterator[WorkspaceStreamResponse]:
+        yield WorkspaceStreamResponse(
+            value=Workspace(
+                key=WorkspaceKey(workspace_id=MOCKED_WORKSPACE_ID),
+                responses=Responses(values={request_id: Response(status=ResponseStatus.UNSPECIFIED, message="request is in progress")}),
+            ),
+        )
+
+    async def second_stream() -> AsyncIterator[WorkspaceStreamResponse]:
+        yield WorkspaceStreamResponse(
+            value=Workspace(
+                key=WorkspaceKey(workspace_id=MOCKED_WORKSPACE_ID),
+                responses=Responses(values={request_id: Response(status=ResponseStatus.SUCCESS)}),
+            ),
+        )
+
+    def subscribe_side_effect(*_args: Any, **_kwargs: Any) -> AsyncIterator[WorkspaceStreamResponse]:
+        nonlocal subscribe_calls
+        subscribe_calls += 1
+        return first_stream() if subscribe_calls == 1 else second_stream()
+
+    with patch(
+        "pyavd._cv.client.workspace.WorkspaceServiceStub.subscribe",
+        side_effect=subscribe_side_effect,
+    ):
+        response, workspace = await cv_client.wait_for_workspace_response(
+            workspace_id=MOCKED_WORKSPACE_ID,
+            request_id=request_id,
+        )
+
+    assert subscribe_calls == 2
+    assert response.status == ResponseStatus.SUCCESS
+    assert workspace.key.workspace_id == MOCKED_WORKSPACE_ID
