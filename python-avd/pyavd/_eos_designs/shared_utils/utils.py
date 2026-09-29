@@ -387,7 +387,7 @@ class UtilsMixin(Protocol):
     def raise_warning_for_grandparent_profile(self: SharedUtilsProtocol, parent_profile: str, context: str) -> None:
         """Raise warning when parent_profile is mentioned for a parent profile but 'avd_design_future.allow_infinite_profile_inheritance' is not set."""
         msg = (
-            f"A parent profile is being inherited from another profile. Enable 'avd_design_future.allow_infinite_profile_inheritance' for device '{self.hostname}'"
-            f" to properly inherit or remove the 'parent_profile' from '{context}[profile={parent_profile}]'."
+            f"A parent profile is being inherited from another profile. Enable 'avd_design_future.allow_infinite_profile_inheritance'"
+            f" for device '{self.hostname}' to properly inherit or remove the 'parent_profile' from '{context}[profile={parent_profile}]'."
         )
         warnings.warn(msg, stacklevel=2)
