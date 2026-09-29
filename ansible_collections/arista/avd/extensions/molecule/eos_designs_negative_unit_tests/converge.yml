@@ -562,6 +562,13 @@
     - name: Run failure scenario Test
       ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
+- name: Converge Negative tests for custom system MAC address with unsupported formatter field
+  hosts: custom-system-mac-address-unsupported-field
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
 - name: Converge Negative tests for 'eos_designs_facts' - FABRIC_UPLINK_TESTS_1
   hosts: uplink-switches-length-less-than-uplink-interfaces
   connection: local

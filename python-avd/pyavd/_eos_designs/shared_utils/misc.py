@@ -128,10 +128,13 @@ class MiscMixin(Protocol):
             )
         except KeyError as error:
             field_name = error.args[0]
-            msg = (
-                f"'custom_system_mac_address' uses formatter field '{field_name}', but no AVD node ID could be resolved for host '{self.hostname}'. "
-                "Configure a node ID for this host or remove the field from the template."
-            )
+            if field_name == "device_id":
+                msg = (
+                    f"'custom_system_mac_address' uses formatter field 'device_id', but no AVD node ID could be resolved for host '{self.hostname}'. "
+                    "Configure a node ID for this host or remove the field from the template."
+                )
+            else:
+                msg = f"'custom_system_mac_address' uses unsupported formatter field '{field_name}'. Supported formatter fields are 'device_id' and 'hostname'."
             raise AristaAvdInvalidInputsError(msg, host=self.hostname) from error
 
         pattern = (
