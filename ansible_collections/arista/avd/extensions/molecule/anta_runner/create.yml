@@ -5,6 +5,9 @@
   connection: local
   vars:
     root_dir: "{{ playbook_dir }}"
+    build_output_folders_root_dir: "{{ playbook_dir }}"
+    build_output_folders_avd_catalogs_dir: "{{ playbook_dir }}/anta/avd_catalogs"
+    build_output_folders_anta_reports_dir: "{{ playbook_dir }}/anta/reports"
   tasks:
     - name: Create local output folders
       delegate_to: 127.0.0.1
@@ -19,14 +22,14 @@
         state: directory
         mode: "0o775"
       loop:
-        - "{{ avd_catalogs_dir }}/default_run"
-        - "{{ avd_catalogs_dir }}/filtered_run"
-        - "{{ avd_catalogs_dir }}/default_run_filtered_report"
-        - "{{ avd_catalogs_dir }}/default_run_sorted_report"
-        - "{{ anta_reports_dir }}/default_run"
-        - "{{ anta_reports_dir }}/filtered_run"
-        - "{{ anta_reports_dir }}/user_defined_catalogs_run"
-        - "{{ anta_reports_dir }}/user_defined_catalogs_with_tags_run"
-        - "{{ anta_reports_dir }}/default_run_filtered_report"
-        - "{{ anta_reports_dir }}/default_run_sorted_report"
+        - "{{ build_output_folders_avd_catalogs_dir }}/default_run"
+        - "{{ build_output_folders_avd_catalogs_dir }}/filtered_run"
+        - "{{ build_output_folders_avd_catalogs_dir }}/default_run_filtered_report"
+        - "{{ build_output_folders_avd_catalogs_dir }}/default_run_sorted_report"
+        - "{{ build_output_folders_anta_reports_dir }}/default_run"
+        - "{{ build_output_folders_anta_reports_dir }}/filtered_run"
+        - "{{ build_output_folders_anta_reports_dir }}/user_defined_catalogs_run"
+        - "{{ build_output_folders_anta_reports_dir }}/user_defined_catalogs_with_tags_run"
+        - "{{ build_output_folders_anta_reports_dir }}/default_run_filtered_report"
+        - "{{ build_output_folders_anta_reports_dir }}/default_run_sorted_report"
       run_once: true
