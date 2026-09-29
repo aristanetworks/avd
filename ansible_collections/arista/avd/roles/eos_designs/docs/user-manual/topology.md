@@ -8,6 +8,10 @@ title: AVD Design data models for design settings
   ~ that can be found in the LICENSE file.
   -->
 
+# Topology and fabric design
+
+These variables describe the overall fabric design: supported topologies, hierarchy and numbering, IP addressing, default interface behavior, and fabric-wide routing protocol settings.
+
 ## Supported designs
 
 Arista AVD supports multiple network design types such as L3LS-EVPN with 3-stage, 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend Arista AVD to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.

@@ -10,6 +10,8 @@ title: AVD Design data models (eos_designs)
 
 # AVD Design data models (eos_designs)
 
+This page is the entry point for the `eos_designs` input variable reference. The other pages in this manual group the same schema-backed data models by topic so you can navigate by area of the design.
+
 AVD Design data models provide opinionated yet flexible network-wide data models expressing the intent of your network design and configuration. AVD Design data models are transformed by the Arista AVD framework to generate configuration, documentation and tests. You can extend or override Arista AVD's behaviour by leveraging "structured config" or [custom structured configuration](../how-to/custom-structured-configuration.md) with data models described in [EOS Config](../../../eos_cli_config_gen/docs/data-models.md).
 
 For Ansible users this document describes the supported input variables for the role `arista.avd.eos_designs`.

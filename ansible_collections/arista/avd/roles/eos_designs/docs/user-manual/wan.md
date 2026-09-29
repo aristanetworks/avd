@@ -8,6 +8,10 @@ title: AVD Design data models for wan
   ~ that can be found in the LICENSE file.
   -->
 
+# WAN
+
+Variables for WAN deployments, including AutoVPN and CV Pathfinder designs, hierarchy, transports, and related services.
+
 ## WAN Settings
 
 ### WAN generic settings

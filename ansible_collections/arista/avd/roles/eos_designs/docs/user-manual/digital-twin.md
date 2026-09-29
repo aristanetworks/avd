@@ -8,6 +8,10 @@ title: AVD Design data models for digital twin
   ~ that can be found in the LICENSE file.
   -->
 
+# Digital Twin
+
+Preview variables for Arista Digital Twin integration. These keys and their defaults may change; do not rely on them in production until they are promoted out of preview.
+
 ## PREVIEW - Digital Twin settings
 
 ### PREVIEW - Digital Twin configuration

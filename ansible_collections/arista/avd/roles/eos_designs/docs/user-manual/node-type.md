@@ -8,6 +8,10 @@ title: AVD Design data models for node types
   ~ that can be found in the LICENSE file.
   -->
 
+# Node types
+
+Use these variables to select default node roles, define custom node types, and override behavior per device or group—for example uplinks, MLAG, loopbacks, VTEPs, and services attached to a node.
+
 ## Node Type Variables
 
 The following tables provide information on the default node types that are pre-defined in AVD.

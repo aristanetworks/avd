@@ -8,6 +8,10 @@ title: AVD Design data models for platform and system settings
   ~ that can be found in the LICENSE file.
   -->
 
+# Platform and system
+
+Platform-specific hardware behavior, reload timing, system settings, and EOS features that apply outside a single design area.
+
 ## Platform settings
 
 Set platform specific settings like TCAM profile and reload delay.

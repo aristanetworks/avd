@@ -8,6 +8,10 @@ title: AVD Design data models for network services
   ~ that can be found in the LICENSE file.
   -->
 
+# Network services
+
+Define tenants, VRFs, VLANs, SVIs, and related overlay services once at fabric scope, then control where each service is deployed using tags and node-type filters.
+
 ## Network Services
 
 The network services variables provide an abstracted model to define network services across the fabric.

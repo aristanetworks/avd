@@ -8,6 +8,10 @@ title: AVD Design data models for management settings
   ~ that can be found in the LICENSE file.
   -->
 
+# Management settings
+
+Day-two management plane configuration applied across the fabric, including AAA, DNS, NTP, SNMP, logging, and related services.
+
 ## Management settings
 
 ### AAA

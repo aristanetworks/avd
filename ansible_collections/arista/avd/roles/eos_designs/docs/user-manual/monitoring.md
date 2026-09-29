@@ -8,6 +8,10 @@ title: AVD Design data models for monitoring
   ~ that can be found in the LICENSE file.
   -->
 
+# Monitoring
+
+Enable and tune monitoring features on fabric nodes, such as event monitoring, load interval, LANZ, and connectivity monitoring.
+
 ## Monitoring
 
 ### Event monitor

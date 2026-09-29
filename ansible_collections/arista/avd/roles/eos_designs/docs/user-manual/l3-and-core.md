@@ -8,6 +8,10 @@ title: AVD Design data models for l3 and core
   ~ that can be found in the LICENSE file.
   -->
 
+# L3 edge and core
+
+Configure additional L3 point-to-point links at the edge or between sites, and define core-facing interfaces where the design uses a dedicated core layer.
+
 ## L3 edge and DCI settings
 
 The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.

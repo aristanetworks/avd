@@ -8,6 +8,10 @@ title: AVD Design data models for future behaviors
   ~ that can be found in the LICENSE file.
   -->
 
+# Future AVD Design behaviors
+
+Opt in to upcoming default behaviors before they ship in the next major AVD release. Use these flags only when you are ready to validate the new behavior in your environment.
+
 ## Future AVD Design Behaviors
 
 Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
