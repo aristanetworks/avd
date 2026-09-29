@@ -8,8 +8,8 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>vrrp</samp>](## "vrrp") | Dictionary |  |  |  | Global VRRP configuration. |
-    | [<samp>&nbsp;&nbsp;ipv4</samp>](## "vrrp.ipv4") | Dictionary |  |  |  | VRRPv2 IPv4 Authentication configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;authentication_anti_replay</samp>](## "vrrp.ipv4.authentication_anti_replay") | Boolean | Required |  |  | Enable AH sequence number validation. |
+    | [<samp>&nbsp;&nbsp;ipv4</samp>](## "vrrp.ipv4") | Dictionary |  |  |  | VRRPv2 IPv4 Authentication configuration.<br>Introduced in EOS 4.36.2F, 4.35.6M, 4.34.8M, 4.33.10M to mitigate Security Advisory 0157. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;authentication_anti_replay</samp>](## "vrrp.ipv4.authentication_anti_replay") | Boolean |  |  |  | Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements. |
 
 === "YAML"
 
@@ -18,8 +18,9 @@
     vrrp:
 
       # VRRPv2 IPv4 Authentication configuration.
+      # Introduced in EOS 4.36.2F, 4.35.6M, 4.34.8M, 4.33.10M to mitigate Security Advisory 0157.
       ipv4:
 
-        # Enable AH sequence number validation.
-        authentication_anti_replay: <bool; required>
+        # Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
+        authentication_anti_replay: <bool>
     ```

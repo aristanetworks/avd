@@ -28082,12 +28082,15 @@ keys:
     keys:
       ipv4:
         type: dict
-        description: VRRPv2 IPv4 Authentication configuration.
+        description: 'VRRPv2 IPv4 Authentication configuration.
+
+          Introduced in EOS 4.36.2F, 4.35.6M, 4.34.8M, 4.33.10M to mitigate Security
+          Advisory 0157.'
         keys:
           authentication_anti_replay:
             type: bool
-            required: true
-            description: Enable AH sequence number validation.
+            description: Enable anti-replay validation for authenticated IPv4 VRRPv2
+              advertisements.
   vxlan_interface:
     type: dict
     keys:

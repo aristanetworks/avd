@@ -78776,12 +78776,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             _fields: ClassVar[dict] = {"authentication_anti_replay": {"type": bool}}
-            authentication_anti_replay: bool
-            """Enable AH sequence number validation."""
+            authentication_anti_replay: bool | None
+            """Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, authentication_anti_replay: bool | UndefinedType = Undefined) -> None:
+                def __init__(self, *, authentication_anti_replay: bool | UndefinedType | None = Undefined) -> None:
                     """
                     Ipv4.
 
@@ -78789,7 +78789,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        authentication_anti_replay: Enable AH sequence number validation.
+                        authentication_anti_replay: Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
 
                     """
 
@@ -78797,6 +78797,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv4: Ipv4
         """
         VRRPv2 IPv4 Authentication configuration.
+        Introduced in EOS 4.36.2F, 4.35.6M, 4.34.8M, 4.33.10M to
+        mitigate Security Advisory 0157.
 
         Subclass of AvdModel.
         """
@@ -78813,6 +78815,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     ipv4:
                        VRRPv2 IPv4 Authentication configuration.
+                       Introduced in EOS 4.36.2F, 4.35.6M, 4.34.8M, 4.33.10M to
+                       mitigate Security Advisory 0157.
 
                        Subclass of AvdModel.
 
