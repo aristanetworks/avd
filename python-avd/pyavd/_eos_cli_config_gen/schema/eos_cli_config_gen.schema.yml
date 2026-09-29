@@ -25701,7 +25701,8 @@ keys:
               - '7'
               description: 'Authentication key type.
 
-                EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+                EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M,
+                and 4.36.2F.
 
                 Used with `auth_key`.
 
@@ -25745,7 +25746,8 @@ keys:
               - '7'
               description: 'Privacy key type.
 
-                EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+                EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M,
+                and 4.36.2F.
 
                 Used with `priv_key`.
 

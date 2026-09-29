@@ -71548,10 +71548,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             auth_key_type: AuthKeyType | None
             """
             Authentication key type.
-            EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+            EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+            4.36.2F.
             Used with `auth_key`.
-            Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key` to be
-            set.
+            Requires `version` to be `v3`, and `auth`, `localized`, and
+            `auth_key` to be set.
             - `0`: Key string is not encrypted.
             - `7`: Type-7 encrypted (HIDDEN) key.
             """
@@ -71577,9 +71578,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             priv_key_type: PrivKeyType | None
             """
             Privacy key type.
-            EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
-            Used with
-            `priv_key`.
+            EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+            Used with `priv_key`.
             Requires `localized` and `priv_key` to be set.
             Rendered only when `priv`,
             `auth_key_type`, and `auth_key` are also set.
@@ -71660,10 +71660,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Required for rendering any authentication or privacy credential.
                         auth_key_type:
                            Authentication key type.
-                           EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
+                           EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+                           4.36.2F.
                            Used with `auth_key`.
-                           Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key` to be
-                           set.
+                           Requires `version` to be `v3`, and `auth`, `localized`, and
+                           `auth_key` to be set.
                            - `0`: Key string is not encrypted.
                            - `7`: Type-7 encrypted (HIDDEN) key.
                         auth_key:
@@ -71681,9 +71682,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Required for rendering any privacy credential.
                         priv_key_type:
                            Privacy key type.
-                           EOS version dependent. Supported starting 4.34.8M, 4.35.6M and 4.36.2F.
-                           Used with
-                           `priv_key`.
+                           EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+                           Used with `priv_key`.
                            Requires `localized` and `priv_key` to be set.
                            Rendered only when `priv`,
                            `auth_key_type`, and `auth_key` are also set.
