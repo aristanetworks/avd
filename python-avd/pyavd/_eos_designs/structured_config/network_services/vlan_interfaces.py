@@ -79,7 +79,6 @@ class VlanInterfacesMixin(Protocol):
             name=interface_name,
             description=default(svi.description, svi.name),
             shutdown=not default(svi.enabled, False),  # noqa: FBT003
-            no_autostate=None if svi.autostate is None else not svi.autostate,
             ip_address=svi.ip_address,
             ip_address_secondaries=EosCliConfigGen.VlanInterfacesItem.IpAddressSecondaries(svi.ip_address_secondaries),
             ipv6_enable=svi.ipv6_enable,
@@ -87,6 +86,8 @@ class VlanInterfacesMixin(Protocol):
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
+        if not svi.autostate:
+            vlan_interface_config.no_autostate = True
         if svi.ipv6_address:
             vlan_interface_config.ipv6_addresses.append(svi.ipv6_address)
         vlan_interface_config.metadata.tenants.append(tenant.name)
