@@ -39,6 +39,7 @@ def test_get_device_structured_config_resolves_dns_profiles() -> None:
     inputs = {
         "fabric_name": "FABRIC",
         "devices": [{"name": "testhost1", "type": "l2leaf", "dns_settings_profile": "testhost1_dns_profile"}],
+        "dns_settings": {"servers": [{"ip_address": "192.0.2.53", "vrf": "default", "priority": 1}]},
         "dns_settings_profiles": [
             {
                 "profile": "testhost1_dns_profile",

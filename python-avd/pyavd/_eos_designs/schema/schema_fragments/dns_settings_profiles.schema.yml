@@ -1,0 +1,29 @@
+# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dns_settings_profiles:
+    type: list
+    primary_key: profile
+    description: |-
+      List of DNS settings profiles that can be applied to devices using `dns_settings_profile` under node definitions.
+      Profiles support inheritance using `parent_profile`, allowing common DNS settings to be shared and selectively overridden per profile.
+    items:
+      type: dict
+      $ref: "eos_designs#/keys/dns_settings"
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: DNS settings profile name.
+        parent_profile:
+          type: str
+          default: ""
+          description: |-
+            Inherit settings from a parent profile defined under `dns_settings_profiles`.
+            The settings from this profile override settings inherited from the parent profile.

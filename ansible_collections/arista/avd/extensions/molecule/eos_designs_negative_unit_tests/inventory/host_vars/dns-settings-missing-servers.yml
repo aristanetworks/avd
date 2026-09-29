@@ -1,24 +1,22 @@
 ---
-fabric_name: all
-devices:
-  - name: testhost
-    type: l2leaf
+type: l2leaf
+l2leaf:
+  defaults:
     dns_settings_profile: child_dns_profile
-avd_switch_facts:
-  testhost:
-    id: 1
-    vlans: ""
-    uplinks: []
+  nodes:
+    - name: dns-settings-missing-servers
+
+dns_settings:
+  domain: global.example.com
+  domain_list:
+    - global.example.com
+
 dns_settings_profiles:
   - profile: common_dns_profile
     domain: common.example.com
     vrfs:
       - name: default
         source_interface: Loopback0
-    servers:
-      - ip_address: 192.0.2.53
-        vrf: default
-        priority: 1
   - profile: regional_dns_profile
     parent_profile: common_dns_profile
     domain_list:
@@ -29,3 +27,6 @@ dns_settings_profiles:
       - hostname: child-host
         ipv4_addresses:
           - 192.0.2.10
+
+expected_error_message: >-
+  At least one server must be provided in DNS configuration

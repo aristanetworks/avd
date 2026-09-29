@@ -1,14 +1,17 @@
 ---
-fabric_name: all
-devices:
-  - name: testhost
-    type: l2leaf
+type: l2leaf
+l2leaf:
+  defaults:
     dns_settings_profile: leaf1_dns_profile
-avd_switch_facts:
-  testhost:
-    id: 1
-    vlans: ""
-    uplinks: []
+  nodes:
+    - name: dns-settings-profile
+
+dns_settings:
+  servers:
+    - ip_address: 192.0.2.53
+      vrf: default
+      priority: 1
+
 dns_settings_profiles:
   - profile: leaf1_dns_profile
     domain: leaf1.example.com

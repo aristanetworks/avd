@@ -1,15 +1,22 @@
 ---
-fabric_name: testgroup
 underlay_routing_protocol: none
 overlay_routing_protocol: none
+
+dns_settings:
+  servers:
+    - ip_address: 192.0.2.53
+      vrf: default
+      priority: 1
+
 devices:
-  - name: testhost
+  - name: dns-settings-profile-per-device-l3leaf
     type: l3leaf
     id: 1
     dns_settings_profile: l3leaf_dns_profile
     loopback_ipv4_pool: 192.0.2.0/24
     vtep_loopback_ipv4_pool: 192.0.3.0/24
-  - name: testhost2
+
+  - name: dns-settings-profile-per-device-l3spine
     type: l3spine
     id: 2
     dns_settings_profile: l3spine_dns_profile
@@ -20,6 +27,7 @@ dns_settings_profiles:
     domain: l3leaf.example.com
     domain_list:
       - l3leaf.example.com
+
   - profile: l3spine_dns_profile
     domain: l3spine.example.com
     domain_list:
