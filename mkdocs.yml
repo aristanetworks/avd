@@ -262,7 +262,7 @@ nav:
           - Roles:
               - eos_designs:
                   - Overview: ansible_collections/arista/avd/roles/eos_designs/README.md
-                  - Role Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/role-configuration.md
+                  - Role Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/role-configuration.md
                   - Custom Templates: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-templates.md
               - eos_cli_config_gen:
                   - Overview: ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md

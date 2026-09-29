@@ -465,7 +465,7 @@ roles/eos_designs/docs/user-manual/monitoring.md
 roles/eos_designs/docs/user-manual/network-services.md
 roles/eos_designs/docs/user-manual/node-type.md
 roles/eos_designs/docs/user-manual/platform-and-system.md
-roles/eos_designs/docs/user-manual/role-configuration.md
+roles/eos_designs/docs/role-configuration.md
 roles/eos_designs/docs/user-manual/topology.md
 roles/eos_designs/docs/user-manual/wan.md
 roles/eos_designs/meta/main.yml
