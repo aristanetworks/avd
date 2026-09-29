@@ -437,7 +437,8 @@ def test__check_requirement_duplicate_dist_alternate_satisfies() -> None:
 
 
 def test__check_requirement_duplicate_dist_none_satisfies() -> None:
-    """When multiple dists exist and none satisfies the requirement, result is placed in mismatched.
+    """
+    When multiple dists exist and none satisfies the requirement, result is placed in mismatched.
 
     Note: the function returns True in this case (falls through to `return True`) — a known
     false-positive: the requirement is not met but no failure is signalled.
@@ -633,9 +634,8 @@ def _mock_get_running_collection_version(collection_name: str, result: dict) -> 
 def test_action_module_main_missing_packaging(action_module: "Callable[..., ActionBase]") -> None:
     """When HAS_PACKAGING is False, main() raises ImportError."""
     module = action_module(ActionModule, task_args={"requirements": []})
-    with patch(f"{MODULE_PATH}.HAS_PACKAGING", False):
-        with pytest.raises(ImportError, match="packaging is required"):
-            module.main(task_vars=DEFAULT_TASK_VARS)
+    with patch(f"{MODULE_PATH}.HAS_PACKAGING", False), pytest.raises(ImportError, match="packaging is required"):
+        module.main(task_vars=DEFAULT_TASK_VARS)
 
 
 def test_action_module_main_validator_failure(action_module: "Callable[..., ActionBase]") -> None:
