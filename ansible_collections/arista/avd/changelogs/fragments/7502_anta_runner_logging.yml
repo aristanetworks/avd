@@ -1,0 +1,8 @@
+minor_changes:
+  - |-
+    Refactor(anta_runner): Centralize multiprocessing logging and align log levels with Ansible verbosity by @gmuloc
+    in https://github.com/aristanetworks/avd/pull/7502
+
+    The `anta_runner` role now follows the shared AVD logging policy, with all component loggers at WARNING by default. `-v` enables INFO for AVD and PyAVD,
+    `-vv` enables DEBUG for PyAVD and `schema_tools`, `-vvv` enables DEBUG for AVD and INFO for ANTA and `asynceapi`, `-vvvv` enables DEBUG for ANTA and
+    `asynceapi`, `-vvvvv` enables INFO for other external libraries, and `-vvvvvv` enables DEBUG for other external libraries.
