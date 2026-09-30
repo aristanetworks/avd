@@ -86,7 +86,7 @@ class VlanInterfacesMixin(Protocol):
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
-        if not svi.autostate:
+        if svi.autostate is False:
             vlan_interface_config.no_autostate = True
         if svi.ipv6_address:
             vlan_interface_config.ipv6_addresses.append(svi.ipv6_address)

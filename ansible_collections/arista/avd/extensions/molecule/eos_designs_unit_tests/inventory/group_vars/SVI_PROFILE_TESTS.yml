@@ -316,6 +316,7 @@ tenants:
             ip_address_virtual: 10.3.10.1/24
             vxlan: false
             profile: vxlan_child_profile_1
+            autostate: null
 
           # vxlan set on child_profile to false and parent_profile set to true
           - id: 311
