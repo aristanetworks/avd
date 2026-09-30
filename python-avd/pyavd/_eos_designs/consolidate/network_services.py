@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from copy import copy
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns as AVDDesign
@@ -48,10 +49,34 @@ class NetworkServicesMixin(Protocol):
         for source_key, source_tenants in source_groups:
             tenants = AVDDesign._DynamicKeys.DynamicNetworkServicesItem.NetworkServices()
             for tenant in source_tenants:
-                tenant.l2vlans = tenant.l2vlans._filtered(lambda l2vlan: "all" in filter_tags or bool(filter_tags.intersection(l2vlan.tags)))
-                for vrf in tenant.vrfs:
-                    vrf.svis = vrf.svis._filtered(lambda svi: "all" in filter_tags or bool(filter_tags.intersection(svi.tags)))
-                tenants.append(tenant)
+                rebuilt_tenant = copy(tenant)
+                filtered_l2vlans = rebuilt_tenant.l2vlans._filtered(
+                    lambda l2vlan: "all" in filter_tags or bool(filter_tags.intersection(l2vlan._get("tags", default=())))
+                )
+                l2vlans_changed = len(filtered_l2vlans) != len(rebuilt_tenant.l2vlans)
+
+                vrfs_changed = False
+                rebuilt_vrfs = AVDDesign._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.Vrfs()
+                for vrf in rebuilt_tenant.vrfs:
+                    rebuilt_vrf = copy(vrf)
+                    filtered_svis = rebuilt_vrf.svis._filtered(lambda svi: "all" in filter_tags or bool(filter_tags.intersection(svi._get("tags", default=()))))
+                    if len(filtered_svis) == len(rebuilt_vrf.svis):
+                        rebuilt_vrfs.append(vrf)
+                        continue
+
+                    rebuilt_vrf.svis = filtered_svis
+                    rebuilt_vrfs.append(rebuilt_vrf)
+                    vrfs_changed = True
+
+                if not l2vlans_changed and not vrfs_changed:
+                    tenants.append(tenant)
+                    continue
+
+                if l2vlans_changed:
+                    rebuilt_tenant.l2vlans = filtered_l2vlans
+                if vrfs_changed:
+                    rebuilt_tenant.vrfs = rebuilt_vrfs
+                tenants.append(rebuilt_tenant)
 
             if tenants:
                 consolidated_groups.append(ConsolidatedNetworkServicesItem(key=source_key, tenants=tenants))
