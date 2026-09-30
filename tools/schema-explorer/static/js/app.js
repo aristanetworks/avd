@@ -46,9 +46,35 @@ function displayPath(keyPath) {
 function isSearchActive(state) {
   return Boolean(state?.q);
 }
+function rowMatchesSearch(row, state) {
+  if (!isSearchActive(state)) return false;
+  const q = state.q.toLowerCase();
+  const scope = normalizeSearchScope(state.searchScope);
+  const path = row.key_path.toLowerCase();
+  const description = String(row.description || "").toLowerCase();
+  if (scope === "description") return description.includes(q);
+  if (scope === "path") return path.includes(q);
+  return path.includes(q) || description.includes(q);
+}
 function referenceNavLabel(row, state) {
-  const label = isSearchActive(state) ? displayPath(row.key_path) : leafSegment(row.key_path);
-  return highlight(label, state.q);
+  return highlight(leafSegment(row.key_path), state.q);
+}
+function expandRowsWithAncestors(db, module, matches) {
+  if (!matches.length) return matches;
+  const byId = new Map(matches.map(row => [schemaRowId(row, module), row]));
+  const queue = [...matches];
+  while (queue.length) {
+    const row = queue.shift();
+    if (!row.parent_path) continue;
+    const mod = rowModule(row, module);
+    const parentId = `${mod}:${row.parent_path}`;
+    if (byId.has(parentId)) continue;
+    const parent = getVar(db, mod, row.parent_path);
+    if (!parent) continue;
+    byId.set(parentId, parent);
+    queue.push(parent);
+  }
+  return [...byId.values()];
 }
 function formatDefaultSummary(parsed, raw) {
   if (Array.isArray(parsed)) return `list, ${parsed.length} item${parsed.length === 1 ? "" : "s"}`;
@@ -777,7 +803,10 @@ function renderResults(db, module, state) {
   const target = state.target || document.getElementById("results");
   // Reference and YAML views need every row in the active scope so the hierarchy is complete.
   // Anything dropped at the SQL boundary disappears from the output entirely.
-  const results = state.rows || searchVars(db, module, { ...state, limit: 20000, order: "id" });
+  let results = state.rows || searchVars(db, module, { ...state, limit: 20000, order: "id" });
+  if (isSearchActive(state) && state.view !== "yaml") {
+    results = expandRowsWithAncestors(db, module, results);
+  }
   if (!results.length) {
     target.innerHTML = `<div class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2"></i><span class="small">No variables match.</span></div>`;
     return;
@@ -1137,16 +1166,15 @@ function renderReferenceResults(target, module, state, inputRows) {
       const rowId = schemaRowId(row, module);
       const parentId = hierarchy.parentIds.get(rowId) || "";
       const depth = row.depth || 1;
-      const isBranch = searchActive ? false : (hierarchy.childCount.get(rowId) || 0) > 0;
-      const expanded = false;
-      const navDepth = searchActive ? 0 : Math.max(0, depth - 1);
+      const isBranch = (hierarchy.childCount.get(rowId) || 0) > 0;
+      const expanded = searchActive && isBranch;
+      const navDepth = Math.max(0, depth - 1);
       const rowStyle = `--schema-reference-depth: ${navDepth};${searchActive || depth <= 1 ? "" : " display: none;"}`;
       const selectedClass = rowId === state.referenceSelectedId ? " active" : "";
-      const moduleBadge = isAll && (searchActive || depth === 1)
-        ? `<span class="schema-reference-module">${escapeHtml(SCHEMA_MODULES[row.module]?.name || row.module)}</span>`
-        : "";
+      const contextClass = searchActive && !rowMatchesSearch(row, state) ? " schema-reference-nav-row--context" : "";
+      const moduleBadge = isAll && depth === 1 ? `<span class="schema-reference-module">${escapeHtml(SCHEMA_MODULES[row.module]?.name || row.module)}</span>` : "";
       return `
-        <div class="schema-reference-nav-row${selectedClass}"
+        <div class="schema-reference-nav-row${selectedClass}${contextClass}"
              data-row-id="${escapeAttr(rowId)}"
              data-parent-id="${escapeAttr(parentId)}"
              data-is-branch="${isBranch ? "1" : "0"}"
@@ -1165,7 +1193,7 @@ function renderReferenceResults(target, module, state, inputRows) {
 
   target.innerHTML = `
     <div class="schema-reference-view">
-      <aside class="schema-reference-nav${searchActive ? " schema-reference-nav--search" : ""}" aria-label="Schema documentation navigation">
+      <aside class="schema-reference-nav${searchActive ? " schema-reference-nav--search-hierarchy" : ""}" aria-label="Schema documentation navigation">
         ${navRows}
       </aside>
       <section class="schema-reference-detail" aria-live="polite">${renderReferenceDetail(selected, module, isAll)}</section>
@@ -1174,10 +1202,6 @@ function renderReferenceResults(target, module, state, inputRows) {
   function applyReferenceVisibility() {
     const nav = target.querySelector(".schema-reference-nav");
     const rows = [...nav.querySelectorAll(".schema-reference-nav-row")];
-    if (searchActive) {
-      for (const row of rows) row.style.display = "";
-      return;
-    }
     const byId = new Map(rows.map(row => [row.dataset.rowId, row]));
     for (const row of rows) {
       let visible = true;
