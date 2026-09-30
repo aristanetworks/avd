@@ -7,6 +7,8 @@ schemas/cv_deploy/docs/tables/*.md
 --global-docs
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md
 ansible_collections/arista/avd/roles/eos_designs/docs/*.md
+ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/*.md
+ansible_collections/arista/avd/roles/eos_designs/docs/how-to/*.md
 ansible_collections/arista/avd/roles/cv_deploy/README.md
 --ignore-files
 schemas/eos_config/docs/tables/role-input-validation.md

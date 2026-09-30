@@ -14,7 +14,7 @@ These variables describe the overall fabric design: supported topologies, hierar
 
 ## Supported designs
 
-Arista AVD supports multiple network design types such as L3LS-EVPN with 3-stage, 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend Arista AVD to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
+Arista AVD supports multiple network design types such as L3LS-EVPN with 3-stage, 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend Arista AVD to support your own topology by using [`node_type_keys`](node-type.md#node-type-customization) to create your own node type.
 
 ### 3-stage clos topology support (Leaf & Spine)
 
@@ -62,7 +62,7 @@ Any node group of 2 or more rr-routers will form a Route Reflector cluster.
 
 The MPLS design supports most fabric topology variables already supported by l3ls-evpn, barring the exceptions outlined below:
 
-- Connectivity is defined with the [`core_interfaces`](#core-interfaces-settings) settings instead of [Node type uplink](#node-type-uplink-management) settings.
+- Connectivity is defined with the [`core_interfaces`](l3-and-core.md#core-interfaces-settings) settings instead of [Node type uplink](node-type.md#node-type-uplink-management) settings.
 - No MLAG support.
 - No VXLAN support.
 - EVPN overlay settings are set with `mpls_overlay_role` and `mpls_route_reflectors` instead of `evpn_role` and `evpn_route_servers`.
