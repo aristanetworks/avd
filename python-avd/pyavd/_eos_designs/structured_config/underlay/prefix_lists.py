@@ -8,6 +8,7 @@ from ipaddress import collapse_addresses
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.get_ip_from_pool import get_ipv4_networks_from_pool, get_ipv6_networks_from_pool
 from pyavd._utils.run_once import run_once_method
 
@@ -69,11 +70,14 @@ class PrefixListsMixin(Protocol):
     def set_once_prefix_list_loopbacks_evpn_overlay(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set prefix-list PL-LOOPBACKS-EVPN-OVERLAY."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
-        if self.shared_utils.node_config.loopback_ipv4_pool:
+        if self.shared_utils.loopback_ipv4_pool:
             for index, network in enumerate(collapse_addresses(get_ipv4_networks_from_pool(self.shared_utils.loopback_ipv4_pool)), start=1):
                 sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq 32")
         elif self.shared_utils.node_config.loopback_ipv4_address:
             sequence_numbers.append_new(sequence=10, action=f"permit {self.shared_utils.node_config.loopback_ipv4_address}/32")
+        else:
+            msg = "'loopback_ipv4_pool' or 'loopback_ipv4_address'"
+            raise AristaAvdInvalidInputsError(msg)
 
         if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0" and not self.shared_utils.is_wan_router:
             for index, network in enumerate(
