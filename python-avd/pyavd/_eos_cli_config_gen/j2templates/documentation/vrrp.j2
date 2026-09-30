@@ -8,12 +8,12 @@
 
 ### VRRP
 
+{%     if vrrp.ipv4.authentication_anti_replay %}
 #### VRRP Summary
 
-{%     if vrrp.ipv4.authentication_anti_replay %}
 VRRP IPv4 Authentication Anti-Replay: Enabled
-{%     endif %}
 
+{%     endif %}
 #### VRRP Device Configuration
 
 ```eos

@@ -78797,9 +78797,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv4: Ipv4
         """
         VRRPv2 IPv4 Authentication configuration.
-        Introduced in EOS 4.36.2F, 4.35.6M, 4.34.8M, 4.33.10M to
-        mitigate Security Advisory 0157.
-
+        Introduced in EOS 4.36.2F, 4.35.6M, 4.34.8M, 4.33.10M.
         Subclass of AvdModel.
         """
 
@@ -78815,9 +78813,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     ipv4:
                        VRRPv2 IPv4 Authentication configuration.
-                       Introduced in EOS 4.36.2F, 4.35.6M, 4.34.8M, 4.33.10M to
-                       mitigate Security Advisory 0157.
-
+                       Introduced in EOS 4.36.2F, 4.35.6M, 4.34.8M, 4.33.10M.
                        Subclass of AvdModel.
 
                 """
