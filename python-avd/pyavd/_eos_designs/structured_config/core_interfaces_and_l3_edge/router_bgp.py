@@ -27,7 +27,7 @@ class RouterBgpMixin(Protocol):
         """Set the structured config for router_bgp."""
         if not self.shared_utils.underlay_bgp:
             return
-        underlay_bgp_peer_group_name = self.shared_utils.underlay_bgp_peer_group_name
+        underlay_bgp_peer_group_name = self.shared_utils.underlay_bgp_peer_group.name
         for p2p_link, p2p_link_data in self._filtered_p2p_links:
             if not p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol != "ebgp":
                 continue

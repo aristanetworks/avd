@@ -6,8 +6,7 @@ mgmt_gateway: 192.168.200.1
 # bgp peer groups
 bgp_peer_groups:
   ipv4_underlay_peers:
-    name: UNDERLAY-PEERS
-    password: "0nsCUm70mvSTxVO0ldytrg=="
+    name: IPv4-UNDERLAY-PEERS
   mlag_ipv4_underlay_peer:
     name: MLAG-PEERS
     password: "15AwQNBEJ1nyF/kBEtoAGw=="

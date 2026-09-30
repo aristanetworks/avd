@@ -38,7 +38,7 @@ class RouterBgpMixin(Protocol):
             return
         # Adding the peer-group as we know we either have neighbors or neighbor_interfaces to configure
         self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers()
-        underlay_bgp_peer_group_name = self.shared_utils.underlay_bgp_peer_group_name
+        underlay_bgp_peer_group_name = self.shared_utils.underlay_bgp_peer_group.name
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:

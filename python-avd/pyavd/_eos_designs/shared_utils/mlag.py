@@ -225,7 +225,7 @@ class MlagMixin(Protocol):
     def mlag_underlay_peer_group(
         self: SharedUtilsProtocol,
     ) -> EosDesigns.BgpPeerGroups.MlagUnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer:
-        if self.inputs.bgp_peer_groups._get_defined_attr("mlag_underlay_peer") is not Undefined:
+        if self.inputs.bgp_peer_groups.mlag_underlay_peer:
             return self.inputs.bgp_peer_groups.mlag_underlay_peer
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
 
@@ -233,7 +233,7 @@ class MlagMixin(Protocol):
     def mlag_vrfs_peer_group(
         self: SharedUtilsProtocol,
     ) -> EosDesigns.BgpPeerGroups.MlagVrfsPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer | None:
-        if self.inputs.bgp_peer_groups._get_defined_attr("mlag_vrfs_peer") is not Undefined:
+        if self.inputs.bgp_peer_groups.mlag_vrfs_peer:
             return self.inputs.bgp_peer_groups.mlag_vrfs_peer
         if self.inputs.bgp_peer_groups._get_defined_attr("mlag_ipv4_vrfs_peer") is not Undefined:
             return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer

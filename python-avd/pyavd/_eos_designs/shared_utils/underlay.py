@@ -10,7 +10,6 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.default import default
 from pyavd._utils.password_utils.password import isis_encrypt
-from pyavd._utils.undefined import Undefined
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -67,13 +66,9 @@ class UnderlayMixin(Protocol):
     def underlay_bgp_peer_group(
         self: SharedUtilsProtocol,
     ) -> EosDesigns.BgpPeerGroups.UnderlayPeers | EosDesigns.BgpPeerGroups.Ipv4UnderlayPeers:
-        if self.inputs.bgp_peer_groups._get_defined_attr("underlay_peers") is not Undefined:
+        if self.inputs.bgp_peer_groups.underlay_peers:
             return self.inputs.bgp_peer_groups.underlay_peers
         return self.inputs.bgp_peer_groups.ipv4_underlay_peers
-
-    @cached_property
-    def underlay_bgp_peer_group_name(self: SharedUtilsProtocol) -> str:
-        return self.underlay_bgp_peer_group.name
 
     @cached_property
     def underlay_multicast_pim_sm_enabled(self: SharedUtilsProtocol) -> bool:
