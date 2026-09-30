@@ -26,7 +26,6 @@ from ansible_collections.arista.avd.plugins.action.anta_workflow import (
     setup_anta_debug_mode,
     update_ansible_result,
 )
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import LoggingOutcome
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -443,13 +442,17 @@ def test_update_ansible_result_uses_only_test_outcomes(summary: dict[str, int], 
 def test_error_log_fails_successful_anta_result(action_module: Callable[..., ActionModule]) -> None:
     """ANTA retains its plugin-specific policy of failing an otherwise successful result on error logs."""
     summary = {"total_tests": 1, "tests_failed": 0, "tests_error": 0}
-    module = action_module(ActionModule)
+    module = action_module(ActionModule, task_args={"save_logs": False, "live_display": False})
 
-    update_ansible_result(module.result, summary)
-    module._handle_logging_outcome(LoggingOutcome(has_errors=True))
+    def successful_main(_task_vars: dict) -> None:
+        update_ansible_result(module.result, summary)
+        module.logger.error("ANTA worker error")
 
-    assert module.result["failed"] is True
-    assert module.result["msg"] == "Errors detected during ANTA workflow execution."
+    with patch.object(module, "main", side_effect=successful_main):
+        result = module.run()
+
+    assert result["failed"] is True
+    assert result["msg"] == "Errors detected during ANTA workflow execution."
 
 
 def test_setup_anta_debug_mode_raises_when_anta_logger_absent() -> None:
