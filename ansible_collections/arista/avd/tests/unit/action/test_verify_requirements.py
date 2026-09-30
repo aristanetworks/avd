@@ -409,7 +409,7 @@ def test__check_requirement_duplicate_dist_alternate_satisfies() -> None:
     """When multiple dists exist and an alternate version satisfies the requirement, result is valid."""
     mock_req = MagicMock()
     mock_req.name = "test-dep"
-    mock_req.specifier.contains.side_effect = lambda v: v in {"4.3"}
+    mock_req.specifier.contains.side_effect = lambda v: v == "4.3"
     mock_req.specifier.__len__ = MagicMock(return_value=1)
     mock_req.specifier.__str__ = MagicMock(return_value=">=4.2")
 
@@ -538,7 +538,7 @@ def test__get_git_command_output_missing_executable(caplog: pytest.LogCaptureFix
 
 def test_check_running_from_source_not_from_source() -> None:
     """Returns False immediately when not running from source."""
-    with patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", False):
+    with patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=False):
         result = check_running_from_source()
 
     assert result is False
@@ -573,7 +573,7 @@ def test_check_running_from_source_rebuild_combinations(
     mock_compile_templates_mod.recompile_templates = mock_recompile_templates
 
     with (
-        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", True),
+        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=True),
         patch(f"{MODULE_PATH}.DISPLAY"),
         patch.dict(
             sys.modules,
@@ -634,7 +634,7 @@ def _mock_get_running_collection_version(collection_name: str, result: dict) -> 
 def test_action_module_main_missing_packaging(action_module: "Callable[..., ActionBase]") -> None:
     """When HAS_PACKAGING is False, main() raises ImportError."""
     module = action_module(ActionModule, task_args={"requirements": []})
-    with patch(f"{MODULE_PATH}.HAS_PACKAGING", False), pytest.raises(ImportError, match="packaging is required"):
+    with patch(f"{MODULE_PATH}.HAS_PACKAGING", new=False), pytest.raises(ImportError, match="packaging is required"):
         module.main(task_vars=DEFAULT_TASK_VARS)
 
 
@@ -650,7 +650,7 @@ def test_action_module_main_validator_failure(action_module: "Callable[..., Acti
         patch(f"{MODULE_PATH}._validate_ansible_version", return_value=True),
         patch(f"{MODULE_PATH}._validate_ansible_collections", return_value=True),
         patch(f"{MODULE_PATH}.DISPLAY"),
-        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", False),
+        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=False),
     ):
         module.main(task_vars=DEFAULT_TASK_VARS)
 
@@ -670,7 +670,7 @@ def test_action_module_main_source_changes(action_module: "Callable[..., ActionB
         patch(f"{MODULE_PATH}._validate_ansible_version", return_value=True),
         patch(f"{MODULE_PATH}._validate_ansible_collections", return_value=True),
         patch(f"{MODULE_PATH}.DISPLAY"),
-        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", False),
+        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=False),
     ):
         module.main(task_vars=DEFAULT_TASK_VARS)
 
@@ -690,7 +690,7 @@ def test_action_module_main_success(action_module: "Callable[..., ActionBase]") 
         patch(f"{MODULE_PATH}._validate_ansible_version", return_value=True),
         patch(f"{MODULE_PATH}._validate_ansible_collections", return_value=True),
         patch(f"{MODULE_PATH}.DISPLAY"),
-        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", False),
+        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=False),
     ):
         module.main(task_vars=DEFAULT_TASK_VARS)
 
