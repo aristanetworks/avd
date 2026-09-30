@@ -116,6 +116,8 @@ Then each module is processed through pyavd's `schema_tools` resolver so:
 - Reference search keeps the hierarchical nav (segment labels and indentation),
   loads ancestor rows for each match, auto-expands branches on the path, and
   mutes ancestor-only rows that matched only as context.
+- The reference detail header renders the key path as an ANTA-style breadcrumb;
+  each ancestor segment is clickable and selects that key in the tree.
 
 ### What the Markdown formatter does
 
