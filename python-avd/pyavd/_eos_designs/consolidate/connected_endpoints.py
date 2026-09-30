@@ -253,7 +253,7 @@ class ConnectedEndpointsMixin(Protocol):
             return
 
         self.consolidated.port_profile_names = ConsolidatedPortProfileNames(
-            ConsolidatedPortProfileName(profile=profile.profile, parent_profile=profile.parent_profile) for profile in self.inputs.port_profiles
+            ConsolidatedPortProfileName(profile=profile.profile, parent_profile=profile._get("parent_profile")) for profile in self.inputs.port_profiles
         )
 
     def prune_connected_endpoint_inputs(self: AVDDesignConsolidatorProtocol) -> None:

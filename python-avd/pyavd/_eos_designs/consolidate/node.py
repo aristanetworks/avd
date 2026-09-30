@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from copy import copy
 from functools import cached_property
 from re import search
 from typing import TYPE_CHECKING, Protocol
@@ -26,13 +27,13 @@ class NodeMixin(Protocol):
         if self.device_name not in self.inputs.devices and not self.inputs.device_profile:
             return None
 
-        if (device_config := self.inputs.devices.get(self.device_name, None)) is None:
-            device_config = AVDDesign.DevicesItem()
+        device_config = AVDDesign.DevicesItem() if (device_config := self.inputs.devices.get(self.device_name, None)) is None else device_config._deepcopy()
 
         if device_profile_name := default(device_config.profile, self.inputs.device_profile):
-            if not (device_profile := self.inputs.device_profiles.get(device_profile_name)):
+            if not (source_device_profile := self.inputs.device_profiles.get(device_profile_name)):
                 msg = f"The Device Profile '{device_profile_name}' applied for the device '{self.device_name}' does not exist under `device_profiles`."
                 raise AristaAvdInvalidInputsError(msg, host=self.device_name)
+            device_profile = source_device_profile._deepcopy()
 
             device_config._deepinherit(device_profile._cast_as(AVDDesign.DevicesItem, ignore_extra_keys=True))
 
@@ -79,11 +80,11 @@ class NodeMixin(Protocol):
         """Resolve the node_type_keys item matching the device type."""
         for node_type_key in self.inputs.custom_node_type_keys:
             if node_type_key.type == self.type:
-                return node_type_key._cast_as(AVDDesign.NodeTypeKeysItem)
+                return node_type_key._cast_as(AVDDesign.NodeTypeKeysItem)._deepcopy()
 
         for node_type_key in self.inputs.node_type_keys:
             if node_type_key.type == self.type:
-                return node_type_key
+                return node_type_key._deepcopy()
 
         # This should never happen, as it should be caught during validation.
         msg = f"Could not find the given type '{self.type}' in node_type_keys or custom_node_type_keys."
@@ -102,7 +103,7 @@ class NodeMixin(Protocol):
             return self.inputs._dynamic_keys.custom_node_types[node_type_key].value._cast_as(AVDDesign._DynamicKeys.DynamicNodeTypesItem.NodeTypes)
 
         if node_type_key in self.inputs._dynamic_keys.node_types:
-            return self.inputs._dynamic_keys.node_types[node_type_key].value
+            return copy(self.inputs._dynamic_keys.node_types[node_type_key].value)
 
         return None
 
@@ -168,7 +169,7 @@ class NodeMixin(Protocol):
         node_config = self.node_type_config.nodes.get(
             self.device_name,
             default=AVDDesign._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem(),
-        )
+        )._deepcopy()
 
         if self.node_group_config is not None:
             node_config._deepinherit(

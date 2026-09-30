@@ -37,6 +37,59 @@ def test_get_avd_facts_get_device_structured_config_models() -> None:
         assert structured_config.hostname == hostname
 
 
+def test_get_avd_facts_does_not_mutate_input_models() -> None:
+    raw_inputs = {
+        "fabric_name": "FABRIC",
+        "_root_custom_data": {"preserved": True},
+        "type": "l2leaf",
+        "l2leaf": {
+            "defaults": {"platform": "7050SX3"},
+            "nodes": [{"name": "testhost1", "filter": {"tags": ["accepted"]}}],
+        },
+        "network_services_keys": [{"name": "tenants"}],
+        "tenants": [
+            {
+                "name": "TEST",
+                "l2vlans": [
+                    {"id": 10, "tags": ["accepted"]},
+                    {"id": 20, "tags": ["rejected"]},
+                ],
+                "vrfs": [
+                    {
+                        "name": "BLUE",
+                        "svis": [
+                            {"id": 30, "tags": ["accepted"]},
+                            {"id": 40, "tags": ["rejected"]},
+                        ],
+                    }
+                ],
+            }
+        ],
+    }
+    inputs = AVDDesign._load(raw_inputs)
+    source_node = inputs._dynamic_keys.node_types["l2leaf"].value.nodes["testhost1"]
+    source_tenant = inputs._dynamic_keys.network_services["tenants"].value["TEST"]
+    original_node = source_node._dump()
+    original_tenant = source_tenant._dump()
+
+    avd_facts = get_avd_facts(all_inputs={"testhost1": inputs})
+
+    assert "l2leaf" in inputs._dynamic_keys.node_types
+    assert source_node._dump() == original_node
+    assert source_tenant._dump() == original_tenant
+    assert inputs._custom_data == {"_root_custom_data": {"preserved": True}}
+    assert avd_facts["testhost1"].vlans == "10,30"
+
+    structured_config = get_device_structured_config("testhost1", inputs, avd_facts)
+
+    assert "l2leaf" in inputs._dynamic_keys.node_types
+    assert source_node._dump() == original_node
+    assert source_tenant._dump() == original_tenant
+    assert inputs._custom_data == {"_root_custom_data": {"preserved": True}}
+    assert structured_config.hostname == "testhost1"
+    assert [vlan.id for vlan in structured_config.vlans] == [30, 10]
+
+
 def test_consolidated_avd_design_json_round_trip() -> None:
     consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", INPUTS["testhost1"])
     dumped_inputs = consolidated_inputs._dump()
