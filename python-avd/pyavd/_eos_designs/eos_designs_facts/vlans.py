@@ -113,7 +113,12 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                     # configure all vlans anyway.
                     return vlans, trunk_groups
 
-        for network_port in self.shared_utils.filtered_network_ports:
+        for network_port in self.consolidated.network_ports:
+            # Preserve the legacy only_vlans_in_use behavior where platform-only network ports are ignored and the platform
+            # selector is not considered for switch-matched network ports. Fixing this changes the structured config and requires a future toggle.
+            if not network_port.switches:
+                continue
+
             adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(network_port)
             vlans.update(adapter_vlans)
             trunk_groups.update(adapter_trunk_groups)

@@ -279,26 +279,24 @@ def test_consolidated_network_services_are_used_by_facts() -> None:
 
 
 def test_network_port_platform_candidates_are_included_in_endpoint_vlan_facts() -> None:
-    """
-    Document the current conservative facts behavior for network-port platform selectors.
-
-    Historically, facts included switch-matched entries without checking their platform, but omitted platform-only entries.
-    Including platform-only candidates avoids underestimating endpoint VLANs before structured config applies the exact platform filter.
-    However, this can expand the VLANs configured with `only_vlans_in_use`, so it is questionable whether this is the correct
-    compatibility behavior. Revisit this test when that potential breaking change is decided explicitly.
-    """
+    """Document the legacy structured-config behavior for network-port platform selectors with only_vlans_in_use."""
     inputs = {
         "leaf1": {
             "fabric_name": "FABRIC",
-            "devices": [{"name": "leaf1", "type": "l2leaf", "platform": "OTHER", "filter": {"only_vlans_in_use": True}}],
+            "devices": [{"name": "leaf1", "type": "l2leaf", "platform": "MATCH", "filter": {"only_vlans_in_use": True}}],
             "network_ports": [
                 {"platforms": ["MATCH"], "switch_ports": ["Ethernet1"], "mode": "access", "vlans": "123"},
-                {"switches": ["leaf1"], "platforms": ["MATCH"], "switch_ports": ["Ethernet2"], "mode": "access", "vlans": "124"},
+                {"switches": ["leaf1"], "platforms": ["OTHER"], "switch_ports": ["Ethernet2"], "mode": "access", "vlans": "124"},
             ],
             "tenants": [{"name": "TEST", "l2vlans": [{"id": 123}, {"id": 124}]}],
         }
     }
 
     facts = get_avd_facts(inputs, None)["leaf1"]
+    structured_config = get_device_structured_config("leaf1", inputs["leaf1"], {"leaf1": facts})
 
-    assert facts.endpoint_vlans == "123-124"
+    assert facts.endpoint_vlans == "124"
+    # BUG: The matching platform-only network port incorrectly configures Ethernet1 without configuring its VLAN 123.
+    assert [ethernet_interface.name for ethernet_interface in structured_config.ethernet_interfaces] == ["Ethernet1"]
+    # BUG: The platform-mismatched switch-selected network port incorrectly configures VLAN 124 without configuring Ethernet2.
+    assert [vlan.id for vlan in structured_config.vlans] == [124]
