@@ -94,15 +94,25 @@ Two key invariants:
 
 ### What `generate.py` does
 
-Loads each schema through pyavd's `schema_tools` resolver so:
+Loads unresolved schemas via `schema_tools.store.load_unresolved_store()`:
+
+- Prefers `python-avd/pyavd/_schema/schemas.json.gz` (the same combined store
+  compiled into `schemas.rkyv` for pyAVD validation) and falls back to combined
+  YAML when the gzip file is missing.
+- Does **not** use fully resolved pickles or the rkyv archive — those materialize
+  every cross-schema `$ref` and are meant for validation, not docs-shaped trees.
+
+Then each module is processed through pyavd's `schema_tools` resolver so:
 
 - `dynamic_keys` placeholders (`<node_type_keys.key>`,
   `<connected_endpoints_keys.key>`, …) are fully expanded.
 - Same-schema `$ref` blocks are resolved.
-- Cross-schema `$ref` (e.g. `eos_cli_config_gen#/...` from inside
-  `eos_designs`) is stripped before resolution and surfaced as a `cross_ref`
-  column on the leaf row, so the SQLite stays ~7.5 MB instead of materializing
-  the whole `eos_cli_config_gen` hierarchy under every `structured_config`.
+- Cross-schema `$ref` with `documentation_options.hide_keys: true` (for example
+  `structured_config` → `eos_cli_config_gen#`) is neutralized before resolution
+  and surfaced as a `cross_ref` column on the leaf row, matching generated schema
+  tables. Other cross-schema `$ref` values (for example reuse under
+  `aaa_settings.authentication.login`) are resolved so children appear under the
+  `eos_designs` path in reference and YAML views.
 
 ### What the Markdown formatter does
 
@@ -168,8 +178,9 @@ pre-commit run schemas --all-files
 make schema-explorer-build
 ```
 
-The MkDocs hook freshness check only sees the compiled schema files, so
-fragment-only edits can look stale until that regeneration step runs.
+The MkDocs hook freshness check prefers `schemas.json.gz` (or combined YAML
+when the gzip file is missing), so fragment-only edits can look stale until
+`pre-commit run schemas` regenerates the combined store.
 
 ## Architecture decisions
 
@@ -179,8 +190,8 @@ See `aristanetworks/avd-internal#503` for the full thread. Short version:
   maintainers call.
 - **`schema_tools` resolver**, not raw `yaml.safe_load` — see
   `aristanetworks/avd-internal#539`. Closes the dynamic_keys hole and the
-  same-schema `$ref` hole, while keeping cross-schema refs as leaf
-  annotations to bound the SQLite size.
+  same-schema `$ref` hole. Cross-schema `$ref` with `hide_keys` stays a leaf
+  `cross_ref` link; other cross-schema reuse is resolved like schema docs.
 - **Embedded views via a Markdown fence**, not iframe / template override
   — picked at the May 15th maintainers call. Docs authors use
   `schema-explorer` fenced blocks, which the Markdown formatter renders into

@@ -1,6 +1,8 @@
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import gzip
+import json
 from copy import deepcopy
 from functools import lru_cache
 from hashlib import sha1
@@ -12,7 +14,7 @@ from pickle import load as pickle_load
 from yaml import CSafeLoader, load
 
 from .avdschemaresolver import AvdSchemaResolver
-from .constants import SCHEMAS
+from .constants import SCHEMAS, SCHEMA_STORE_GZ_FILE
 
 
 @lru_cache
@@ -80,6 +82,77 @@ def _create_store_from_yaml() -> dict[str, dict]:
         with Path(schema_paths.yaml_file).open(encoding="UTF-8") as stream:
             store[schema_id] = load(stream=stream, Loader=CSafeLoader)
     return store
+
+
+def load_combined_store_from_gz(*, gz_path: Path | None = None) -> dict[str, dict]:
+    """
+    Load the combined unresolved schema store produced by ``combine_schemas``.
+
+    This is the same JSON document written to ``schemas.json.gz`` and compiled
+    into ``schemas.rkyv`` for runtime validation. Tooling that needs unresolved
+    cross-schema ``$ref`` markers (such as the Schema Explorer) should prefer
+    this entry point over re-reading individual combined YAML files.
+    """
+    path = gz_path or SCHEMA_STORE_GZ_FILE
+    if not path.is_file():
+        msg = f"Combined schema store not found: {path}. Run schema build (combine_schemas) first."
+        raise FileNotFoundError(msg)
+
+    with gzip.open(path, "rt", encoding="UTF-8") as gz_file:
+        store = json.load(gz_file)
+
+    if not isinstance(store, dict):
+        msg = f"Invalid combined schema store in {path}: expected a JSON object"
+        raise TypeError(msg)
+
+    return store
+
+
+def load_unresolved_store(*, prefer_gz: bool = True) -> dict[str, dict]:
+    """
+    Return unresolved schemas for documentation tooling.
+
+    Prefers ``schemas.json.gz`` when present and falls back to combined YAML.
+    """
+    if prefer_gz and SCHEMA_STORE_GZ_FILE.is_file():
+        return load_combined_store_from_gz()
+    return _create_store_from_yaml()
+
+
+def neutralize_hidden_cross_schema_refs(node: dict, own_schema_id: str) -> None:
+    """
+    Strip cross-schema ``$ref`` only when ``documentation_options.hide_keys`` is set.
+
+    Matches pyavd schema docs: ``hide_keys`` blocks inlining reused schema
+    subtrees (for example ``structured_config`` → ``eos_cli_config_gen#``).
+    Other cross-schema ``$ref`` values are left for ``AvdSchemaResolver`` so
+    keys such as ``aaa_settings.authentication.login`` keep their children.
+
+    Same-schema ``$ref`` is never modified here.
+    """
+    if not isinstance(node, dict):
+        return
+
+    doc_opts = node.get("documentation_options") or {}
+    hide_keys = doc_opts.get("hide_keys")
+    ref = node.get("$ref")
+    if hide_keys and isinstance(ref, str) and "#" in ref:
+        target_schema = ref.split("#", 1)[0]
+        if target_schema and target_schema != own_schema_id:
+            node["_cross_ref"] = ref
+            node.pop("$ref", None)
+
+    for child_key in ("keys", "dynamic_keys"):
+        children = node.get(child_key)
+        if isinstance(children, dict):
+            for child in children.values():
+                neutralize_hidden_cross_schema_refs(child, own_schema_id)
+    if isinstance(node.get("items"), dict):
+        neutralize_hidden_cross_schema_refs(node["items"], own_schema_id)
+    defs = node.get("$defs")
+    if isinstance(defs, dict):
+        for child in defs.values():
+            neutralize_hidden_cross_schema_refs(child, own_schema_id)
 
 
 def _compile_schemas() -> dict:

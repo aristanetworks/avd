@@ -9,11 +9,13 @@ Two responsibilities:
 1. Generate a ``schema.sqlite`` by loading the eos_designs and
    eos_cli_config_gen schemas through pyavd's ``schema_tools`` resolver, so
    ``dynamic_keys`` placeholders and same-schema ``$ref`` blocks are fully
-   expanded. Cross-schema ``$ref`` (e.g. ``eos_cli_config_gen#/...`` from
-   inside ``eos_designs``) is stripped before resolution and surfaced as a
-   ``cross_ref`` column on the leaf row, so the SQLite stays small instead
-   of materializing the entire ``eos_cli_config_gen`` tree under every
-   ``structured_config``.
+   expanded. Cross-schema ``$ref`` paired with ``documentation_options.hide_keys``
+   (for example ``structured_config`` → ``eos_cli_config_gen#``) is neutralized
+   before resolution and surfaced as a ``cross_ref`` column so the SQLite stays
+   small. Other cross-schema ``$ref`` values are resolved like schema docs tables.
+
+   Schemas are loaded from ``python-avd/pyavd/_schema/schemas.json.gz`` when
+   present (same combined store as ``schemas.rkyv``), otherwise from combined YAML.
 2. Copy the static SPA assets (``static/index.html``, ``static/css/``,
    ``static/js/``) alongside the SQLite into ``--site-dir`` so MkDocs picks
    up a self-contained Schema Explorer page.
@@ -67,48 +69,13 @@ def _path_depth(key_path: str) -> int:
     return depth
 
 
-def _strip_cross_schema_refs(node: dict, own_schema_id: str) -> None:
-    """
-    Strip any ``$ref`` that targets a different schema.
-
-    Without this step the resolver would materialize the entire
-    ``eos_cli_config_gen`` tree under every ``structured_config`` key in
-    ``eos_designs`` — about 155 k duplicated rows. We instead emit a single
-    leaf row with a ``cross_ref`` annotation pointing at the other module so
-    consumers can link out.
-
-    Same-schema ``$ref`` (e.g. ``eos_designs#/$defs/node_type``) is left intact
-    so the resolver expands it normally — that is how dynamic_keys subtrees
-    get filled in.
-    """
-    if not isinstance(node, dict):
-        return
-    ref = node.get("$ref")
-    if isinstance(ref, str) and "#" in ref:
-        target_schema = ref.split("#", 1)[0]
-        if target_schema and target_schema != own_schema_id:
-            node["_cross_ref"] = ref
-            node.pop("$ref", None)
-    for child_key in ("keys", "dynamic_keys"):
-        children = node.get(child_key)
-        if isinstance(children, dict):
-            for child in children.values():
-                _strip_cross_schema_refs(child, own_schema_id)
-    if isinstance(node.get("items"), dict):
-        _strip_cross_schema_refs(node["items"], own_schema_id)
-    defs = node.get("$defs")
-    if isinstance(defs, dict):
-        for child in defs.values():
-            _strip_cross_schema_refs(child, own_schema_id)
-
-
 def _load_resolved_store(avd_root: Path) -> dict[str, dict]:
     """
     Load both AVD schemas as resolved dicts.
 
-    ``dynamic_keys`` subtrees and same-schema ``$ref``s are expanded;
-    cross-schema ``$ref``s (e.g. ``eos_cli_config_gen#/...`` from inside
-    ``eos_designs``) are left as leaf annotations to keep the SQLite small.
+    ``dynamic_keys`` subtrees and same-schema ``$ref``s are expanded.
+    Cross-schema ``$ref`` with ``hide_keys`` becomes a ``cross_ref`` leaf;
+    other cross-schema ``$ref`` values are merged by the resolver.
     """
     python_avd = avd_root / "python-avd"
     if not python_avd.is_dir():
@@ -117,15 +84,17 @@ def _load_resolved_store(avd_root: Path) -> dict[str, dict]:
     sys.path.insert(0, str(python_avd))
 
     from schema_tools.avdschemaresolver import AvdSchemaResolver
-    from schema_tools.store import create_store
+    from schema_tools.store import load_unresolved_store, neutralize_hidden_cross_schema_refs
 
-    raw_store = create_store(load_from_yaml=True)
-    # Strip cross-schema $refs in-place across the whole store first, so that
-    # when the resolver pulls in $defs subtrees (e.g. eos_designs#/$defs/node_type
-    # which itself contains $ref: eos_cli_config_gen#/... under structured_config)
-    # those references are already neutralized.
+    raw_store = load_unresolved_store()
+    # Neutralize hide_keys cross-schema $refs in-place across the whole store first,
+    # so when the resolver pulls in $defs subtrees (e.g. structured_config under
+    # node_type) those references are already link-out leaves.
     for schema_id in SCHEMA_IDS:
-        _strip_cross_schema_refs(raw_store[schema_id], own_schema_id=schema_id)
+        if schema_id not in raw_store:
+            msg = f"Schema {schema_id!r} missing from unresolved store"
+            raise KeyError(msg)
+        neutralize_hidden_cross_schema_refs(raw_store[schema_id], own_schema_id=schema_id)
     # eos_cli_config_gen must be resolved first so any same-schema $refs
     # within it are settled before eos_designs is processed.
     for schema_id in ("eos_cli_config_gen", "eos_designs"):
