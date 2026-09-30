@@ -65,7 +65,7 @@ function buildKeyPathPrefixes(keyPath) {
   let acc = "";
   for (const part of parts) {
     acc = acc ? `${acc}.${part}` : part;
-    prefixes.push({ keyPath: acc, label: stripPlaceholderBrackets(part) });
+    prefixes.push({ keyPath: acc.replace(/\[\]$/, ""), label: stripPlaceholderBrackets(part) });
   }
   return prefixes;
 }
