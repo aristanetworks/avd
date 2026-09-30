@@ -468,7 +468,7 @@ Connectivity is defined from the child's device perspective.
 Source uplink interfaces and parent interfaces are defined on the child.
 
 !!! tip
-    Leverage [`default_interfaces`](#default-interface-settings) data model to auto define uplink and downlink interfaces based on the node id.
+    Leverage [`default_interfaces`](topology.md#default-interface-settings) data model to auto define uplink and downlink interfaces based on the node id.
 
 --8<--
 schemas/avd_design/docs/tables/node-type-uplink-configuration.md
@@ -477,7 +477,7 @@ schemas/avd_design/docs/tables/node-type-uplink-configuration.md
 ### Node type L2 and MLAG configuration
 
 !!! tip
-    Alternate addressing schemes are available at [`fabric_ip_addressing`](#fabric-ip-addressing).
+    Alternate addressing schemes are available at [`fabric_ip_addressing`](topology.md#fabric-ip-addressing).
 
 --8<--
 schemas/avd_design/docs/tables/node-type-l2-mlag-configuration.md
