@@ -28191,7 +28191,8 @@ keys:
         type: dict
         description: 'VRRPv2 IPv4 Authentication configuration.
 
-          Introduced in EOS 4.36.2F, 4.35.6M, 4.34.8M, 4.33.10M.'
+          EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M and
+          4.36.2F.'
         keys:
           authentication_anti_replay:
             type: bool
