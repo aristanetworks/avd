@@ -43,6 +43,13 @@ function stripPlaceholderBrackets(s) {
 function displayPath(keyPath) {
   return splitKeyPath(keyPath).map(stripPlaceholderBrackets).join(".");
 }
+function isSearchActive(state) {
+  return Boolean(state?.q);
+}
+function referenceNavLabel(row, state) {
+  const label = isSearchActive(state) ? displayPath(row.key_path) : leafSegment(row.key_path);
+  return highlight(label, state.q);
+}
 function formatDefaultSummary(parsed, raw) {
   if (Array.isArray(parsed)) return `list, ${parsed.length} item${parsed.length === 1 ? "" : "s"}`;
   if (parsed && typeof parsed === "object") {
@@ -1103,6 +1110,7 @@ function renderReferenceDetail(row, module, isAll) {
 
 function renderReferenceResults(target, module, state, inputRows) {
   const isAll = module === "all";
+  const searchActive = isSearchActive(state);
   const rowsById = new Map(inputRows.map(row => [schemaRowId(row, module), row]));
 
   const groups = new Map();
@@ -1129,11 +1137,14 @@ function renderReferenceResults(target, module, state, inputRows) {
       const rowId = schemaRowId(row, module);
       const parentId = hierarchy.parentIds.get(rowId) || "";
       const depth = row.depth || 1;
-      const isBranch = (hierarchy.childCount.get(rowId) || 0) > 0;
+      const isBranch = searchActive ? false : (hierarchy.childCount.get(rowId) || 0) > 0;
       const expanded = false;
-      const rowStyle = `--schema-reference-depth: ${Math.max(0, depth - 1)};${depth > 1 ? " display: none;" : ""}`;
+      const navDepth = searchActive ? 0 : Math.max(0, depth - 1);
+      const rowStyle = `--schema-reference-depth: ${navDepth};${searchActive || depth <= 1 ? "" : " display: none;"}`;
       const selectedClass = rowId === state.referenceSelectedId ? " active" : "";
-      const moduleBadge = isAll && depth === 1 ? `<span class="schema-reference-module">${escapeHtml(SCHEMA_MODULES[row.module]?.name || row.module)}</span>` : "";
+      const moduleBadge = isAll && (searchActive || depth === 1)
+        ? `<span class="schema-reference-module">${escapeHtml(SCHEMA_MODULES[row.module]?.name || row.module)}</span>`
+        : "";
       return `
         <div class="schema-reference-nav-row${selectedClass}"
              data-row-id="${escapeAttr(rowId)}"
@@ -1145,7 +1156,7 @@ function renderReferenceResults(target, module, state, inputRows) {
           <button type="button" class="schema-reference-toggle" ${isBranch ? "" : "disabled"}>${isBranch ? `<i class="bi ${expanded ? "bi-chevron-down" : "bi-chevron-right"}"></i>` : ""}</button>
           <button type="button" class="schema-reference-nav-key" data-reference-select="${escapeAttr(rowId)}">
             <span class="schema-reference-file-icon"><i class="bi bi-file-earmark-text"></i></span>
-            <span>${highlight(leafSegment(row.key_path), state.q)}</span>
+            <span class="schema-reference-nav-label">${referenceNavLabel(row, state)}</span>
             ${moduleBadge}
           </button>
         </div>`;
@@ -1154,7 +1165,7 @@ function renderReferenceResults(target, module, state, inputRows) {
 
   target.innerHTML = `
     <div class="schema-reference-view">
-      <aside class="schema-reference-nav" aria-label="Schema documentation navigation">
+      <aside class="schema-reference-nav${searchActive ? " schema-reference-nav--search" : ""}" aria-label="Schema documentation navigation">
         ${navRows}
       </aside>
       <section class="schema-reference-detail" aria-live="polite">${renderReferenceDetail(selected, module, isAll)}</section>
@@ -1163,6 +1174,10 @@ function renderReferenceResults(target, module, state, inputRows) {
   function applyReferenceVisibility() {
     const nav = target.querySelector(".schema-reference-nav");
     const rows = [...nav.querySelectorAll(".schema-reference-nav-row")];
+    if (searchActive) {
+      for (const row of rows) row.style.display = "";
+      return;
+    }
     const byId = new Map(rows.map(row => [row.dataset.rowId, row]));
     for (const row of rows) {
       let visible = true;

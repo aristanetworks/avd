@@ -1446,6 +1446,21 @@ html.style-none #schema-navbar { display: none !important; }
   white-space: nowrap;
 }
 
+:where(.schema-spa-host, .schema-embed) .schema-reference-nav--search .schema-reference-nav-row {
+  align-items: flex-start;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-nav--search .schema-reference-nav-key {
+  align-items: flex-start;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-nav--search .schema-reference-nav-label {
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+  word-break: break-word;
+}
+
 :where(.schema-spa-host, .schema-embed) .schema-reference-nav-row.active .schema-reference-nav-key,
 :where(.schema-spa-host, .schema-embed) .schema-reference-nav-key:hover {
   background: rgba(68, 115, 169, 0.16);

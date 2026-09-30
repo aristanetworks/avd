@@ -113,6 +113,9 @@ Then each module is processed through pyavd's `schema_tools` resolver so:
   tables. Other cross-schema `$ref` values (for example reuse under
   `aaa_settings.authentication.login`) are resolved so children appear under the
   `eos_designs` path in reference and YAML views.
+- Reference search shows the full flattened key path for each match (not just the
+  leaf segment) and lists every hit flatly instead of hiding non-root rows behind
+  the tree expanders.
 
 ### What the Markdown formatter does
 
