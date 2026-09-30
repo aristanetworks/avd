@@ -70,8 +70,8 @@ class PrefixListsMixin(Protocol):
     def set_once_prefix_list_loopbacks_evpn_overlay(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set prefix-list PL-LOOPBACKS-EVPN-OVERLAY."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
-        if self.shared_utils.loopback_ipv4_pool:
-            for index, network in enumerate(collapse_addresses(get_ipv4_networks_from_pool(self.shared_utils.loopback_ipv4_pool)), start=1):
+        if self.shared_utils.node_config.loopback_ipv4_pool:
+            for index, network in enumerate(collapse_addresses(get_ipv4_networks_from_pool(self.shared_utils.node_config.loopback_ipv4_pool)), start=1):
                 sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq 32")
         elif self.shared_utils.node_config.loopback_ipv4_address:
             sequence_numbers.append_new(sequence=10, action=f"permit {self.shared_utils.node_config.loopback_ipv4_address}/32")

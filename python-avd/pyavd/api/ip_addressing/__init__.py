@@ -297,6 +297,8 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         Default offset from pool is `id + loopback_ipv4_offset`
         """
         if self._loopback_ipv4_address:
+            if template_path := self.shared_utils.node_type_key_data.ip_addressing.router_id:
+                return self._template(template_path, loopback_ipv4_address=self._loopback_ipv4_address)
             return self._loopback_ipv4_address
 
         loopback_pool = self._loopback_ipv4_pool if not self.shared_utils.underlay_ipv6_numbered else self._router_id_pool
@@ -306,6 +308,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
                 template_path,
                 switch_id=self._id,
                 loopback_ipv4_pool=self._loopback_ipv4_pool,
+                loopback_ipv4_address = self._loopback_ipv4_address,
                 loopback_ipv4_offset=self._loopback_ipv4_offset,
             )
 
