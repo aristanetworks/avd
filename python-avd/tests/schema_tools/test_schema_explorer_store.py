@@ -1,7 +1,9 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import gzip
 from copy import deepcopy
+from pathlib import Path
 
 import pytest
 
@@ -48,6 +50,64 @@ def test_neutralize_hidden_cross_schema_refs_leaves_same_schema_ref() -> None:
     node = {"$ref": "eos_designs#/$defs/node_type"}
     neutralize_hidden_cross_schema_refs(node, own_schema_id="eos_designs")
     assert node["$ref"] == "eos_designs#/$defs/node_type"
+
+
+def test_neutralize_hidden_cross_schema_refs_ignores_non_dict() -> None:
+    neutralize_hidden_cross_schema_refs([], own_schema_id="eos_designs")  # type: ignore[arg-type]
+
+
+def test_neutralize_hidden_cross_schema_refs_hide_keys_same_schema() -> None:
+    node = {
+        "documentation_options": {"hide_keys": True},
+        "$ref": "eos_designs#/$defs/node_type",
+    }
+    neutralize_hidden_cross_schema_refs(node, own_schema_id="eos_designs")
+    assert node["$ref"] == "eos_designs#/$defs/node_type"
+    assert "_cross_ref" not in node
+
+
+def test_neutralize_hidden_cross_schema_refs_recurses_nested_containers() -> None:
+    node = {
+        "dynamic_keys": {
+            "dyn": {
+                "documentation_options": {"hide_keys": True},
+                "$ref": "eos_cli_config_gen#/keys/foo",
+            },
+        },
+        "items": {
+            "documentation_options": {"hide_keys": True},
+            "$ref": "eos_cli_config_gen#/keys/bar",
+        },
+        "$defs": {
+            "inner": {
+                "documentation_options": {"hide_keys": True},
+                "$ref": "eos_cli_config_gen#",
+            },
+        },
+    }
+    neutralize_hidden_cross_schema_refs(node, own_schema_id="eos_designs")
+    assert node["dynamic_keys"]["dyn"]["_cross_ref"] == "eos_cli_config_gen#/keys/foo"
+    assert node["items"]["_cross_ref"] == "eos_cli_config_gen#/keys/bar"
+    assert node["$defs"]["inner"]["_cross_ref"] == "eos_cli_config_gen#"
+
+
+def test_load_combined_store_from_gz_missing_file(tmp_path: Path) -> None:
+    with pytest.raises(FileNotFoundError, match="Combined schema store not found"):
+        load_combined_store_from_gz(gz_path=tmp_path / "missing.json.gz")
+
+
+def test_load_combined_store_from_gz_invalid_root(tmp_path: Path) -> None:
+    bad_file = tmp_path / "invalid.json.gz"
+    with gzip.open(bad_file, "wt", encoding="UTF-8") as gz_file:
+        gz_file.write("[1, 2, 3]")
+    with pytest.raises(TypeError, match="expected a JSON object"):
+        load_combined_store_from_gz(gz_path=bad_file)
+
+
+def test_load_unresolved_store_yaml_fallback() -> None:
+    store = load_unresolved_store(prefer_gz=False)
+    assert "eos_designs" in store
+    assert "eos_cli_config_gen" in store
 
 
 @pytest.mark.skipif(not SCHEMA_STORE_GZ_FILE.is_file(), reason="schemas.json.gz not built")
