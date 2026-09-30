@@ -14,7 +14,7 @@ from pickle import load as pickle_load
 from yaml import CSafeLoader, load
 
 from .avdschemaresolver import AvdSchemaResolver
-from .constants import SCHEMAS, SCHEMA_STORE_GZ_FILE
+from .constants import SCHEMA_STORE_GZ_FILE, SCHEMAS
 
 
 @lru_cache
