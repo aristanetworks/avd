@@ -147,6 +147,9 @@
     | [<samp>&nbsp;&nbsp;suspended_vlans</samp>](## "general_settings.suspended_vlans") | List, items: Dictionary |  |  |  | Suspended VLANs are rendered only as local suspended VLAN definitions.<br>They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs defined by network services. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "general_settings.suspended_vlans.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "general_settings.suspended_vlans.[].name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;ip_software_forwarding_exceed_action_drop</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop") | Dictionary |  |  |  | Drop IPv4 packets larger than configured mtu (in bytes) in software.<br>EOS version dependent. Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop.enable") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop.mtu") | Integer | Required |  | Min: 68<br>Max: 65535 |  |
     | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsibility of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "hardware_counters.features.[].name") | String | Required |  | Valid Values:<br>- <code>acl</code><br>- <code>decap-group</code><br>- <code>directflow</code><br>- <code>ecn</code><br>- <code>flow-spec</code><br>- <code>gre tunnel interface</code><br>- <code>ip</code><br>- <code>mpls interface</code><br>- <code>mpls lfib</code><br>- <code>mpls tunnel</code><br>- <code>multicast</code><br>- <code>nexthop</code><br>- <code>pbr</code><br>- <code>pdp</code><br>- <code>policing interface</code><br>- <code>qos</code><br>- <code>qos dual-rate-policer</code><br>- <code>route</code><br>- <code>routed-port</code><br>- <code>segment-security</code><br>- <code>subinterface</code><br>- <code>tapagg</code><br>- <code>traffic-class</code><br>- <code>traffic-policy</code><br>- <code>traffic-policy vlan-interface</code><br>- <code>vlan</code><br>- <code>vlan-interface</code><br>- <code>vni decap</code><br>- <code>vni encap</code><br>- <code>vtep decap</code><br>- <code>vtep encap</code> |  |
@@ -162,10 +165,6 @@
     | [<samp>&nbsp;&nbsp;range</samp>](## "internal_vlan_order.range") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;beginning</samp>](## "internal_vlan_order.range.beginning") | Integer | Required |  | Min: 2<br>Max: 4094 | First VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ending</samp>](## "internal_vlan_order.range.ending") | Integer | Required |  | Min: 2<br>Max: 4094 | Last VLAN ID. |
-    | [<samp>ip_software_forwarding</samp>](## "ip_software_forwarding") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;mtu</samp>](## "ip_software_forwarding.mtu") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "ip_software_forwarding.mtu.size") | Integer |  | `1500` |  | IPv4 software-forwarding MTU threshold in bytes.<br>This setting alone does not enable dropping. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_drop</samp>](## "ip_software_forwarding.mtu.exceed_action_drop") | Boolean |  |  |  | Drop IPv4 packets larger than `mtu.size` in software.<br>Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142. |
     | [<samp>mac_address_table</samp>](## "mac_address_table") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;aging_time</samp>](## "mac_address_table.aging_time") | Integer |  |  | Min: 0<br>Max: 1000000 | Aging time in seconds 10-1000000.<br>Enter 0 to disable aging.<br> |
     | [<samp>&nbsp;&nbsp;notification_host_flap</samp>](## "mac_address_table.notification_host_flap") | Dictionary |  |  |  |  |
@@ -421,6 +420,12 @@
       suspended_vlans:
         - id: <int; 1-4094; required; unique>
           name: <str>
+
+      # Drop IPv4 packets larger than configured mtu (in bytes) in software.
+      # EOS version dependent. Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+      ip_software_forwarding_exceed_action_drop:
+        enable: <bool>
+        mtu: <int; 68-65535; required>
     hardware_counters:
 
       # This data model allows to configure the list of hardware counters feature
@@ -503,16 +508,6 @@
 
         # Last VLAN ID.
         ending: <int; 2-4094; required>
-    ip_software_forwarding:
-      mtu:
-
-        # IPv4 software-forwarding MTU threshold in bytes.
-        # This setting alone does not enable dropping.
-        size: <int; default=1500>
-
-        # Drop IPv4 packets larger than `mtu.size` in software.
-        # Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
-        exceed_action_drop: <bool>
     mac_address_table:
 
       # Aging time in seconds 10-1000000.
