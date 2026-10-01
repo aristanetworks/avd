@@ -75,9 +75,6 @@ class PrefixListsMixin(Protocol):
                 sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq 32")
         elif self.shared_utils.node_config.loopback_ipv4_address:
             sequence_numbers.append_new(sequence=10, action=f"permit {self.shared_utils.node_config.loopback_ipv4_address}/32")
-        else:
-            msg = "'loopback_ipv4_pool' or 'loopback_ipv4_address'"
-            raise AristaAvdInvalidInputsError(msg)
 
         if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0" and not self.shared_utils.is_wan_router:
             for index, network in enumerate(

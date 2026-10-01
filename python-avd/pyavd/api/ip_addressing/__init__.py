@@ -313,7 +313,8 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             )
 
         offset = self._id + self._loopback_ipv4_offset
-        return get_ip_from_pool(loopback_pool, 32, offset, 0)
+        if loopback_pool:
+            return get_ip_from_pool(loopback_pool, 32, offset, 0)
 
     def ipv6_router_id(self) -> str:
         """
