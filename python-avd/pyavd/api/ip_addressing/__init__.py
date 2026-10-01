@@ -288,7 +288,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         """
         return self.p2p_uplinks_peer_ipv6(uplink_switch_index)
 
-    def router_id(self) -> str:
+    def router_id(self) -> str | None:
         """
         Return IP address for Router ID.
 
@@ -315,6 +315,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         offset = self._id + self._loopback_ipv4_offset
         if loopback_pool:
             return get_ip_from_pool(loopback_pool, 32, offset, 0)
+        return None
 
     def ipv6_router_id(self) -> str:
         """
