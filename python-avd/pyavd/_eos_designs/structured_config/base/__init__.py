@@ -558,9 +558,10 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def ip_software_forwarding(self: AvdStructuredConfigBaseProtocol) -> None:
         """Set ip software forwarding rconfiguration."""
-        if (software_settings := self.inputs.general_settings.ip_software_forwarding_exceed_action_drop):
+        if software_settings := self.inputs.general_settings.ip_software_forwarding_exceed_action_drop:
             self.structured_config.ip_software_forwarding.mtu.exceed_action_drop = software_settings.enable
             self.structured_config.ip_software_forwarding.mtu.size = software_settings.mtu
+
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):
     """
