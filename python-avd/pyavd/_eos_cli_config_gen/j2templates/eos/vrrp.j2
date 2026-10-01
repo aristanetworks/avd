@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - vrrp #}
-{% if vrrp.ipv4.authentication_anti_replay is arista.avd.defined %}
+{% if vrrp.ipv4.authentication_anti_replay is arista.avd.defined(true) %}
 !
 vrrp ipv4 authentication anti-replay
 {% endif %}
