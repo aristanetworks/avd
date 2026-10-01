@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3") | Dictionary |  |  |  | Router OSPFv3 configuration.<br>This will create an OSPFv3 routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be<br>created on all leafs where the VRF is deployed. This will also cause automatic OSPFv3 redistribution into BGP unless<br>explicitly turned off with "redistribute_ospfv3: false".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure an OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure an OSPFv3 Router ID for this VRF. EOS will use the main OSPFv3 Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.passive_interface_default") | Boolean |  | `True` |  | Set passive-interface default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.address_family_ipv4") | Dictionary |  |  |  | OSPFv3 IPv4 address family configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.address_family_ipv4.enabled") | Boolean |  |  |  |  |
@@ -71,7 +71,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "network_services.[].vrfs.[].ospfv3") | Dictionary |  |  |  | Router OSPFv3 configuration.<br>This will create an OSPFv3 routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be<br>created on all leafs where the VRF is deployed. This will also cause automatic OSPFv3 redistribution into BGP unless<br>explicitly turned off with "redistribute_ospfv3: false".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].ospfv3.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "network_services.[].vrfs.[].ospfv3.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure an OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "network_services.[].vrfs.[].ospfv3.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure an OSPFv3 Router ID for this VRF. EOS will use the main OSPFv3 Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "network_services.[].vrfs.[].ospfv3.passive_interface_default") | Boolean |  | `True` |  | Set passive-interface default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "network_services.[].vrfs.[].ospfv3.address_family_ipv4") | Dictionary |  |  |  | OSPFv3 IPv4 address family configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].ospfv3.address_family_ipv4.enabled") | Boolean |  |  |  |  |
@@ -179,7 +179,7 @@
               # Router ID to use for OSPFv3 in this VRF.
               # This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".
               # - "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."
-              # - "none" will not configure an OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+              # - "none" will not configure an OSPFv3 Router ID for this VRF. EOS will use the main OSPFv3 Router ID.
               # - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
               router_id: <str; default="main_router_id">
 
@@ -319,7 +319,7 @@
               # Router ID to use for OSPFv3 in this VRF.
               # This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".
               # - "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."
-              # - "none" will not configure an OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+              # - "none" will not configure an OSPFv3 Router ID for this VRF. EOS will use the main OSPFv3 Router ID.
               # - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
               router_id: <str; default="main_router_id">
 

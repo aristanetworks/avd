@@ -32822,9 +32822,9 @@ class EosDesigns(EosDesignsRootModel):
                 - "main_router_id" will use the IP address of Loopback0 or the common `router
                 general` Router ID if `use_router_general_for_router_id` is set."
                 - "none" will not configure an
-                OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
-                - "diagnostic_loopback" will use
-                the IP address of the VRF Diagnostic Loopback interface.
+                OSPFv3 Router ID for this VRF. EOS will use the main OSPFv3 Router ID.
+                - "diagnostic_loopback" will
+                use the IP address of the VRF Diagnostic Loopback interface.
 
                 Default value: `"main_router_id"`
                 """
@@ -32879,9 +32879,9 @@ class EosDesigns(EosDesignsRootModel):
                                - "main_router_id" will use the IP address of Loopback0 or the common `router
                                general` Router ID if `use_router_general_for_router_id` is set."
                                - "none" will not configure an
-                               OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
-                               - "diagnostic_loopback" will use
-                               the IP address of the VRF Diagnostic Loopback interface.
+                               OSPFv3 Router ID for this VRF. EOS will use the main OSPFv3 Router ID.
+                               - "diagnostic_loopback" will
+                               use the IP address of the VRF Diagnostic Loopback interface.
                             passive_interface_default: Set passive-interface default.
                             address_family_ipv4:
                                OSPFv3 IPv4 address family configuration.
@@ -39855,7 +39855,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Required if "vrf_vni" is not set.
             "vrf_id" is used as default value for "vrf_vni", "ospf.process_id"
-            and "ipv6_ospf.process_id" unless those are set.
+            and "ospfv3.router_id" unless those are set.
             "vrf_id" may also be used for VRF RD/RT ID. See
             "overlay_rd_type" and "overlay_rt_type" for details.
             "vrf_id" is preferred over "vrf_vni" for MLAG
@@ -40238,7 +40238,7 @@ class EosDesigns(EosDesignsRootModel):
                         vrf_id:
                            Required if "vrf_vni" is not set.
                            "vrf_id" is used as default value for "vrf_vni", "ospf.process_id"
-                           and "ipv6_ospf.process_id" unless those are set.
+                           and "ospfv3.router_id" unless those are set.
                            "vrf_id" may also be used for VRF RD/RT ID. See
                            "overlay_rd_type" and "overlay_rt_type" for details.
                            "vrf_id" is preferred over "vrf_vni" for MLAG
@@ -86225,9 +86225,9 @@ class EosDesigns(EosDesignsRootModel):
                         - "main_router_id" will use the IP address of Loopback0 or the common `router
                         general` Router ID if `use_router_general_for_router_id` is set."
                         - "none" will not configure an
-                        OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
-                        - "diagnostic_loopback" will use
-                        the IP address of the VRF Diagnostic Loopback interface.
+                        OSPFv3 Router ID for this VRF. EOS will use the main OSPFv3 Router ID.
+                        - "diagnostic_loopback" will
+                        use the IP address of the VRF Diagnostic Loopback interface.
 
                         Default value: `"main_router_id"`
                         """
@@ -86282,9 +86282,9 @@ class EosDesigns(EosDesignsRootModel):
                                        - "main_router_id" will use the IP address of Loopback0 or the common `router
                                        general` Router ID if `use_router_general_for_router_id` is set."
                                        - "none" will not configure an
-                                       OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
-                                       - "diagnostic_loopback" will use
-                                       the IP address of the VRF Diagnostic Loopback interface.
+                                       OSPFv3 Router ID for this VRF. EOS will use the main OSPFv3 Router ID.
+                                       - "diagnostic_loopback" will
+                                       use the IP address of the VRF Diagnostic Loopback interface.
                                     passive_interface_default: Set passive-interface default.
                                     address_family_ipv4:
                                        OSPFv3 IPv4 address family configuration.
@@ -93290,7 +93290,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Required if "vrf_vni" is not set.
                     "vrf_id" is used as default value for "vrf_vni", "ospf.process_id"
-                    and "ipv6_ospf.process_id" unless those are set.
+                    and "ospfv3.router_id" unless those are set.
                     "vrf_id" may also be used for VRF RD/RT ID. See
                     "overlay_rd_type" and "overlay_rt_type" for details.
                     "vrf_id" is preferred over "vrf_vni" for MLAG
@@ -93673,7 +93673,7 @@ class EosDesigns(EosDesignsRootModel):
                                 vrf_id:
                                    Required if "vrf_vni" is not set.
                                    "vrf_id" is used as default value for "vrf_vni", "ospf.process_id"
-                                   and "ipv6_ospf.process_id" unless those are set.
+                                   and "ospfv3.router_id" unless those are set.
                                    "vrf_id" may also be used for VRF RD/RT ID. See
                                    "overlay_rd_type" and "overlay_rt_type" for details.
                                    "vrf_id" is preferred over "vrf_vni" for MLAG

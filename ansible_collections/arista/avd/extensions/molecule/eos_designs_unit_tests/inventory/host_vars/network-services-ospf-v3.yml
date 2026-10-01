@@ -43,7 +43,6 @@ tenants:
               enabled: true
             redistribute_static:
               enabled: true
-          nodes: [network-services-ospf-v3]
         redistribute_ospfv3: false
         svis:
           - id: 201
