@@ -394,9 +394,9 @@ def test__validate_python_requirements_short_circuits_on_first_failure() -> None
         return False
 
     with patch(f"{MODULE_PATH}._check_requirement", side_effect=recording_check):
-        ret = _validate_python_requirements(requirements, result)
+        is_valid = _validate_python_requirements(requirements, result)
 
-    assert ret is False
+    assert is_valid is False
     assert checked_names == ["first-dep"]
 
 
@@ -425,9 +425,9 @@ def test__check_requirement_duplicate_dist_alternate_satisfies() -> None:
         patch(f"{MODULE_PATH}.Distribution") as mock_dist_cls,
     ):
         mock_dist_cls.discover.return_value = [mock_dist_old, mock_dist_new]
-        ret = _check_requirement(mock_req, requirements_dict)
+        is_valid = _check_requirement(mock_req, requirements_dict)
 
-    assert ret is True
+    assert is_valid is True
     assert "test-dep" in requirements_dict["valid"]
     entry = requirements_dict["valid"]["test-dep"]
     assert entry["installed"] == "4.0"
@@ -461,9 +461,9 @@ def test__check_requirement_duplicate_dist_none_satisfies() -> None:
         patch(f"{MODULE_PATH}.Distribution") as mock_dist_cls,
     ):
         mock_dist_cls.discover.return_value = [mock_dist1, mock_dist2]
-        ret = _check_requirement(mock_req, requirements_dict)
+        is_valid = _check_requirement(mock_req, requirements_dict)
 
-    assert ret is True
+    assert is_valid is True
     assert "test-dep" in requirements_dict["mismatched"]
     entry = requirements_dict["mismatched"]["test-dep"]
     assert entry["installed"] == "4.0"
@@ -619,6 +619,13 @@ def test__get_collection_version_versionless_metadata(tmp_path: Path) -> None:
     """When galaxy.yml has no 'version' key, KeyError is raised."""
     (tmp_path / "galaxy.yml").write_text("name: test-collection\n", encoding="UTF-8")
     with pytest.raises(KeyError):
+        _get_collection_version(str(tmp_path))
+
+
+def test__get_collection_version_invalid_version_value(tmp_path: Path) -> None:
+    """When the version value is not a valid string, ValueError is raised."""
+    (tmp_path / "galaxy.yml").write_text("version: 5\n", encoding="UTF-8")
+    with pytest.raises(ValueError, match="Invalid collection version found in collection metadata"):
         _get_collection_version(str(tmp_path))
 
 
