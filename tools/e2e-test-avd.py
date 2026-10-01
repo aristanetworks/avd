@@ -774,9 +774,9 @@ class AvdV6Build:
             )
             fabric_doc_dir.mkdir(parents=True, exist_ok=True)
             if isinstance(output.digital_twin, ContainerlabDigitalTwin):
-                from ansible_collections.arista.avd.plugins.action.eos_designs_documentation import _normalize_yaml_data
+                from pyavd._utils.normalize_yaml_data import normalize_yaml_data
 
-                content = strip_empties_from_dict(_normalize_yaml_data(output.digital_twin))
+                content = strip_empties_from_dict(normalize_yaml_data(output.digital_twin))
                 topology_dir = self.config.full_output_dir.parent
                 if interface_mapping := content.pop("interface_mapping", None):
                     topology_dir.joinpath("interface_mapping.json").write_text(json.dumps(interface_mapping, indent=4) + "\n", encoding="utf-8")

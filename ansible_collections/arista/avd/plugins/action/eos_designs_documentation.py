@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import json
-from dataclasses import fields, is_dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -18,6 +17,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 if TYPE_CHECKING:  # pragma: no cover
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils.get import get
+    from pyavd._utils.normalize_yaml_data import normalize_yaml_data as _normalize_yaml_data
     from pyavd._utils.strip_empties import strip_empties_from_dict
     from pyavd.get_fabric_documentation import get_fabric_documentation
     from pyavd.j2filters import natural_sort
@@ -25,6 +25,7 @@ if TYPE_CHECKING:  # pragma: no cover
 try:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils.get import get
+    from pyavd._utils.normalize_yaml_data import normalize_yaml_data as _normalize_yaml_data
     from pyavd._utils.strip_empties import strip_empties_from_dict
     from pyavd.get_fabric_documentation import get_fabric_documentation
     from pyavd.j2filters import natural_sort
@@ -51,20 +52,6 @@ ARGUMENT_SPEC = {
     "digital_twin_file": {"type": "str", "default": "DIGITAL-TWIN-TOPOLOGY.yml"},
     "digital_twin": {"type": "bool", "default": False},
 }
-
-
-def _normalize_yaml_data(data: Any) -> Any:
-    """Recursively normalize data for YAML output while honoring per-field YAML key aliases on dataclasses."""
-    if is_dataclass(data):
-        return {
-            str(dataclass_field.metadata.get("yaml_key", dataclass_field.name)): _normalize_yaml_data(getattr(data, dataclass_field.name))
-            for dataclass_field in fields(data)
-        }
-    if isinstance(data, dict):
-        return {str(key): _normalize_yaml_data(value) for key, value in data.items()}
-    if isinstance(data, tuple | list):
-        return [_normalize_yaml_data(value) for value in data]
-    return data
 
 
 class ActionModule(AVDActionPlugin):
