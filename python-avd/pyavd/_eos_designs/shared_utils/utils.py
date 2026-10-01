@@ -387,7 +387,7 @@ class UtilsMixin(Protocol):
     def raise_warning_for_grandparent_profile(self: SharedUtilsProtocol, parent_profile: str, context: str) -> None:
         """
         Raise warning when parent_profile is mentioned for a parent profile but 'avd_design_future.allow_recursive_profile_inheritance' is not set.
-        
+
         This function emits the warning unconditionally so it is the responsibility of the caller to consider the toggle.
         """
         msg = (
