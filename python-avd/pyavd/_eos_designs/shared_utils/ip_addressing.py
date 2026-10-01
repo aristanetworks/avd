@@ -35,7 +35,7 @@ class IpAddressingMixin(Protocol):
         return self.node_config.loopback_ipv4_pool
 
     @cached_property
-    def loopback_ipv4_addresss(self: SharedUtilsProtocol) -> str | None:
+    def loopback_ipv4_address(self: SharedUtilsProtocol) -> str | None:
         return self.node_config.loopback_ipv4_address
 
     @cached_property
