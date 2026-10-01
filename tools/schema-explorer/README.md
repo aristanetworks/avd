@@ -48,7 +48,7 @@ The Markdown formatter renders the block as a `<schema-explorer>` custom element
 
 | Path                                                                    | What it is                                                                                                                                                                                   |
 | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tools/schema-explorer/generate.py`                                     | CLI: loads both AVD schemas through pyavd's `schema_tools` resolver, flattens them, writes `schema.sqlite`, copies the SPA assets next to it.                                                |
+| `tools/schema-explorer/generate.py`                                     | CLI: loads the YAML schemas and metaschema, resolves them through pyavd's `schema_tools` resolver, flattens them, writes `schema.sqlite`, and copies the SPA assets.                         |
 | `tools/schema-explorer/static/index.html`                               | Standalone SPA shell — sql.js loader, layout, navigation.                                                                                                                                    |
 | `tools/schema-explorer/static/css/style.css`                            | Schema Explorer styles + dark-mode rules. Body-level styles are scoped to `.schema-spa-host` / `.schema-embed`.                                                                              |
 | `tools/schema-explorer/static/js/app.js`                                | Hash router + views for standalone mode; embed mounter for any `<schema-explorer>` element on the page. Lazy-loads runtime JS and icon CSS only when the explorer mounts.                    |
@@ -63,7 +63,7 @@ The Markdown formatter renders the block as a `<schema-explorer>` custom element
 ## Build pipeline
 
 ```text
-              pyavd schema_tools resolver
+        combined YAML schemas + metaschema
                           │
                           ▼
  mkdocs build / serve  →  mkdocs_hook.py  →  generate.py  ──►  temp cache outside repo/
@@ -94,13 +94,15 @@ Two key invariants:
 
 ### What `generate.py` does
 
-Loads unresolved schemas via `schema_tools.store.load_unresolved_store()`:
+Loads unresolved schemas directly from the checked-in source files:
 
-- Prefers `python-avd/pyavd/_schema/schemas.json.gz` (the same combined store
-  compiled into `schemas.rkyv` for pyAVD validation) and falls back to combined
-  YAML when the gzip file is missing.
-- Does **not** use fully resolved pickles or the rkyv archive — those materialize
-  every cross-schema `$ref` and are meant for validation, not docs-shaped trees.
+- `python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml`
+- `python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml`
+- `python-avd/pyavd/_schema/avd_meta_schema.json` for the resolver's metaschema
+
+It does not read or regenerate `schemas.json.gz`, `schemas.rkyv`, or the
+resolved schema pickles. Keeping the explorer on the combined YAML sources
+avoids the archive metaschema mismatch while preserving the docs-shaped trees.
 
 Then each module is processed through pyavd's `schema_tools` resolver so:
 
@@ -183,9 +185,9 @@ pre-commit run schemas --all-files
 make schema-explorer-build
 ```
 
-The MkDocs hook freshness check prefers `schemas.json.gz` (or combined YAML
-when the gzip file is missing), so fragment-only edits can look stale until
-`pre-commit run schemas` regenerates the combined store.
+The MkDocs hook freshness check tracks the combined YAML sources and the
+metaschema. Fragment-only edits can look stale until the repository schema
+workflow regenerates the combined YAML files.
 
 ## Architecture decisions
 

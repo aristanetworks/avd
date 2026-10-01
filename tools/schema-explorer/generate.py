@@ -14,8 +14,7 @@ Two responsibilities:
    before resolution and surfaced as a ``cross_ref`` column so the SQLite stays
    small. Other cross-schema ``$ref`` values are resolved like schema docs tables.
 
-   Schemas are loaded from ``python-avd/pyavd/_schema/schemas.json.gz`` when
-   present (same combined store as ``schemas.rkyv``), otherwise from combined YAML.
+   Schemas are loaded from the combined YAML files under ``python-avd/``.
 2. Copy the static SPA assets (``static/index.html``, ``static/css/``,
    ``static/js/``) alongside the SQLite into ``--site-dir`` so MkDocs picks
    up a self-contained Schema Explorer page.
@@ -45,7 +44,15 @@ import time
 from copy import deepcopy
 from pathlib import Path
 
+from yaml import CSafeLoader
+from yaml import load as yaml_load
+
 SCHEMA_IDS = ("eos_designs", "eos_cli_config_gen")
+SCHEMA_SOURCE_FILES = {
+    "avd_meta_schema": Path("python-avd/pyavd/_schema/avd_meta_schema.json"),
+    "eos_cli_config_gen": Path("python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml"),
+    "eos_designs": Path("python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml"),
+}
 HERE = Path(__file__).resolve().parent
 STATIC_DIR = HERE / "static"
 
@@ -69,6 +76,46 @@ def _path_depth(key_path: str) -> int:
     return depth
 
 
+def _load_schema_file(path: Path) -> dict:
+    """Load one schema source file from JSON or YAML."""
+    with path.open(encoding="UTF-8") as stream:
+        if path.suffix == ".json":
+            return json.load(stream)
+        return yaml_load(stream, Loader=CSafeLoader)
+
+
+def load_unresolved_store(avd_root: Path) -> dict[str, dict]:
+    """Load the unresolved schemas used by the Schema Explorer from YAML sources."""
+    return {schema_id: _load_schema_file(avd_root / source_path) for schema_id, source_path in SCHEMA_SOURCE_FILES.items()}
+
+
+def neutralize_hidden_cross_schema_refs(node: dict, own_schema_id: str) -> None:
+    """Turn hidden cross-schema refs into link annotations before resolving schemas."""
+    if not isinstance(node, dict):
+        return
+
+    doc_opts = node.get("documentation_options") or {}
+    hide_keys = doc_opts.get("hide_keys")
+    ref = node.get("$ref")
+    if hide_keys and isinstance(ref, str) and "#" in ref:
+        target_schema = ref.split("#", 1)[0]
+        if target_schema and target_schema != own_schema_id:
+            node["_cross_ref"] = ref
+            node.pop("$ref", None)
+
+    for child_key in ("keys", "dynamic_keys"):
+        children = node.get(child_key)
+        if isinstance(children, dict):
+            for child in children.values():
+                neutralize_hidden_cross_schema_refs(child, own_schema_id)
+    if isinstance(node.get("items"), dict):
+        neutralize_hidden_cross_schema_refs(node["items"], own_schema_id)
+    defs = node.get("$defs")
+    if isinstance(defs, dict):
+        for child in defs.values():
+            neutralize_hidden_cross_schema_refs(child, own_schema_id)
+
+
 def _load_resolved_store(avd_root: Path) -> dict[str, dict]:
     """
     Load both AVD schemas as resolved dicts.
@@ -84,9 +131,8 @@ def _load_resolved_store(avd_root: Path) -> dict[str, dict]:
     sys.path.insert(0, str(python_avd))
 
     from schema_tools.avdschemaresolver import AvdSchemaResolver
-    from schema_tools.store import load_unresolved_store, neutralize_hidden_cross_schema_refs
 
-    raw_store = load_unresolved_store()
+    raw_store = load_unresolved_store(avd_root)
     # Neutralize hide_keys cross-schema $refs in-place across the whole store first,
     # so when the resolver pulls in $defs subtrees (e.g. structured_config under
     # node_type) those references are already link-out leaves.

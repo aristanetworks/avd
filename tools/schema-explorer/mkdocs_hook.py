@@ -43,8 +43,8 @@ GENERATE_SCRIPT = HERE / "generate.py"
 # Repo root is two levels up from tools/schema-explorer/.
 AVD_ROOT = HERE.parents[1]
 BUILD_DIR = Path(tempfile.gettempdir()) / "avd-schema-explorer" / hashlib.sha256(str(AVD_ROOT).encode()).hexdigest()[:16]
-SCHEMA_STORE_GZ = AVD_ROOT / "python-avd" / "pyavd" / "_schema" / "schemas.json.gz"
-SCHEMA_YAML_INPUTS = (
+SCHEMA_INPUTS = (
+    AVD_ROOT / "python-avd" / "pyavd" / "_schema" / "avd_meta_schema.json",
     AVD_ROOT / "python-avd" / "pyavd" / "_eos_designs" / "schema" / "eos_designs.schema.yml",
     AVD_ROOT / "python-avd" / "pyavd" / "_eos_cli_config_gen" / "schema" / "eos_cli_config_gen.schema.yml",
 )
@@ -125,9 +125,7 @@ def _copy_static_assets() -> None:
 
 def _schema_input_paths() -> tuple[Path, ...]:
     """Paths that invalidate the SQLite when newer than the artifact."""
-    if SCHEMA_STORE_GZ.is_file():
-        return (GENERATE_SCRIPT, SCHEMA_STORE_GZ)
-    return (GENERATE_SCRIPT, *SCHEMA_YAML_INPUTS)
+    return (GENERATE_SCRIPT, *SCHEMA_INPUTS)
 
 
 def _database_is_current(sqlite_marker: Path) -> bool:
