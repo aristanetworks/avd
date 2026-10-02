@@ -73,7 +73,10 @@ class AddressLockingMixin(Protocol):
             if not feature_support.ipv6_enforcement_disabled:
                 msg = (
                     f"IPv6 address locking is enabled under '{context}' but the platform does not support "
-                    "`locked-address ipv6 enforcement disabled`, which is required for IPv6 Address Locking."
+                    "`locked-address ipv6 enforcement disabled`. "
+                    "IPv6 Address Locking can only operate in enforcement-disabled mode "
+                    "(`address_locking_settings.locked_address.ipv6_enforcement_disabled: true`), "
+                    "which is not supported by this platform."
                 )
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
