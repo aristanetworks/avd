@@ -109,9 +109,8 @@ class AddressLockingMixin(Protocol):
 
         # None of the EOS-supported IPv4 operating modes are configured.
         msg = (
-            f"IPv4 address locking is enabled under '{context}' but one of the following is required: "
-            "`address_locking_settings.locked_address.ipv4_enforcement_disabled: true`, "
-            "`address_locking_settings.dhcp_servers_ipv4` with `address_locking_settings.local_interface`, or "
-            "`address_locking_settings.dhcp_server_interfaces`."
+            f"IPv4 address locking is enabled under '{context}' but 'address_locking_settings' is not properly configured "
+            "for any supported IPv4 Address Locking mode. "
+            "Consult the 'address_locking_settings' key documentation for the supported modes."
         )
         raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
