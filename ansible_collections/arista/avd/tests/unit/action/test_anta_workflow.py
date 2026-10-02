@@ -613,6 +613,8 @@ def test_sort_result_manager_orders_status_then_requested_fields() -> None:
     """Known statuses use the configured rank and unknown statuses sort last alphabetically."""
     results = [
         SimpleNamespace(result="success", name="leaf2", categories=["routing"], test="TestB", description="b", custom_field=None),
+        SimpleNamespace(result="success", name="leaf4", categories=["routing"], test="TestB", description="b", custom_field=None),
+        SimpleNamespace(result="success", name="leaf4", categories=["routing"], test="TestA", description="a", custom_field=None),
         SimpleNamespace(result="mystery", name="leaf1", categories=["routing"], test="TestA", description="a", custom_field=None),
         SimpleNamespace(result="failure", name="leaf3", categories=["routing"], test="TestA", description="a", custom_field=None),
         SimpleNamespace(result="success", name="leaf1", categories=["routing"], test="TestA", description="a", custom_field=None),
@@ -622,12 +624,14 @@ def test_sort_result_manager_orders_status_then_requested_fields() -> None:
 
     anta_module.sort_result_manager(result_manager, ["failure", "success"], ["device", "test"])
 
-    assert [(result.result, result.name) for result in result_manager.results] == [
-        ("failure", "leaf3"),
-        ("success", "leaf1"),
-        ("success", "leaf2"),
-        ("mystery", "leaf1"),
-        ("unset", "leaf0"),
+    assert [(result.result, result.name, result.test) for result in result_manager.results] == [
+        ("failure", "leaf3", "TestA"),
+        ("success", "leaf1", "TestA"),
+        ("success", "leaf2", "TestB"),
+        ("success", "leaf4", "TestA"),
+        ("success", "leaf4", "TestB"),
+        ("mystery", "leaf1", "TestA"),
+        ("unset", "leaf0", "TestA"),
     ]
 
 
