@@ -78964,6 +78964,59 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Vrfs._item_type = VrfsItem
 
+    class Vrrp(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Ipv4(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"authentication_anti_replay": {"type": bool}}
+            authentication_anti_replay: bool | None
+            """Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, authentication_anti_replay: bool | UndefinedType | None = Undefined) -> None:
+                    """
+                    Ipv4.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        authentication_anti_replay: Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
+
+                    """
+
+        _fields: ClassVar[dict] = {"ipv4": {"type": Ipv4}}
+        ipv4: Ipv4
+        """
+        VRRPv2 IPv4 Authentication configuration.
+        EOS version dependent. Supported starting 4.33.10M,
+        4.34.8M, 4.35.6M and 4.36.2F.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, ipv4: Ipv4 | UndefinedType = Undefined) -> None:
+                """
+                Vrrp.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    ipv4:
+                       VRRPv2 IPv4 Authentication configuration.
+                       EOS version dependent. Supported starting 4.33.10M,
+                       4.34.8M, 4.35.6M and 4.36.2F.
+
+                       Subclass of AvdModel.
+
+                """
+
     class VxlanInterface(AvdModel):
         """Subclass of AvdModel."""
 
@@ -79739,6 +79792,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "vlans": {"type": Vlans},
         "vmtracer_sessions": {"type": VmtracerSessions},
         "vrfs": {"type": Vrfs},
+        "vrrp": {"type": Vrrp},
         "vxlan_interface": {"type": VxlanInterface},
     }
     _allow_other_keys: ClassVar[bool] = True
@@ -80401,6 +80455,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     Subclass of AvdIndexedList with
     `VrfsItem` items. Primary key is `name` (`str`).
     """
+    vrrp: Vrrp
+    """
+    Global VRRP configuration.
+
+    Subclass of AvdModel.
+    """
     vxlan_interface: VxlanInterface
     """Subclass of AvdModel."""
 
@@ -80617,6 +80677,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlans: Vlans | UndefinedType = Undefined,
             vmtracer_sessions: VmtracerSessions | UndefinedType = Undefined,
             vrfs: Vrfs | UndefinedType = Undefined,
+            vrrp: Vrrp | UndefinedType = Undefined,
             vxlan_interface: VxlanInterface | UndefinedType = Undefined,
         ) -> None:
             """
@@ -81029,6 +81090,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdIndexedList with
                    `VrfsItem` items. Primary key is `name` (`str`).
+                vrrp:
+                   Global VRRP configuration.
+
+                   Subclass of AvdModel.
                 vxlan_interface: Subclass of AvdModel.
 
             """
