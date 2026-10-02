@@ -1991,7 +1991,7 @@ Important caveats for the current Containerlab implementation:
 - Only a single IPv4 management subnet is supported across the lab.
 - Management IP addresses in the lab and production must currently match.
 - Each node must have a static `mgmt_ip`. Unset management IPs and `mgmt_ip: dhcp` are not supported.
-- `digital_twin.mgmt_ip` is not currently used by the Containerlab topology generator. Instead, topology generation uses each node `mgmt_ip` value from the AVD fabric facts.
+- `digital_twin.mgmt_ip` is not currently used by the Containerlab topology generator. Instead, topology generation uses each node's `mgmt_ip` value from the AVD fabric facts.
 - The generated topology includes fabric nodes and point-to-point fabric links. Connected endpoints and non-point-to-point links are not modeled.
 - The generated topology sets `prefix: ""` intentionally to preserve the original AVD hostnames.
 - The generated topology currently defaults to `arista_ceos` with `image: arista/ceos:latest`. Please set up your lab environment accordingly, or update the generated topology file if needed.
