@@ -4,7 +4,11 @@
 import logging
 import warnings
 from collections.abc import Callable, Generator
+from concurrent.futures import ProcessPoolExecutor
 from contextlib import ExitStack
+from logging.handlers import QueueHandler
+from multiprocessing import get_context
+from threading import Thread
 from typing import Any
 from unittest.mock import MagicMock, patch
 
@@ -13,8 +17,31 @@ from ansible.errors import AnsibleActionFail
 from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import AnsibleDisplayHandler
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import AnsibleDisplayHandler, LoggingOutcome, log_context
 from pyavd._errors import AvdDeprecationWarning
+
+
+def _emit_logs_from_worker(logger_name: str, worker_log_context: str | None = None) -> None:
+    """Emit records from a forked worker for queue logging tests."""
+    with log_context(worker_log_context):
+        logger = logging.getLogger(logger_name)
+        logger.warning("A warning from a worker.")
+        logger.error("An error from a worker.")
+
+
+def _emit_log_and_raise_from_worker(logger_name: str) -> None:
+    """Emit a record and raise from a forked worker for queue cleanup tests."""
+    logging.getLogger(logger_name).warning("A warning before a worker exception.")
+    msg = "Worker failed"
+    raise RuntimeError(msg)
+
+
+def _emit_log_from_thread_in_worker(logger_name: str, worker_log_context: str) -> None:
+    """Emit a record from a new thread in a forked worker."""
+    with log_context(worker_log_context):
+        thread = Thread(target=logging.getLogger(logger_name).warning, args=("A warning from a worker thread.",))
+        thread.start()
+        thread.join()
 
 
 class TestAVDActionPlugin:
@@ -307,6 +334,199 @@ class TestAVDActionPlugin:
 
         # Assert the display handler was NOT called
         mock_display.warning.assert_not_called()
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_multiprocessing_logs_are_saved_without_failing_action(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Unlisted records caught by a root fallback are drained without directly controlling task failure."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(
+                target_loggers=("", "ansible_collections.arista.avd"),
+                track_log_errors=True,
+                use_multiprocessing_queue=True,
+            )
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_logs_from_worker, "custom_anta_test.ExampleTest").result()
+
+            def _handle_logging_outcome(self, logging_outcome: LoggingOutcome) -> None:
+                self.result["has_log_errors"] = logging_outcome.has_errors
+
+        plugin = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
+        result = plugin.run()
+
+        assert result["logs"] == {
+            "warnings": ["A warning from a worker."],
+            "errors": ["An error from a worker."],
+        }
+        assert result["has_log_errors"] is True
+        assert "failed" not in result
+
+    def test_multiprocessing_logs_are_displayed_once(self, action_module: Callable[..., AVDActionPlugin], mock_display: MagicMock) -> None:
+        """A forked worker record is displayed exactly once by the parent listener."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_logs_from_worker, self._primary_logger_name).result()
+
+        plugin = action_module(ActionModule)
+        plugin.run()
+
+        mock_display.warning.assert_called_once_with("A warning from a worker.")
+        mock_display.error.assert_called_once_with("An error from a worker.", wrap_text=False)
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_multiprocessing_logs_are_drained_when_worker_raises(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Queued records are drained before a worker exception is recast as AnsibleActionFail."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_log_and_raise_from_worker, self._primary_logger_name).result()
+
+        plugin = action_module(ActionModule, task_args={"save_logs": True, "live_display": False}, ansible_name="pytest_action_plugin")
+
+        with pytest.raises(AnsibleActionFail, match="Error during plugin 'pytest_action_plugin' execution: Worker failed"):
+            plugin.run()
+
+        assert plugin.result["logs"]["warnings"] == ["A warning before a worker exception."]
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_multiprocessing_context_is_applied_in_parent_listener(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Role and hostname context is formatted by the parent-side sink handler."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(
+                add_hostname_context=True,
+                add_role_context=True,
+                log_context="anta-workflow",
+                use_multiprocessing_queue=True,
+            )
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_logs_from_worker, self._primary_logger_name, "anta-run-12345678").result()
+
+        plugin = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
+        result = plugin.run(task_vars={"inventory_hostname": "leaf1", "ansible_role_name": "anta_runner"})
+
+        assert result["logs"]["warnings"] == ["[anta_runner] - <leaf1> [anta-run-12345678] A warning from a worker."]
+        assert result["logs"]["errors"] == ["[anta_runner] - <leaf1> [anta-run-12345678] An error from a worker."]
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_multiprocessing_context_is_available_to_worker_threads(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """A raw worker thread uses the process context when no task-local context is available."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(log_context="anta-workflow", use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_log_from_thread_in_worker, self._primary_logger_name, "anta-run-12345678").result()
+
+        plugin = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
+        result = plugin.run()
+
+        assert result["logs"]["warnings"] == ["[anta-run-12345678] A warning from a worker thread."]
+
+    def test_multiprocessing_queue_tracks_errors_without_output_sinks(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Queue mode is only activated without output sinks when error tracking is requested."""
+
+        class UntrackedActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                self.logger.error("Dropped because no sinks are enabled.")
+
+        untracked_plugin = action_module(UntrackedActionModule, task_args={"save_logs": False, "live_display": False})
+        with patch("ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.avd_action_plugin.get_context") as mock_get_context:
+            untracked_result = untracked_plugin.run()
+
+        mock_get_context.assert_not_called()
+        assert "failed" not in untracked_result
+        assert "logs" not in untracked_result
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(track_log_errors=True, use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                self.logger.error("Dropped because no sinks are enabled.")
+
+            def _handle_logging_outcome(self, logging_outcome: LoggingOutcome) -> None:
+                self.result["has_log_errors"] = logging_outcome.has_errors
+
+        plugin = action_module(ActionModule, task_args={"save_logs": False, "live_display": False})
+        result = plugin.run()
+
+        assert result["has_log_errors"] is True
+        assert "failed" not in result
+        assert "logs" not in result
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_multiprocessing_descendant_records_are_not_duplicated(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Overlapping configured logger roots still handle descendant records once."""
+        child_logger_name = "ansible_collections.arista.avd.worker"
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(
+                target_loggers=("ansible_collections.arista.avd", child_logger_name),
+                use_multiprocessing_queue=True,
+            )
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_logs_from_worker, f"{child_logger_name}.descendant").result()
+
+        plugin = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
+        result = plugin.run()
+
+        assert result["logs"]["warnings"] == ["A warning from a worker."]
+        assert result["logs"]["errors"] == ["An error from a worker."]
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_multiprocessing_context_restores_dirty_logger_state(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Queue mode restores handlers, level, and propagation after execution."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                assert len(self.logger.handlers) == 1
+                assert isinstance(self.logger.handlers[0], QueueHandler)
+
+        logger = logging.getLogger("ansible_collections.arista.avd")
+        sticky_handler = logging.StreamHandler()
+        original_handlers = logger.handlers[:]
+        original_level = logger.level
+        original_propagate = logger.propagate
+
+        try:
+            logger.addHandler(sticky_handler)
+            expected_handlers = [*original_handlers, sticky_handler]
+            plugin = action_module(ActionModule)
+            plugin.run()
+
+            assert logger.handlers == expected_handlers
+            assert logger.level == original_level
+            assert logger.propagate == original_propagate
+        finally:
+            logger.removeHandler(sticky_handler)
+            sticky_handler.close()
 
     @pytest.mark.parametrize(
         ("warning", "expected_result"),

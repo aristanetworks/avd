@@ -375,7 +375,6 @@ plugins/plugin_utils/pyavd_wrappers.py
 plugins/plugin_utils/schema/MOVED_TO_PYAVD.txt
 plugins/plugin_utils/utils/__init__.py
 plugins/plugin_utils/utils/action_plugin_vars.py
-plugins/plugin_utils/utils/anta_workflow_logging.py
 plugins/plugin_utils/utils/avd_action_plugin/__init__.py
 plugins/plugin_utils/utils/avd_action_plugin/avd_action_plugin.py
 plugins/plugin_utils/utils/avd_action_plugin/log_config.py

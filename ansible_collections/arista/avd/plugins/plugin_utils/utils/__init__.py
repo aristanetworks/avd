@@ -2,7 +2,6 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from .action_plugin_vars import ActionPluginVars
-from .anta_workflow_logging import AntaWorkflowFilter, AntaWorkflowHandler
 from .avd_file_handler import AVDFileHandler
 from .avd_switch_facts_default_dict import AvdSwitchFactsDefaultDict
 from .avd_vault_handler import AVDVaultHandler
@@ -22,8 +21,6 @@ __all__ = [
     "AVDFileHandler",
     "AVDVaultHandler",
     "ActionPluginVars",
-    "AntaWorkflowFilter",
-    "AntaWorkflowHandler",
     "AvdSwitchFactsDefaultDict",
     "NoAliasDumper",
     "PythonToAnsibleContextFilter",
