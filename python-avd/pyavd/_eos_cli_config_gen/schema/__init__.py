@@ -24959,6 +24959,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {"idle_timeout": {"type": int}}
         idle_timeout: int | None
+        """Idle timeout in minutes."""
 
         if TYPE_CHECKING:
 
@@ -24970,7 +24971,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    idle_timeout: idle_timeout
+                    idle_timeout: Idle timeout in minutes.
 
                 """
 
