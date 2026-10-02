@@ -1,0 +1,30 @@
+# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ntp_settings_profiles:
+    documentation_options:
+      table: ntp-settings-profiles
+    type: list
+    primary_key: profile
+    description: |-
+      NTP settings
+    items:
+      type: dict
+      $ref: "eos_designs#/keys/ntp_settings"
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: NTP settings profile name.
+        parent_profile:
+          type: str
+          min_length: 1
+          description: |-
+            Inherit settings from a parent profile defined under `ntp_settings_profiles`.
+            The settings from this profile override settings inherited from the parent profile.
