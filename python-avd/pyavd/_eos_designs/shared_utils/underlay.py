@@ -12,6 +12,8 @@ from pyavd._utils.default import default
 from pyavd._utils.password_utils.password import isis_encrypt
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import SharedUtilsProtocol
 
 
@@ -59,6 +61,14 @@ class UnderlayMixin(Protocol):
     @cached_property
     def underlay_ipv6(self: SharedUtilsProtocol) -> bool:
         return self.inputs.underlay_ipv6 and self.underlay_router
+
+    @cached_property
+    def underlay_bgp_peer_group(
+        self: SharedUtilsProtocol,
+    ) -> EosDesigns.BgpPeerGroups.UnderlayPeers | EosDesigns.BgpPeerGroups.Ipv4UnderlayPeers:
+        if self.inputs.bgp_peer_groups.underlay_peers:
+            return self.inputs.bgp_peer_groups.underlay_peers
+        return self.inputs.bgp_peer_groups.ipv4_underlay_peers
 
     @cached_property
     def underlay_multicast_pim_sm_enabled(self: SharedUtilsProtocol) -> bool:

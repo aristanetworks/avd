@@ -15,7 +15,9 @@ if TYPE_CHECKING:
     from . import SharedUtilsProtocol
 
     BgpPeerGroupOrNeighbor = (
-        EosDesigns.BgpPeerGroups.Ipv4UnderlayPeers
+        EosDesigns.BgpPeerGroups.UnderlayPeers
+        | EosDesigns.BgpPeerGroups.Ipv4UnderlayPeers
+        | EosDesigns.BgpPeerGroups.MlagUnderlayPeer
         | EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer
         | EosDesigns.BgpPeerGroups.WanOverlayPeers
         | EosDesigns.BgpPeerGroups.WanRrOverlayPeers
@@ -23,6 +25,7 @@ if TYPE_CHECKING:
         | EosDesigns.BgpPeerGroups.EvpnOverlayCore
         | EosDesigns.BgpPeerGroups.EvpnOverlayPeers
         | EosDesigns.BgpPeerGroups.RrOverlayPeers
+        | EosDesigns.BgpPeerGroups.MlagVrfsPeer
         | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer
         | EosDesigns.BgpPeerGroups.IpvpnGatewayPeers
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.BgpPeerGroupsItem

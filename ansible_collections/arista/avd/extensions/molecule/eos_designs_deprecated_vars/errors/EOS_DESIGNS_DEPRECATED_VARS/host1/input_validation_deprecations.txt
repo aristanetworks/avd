@@ -1,3 +1,6 @@
+[['bgp_peer_groups', 'ipv4_underlay_peers']]: 'The input data model 'bgp_peer_groups.ipv4_underlay_peers' is deprecated and will be removed in AVD version 7.0.0. Use 'underlay_peers' instead.'
+[['bgp_peer_groups', 'mlag_ipv4_underlay_peer']]: 'The input data model 'bgp_peer_groups.mlag_ipv4_underlay_peer' is deprecated and will be removed in AVD version 7.0.0. Use 'mlag_underlay_peer' instead.'
+[['bgp_peer_groups', 'mlag_ipv4_vrfs_peer']]: 'The input data model 'bgp_peer_groups.mlag_ipv4_vrfs_peer' is deprecated and will be removed in AVD version 7.0.0. Use 'mlag_vrfs_peer' instead.'
 [['tenants', '0', 'igmp_snooping_querier']]: 'The input data model 'tenants[0].igmp_snooping_querier' is deprecated and will be removed in AVD version 7.0.0. Use 'igmp_snooping.querier' instead.'
 [['tenants', '0', 'l2vlans', '1', 'igmp_snooping_querier']]: 'The input data model 'tenants[0].l2vlans[1].igmp_snooping_querier' is deprecated and will be removed in AVD version 7.0.0. Use 'igmp_snooping.querier' instead.'
 [['tenants', '1', 'vrfs', '0', 'svis', '0', 'igmp_snooping_querier']]: 'The input data model 'tenants[1].vrfs[0].svis[0].igmp_snooping_querier' is deprecated and will be removed in AVD version 7.0.0. Use 'igmp_snooping.querier' instead.'

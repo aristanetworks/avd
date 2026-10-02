@@ -52,9 +52,11 @@ bgp_peer_groups:
   # all passwords set to "arista"
   evpn_overlay_peers:
     password: Q4fqtbqcZ7oQuKfuWtNGRQ==
-  ipv4_underlay_peers:
+  underlay_peers:
+    name: IPv4-UNDERLAY-PEERS
     password: 7x4B4rnJhZB438m9+BrBfQ==
-  mlag_ipv4_underlay_peer:
+  mlag_underlay_peer:
+    name: MLAG-IPv4-UNDERLAY-PEER
     password: 4b21pAdCvWeAqpcKDFMdWw==
 
 # Define default interfaces
