@@ -5,13 +5,13 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterable, Iterator, Sequence
-from typing import TYPE_CHECKING, ClassVar, Generic, Literal, cast, overload
+from typing import TYPE_CHECKING, ClassVar, Generic, cast, overload
 
 from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils.undefined import Undefined, UndefinedType
 
-from .avd_base import AvdBase
+from .avd_base import AvdBase, AvdListMergeStrategy
 from .type_vars import T_AvdModel, T_PrimaryKey
 
 if TYPE_CHECKING:
@@ -180,7 +180,7 @@ class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdM
         cls = type(self)
         return cls(sorted(self.values(), key=key))
 
-    def _deepmerge(self, other: Self, list_merge: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"] = "append_unique") -> None:
+    def _deepmerge(self, other: Self, list_merge: AvdListMergeStrategy = "append_unique") -> None:
         """
         Update instance by deepmerging the other instance in.
 

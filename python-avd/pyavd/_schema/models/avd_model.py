@@ -6,14 +6,14 @@ from __future__ import annotations
 from collections.abc import Mapping
 from copy import deepcopy
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, cast
+from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils.merge import merge
 from pyavd._utils.undefined import Undefined, UndefinedType
 
-from .avd_base import AvdBase
+from .avd_base import AvdBase, AvdListMergeStrategy
 from .avd_indexed_list import AvdIndexedList
 
 if TYPE_CHECKING:
@@ -269,7 +269,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
             [setattr(self, arg, arg_value) for arg, arg_value in kwargs.items() if arg_value is not Undefined]
             return self
 
-    def _deepmerge(self, other: Self, list_merge: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"] = "append_unique") -> None:
+    def _deepmerge(self, other: Self, list_merge: AvdListMergeStrategy = "append_unique") -> None:
         """
         Update instance by deepmerging the other instance in.
 

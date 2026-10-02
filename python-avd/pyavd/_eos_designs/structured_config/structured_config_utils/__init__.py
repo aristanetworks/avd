@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
 from pyavd._utils.run_once import RunOnceMethodStateHelper
 
+from .mac_access_lists import MacAccessListsMixin
 from .mlag import MlagMixin
 from .sflow import SflowMixin
 from .underlay import UnderlayMixin
@@ -26,7 +27,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
 
 
-class StructuredConfigUtilsProtocol(UtilsMixin, MlagMixin, UnderlayMixin, SflowMixin, Protocol):
+class StructuredConfigUtilsProtocol(UtilsMixin, MacAccessListsMixin, MlagMixin, UnderlayMixin, SflowMixin, Protocol):
     """Protocol for the StructuredConfigUtils Class with commonly used methods to be shared between all the python modules loaded in eos_designs."""
 
     structured_config: EosCliConfigGen

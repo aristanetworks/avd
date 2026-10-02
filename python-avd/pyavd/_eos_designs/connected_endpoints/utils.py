@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.schema import EosDesigns
 
-    from . import AvdStructuredConfigConnectedEndpointsProtocol
+    from .builder import ConnectedEndpointsBuilder
 
     T_Ptp = TypeVar("T_Ptp", EosCliConfigGen.EthernetInterfacesItem.Ptp, EosCliConfigGen.PortChannelInterfacesItem.Ptp)
     T_Link_Tracking_Groups = TypeVar(
@@ -41,20 +41,21 @@ if TYPE_CHECKING:
 
 class UtilsMixin(Protocol):
     """
-    Mixin Class with internal functions.
+    Pure connected-endpoint transformations mixed into the core builder.
 
-    Class should only be used as Mixin to a AvdStructuredConfig class or other Mixins.
+    Dependencies must be read from the declared build context. Adding access to
+    full inputs, facts, or ``SharedUtils`` here would break the isolation boundary.
     """
 
     def _get_short_esi(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         channel_group_id: int,
         subif_short_esi: str | None = None,
         hash_extra_value: str = "",
     ) -> str | None:
         """Return short_esi for one adapter or subinterface."""
-        if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
+        if not self.context.evpn_ethernet_segments_enabled:
             return None
 
         if (short_esi := (subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
@@ -82,13 +83,13 @@ class UtilsMixin(Protocol):
         return short_esi
 
     def _get_adapter_trunk_groups(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         connected_endpoint: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem,
         output_type: type[T_TrunkGroups],
     ) -> T_TrunkGroups | UndefinedType:
         """Return trunk_groups for one adapter."""
-        if not self.inputs.enable_trunk_groups or adapter.mode not in ["trunk", "trunk phone"]:
+        if not self.context.enable_trunk_groups or adapter.mode not in ["trunk", "trunk phone"]:
             return Undefined
 
         if adapter._get("trunk_groups") is None:
@@ -98,18 +99,18 @@ class UtilsMixin(Protocol):
         return output_type(adapter.trunk_groups)
 
     def _get_adapter_storm_control(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         output_type: type[T_StormControl],
     ) -> T_StormControl | UndefinedType:
         """Return storm_control for one adapter."""
-        if self.shared_utils.platform_settings.feature_support.interface_storm_control and adapter.storm_control:
+        if self.context.platform_features.interface_storm_control and adapter.storm_control:
             return adapter.storm_control._cast_as(output_type)
 
         return Undefined
 
     def _get_adapter_evpn_ethernet_segment_cfg(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         short_esi: str | None,
         node_index: int,
@@ -123,7 +124,7 @@ class UtilsMixin(Protocol):
             return Undefined
 
         evpn_ethernet_segment = output_type(
-            identifier=f"{self.inputs.evpn_short_esi_prefix}{short_esi}",
+            identifier=f"{self.context.evpn_short_esi_prefix}{short_esi}",
             redundancy=adapter.ethernet_segment.redundancy or default_redundancy,
             route_target=short_esi_to_route_target(short_esi),
         )
@@ -158,36 +159,35 @@ class UtilsMixin(Protocol):
         return evpn_ethernet_segment
 
     def _get_adapter_link_tracking_groups(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         output_type: type[T_Link_Tracking_Groups],
     ) -> T_Link_Tracking_Groups | UndefinedType:
         """Return link_tracking_groups for one adapter."""
-        if self.shared_utils.link_tracking_groups is None or not adapter.link_tracking.enabled:
+        if self.context.link_tracking_group_default_name is None or not adapter.link_tracking.enabled:
             return Undefined
 
         output = output_type()
-        default_name = next(iter(self.shared_utils.link_tracking_groups)).name
-        output.append_new(name=adapter.link_tracking.name or default_name, direction="downstream")
+        output.append_new(name=adapter.link_tracking.name or self.context.link_tracking_group_default_name, direction="downstream")
         return output
 
     def _get_adapter_ptp(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         output_type: type[T_Ptp],
     ) -> T_Ptp | UndefinedType:
         """Return ptp for one adapter."""
-        if not (adapter.ptp.enabled and self.shared_utils.platform_settings.feature_support.ptp):
+        if not (adapter.ptp.enabled and self.context.platform_features.ptp):
             return Undefined
 
         # Apply PTP profile config
-        if (ptp_profile_name := adapter.ptp.profile or self.shared_utils.ptp_profile_name) is not None:
-            if ptp_profile_name not in self.inputs.ptp_profiles:
+        if (ptp_profile_name := adapter.ptp.profile or self.context.ptp_profile_name) is not None:
+            if ptp_profile_name not in self.context.ptp_profiles:
                 msg = f"PTP Profile '{ptp_profile_name}' referenced under {adapter._internal_data.context} does not exist in `ptp_profiles`."
                 raise AristaAvdInvalidInputsError(msg)
 
             # Create a copy and removes the .profile attribute since the target model has a .profile key with a different schema.
-            ptp_profile_config = self.inputs.ptp_profiles[ptp_profile_name]._deepcopy()
+            ptp_profile_config = self.context.ptp_profiles[ptp_profile_name]._deepcopy()
             delattr(ptp_profile_config, "profile")
             ptp_config = ptp_profile_config._cast_as(output_type, ignore_extra_keys=True)
         else:
@@ -201,7 +201,7 @@ class UtilsMixin(Protocol):
         return ptp_config
 
     def _get_adapter_phone(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         connected_endpoint: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem,
         output_type: type[T_Phone],
@@ -226,23 +226,22 @@ class UtilsMixin(Protocol):
         return output_type(trunk=adapter.phone_trunk_mode, vlan=adapter.phone_vlan)
 
     def _get_adapter_l2_mtu(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
     ) -> int | None:
         """Return l2_mtu for one adapter."""
-        if self.shared_utils.platform_settings.feature_support.per_interface_l2_mtu and adapter.l2_mtu:
+        if self.context.platform_features.per_interface_l2_mtu and adapter.l2_mtu:
             return adapter.l2_mtu
 
         return None
 
     def _get_adapter_address_locking(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         output_type: type[T_AddressLocking],
     ) -> T_AddressLocking | UndefinedType:
         """Return address_locking for one adapter, mapping ipv4/ipv6 flags to address_family format."""
-        feature_support = self.shared_utils.platform_settings.feature_support
-        if not (adapter.address_locking and feature_support.address_locking.supported):
+        if not adapter.address_locking or self.context.platform_features.address_locking_support == "none":
             return Undefined
 
         address_locking = output_type()
@@ -253,12 +252,12 @@ class UtilsMixin(Protocol):
                 address_locking.address_family.ipv6 = adapter.address_locking.ipv6
         else:  # EosCliConfigGen.EthernetInterfacesItem.AddressLocking
             address_locking.address_family.ipv4 = adapter.address_locking.ipv4
-            if feature_support.address_locking.ipv6_ethernet_interface:
+            if self.context.platform_features.address_locking_support == "ipv4_ipv6":
                 address_locking.address_family.ipv6 = adapter.address_locking.ipv6
         return address_locking
 
     def _get_adapter_dot1x(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
     ) -> EosCliConfigGen.EthernetInterfacesItem.Dot1x:
         """
@@ -266,7 +265,7 @@ class UtilsMixin(Protocol):
 
         Raise AristaAvdInvalidInputsError if dot1x is not globally enabled.
         """
-        if not self.inputs.dot1x_settings.enabled:
+        if not self.context.dot1x_enabled:
             msg = (
                 f"802.1X settings are configured under '{adapter._internal_data.context}' but 802.1X is not enabled globally. "
                 "802.1X must be enabled globally by setting 'dot1x_settings.enabled: true' before configuring 802.1X on any interface."
@@ -276,36 +275,38 @@ class UtilsMixin(Protocol):
         dot1x = adapter.dot1x._cast_as(EosCliConfigGen.EthernetInterfacesItem.Dot1x, ignore_extra_keys=True)
         if acl_name := adapter.dot1x.authentication_failure.allow_access_list:
             acl_found = False
-            if acl_name in self.inputs.ipv4_acls:
-                self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[acl_name])
+            if acl_name in self.context.ipv4_acl_names:
+                if acl_name not in self.target.referenced_ipv4_acls:
+                    self.target.referenced_ipv4_acls.append(acl_name)
                 acl_found = True
-            if acl_name in self.inputs.ipv6_acls:
-                self.structured_config_utils._set_ipv6_acl(self.inputs.ipv6_acls[acl_name])
+            if acl_name in self.context.ipv6_acl_names:
+                if acl_name not in self.target.referenced_ipv6_acls:
+                    self.target.referenced_ipv6_acls.append(acl_name)
                 acl_found = True
             if not acl_found:
                 msg = f"ipv4_acls[name={acl_name}] or ipv6_acls[name={acl_name}]"
-                raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+                raise AristaAvdMissingVariableError(msg, host=self.context.hostname)
 
         return dot1x
 
     def _get_adapter_l2_mru(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
     ) -> int | None:
         """Return l2_mru for one adapter."""
-        if self.shared_utils.platform_settings.feature_support.per_interface_l2_mru and adapter.l2_mru:
+        if self.context.platform_features.per_interface_l2_mru and adapter.l2_mru:
             return adapter.l2_mru
 
         return None
 
     def _get_adapter_vlans(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: ConnectedEndpointsBuilder,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
     ) -> str | UndefinedType:
         """Return a list of allowed VLANs for a Trunk port for one adapter."""
         if adapter.mode == "trunk":
             if adapter.vlans == "defined_vlans":
-                return self.facts.vlans or "none"
+                return self.context.defined_vlans or "none"
             # EOS default is implicit "switchport trunk allowed vlan 1-4094" ("all" is its alias)
             if adapter.vlans == "all":
                 return Undefined
@@ -314,3 +315,11 @@ class UtilsMixin(Protocol):
                 return adapter.vlans
 
         return Undefined
+
+    def _set_mac_acl(self: ConnectedEndpointsBuilder, acl_name: str) -> None:
+        """Record a referenced MAC ACL without producing non-interface config."""
+        if acl_name not in self.context.mac_acl_names:
+            msg = f"mac_acls[name={acl_name}]"
+            raise AristaAvdMissingVariableError(msg, host=self.context.hostname)
+        if acl_name not in self.target.referenced_mac_acls:
+            self.target.referenced_mac_acls.append(acl_name)
