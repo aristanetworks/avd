@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Protocol
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError
@@ -48,8 +48,9 @@ class AddressLockingMixin(Protocol):
             leases=address_locking_settings.leases._cast_as(EosCliConfigGen.AddressLocking.Leases),
         )
 
-    def ensure_address_locking(self: StructuredConfigUtilsProtocol, address_family: Literal["ipv4", "ipv6"], context: str) -> None:
-        """Validate global address locking settings and configure them once."""
+    @run_once_method
+    def set_once_address_locking_ipv4(self: StructuredConfigUtilsProtocol, context: str) -> None:
+        """Validate IPv4 address locking settings and configure global address locking once."""
         address_locking_settings = self.inputs.address_locking_settings
 
         # A client cannot activate Address Locking without global settings because 'enforcement disabled' is only exposed in global settings.
@@ -61,27 +62,6 @@ class AddressLockingMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         feature_support = self.shared_utils.platform_settings.feature_support.address_locking
-        if address_family == "ipv6":
-            # EOS supports IPv6 Address Locking only with enforcement disabled.
-            if not address_locking_settings.locked_address.ipv6_enforcement_disabled:
-                msg = (
-                    f"IPv6 address locking is enabled under '{context}' but "
-                    "`address_locking_settings.locked_address.ipv6_enforcement_disabled: true` is required."
-                )
-                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
-
-            if not feature_support.ipv6_enforcement_disabled:
-                msg = (
-                    f"IPv6 address locking is enabled under '{context}' but the platform does not support "
-                    "`locked-address ipv6 enforcement disabled`. "
-                    "IPv6 Address Locking can only operate in enforcement-disabled mode "
-                    "(`address_locking_settings.locked_address.ipv6_enforcement_disabled: true`), "
-                    "which is not supported by this platform."
-                )
-                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
-
-            self.set_once_address_locking()
-            return
 
         # IPv4 Address Locking can operate without lease learning when enforcement is disabled.
         if address_locking_settings.locked_address.ipv4_enforcement_disabled and feature_support.ipv4_enforcement_disabled:
@@ -114,3 +94,37 @@ class AddressLockingMixin(Protocol):
             "Consult the 'address_locking_settings' key documentation for the supported modes."
         )
         raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+    @run_once_method
+    def set_once_address_locking_ipv6(self: StructuredConfigUtilsProtocol, context: str) -> None:
+        """Validate IPv6 address locking settings and configure global address locking once."""
+        address_locking_settings = self.inputs.address_locking_settings
+
+        # A client cannot activate Address Locking without global settings because 'enforcement disabled' is only exposed in global settings.
+        if not address_locking_settings:
+            msg = (
+                f"Address locking is enabled under '{context}' but 'address_locking_settings' is not configured. "
+                "Configure the required global address locking settings before enabling address locking on an interface or VLAN."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        feature_support = self.shared_utils.platform_settings.feature_support.address_locking
+
+        # EOS supports IPv6 Address Locking only with enforcement disabled.
+        if not address_locking_settings.locked_address.ipv6_enforcement_disabled:
+            msg = (
+                f"IPv6 address locking is enabled under '{context}' but `address_locking_settings.locked_address.ipv6_enforcement_disabled: true` is required."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if not feature_support.ipv6_enforcement_disabled:
+            msg = (
+                f"IPv6 address locking is enabled under '{context}' but the platform does not support "
+                "`locked-address ipv6 enforcement disabled`. "
+                "IPv6 Address Locking can only operate in enforcement-disabled mode "
+                "(`address_locking_settings.locked_address.ipv6_enforcement_disabled: true`), "
+                "which is not supported by this platform."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        self.set_once_address_locking()

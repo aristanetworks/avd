@@ -143,10 +143,13 @@ class VlansMixin(Protocol):
         ip_version: Literal["ipv4", "ipv6"],
     ) -> None:
         """Helper to apply IPv4/IPv6 address locking per VLAN."""
-        # In lazy mode, ensure_address_locking validates the operating mode and configures global Address Locking once.
+        # In lazy mode, validate the operating mode and configure global Address Locking once.
         if self.inputs.avd_design_future.only_configure_address_locking_when_used:
             context = f"vlan {vlan_id} in Tenant '{tenant_name}'"
-            self.structured_config_utils.ensure_address_locking(ip_version, context)
+            if ip_version == "ipv4":
+                self.structured_config_utils.set_once_address_locking_ipv4(context)
+            else:
+                self.structured_config_utils.set_once_address_locking_ipv6(context)
             setattr(vlans_vlan.address_locking.address_family, ip_version, True)
             return
 

@@ -262,8 +262,10 @@ class UtilsMixin(Protocol):
                     address_families.append("ipv6")
 
         if self.inputs.avd_design_future.only_configure_address_locking_when_used:
-            for address_family in address_families:
-                self.structured_config_utils.ensure_address_locking(address_family, adapter._internal_data.context)
+            if "ipv4" in address_families:
+                self.structured_config_utils.set_once_address_locking_ipv4(adapter._internal_data.context)
+            if "ipv6" in address_families:
+                self.structured_config_utils.set_once_address_locking_ipv6(adapter._internal_data.context)
         return address_locking
 
     def _get_adapter_dot1x(

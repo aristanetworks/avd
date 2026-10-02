@@ -1,0 +1,23 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: missing-global-address-locking-settings-ipv6
+
+avd_design_future:
+  only_configure_address_locking_when_used: true
+
+servers:
+  - name: server
+    adapters:
+      - switches: [missing-global-address-locking-settings-ipv6]
+        switch_ports: [Ethernet1]
+        mode: access
+        vlans: 10
+        address_locking:
+          ipv6: true
+
+expected_error_message: >-
+  Address locking is enabled under 'servers[name=server].adapters[0]' but 'address_locking_settings' is not configured.
+  Configure the required global address locking settings before enabling address locking on an interface or VLAN.
