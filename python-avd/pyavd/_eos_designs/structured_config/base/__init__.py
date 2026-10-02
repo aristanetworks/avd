@@ -595,6 +595,13 @@ class AvdStructuredConfigBaseProtocol(
             if self.shared_utils.mlag and relay_settings.mlag_peerlink_requests_disabled:
                 self.structured_config.dhcp_relay.mlag_peerlink_requests_disabled = relay_settings.mlag_peerlink_requests_disabled
 
+    @structured_config_contributor
+    def ip_software_forwarding(self: AvdStructuredConfigBaseProtocol) -> None:
+        """Set ip software forwarding rconfiguration."""
+        if software_settings := self.inputs.general_settings.ip_software_forwarding_exceed_action_drop:
+            self.structured_config.ip_software_forwarding.mtu.exceed_action_drop = software_settings.enable
+            self.structured_config.ip_software_forwarding.mtu.size = software_settings.mtu
+
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):
     """

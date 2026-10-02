@@ -65,3 +65,19 @@ keys:
               max: 4094
             name:
               type: str
+      ip_software_forwarding_exceed_action_drop:
+        type: dict
+        documentation_options:
+          table: system-settings
+        description: |-
+          Drop IPv4 packets larger than configured mtu (in bytes) in software.
+          EOS version dependent. Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+        keys:
+          enable:
+            type: bool
+          mtu:
+            type: int
+            min: 68
+            max: 65535
+            convert_types: [str]
+            required: true
