@@ -2,24 +2,41 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+import json
 import logging
+import sys
 from importlib.metadata import PackageNotFoundError
 from itertools import repeat
 from pathlib import Path
-from typing import NamedTuple
-from unittest.mock import patch
+from typing import TYPE_CHECKING, NamedTuple
+from unittest.mock import MagicMock, patch
 
 import pytest
 
 from ansible_collections.arista.avd.plugins.action.verify_requirements import (
     MIN_PYTHON_SUPPORTED_VERSION,
+    ActionModule,
+    _check_requirement,
     _get_collection_version,
+    _get_git_command_output,
     _get_running_collection_version,
     _validate_ansible_collections,
     _validate_ansible_version,
     _validate_python_requirements,
     _validate_python_version,
+    check_running_from_source,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from ansible.plugins.action import ActionBase
+
+MODULE_PATH = "ansible_collections.arista.avd.plugins.action.verify_requirements"
+DEFAULT_TASK_VARS = {
+    "ansible_version": {"string": "2.16.0"},
+    "ansible_collection_name": "arista.avd",
+}
 
 
 class VersionInfo(NamedTuple):
@@ -358,3 +375,331 @@ def test__get_running_collection_version_not_running_from_source_skips_git(tmp_p
     assert result == {"collection": {"name": "dummy", "path": str(customer_repo_path / "collections/ansible_collections"), "version": "42.0.0"}}
     patched__get_git_command_output.assert_not_called()
     assert "AVD is not running from source, returning collection version" in caplog.text
+
+
+# ---------------------------------------------------------------------------
+# Short-circuit prevention
+# ---------------------------------------------------------------------------
+
+
+def test__validate_python_requirements_short_circuits_on_first_failure() -> None:
+    """Due to the `valid = valid and ...` pattern, only the first failing requirement is evaluated."""
+    result = {}
+    requirements = ["first-dep>=1.0", "second-dep>=1.0"]
+    checked_names: list[str] = []
+
+    def recording_check(req: object, requirements_dict: dict) -> bool:
+        checked_names.append(req.name)  # type: ignore[attr-defined]
+        requirements_dict["mismatched"][req.name] = {"installed": "0.1", "required_version": ">=1.0"}  # type: ignore[attr-defined]
+        return False
+
+    with patch(f"{MODULE_PATH}._check_requirement", side_effect=recording_check):
+        is_valid = _validate_python_requirements(requirements, result)
+
+    assert is_valid is False
+    assert checked_names == ["first-dep"]
+
+
+# ---------------------------------------------------------------------------
+# Duplicate installed-distribution metadata
+# ---------------------------------------------------------------------------
+
+
+def test__check_requirement_duplicate_dist_alternate_satisfies() -> None:
+    """When multiple dists exist and an alternate version satisfies the requirement, result is valid."""
+    mock_req = MagicMock()
+    mock_req.name = "test-dep"
+    mock_req.specifier.contains.side_effect = lambda v: v == "4.3"
+    mock_req.specifier.__len__ = MagicMock(return_value=1)
+    mock_req.specifier.__str__ = MagicMock(return_value=">=4.2")
+
+    requirements_dict: dict = {"valid": {}, "mismatched": {}, "not_found": {}, "parsing_failed": []}
+
+    mock_dist_old = MagicMock()
+    mock_dist_old.version = "4.0"
+    mock_dist_new = MagicMock()
+    mock_dist_new.version = "4.3"
+
+    with (
+        patch(f"{MODULE_PATH}.version", return_value="4.0"),
+        patch(f"{MODULE_PATH}.Distribution") as mock_dist_cls,
+    ):
+        mock_dist_cls.discover.return_value = [mock_dist_old, mock_dist_new]
+        is_valid = _check_requirement(mock_req, requirements_dict)
+
+    assert is_valid is True
+    assert "test-dep" in requirements_dict["valid"]
+    entry = requirements_dict["valid"]["test-dep"]
+    assert entry["installed"] == "4.0"
+    assert set(entry["detected_versions"]) == {"4.0", "4.3"}
+    assert entry["valid_versions"] == ["4.3"]
+    assert "test-dep" not in requirements_dict["mismatched"]
+
+
+def test__check_requirement_duplicate_dist_none_satisfies() -> None:
+    """
+    When multiple dists exist and none satisfies the requirement, result is placed in mismatched.
+
+    Note: the function returns True in this case (falls through to `return True`) — a known
+    false-positive: the requirement is not met but no failure is signalled.
+    """
+    mock_req = MagicMock()
+    mock_req.name = "test-dep"
+    mock_req.specifier.contains.return_value = False
+    mock_req.specifier.__len__ = MagicMock(return_value=1)
+    mock_req.specifier.__str__ = MagicMock(return_value=">=4.2")
+
+    requirements_dict: dict = {"valid": {}, "mismatched": {}, "not_found": {}, "parsing_failed": []}
+
+    mock_dist1 = MagicMock()
+    mock_dist1.version = "4.0"
+    mock_dist2 = MagicMock()
+    mock_dist2.version = "3.9"
+
+    with (
+        patch(f"{MODULE_PATH}.version", return_value="4.0"),
+        patch(f"{MODULE_PATH}.Distribution") as mock_dist_cls,
+    ):
+        mock_dist_cls.discover.return_value = [mock_dist1, mock_dist2]
+        is_valid = _check_requirement(mock_req, requirements_dict)
+
+    assert is_valid is True
+    assert "test-dep" in requirements_dict["mismatched"]
+    entry = requirements_dict["mismatched"]["test-dep"]
+    assert entry["installed"] == "4.0"
+    assert entry["valid_versions"] is None
+    assert set(entry["detected_versions"]) == {"4.0", "3.9"}
+    assert "test-dep" not in requirements_dict["valid"]
+
+
+# ---------------------------------------------------------------------------
+# _get_git_command_output direct tests
+# ---------------------------------------------------------------------------
+
+
+def test__get_git_command_output_success() -> None:
+    """Successful git command returns stripped decoded output."""
+    mock_process = MagicMock()
+    mock_process.communicate.return_value = (b"v5.3.0-1-gabcdef\n", b"")
+    mock_process.returncode = 0
+
+    with patch(f"{MODULE_PATH}.Popen") as mock_popen:
+        mock_popen.return_value.__enter__.return_value = mock_process
+        mock_popen.return_value.__exit__.return_value = False
+        result = _get_git_command_output(["git", "describe", "--tags"], "/some/path")
+
+    assert result == "v5.3.0-1-gabcdef"
+
+
+def test__get_git_command_output_nonzero_exit() -> None:
+    """Non-zero return code results in None."""
+    mock_process = MagicMock()
+    mock_process.communicate.return_value = (b"", b"")
+    mock_process.returncode = 128
+
+    with patch(f"{MODULE_PATH}.Popen") as mock_popen:
+        mock_popen.return_value.__enter__.return_value = mock_process
+        mock_popen.return_value.__exit__.return_value = False
+        result = _get_git_command_output(["git", "describe", "--tags"], "/some/path")
+
+    assert result is None
+
+
+def test__get_git_command_output_stderr() -> None:
+    """Stderr output results in None even when returncode is 0."""
+    mock_process = MagicMock()
+    mock_process.communicate.return_value = (b"v5.3.0\n", b"fatal: not a git repository\n")
+    mock_process.returncode = 0
+
+    with patch(f"{MODULE_PATH}.Popen") as mock_popen:
+        mock_popen.return_value.__enter__.return_value = mock_process
+        mock_popen.return_value.__exit__.return_value = False
+        result = _get_git_command_output(["git", "describe", "--tags"], "/some/path")
+
+    assert result is None
+
+
+def test__get_git_command_output_missing_executable(caplog: pytest.LogCaptureFixture) -> None:
+    """FileNotFoundError when git is absent results in None and logs a debug message."""
+    with (
+        patch(f"{MODULE_PATH}.Popen", side_effect=FileNotFoundError),
+        caplog.at_level(logging.DEBUG),
+    ):
+        result = _get_git_command_output(["git", "describe", "--tags"], "/some/path")
+
+    assert result is None
+    assert "Could not find 'git' executable" in caplog.text
+
+
+# ---------------------------------------------------------------------------
+# check_running_from_source
+# ---------------------------------------------------------------------------
+
+
+def test_check_running_from_source_not_from_source() -> None:
+    """Returns False immediately when not running from source."""
+    with patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=False):
+        result = check_running_from_source()
+
+    assert result is False
+
+
+@pytest.mark.parametrize(
+    ("schemas_recompiled", "templates_recompiled", "expected_return"),
+    [
+        pytest.param(True, True, True, id="both-recompiled"),
+        pytest.param(True, False, True, id="schemas-only"),
+        pytest.param(False, True, True, id="templates-only"),
+        pytest.param(False, False, False, id="neither-recompiled"),
+    ],
+)
+def test_check_running_from_source_rebuild_combinations(
+    schemas_recompiled: bool,
+    templates_recompiled: bool,
+    expected_return: bool,
+) -> None:
+    """check_running_from_source returns True only when schemas or templates were recompiled."""
+    mock_check_schemas = MagicMock(return_value=schemas_recompiled)
+    mock_rebuild_schemas = MagicMock()
+    mock_check_templates = MagicMock(return_value=templates_recompiled)
+    mock_recompile_templates = MagicMock()
+
+    mock_check_schemas_mod = MagicMock()
+    mock_check_schemas_mod.check_schemas = mock_check_schemas
+    mock_check_schemas_mod.rebuild_schemas = mock_rebuild_schemas
+
+    mock_compile_templates_mod = MagicMock()
+    mock_compile_templates_mod.check_templates = mock_check_templates
+    mock_compile_templates_mod.recompile_templates = mock_recompile_templates
+
+    with (
+        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=True),
+        patch(f"{MODULE_PATH}.DISPLAY"),
+        patch.dict(
+            sys.modules,
+            {
+                "schema_tools": MagicMock(),
+                "schema_tools.check_schemas": mock_check_schemas_mod,
+                "schema_tools.compile_templates": mock_compile_templates_mod,
+            },
+        ),
+    ):
+        result = check_running_from_source()
+
+    assert result is expected_return
+    if schemas_recompiled:
+        mock_rebuild_schemas.assert_called_once()
+    else:
+        mock_rebuild_schemas.assert_not_called()
+    if templates_recompiled:
+        mock_recompile_templates.assert_called_once()
+    else:
+        mock_recompile_templates.assert_not_called()
+
+
+# ---------------------------------------------------------------------------
+# _get_collection_version edge cases
+# ---------------------------------------------------------------------------
+
+
+def test__get_collection_version_missing_both_files(tmp_path: Path) -> None:
+    """When both galaxy.yml and MANIFEST.json are absent, FileNotFoundError is raised."""
+    with pytest.raises(FileNotFoundError):
+        _get_collection_version(str(tmp_path))
+
+
+def test__get_collection_version_malformed_manifest(tmp_path: Path) -> None:
+    """When MANIFEST.json contains invalid JSON, json.JSONDecodeError is raised."""
+    (tmp_path / "MANIFEST.json").write_text("this is not valid json", encoding="UTF-8")
+    with pytest.raises(json.JSONDecodeError):
+        _get_collection_version(str(tmp_path))
+
+
+def test__get_collection_version_versionless_metadata(tmp_path: Path) -> None:
+    """When galaxy.yml has no 'version' key, KeyError is raised."""
+    (tmp_path / "galaxy.yml").write_text("name: test-collection\n", encoding="UTF-8")
+    with pytest.raises(KeyError):
+        _get_collection_version(str(tmp_path))
+
+
+def test__get_collection_version_invalid_version_value(tmp_path: Path) -> None:
+    """When the version value is not a valid string, ValueError is raised."""
+    (tmp_path / "galaxy.yml").write_text("version: 5\n", encoding="UTF-8")
+    with pytest.raises(ValueError, match="Invalid collection version found in collection metadata"):
+        _get_collection_version(str(tmp_path))
+
+
+# ---------------------------------------------------------------------------
+# Isolated ActionModule.main() tests
+# ---------------------------------------------------------------------------
+
+
+def _mock_get_running_collection_version(collection_name: str, result: dict) -> None:
+    result["collection"] = {"name": collection_name, "version": "5.3.0", "path": "/collections/ansible_collections"}
+
+
+def test_action_module_main_missing_packaging(action_module: "Callable[..., ActionBase]") -> None:
+    """When HAS_PACKAGING is False, main() raises ImportError."""
+    module = action_module(ActionModule, task_args={"requirements": []})
+    with patch(f"{MODULE_PATH}.HAS_PACKAGING", new=False), pytest.raises(ImportError, match="packaging is required"):
+        module.main(task_vars=DEFAULT_TASK_VARS)
+
+
+def test_action_module_main_validator_failure(action_module: "Callable[..., ActionBase]") -> None:
+    """When a validator returns False, result['failed'] is True and the error message is set."""
+    module = action_module(ActionModule, task_args={"requirements": []})
+
+    with (
+        patch(f"{MODULE_PATH}._get_running_collection_version", side_effect=_mock_get_running_collection_version),
+        patch(f"{MODULE_PATH}.check_running_from_source", return_value=False),
+        patch(f"{MODULE_PATH}._validate_python_version", return_value=False),
+        patch(f"{MODULE_PATH}._validate_python_requirements", return_value=True),
+        patch(f"{MODULE_PATH}._validate_ansible_version", return_value=True),
+        patch(f"{MODULE_PATH}._validate_ansible_collections", return_value=True),
+        patch(f"{MODULE_PATH}.DISPLAY"),
+        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=False),
+    ):
+        module.main(task_vars=DEFAULT_TASK_VARS)
+
+    assert module.result["failed"] is True
+    assert module.result.get("msg") == "If it is a false positive, set 'avd_ignore_requirements=True'."
+
+
+def test_action_module_main_source_changes(action_module: "Callable[..., ActionBase]") -> None:
+    """When check_running_from_source returns True, result['changed'] is True."""
+    module = action_module(ActionModule, task_args={"requirements": []})
+
+    with (
+        patch(f"{MODULE_PATH}._get_running_collection_version", side_effect=_mock_get_running_collection_version),
+        patch(f"{MODULE_PATH}.check_running_from_source", return_value=True),
+        patch(f"{MODULE_PATH}._validate_python_version", return_value=True),
+        patch(f"{MODULE_PATH}._validate_python_requirements", return_value=True),
+        patch(f"{MODULE_PATH}._validate_ansible_version", return_value=True),
+        patch(f"{MODULE_PATH}._validate_ansible_collections", return_value=True),
+        patch(f"{MODULE_PATH}.DISPLAY"),
+        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=False),
+    ):
+        module.main(task_vars=DEFAULT_TASK_VARS)
+
+    assert module.result.get("changed") is True
+    assert module.result["failed"] is False
+
+
+def test_action_module_main_success(action_module: "Callable[..., ActionBase]") -> None:
+    """When all validators pass and avd_ignore_requirements is False, result['failed'] is False."""
+    module = action_module(ActionModule, task_args={"requirements": ["test-dep>=1.0"]})
+
+    with (
+        patch(f"{MODULE_PATH}._get_running_collection_version", side_effect=_mock_get_running_collection_version),
+        patch(f"{MODULE_PATH}.check_running_from_source", return_value=False),
+        patch(f"{MODULE_PATH}._validate_python_version", return_value=True),
+        patch(f"{MODULE_PATH}._validate_python_requirements", return_value=True),
+        patch(f"{MODULE_PATH}._validate_ansible_version", return_value=True),
+        patch(f"{MODULE_PATH}._validate_ansible_collections", return_value=True),
+        patch(f"{MODULE_PATH}.DISPLAY"),
+        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=False),
+    ):
+        module.main(task_vars=DEFAULT_TASK_VARS)
+
+    assert module.result["failed"] is False
+    assert "msg" not in module.result
