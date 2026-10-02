@@ -95,6 +95,13 @@ class AddressLockingMixin(Protocol):
             self.set_once_address_locking()
             return
 
+        if address_locking_settings.locked_address.ipv4_enforcement_disabled and not feature_support.ipv4_enforcement_disabled:
+            msg = (
+                f"IPv4 address locking is enabled under '{context}' with `ipv4_enforcement_disabled: true`, but the platform does not support "
+                "`locked-address ipv4 enforcement disabled`. Configure LeaseQuery or server-interface mode instead."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
         # None of the EOS-supported IPv4 operating modes are configured.
         msg = (
             f"IPv4 address locking is enabled under '{context}' but one of the following is required: "

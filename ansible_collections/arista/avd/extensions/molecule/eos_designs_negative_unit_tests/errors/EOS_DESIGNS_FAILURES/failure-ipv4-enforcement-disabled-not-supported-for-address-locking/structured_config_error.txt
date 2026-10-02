@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: IPv4 address locking is enabled under 'servers[name=server].adapters[0]' with `ipv4_enforcement_disabled: true`, but the platform does not support `locked-address ipv4 enforcement disabled`. Configure LeaseQuery or server-interface mode instead.

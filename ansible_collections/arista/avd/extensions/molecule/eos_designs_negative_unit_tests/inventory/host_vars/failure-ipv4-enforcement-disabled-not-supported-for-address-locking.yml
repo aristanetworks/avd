@@ -1,0 +1,42 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.10
+  nodes:
+    - name: failure-ipv4-enforcement-disabled-not-supported-for-address-locking
+      id: 101
+      bgp_as: 101
+      platform: no_ipv4_enforcement_disabled_platform
+
+custom_platform_settings:
+  - platforms:
+      - no_ipv4_enforcement_disabled_platform
+    feature_support:
+      address_locking:
+        ipv4_enforcement_disabled: false
+
+avd_design_future:
+  only_configure_address_locking_when_used: true
+
+address_locking_settings:
+  locked_address:
+    ipv4_enforcement_disabled: true
+
+servers:
+  - name: server
+    adapters:
+      - switches: [failure-ipv4-enforcement-disabled-not-supported-for-address-locking]
+        switch_ports: [Ethernet1]
+        mode: access
+        vlans: 10
+        address_locking:
+          ipv4: true
+
+expected_error_message: >-
+  IPv4 address locking is enabled under 'servers[name=server].adapters[0]' with `ipv4_enforcement_disabled: true`, but the platform does not support
+  `locked-address ipv4 enforcement disabled`. Configure LeaseQuery or server-interface mode instead.
