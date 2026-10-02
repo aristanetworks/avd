@@ -226,6 +226,12 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
+    - name: MLAG-IPv6-UNDERLAY-PEER
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   address_family_ipv6:
