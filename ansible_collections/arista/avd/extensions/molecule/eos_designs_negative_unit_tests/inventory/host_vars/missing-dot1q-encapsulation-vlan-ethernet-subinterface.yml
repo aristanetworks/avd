@@ -24,4 +24,4 @@ servers:
 
 expected_error_message: >-
   'encapsulation_vlan.client_dot1q' must be set for 'servers[name=OLD_SW-1/2].adapters[0].subinterfaces[number=10000]'
-  since the subinterface number is above 4094.
+  since the subinterface number is above 4094 for host 'missing-dot1q-encapsulation-vlan-ethernet-subinterface'.

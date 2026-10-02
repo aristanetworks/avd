@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -59,7 +59,7 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
             )
         ) is None:
             msg = "The WAN control-plane load-balance policy is empty. Make sure at least one path-group can be used in the policy"
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         output_policy.matches.append_new(
             application_profile=self.inputs.wan_virtual_topologies.control_plane_virtual_topology.application_profile,
@@ -180,7 +180,7 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
                     "an empty load-balancing policy. Make sure at least one path-group present on the device is allowed in the "
                     "`default_virtual_topology` path-groups."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             output_policy.matches.append_new(
                 application_profile="default",
@@ -215,7 +215,7 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
                 f"The policy `wan_virtual_topologies.policies[{policy.name}]` cannot match any traffic but is assigned to a VRF. "
                 "Make sure at least one path-group present on the device is used in the policy."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         self.structured_config.router_adaptive_virtual_topology.policies.append(output_policy)
 

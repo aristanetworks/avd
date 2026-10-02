@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.j2filters import natural_sort
 
@@ -250,7 +250,7 @@ class UtilsWanMixin(Protocol):
                 f"Invalid value '{path_group_preference}' for Path-Group preference - should be either 'preferred', "
                 f"'alternate' or an integer[1-65535] for {context_path}."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         return priority
 
@@ -275,7 +275,7 @@ class UtilsWanMixin(Protocol):
                 "is eligible to be included. Make sure that at least one path-group for the device is not configured with "
                 "`excluded_from_default_policy: true` under `wan_path_groups`."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
         return natural_sort(path_group_names)
 
     @cached_property
