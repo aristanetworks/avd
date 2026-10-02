@@ -8,6 +8,6 @@
   arista.eos.eos_config:
     backup: true
     backup_options:
-      filename: "{{ post_running_config_backup_filename }}"
-      dir_path: "{{ post_running_config_backup_dir }}"
+      filename: "{{ eos_config_deploy_eapi_internal_post_running_config_backup_filename }}"
+      dir_path: "{{ eos_config_deploy_eapi_internal_post_running_config_backup_dir }}"
   listen: "backup config"

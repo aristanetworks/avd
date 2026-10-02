@@ -105,7 +105,7 @@ You can also manually supply a list of devices:
 # Defaults to all hosts in the play.
 # This means the role must be imported/included in a play targeting only the
 # relevant EOS devices - *not* CloudVision.
-anta_devices: [ DC1-LEAF1A, DC1-LEAF1B ]
+anta_runner_devices: [DC1-LEAF1A, DC1-LEAF1B]
 ```
 
 !!! note
@@ -115,7 +115,7 @@ anta_devices: [ DC1-LEAF1A, DC1-LEAF1B ]
 Devices with `is_deployed: false` set as part of `eos_designs` inputs will automatically be ignored. See [Device Deployment Status](#device-deployment-status) for more details.
 
 !!! note
-    When devices are excluded from a run, whether by using `--limit` or `anta_devices`, tests that rely on the excluded devices will not be executed. For example, if a test requires information from a device that is not included, the test will be skipped. The same behavior applies to `is_deployed: false` devices.
+    When devices are excluded from a run, whether by using `--limit` or `anta_runner_devices`, tests that rely on the excluded devices will not be executed. For example, if a test requires information from a device that is not included, the test will be skipped. The same behavior applies to `is_deployed: false` devices.
 
 ### Connection Options
 
@@ -172,46 +172,48 @@ The directories are configured with the same variables as for the other AVD role
 
 ```yaml
 # Root directory.
-root_dir: "{{ inventory_dir }}"
+anta_runner_root_dir: "{{ inventory_dir }}"
 
 # Main output directory used in AVD.
-output_dir_name: "intended"
-output_dir: "{{ root_dir }}/{{ output_dir_name }}"
+anta_runner_output_dir_name: "intended"
+anta_runner_output_dir: "{{ anta_runner_root_dir }}/{{ anta_runner_output_dir_name }}"
 
 # Output for structured configuration files.
-structured_dir_name: "structured_configs"
-structured_dir: "{{ output_dir }}/{{ structured_dir_name }}"
+anta_runner_structured_dir_name: "structured_configs"
+anta_runner_structured_dir: "{{ anta_runner_output_dir }}/{{ anta_runner_structured_dir_name }}"
 
 # Structured configuration file format. Supported formats: yml, yaml, json.
-avd_structured_config_file_format: "yml"
+anta_runner_structured_config_file_format: "yml"
 ```
 
 The ANTA-related directories for the role are configured as follows:
 
 ```yaml
 # Main directory for the ANTA-related files.
-anta_dir_name: "anta"
-anta_dir: "{{ root_dir }}/{{ anta_dir_name }}"
+anta_runner_dir_name: "anta"
+anta_runner_dir: "{{ anta_runner_root_dir }}/{{ anta_runner_dir_name }}"
 
 # Directory for ANTA user-defined catalog files. These are the catalogs created by the user.
 # The role will search for valid ANTA catalogs in this directory
 # and merge them with each device's AVD-generated catalog.
-user_catalogs_dir_name: "user_catalogs"
-user_catalogs_dir: "{{ anta_dir }}/{{ user_catalogs_dir_name }}"
+anta_runner_user_catalogs_dir_name: "user_catalogs"
+anta_runner_user_catalogs_dir: "{{ anta_runner_dir }}/{{ anta_runner_user_catalogs_dir_name }}"
 
 # Directory for AVD-generated ANTA catalogs. Per-device catalogs will be stored here.
-avd_catalogs_dir_name: "avd_catalogs"
-avd_catalogs_dir: "{{ anta_dir }}/{{ avd_catalogs_dir_name }}"
+anta_runner_avd_catalogs_dir_name: "avd_catalogs"
+anta_runner_avd_catalogs_dir: "{{ anta_runner_dir }}/{{ anta_runner_avd_catalogs_dir_name }}"
 
 # Directory for ANTA reports.
-anta_reports_dir_name: "reports"
-anta_reports_dir: "{{ anta_dir }}/{{ anta_reports_dir_name }}"
+anta_runner_reports_dir_name: "reports"
+anta_runner_reports_dir: "{{ anta_runner_dir }}/{{ anta_runner_reports_dir_name }}"
 
 # Paths for the generated reports. Supports JSON, CSV, and Markdown.
-anta_report_json_path: "{{ anta_reports_dir }}/anta_report.json"
-anta_report_md_path: "{{ anta_reports_dir }}/anta_report.md"
-anta_report_csv_path: "{{ anta_reports_dir }}/anta_report.csv"
+anta_runner_report_json_path: "{{ anta_runner_reports_dir }}/anta_report.json"
+anta_runner_report_md_path: "{{ anta_runner_reports_dir }}/anta_report.md"
+anta_runner_report_csv_path: "{{ anta_runner_reports_dir }}/anta_report.csv"
 ```
+
+Legacy unprefixed aliases remain supported. The role-prefixed variable takes precedence when both names are set.
 
 ### Test Filtering
 
@@ -248,16 +250,16 @@ anta.tests.vxlan:
       import_role:
         name: arista.avd.anta_runner
       vars:
-        avd_catalogs_enabled: false  # <-- Disable AVD-generated catalogs to use only user-defined catalogs
+        anta_runner_avd_catalogs_enabled: false  # <-- Disable AVD-generated catalogs to use only user-defined catalogs
         anta_runner_tags: [ leaf ]   # <-- Only run tests tagged with 'leaf' on devices with 'leaf' tag
 ```
 
 !!! warning
-    Tests in the AVD-generated catalogs are tagged with the device's hostname only. This means using `anta_runner_tags` with tags other than any device's hostname will skip all AVD-generated tests. To run/skip tests from the AVD-generated catalogs, use the `avd_catalogs_filters` variable described below.
+    Tests in the AVD-generated catalogs are tagged with the device's hostname only. This means using `anta_runner_tags` with tags other than any device's hostname will skip all AVD-generated tests. To run/skip tests from the AVD-generated catalogs, use the `anta_runner_avd_catalogs_filters` variable described below.
 
 #### Test-Based Filtering
 
-`avd_catalogs_filters`: Filters are used to run or skip tests from the AVD-generated catalogs. These filters do **not** apply to user-defined catalogs, use `anta_runner_tags` for that. See the [AVD test index](#avd-generated-catalog-test-index) section for the available tests.
+`anta_runner_avd_catalogs_filters`: Filters are used to run or skip tests from the AVD-generated catalogs. These filters do **not** apply to user-defined catalogs, use `anta_runner_tags` for that. See the [AVD test index](#avd-generated-catalog-test-index) section for the available tests.
 
 ```yaml
 # In the playbook
@@ -270,7 +272,7 @@ anta.tests.vxlan:
       import_role:
         name: arista.avd.anta_runner
       vars:
-        avd_catalogs_filters:
+        anta_runner_avd_catalogs_filters:
           # Skip VerifyNTP for all devices targeted by the run
           - skip_tests: [ VerifyNTP ]
           # Skip VerifyReachability for all devices in the DC1 Ansible inventory group
@@ -292,7 +294,7 @@ These settings control the format and content of the generated reports.
 
 #### Report Filtering
 
-`anta_report_exclude_statuses`: A list of test result statuses to exclude from the generated reports. The available statuses are `error`, `failure`, `skipped`, `success`, and `unset`.
+`anta_runner_report_exclude_statuses`: A list of test result statuses to exclude from the generated reports. The available statuses are `error`, `failure`, `skipped`, `success`, and `unset`.
 
 ```yaml
 # In the playbook
@@ -306,23 +308,23 @@ These settings control the format and content of the generated reports.
         name: arista.avd.anta_runner
       vars:
         # Do not show success and skipped tests in the reports.
-        anta_report_exclude_statuses: [ success, skipped ]
+        anta_runner_report_exclude_statuses: [success, skipped]
 ```
 
 #### Report Sorting
 
-`anta_report_status_priority`: A list of test statuses that defines the primary grouping order of the test results. Tests with statuses listed here appear at the top in the specified order. Any status not listed is pushed to the bottom of the reports and grouped alphabetically.
+`anta_runner_report_status_priority`: A list of test statuses that defines the primary grouping order of the test results. Tests with statuses listed here appear at the top in the specified order. Any status not listed is pushed to the bottom of the reports and grouped alphabetically.
 
 - **Available values:** `error`, `failure`, `skipped`, `success`, `unset`
 - **Default:** `['error', 'failure', 'skipped', 'success', 'unset']`
 
-`anta_report_sort_fields`: A list of result attributes used to sort tests **within** each status group.
+`anta_runner_report_sort_fields`: A list of result attributes used to sort tests **within** each status group.
 
 - **Available values:** `categories`, `custom_field`, `description`, `device`, `test`
 - **Default:** `['device', 'categories', 'test', 'description', 'custom_field']`
 
 !!! note
-    `anta_report_status_priority` defines the primary grouping order. Within each status group, tests are sub-sorted using the attributes defined in `anta_report_sort_fields`.
+    `anta_runner_report_status_priority` defines the primary grouping order. Within each status group, tests are sub-sorted using the attributes defined in `anta_runner_report_sort_fields`.
 
 ```yaml
 # In the playbook
@@ -336,20 +338,20 @@ These settings control the format and content of the generated reports.
         name: arista.avd.anta_runner
       vars:
         # Prioritize success, then skipped tests. Unlisted statuses like 'error' falls to the bottom.
-        anta_report_status_priority: [ success, skipped ]
+        anta_runner_report_status_priority: [success, skipped]
 
         # Within each status group, sort by device, then test name.
-        anta_report_sort_fields: [ device, test ]
+        anta_runner_report_sort_fields: [device, test]
 ```
 
 #### Report Granularity
 
-`anta_report_expand_results`: Controls the granularity of the Markdown report. When enabled, test entries are expanded to show the individual status of every check performed.
+`anta_runner_report_expand_results`: Controls the granularity of the Markdown report. When enabled, test entries are expanded to show the individual status of every check performed.
 
 !!! warning
     Not all ANTA tests currently support expanded results. For tests that do not support this feature yet, the report will display the standard aggregated result regardless of this setting.
 
-`anta_report_custom_field`: Controls whether the `custom_field` column is generated in the Markdown report.
+`anta_runner_report_custom_field`: Controls whether the `custom_field` column is generated in the Markdown report.
 
 !!! info
     ANTA test definitions can include an arbitrary string in the `custom_field` input that will be added to the test result.
@@ -366,18 +368,18 @@ These settings control the format and content of the generated reports.
         name: arista.avd.anta_runner
       vars:
         # Expand results in the Markdown report
-        anta_report_expand_results: true
+        anta_runner_report_expand_results: true
         # Generate the custom_field column in the Markdown report
-        anta_report_custom_field: true
+        anta_runner_report_custom_field: true
 ```
 
 ### Extra Fabric Validation
 
-By default, the AVD-generated catalog includes tests that validate individual device configurations and their direct peers. When `avd_catalogs_extra_fabric_validation` is enabled, additional fabric-wide validation tests are generated to verify end-to-end connectivity and routing across the entire fabric.
+By default, the AVD-generated catalog includes tests that validate individual device configurations and their direct peers. When `anta_runner_avd_catalogs_extra_fabric_validation` is enabled, additional fabric-wide validation tests are generated to verify end-to-end connectivity and routing across the entire fabric.
 
 ```yaml
 # Enable extra fabric-wide validation tests.
-avd_catalogs_extra_fabric_validation: true
+anta_runner_avd_catalogs_extra_fabric_validation: true
 ```
 
 !!! warning
@@ -385,7 +387,7 @@ avd_catalogs_extra_fabric_validation: true
 
 #### Tests Enabled by Extra Fabric Validation
 
-The following tests are only generated when `avd_catalogs_extra_fabric_validation: true`:
+The following tests are only generated when `anta_runner_avd_catalogs_extra_fabric_validation: true`:
 
 | Test | Description |
 | :--- | :--- |
@@ -405,11 +407,11 @@ These settings control the execution behavior of the role.
 
 ```yaml
 # Enable AVD catalogs generation. Can be disabled if only user-defined catalogs are used.
-avd_catalogs_enabled: true
+anta_runner_avd_catalogs_enabled: true
 
 # Enable user-defined catalogs. When enabled, the role will search for valid ANTA catalogs
-# in `user_catalogs_dir` and merge them with each device's AVD-generated catalog.
-user_catalogs_enabled: false
+# in `anta_runner_user_catalogs_dir` and merge them with each device's AVD-generated catalog.
+anta_runner_user_catalogs_enabled: false
 
 # Global timeout (in seconds) for each ANTA test. Depending on the scale this can be adjusted.
 anta_runner_timeout: 30
@@ -508,7 +510,7 @@ l3leaf:
 ```
 
 !!! note
-    This setting only applies on tests generated when `avd_catalogs_extra_fabric_validation` is enabled.
+    This setting only applies on tests generated when `anta_runner_avd_catalogs_extra_fabric_validation` is enabled.
 
 ### Interface Validation
 
@@ -608,10 +610,10 @@ The table below shows which parts of the AVD structured configuration are used t
 | [**VerifyOSPFMaxLSA**](https://anta.arista.com/stable/api/tests/routing.ospf/#anta.tests.routing.ospf.VerifyOSPFMaxLSA){:target="_blank"} | Verifies that all OSPF instances did not cross the maximum LSA threshold. | `router_ospf` |
 | [**VerifyOSPFNeighborState**](https://anta.arista.com/stable/api/tests/routing.ospf/#anta.tests.routing.ospf.VerifyOSPFNeighborState){:target="_blank"} | Verifies that all OSPF neighbors are in the *full* state; the *2Ways* state is **not** accepted. Use `VerifyOSPFSpecificNeighbors` in a user-defined catalog instead for any device with a neighbor that is expected to be in the *2Ways* state. | `router_ospf` |
 | [**VerifyPortChannels**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyPortChannels){:target="_blank"} | Verifies the status of Port-Channel interfaces and their members. | `port_channel_interfaces` |
-| [**VerifyReachability**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyReachability){:target="_blank"} | <ul><li>Verifies point-to-point reachability between Ethernet interfaces.</li><li>Verifies VTEP fabric-wide underlay reachability. **Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies inband management reachability within default VRF only. **Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies DPS-to-DPS reachability between WAN routers. **Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies reachability to BGP neighbors.</li></ul> | <ul><li>`ethernet_interfaces`</li><li>`loopback_interfaces`</li><li>`vlan_interfaces`</li><li>`dps_interfaces`</li><li>`router_bgp`</li></ul> |
+| [**VerifyReachability**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyReachability){:target="_blank"} | <ul><li>Verifies point-to-point reachability between Ethernet interfaces.</li><li>Verifies VTEP fabric-wide underlay reachability. **Requires:** `anta_runner_avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies inband management reachability within default VRF only. **Requires:** `anta_runner_avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies DPS-to-DPS reachability between WAN routers. **Requires:** `anta_runner_avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies reachability to BGP neighbors.</li></ul> | <ul><li>`ethernet_interfaces`</li><li>`loopback_interfaces`</li><li>`vlan_interfaces`</li><li>`dps_interfaces`</li><li>`router_bgp`</li></ul> |
 | [**VerifyReloadCause**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyReloadCause){:target="_blank"} | Verifies that the last reload cause was expected. | *Allowed causes:*<ul><li>**USER** - Reload requested by the user.</li><li>**USER_HITLESS** - Hitless reload requested by the user.</li><li>**FPGA** - Reload requested after FPGA upgrade</li><li>**ZTP** - System reloaded due to Zero Touch Provisioning</li></ul> |
 | [**VerifyRoutingProtocolModel**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyRoutingProtocolModel){:target="_blank"} | Verifies the configured routing protocol model. | `service_routing_protocols_model` |
-| [**VerifyIPv4RoutePresencePerVRF**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyIPv4RoutePresencePerVRF){:target="_blank"} | Verifies that Loopback0 and VTEP IPs from all fabric devices (excluding WAN routers) are present in the routing table of VTEP devices to ensure proper IPv4 underlay routing. IPv6 underlays are *not* tested. | Fabric-wide collection of:<ul><li>`loopback_interfaces[name=Loopback0].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.source_interface` → `loopback_interfaces[name=<source_interface>].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.mlag_source_interface` → `loopback_interfaces[name=<mlag_source_interface>].ip_address`</li></ul><br>**Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable) |
+| [**VerifyIPv4RoutePresencePerVRF**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyIPv4RoutePresencePerVRF){:target="_blank"} | Verifies that Loopback0 and VTEP IPs from all fabric devices (excluding WAN routers) are present in the routing table of VTEP devices to ensure proper IPv4 underlay routing. IPv6 underlays are *not* tested. | Fabric-wide collection of:<ul><li>`loopback_interfaces[name=Loopback0].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.source_interface` → `loopback_interfaces[name=<source_interface>].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.mlag_source_interface` → `loopback_interfaces[name=<mlag_source_interface>].ip_address`</li></ul><br>**Requires:** `anta_runner_avd_catalogs_extra_fabric_validation: true` (role variable) |
 | [**VerifyRunningConfigDiffs**](https://anta.arista.com/stable/api/tests/configuration/#anta.tests.configuration.VerifyRunningConfigDiffs){:target="_blank"} | Verifies there are no differences between the running and startup configs. | *None* |
 | [**VerifySpecificIPSecConn**](https://anta.arista.com/stable/api/tests/security/#anta.tests.security.VerifySpecificIPSecConn){:target="_blank"} | Verifies the status of specific IPSec tunnels. | `router_path_selection` |
 | [**VerifySpecificPath**](https://anta.arista.com/stable/api/tests/path_selection/#anta.tests.path_selection.VerifySpecificPath){:target="_blank"} | Verifies the DPS path and telemetry state of an IPv4 peer. | `router_path_selection` |

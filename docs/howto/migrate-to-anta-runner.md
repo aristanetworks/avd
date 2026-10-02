@@ -72,12 +72,12 @@ In the legacy `eos_validate_state` role, output files were split between the `in
 To customize directory and report paths in `anta_runner`:
 
 ```yaml
-avd_catalogs_dir: "{{ inventory_dir }}/anta/avd_catalogs"
-user_catalogs_dir: "{{ inventory_dir }}/anta/user_catalogs"
-anta_reports_dir: "{{ inventory_dir }}/anta/reports"
-anta_report_md_path: "{{ anta_reports_dir }}/anta_report.md"
-anta_report_csv_path: "{{ anta_reports_dir }}/anta_report.csv"
-anta_report_json_path: "{{ anta_reports_dir }}/anta_report.json"
+anta_runner_avd_catalogs_dir: "{{ inventory_dir }}/anta/avd_catalogs"
+anta_runner_user_catalogs_dir: "{{ inventory_dir }}/anta/user_catalogs"
+anta_runner_reports_dir: "{{ inventory_dir }}/anta/reports"
+anta_runner_report_md_path: "{{ anta_runner_reports_dir }}/anta_report.md"
+anta_runner_report_csv_path: "{{ anta_runner_reports_dir }}/anta_report.csv"
+anta_runner_report_json_path: "{{ anta_runner_reports_dir }}/anta_report.json"
 ```
 
 ## Custom ANTA Catalogs
@@ -86,7 +86,7 @@ In `eos_validate_state`, custom ANTA catalogs were automatically loaded from the
 In `anta_runner`, these catalogs are now referred to as *user-defined catalogs*. To load user-defined catalogs, you must explicitly enable the feature:
 
 ```yaml
-user_catalogs_enabled: true
+anta_runner_user_catalogs_enabled: true
 ```
 
 Additionally, the device targeting mechanism has changed:
@@ -139,18 +139,18 @@ In `anta_runner`, test catalogs are **always** saved, but they only include AVD-
 !!! note
     This is acceptable because user-defined catalogs now use tag-based targeting instead of filename-based targeting, so the merged catalog is no longer needed for debugging or inspection.
 
-To disable AVD-generated catalogs entirely (for example, when running only user-defined catalogs), use `avd_catalogs_enabled`:
+To disable AVD-generated catalogs entirely (for example, when running only user-defined catalogs), use `anta_runner_avd_catalogs_enabled`:
 
 ```yaml
 # Disable AVD-generated catalogs
-avd_catalogs_enabled: false
+anta_runner_avd_catalogs_enabled: false
 # Enable user-defined catalogs only
-user_catalogs_enabled: true
+anta_runner_user_catalogs_enabled: true
 ```
 
 ## Test Filtering
 
-The `skip_tests` variable has been replaced with `avd_catalogs_filters`. The key difference is that `anta_runner` no longer uses AVD test categories (e.g., `AvdTestHardware`, `AvdTestNTP`). Instead, you specify ANTA test class names directly (e.g., `VerifyNTP`, `VerifyEnvironmentPower`).
+The `skip_tests` variable has been replaced with `anta_runner_avd_catalogs_filters`. The key difference is that `anta_runner` no longer uses AVD test categories (e.g., `AvdTestHardware`, `AvdTestNTP`). Instead, you specify ANTA test class names directly (e.g., `VerifyNTP`, `VerifyEnvironmentPower`).
 
 <div class="grid" markdown>
 
@@ -165,7 +165,7 @@ The `skip_tests` variable has been replaced with `avd_catalogs_filters`. The key
 === "anta_runner"
 
     ```yaml
-    avd_catalogs_filters:
+    anta_runner_avd_catalogs_filters:
       - skip_tests:
           - VerifyEnvironmentPower
           - VerifyEnvironmentCooling
@@ -177,7 +177,7 @@ The `skip_tests` variable has been replaced with `avd_catalogs_filters`. The key
 </div>
 
 !!! note
-    The `anta_runner` role generates additional tests compared to `eos_validate_state`. If you want to skip these additional tests, you can use the `avd_catalogs_filters` variable shown above.
+    The `anta_runner` role generates additional tests compared to `eos_validate_state`. If you want to skip these additional tests, you can use the `anta_runner_avd_catalogs_filters` variable shown above.
 
 For a complete list of available ANTA test names, see the [AVD-generated Catalog Test Index](../../ansible_collections/arista/avd/roles/anta_runner/README.md#avd-generated-catalog-test-index). For additional filtering options, see [Test-Based Filtering](../../ansible_collections/arista/avd/roles/anta_runner/README.md#test-based-filtering).
 
@@ -232,7 +232,7 @@ The `anta_runner` role does **not** support Ansible check mode (`--check`). To g
 
 In `eos_validate_state`, the `only_failed_tests` variable controlled whether reports showed only failed tests.
 
-In `anta_runner`, use `anta_report_exclude_statuses` to exclude specific test statuses from reports:
+In `anta_runner`, use `anta_runner_report_exclude_statuses` to exclude specific test statuses from reports:
 
 <div class="grid" markdown>
 
@@ -245,7 +245,7 @@ In `anta_runner`, use `anta_report_exclude_statuses` to exclude specific test st
 === "anta_runner"
 
     ```yaml
-    anta_report_exclude_statuses: [ success, skipped ]
+    anta_runner_report_exclude_statuses: [success, skipped]
     ```
 
 </div>
@@ -269,8 +269,8 @@ In `anta_runner`, set the report path to `null` to disable generation of a speci
 
     ```yaml
     # Set to null to disable
-    anta_report_csv_path: null
-    anta_report_md_path: null
+    anta_runner_report_csv_path: null
+    anta_runner_report_md_path: null
     ```
 
 </div>
@@ -279,15 +279,15 @@ In `anta_runner`, set the report path to `null` to disable generation of a speci
 
 The `anta_runner` role has different default report formatting compared to `eos_validate_state`:
 
-1. **Condensed results**: By default, test results are grouped in the report to avoid large report files on high-scale fabrics. To show individual test entries like `eos_validate_state`, use `anta_report_expand_results`.
+1. **Condensed results**: By default, test results are grouped in the report to avoid large report files on high-scale fabrics. To show individual test entries like `eos_validate_state`, use `anta_runner_report_expand_results`.
 
-2. **Custom field hidden**: By default, the `custom_field` column is hidden. To show it like `eos_validate_state`, use `anta_report_custom_field`.
+2. **Custom field hidden**: By default, the `custom_field` column is hidden. To show it like `eos_validate_state`, use `anta_runner_report_custom_field`.
 
 ```yaml
 # Expand results to show individual test inputs
-anta_report_expand_results: true
+anta_runner_report_expand_results: true
 # Include the custom_field column in Markdown reports
-anta_report_custom_field: true
+anta_runner_report_custom_field: true
 ```
 
 ## Fan and Power Supply States
@@ -386,7 +386,7 @@ In `anta_runner`, these tests are **disabled by default**.
 To enable fabric-wide tests:
 
 ```yaml
-avd_catalogs_extra_fabric_validation: true
+anta_runner_avd_catalogs_extra_fabric_validation: true
 ```
 
 For more details, see [Extra Fabric Validation](../../ansible_collections/arista/avd/roles/anta_runner/README.md#extra-fabric-validation).
@@ -455,10 +455,10 @@ The following example shows a complete migration from `eos_validate_state` to `a
           import_role:
             name: arista.avd.anta_runner
           vars:
-            avd_catalogs_extra_fabric_validation: true # (1)!
-            anta_report_exclude_statuses: [ success, skipped ] # (2)!
-            anta_report_expand_results: true # (3)!
-            anta_report_custom_field: true # (4)!
+            anta_runner_avd_catalogs_extra_fabric_validation: true # (1)!
+            anta_runner_report_exclude_statuses: [success, skipped] # (2)!
+            anta_runner_report_expand_results: true # (3)!
+            anta_runner_report_custom_field: true # (4)!
     ```
 
     1. Enable fabric-wide validation tests (default in eos_validate_state)

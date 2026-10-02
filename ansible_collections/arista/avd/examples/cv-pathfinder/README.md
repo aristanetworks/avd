@@ -182,8 +182,8 @@ In this example, we consider that no DNS entry is available to reach the devices
 
 !!! Info  "CVaaS configuration"
     - The example is targeting cv-staging. Please adjust to the correct CVaaS region as described in the `cv_deploy` role [documentation](../../roles/cv_deploy/README.md#overview)
-    - Additionally follow the [guide](../../roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) to create the `cv_token`
-    - the `cv_token` should then be loaded as an ENV variable `CV_TOKEN` using `export CV_TOKEN=<token>` for the `deploy.yml` playbook to work toward CVaaS.
+    - Additionally follow the [guide](../../roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) to create the `cv_deploy_token`.
+    - The token should then be loaded as an environment variable `CV_TOKEN` using `export CV_TOKEN=<token>` for the `deploy.yml` playbook to work toward CVaaS.
 
 ```yaml title="inventory.yml"
 --8<--
@@ -558,7 +558,7 @@ To build and deploy the configurations to CVaaS, run first the `build.yml` playb
 
 !!! Note
     In this example, the `deploy.yml` playbook is configured to auto approve and
-    execute the Change Control created by the Workspace using `cv_run_change_control: true`.
+    execute the Change Control created by the Workspace using `cv_deploy_run_change_control: true`.
 
 === "deploy.yml"
 

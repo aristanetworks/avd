@@ -1,0 +1,24 @@
+---
+eos_snapshot_internal_legacy_var_aliases:
+  commands_list: eos_snapshot_commands
+  output_format: eos_snapshot_output_formats
+  root_dir: eos_snapshot_root_dir
+  snapshots_backup_dir: eos_snapshot_backup_dir
+  snapshots_backup_dir_name: eos_snapshot_backup_dir_name
+
+eos_snapshot_internal_root_dir: "{{ eos_snapshot_root_dir | default(root_dir | default(inventory_dir)) }}"
+eos_snapshot_internal_backup_dir_name: "{{ eos_snapshot_backup_dir_name | default(snapshots_backup_dir_name | default('snapshots')) }}"
+eos_snapshot_internal_backup_dir: >-
+  {{ eos_snapshot_backup_dir | default(snapshots_backup_dir | default(eos_snapshot_internal_root_dir ~ '/' ~ eos_snapshot_internal_backup_dir_name)) }}
+eos_snapshot_internal_output_formats: "{{ eos_snapshot_output_formats | default(output_format | default(['text', 'markdown'])) }}"
+eos_snapshot_internal_commands: >-
+  {{
+    eos_snapshot_commands
+    | default(commands_list | default([
+        'show lldp neighbors',
+        'show ip interface brief',
+        'show interfaces description',
+        'show version',
+        'show running-config'
+      ]))
+  }}

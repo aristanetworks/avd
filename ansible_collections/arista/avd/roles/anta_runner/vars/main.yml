@@ -1,0 +1,70 @@
+---
+anta_runner_internal_legacy_var_aliases:
+  anta_devices: anta_runner_devices
+  anta_dir: anta_runner_dir
+  anta_dir_name: anta_runner_dir_name
+  anta_report_csv_path: anta_runner_report_csv_path
+  anta_report_custom_field: anta_runner_report_custom_field
+  anta_report_exclude_statuses: anta_runner_report_exclude_statuses
+  anta_report_expand_results: anta_runner_report_expand_results
+  anta_report_json_path: anta_runner_report_json_path
+  anta_report_md_path: anta_runner_report_md_path
+  anta_report_sort_fields: anta_runner_report_sort_fields
+  anta_report_status_priority: anta_runner_report_status_priority
+  anta_reports_dir: anta_runner_reports_dir
+  anta_reports_dir_name: anta_runner_reports_dir_name
+  avd_catalogs_dir: anta_runner_avd_catalogs_dir
+  avd_catalogs_dir_name: anta_runner_avd_catalogs_dir_name
+  avd_catalogs_enabled: anta_runner_avd_catalogs_enabled
+  avd_catalogs_extra_fabric_validation: anta_runner_avd_catalogs_extra_fabric_validation
+  avd_catalogs_filters: anta_runner_avd_catalogs_filters
+  avd_structured_config_file_format: anta_runner_structured_config_file_format
+  output_dir: anta_runner_output_dir
+  output_dir_name: anta_runner_output_dir_name
+  root_dir: anta_runner_root_dir
+  structured_dir: anta_runner_structured_dir
+  structured_dir_name: anta_runner_structured_dir_name
+  user_catalogs_dir: anta_runner_user_catalogs_dir
+  user_catalogs_dir_name: anta_runner_user_catalogs_dir_name
+  user_catalogs_enabled: anta_runner_user_catalogs_enabled
+
+anta_runner_internal_devices: "{{ anta_runner_devices | default(anta_devices | default(ansible_play_hosts)) }}"
+anta_runner_internal_avd_catalogs_enabled: "{{ anta_runner_avd_catalogs_enabled | default(avd_catalogs_enabled | default(true)) }}"
+anta_runner_internal_user_catalogs_enabled: "{{ anta_runner_user_catalogs_enabled | default(user_catalogs_enabled | default(false)) }}"
+anta_runner_internal_avd_catalogs_extra_fabric_validation: >-
+  {{ anta_runner_avd_catalogs_extra_fabric_validation | default(avd_catalogs_extra_fabric_validation | default(false)) }}
+anta_runner_internal_avd_catalogs_filters: "{{ anta_runner_avd_catalogs_filters | default(avd_catalogs_filters | default([])) }}"
+anta_runner_internal_structured_config_file_format: >-
+  {{ anta_runner_structured_config_file_format | default(avd_structured_config_file_format | default('yml')) }}
+anta_runner_internal_report_status_priority: >-
+  {{ anta_runner_report_status_priority | default(anta_report_status_priority | default(['error', 'failure', 'skipped', 'success', 'unset'])) }}
+anta_runner_internal_report_sort_fields: >-
+  {{ anta_runner_report_sort_fields | default(anta_report_sort_fields | default(['device', 'categories', 'test', 'description', 'custom_field'])) }}
+anta_runner_internal_report_expand_results: "{{ anta_runner_report_expand_results | default(anta_report_expand_results | default(false)) }}"
+anta_runner_internal_report_custom_field: "{{ anta_runner_report_custom_field | default(anta_report_custom_field | default(false)) }}"
+anta_runner_internal_report_exclude_statuses: "{{ anta_runner_report_exclude_statuses | default(anta_report_exclude_statuses | default([])) }}"
+
+anta_runner_internal_root_dir: "{{ anta_runner_root_dir | default(root_dir | default(inventory_dir)) }}"
+anta_runner_internal_output_dir_name: "{{ anta_runner_output_dir_name | default(output_dir_name | default('intended')) }}"
+anta_runner_internal_output_dir: >-
+  {{ anta_runner_output_dir | default(output_dir | default(anta_runner_internal_root_dir ~ '/' ~ anta_runner_internal_output_dir_name)) }}
+anta_runner_internal_structured_dir_name: "{{ anta_runner_structured_dir_name | default(structured_dir_name | default('structured_configs')) }}"
+anta_runner_internal_structured_dir: >-
+  {{ anta_runner_structured_dir | default(structured_dir | default(anta_runner_internal_output_dir ~ '/' ~ anta_runner_internal_structured_dir_name)) }}
+anta_runner_internal_dir_name: "{{ anta_runner_dir_name | default(anta_dir_name | default('anta')) }}"
+anta_runner_internal_dir: "{{ anta_runner_dir | default(anta_dir | default(anta_runner_internal_root_dir ~ '/' ~ anta_runner_internal_dir_name)) }}"
+anta_runner_internal_user_catalogs_dir_name: "{{ anta_runner_user_catalogs_dir_name | default(user_catalogs_dir_name | default('user_catalogs')) }}"
+anta_runner_internal_user_catalogs_dir: >-
+  {{ anta_runner_user_catalogs_dir | default(user_catalogs_dir | default(anta_runner_internal_dir ~ '/' ~ anta_runner_internal_user_catalogs_dir_name)) }}
+anta_runner_internal_avd_catalogs_dir_name: "{{ anta_runner_avd_catalogs_dir_name | default(avd_catalogs_dir_name | default('avd_catalogs')) }}"
+anta_runner_internal_avd_catalogs_dir: >-
+  {{ anta_runner_avd_catalogs_dir | default(avd_catalogs_dir | default(anta_runner_internal_dir ~ '/' ~ anta_runner_internal_avd_catalogs_dir_name)) }}
+anta_runner_internal_reports_dir_name: "{{ anta_runner_reports_dir_name | default(anta_reports_dir_name | default('reports')) }}"
+anta_runner_internal_reports_dir: >-
+  {{ anta_runner_reports_dir | default(anta_reports_dir | default(anta_runner_internal_dir ~ '/' ~ anta_runner_internal_reports_dir_name)) }}
+anta_runner_internal_report_json_path: >-
+  {{ anta_runner_report_json_path | default(anta_report_json_path | default(anta_runner_internal_reports_dir ~ '/anta_report.json')) }}
+anta_runner_internal_report_md_path: >-
+  {{ anta_runner_report_md_path | default(anta_report_md_path | default(anta_runner_internal_reports_dir ~ '/anta_report.md')) }}
+anta_runner_internal_report_csv_path: >-
+  {{ anta_runner_report_csv_path | default(anta_report_csv_path | default(anta_runner_internal_reports_dir ~ '/anta_report.csv')) }}

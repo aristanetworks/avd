@@ -8,9 +8,9 @@
     "devices": {
 {% for node in ansible_play_hosts | arista.avd.natural_sort %}
         "{{ node }}": {
-{%     for command in commands_list %}
+{%     for command in eos_snapshot_internal_commands %}
             "{{ command | replace(" ","_") }}":
-                {{ hostvars[node].cli_output_json.results[loop.index0].stdout[0] | to_nice_json | indent(12) }}
+                {{ hostvars[node].eos_snapshot_cli_output_json.results[loop.index0].stdout[0] | to_nice_json | indent(12) }}
 {%-        if not loop.last %}
 ,
 {%         else %}

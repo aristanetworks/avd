@@ -49,22 +49,22 @@ The following default variables are defined, and can be modified as desired:
 ```yaml
 ---
 
-root_dir: '{{ inventory_dir }}'
-snapshots_backup_dir_name: 'commands'
-snapshots_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
+eos_snapshot_root_dir: "{{ inventory_dir }}"
+eos_snapshot_backup_dir_name: "commands"
+eos_snapshot_backup_dir: "{{ eos_snapshot_root_dir }}/{{ eos_snapshot_backup_dir_name }}"
 
 # list of desired formats. Supported values are markdown, json and text.
 # text: one file per device and show command
 # markdown: one report per device
 # json: one report per fabric
 # yaml: one report per fabric
-output_format:
- - text
- - markdown
+eos_snapshot_output_formats:
+  - text
+  - markdown
  # - json
  # - yaml
 
-commands_list:
+eos_snapshot_commands:
   - show lldp neighbors
   - show ip interface brief
   - show interfaces description
@@ -131,13 +131,13 @@ ansible_become_method: enable
 ```
 
 ```yaml
-output_format:
- - text
- - markdown
+eos_snapshot_output_formats:
+  - text
+  - markdown
  # - json
  # - yaml
 
-commands_list:
+eos_snapshot_commands:
   - show lldp neighbors
   - show ip interface brief
   - show interfaces description

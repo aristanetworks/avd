@@ -2,16 +2,25 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
+- name: Validate legacy role variables
+  arista.avd.legacy_role_vars:
+    role_name: eos_cli_config_gen
+    aliases: "{{ eos_cli_config_gen_internal_legacy_var_aliases }}"
+    mode: "{{ avd_legacy_role_vars_mode | default('warning') }}"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+
 - name: Verify Requirements
   delegate_to: localhost
-  when: avd_requirements is not defined and avd_verify_requirements | default(true)
+  when: eos_cli_config_gen_requirements is not defined and avd_verify_requirements | default(true)
   arista.avd.verify_requirements:
     requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
     avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
   vars:
     requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
   run_once: true
-  register: avd_requirements
+  register: eos_cli_config_gen_requirements
 
 - name: Run eos_cli_config_gen
   block:
@@ -20,11 +29,11 @@
         tmp_dir: "{{ eos_cli_config_gen_tmp_dir }}"
         batch_size: "{{ eos_cli_config_gen_validate_inputs_batch_size | arista.avd.default(10) }}"
         schema_name: eos_config
-        input_dir: "{{ structured_dir }}"
-        input_suffix: "{{ avd_structured_config_file_format }}"
-        read_from_input_dir: "{{ read_structured_config_from_file | arista.avd.default(true) }}"
+        input_dir: "{{ eos_cli_config_gen_internal_structured_dir }}"
+        input_suffix: "{{ eos_cli_config_gen_internal_structured_config_file_format }}"
+        read_from_input_dir: "{{ eos_cli_config_gen_internal_read_structured_config_from_file }}"
         fail_on_validation_errors: false
-        vault_id: "{{ avd_vault_id }}"
+        vault_id: "{{ eos_cli_config_gen_internal_vault_id }}"
       delegate_to: localhost
       check_mode: false
       run_once: true
@@ -35,8 +44,8 @@
         (eos_cli_config_gen_documentation.enable | arista.avd.default(true))
       arista.avd.eos_cli_config_gen:
         tmp_dir: "{{ eos_cli_config_gen_tmp_dir }}"
-        config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
-        documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
+        config_filename: "{{ eos_cli_config_gen_internal_config_dir }}/{{ inventory_hostname }}.cfg"
+        documentation_filename: "{{ eos_cli_config_gen_internal_devices_dir }}/{{ inventory_hostname }}.md"
         generate_device_config: "{{ eos_cli_config_gen_configuration.enable | arista.avd.default(true) }}"
         generate_device_doc: "{{ eos_cli_config_gen_documentation.enable | arista.avd.default(true) }}"
         configuration_hide_passwords: "{{ eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(omit) }}"

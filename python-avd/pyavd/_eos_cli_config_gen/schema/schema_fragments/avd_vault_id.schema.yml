@@ -7,7 +7,7 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_vault_id:
+  eos_cli_config_gen_vault_id:
     documentation_options:
       table: role-settings
     type: str
@@ -16,5 +16,10 @@ keys:
       When Ansible Vault is not configured, this parameter has no effect and files are written as plain JSON.
       When Ansible Vault is configured, AVD encrypts files containing templated and validated data
       to prevent sensitive information from being exposed in the temporary directories.
-        * When `avd_vault_id` is not specified, AVD uses the *first* Vault ID in the list for encryption.
-        * When `avd_vault_id` is specified, AVD uses the specified Vault ID for encryption.
+        * When `eos_cli_config_gen_vault_id` is not specified, AVD uses the *first* Vault ID in the list for encryption.
+        * When `eos_cli_config_gen_vault_id` is specified, AVD uses the specified Vault ID for encryption.
+  avd_vault_id:
+    documentation_options:
+      table: legacy-role-settings
+    type: str
+    description: Legacy alias for `eos_cli_config_gen_vault_id`.

@@ -314,9 +314,9 @@ With most jobs, we need a way to authenticate to our CV instance or EOS nodes. A
         import_role:
           name: cv_deploy
         vars:
-          cv_server: <CV or CVaaS URL>
-          cv_token: "{{ lab_token }}"
-          cv_run_change_control: true
+          cv_deploy_server: <CV or CVaaS URL>
+          cv_deploy_token: "{{ lab_token }}"
+          cv_deploy_run_change_control: true
     ```
 
     !!! note
@@ -341,7 +341,7 @@ Below is an example of the playbook we are leveraging to build and deploy our co
   collections:
     - arista.avd
   vars:
-    fabric_dir_name: "{{ fabric_name }}"
+    eos_designs_fabric_dir_name: "{{ fabric_name }}"
   tasks:
 
     - name: Generate intended variables
@@ -356,9 +356,9 @@ Below is an example of the playbook we are leveraging to build and deploy our co
       import_role:
         name: cv_deploy
       vars:
-        cv_server: <CV or CVaaS URL>
-        cv_token: "{{ lab_token }}"
-        cv_run_change_control: true
+        cv_deploy_server: <CV or CVaaS URL>
+        cv_deploy_token: "{{ lab_token }}"
+        cv_deploy_run_change_control: true
 
 ```
 

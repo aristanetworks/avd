@@ -2,32 +2,41 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
+- name: Validate legacy role variables
+  arista.avd.legacy_role_vars:
+    role_name: cv_deploy
+    aliases: "{{ cv_deploy_internal_legacy_var_aliases }}"
+    mode: "{{ avd_legacy_role_vars_mode | default('warning') }}"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+
 - name: Verify Requirements
   delegate_to: localhost
-  when: avd_requirements is not defined and avd_verify_requirements | default(true)
+  when: cv_deploy_requirements is not defined and avd_verify_requirements | default(true)
   arista.avd.verify_requirements:
     requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
     avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
   vars:
     requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
   run_once: true
-  register: avd_requirements
+  register: cv_deploy_requirements
 
 - name: Run cv_deploy
   block:
     - name: Validate cv_deploy inputs
       arista.avd.validate_inputs:
         tmp_dir: "{{ cv_deploy_tmp_dir }}"
-        device_list: "{{ cv_devices }}"
+        device_list: "{{ cv_deploy_internal_devices }}"
         batch_size: "{{ cv_deploy_validate_inputs_batch_size | arista.avd.default(10) }}"
         schema_name: cv_deploy
-        input_dir: "{{ structured_dir }}"
-        input_suffix: "{{ avd_structured_config_file_format }}"
-        read_from_input_dir: "{{ read_structured_config_from_file | arista.avd.default(true) }}"
+        input_dir: "{{ cv_deploy_internal_structured_dir }}"
+        input_suffix: "{{ cv_deploy_internal_structured_config_file_format }}"
+        read_from_input_dir: "{{ cv_deploy_internal_read_structured_config_from_file }}"
         # Only allow missing files if we are actually in read_structured_config_from_file mode.
-        fail_on_missing_input_files: "{{ false if (read_structured_config_from_file | arista.avd.default(true)) else true }}"
+        fail_on_missing_input_files: "{{ false if cv_deploy_internal_read_structured_config_from_file else true }}"
         fail_on_validation_errors: true
-        vault_id: "{{ avd_vault_id }}"
+        vault_id: "{{ cv_deploy_internal_vault_id }}"
       delegate_to: localhost
       check_mode: false
       run_once: true
@@ -36,44 +45,48 @@
       run_once: true
       delegate_to: localhost
       arista.avd.cv_workflow:
-        cv_servers: ["{{ cv_server }}"]
-        cv_token: "{{ cv_token }}"
-        cv_username: "{{ cv_username | arista.avd.default }}"
-        cv_password: "{{ cv_password | arista.avd.default }}"
-        cv_verify_certs: "{{ cv_verify_certs }}"
+        cv_servers: ["{{ cv_deploy_internal_server }}"]
+        cv_token: "{{ cv_deploy_internal_token }}"
+        cv_username: "{{ cv_deploy_username | default(cv_username | default(omit)) }}"
+        cv_password: "{{ cv_deploy_password | default(cv_password | default(omit)) }}"
+        cv_verify_certs: "{{ cv_deploy_internal_verify_certs }}"
         cv_deploy_future: "{{ cv_deploy_future | default(omit) }}"
-        proxy_host: "{{ proxy_host | arista.avd.default }}"
-        proxy_port: "{{ proxy_port }}"
-        proxy_username: "{{ proxy_username | arista.avd.default }}"
-        proxy_password: "{{ proxy_password | arista.avd.default }}"
-        configuration_dir: "{{ eos_config_dir }}"
-        device_list: "{{ cv_devices }}"
-        strict_tags: "{{ cv_strict_tags }}"
-        skip_missing_devices: "{{ cv_skip_missing_devices }}"
-        strict_system_mac_address: "{{ cv_strict_system_mac_address }}"
-        configlet_name_template: "{{ cv_configlet_name_template | arista.avd.default }}"
+        proxy_host: "{{ cv_deploy_proxy_host | default(proxy_host | default(omit)) }}"
+        proxy_port: "{{ cv_deploy_internal_proxy_port }}"
+        proxy_username: "{{ cv_deploy_proxy_username | default(proxy_username | default(omit)) }}"
+        proxy_password: "{{ cv_deploy_proxy_password | default(proxy_password | default(omit)) }}"
+        configuration_dir: "{{ cv_deploy_internal_config_dir }}"
+        device_list: "{{ cv_deploy_internal_devices }}"
+        strict_tags: "{{ cv_deploy_internal_strict_tags }}"
+        skip_missing_devices: "{{ cv_deploy_internal_skip_missing_devices }}"
+        strict_system_mac_address: "{{ cv_deploy_internal_strict_system_mac_address }}"
+        configlet_name_template: "{{ cv_deploy_internal_configlet_name_template }}"
         workspace:
-          name: "{{ cv_workspace_name | arista.avd.default }}"
-          description: "{{ cv_workspace_description | arista.avd.default }}"
-          id: "{{ cv_workspace_id | arista.avd.default }}"
-          requested_state: "{{ cv_workspace_requested_state | arista.avd.default('submitted' if cv_submit_workspace else 'built') }}"
-          force: "{{ cv_submit_workspace_force }}"
+          name: "{{ cv_deploy_workspace_name | default(cv_workspace_name | default(omit)) }}"
+          description: "{{ cv_deploy_workspace_description | default(cv_workspace_description | default(omit)) }}"
+          id: "{{ cv_deploy_workspace_id | default(cv_workspace_id | default(omit)) }}"
+          requested_state: >-
+            {{ cv_deploy_workspace_requested_state | default(cv_workspace_requested_state |
+            default('submitted' if cv_deploy_internal_submit_workspace else 'built')) }}
+          force: "{{ cv_deploy_internal_submit_workspace_force }}"
           build_warnings:
-            enabled: "{{ cv_workspace_build_warnings_enabled }}"
-            suppress_patterns: "{{ cv_workspace_build_warnings_suppress_patterns }}"
-            suppress_portfast: "{{ cv_workspace_build_warnings_suppress_portfast }}"
-          max_sync_retries: "{{ cv_workspace_max_sync_retries }}"
+            enabled: "{{ cv_deploy_internal_workspace_build_warnings_enabled }}"
+            suppress_patterns: "{{ cv_deploy_internal_workspace_build_warnings_suppress_patterns }}"
+            suppress_portfast: "{{ cv_deploy_internal_workspace_build_warnings_suppress_portfast }}"
+          max_sync_retries: "{{ cv_deploy_internal_workspace_max_sync_retries }}"
         change_control:
-          name: "{{ cv_change_control_name | arista.avd.default }}"
-          description: "{{ cv_change_control_description | arista.avd.default }}"
-          requested_state: "{{ cv_change_control_requested_state | arista.avd.default('completed' if cv_run_change_control else 'pending approval') }}"
+          name: "{{ cv_deploy_change_control_name | default(cv_change_control_name | default(omit)) }}"
+          description: "{{ cv_deploy_change_control_description | default(cv_change_control_description | default(omit)) }}"
+          requested_state: >-
+            {{ cv_deploy_change_control_requested_state | default(cv_change_control_requested_state |
+            default('completed' if cv_deploy_internal_run_change_control else 'pending approval')) }}
         timeouts:
-          workspace_build_timeout: "{{ cv_workspace_build_timeout }}"
-        static_config_manifest: "{{ cv_static_config_manifest | arista.avd.default({}) }}"
-        return_details: "{{ cv_register_detailed_results }}"
+          workspace_build_timeout: "{{ cv_deploy_internal_workspace_build_timeout }}"
+        static_config_manifest: "{{ cv_deploy_static_config_manifest | default(cv_static_config_manifest | default({})) }}"
+        return_details: "{{ cv_deploy_internal_register_detailed_results }}"
         preview_features:
           read_from_validated_inputs: true
-        grpc_keepalives: "{{ cv_grpc_keepalives }}"
+        grpc_keepalives: "{{ cv_deploy_internal_grpc_keepalives }}"
         tmp_dir: "{{ cv_deploy_tmp_dir }}"
       register: cv_deploy_results
 

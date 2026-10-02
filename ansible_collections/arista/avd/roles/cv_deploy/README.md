@@ -32,7 +32,7 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
 !!! Note
 
     Please note that in case of using CVaaS, the correct regional URL where the CVaaS tenant is deployed must be used
-    for the `cv_server` var. The following are the cluster URLs used in production:
+    for the `cv_deploy_server` variable. The following are the cluster URLs used in production:
 
     | Region | URL |
     |--------|-----|
@@ -104,8 +104,8 @@ This basic example will deploy configurations and tags for all devices in the in
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
       vars:
-        cv_server: www.arista.io
-        cv_token: <insert service_account token here - use Ansible Vault>
+        cv_deploy_server: www.arista.io
+        cv_deploy_token: <insert service_account token here - use Ansible Vault>
 ```
 
 The workspace will be built and submitted, and a change control will be created and left in `pending approval` state.
@@ -119,11 +119,11 @@ Figure 2 below provides a visualization of the role's inputs, outputs executed b
 
 ### Inputs
 
-All `cv_*` settings described below can be set either as inventory variables, group_vars, host_vars or directly in the playbook task under `vars`.
+All `cv_deploy_*` settings described below can be set either as inventory variables, group_vars, host_vars or directly in the playbook task under `vars`.
 
 #### CloudVision Server configuration
 
-By default this role will read information about the CloudVision server from the inventory host `cloudvision` (The name of the host is configurable with `cv_inventory_hostname`).
+By default this role will read information about the CloudVision server from the inventory host `cloudvision` (the name is configurable with `cv_deploy_inventory_hostname`).
 
 ```yaml title="inventory.yml"
 all:
@@ -139,15 +139,15 @@ The CloudVision inventory hostname is configurable.
 # Inventory hostname of the CloudVision host.
 # This is used to pickup the ansible_host and ansible_password used to connect to CloudVision.
 # Each of these can be overridden manually if CloudVision is not part of the inventory.
-cv_inventory_hostname: "cloudvision"
+cv_deploy_inventory_hostname: "cloudvision"
 ```
 
 It is also possible to define the hostname and token directly without defining the CloudVision server in the inventory.
 
 ```yaml
 # Manually override the CV server hostname and token if CloudVision is not part of the inventory.
-cv_server: <hostname or IP address of CloudVision host. Ex. "www.arista.io" for CVaaS>
-cv_token: <service account token as defined on CloudVision. This value should be using Ansible Vault>
+cv_deploy_server: <hostname or IP address of CloudVision host. Ex. "www.arista.io" for CVaaS>
+cv_deploy_token: <service account token as defined on CloudVision. This value should be using Ansible Vault>
 ```
 
 By default the connection to CloudVision requires valid certificates.
@@ -155,16 +155,16 @@ For test and lab usage the certificate verification can be disabled.
 
 ```yaml
 # Verify Certificate for CloudVision (Always use valid certificates for production)
-cv_verify_certs: false
+cv_deploy_verify_certs: false
 ```
 
 For an on-premise CloudVision cluster it is possible to authenticate with username/password instead of a service account token.
-The username and password below must be set via variables on the task, play or in the fabric-level group vars. `ansible_password` and `cv_token` **must not** be set.
+The username and password below must be set via variables on the task, play or in the fabric-level group vars. `ansible_password` and `cv_deploy_token` **must not** be set.
 
 ```yaml
 # Use username/password instead of a service account token for authentication to CloudVision.
-cv_username: <username>
-cv_password: <password. This value should be using Ansible Vault>
+cv_deploy_username: <username>
+cv_deploy_password: <password. This value should be using Ansible Vault>
 ```
 
 #### EOS Devices configuration
@@ -194,7 +194,7 @@ It is also possible to manually supply a list of devices.
 # Deploy device configs and tags for these devices.
 # Defaults to all hosts in the play.
 # This means the role must be imported/included in a play targeting only the relevant EOS devices - *not* CloudVision.
-cv_devices: [ DC1-L3LEAF1A, DC1-L3LEAF1B ]
+cv_deploy_devices: [DC1-L3LEAF1A, DC1-L3LEAF1B]
 ```
 
 !!! note
@@ -209,7 +209,7 @@ It is possible to ignore other missing devices by simply skipping them and conti
 
 ```yaml
 # If false, the deployment will fail if any devices are missing (excempting devices where 'is_deployed' is set to false).
-cv_skip_missing_devices: true
+cv_deploy_skip_missing_devices: true
 ```
 
 #### Role behavior configuration
@@ -227,63 +227,63 @@ By default the role will
     When deploying CloudVision Tag assignments, the builtin behavior is to unassign any other tags
     with the same labels but different values. This is not configurable.
 
-    It is possible to unassign _any_ other tag from the devices by setting `cv_strict_tags: true`.
+    It is possible to unassign _any_ other tag from the devices by setting `cv_deploy_strict_tags: true`.
     This may remove tags used for studios and other things, so this is *not* recommended.
 
 These settings allow modifying the default behavior as needed. The values below are the default values.
 
 ```yaml
 # Submit Workspace on deployment. Otherwise the Workspace will be left in "pending" mode.
-cv_submit_workspace: true
+cv_deploy_submit_workspace: true
 
 # Force Workspace submission even if some devices are not streaming.
 # If set, configurations will not be validated for non-streaming devices.
-cv_submit_workspace_force: false
+cv_deploy_submit_workspace_force: false
 
 # Fetch and expose Workspace build warnings.
 # Suppress specific warnings based on pre-defined options or custom regex fullmatch pattern(s).
-cv_workspace_build_warnings_enabled: true
-cv_workspace_build_warnings_suppress_patterns: []
-cv_workspace_build_warnings_suppress_portfast: false
+cv_deploy_workspace_build_warnings_enabled: true
+cv_deploy_workspace_build_warnings_suppress_patterns: []
+cv_deploy_workspace_build_warnings_suppress_portfast: false
 
 # Approve, start and wait for the Change Control to Complete. Otherwise the Change Control will be left in "pending approval" mode.
-cv_run_change_control: false
+cv_deploy_run_change_control: false
 
 # Set the name of the created Workspace. By default this will be "AVD <date and time>"
-# cv_workspace_name: <str>
+# cv_deploy_workspace_name: <str>
 
 # Set the description of the created Workspace.
-# cv_workspace_description: <str>
+# cv_deploy_workspace_description: <str>
 
 # Set the name of the created Change Control. By default this will be auto generated by CloudVision based on the workspace name.
-# cv_change_control_name: <str>
+# cv_deploy_change_control_name: <str>
 
 # Set the description of the created Change Control.
-# cv_change_control_description: <str>
+# cv_deploy_change_control_description: <str>
 
 # Remove any tags on the devices and interfaces not specified by AVD.
 # WARNING: This may remove tags used for studios and other things, so this is *not* recommended.
 # NOTICE: For tags set by AVD any other tags with the same label will _always_ be removed. This is not configurable.
-cv_strict_tags: false
+cv_deploy_strict_tags: false
 
 # Set the template to be used to generate the configlet names in CloudVision Static Config Studio.
-cv_configlet_name_template: "AVD-${hostname}"
+cv_deploy_configlet_name_template: "AVD-${hostname}"
 
 # If true, detailed deployment results will be registered into 'cv_deploy_results' variable.
 # Otherwise only the basic result like 'failed', 'warnings' and 'errors' are registered.
 # There is a small performance impact on this, which is why it is not registered by default.
-cv_register_detailed_results: false
+cv_deploy_register_detailed_results: false
 
 # Time to wait for a Workspace to build. Depending on the scale this can be adjusted.
-cv_workspace_build_timeout: 300
+cv_deploy_workspace_build_timeout: 300
 
 # Maximum number of retry attempts to synchronize Workspace.
 # Requires CloudVision 2026.2.0 or later.
-cv_workspace_max_sync_retries: 5
+cv_deploy_workspace_max_sync_retries: 5
 
 # Deploy a custom hierarchy of containers and configlets to the Static Configuration Studio.
 # See the "Static Configuration Studio" section below for more details.
-# cv_static_config_manifest:
+# cv_deploy_static_config_manifest:
 #   Preserve existing manifest-managed root containers and their children when they are not declared in the current manifest.
 #   This enables partial manifests managing separate root-level branches.
 #   Existing manifest-managed container order is preserved, and newly declared containers are appended.
@@ -318,7 +318,7 @@ cv_workspace_max_sync_retries: 5
 
 # Raise an error (instead of a warning) if two or more targeted devices share the same `system_mac_address`
 # but have unique `serial_number` values. See the warning below for full duplicate-detection behavior.
-cv_strict_system_mac_address: false
+cv_deploy_strict_system_mac_address: false
 ```
 
 !!! warning
@@ -333,7 +333,7 @@ cv_strict_system_mac_address: false
 
     - Two or more targeted devices have the same `system_mac_address` but unique `serial_number` values.
 
-    To raise an error instead of a warning for the above case, set `cv_strict_system_mac_address` to `true`.
+    To raise an error instead of a warning for the above case, set `cv_deploy_strict_system_mac_address` to `true`.
 
 ##### Advanced role configuration
 
@@ -341,24 +341,24 @@ The optional settings below provide direct control over Workspace and Change Con
 
 ```yaml
 # Set the ID of the created Workspace. If a workspace with the same ID already exists, it must be in the 'pending' state.
-# cv_workspace_id: <str>
+# cv_deploy_workspace_id: <str>
 
 # Set the requested state for the Workspace.
 # Accepted values: "pending", "built", "submitted", "abandoned" or "deleted".
-# cv_workspace_requested_state: <str>
+# cv_deploy_workspace_requested_state: <str>
 
 # Set the requested state of the created Change Control.
 # Accepted values: "pending approval", "approved", "running" or "completed".
-# cv_change_control_requested_state: <str>
+# cv_deploy_change_control_requested_state: <str>
 ```
 
-**`cv_workspace_id`**
+**`cv_deploy_workspace_id`**
 
-By default, `cv_deploy` auto-generates new workspace ID on each run. Setting `cv_workspace_id` instructs the role to use a specific ID instead. If a workspace with that ID already exists in CloudVision and is in `pending` state, it will be reused (this may be useful for resuming an interrupted deployment). If the existing workspace is in any other state, the role will raise an error. If workspace with that ID does not yet exist - it will be created.
+By default, `cv_deploy` auto-generates a new workspace ID on each run. Setting `cv_deploy_workspace_id` instructs the role to use a specific ID instead. If a workspace with that ID already exists in CloudVision and is in `pending` state, it will be reused (this may be useful for resuming an interrupted deployment). If the existing workspace is in any other state, the role will raise an error. If a workspace with that ID does not yet exist, it will be created.
 
 ```mermaid
 flowchart LR
-    A([cv_deploy]) --> B{cv_workspace_id\nis set?}
+    A([cv_deploy]) --> B{cv_deploy_workspace_id\nis set?}
     B -- No --> C[auto-generate\nWorkspace ID]
     B -- Yes --> D{Workspace with\nrequested ID exists?}
     D -- No --> E[Create Workspace\nwith requested ID]
@@ -367,29 +367,29 @@ flowchart LR
     G -- No --> I([Raise exception])
 ```
 
-**`cv_workspace_requested_state`**
+**`cv_deploy_workspace_requested_state`**
 
-By default, the Workspace state is controlled by the `cv_submit_workspace` key. Setting `cv_workspace_requested_state` bypasses `cv_submit_workspace` entirely and applies the specified state directly. This is useful for workflows that need precise control over the target state of the Workspace.
+By default, the Workspace state is controlled by `cv_deploy_submit_workspace`. Setting `cv_deploy_workspace_requested_state` bypasses `cv_deploy_submit_workspace` entirely and applies the specified state directly. This is useful for workflows that need precise control over the target state of the Workspace.
 
 ```mermaid
 flowchart LR
-    A([cv_deploy]) --> B{"cv_workspace_requested_state\nis set?"}
-    B -- Yes --> C["Workspace requested state =\ncv_workspace_requested_state"]
-    B -- No --> D{cv_submit_workspace?}
+    A([cv_deploy]) --> B{"cv_deploy_workspace_requested_state\nis set?"}
+    B -- Yes --> C["Workspace requested state =\ncv_deploy_workspace_requested_state"]
+    B -- No --> D{cv_deploy_submit_workspace?}
     D -- "True (default)" --> E["Workspace requested state =\n submitted"]
     D -- False --> F["Workspace requested state =\n built"]
 ```
 
-**`cv_change_control_requested_state`**
+**`cv_deploy_change_control_requested_state`**
 
-By default, the Change Control state is controlled by `cv_run_change_control`. Setting `cv_change_control_requested_state` bypasses `cv_run_change_control` entirely. Only applicable when the requested state of the Workspace is `submitted`.
+By default, the Change Control state is controlled by `cv_deploy_run_change_control`. Setting `cv_deploy_change_control_requested_state` bypasses `cv_deploy_run_change_control` entirely. This is only applicable when the requested state of the Workspace is `submitted`.
 
 ```mermaid
 flowchart LR
-    A(["Workspace requested state\n==\nsubmitted?"]) -- Yes --> B{cv_change_control_requested_state set?}
+    A(["Workspace requested state\n==\nsubmitted?"]) -- Yes --> B{cv_deploy_change_control_requested_state set?}
     A -- No --> G["Change Control is not created"]
-    B -- Yes --> C["Change Control requested state\n=\ncv_change_control_requested_state"]
-    B -- No --> D{"cv_run_change_control?"}
+    B -- Yes --> C["Change Control requested state\n=\ncv_deploy_change_control_requested_state"]
+    B -- No --> D{"cv_deploy_run_change_control?"}
     D -- True --> E["Change Control requested state\n=\ncompleted"]
     D -- "False (default)" --> F["Change Control requested state\n=\npending approval"]
 ```
@@ -398,15 +398,20 @@ flowchart LR
 
 When using the standard AVD workflow, the EOS device configurations and AVD structured configurations are read from files generated by the `arista.avd.eos_designs` and `arista.avd.eos_cli_config_gen` roles.
 
-The directories are configured with the same variables as for the other AVD roles:
+The input directories are configured with role-prefixed variables:
 
 ```yaml
---8<--
-ansible_collections/arista/avd/roles/cv_deploy/defaults/main/directories.yml
---8<--
-# Read structured configuration from files in `structured_dir`. If set to false, `cv_deploy` will read structured configuration from hostvars.
+cv_deploy_root_dir: "{{ inventory_dir }}"
+cv_deploy_output_dir_name: "intended"
+cv_deploy_output_dir: "{{ cv_deploy_root_dir }}/{{ cv_deploy_output_dir_name }}"
+cv_deploy_structured_dir_name: "structured_configs"
+cv_deploy_structured_dir: "{{ cv_deploy_output_dir }}/{{ cv_deploy_structured_dir_name }}"
+cv_deploy_config_dir_name: "configs"
+cv_deploy_config_dir: "{{ cv_deploy_output_dir }}/{{ cv_deploy_config_dir_name }}"
+
+# Read structured configuration from files in `cv_deploy_structured_dir`. If set to false, `cv_deploy` reads structured configuration from hostvars.
 # See the "Per-device variables" section below for more details.
-read_structured_config_from_file: true
+cv_deploy_read_structured_config_from_file: true
 ```
 
 #### Input validation
@@ -420,9 +425,9 @@ The following role variables can be used to tweak the validation behavior if nee
 # When Ansible Vault is not configured, this parameter has no effect and files are written as plain JSON.
 # When Ansible Vault is configured, AVD encrypts files containing templated and validated data
 # to prevent sensitive information from being exposed in the temporary directories.
-#   * When `avd_vault_id` is not specified, AVD uses the *first* Vault ID in the list for encryption.
-#   * When `avd_vault_id` is specified, AVD uses the specified Vault ID for encryption.
-avd_vault_id: null
+#   * When `cv_deploy_vault_id` is not specified, AVD uses the *first* Vault ID in the list for encryption.
+#   * When `cv_deploy_vault_id` is specified, AVD uses the specified Vault ID for encryption.
+cv_deploy_vault_id: null
 
 # Avoid deleting temporary files. Allows the user to inspect tmp files created by the role.
 # When an Ansible Vault secret is set, temporary files holding input variables are encrypted. Decryption is required to inspect them.
@@ -443,7 +448,7 @@ When using the standard AVD workflow (`eos_designs` → `eos_cli_config_gen` →
 
 ### cv_deploy-only users
 
-For users running `cv_deploy` without the rest of the AVD workflow (no `eos_designs`, no `eos_cli_config_gen`), the role can be used independently by providing these variables directly as Ansible variables. Set [`read_structured_config_from_file`](#role-default-input-directories) to `false` so the role reads structured configuration from Ansible variables instead of files.
+For users running `cv_deploy` without the rest of the AVD workflow (no `eos_designs`, no `eos_cli_config_gen`), the role can be used independently by providing these variables directly as Ansible variables. Set [`cv_deploy_read_structured_config_from_file`](#role-default-input-directories) to `false` so the role reads structured configuration from Ansible variables instead of files.
 
 The following variables can then be set per device:
 
@@ -473,7 +478,7 @@ AVD Configurations              (root container)
 !!! warning "Preview"
     `cv_use_static_config_manifest` is a **preview** setting. The data model and behavior may change in a future release.
 
-If you want to build your own hierarchy of containers and configlets, use the `cv_static_config_manifest` role variable. See the [Role behavior configuration](#role-behavior-configuration) section above for the full schema.
+If you want to build your own hierarchy of containers and configlets, use the `cv_deploy_static_config_manifest` role variable. See the [Role behavior configuration](#role-behavior-configuration) section above for the full schema.
 
 To switch a device's configuration deployment from the flat layout to the manifest, set the `cv_use_static_config_manifest: true` device variable. See the [example for AVD users](#example-for-avd-users) or the [example for cv_deploy-only users](#example-for-cv_deploy-only-users) below for how this variable and the manifest fit together. Devices that do not opt in will continue to use the flat layout. When a device is opted in, any leftover flat-layout configlet or container is cleaned up automatically. Onboarding and tag deployment are unaffected by this variable.
 
@@ -497,16 +502,16 @@ For each opted-in device, you are responsible for ensuring the manifest defines 
 
 #### Example for AVD users
 
-`eos_cli_config_gen` generates one configuration file per device in `eos_config_dir` (`intended/configs` by default). The example below puts those configurations into a custom hierarchy organized by fabric, DC, and POD.
+`eos_cli_config_gen` generates one configuration file per device in `eos_cli_config_gen_config_dir` (`intended/configs` by default). The example below puts those configurations into a custom hierarchy organized by fabric, DC, and POD.
 
 ```yaml title="group_vars/FABRIC.yml"
 # Custom hierarchy of containers and configlets.
-cv_static_config_manifest:
+cv_deploy_static_config_manifest:
   configlets:
     - name: AVD-spine1
-      file: "{{ eos_config_dir }}/spine1.cfg"
+      file: "{{ eos_cli_config_gen_config_dir }}/spine1.cfg"
     - name: AVD-leaf1
-      file: "{{ eos_config_dir }}/leaf1.cfg"
+      file: "{{ eos_cli_config_gen_config_dir }}/leaf1.cfg"
   containers:
     - name: FABRIC
       description: "Fabric devices"
@@ -550,10 +555,10 @@ The same approach applies when using `cv_deploy` directly with the [cv_deploy-on
 
 ```yaml title="group_vars/FABRIC.yml"
 # Use cv_deploy schema inputs (Ansible variables) instead of generated structured configuration files.
-read_structured_config_from_file: false
+cv_deploy_read_structured_config_from_file: false
 
 # Custom hierarchy with shared, POD-level, and per-device configlets.
-cv_static_config_manifest:
+cv_deploy_static_config_manifest:
   configlets:
     # Shared configlets
     - name: COMMON-NTP
@@ -605,9 +610,9 @@ cv_use_static_config_manifest: true
 
 ### Manifest-only deployment
 
-To deploy a manifest without targeting any device, you can run a "manifest-only" deployment. Simply provide an empty list for `cv_devices` (`cv_devices: []`).
+To deploy a manifest without targeting any device, you can run a "manifest-only" deployment. Simply provide an empty list for `cv_deploy_devices` (`cv_deploy_devices: []`).
 
-When `cv_devices` is empty, the role skips all device-specific operations (like configlet generation and tagging) and **only** deploys the content of `cv_static_config_manifest`.
+When `cv_deploy_devices` is empty, the role skips all device-specific operations (like configlet generation and tagging) and **only** deploys the content of `cv_deploy_static_config_manifest`.
 
 !!! tip
     This mode can be useful for pre-provisioning a manifest before any devices are onboarded on CloudVision.
@@ -637,7 +642,7 @@ Click "Save" to exit the dialogue box.
 
 The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [HTTP CONNECT](https://en.wikipedia.org/wiki/HTTP_tunnel#HTTP_CONNECT_method) proxy server, with or without basic authentication.
 
-To enable the proxy, set `proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
+To enable the proxy, set `cv_deploy_proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
 
 !!! Warning
 
@@ -651,41 +656,41 @@ Below settings allow modifying the default proxy-related behavior as needed. The
 
 ```yaml
 # Set FQDN/IP of the HTTP CONNECT proxy server.
-proxy_host: <str>
+cv_deploy_proxy_host: <str>
 # Set target TCP port of the HTTP CONNECT proxy server.
-proxy_port: 8080
+cv_deploy_proxy_port: 8080
 # Set authentication username for the HTTP CONNECT proxy server.
-proxy_username: <str>
+cv_deploy_proxy_username: <str>
 # Set authentication password for the HTTP CONNECT proxy server.
-proxy_password: <str>
+cv_deploy_proxy_password: <str>
 ```
 
 Example of the configuration to use unauthenticated HTTP proxy using CONNECT method:
 
 ```yaml
-proxy_host: proxy.local.domain
-proxy_port: 3128
+cv_deploy_proxy_host: proxy.local.domain
+cv_deploy_proxy_port: 3128
 ```
 
 Example of the configuration to use authenticated HTTP proxy using CONNECT method:
 
 ```yaml
-proxy_host: proxy.local.domain
-proxy_port: 3128
-proxy_username: "avd_proxy_user"
-proxy_password: "avd_proxy_password"
+cv_deploy_proxy_host: proxy.local.domain
+cv_deploy_proxy_port: 3128
+cv_deploy_proxy_username: "avd_proxy_user"
+cv_deploy_proxy_password: "avd_proxy_password"
 ```
 
 ## gRPC keepalives
 
 The `arista.avd.cv_deploy` role supports client-side gRPC keepalives on the CloudVision connection. When enabled, AVD periodically pings CloudVision over the gRPC connection so the connection is not silently terminated by intermediate firewalls or load balancers during long-running deployments.
 
-Keepalives are disabled by default. To enable them, set `cv_grpc_keepalives.enabled: true`. The other settings can be left at their defaults and only need to be adjusted to match a specific network environment.
+Keepalives are disabled by default. To enable them, set `cv_deploy_grpc_keepalives.enabled: true`. The other settings can be left at their defaults and only need to be adjusted to match a specific network environment.
 
 Below settings allow modifying the default keepalive behavior as needed. The values below are the default values.
 
 ```yaml
-cv_grpc_keepalives:
+cv_deploy_grpc_keepalives:
   # Enable client-side gRPC keepalives. When false, the other settings have no effect.
   enabled: false
   # Interval in seconds between keepalive pings. Must be >= 30s.
@@ -699,7 +704,7 @@ cv_grpc_keepalives:
 Example of enabling keepalives with the default settings:
 
 ```yaml
-cv_grpc_keepalives:
+cv_deploy_grpc_keepalives:
   enabled: true
 ```
 

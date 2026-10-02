@@ -6,9 +6,14 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_eos_designs_structured_config:
+  eos_designs_structured_config:
     documentation_options:
       table: role-settings
     type: bool
     default: true
     description: Generate structured configuration per device.
+  avd_eos_designs_structured_config:
+    documentation_options:
+      table: legacy-role-settings
+    type: bool
+    description: Legacy alias for `eos_designs_structured_config`.

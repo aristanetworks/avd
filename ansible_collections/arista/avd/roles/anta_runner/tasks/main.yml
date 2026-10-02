@@ -2,16 +2,25 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
+- name: Validate legacy role variables
+  arista.avd.legacy_role_vars:
+    role_name: anta_runner
+    aliases: "{{ anta_runner_internal_legacy_var_aliases }}"
+    mode: "{{ avd_legacy_role_vars_mode | default('warning') }}"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+
 - name: Verify Requirements
   delegate_to: localhost
-  when: avd_requirements is not defined and avd_verify_requirements | default(true)
+  when: anta_runner_requirements is not defined and avd_verify_requirements | default(true)
   arista.avd.verify_requirements:
     requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
     avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
   vars:
     requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
   run_once: true
-  register: avd_requirements
+  register: anta_runner_requirements
 
 - name: Create required output directories if not present
   when: avd_create_directories | arista.avd.default(true)
@@ -20,44 +29,44 @@
     state: directory
     mode: "0o775"
   loop:
-    - "{{ anta_dir }}"
-    - "{{ avd_catalogs_dir }}"
-    - "{{ user_catalogs_dir }}"
-    - "{{ anta_reports_dir }}"
+    - "{{ anta_runner_internal_dir }}"
+    - "{{ anta_runner_internal_avd_catalogs_dir }}"
+    - "{{ anta_runner_internal_user_catalogs_dir }}"
+    - "{{ anta_runner_internal_reports_dir }}"
   delegate_to: localhost
   run_once: true
   check_mode: false
 
 - name: Run ANTA
   arista.avd.anta_workflow:
-    device_list: "{{ anta_devices }}"
+    device_list: "{{ anta_runner_internal_devices }}"
     avd_catalogs:
-      enabled: "{{ avd_catalogs_enabled }}"
-      output_dir: "{{ avd_catalogs_dir }}"
-      structured_config_dir: "{{ structured_dir }}"
-      structured_config_suffix: "{{ avd_structured_config_file_format }}"
-      extra_fabric_validation: "{{ avd_catalogs_extra_fabric_validation }}"
-      filters: "{{ avd_catalogs_filters | arista.avd.default([]) }}"
+      enabled: "{{ anta_runner_internal_avd_catalogs_enabled }}"
+      output_dir: "{{ anta_runner_internal_avd_catalogs_dir }}"
+      structured_config_dir: "{{ anta_runner_internal_structured_dir }}"
+      structured_config_suffix: "{{ anta_runner_internal_structured_config_file_format }}"
+      extra_fabric_validation: "{{ anta_runner_internal_avd_catalogs_extra_fabric_validation }}"
+      filters: "{{ anta_runner_internal_avd_catalogs_filters }}"
     user_catalogs:
-      enabled: "{{ user_catalogs_enabled }}"
-      input_dir: "{{ user_catalogs_dir }}"
+      enabled: "{{ anta_runner_internal_user_catalogs_enabled }}"
+      input_dir: "{{ anta_runner_internal_user_catalogs_dir }}"
     runner:
       timeout: "{{ anta_runner_timeout }}"
       batch_size: "{{ anta_runner_batch_size }}"
       tags: "{{ anta_runner_tags | arista.avd.default([]) }}"
       dry_run: "{{ anta_runner_dry_run }}"
     report:
-      expand_results: "{{ anta_report_expand_results }}"
-      generate_custom_field: "{{ anta_report_custom_field }}"
-      csv_output: "{{ anta_report_csv_path }}"
-      md_output: "{{ anta_report_md_path }}"
-      json_output: "{{ anta_report_json_path }}"
+      expand_results: "{{ anta_runner_internal_report_expand_results }}"
+      generate_custom_field: "{{ anta_runner_internal_report_custom_field }}"
+      csv_output: "{{ anta_runner_internal_report_csv_path }}"
+      md_output: "{{ anta_runner_internal_report_md_path }}"
+      json_output: "{{ anta_runner_internal_report_json_path }}"
       filters:
-        exclude_statuses: "{{ anta_report_exclude_statuses | arista.avd.default([]) }}"
+        exclude_statuses: "{{ anta_runner_internal_report_exclude_statuses }}"
       sorting:
-        sort_fields: "{{ anta_report_sort_fields }}"
-        status_priority: "{{ anta_report_status_priority }}"
-  register: anta
+        sort_fields: "{{ anta_runner_internal_report_sort_fields }}"
+        status_priority: "{{ anta_runner_internal_report_status_priority }}"
+  register: anta_runner_result
   delegate_to: localhost
   run_once: true
   check_mode: false

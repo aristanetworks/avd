@@ -18,29 +18,31 @@ None
 
 ## Role Variables
 
-Role support following variables:
+The role supports the following role-prefixed variables:
 
 ```yaml
 # Root directory where to build output structure
 # All folder below will be created in this directory folder.
-root_dir: '{{ inventory_dir }}'
+build_output_folders_root_dir: "{{ inventory_dir }}"
 
 # Main output directory
-output_dir_name: 'intended'
+build_output_folders_output_dir_name: "intended"
 # Output for structured YAML files:
-structured_dir_name: 'structured_configs'
+build_output_folders_structured_dir_name: "structured_configs"
 # EOS configuration directory name
-eos_config_dir_name: 'configs'
+build_output_folders_eos_config_dir_name: "configs"
 # Main documentation folder
-documentation_dir_name: 'documentation'
+build_output_folders_documentation_dir_name: "documentation"
 # Fabric documentation
-fabric_dir_name: 'fabric'
+build_output_folders_fabric_dir_name: "fabric"
 # Device documentation
-devices_dir_name: 'devices'
+build_output_folders_devices_dir_name: "devices"
 # EOS config deploy eapi running config backup directory
-post_running_config_backup_dir_name: 'config_backup'
-pre_running_config_backup_dir_name: 'config_backup'
+build_output_folders_post_running_config_backup_dir_name: "config_backup"
+build_output_folders_pre_running_config_backup_dir_name: "config_backup"
 ```
+
+Legacy unprefixed aliases remain supported. The role-prefixed variable takes precedence when both names are set.
 
 Role will create following structure:
 

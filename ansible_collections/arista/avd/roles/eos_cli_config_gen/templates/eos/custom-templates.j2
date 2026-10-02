@@ -4,9 +4,10 @@
  that can be found in the LICENSE file.
 #}
 {# eos - custom templates #}
-{% if custom_templates is arista.avd.defined %}
+{% set eos_cli_config_gen_internal_custom_templates = eos_cli_config_gen_custom_templates | default(custom_templates) %}
+{% if eos_cli_config_gen_internal_custom_templates is arista.avd.defined %}
 !
-{%     for custom_template in custom_templates %}
+{%     for custom_template in eos_cli_config_gen_internal_custom_templates %}
 {%         include custom_template %}
 
 {%     endfor %}

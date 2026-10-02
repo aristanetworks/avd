@@ -7,8 +7,13 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_vault_id:
+  eos_designs_vault_id:
     documentation_options:
       table: role-settings
     type: str
-    $ref: "eos_cli_config_gen#/keys/avd_vault_id"
+    $ref: "eos_cli_config_gen#/keys/eos_cli_config_gen_vault_id"
+  avd_vault_id:
+    documentation_options:
+      table: legacy-role-settings
+    type: str
+    description: Legacy alias for `eos_designs_vault_id`.

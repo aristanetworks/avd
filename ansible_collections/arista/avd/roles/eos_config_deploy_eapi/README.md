@@ -38,18 +38,24 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 **Tasks:**
 
 1. Take a backup of the running configuration before configuration is replaced (pre) - (optional, default false).
-   1. Destination: `{{ pre_running_config_backup_dir }}/{{ pre_running_config_backup_filename }}`
+   1. Destination: `{{ eos_config_deploy_eapi_pre_running_config_backup_dir }}/{{ eos_config_deploy_eapi_pre_running_config_backup_filename }}`
 2. Replace configuration on device with intended EOS configuration. If changed, saves to startup-config, and notifies handler to backup configuration.
 3. Backup Configuration after the configuration is replaced (post) with handler.
-   1. Destination: `{{ post_running_config_backup_dir }}/{{ post_running_config_backup_filename }}`.
+   1. Destination: `{{ eos_config_deploy_eapi_post_running_config_backup_dir }}/{{ eos_config_deploy_eapi_post_running_config_backup_filename }}`.
 
 ## Default Variables
 
-``` yaml
---8<--
-ansible_collections/arista/avd/roles/eos_config_deploy_eapi/defaults/main.yml
---8<--
+```yaml
+eos_config_deploy_eapi_root_dir: "{{ inventory_dir }}"
+eos_config_deploy_eapi_output_dir_name: "intended"
+eos_config_deploy_eapi_output_dir: "{{ eos_config_deploy_eapi_root_dir }}/{{ eos_config_deploy_eapi_output_dir_name }}"
+eos_config_deploy_eapi_config_dir_name: "configs"
+eos_config_deploy_eapi_config_dir: "{{ eos_config_deploy_eapi_output_dir }}/{{ eos_config_deploy_eapi_config_dir_name }}"
+eos_config_deploy_eapi_pre_running_config_backup_dir_name: "config_backup"
+eos_config_deploy_eapi_post_running_config_backup_dir_name: "config_backup"
 ```
+
+Legacy unprefixed aliases remain supported. The role-prefixed variable takes precedence when both names are set.
 
 ## Requirements
 

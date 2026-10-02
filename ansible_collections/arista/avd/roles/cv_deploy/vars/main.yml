@@ -1,0 +1,99 @@
+---
+cv_deploy_internal_legacy_var_aliases:
+  avd_structured_config_file_format: cv_deploy_structured_config_file_format
+  avd_vault_id: cv_deploy_vault_id
+  cv_change_control_description: cv_deploy_change_control_description
+  cv_change_control_name: cv_deploy_change_control_name
+  cv_change_control_requested_state: cv_deploy_change_control_requested_state
+  cv_configlet_name_template: cv_deploy_configlet_name_template
+  cv_devices: cv_deploy_devices
+  cv_grpc_keepalives: cv_deploy_grpc_keepalives
+  cv_inventory_hostname: cv_deploy_inventory_hostname
+  cv_password: cv_deploy_password
+  cv_register_detailed_results: cv_deploy_register_detailed_results
+  cv_run_change_control: cv_deploy_run_change_control
+  cv_server: cv_deploy_server
+  cv_skip_missing_devices: cv_deploy_skip_missing_devices
+  cv_static_config_manifest: cv_deploy_static_config_manifest
+  cv_strict_system_mac_address: cv_deploy_strict_system_mac_address
+  cv_strict_tags: cv_deploy_strict_tags
+  cv_submit_workspace: cv_deploy_submit_workspace
+  cv_submit_workspace_force: cv_deploy_submit_workspace_force
+  cv_token: cv_deploy_token
+  cv_username: cv_deploy_username
+  cv_verify_certs: cv_deploy_verify_certs
+  cv_workspace_build_timeout: cv_deploy_workspace_build_timeout
+  cv_workspace_build_warnings_enabled: cv_deploy_workspace_build_warnings_enabled
+  cv_workspace_build_warnings_suppress_patterns: cv_deploy_workspace_build_warnings_suppress_patterns
+  cv_workspace_build_warnings_suppress_portfast: cv_deploy_workspace_build_warnings_suppress_portfast
+  cv_workspace_description: cv_deploy_workspace_description
+  cv_workspace_id: cv_deploy_workspace_id
+  cv_workspace_max_sync_retries: cv_deploy_workspace_max_sync_retries
+  cv_workspace_name: cv_deploy_workspace_name
+  cv_workspace_requested_state: cv_deploy_workspace_requested_state
+  eos_config_dir: cv_deploy_config_dir
+  eos_config_dir_name: cv_deploy_config_dir_name
+  output_dir: cv_deploy_output_dir
+  output_dir_name: cv_deploy_output_dir_name
+  proxy_host: cv_deploy_proxy_host
+  proxy_password: cv_deploy_proxy_password
+  proxy_port: cv_deploy_proxy_port
+  proxy_username: cv_deploy_proxy_username
+  read_structured_config_from_file: cv_deploy_read_structured_config_from_file
+  root_dir: cv_deploy_root_dir
+  structured_dir: cv_deploy_structured_dir
+  structured_dir_name: cv_deploy_structured_dir_name
+
+cv_deploy_internal_structured_config_file_format: >-
+  {{ cv_deploy_structured_config_file_format | default(avd_structured_config_file_format | default('yml')) }}
+cv_deploy_internal_vault_id: "{{ cv_deploy_vault_id | default(avd_vault_id | default(None)) }}"
+cv_deploy_internal_inventory_hostname: "{{ cv_deploy_inventory_hostname | default(cv_inventory_hostname | default('cloudvision')) }}"
+cv_deploy_internal_server: >-
+  {{ cv_deploy_server | default(cv_server | default(hostvars[cv_deploy_internal_inventory_hostname].ansible_host | default(None))) }}
+cv_deploy_internal_token: >-
+  {{ cv_deploy_token | default(cv_token | default(hostvars[cv_deploy_internal_inventory_hostname].ansible_password | default(None))) }}
+cv_deploy_internal_verify_certs: "{{ cv_deploy_verify_certs | default(cv_verify_certs | default(true)) }}"
+cv_deploy_internal_grpc_keepalives: >-
+  {{
+    cv_deploy_grpc_keepalives
+    | default(cv_grpc_keepalives | default({
+        'enabled': false,
+        'keepalive_time': 60,
+        'keepalive_timeout': 20,
+        'permit_without_calls': false
+      }))
+  }}
+cv_deploy_internal_proxy_port: "{{ cv_deploy_proxy_port | default(proxy_port | default(8080)) }}"
+cv_deploy_internal_devices: "{{ cv_deploy_devices | default(cv_devices | default(ansible_play_hosts)) }}"
+cv_deploy_internal_skip_missing_devices: "{{ cv_deploy_skip_missing_devices | default(cv_skip_missing_devices | default(false)) }}"
+cv_deploy_internal_strict_system_mac_address: >-
+  {{ cv_deploy_strict_system_mac_address | default(cv_strict_system_mac_address | default(false)) }}
+cv_deploy_internal_submit_workspace: "{{ cv_deploy_submit_workspace | default(cv_submit_workspace | default(true)) }}"
+cv_deploy_internal_submit_workspace_force: "{{ cv_deploy_submit_workspace_force | default(cv_submit_workspace_force | default(false)) }}"
+cv_deploy_internal_workspace_build_warnings_enabled: >-
+  {{ cv_deploy_workspace_build_warnings_enabled | default(cv_workspace_build_warnings_enabled | default(true)) }}
+cv_deploy_internal_workspace_build_warnings_suppress_patterns: >-
+  {{ cv_deploy_workspace_build_warnings_suppress_patterns | default(cv_workspace_build_warnings_suppress_patterns | default([])) }}
+cv_deploy_internal_workspace_build_warnings_suppress_portfast: >-
+  {{ cv_deploy_workspace_build_warnings_suppress_portfast | default(cv_workspace_build_warnings_suppress_portfast | default(false)) }}
+cv_deploy_internal_run_change_control: "{{ cv_deploy_run_change_control | default(cv_run_change_control | default(false)) }}"
+cv_deploy_internal_strict_tags: "{{ cv_deploy_strict_tags | default(cv_strict_tags | default(false)) }}"
+cv_deploy_internal_configlet_name_template: >-
+  {{ cv_deploy_configlet_name_template | default(cv_configlet_name_template | default('AVD-${hostname}')) }}
+cv_deploy_internal_register_detailed_results: >-
+  {{ cv_deploy_register_detailed_results | default(cv_register_detailed_results | default(false)) }}
+cv_deploy_internal_workspace_build_timeout: "{{ cv_deploy_workspace_build_timeout | default(cv_workspace_build_timeout | default(300)) }}"
+cv_deploy_internal_workspace_max_sync_retries: >-
+  {{ cv_deploy_workspace_max_sync_retries | default(cv_workspace_max_sync_retries | default(5)) }}
+cv_deploy_internal_read_structured_config_from_file: >-
+  {{ cv_deploy_read_structured_config_from_file | default(read_structured_config_from_file | default(true)) }}
+cv_deploy_internal_root_dir: "{{ cv_deploy_root_dir | default(root_dir | default(inventory_dir)) }}"
+cv_deploy_internal_output_dir_name: "{{ cv_deploy_output_dir_name | default(output_dir_name | default('intended')) }}"
+cv_deploy_internal_output_dir: >-
+  {{ cv_deploy_output_dir | default(output_dir | default(cv_deploy_internal_root_dir ~ '/' ~ cv_deploy_internal_output_dir_name)) }}
+cv_deploy_internal_structured_dir_name: "{{ cv_deploy_structured_dir_name | default(structured_dir_name | default('structured_configs')) }}"
+cv_deploy_internal_structured_dir: >-
+  {{ cv_deploy_structured_dir | default(structured_dir | default(cv_deploy_internal_output_dir ~ '/' ~ cv_deploy_internal_structured_dir_name)) }}
+cv_deploy_internal_config_dir_name: "{{ cv_deploy_config_dir_name | default(eos_config_dir_name | default('configs')) }}"
+cv_deploy_internal_config_dir: >-
+  {{ cv_deploy_config_dir | default(eos_config_dir | default(cv_deploy_internal_output_dir ~ '/' ~ cv_deploy_internal_config_dir_name)) }}

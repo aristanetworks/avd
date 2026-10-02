@@ -1,0 +1,101 @@
+---
+- name: Detect a legacy-only variable
+  arista.avd.legacy_role_vars:
+    role_name: test_role
+    aliases:
+      legacy_value: test_role_value
+    mode: silent
+  vars:
+    legacy_value: false
+  register: legacy_role_vars_legacy_only
+
+- name: Verify the legacy-only result
+  ansible.builtin.assert:
+    that:
+      - legacy_role_vars_legacy_only is not changed
+      - legacy_role_vars_legacy_only.legacy_aliases == ['legacy_value']
+
+- name: Prefer a canonical variable when both names are defined
+  arista.avd.legacy_role_vars:
+    role_name: test_role
+    aliases:
+      legacy_value: test_role_value
+    mode: silent
+  vars:
+    legacy_value: legacy
+    test_role_value: ""
+  register: legacy_role_vars_both
+
+- name: Verify the ignored legacy alias is not reported
+  ansible.builtin.assert:
+    that:
+      - legacy_role_vars_both.legacy_aliases == []
+
+- name: Reject a consumed legacy alias in error mode
+  arista.avd.legacy_role_vars:
+    role_name: test_role
+    aliases:
+      legacy_value: test_role_value
+    mode: error
+  vars:
+    legacy_value: null
+  register: legacy_role_vars_error
+  ignore_errors: true
+
+- name: Verify error mode
+  ansible.builtin.assert:
+    that:
+      - legacy_role_vars_error is failed
+      - "'legacy_value' in legacy_role_vars_error.msg"
+      - "'test_role_value' in legacy_role_vars_error.msg"
+
+- name: Reject an invalid mode
+  arista.avd.legacy_role_vars:
+    role_name: test_role
+    aliases: {}
+    mode: invalid
+  register: legacy_role_vars_invalid_mode
+  ignore_errors: true
+
+- name: Verify invalid mode validation
+  ansible.builtin.assert:
+    that:
+      - legacy_role_vars_invalid_mode is failed
+
+- name: Resolve a false legacy value
+  ansible.builtin.set_fact:
+    legacy_role_vars_fixture_result: >-
+      {{ legacy_role_vars_fixture_value | default(legacy_fixture_value | default('default')) }}
+  vars:
+    legacy_fixture_value: false
+
+- name: Verify a false legacy value is preserved
+  ansible.builtin.assert:
+    that:
+      - legacy_role_vars_fixture_result is sameas false
+
+- name: Prefer an empty canonical value
+  ansible.builtin.set_fact:
+    legacy_role_vars_fixture_result: >-
+      {{ legacy_role_vars_fixture_value | default(legacy_fixture_value | default('default')) }}
+  vars:
+    legacy_fixture_value: legacy
+    legacy_role_vars_fixture_value: ""
+
+- name: Verify an empty canonical value is preserved
+  ansible.builtin.assert:
+    that:
+      - legacy_role_vars_fixture_result == ''
+
+- name: Prefer a null canonical value
+  ansible.builtin.set_fact:
+    legacy_role_vars_fixture_result: >-
+      {{ legacy_role_vars_fixture_value | default(legacy_fixture_value | default('default')) }}
+  vars:
+    legacy_fixture_value: legacy
+    legacy_role_vars_fixture_value: null
+
+- name: Verify a null canonical value is preserved
+  ansible.builtin.assert:
+    that:
+      - legacy_role_vars_fixture_result is none

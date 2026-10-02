@@ -1,0 +1,61 @@
+---
+eos_config_deploy_eapi_internal_legacy_var_aliases:
+  eos_config_dir: eos_config_deploy_eapi_config_dir
+  eos_config_dir_name: eos_config_deploy_eapi_config_dir_name
+  output_dir: eos_config_deploy_eapi_output_dir
+  output_dir_name: eos_config_deploy_eapi_output_dir_name
+  post_running_config_backup_dir: eos_config_deploy_eapi_post_running_config_backup_dir
+  post_running_config_backup_dir_name: eos_config_deploy_eapi_post_running_config_backup_dir_name
+  post_running_config_backup_filename: eos_config_deploy_eapi_post_running_config_backup_filename
+  pre_running_config_backup_dir: eos_config_deploy_eapi_pre_running_config_backup_dir
+  pre_running_config_backup_dir_name: eos_config_deploy_eapi_pre_running_config_backup_dir_name
+  pre_running_config_backup_filename: eos_config_deploy_eapi_pre_running_config_backup_filename
+  root_dir: eos_config_deploy_eapi_root_dir
+
+eos_config_deploy_eapi_internal_root_dir: "{{ eos_config_deploy_eapi_root_dir | default(root_dir | default(inventory_dir)) }}"
+eos_config_deploy_eapi_internal_output_dir_name: >-
+  {{ eos_config_deploy_eapi_output_dir_name | default(output_dir_name | default('intended')) }}
+eos_config_deploy_eapi_internal_output_dir: >-
+  {{
+    eos_config_deploy_eapi_output_dir
+    | default(output_dir | default(
+        eos_config_deploy_eapi_internal_root_dir ~ '/' ~ eos_config_deploy_eapi_internal_output_dir_name
+      ))
+  }}
+eos_config_deploy_eapi_internal_config_dir_name: >-
+  {{ eos_config_deploy_eapi_config_dir_name | default(eos_config_dir_name | default('configs')) }}
+eos_config_deploy_eapi_internal_config_dir: >-
+  {{
+    eos_config_deploy_eapi_config_dir
+    | default(eos_config_dir | default(
+        eos_config_deploy_eapi_internal_output_dir ~ '/' ~ eos_config_deploy_eapi_internal_config_dir_name
+      ))
+  }}
+eos_config_deploy_eapi_internal_post_running_config_backup_filename: >-
+  {{
+    eos_config_deploy_eapi_post_running_config_backup_filename
+    | default(post_running_config_backup_filename | default(inventory_hostname ~ '_post_running-config.conf'))
+  }}
+eos_config_deploy_eapi_internal_post_running_config_backup_dir_name: >-
+  {{ eos_config_deploy_eapi_post_running_config_backup_dir_name | default(post_running_config_backup_dir_name | default('config_backup')) }}
+eos_config_deploy_eapi_internal_post_running_config_backup_dir: >-
+  {{
+    eos_config_deploy_eapi_post_running_config_backup_dir
+    | default(post_running_config_backup_dir | default(
+        eos_config_deploy_eapi_internal_root_dir ~ '/' ~ eos_config_deploy_eapi_internal_post_running_config_backup_dir_name
+      ))
+  }}
+eos_config_deploy_eapi_internal_pre_running_config_backup_filename: >-
+  {{
+    eos_config_deploy_eapi_pre_running_config_backup_filename
+    | default(pre_running_config_backup_filename | default(inventory_hostname ~ '_pre_running-config.conf'))
+  }}
+eos_config_deploy_eapi_internal_pre_running_config_backup_dir_name: >-
+  {{ eos_config_deploy_eapi_pre_running_config_backup_dir_name | default(pre_running_config_backup_dir_name | default('config_backup')) }}
+eos_config_deploy_eapi_internal_pre_running_config_backup_dir: >-
+  {{
+    eos_config_deploy_eapi_pre_running_config_backup_dir
+    | default(pre_running_config_backup_dir | default(
+        eos_config_deploy_eapi_internal_root_dir ~ '/' ~ eos_config_deploy_eapi_internal_pre_running_config_backup_dir_name
+      ))
+  }}
