@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils.load_python_class import load_python_class
+from pyavd._utils.get_ip_from_pool import get_ip_from_pool
 from pyavd.api.ip_addressing import AvdIpAddressing
 
 if TYPE_CHECKING:
@@ -32,10 +33,16 @@ class IpAddressingMixin(Protocol):
 
     @cached_property
     def loopback_ipv4_pool(self: SharedUtilsProtocol) -> str | None:
+        if not self.node_config.loopback_ipv4_address and not self.node_config.loopback_ipv4_pool:
+            msg = "'loopback_ipv4_pool or loopback_ipv4_address' is required but was not found"
+            raise AristaAvdMissingVariableError(msg)
         return self.node_config.loopback_ipv4_pool
 
     @cached_property
     def loopback_ipv4_address(self: SharedUtilsProtocol) -> str | None:
+        if not self.node_config.loopback_ipv4_address and not self.node_config.loopback_ipv4_pool:
+            msg = "'loopback_ipv4_pool or loopback_ipv4_address' is required but was not found"
+            raise AristaAvdMissingVariableError(msg)
         return self.node_config.loopback_ipv4_address
 
     @cached_property

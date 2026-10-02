@@ -288,7 +288,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         """
         return self.p2p_uplinks_peer_ipv6(uplink_switch_index)
 
-    def router_id(self) -> str:
+    def router_id(self) -> str | None:
         """
         Return IP address for Router ID.
 
@@ -296,12 +296,13 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         Default pool is "loopback_ipv4_pool"
         Default offset from pool is `id + loopback_ipv4_offset`
         """
-        if self._loopback_ipv4_address:
-            if template_path := self.shared_utils.node_type_key_data.ip_addressing.router_id:
-                return self._template(template_path, loopback_ipv4_address=self._loopback_ipv4_address)
-            return self._loopback_ipv4_address
-        if self._loopback_ipv4_pool:
-            loopback_pool = self._loopback_ipv4_pool if not self.shared_utils.underlay_ipv6_numbered else self._router_id_pool
+        loopback_pool = None
+        if self.shared_utils.underlay_ipv6_numbered:
+            loopback_pool = self._router_id_pool
+            offset = self._id + self._loopback_ipv4_offset
+            return get_ip_from_pool(loopback_pool, 32, offset, 0)
+        else:
+            loopback_pool = self._loopback_ipv4_pool
 
             if template_path := self.shared_utils.node_type_key_data.ip_addressing.router_id:
                 return self._template(
@@ -312,10 +313,13 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
                     loopback_ipv4_offset=self._loopback_ipv4_offset,
                 )
 
+            if self._loopback_ipv4_address:
+                return self._loopback_ipv4_address
+
             offset = self._id + self._loopback_ipv4_offset
-            return get_ip_from_pool(loopback_pool, 32, offset, 0)
-        msg = "'loopback_ipv4_address or loopback_ipv4_pool' is required but was not found"
-        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+            if loopback_pool:
+                return get_ip_from_pool(loopback_pool, 32, offset, 0)
+        return None
 
     def ipv6_router_id(self) -> str:
         """

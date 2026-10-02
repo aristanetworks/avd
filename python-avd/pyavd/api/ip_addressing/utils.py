@@ -81,7 +81,7 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def _loopback_ipv4_address(self: AvdIpAddressingProtocol) -> str | None:
-        return self.shared_utils.node_config.loopback_ipv4_address
+        return self.shared_utils.loopback_ipv4_address
 
     @cached_property
     def _loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str | None:
