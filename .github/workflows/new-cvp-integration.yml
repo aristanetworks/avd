@@ -62,7 +62,7 @@ jobs:
         avd_scenario:
           - "cv_workflow"
         ansible_version:
-          - "ansible-core<2.22.0 --upgrade"
+          - "ansible-core<2.23.0 --upgrade"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -99,7 +99,7 @@ jobs:
         avd_scenario:
           - "cv_deploy"
         ansible_version:
-          - "ansible-core<2.22.0 --upgrade"
+          - "ansible-core<2.23.0 --upgrade"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
