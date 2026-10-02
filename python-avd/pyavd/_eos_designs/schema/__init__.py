@@ -117310,17 +117310,19 @@ class EosDesigns(EosDesignsRootModel):
     With
     `avd_design_future.only_configure_address_locking_when_used: true`, it is rendered only when Address
     Locking is enabled on a connected endpoint, network port, VLAN, or SVI.
-    In this mode, IPv4 Address
-    Locking requires one of the following:
-      - `locked_address.ipv4_enforcement_disabled: true` —
-    enforcement-disabled mode, no lease learning required.
-      - `dhcp_servers_ipv4` with
-    `local_interface` (or a resolvable default management interface) — learns leases via DHCP
-    LeaseQuery.
-      - `dhcp_server_interfaces` (EOS 4.36+, requires
+    When
+    `avd_design_future.only_configure_address_locking_when_used: true`:
+      - IPv4 Address Locking
+    requires one of the following:
+        - `locked_address.ipv4_enforcement_disabled: true` — enforcement-
+    disabled mode, no lease learning required.
+        - `dhcp_servers_ipv4` with `local_interface` (or a
+    resolvable default management interface) — learns leases via DHCP LeaseQuery.
+        -
+    `dhcp_server_interfaces` (EOS 4.36+, requires
     `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`) — learns leases directly from
     DHCP server interfaces.
-    IPv6 Address Locking requires `locked_address.ipv6_enforcement_disabled:
+      - IPv6 Address Locking requires `locked_address.ipv6_enforcement_disabled:
     true`.
 
     Subclass of AvdModel.
@@ -119790,17 +119792,19 @@ class EosDesigns(EosDesignsRootModel):
                    With
                    `avd_design_future.only_configure_address_locking_when_used: true`, it is rendered only when Address
                    Locking is enabled on a connected endpoint, network port, VLAN, or SVI.
-                   In this mode, IPv4 Address
-                   Locking requires one of the following:
-                     - `locked_address.ipv4_enforcement_disabled: true` —
-                   enforcement-disabled mode, no lease learning required.
-                     - `dhcp_servers_ipv4` with
-                   `local_interface` (or a resolvable default management interface) — learns leases via DHCP
-                   LeaseQuery.
-                     - `dhcp_server_interfaces` (EOS 4.36+, requires
+                   When
+                   `avd_design_future.only_configure_address_locking_when_used: true`:
+                     - IPv4 Address Locking
+                   requires one of the following:
+                       - `locked_address.ipv4_enforcement_disabled: true` — enforcement-
+                   disabled mode, no lease learning required.
+                       - `dhcp_servers_ipv4` with `local_interface` (or a
+                   resolvable default management interface) — learns leases via DHCP LeaseQuery.
+                       -
+                   `dhcp_server_interfaces` (EOS 4.36+, requires
                    `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`) — learns leases directly from
                    DHCP server interfaces.
-                   IPv6 Address Locking requires `locked_address.ipv6_enforcement_disabled:
+                     - IPv6 Address Locking requires `locked_address.ipv6_enforcement_disabled:
                    true`.
 
                    Subclass of AvdModel.
