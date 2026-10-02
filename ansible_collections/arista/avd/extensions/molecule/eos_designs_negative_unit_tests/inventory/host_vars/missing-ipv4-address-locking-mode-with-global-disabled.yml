@@ -24,5 +24,5 @@ servers:
 expected_error_message: >-
   IPv4 address locking is enabled under 'servers[name=server].adapters[0]' but one of the following is required:
   `address_locking_settings.locked_address.ipv4_enforcement_disabled: true`, `address_locking_settings.dhcp_servers_ipv4`
-  with a local interface, or server-interface mode with `address_locking_settings.dhcp_server_interfaces` and
+  with `address_locking_settings.local_interface`, or `address_locking_settings.dhcp_server_interfaces` with
   `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`.

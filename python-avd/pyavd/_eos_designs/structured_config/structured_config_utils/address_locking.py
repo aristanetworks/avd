@@ -98,7 +98,9 @@ class AddressLockingMixin(Protocol):
         if address_locking_settings.locked_address.ipv4_enforcement_disabled and not feature_support.ipv4_enforcement_disabled:
             msg = (
                 f"IPv4 address locking is enabled under '{context}' with `ipv4_enforcement_disabled: true`, but the platform does not support "
-                "`locked-address ipv4 enforcement disabled`. Configure LeaseQuery or server-interface mode instead."
+                "`locked-address ipv4 enforcement disabled`. "
+                "Configure `address_locking_settings.dhcp_servers_ipv4` with `address_locking_settings.local_interface`, or "
+                "`address_locking_settings.dhcp_server_interfaces` with `avd_design_future.fix_address_locking_dhcp_server_interfaces: true` instead."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
@@ -106,8 +108,8 @@ class AddressLockingMixin(Protocol):
         msg = (
             f"IPv4 address locking is enabled under '{context}' but one of the following is required: "
             "`address_locking_settings.locked_address.ipv4_enforcement_disabled: true`, "
-            "`address_locking_settings.dhcp_servers_ipv4` with a local interface, or "
-            "server-interface mode with `address_locking_settings.dhcp_server_interfaces` and "
+            "`address_locking_settings.dhcp_servers_ipv4` with `address_locking_settings.local_interface`, or "
+            "`address_locking_settings.dhcp_server_interfaces` with "
             "`avd_design_future.fix_address_locking_dhcp_server_interfaces: true`."
         )
         raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
