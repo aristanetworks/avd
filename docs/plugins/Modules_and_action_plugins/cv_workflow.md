@@ -27,6 +27,7 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 - Deploy a full hierarchy of containers and configlets using Static Configuration Studio.
 - Create and associate Device and Interface Tags.
 - Approve, run, cancel Change Controls as needed.
+- Decommission devices marked with `is_deployed: false` from CloudVision (requires `inventory_mode: controlled` and CloudVision 2025.1.0 or later).
 
 ## Parameters
 
@@ -49,6 +50,7 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>device_list</samp> | list | False | None | - | List of devices to deploy. The names are used to find AVD structured configuration and EOS configuration files. |
 | <samp>strict_tags</samp> | bool | optional | False | - | If `true` other tags associated with the devices will get removed. Otherwise other tags will be left as-is. |
 | <samp>skip_missing_devices</samp> | bool | optional | False | - | If `true` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue. |
+| <samp>inventory_mode</samp> | str | optional | loose | Valid values:<br>- <code>loose</code><br>- <code>controlled</code> | Controls how devices with `is_deployed: false` are handled.<br><br>- `loose` (default): Devices with `is_deployed: false` are silently skipped. No changes are made to CloudVision for these devices.<br>- `controlled`: Devices with `is_deployed: false` are decommissioned from CloudVision.<br>    CloudVision removes device-specific containers and all device and interface tag assignments associated with the device.<br>    CloudVision does not remove configlets or tag definitions.<br>    After decommission staging succeeds, AVD removes any leftover flat-layout device configlet, including for devices using the manifest layout.<br>    The supplied static configuration manifest remains authoritative and is reconciled after decommission staging.<br>    AVD does not delete tag definitions.<br><br>Requires CloudVision 2025.1.0 or later when set to `controlled`. |
 | <samp>strict_system_mac_address</samp> | bool | optional | False | - | If `true`, raise an exception if the input data contains devices with a duplicated system_mac_address but unique serial_number values.<br>Otherwise, just issue a warning. |
 | <samp>configlet_name_template</samp> | str | optional | AVD-${hostname} | - | Python String Template to use for creating the configlet name for each device configuration. |
 | <samp>static_config_manifest</samp> | dict | optional | None | - | Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio. |
@@ -117,6 +119,7 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
         device_list: "{{ ansible_play_hosts }}"
         # strict_tags: false
         # skip_missing_devices: false
+        # inventory_mode: loose
         # strict_system_mac_address: false
         # configlet_name_template: "AVD-${hostname}"
         # static_config_manifest:
