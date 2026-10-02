@@ -63,14 +63,22 @@ class AddressLockingMixin(Protocol):
         feature_support = self.shared_utils.platform_settings.feature_support.address_locking
         if address_family == "ipv6":
             # EOS supports IPv6 Address Locking only with enforcement disabled.
-            if address_locking_settings.locked_address.ipv6_enforcement_disabled and feature_support.ipv6_enforcement_disabled:
-                self.set_once_address_locking()
-                return
+            if not address_locking_settings.locked_address.ipv6_enforcement_disabled:
+                msg = (
+                    f"IPv6 address locking is enabled under '{context}' but "
+                    "`address_locking_settings.locked_address.ipv6_enforcement_disabled: true` is required."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
-            msg = (
-                f"IPv6 address locking is enabled under '{context}' but `address_locking_settings.locked_address.ipv6_enforcement_disabled: true` is required."
-            )
-            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+            if not feature_support.ipv6_enforcement_disabled:
+                msg = (
+                    f"IPv6 address locking is enabled under '{context}' but the platform does not support "
+                    "`locked-address ipv6 enforcement disabled`, which is required for IPv6 Address Locking."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+            self.set_once_address_locking()
+            return
 
         # IPv4 Address Locking can operate without lease learning when enforcement is disabled.
         if address_locking_settings.locked_address.ipv4_enforcement_disabled and feature_support.ipv4_enforcement_disabled:

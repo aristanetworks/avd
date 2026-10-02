@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: IPv6 address locking is enabled under 'servers[name=server].adapters[0]' but the platform does not support `locked-address ipv6 enforcement disabled`, which is required for IPv6 Address Locking.

@@ -3,7 +3,6 @@ aaa_root:
 address_locking:
   dhcp_server_interfaces:
   - Ethernet1
-  disabled: true
 config_end: true
 enable_password:
   disabled: true

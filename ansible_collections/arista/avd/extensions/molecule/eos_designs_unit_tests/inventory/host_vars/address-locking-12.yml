@@ -19,7 +19,6 @@ avd_design_future:
 address_locking_settings:
   dhcp_server_interfaces:
     - Ethernet1
-  disabled: true
 
 servers:
   - name: ADDRESS_LOCKING_12_SERVER
