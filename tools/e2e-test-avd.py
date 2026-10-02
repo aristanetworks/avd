@@ -474,7 +474,7 @@ class AvdBuildContext:
 
         # Unload modules loaded from the custom path
         modules_to_unload = []
-        for name, mod in list(sys.modules.items()):
+        for name, mod in sys.modules.copy().items():
             if mod is None:
                 continue
 
