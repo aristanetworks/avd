@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils.load_python_class import load_python_class
-from pyavd._utils.get_ip_from_pool import get_ip_from_pool
 from pyavd.api.ip_addressing import AvdIpAddressing
 
 if TYPE_CHECKING:

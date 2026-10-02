@@ -301,24 +301,23 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             loopback_pool = self._router_id_pool
             offset = self._id + self._loopback_ipv4_offset
             return get_ip_from_pool(loopback_pool, 32, offset, 0)
-        else:
-            loopback_pool = self._loopback_ipv4_pool
+        loopback_pool = self._loopback_ipv4_pool
 
-            if template_path := self.shared_utils.node_type_key_data.ip_addressing.router_id:
-                return self._template(
-                    template_path,
-                    switch_id=self._id,
-                    loopback_ipv4_pool=self._loopback_ipv4_pool,
-                    loopback_ipv4_address=self._loopback_ipv4_address,
-                    loopback_ipv4_offset=self._loopback_ipv4_offset,
-                )
+        if template_path := self.shared_utils.node_type_key_data.ip_addressing.router_id:
+            return self._template(
+                template_path,
+                switch_id=self._id,
+                loopback_ipv4_pool=self._loopback_ipv4_pool,
+                loopback_ipv4_address=self._loopback_ipv4_address,
+                loopback_ipv4_offset=self._loopback_ipv4_offset,
+            )
 
-            if self._loopback_ipv4_address:
-                return self._loopback_ipv4_address
+        if self._loopback_ipv4_address:
+            return self._loopback_ipv4_address
 
-            offset = self._id + self._loopback_ipv4_offset
-            if loopback_pool:
-                return get_ip_from_pool(loopback_pool, 32, offset, 0)
+        offset = self._id + self._loopback_ipv4_offset
+        if loopback_pool:
+            return get_ip_from_pool(loopback_pool, 32, offset, 0)
         return None
 
     def ipv6_router_id(self) -> str:
