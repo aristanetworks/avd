@@ -1,0 +1,12 @@
+---
+devices:
+  - name: dns-settings-profile-missing-parent-profile
+    type: l2leaf
+    dns_settings_profile: child_profile
+
+dns_settings_profiles:
+  - profile: child_profile
+    parent_profile: missing_parent_profile
+
+expected_error_message: >-
+  Unresolved `parent_profile` references while trying to resolve profiles for EosDesigns.DnsSettings: {'missing_parent_profile'}

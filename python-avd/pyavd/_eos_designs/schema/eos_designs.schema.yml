@@ -2506,8 +2506,8 @@ keys:
         $ref: eos_cli_config_gen#/keys/domain_list
       servers:
         type: list
-        required: true
         min_length: 1
+        description: List of DNS servers to configure.
         items:
           type: dict
           keys:
@@ -2543,6 +2543,7 @@ keys:
       vrfs:
         type: list
         primary_key: name
+        description: Per-VRF DNS lookup source-interface settings.
         items:
           type: dict
           keys:
@@ -2568,6 +2569,32 @@ keys:
       ip_hosts:
         type: list
         $ref: eos_cli_config_gen#/keys/ip_hosts
+        description: Static hostname-to-IP address mappings to configure in the local
+          host table.
+  dns_settings_profiles:
+    type: list
+    primary_key: profile
+    description: 'List of DNS settings profiles that can be applied to devices using
+      `dns_settings_profile` under node definitions.
+
+      Profiles support inheritance using `parent_profile`, allowing common DNS settings
+      to be shared and selectively overridden per profile.'
+    items:
+      type: dict
+      $ref: eos_designs#/keys/dns_settings
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: DNS settings profile name.
+        parent_profile:
+          type: str
+          default: ''
+          description: 'Inherit settings from a parent profile defined under `dns_settings_profiles`.
+
+            The settings from this profile override settings inherited from the parent
+            profile.'
   dot1x_settings:
     documentation_options:
       table: dot1x-settings
@@ -15472,6 +15499,13 @@ $defs:
 
               Validation profiles define requirements (e.g., hardware and logging)
               used by the `anta_runner` role during post-deployment validation.'
+          dns_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: 'Name of the DNS settings profile to apply to this device.
+
+              The profile must be defined under `dns_settings_profiles`.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

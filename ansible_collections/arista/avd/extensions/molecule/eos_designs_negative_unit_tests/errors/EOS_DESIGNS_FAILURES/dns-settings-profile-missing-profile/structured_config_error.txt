@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Profile 'missing_profile' is missing while trying to resolve profiles for EosDesigns.DnsSettings
