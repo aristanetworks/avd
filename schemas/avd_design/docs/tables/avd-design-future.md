@@ -18,6 +18,7 @@
     | [<samp>&nbsp;&nbsp;fix_match_ipv6_prefix_list_on_mlag_route_map</samp>](## "avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`<br>instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`. |
     | [<samp>&nbsp;&nbsp;fix_radius_server_group_tls</samp>](## "avd_design_future.fix_radius_server_group_tls") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
+    | [<samp>&nbsp;&nbsp;only_configure_address_locking_when_used</samp>](## "avd_design_future.only_configure_address_locking_when_used") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>When `false` (the default), render global Address Locking settings whenever `address_locking_settings` has at least one setting.<br>When `true`, render global Address Locking settings only when IPv4 or IPv6 Address Locking is enabled on a connected endpoint, network port, VLAN, or SVI.<br>When `true`, IPv4 Address Locking requires one of the following global configurations:<br>  - `address_locking_settings.locked_address.ipv4_enforcement_disabled: true`.<br>  - LeaseQuery mode with `address_locking_settings.dhcp_servers_ipv4` and `address_locking_settings.local_interface`. If `local_interface` is not set, AVD uses the default management interface, which must resolve to an interface.<br>  - Server-interface mode with `address_locking_settings.dhcp_server_interfaces` and `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`.<br>When `true`, IPv6 Address Locking requires `address_locking_settings.locked_address.ipv6_enforcement_disabled: true`. |
     | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
     | [<samp>&nbsp;&nbsp;only_configure_pvst_border_when_mode_is_mstp</samp>](## "avd_design_future.only_configure_pvst_border_when_mode_is_mstp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>PVST border parameters have no effect unless the spanning-tree mode is MSTP.<br>When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to 'mstp'. |
     | [<samp>&nbsp;&nbsp;only_configure_route_map_connected_to_bgp_vrfs_when_used</samp>](## "avd_design_future.only_configure_route_map_connected_to_bgp_vrfs_when_used") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.<br>The route map is skipped when both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,<br>since 'redistribute connected route-map' is not required in that case. |
@@ -73,6 +74,16 @@
       # Available from AVD 6.2.0.
       # Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
       only_configure_ipv6_inband_mgmt_prefix_list_when_used: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # When `false` (the default), render global Address Locking settings whenever `address_locking_settings` has at least one setting.
+      # When `true`, render global Address Locking settings only when IPv4 or IPv6 Address Locking is enabled on a connected endpoint, network port, VLAN, or SVI.
+      # When `true`, IPv4 Address Locking requires one of the following global configurations:
+      #   - `address_locking_settings.locked_address.ipv4_enforcement_disabled: true`.
+      #   - LeaseQuery mode with `address_locking_settings.dhcp_servers_ipv4` and `address_locking_settings.local_interface`. If `local_interface` is not set, AVD uses the default management interface, which must resolve to an interface.
+      #   - Server-interface mode with `address_locking_settings.dhcp_server_interfaces` and `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`.
+      # When `true`, IPv6 Address Locking requires `address_locking_settings.locked_address.ipv6_enforcement_disabled: true`.
+      only_configure_address_locking_when_used: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.

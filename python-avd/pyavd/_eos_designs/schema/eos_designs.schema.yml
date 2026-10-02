@@ -388,6 +388,28 @@ keys:
   address_locking_settings:
     type: dict
     $ref: eos_cli_config_gen#/keys/address_locking
+    description: 'Global Address Locking configuration.
+
+      With `avd_design_future.only_configure_address_locking_when_used: false` (the
+      default), this configuration is rendered
+
+      whenever it has at least one setting.
+
+      With `avd_design_future.only_configure_address_locking_when_used: true`, it
+      is rendered only when Address Locking is enabled on a connected endpoint, network
+      port, VLAN, or SVI.
+
+      In this mode, IPv4 Address Locking requires IPv4 enforcement to be disabled,
+      LeaseQuery mode, or server-interface mode.
+
+      LeaseQuery mode uses `dhcp_servers_ipv4` and a local interface. If `local_interface`
+      is not set, AVD uses the default management interface, which must resolve to
+      an interface.
+
+      Server-interface mode uses `dhcp_server_interfaces` with `avd_design_future.fix_address_locking_dhcp_server_interfaces:
+      true`.
+
+      IPv6 Address Locking requires IPv6 enforcement to be disabled.'
     keys:
       local_interface:
         type: str
@@ -398,7 +420,18 @@ keys:
           `mgmt_interface` or `inband_mgmt_interface` as the local interface depending
           on the value of `default_mgmt_method`.\n  - Any other string will be used
           directly as the local interface.\nWhen `avd_design_future.fix_address_locking_dhcp_server_interfaces`
-          is `true`, this setting is mutually exclusive with `dhcp_server_interfaces`."
+          is `true`, this setting is mutually exclusive with `dhcp_server_interfaces`.\nFor
+          IPv4 LeaseQuery mode, configure this setting, or use a resolvable default
+          management interface, together with at least one `dhcp_servers_ipv4` entry."
+      dhcp_servers_ipv4:
+        type: list
+        description: 'DHCP server IPv4 addresses used by IPv4 LeaseQuery mode.
+
+          Requires a local interface. If `local_interface` is not configured, AVD
+          uses the default management interface, which must resolve to an interface.'
+        items:
+          type: str
+          description: DHCP server IPv4 address.
       dhcp_server_interfaces:
         type: list
         description: 'The list of interfaces connected to the DHCP server.
@@ -408,7 +441,13 @@ keys:
 
           When enabled, this setting is mutually exclusive with `local_interface`.
 
-          Requires EOS version 4.36 or later.'
+          Requires EOS version 4.36 or later.
+
+          This is the server-interface mode for IPv4 Address Locking, where `dhcp_servers_ipv4`
+          is optional.
+
+          EOS DHCP Snooping is incompatible with IP Locking and must not be configured
+          alongside this mode.'
         items:
           type: str
           description: Interface name.
@@ -527,6 +566,22 @@ keys:
 
           Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.'
         default: false
+      only_configure_address_locking_when_used:
+        type: bool
+        default: false
+        description: "Available from AVD 6.5.0.\nWhen `false` (the default), render
+          global Address Locking settings whenever `address_locking_settings` has
+          at least one setting.\nWhen `true`, render global Address Locking settings
+          only when IPv4 or IPv6 Address Locking is enabled on a connected endpoint,
+          network port, VLAN, or SVI.\nWhen `true`, IPv4 Address Locking requires
+          one of the following global configurations:\n  - `address_locking_settings.locked_address.ipv4_enforcement_disabled:
+          true`.\n  - LeaseQuery mode with `address_locking_settings.dhcp_servers_ipv4`
+          and `address_locking_settings.local_interface`. If `local_interface` is
+          not set, AVD uses the default management interface, which must resolve to
+          an interface.\n  - Server-interface mode with `address_locking_settings.dhcp_server_interfaces`
+          and `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`.\nWhen
+          `true`, IPv6 Address Locking requires `address_locking_settings.locked_address.ipv6_enforcement_disabled:
+          true`."
       only_configure_mlag_vrfs_peer_group_when_used:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -6381,9 +6436,16 @@ keys:
                     address_locking:
                       type: dict
                       $ref: eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family
-                      description: To configure `address_locking.ipv4/v6`, you must
-                        define either `address_locking_settings.dhcp_servers_ipv4`
-                        or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                      description: 'With `avd_design_future.only_configure_address_locking_when_used:
+                        true`, enabling an address family requires compatible global
+                        Address Locking settings.
+
+                        See `address_locking_settings` for the IPv4 LeaseQuery, IPv4
+                        server-interface mode, and IPv6 enforcement-disabled requirements.
+
+                        With the future key set to `false`, enabling IPv4 or IPv6
+                        Address Locking requires `address_locking_settings.dhcp_servers_ipv4`
+                        or the matching enforcement-disabled setting.'
                     profile:
                       type: str
                       description: 'SVI profile name to apply.
@@ -12480,7 +12542,17 @@ $defs:
                   is enabled on the interface.'
       address_locking:
         type: dict
-        description: Address locking settings applied on the port.
+        description: 'Address locking settings applied on the port.
+
+          With `avd_design_future.only_configure_address_locking_when_used: true`,
+          enabling an address family requires compatible global Address Locking settings.
+
+          See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface
+          mode, and IPv6 enforcement-disabled requirements.
+
+          With the future key set to `false`, AVD renders supported interface Address
+          Locking configuration without validating the global Address Locking operating
+          mode.'
         keys:
           ipv4:
             type: bool
@@ -12859,6 +12931,16 @@ $defs:
         address_locking:
           type: dict
           $ref: eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family
+          description: 'With `avd_design_future.only_configure_address_locking_when_used:
+            true`, enabling an address family requires compatible global Address Locking
+            settings.
+
+            See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface
+            mode, and IPv6 enforcement-disabled requirements.
+
+            With the future key set to `false`, enabling IPv4 or IPv6 Address Locking
+            requires `address_locking_settings.dhcp_servers_ipv4` or the matching
+            enforcement-disabled setting.'
         vni_override:
           type: int
           convert_types:

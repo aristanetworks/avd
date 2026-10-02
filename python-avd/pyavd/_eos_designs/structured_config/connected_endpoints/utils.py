@@ -246,6 +246,7 @@ class UtilsMixin(Protocol):
             return Undefined
 
         address_locking = output_type()
+        address_families: list[Literal["ipv4", "ipv6"]] = []
         if isinstance(address_locking, EosCliConfigGen.PortChannelInterfacesItem.AddressLocking):
             if adapter.address_locking.ipv4 is False:
                 address_locking.address_family.ipv4 = adapter.address_locking.ipv4
@@ -253,8 +254,16 @@ class UtilsMixin(Protocol):
                 address_locking.address_family.ipv6 = adapter.address_locking.ipv6
         else:  # EosCliConfigGen.EthernetInterfacesItem.AddressLocking
             address_locking.address_family.ipv4 = adapter.address_locking.ipv4
+            if adapter.address_locking.ipv4:
+                address_families.append("ipv4")
             if feature_support.address_locking.ipv6_ethernet_interface:
                 address_locking.address_family.ipv6 = adapter.address_locking.ipv6
+                if adapter.address_locking.ipv6:
+                    address_families.append("ipv6")
+
+        if self.inputs.avd_design_future.only_configure_address_locking_when_used:
+            for address_family in address_families:
+                self.structured_config_utils.ensure_address_locking(address_family, adapter._internal_data.context)
         return address_locking
 
     def _get_adapter_dot1x(
