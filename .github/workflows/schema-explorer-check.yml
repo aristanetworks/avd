@@ -10,11 +10,6 @@ name: Schema Explorer check
       - ".github/workflows/schema-explorer-check.yml"
   merge_group:
     types: [checks_requested]
-    paths:
-      - "tools/schema-explorer/**"
-      - "tools/schema_explorer_markdown.py"
-      - "Makefile"
-      - ".github/workflows/schema-explorer-check.yml"
   push:
     branches:
       - devel
