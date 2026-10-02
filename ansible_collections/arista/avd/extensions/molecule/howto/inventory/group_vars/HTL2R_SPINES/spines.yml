@@ -1,0 +1,16 @@
+---
+type: spine
+
+spine:
+  defaults:
+    platform: cEOS-lab
+    loopback_ipv4_pool: 10.255.8.0/27
+    bgp_as: 65100
+
+  nodes:
+    - name: htl2r-spine1
+      id: 1
+      mgmt_ip: 172.16.4.11/24
+    - name: htl2r-spine2
+      id: 2
+      mgmt_ip: 172.16.4.12/24
