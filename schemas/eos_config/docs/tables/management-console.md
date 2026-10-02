@@ -8,11 +8,13 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>management_console</samp>](## "management_console") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;idle_timeout</samp>](## "management_console.idle_timeout") | Integer |  |  | Min: 0<br>Max: 86400 |  |
+    | [<samp>&nbsp;&nbsp;idle_timeout</samp>](## "management_console.idle_timeout") | Integer |  |  | Min: 0<br>Max: 86400 | Idle timeout in minutes. |
 
 === "YAML"
 
     ```yaml
     management_console:
+
+      # Idle timeout in minutes.
       idle_timeout: <int; 0-86400>
     ```
