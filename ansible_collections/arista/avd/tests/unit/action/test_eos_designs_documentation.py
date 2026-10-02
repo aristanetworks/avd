@@ -56,35 +56,35 @@ def test_normalize_yaml_data_recursively_honors_dataclass_yaml_keys() -> None:
     """Normalize nested cLab-shaped dataclasses into YAML-ready data while preserving explicit YAML key aliases."""
 
     @dataclass(frozen=True)
-    class ContainerlabNode:
+    class SampleContainerlabNode:
         mgmt_ipv4: str = field(metadata={"yaml_key": "mgmt-ipv4"})
 
     @dataclass(frozen=True)
-    class ContainerlabKind:
+    class SampleContainerlabKind:
         enforce_startup_config: bool = field(metadata={"yaml_key": "enforce-startup-config"})
         image: str
 
     @dataclass(frozen=True)
-    class ContainerlabMgmt:
+    class SampleContainerlabMgmt:
         network: str
         ipv4_subnet: str = field(metadata={"yaml_key": "ipv4-subnet"})
 
     @dataclass(frozen=True)
-    class ContainerlabTopology:
-        nodes: dict[object, ContainerlabNode]
-        kinds: tuple[ContainerlabKind, ...]
+    class SampleContainerlabTopology:
+        nodes: dict[object, SampleContainerlabNode]
+        kinds: tuple[SampleContainerlabKind, ...]
         endpoint_lists: list[tuple[str, str]]
 
     @dataclass(frozen=True)
-    class ContainerlabDigitalTwin:
-        mgmt: ContainerlabMgmt
-        topology: ContainerlabTopology
+    class SampleContainerlabDigitalTwin:
+        mgmt: SampleContainerlabMgmt
+        topology: SampleContainerlabTopology
 
-    data = ContainerlabDigitalTwin(
-        mgmt=ContainerlabMgmt(network="clab-mgmt", ipv4_subnet="172.16.1.0/24"),
-        topology=ContainerlabTopology(
-            nodes={1: ContainerlabNode(mgmt_ipv4="172.16.1.101")},
-            kinds=(ContainerlabKind(enforce_startup_config=True, image="ceos:latest"),),
+    data = SampleContainerlabDigitalTwin(
+        mgmt=SampleContainerlabMgmt(network="clab-mgmt", ipv4_subnet="172.16.1.0/24"),
+        topology=SampleContainerlabTopology(
+            nodes={1: SampleContainerlabNode(mgmt_ipv4="172.16.1.101")},
+            kinds=(SampleContainerlabKind(enforce_startup_config=True, image="ceos:latest"),),
             endpoint_lists=[("leaf1:eth1", "spine1:eth1")],
         ),
     )
