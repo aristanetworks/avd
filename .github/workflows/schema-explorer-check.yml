@@ -7,6 +7,8 @@ name: Schema Explorer check
       - "tools/schema-explorer/**"
       - "tools/schema_explorer_markdown.py"
       - "Makefile"
+      - "pyproject.toml"
+      - "uv.lock"
       - ".github/workflows/schema-explorer-check.yml"
   merge_group:
     types: [checks_requested]
@@ -17,6 +19,8 @@ name: Schema Explorer check
       - "tools/schema-explorer/**"
       - "tools/schema_explorer_markdown.py"
       - "Makefile"
+      - "pyproject.toml"
+      - "uv.lock"
       - ".github/workflows/schema-explorer-check.yml"
 
 permissions:
