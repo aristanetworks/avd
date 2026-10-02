@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import json
-from dataclasses import asdict
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -18,14 +17,18 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 if TYPE_CHECKING:  # pragma: no cover
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils.get import get
+    from pyavd._utils.normalize_yaml_data import normalize_yaml_data as _normalize_yaml_data
     from pyavd._utils.strip_empties import strip_empties_from_dict
+    from pyavd.api.fabric_documentation import ContainerlabDigitalTwin
     from pyavd.get_fabric_documentation import get_fabric_documentation
     from pyavd.j2filters import natural_sort
 
 try:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils.get import get
+    from pyavd._utils.normalize_yaml_data import normalize_yaml_data as _normalize_yaml_data
     from pyavd._utils.strip_empties import strip_empties_from_dict
+    from pyavd.api.fabric_documentation import ContainerlabDigitalTwin
     from pyavd.get_fabric_documentation import get_fabric_documentation
     from pyavd.j2filters import natural_sort
 
@@ -116,11 +119,33 @@ class ActionModule(AVDActionPlugin):
             self.result["changed"] = self.result["changed"] or changed
 
         if output.digital_twin:
-            content = strip_empties_from_dict(
-                {str(key).replace("_", "-"): list(value) if isinstance(value, tuple) else value for key, value in asdict(output.digital_twin).items()}
-            )
+            content = strip_empties_from_dict(_normalize_yaml_data(output.digital_twin))
+            yaml_language_server_prefix = ""
+            # for cLab we want empty `prefix` at all times in the topology to avoid modifying hostnames
+            if get(task_vars, "digital_twin.environment") == "containerlab" and isinstance(output.digital_twin, ContainerlabDigitalTwin):
+                interface_mapping = content.pop("interface_mapping", None)
+                if interface_mapping:
+                    changed = write_file(
+                        content=json.dumps(interface_mapping, indent=4) + "\n",
+                        filename=str(Path(validated_args["digital_twin_file"]).parent / "interface_mapping.json"),
+                        file_mode=validated_args["mode"],
+                    )
+                    self.result["changed"] = self.result["changed"] or changed
+
+                content["topology"]["nodes"] = {
+                    node_name: {
+                        "mgmt-ipv4": node_settings["mgmt-ipv4"],
+                        "startup-config": f"intended/configs/{node_name}.cfg",
+                    }
+                    for node_name, node_settings in content["topology"]["nodes"].items()
+                }
+                # add keys in a very specific order - name, prefix, everything else
+                content = {"name": content["name"], "prefix": output.digital_twin.prefix, **{key: value for key, value in content.items() if key != "name"}}
+                yaml_language_server_prefix = (
+                    "# yaml-language-server: $schema=https://raw.githubusercontent.com/srl-labs/containerlab/main/schemas/clab.schema.json\n"
+                )
             changed = write_file(
-                content=yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),
+                content=yaml_language_server_prefix + yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130, explicit_start=True),
                 filename=validated_args["digital_twin_file"],
                 file_mode=validated_args["mode"],
             )

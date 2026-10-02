@@ -1,0 +1,9 @@
+Node Type,Node,Serial Number,Node Interface,Peer Type,Peer Node,Peer Serial Number,Peer Interface,Node Interface Enabled
+l3leaf,dc1-leaf1a,,Ethernet1,spine,dc1-spine1,,Ethernet1,True
+l3leaf,dc1-leaf1a,,Ethernet1/2,spine,dc1-spine2,,Ethernet1/2,True
+l3leaf,dc1-leaf2a,,Ethernet1/1,spine,dc1-spine1,,Ethernet1/3,True
+l3leaf,dc1-leaf2a,,Ethernet2,spine,dc1-spine2,,Ethernet2,True
+spine,dc1-spine1,,Ethernet1,l3leaf,dc1-leaf1a,,Ethernet1,True
+spine,dc1-spine1,,Ethernet1/3,l3leaf,dc1-leaf2a,,Ethernet1/1,True
+spine,dc1-spine2,,Ethernet1/2,l3leaf,dc1-leaf1a,,Ethernet1/2,True
+spine,dc1-spine2,,Ethernet2,l3leaf,dc1-leaf2a,,Ethernet2,True

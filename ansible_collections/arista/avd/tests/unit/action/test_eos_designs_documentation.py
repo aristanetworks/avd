@@ -5,13 +5,24 @@ from __future__ import annotations
 
 import json
 import logging
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
 import pytest
 from ansible.errors import AnsibleActionFail
 
-from ansible_collections.arista.avd.plugins.action.eos_designs_documentation import ActionModule
+from ansible_collections.arista.avd.plugins.action.eos_designs_documentation import ActionModule, _normalize_yaml_data
+from pyavd.api.fabric_documentation import (
+    ACTDigitalTwin,
+    ActNodeSettings,
+    ContainerlabDefaults,
+    ContainerlabDigitalTwin,
+    ContainerlabKind,
+    ContainerlabMgmt,
+    ContainerlabNode,
+    ContainerlabTopology,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -22,6 +33,7 @@ LOG_HANDLERS_PATH = "ansible_collections.arista.avd.plugins.plugin_utils.utils.a
 LOG_CONFIG_PATH = "ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_config"
 MOCK_TMP_DIR = "/avd/mocked/tmp"
 FABRIC_NAME = "DC1_FABRIC"
+CONTAINERLAB_SCHEMA_COMMENT = "# yaml-language-server: $schema=https://raw.githubusercontent.com/srl-labs/containerlab/main/schemas/clab.schema.json"
 
 
 """Default validated_args returned by the action module's argument-spec validation.
@@ -39,6 +51,53 @@ BASE_VALIDATED_ARGS = {
     "toc": True,
     "digital_twin": False,
 }
+
+
+def test_normalize_yaml_data_recursively_honors_dataclass_yaml_keys() -> None:
+    """Normalize nested cLab-shaped dataclasses into YAML-ready data while preserving explicit YAML key aliases."""
+
+    @dataclass(frozen=True)
+    class SampleContainerlabNode:
+        mgmt_ipv4: str = field(metadata={"yaml_key": "mgmt-ipv4"})
+
+    @dataclass(frozen=True)
+    class SampleContainerlabKind:
+        enforce_startup_config: bool = field(metadata={"yaml_key": "enforce-startup-config"})
+        image: str
+
+    @dataclass(frozen=True)
+    class SampleContainerlabMgmt:
+        network: str
+        ipv4_subnet: str = field(metadata={"yaml_key": "ipv4-subnet"})
+
+    @dataclass(frozen=True)
+    class SampleContainerlabTopology:
+        nodes: dict[object, SampleContainerlabNode]
+        kinds: tuple[SampleContainerlabKind, ...]
+        endpoint_lists: list[tuple[str, str]]
+
+    @dataclass(frozen=True)
+    class SampleContainerlabDigitalTwin:
+        mgmt: SampleContainerlabMgmt
+        topology: SampleContainerlabTopology
+
+    data = SampleContainerlabDigitalTwin(
+        mgmt=SampleContainerlabMgmt(network="clab-mgmt", ipv4_subnet="172.16.1.0/24"),
+        topology=SampleContainerlabTopology(
+            nodes={1: SampleContainerlabNode(mgmt_ipv4="172.16.1.101")},
+            kinds=(SampleContainerlabKind(enforce_startup_config=True, image="ceos:latest"),),
+            endpoint_lists=[("leaf1:eth1", "spine1:eth1")],
+        ),
+    )
+
+    assert _normalize_yaml_data(data) == {
+        "mgmt": {"network": "clab-mgmt", "ipv4-subnet": "172.16.1.0/24"},
+        "topology": {
+            "nodes": {"1": {"mgmt-ipv4": "172.16.1.101"}},
+            "kinds": [{"enforce-startup-config": True, "image": "ceos:latest"}],
+            "endpoint_lists": [["leaf1:eth1", "spine1:eth1"]],
+        },
+    }
 
 
 def _empty_output() -> MagicMock:
@@ -97,6 +156,193 @@ def test_run_routes_missing_device_warning_to_display(action_module: Callable[..
     warning_messages = [call.args[0] for call in shared_display.warning.call_args_list]
     assert warning_messages == [expected_message]
     assert result.get("failed") is not True
+
+
+def test_main_marks_changed_when_p2p_links_csv_changes(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Cover changed aggregation for p2p link CSV output."""
+    module = action_module(ActionModule)
+    module.result["changed"] = False
+    p2p_links_csv_file = tmp_path / "p2p-links.csv"
+    output = _empty_output()
+    output.p2p_links_csv = "node,peer\nleaf1,spine1\n"
+    written_files: dict[str, str] = {}
+
+    def mock_write_file(content: str, filename: str, file_mode: str) -> bool:
+        assert file_mode == "0o664"
+        written_files[filename] = content
+        return True
+
+    with (
+        patch.object(
+            module,
+            "_validate_args",
+            return_value={
+                **BASE_VALIDATED_ARGS,
+                "p2p_links_csv": True,
+                "p2p_links_csv_file": str(p2p_links_csv_file),
+                "mode": "0o664",
+            },
+        ),
+        patch.object(module, "load_facts", return_value={}),
+        patch.object(module, "read_structured_configs", return_value={}),
+        patch(f"{MODULE_PATH}.get_fabric_documentation", return_value=output),
+        patch(f"{MODULE_PATH}.write_file", side_effect=mock_write_file),
+    ):
+        module.main(task_vars={"fabric_name": FABRIC_NAME})
+
+    assert written_files == {str(p2p_links_csv_file): "node,peer\nleaf1,spine1\n"}
+    assert module.result["changed"] is True
+
+
+def test_main_writes_containerlab_topology_with_ordered_name_and_prefix(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Cover the cLab-only topology key ordering: name and prefix must be emitted first."""
+    module = action_module(ActionModule)
+    module.result["changed"] = False
+    topology_file = tmp_path / "fabric.clab.yml"
+    output = _empty_output()
+    output.digital_twin = ContainerlabDigitalTwin(
+        name="DC1",
+        prefix="",
+        mgmt=ContainerlabMgmt(network="clab-mgmt", ipv4_subnet="172.16.1.0/24"),
+        topology=ContainerlabTopology(
+            defaults=ContainerlabDefaults(kind="arista_ceos"),
+            kinds={"arista_ceos": ContainerlabKind(enforce_startup_config=True, image="ceos:latest")},
+            nodes={"leaf1": ContainerlabNode(mgmt_ipv4="172.16.1.101")},
+            links=(),
+        ),
+        interface_mapping={
+            "ManagementIntf": {"eth0": "Management1"},
+            "EthernetIntf": {"eth1": "Ethernet1"},
+        },
+    )
+    written_files: dict[str, str] = {}
+
+    def mock_write_file(content: str, filename: str, file_mode: str) -> bool:
+        assert file_mode == "0o664"
+        written_files[filename] = content
+        return True
+
+    with (
+        patch.object(
+            module,
+            "_validate_args",
+            return_value={
+                **BASE_VALIDATED_ARGS,
+                "digital_twin": True,
+                "digital_twin_file": str(topology_file),
+                "mode": "0o664",
+            },
+        ),
+        patch.object(module, "load_facts", return_value={}),
+        patch.object(module, "read_structured_configs", return_value={}),
+        patch(f"{MODULE_PATH}.get_fabric_documentation", return_value=output),
+        patch(f"{MODULE_PATH}.write_file", side_effect=mock_write_file),
+    ):
+        module.main(task_vars={"fabric_name": FABRIC_NAME, "digital_twin": {"environment": "containerlab"}})
+
+    assert written_files[str(topology_file)].splitlines()[:4] == [CONTAINERLAB_SCHEMA_COMMENT, "---", "name: DC1", "prefix: ''"]
+    assert written_files[str(topology_file)].count(CONTAINERLAB_SCHEMA_COMMENT) == 1
+    assert json.loads(written_files[str(tmp_path / "interface_mapping.json")]) == {
+        "ManagementIntf": {"eth0": "Management1"},
+        "EthernetIntf": {"eth1": "Ethernet1"},
+    }
+
+
+def test_main_writes_containerlab_topology_without_interface_mapping(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Cover cLab topology rendering when no interface mapping sidecar is present."""
+    module = action_module(ActionModule)
+    module.result["changed"] = False
+    topology_file = tmp_path / "fabric.clab.yml"
+    output = _empty_output()
+    output.digital_twin = ContainerlabDigitalTwin(
+        name="DC1",
+        prefix="",
+        mgmt=ContainerlabMgmt(network="clab-mgmt", ipv4_subnet="172.16.1.0/24"),
+        topology=ContainerlabTopology(
+            defaults=ContainerlabDefaults(kind="arista_ceos"),
+            kinds={"arista_ceos": ContainerlabKind(enforce_startup_config=True, image="ceos:latest")},
+            nodes={"leaf1": ContainerlabNode(mgmt_ipv4="172.16.1.101")},
+            links=(),
+        ),
+        interface_mapping=None,
+    )
+    written_files: dict[str, str] = {}
+
+    def mock_write_file(content: str, filename: str, file_mode: str) -> bool:
+        assert file_mode == "0o664"
+        written_files[filename] = content
+        return True
+
+    with (
+        patch.object(
+            module,
+            "_validate_args",
+            return_value={
+                **BASE_VALIDATED_ARGS,
+                "digital_twin": True,
+                "digital_twin_file": str(topology_file),
+                "mode": "0o664",
+            },
+        ),
+        patch.object(module, "load_facts", return_value={}),
+        patch.object(module, "read_structured_configs", return_value={}),
+        patch(f"{MODULE_PATH}.get_fabric_documentation", return_value=output),
+        patch(f"{MODULE_PATH}.write_file", side_effect=mock_write_file),
+    ):
+        module.main(task_vars={"fabric_name": FABRIC_NAME, "digital_twin": {"environment": "containerlab"}})
+
+    assert list(written_files) == [str(topology_file)]
+    assert written_files[str(topology_file)].splitlines()[:4] == [CONTAINERLAB_SCHEMA_COMMENT, "---", "name: DC1", "prefix: ''"]
+    assert written_files[str(topology_file)].count(CONTAINERLAB_SCHEMA_COMMENT) == 1
+
+
+def test_main_writes_act_topology_without_containerlab_post_processing(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Cover the generic Digital Twin serialization path for non-cLab topologies."""
+    module = action_module(ActionModule)
+    module.result["changed"] = False
+    topology_file = tmp_path / "fabric.yml"
+    output = _empty_output()
+    output.digital_twin = ACTDigitalTwin(
+        nodes=(
+            {
+                "leaf1": ActNodeSettings(
+                    node_type="veos",
+                    ip_addr="192.0.2.1",
+                    version="4.33.1.1F",
+                    internet_access=None,
+                    ports=None,
+                )
+            },
+        ),
+    )
+    written_files: dict[str, str] = {}
+
+    def mock_write_file(content: str, filename: str, file_mode: str) -> bool:
+        assert file_mode == "0o664"
+        written_files[filename] = content
+        return True
+
+    with (
+        patch.object(
+            module,
+            "_validate_args",
+            return_value={
+                **BASE_VALIDATED_ARGS,
+                "digital_twin": True,
+                "digital_twin_file": str(topology_file),
+                "mode": "0o664",
+            },
+        ),
+        patch.object(module, "load_facts", return_value={}),
+        patch.object(module, "read_structured_configs", return_value={}),
+        patch(f"{MODULE_PATH}.get_fabric_documentation", return_value=output),
+        patch(f"{MODULE_PATH}.write_file", side_effect=mock_write_file),
+    ):
+        module.main(task_vars={"fabric_name": FABRIC_NAME, "digital_twin": {"environment": "act"}})
+
+    assert list(written_files) == [str(topology_file)]
+    assert written_files[str(topology_file)].splitlines()[:2] == ["---", "nodes:"]
+    assert CONTAINERLAB_SCHEMA_COMMENT not in written_files[str(topology_file)]
 
 
 # ---------------------------------------------------------------------------
