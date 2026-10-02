@@ -2,7 +2,7 @@
 # pyavd minimal requirements when running from source
 dev = [
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.10",
+    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils.git@24f8ffbdf641ae26dd19661f09067f65a270f1d0",
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"
@@ -45,6 +45,8 @@ doc = [
     "mkdocs-exclude",
     "mkdocs-include-dir-to-nav",
     "mkdocstrings[python]",
+    # Likely a long-term documentation dependency as SQLite database generation is planned to move into pyavd-utils.
+    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils.git@24f8ffbdf641ae26dd19661f09067f65a270f1d0",
     {include-group = "schema-tools"},
 ]
 molecule = [
