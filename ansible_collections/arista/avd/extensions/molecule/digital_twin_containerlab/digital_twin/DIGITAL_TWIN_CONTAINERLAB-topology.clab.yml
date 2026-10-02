@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/srl-labs/containerlab/main/schemas/clab.schema.json
 ---
 name: DIGITAL_TWIN_CONTAINERLAB
 prefix: ''

@@ -19,6 +19,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from pyavd._utils.get import get
     from pyavd._utils.normalize_yaml_data import normalize_yaml_data as _normalize_yaml_data
     from pyavd._utils.strip_empties import strip_empties_from_dict
+    from pyavd.api.fabric_documentation import ContainerlabDigitalTwin
     from pyavd.get_fabric_documentation import get_fabric_documentation
     from pyavd.j2filters import natural_sort
 
@@ -27,6 +28,7 @@ try:
     from pyavd._utils.get import get
     from pyavd._utils.normalize_yaml_data import normalize_yaml_data as _normalize_yaml_data
     from pyavd._utils.strip_empties import strip_empties_from_dict
+    from pyavd.api.fabric_documentation import ContainerlabDigitalTwin
     from pyavd.get_fabric_documentation import get_fabric_documentation
     from pyavd.j2filters import natural_sort
 
@@ -118,8 +120,9 @@ class ActionModule(AVDActionPlugin):
 
         if output.digital_twin:
             content = strip_empties_from_dict(_normalize_yaml_data(output.digital_twin))
+            yaml_language_server_prefix=""
             # for cLab we want empty `prefix` at all times in the topology to avoid modifying hostnames
-            if get(task_vars, "digital_twin.environment") == "containerlab" and hasattr(output.digital_twin, "prefix"):
+            if get(task_vars, "digital_twin.environment") == "containerlab" and isinstance(output.digital_twin, ContainerlabDigitalTwin):
                 interface_mapping = content.pop("interface_mapping", None)
                 if interface_mapping:
                     changed = write_file(
@@ -138,8 +141,11 @@ class ActionModule(AVDActionPlugin):
                 }
                 # add keys in a very specific order - name, prefix, everything else
                 content = {"name": content["name"], "prefix": output.digital_twin.prefix, **{key: value for key, value in content.items() if key != "name"}}
+                yaml_language_server_prefix = (
+                    "# yaml-language-server: $schema=https://raw.githubusercontent.com/srl-labs/containerlab/main/schemas/clab.schema.json\n"
+                )
             changed = write_file(
-                content=yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130, explicit_start=True),
+                content=yaml_language_server_prefix + yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130, explicit_start=True),
                 filename=validated_args["digital_twin_file"],
                 file_mode=validated_args["mode"],
             )
