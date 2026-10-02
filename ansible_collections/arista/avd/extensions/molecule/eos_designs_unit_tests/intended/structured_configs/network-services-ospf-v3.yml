@@ -1,0 +1,383 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: network-services-ospf-v3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:11:22:33:44:55
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.66.142/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.142.142/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.42.142/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.66.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.142.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '666'
+  router_id: 192.168.66.142
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 201
+    metadata:
+      tenants:
+      - Tenant_OSPFv3_Redistribute
+    rd: 192.168.66.142:20201
+    route_targets:
+      both:
+      - 20201:20201
+    redistribute_routes:
+    - learned
+  - id: 203
+    metadata:
+      tenants:
+      - Tenant_OSPFv3_Redistribute_IPv4
+    rd: 192.168.66.142:20203
+    route_targets:
+      both:
+      - 20203:20203
+    redistribute_routes:
+    - learned
+  - id: 206
+    metadata:
+      tenants:
+      - Tenant_OSPFv3_Redistribute_IPv6
+    rd: 192.168.66.142:20206
+    route_targets:
+      both:
+      - 20206:20206
+    redistribute_routes:
+    - learned
+  - id: 202
+    metadata:
+      tenants:
+      - Tenant_OSPFv3_Redistribute_Route_Map
+    rd: 192.168.66.142:20202
+    route_targets:
+      both:
+      - 20202:20202
+    redistribute_routes:
+    - learned
+  vrfs:
+  - name: Tenant_OSPFv3_Redistribute_VRF
+    rd: 192.168.66.142:42
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+    router_id: 192.168.66.142
+    redistribute:
+      connected:
+        enabled: true
+  - name: Tenant_OSPFv3_Redistribute_IPv4
+    rd: 192.168.66.142:44
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '44:44'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '44:44'
+    router_id: 192.168.66.142
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+  - name: Tenant_OSPFv3_Redistribute_IPv6
+    rd: 192.168.66.142:47
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '47:47'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '47:47'
+    router_id: 192.168.66.142
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+  - name: Tenant_OSPFv3_Redistribute_Route_Map_VRF
+    rd: 192.168.66.142:43
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '43:43'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '43:43'
+    router_id: 192.168.66.142
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+router_ospfv3:
+  vrfs:
+  - name: Tenant_OSPFv3_Redistribute_VRF
+    router_id: 192.168.255.101
+    passive_interface_default: true
+    address_family_ipv4:
+      enabled: true
+      redistribute:
+        bgp:
+          enabled: true
+        connected:
+          enabled: true
+        static:
+          enabled: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+        connected:
+          enabled: true
+        static:
+          enabled: true
+      enabled: true
+  - name: Tenant_OSPFv3_Redistribute_IPv4
+    router_id: 192.168.255.103
+    passive_interface_default: true
+    address_family_ipv4:
+      enabled: true
+      redistribute:
+        bgp:
+          enabled: true
+        static:
+          enabled: true
+          route_map: ipv6_ospf_rm
+  - name: Tenant_OSPFv3_Redistribute_IPv6
+    router_id: 192.168.255.104
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+        static:
+          enabled: true
+          route_map: ipv6_ospf_rm
+      enabled: true
+  - name: Tenant_OSPFv3_Redistribute_Route_Map_VRF
+    router_id: 192.168.255.102
+    passive_interface_default: true
+    address_family_ipv4:
+      enabled: true
+      redistribute:
+        bgp:
+          enabled: true
+          route_map: ipv4_ospf_rm
+        connected:
+          enabled: true
+          route_map: ipv4_ospf_rm
+        static:
+          enabled: true
+          route_map: ipv4_ospf_rm
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+          route_map: ipv6_ospf_rm
+        connected:
+          enabled: true
+          route_map: ipv6_ospf_rm
+        static:
+          enabled: true
+          route_map: ipv6_ospf_rm
+      enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan201
+  description: Tenant_OSPFv3_Redistribute_201 description
+  shutdown: false
+  vrf: Tenant_OSPFv3_Redistribute_VRF
+  ipv6_enable: true
+  ipv6_addresses:
+  - cafe::cafe/64
+  ospfv3:
+    ipv4:
+      area: 0.0.0.0
+    ipv6:
+      area: 0.0.0.0
+    passive_interface: true
+    network_point_to_point: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute
+- name: Vlan203
+  description: Tenant_OSPFv3_Redistribute_IPv4_203 description
+  shutdown: false
+  vrf: Tenant_OSPFv3_Redistribute_IPv4
+  ipv6_enable: true
+  ipv6_addresses:
+  - cafe::ca/64
+  ospfv3:
+    ipv4:
+      area: 1.1.1.1
+    ipv6:
+      area: 1.1.1.1
+    passive_interface: true
+    network_point_to_point: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_IPv4
+- name: Vlan206
+  description: Tenant_OSPFv3_Redistribute_IPv6_206 description
+  shutdown: false
+  vrf: Tenant_OSPFv3_Redistribute_IPv6
+  ipv6_enable: true
+  ipv6_addresses:
+  - ca::ca/64
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_IPv6
+- name: Vlan202
+  description: Tenant_OSPFv3_Redistribute_Route_Map_202 description
+  shutdown: false
+  vrf: Tenant_OSPFv3_Redistribute_Route_Map_VRF
+  ipv6_enable: true
+  ipv6_addresses:
+  - cafe::/64
+  ospfv3:
+    ipv4:
+      area: 1.1.1.1
+    ipv6:
+      area: 1.1.1.1
+    passive_interface: true
+    network_point_to_point: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_Route_Map
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 201
+  name: Tenant_OSPFv3_Redistribute_201
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute
+- id: 203
+  name: Tenant_OSPFv3_Redistribute_IPv4_203
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_IPv4
+- id: 206
+  name: Tenant_OSPFv3_Redistribute_IPv6_206
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_IPv6
+- id: 202
+  name: Tenant_OSPFv3_Redistribute_Route_Map_202
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_Route_Map
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: Tenant_OSPFv3_Redistribute_VRF
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute
+- name: Tenant_OSPFv3_Redistribute_IPv4
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_IPv4
+- name: Tenant_OSPFv3_Redistribute_IPv6
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_IPv6
+- name: Tenant_OSPFv3_Redistribute_Route_Map_VRF
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_Route_Map
+vxlan_interface:
+  vxlan1:
+    description: network-services-ospf-v3_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 201
+        vni: 10201
+      - id: 203
+        vni: 10203
+      - id: 206
+        vni: 10206
+      - id: 202
+        vni: 10202
+      vrfs:
+      - name: Tenant_OSPFv3_Redistribute_VRF
+        vni: 100
+      - name: Tenant_OSPFv3_Redistribute_IPv4
+        vni: 102
+      - name: Tenant_OSPFv3_Redistribute_IPv6
+        vni: 105
+      - name: Tenant_OSPFv3_Redistribute_Route_Map_VRF
+        vni: 101
