@@ -1,0 +1,21 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: ssh-settings-client-vrfs-and-source-interfaces-ssh-client
+      id: 1
+      mgmt_ip: 192.168.0.2/24
+
+mgmt_interface_settings:
+  vrf: default
+
+source_interfaces:
+  ssh_client:
+    mgmt_interface: true
+
+ssh_settings:
+  client_vrfs:
+    - name: use_mgmt_interface_vrf
+
+expected_error_message: >-
+  The input data model 'source_interfaces.ssh_client' is deprecated and cannot be used in conjunction with the new data model 'ssh_settings.client_vrfs'.
+  This usually happens when a data model has been updated and custom structured configuration still uses the old model.

@@ -209,6 +209,7 @@ vlan_interfaces:
   shutdown: false
   vrf: svi_profile_tests_vrf
   ip_address_virtual: 10.2.12.1/24
+  no_autostate: true
   metadata:
     tenants:
     - svi_profile_tests

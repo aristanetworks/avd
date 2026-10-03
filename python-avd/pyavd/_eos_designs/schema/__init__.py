@@ -33672,6 +33672,7 @@ class EosDesigns(EosDesignsRootModel):
                         "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                         "name": {"type": str},
                         "enabled": {"type": bool},
+                        "autostate": {"type": bool, "default": True},
                         "description": {"type": str},
                         "arp_gratuitous_accept": {"type": bool},
                         "ip_address": {"type": str},
@@ -33728,6 +33729,12 @@ class EosDesigns(EosDesignsRootModel):
                     """VLAN name."""
                     enabled: bool | None
                     """Enable or disable interface."""
+                    autostate: bool
+                    """
+                    Set to false to disable automatic management of the interface link state.
+
+                    Default value: `True`
+                    """
                     description: str | None
                     """SVI description. By default set to VLAN name."""
                     arp_gratuitous_accept: bool | None
@@ -33965,6 +33972,7 @@ class EosDesigns(EosDesignsRootModel):
                             tags: Tags | UndefinedType = Undefined,
                             name: str | UndefinedType | None = Undefined,
                             enabled: bool | UndefinedType | None = Undefined,
+                            autostate: bool | UndefinedType = Undefined,
                             description: str | UndefinedType | None = Undefined,
                             arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                             ip_address: str | UndefinedType | None = Undefined,
@@ -34021,6 +34029,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with `str` items.
                                 name: VLAN name.
                                 enabled: Enable or disable interface.
+                                autostate: Set to false to disable automatic management of the interface link state.
                                 description: SVI description. By default set to VLAN name.
                                 arp_gratuitous_accept: Accept gratuitous ARP.
                                 ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -35097,6 +35106,7 @@ class EosDesigns(EosDesignsRootModel):
                     "evpn_vlan_bundle": {"type": str},
                     "nodes": {"type": Nodes},
                     "enabled": {"type": bool},
+                    "autostate": {"type": bool, "default": True},
                     "description": {"type": str},
                     "arp_gratuitous_accept": {"type": bool},
                     "ip_address": {"type": str},
@@ -35187,6 +35197,12 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 enabled: bool | None
                 """Enable or disable interface."""
+                autostate: bool
+                """
+                Set to false to disable automatic management of the interface link state.
+
+                Default value: `True`
+                """
                 description: str | None
                 """SVI description. By default set to VLAN name."""
                 arp_gratuitous_accept: bool | None
@@ -35428,6 +35444,7 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_vlan_bundle: str | UndefinedType | None = Undefined,
                         nodes: Nodes | UndefinedType = Undefined,
                         enabled: bool | UndefinedType | None = Undefined,
+                        autostate: bool | UndefinedType = Undefined,
                         description: str | UndefinedType | None = Undefined,
                         arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                         ip_address: str | UndefinedType | None = Undefined,
@@ -35510,6 +35527,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                             enabled: Enable or disable interface.
+                            autostate: Set to false to disable automatic management of the interface link state.
                             description: SVI description. By default set to VLAN name.
                             arp_gratuitous_accept: Accept gratuitous ARP.
                             ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -50626,7 +50644,82 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
+        class ClientVrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            """
+            VRF name.
+            The value will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure SSH for the VRF set with `mgmt_interface_vrf`.
+              An error will be raised if `mgmt_ip` or
+            `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will configure SSH for the
+            VRF set with `inband_mgmt_vrf`.
+              An error will be raised if inband management is not configured for
+            the device.
+            - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above
+            depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as the VRF
+            name.
+            """
+            source_interface: str | None
+            """
+            Source interface to use for IP SSH Client in this VRF.
+            If set, the value is used directly as the
+            source interface name.
+            If not set, the source interface is derived automatically when `name` is set
+            to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+            For any other
+            `name` value, `source_interface` must be set.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType | None = Undefined) -> None:
+                    """
+                    ClientVrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           VRF name.
+                           The value will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure SSH for the VRF set with `mgmt_interface_vrf`.
+                             An error will be raised if `mgmt_ip` or
+                           `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will configure SSH for the
+                           VRF set with `inband_mgmt_vrf`.
+                             An error will be raised if inband management is not configured for
+                           the device.
+                           - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above
+                           depending on the value of `default_mgmt_method`.
+                           - Any other string will be used directly as the VRF
+                           name.
+                        source_interface:
+                           Source interface to use for IP SSH Client in this VRF.
+                           If set, the value is used directly as the
+                           source interface name.
+                           If not set, the source interface is derived automatically when `name` is set
+                           to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                           For any other
+                           `name` value, `source_interface` must be set.
+
+                    """
+
+        class ClientVrfs(AvdIndexedList[str, ClientVrfsItem]):
+            """Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        ClientVrfs._item_type = ClientVrfsItem
+
+        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}, "client_vrfs": {"type": ClientVrfs}}
         enabled: bool | None
         """
         Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
@@ -50636,6 +50729,8 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         idle_timeout: int | None
         """Idle timeout in minutes."""
+        client_vrfs: ClientVrfs
+        """Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`)."""
 
         if TYPE_CHECKING:
 
@@ -50645,6 +50740,7 @@ class EosDesigns(EosDesignsRootModel):
                 enabled: bool | UndefinedType | None = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 idle_timeout: int | UndefinedType | None = Undefined,
+                client_vrfs: ClientVrfs | UndefinedType = Undefined,
             ) -> None:
                 """
                 SshSettings.
@@ -50658,6 +50754,7 @@ class EosDesigns(EosDesignsRootModel):
                        all VRFs.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     idle_timeout: Idle timeout in minutes.
+                    client_vrfs: Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
@@ -51564,6 +51661,7 @@ class EosDesigns(EosDesignsRootModel):
                 "node": {"type": str},
                 "name": {"type": str},
                 "enabled": {"type": bool},
+                "autostate": {"type": bool, "default": True},
                 "description": {"type": str},
                 "arp_gratuitous_accept": {"type": bool},
                 "ip_address": {"type": str},
@@ -51610,6 +51708,12 @@ class EosDesigns(EosDesignsRootModel):
             """VLAN name."""
             enabled: bool | None
             """Enable or disable interface."""
+            autostate: bool
+            """
+            Set to false to disable automatic management of the interface link state.
+
+            Default value: `True`
+            """
             description: str | None
             """SVI description. By default set to VLAN name."""
             arp_gratuitous_accept: bool | None
@@ -51846,6 +51950,7 @@ class EosDesigns(EosDesignsRootModel):
                     node: str | UndefinedType = Undefined,
                     name: str | UndefinedType | None = Undefined,
                     enabled: bool | UndefinedType | None = Undefined,
+                    autostate: bool | UndefinedType = Undefined,
                     description: str | UndefinedType | None = Undefined,
                     arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                     ip_address: str | UndefinedType | None = Undefined,
@@ -51896,6 +52001,7 @@ class EosDesigns(EosDesignsRootModel):
                         node: Node inventory hostname.
                         name: VLAN name.
                         enabled: Enable or disable interface.
+                        autostate: Set to false to disable automatic management of the interface link state.
                         description: SVI description. By default set to VLAN name.
                         arp_gratuitous_accept: Accept gratuitous ARP.
                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -52962,6 +53068,7 @@ class EosDesigns(EosDesignsRootModel):
             "nodes": {"type": Nodes},
             "name": {"type": str},
             "enabled": {"type": bool},
+            "autostate": {"type": bool, "default": True},
             "description": {"type": str},
             "arp_gratuitous_accept": {"type": bool},
             "ip_address": {"type": str},
@@ -53028,6 +53135,12 @@ class EosDesigns(EosDesignsRootModel):
         """VLAN name."""
         enabled: bool | None
         """Enable or disable interface."""
+        autostate: bool
+        """
+        Set to false to disable automatic management of the interface link state.
+
+        Default value: `True`
+        """
         description: str | None
         """SVI description. By default set to VLAN name."""
         arp_gratuitous_accept: bool | None
@@ -53266,6 +53379,7 @@ class EosDesigns(EosDesignsRootModel):
                 nodes: Nodes | UndefinedType = Undefined,
                 name: str | UndefinedType | None = Undefined,
                 enabled: bool | UndefinedType | None = Undefined,
+                autostate: bool | UndefinedType = Undefined,
                 description: str | UndefinedType | None = Undefined,
                 arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                 ip_address: str | UndefinedType | None = Undefined,
@@ -53332,6 +53446,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                     name: VLAN name.
                     enabled: Enable or disable interface.
+                    autostate: Set to false to disable automatic management of the interface link state.
                     description: SVI description. By default set to VLAN name.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -86128,6 +86243,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                                 "name": {"type": str},
                                 "enabled": {"type": bool},
+                                "autostate": {"type": bool, "default": True},
                                 "description": {"type": str},
                                 "arp_gratuitous_accept": {"type": bool},
                                 "ip_address": {"type": str},
@@ -86184,6 +86300,12 @@ class EosDesigns(EosDesignsRootModel):
                             """VLAN name."""
                             enabled: bool | None
                             """Enable or disable interface."""
+                            autostate: bool
+                            """
+                            Set to false to disable automatic management of the interface link state.
+
+                            Default value: `True`
+                            """
                             description: str | None
                             """SVI description. By default set to VLAN name."""
                             arp_gratuitous_accept: bool | None
@@ -86421,6 +86543,7 @@ class EosDesigns(EosDesignsRootModel):
                                     tags: Tags | UndefinedType = Undefined,
                                     name: str | UndefinedType | None = Undefined,
                                     enabled: bool | UndefinedType | None = Undefined,
+                                    autostate: bool | UndefinedType = Undefined,
                                     description: str | UndefinedType | None = Undefined,
                                     arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                                     ip_address: str | UndefinedType | None = Undefined,
@@ -86477,6 +86600,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         name: VLAN name.
                                         enabled: Enable or disable interface.
+                                        autostate: Set to false to disable automatic management of the interface link state.
                                         description: SVI description. By default set to VLAN name.
                                         arp_gratuitous_accept: Accept gratuitous ARP.
                                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -87555,6 +87679,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_vlan_bundle": {"type": str},
                             "nodes": {"type": Nodes},
                             "enabled": {"type": bool},
+                            "autostate": {"type": bool, "default": True},
                             "description": {"type": str},
                             "arp_gratuitous_accept": {"type": bool},
                             "ip_address": {"type": str},
@@ -87645,6 +87770,12 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         enabled: bool | None
                         """Enable or disable interface."""
+                        autostate: bool
+                        """
+                        Set to false to disable automatic management of the interface link state.
+
+                        Default value: `True`
+                        """
                         description: str | None
                         """SVI description. By default set to VLAN name."""
                         arp_gratuitous_accept: bool | None
@@ -87886,6 +88017,7 @@ class EosDesigns(EosDesignsRootModel):
                                 evpn_vlan_bundle: str | UndefinedType | None = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType | None = Undefined,
+                                autostate: bool | UndefinedType = Undefined,
                                 description: str | UndefinedType | None = Undefined,
                                 arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                                 ip_address: str | UndefinedType | None = Undefined,
@@ -87968,6 +88100,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                                     enabled: Enable or disable interface.
+                                    autostate: Set to false to disable automatic management of the interface link state.
                                     description: SVI description. By default set to VLAN name.
                                     arp_gratuitous_accept: Accept gratuitous ARP.
                                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -118551,9 +118684,11 @@ class EosDesigns(EosDesignsRootModel):
     """
     overlay_routing_protocol_address_family: OverlayRoutingProtocolAddressFamily
     """
-    When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
-    This feature depends on
-    underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.
+    Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
+    Setting this to `ipv6` requires both
+    `underlay_ipv6: true` and `underlay_rfc5549: true`.
+    When `underlay_ipv6_numbered: true`, this
+    setting is not required. IPv6 overlay peering is enabled automatically.
 
     Default value: `"ipv4"`
     """
@@ -120590,9 +120725,11 @@ class EosDesigns(EosDesignsRootModel):
                      If not set, the
                    default_overlay_routing_protocol defined under the node_type_keys will be used (default is "ebgp").
                 overlay_routing_protocol_address_family:
-                   When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
-                   This feature depends on
-                   underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.
+                   Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
+                   Setting this to `ipv6` requires both
+                   `underlay_ipv6: true` and `underlay_rfc5549: true`.
+                   When `underlay_ipv6_numbered: true`, this
+                   setting is not required. IPv6 overlay peering is enabled automatically.
                 overlay_rt_type:
                    Configuration options for the Administrator subfield (first part of RT) and the Assigned Number
                    subfield (second part of RT).
