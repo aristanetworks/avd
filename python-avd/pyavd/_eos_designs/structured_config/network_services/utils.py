@@ -132,6 +132,13 @@ class UtilsMixin(Protocol):
                 f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(vrf.mlag_ibgp_peering_ipv4_pool)}/"
                 f"{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
             )
+        if self.shared_utils.mlag_peer_l3_vlan is None and self.shared_utils.node_config.mlag_peer_address_family == "ipv6":
+            msg = (
+                f"Invalid combination of inputs. Unable to configure the IPv4 MLAG iBGP peering for VRF '{vrf.name}' "
+                "since the MLAG peer VLAN is also used for L3 peering ('mlag_peer_l3_vlan' is 0 or the same as 'mlag_peer_vlan') "
+                "with 'mlag_peer_address_family: ipv6'. Set 'mlag_peer_address_family: ipv4' or use a separate 'mlag_peer_l3_vlan'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
         return f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
 
     def get_ipv6_mlag_peering_ip(
@@ -149,6 +156,13 @@ class UtilsMixin(Protocol):
                 f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_secondary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
                 f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
             )
+        if self.shared_utils.mlag_peer_l3_vlan is None and self.shared_utils.node_config.mlag_peer_address_family == "ipv4":
+            msg = (
+                f"Invalid combination of inputs. Unable to configure the IPv6 MLAG iBGP peering for VRF '{vrf.name}' "
+                "since the MLAG peer VLAN is also used for L3 peering ('mlag_peer_l3_vlan' is 0 or the same as 'mlag_peer_vlan') "
+                "with 'mlag_peer_address_family: ipv4'. Set 'mlag_peer_address_family: ipv6' or use a separate 'mlag_peer_l3_vlan'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
         return f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
 
     def _mlag_ibgp_peering_enabled(
