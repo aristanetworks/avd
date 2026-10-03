@@ -33,15 +33,15 @@ class IpAddressingMixin(Protocol):
     @cached_property
     def loopback_ipv4_pool(self: SharedUtilsProtocol) -> str | None:
         if not self.node_config.loopback_ipv4_address and not self.node_config.loopback_ipv4_pool:
-            msg = "'loopback_ipv4_pool or loopback_ipv4_address' is required but was not found"
-            raise AristaAvdMissingVariableError(msg)
+            msg = "loopback_ipv4_pool or loopback_ipv4_address"
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
         return self.node_config.loopback_ipv4_pool
 
     @cached_property
     def loopback_ipv4_address(self: SharedUtilsProtocol) -> str | None:
         if not self.node_config.loopback_ipv4_address and not self.node_config.loopback_ipv4_pool:
-            msg = "'loopback_ipv4_pool or loopback_ipv4_address' is required but was not found"
-            raise AristaAvdMissingVariableError(msg)
+            msg = "loopback_ipv4_pool or loopback_ipv4_address"
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
         return self.node_config.loopback_ipv4_address
 
     @cached_property
