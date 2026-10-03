@@ -64,8 +64,11 @@
             suppress_portfast: "{{ cv_workspace_build_warnings_suppress_portfast }}"
           max_sync_retries: "{{ cv_workspace_max_sync_retries }}"
         change_control:
+          id: "{{ cv_change_control_id | arista.avd.default }}"
           name: "{{ cv_change_control_name | arista.avd.default }}"
           description: "{{ cv_change_control_description | arista.avd.default }}"
+          approval_note: "{{ cv_change_control_approval_note | arista.avd.default }}"
+          start_note: "{{ cv_change_control_start_note | arista.avd.default }}"
           requested_state: "{{ cv_change_control_requested_state | arista.avd.default('completed' if cv_run_change_control else 'pending approval') }}"
         timeouts:
           workspace_build_timeout: "{{ cv_workspace_build_timeout }}"
