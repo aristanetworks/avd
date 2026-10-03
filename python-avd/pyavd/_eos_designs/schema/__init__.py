@@ -117322,9 +117322,11 @@ class EosDesigns(EosDesignsRootModel):
     `dhcp_server_interfaces` (EOS 4.36+, requires
     `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`) — learns leases directly from
     DHCP server interfaces.
-      - IPv6 Address Locking requires `locked_address.ipv6_enforcement_disabled:
-    true`.
-
+      - IPv6 Address Locking auto-configures
+    `locked_address.ipv6_enforcement_disabled: true` since enforcement-disabled is the only supported
+    mode.
+        Explicitly setting `locked_address.ipv6_enforcement_disabled: false` while any connected
+    endpoint, network port, VLAN, or SVI has IPv6 Address Locking enabled will raise a validation error.
     Subclass of AvdModel.
     """
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
@@ -119804,9 +119806,11 @@ class EosDesigns(EosDesignsRootModel):
                    `dhcp_server_interfaces` (EOS 4.36+, requires
                    `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`) — learns leases directly from
                    DHCP server interfaces.
-                     - IPv6 Address Locking requires `locked_address.ipv6_enforcement_disabled:
-                   true`.
-
+                     - IPv6 Address Locking auto-configures
+                   `locked_address.ipv6_enforcement_disabled: true` since enforcement-disabled is the only supported
+                   mode.
+                       Explicitly setting `locked_address.ipv6_enforcement_disabled: false` while any connected
+                   endpoint, network port, VLAN, or SVI has IPv6 Address Locking enabled will raise a validation error.
                    Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
                 avd_design_future:
