@@ -352,6 +352,7 @@ The optional settings below provide direct control over Workspace and Change Con
 # cv_change_control_requested_state: <str>
 
 # Set the ID of an existing Change Control to manage without performing a deployment.
+# Setting the ID cannot be combined with any devices, tags, manifests or similar work items. It will only be used when operating on an existing Change Control.
 # cv_change_control_id: <str>
 
 # Set the note used when approving or unapproving the Change Control. By default this will be "Automatic approval by AVD".
