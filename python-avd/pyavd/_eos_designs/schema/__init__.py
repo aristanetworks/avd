@@ -938,10 +938,6 @@ class EosDesigns(EosDesignsRootModel):
         When enabled, this setting is mutually exclusive with `local_interface`.
         Requires EOS
         version 4.36 or later.
-        This is the server-interface mode for IPv4 Address Locking, where
-        `dhcp_servers_ipv4` is optional.
-        EOS DHCP Snooping is incompatible with IP Locking and must not be
-        configured alongside this mode.
 
         Subclass of AvdList with `str` items.
         """
@@ -1001,10 +997,6 @@ class EosDesigns(EosDesignsRootModel):
                        When enabled, this setting is mutually exclusive with `local_interface`.
                        Requires EOS
                        version 4.36 or later.
-                       This is the server-interface mode for IPv4 Address Locking, where
-                       `dhcp_servers_ipv4` is optional.
-                       EOS DHCP Snooping is incompatible with IP Locking and must not be
-                       configured alongside this mode.
 
                        Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
