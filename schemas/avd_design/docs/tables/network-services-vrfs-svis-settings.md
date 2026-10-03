@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "<network_services_keys.name>.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].name") | String | Required |  |  | VLAN name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].address_locking") | Dictionary |  |  |  | To configure `address_locking.ipv4/v6`, you must define either `address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].address_locking") | Dictionary |  |  |  | With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.<br>See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.<br>With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].profile") | String |  |  |  | SVI profile name to apply.<br>SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels.<br> |
@@ -183,7 +183,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "network_services.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "network_services.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_services.[].vrfs.[].svis.[].name") | String | Required |  |  | VLAN name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_services.[].vrfs.[].svis.[].address_locking") | Dictionary |  |  |  | To configure `address_locking.ipv4/v6`, you must define either `address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_services.[].vrfs.[].svis.[].address_locking") | Dictionary |  |  |  | With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.<br>See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.<br>With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "network_services.[].vrfs.[].svis.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "network_services.[].vrfs.[].svis.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_services.[].vrfs.[].svis.[].profile") | String |  |  |  | SVI profile name to apply.<br>SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels.<br> |
@@ -377,7 +377,9 @@
                 # VLAN name.
                 name: <str; required>
 
-                # To configure `address_locking.ipv4/v6`, you must define either `address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                # With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.
+                # See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                # With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
                 address_locking:
 
                   # Enable address locking for IPv4.
@@ -940,7 +942,9 @@
                 # VLAN name.
                 name: <str; required>
 
-                # To configure `address_locking.ipv4/v6`, you must define either `address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                # With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.
+                # See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                # With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
                 address_locking:
 
                   # Enable address locking for IPv4.
