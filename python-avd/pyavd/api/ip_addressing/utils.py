@@ -80,11 +80,7 @@ class UtilsMixin(Protocol):
         return self.shared_utils.node_config.max_parallel_uplinks
 
     @cached_property
-    def _loopback_ipv4_address(self: AvdIpAddressingProtocol) -> str | None:
-        return self.shared_utils.loopback_ipv4_address
-
-    @cached_property
-    def _loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str | None:
+    def _loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str:
         return self.shared_utils.loopback_ipv4_pool
 
     @cached_property
