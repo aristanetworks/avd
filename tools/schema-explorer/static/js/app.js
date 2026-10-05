@@ -43,6 +43,68 @@ function stripPlaceholderBrackets(s) {
 function displayPath(keyPath) {
   return splitKeyPath(keyPath).map(stripPlaceholderBrackets).join(".");
 }
+function isSearchActive(state) {
+  return Boolean(state?.q);
+}
+function rowMatchesSearch(row, state) {
+  if (!isSearchActive(state)) return false;
+  const q = state.q.toLowerCase();
+  const scope = normalizeSearchScope(state.searchScope);
+  const path = row.key_path.toLowerCase();
+  const description = String(row.description || "").toLowerCase();
+  if (scope === "description") return description.includes(q);
+  if (scope === "path") return path.includes(q);
+  return path.includes(q) || description.includes(q);
+}
+function referenceNavLabel(row, state) {
+  return highlight(leafSegment(row.key_path), state.q);
+}
+function buildKeyPathPrefixes(keyPath) {
+  const parts = splitKeyPath(keyPath);
+  const prefixes = [];
+  let acc = "";
+  for (const part of parts) {
+    acc = acc ? `${acc}.${part}` : part;
+    prefixes.push({ keyPath: acc.replace(/\[\]$/, ""), label: stripPlaceholderBrackets(part) });
+  }
+  return prefixes;
+}
+function renderReferencePathBreadcrumb(row, module, isAll) {
+  const mod = rowModule(row, module);
+  const prefixes = buildKeyPathPrefixes(row.key_path);
+  const items = [];
+  if (isAll) {
+    items.push(`<li class="schema-reference-breadcrumb-item schema-reference-breadcrumb-module"><span>${escapeHtml(SCHEMA_MODULES[row.module]?.name || row.module)}</span></li>`);
+  }
+  prefixes.forEach((prefix, idx) => {
+    const rowId = `${mod}:${prefix.keyPath}`;
+    const isCurrent = idx === prefixes.length - 1;
+    if (isCurrent) {
+      items.push(`<li class="schema-reference-breadcrumb-item active" aria-current="page"><span>${escapeHtml(prefix.label)}</span></li>`);
+      return;
+    }
+    items.push(`<li class="schema-reference-breadcrumb-item"><button type="button" class="schema-reference-breadcrumb-link link-brand" data-reference-select="${escapeAttr(rowId)}">${escapeHtml(prefix.label)}</button></li>`);
+  });
+  const separators = items.flatMap((item, idx) => (idx < items.length - 1 ? [item, `<li class="schema-reference-breadcrumb-separator" aria-hidden="true"><i class="bi bi-chevron-right"></i></li>`] : [item]));
+  return `<nav class="schema-reference-breadcrumb" aria-label="Key path"><ol class="schema-reference-breadcrumb-list">${separators.join("")}</ol></nav>`;
+}
+function expandRowsWithAncestors(db, module, matches) {
+  if (!matches.length) return matches;
+  const byId = new Map(matches.map(row => [schemaRowId(row, module), row]));
+  const queue = [...matches];
+  while (queue.length) {
+    const row = queue.shift();
+    if (!row.parent_path) continue;
+    const mod = rowModule(row, module);
+    const parentId = `${mod}:${row.parent_path}`;
+    if (byId.has(parentId)) continue;
+    const parent = getVar(db, mod, row.parent_path);
+    if (!parent) continue;
+    byId.set(parentId, parent);
+    queue.push(parent);
+  }
+  return [...byId.values()];
+}
 function formatDefaultSummary(parsed, raw) {
   if (Array.isArray(parsed)) return `list, ${parsed.length} item${parsed.length === 1 ? "" : "s"}`;
   if (parsed && typeof parsed === "object") {
@@ -770,14 +832,17 @@ function renderResults(db, module, state) {
   const target = state.target || document.getElementById("results");
   // Reference and YAML views need every row in the active scope so the hierarchy is complete.
   // Anything dropped at the SQL boundary disappears from the output entirely.
-  const results = state.rows || searchVars(db, module, { ...state, limit: 20000, order: "id" });
+  let results = state.rows || searchVars(db, module, { ...state, limit: 20000, order: "id" });
+  if (isSearchActive(state) && state.view !== "yaml") {
+    results = expandRowsWithAncestors(db, module, results);
+  }
   if (!results.length) {
     target.innerHTML = `<div class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2"></i><span class="small">No variables match.</span></div>`;
     return;
   }
   if (state.view === "yaml") return renderYamlResults(target, module, state, results);
-  if (state.view === "reference") return renderReferenceResults(target, module, state, results);
-  return renderReferenceResults(target, module, { ...state, view: "reference" }, results);
+  if (state.view === "reference") return renderReferenceResults(target, db, module, state, results);
+  return renderReferenceResults(target, db, module, { ...state, view: "reference" }, results);
 }
 
 let _schemaRenderSeq = 0;
@@ -1086,7 +1151,7 @@ function renderReferenceDetail(row, module, isAll) {
     : "";
   return `
     <div class="schema-reference-detail-inner">
-      <div class="schema-reference-breadcrumb"><code>${escapeHtml(displayPath(row.key_path))}</code></div>
+      ${renderReferencePathBreadcrumb(row, module, isAll)}
       <h2>Key ${lifecycle}</h2>
       <div class="schema-reference-key-table-wrap">
         <table class="schema-reference-key-table">
@@ -1101,8 +1166,9 @@ function renderReferenceDetail(row, module, isAll) {
     </div>`;
 }
 
-function renderReferenceResults(target, module, state, inputRows) {
+function renderReferenceResults(target, db, module, state, inputRows) {
   const isAll = module === "all";
+  const searchActive = isSearchActive(state);
   const rowsById = new Map(inputRows.map(row => [schemaRowId(row, module), row]));
 
   const groups = new Map();
@@ -1117,9 +1183,9 @@ function renderReferenceResults(target, module, state, inputRows) {
     state.referenceSelectedId = state.currentRowId;
   }
   if (!state.referenceSelectedId || !rowsById.has(state.referenceSelectedId)) {
-    state.referenceSelectedId = schemaRowId(orderedRows[0] || inputRows[0], module);
+    state.referenceSelectedId = schemaRowId(inputRows[0], module);
   }
-  const selected = rowsById.get(state.referenceSelectedId) || orderedRows[0] || inputRows[0];
+  const selected = rowsById.get(state.referenceSelectedId) || inputRows[0];
   state.currentRowId = schemaRowId(selected, module);
   state.referenceSelectedId = state.currentRowId;
 
@@ -1130,12 +1196,14 @@ function renderReferenceResults(target, module, state, inputRows) {
       const parentId = hierarchy.parentIds.get(rowId) || "";
       const depth = row.depth || 1;
       const isBranch = (hierarchy.childCount.get(rowId) || 0) > 0;
-      const expanded = false;
-      const rowStyle = `--schema-reference-depth: ${Math.max(0, depth - 1)};${depth > 1 ? " display: none;" : ""}`;
+      const expanded = searchActive && isBranch;
+      const navDepth = Math.max(0, depth - 1);
+      const rowStyle = `--schema-reference-depth: ${navDepth};${searchActive || depth <= 1 ? "" : " display: none;"}`;
       const selectedClass = rowId === state.referenceSelectedId ? " active" : "";
+      const contextClass = searchActive && !rowMatchesSearch(row, state) ? " schema-reference-nav-row--context" : "";
       const moduleBadge = isAll && depth === 1 ? `<span class="schema-reference-module">${escapeHtml(SCHEMA_MODULES[row.module]?.name || row.module)}</span>` : "";
       return `
-        <div class="schema-reference-nav-row${selectedClass}"
+        <div class="schema-reference-nav-row${selectedClass}${contextClass}"
              data-row-id="${escapeAttr(rowId)}"
              data-parent-id="${escapeAttr(parentId)}"
              data-is-branch="${isBranch ? "1" : "0"}"
@@ -1145,7 +1213,7 @@ function renderReferenceResults(target, module, state, inputRows) {
           <button type="button" class="schema-reference-toggle" ${isBranch ? "" : "disabled"}>${isBranch ? `<i class="bi ${expanded ? "bi-chevron-down" : "bi-chevron-right"}"></i>` : ""}</button>
           <button type="button" class="schema-reference-nav-key" data-reference-select="${escapeAttr(rowId)}">
             <span class="schema-reference-file-icon"><i class="bi bi-file-earmark-text"></i></span>
-            <span>${highlight(leafSegment(row.key_path), state.q)}</span>
+            <span class="schema-reference-nav-label">${referenceNavLabel(row, state)}</span>
             ${moduleBadge}
           </button>
         </div>`;
@@ -1154,7 +1222,7 @@ function renderReferenceResults(target, module, state, inputRows) {
 
   target.innerHTML = `
     <div class="schema-reference-view">
-      <aside class="schema-reference-nav" aria-label="Schema documentation navigation">
+      <aside class="schema-reference-nav${searchActive ? " schema-reference-nav--search-hierarchy" : ""}" aria-label="Schema documentation navigation">
         ${navRows}
       </aside>
       <section class="schema-reference-detail" aria-live="polite">${renderReferenceDetail(selected, module, isAll)}</section>
@@ -1202,7 +1270,28 @@ function renderReferenceResults(target, module, state, inputRows) {
     selectedRow?.scrollIntoView({ block: "nearest" });
   }
 
-  target.querySelector(".schema-reference-nav")?.addEventListener("click", event => {
+  function selectReferenceRow(rowId) {
+    if (!rowId) return;
+    state.referenceSelectedId = rowId;
+    state.currentRowId = rowId;
+    target.querySelectorAll(".schema-reference-nav-row.active").forEach(row => row.classList.remove("active"));
+    referenceRowById(rowId)?.classList.add("active");
+    let selectedRow = rowsById.get(rowId);
+    if (!selectedRow) {
+      const splitIdx = rowId.indexOf(":");
+      if (splitIdx > 0) {
+        selectedRow = getVar(db, rowId.slice(0, splitIdx), rowId.slice(splitIdx + 1));
+        if (selectedRow) rowsById.set(rowId, selectedRow);
+      }
+    }
+    if (!selectedRow) return;
+    const detail = target.querySelector(".schema-reference-detail");
+    detail.innerHTML = renderReferenceDetail(selectedRow, module, isAll);
+    detail.scrollTop = 0;
+    revealReferenceSelection();
+  }
+
+  target.querySelector(".schema-reference-view")?.addEventListener("click", event => {
     const toggle = event.target.closest(".schema-reference-toggle");
     if (toggle && !toggle.disabled) {
       const row = toggle.closest(".schema-reference-nav-row");
@@ -1214,16 +1303,7 @@ function renderReferenceResults(target, module, state, inputRows) {
     }
     const select = event.target.closest("[data-reference-select]");
     if (!select) return;
-    state.referenceSelectedId = select.dataset.referenceSelect;
-    state.currentRowId = state.referenceSelectedId;
-    target.querySelectorAll(".schema-reference-nav-row.active").forEach(row => row.classList.remove("active"));
-    select.closest(".schema-reference-nav-row")?.classList.add("active");
-    const selectedRow = rowsById.get(state.referenceSelectedId);
-    if (selectedRow) {
-      const detail = target.querySelector(".schema-reference-detail");
-      detail.innerHTML = renderReferenceDetail(selectedRow, module, isAll);
-      detail.scrollTop = 0;
-    }
+    selectReferenceRow(select.dataset.referenceSelect);
   });
   revealReferenceSelection();
 }

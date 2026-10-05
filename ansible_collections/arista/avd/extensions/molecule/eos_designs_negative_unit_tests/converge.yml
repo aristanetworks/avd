@@ -527,6 +527,48 @@
     - name: Run failure scenario Test
       ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
 
+- name: Converge Negative tests for custom all-zero system MAC address
+  hosts: custom-system-mac-address-all-zeros
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for custom system MAC address when both keys are set
+  hosts: custom-system-mac-address-both-set
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for custom system MAC address with invalid format
+  hosts: custom-system-mac-address-invalid-format
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for custom multicast system MAC address
+  hosts: custom-system-mac-address-multicast
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for custom system MAC address without device ID
+  hosts: custom-system-mac-address-no-device-id
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
+- name: Converge Negative tests for custom system MAC address with unsupported formatter field
+  hosts: custom-system-mac-address-unsupported-field
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      ansible.builtin.import_tasks: tasks/run_negative_eos_designs_case.yml
+
 - name: Converge Negative tests for 'eos_designs_facts' - FABRIC_UPLINK_TESTS_1
   hosts: uplink-switches-length-less-than-uplink-interfaces
   connection: local

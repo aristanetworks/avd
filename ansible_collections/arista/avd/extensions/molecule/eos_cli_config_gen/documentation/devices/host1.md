@@ -18,6 +18,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Clock Settings](#clock-settings)
   - [NTP](#ntp)
   - [PTP](#ptp)
+  - [System MAC Address](#system-mac-address)
   - [System Control-Plane](#system-control-plane)
   - [Management SSH](#management-ssh)
   - [Management Tech-Support](#management-tech-support)
@@ -826,6 +827,10 @@ ptp monitor threshold missing-message follow-up 203 sequence-ids
 ptp monitor threshold missing-message delay-resp 202 sequence-ids
 ptp monitor threshold missing-message announce 201 sequence-ids
 ```
+
+### System MAC Address
+
+**MAC address:** 00:1c:73:00:00:01
 
 ### System Control-Plane
 
