@@ -46,6 +46,8 @@ l3leaf:
     platform: vEOS-lab
     router_id_pool: 10.255.1.0/24
     loopback_ipv6_pool: 2001:DB8:1::/48
+    # Testing loopback_ipv4_pool is ignored for underlay_ipv6_numbered.
+    loopback_ipv4_pool: 10.255.2.0/24
     # Testing Loopback0 as vtep loopback.
     vtep_loopback: Loopback0
     uplink_switches: ['ipv6-numbered-vtep-loopback0-spine']
