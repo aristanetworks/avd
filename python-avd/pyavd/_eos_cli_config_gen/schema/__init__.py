@@ -79006,8 +79006,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv4: Ipv4
         """
         VRRPv2 IPv4 Authentication configuration.
-        EOS version dependent. Supported starting 4.33.10M,
-        4.34.8M, 4.35.6M and 4.36.2F.
+        Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and
+        4.36.2F.
 
         Subclass of AvdModel.
         """
@@ -79024,8 +79024,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     ipv4:
                        VRRPv2 IPv4 Authentication configuration.
-                       EOS version dependent. Supported starting 4.33.10M,
-                       4.34.8M, 4.35.6M and 4.36.2F.
+                       Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and
+                       4.36.2F.
 
                        Subclass of AvdModel.
 

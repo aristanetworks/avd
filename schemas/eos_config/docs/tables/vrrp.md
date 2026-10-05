@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>vrrp</samp>](## "vrrp") | Dictionary |  |  |  | Global VRRP configuration. |
-    | [<samp>&nbsp;&nbsp;ipv4</samp>](## "vrrp.ipv4") | Dictionary |  |  |  | VRRPv2 IPv4 Authentication configuration.<br>EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F. |
+    | [<samp>&nbsp;&nbsp;ipv4</samp>](## "vrrp.ipv4") | Dictionary |  |  |  | VRRPv2 IPv4 Authentication configuration.<br>Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;authentication_anti_replay</samp>](## "vrrp.ipv4.authentication_anti_replay") | Boolean |  |  |  | Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements. |
 
 === "YAML"
@@ -18,7 +18,7 @@
     vrrp:
 
       # VRRPv2 IPv4 Authentication configuration.
-      # EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.
+      # Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.
       ipv4:
 
         # Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
