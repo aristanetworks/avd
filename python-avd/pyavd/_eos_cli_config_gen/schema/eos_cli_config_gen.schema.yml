@@ -9754,6 +9754,7 @@ keys:
         max: 86400
         convert_types:
         - str
+        description: Idle timeout in minutes.
   management_cvx:
     type: dict
     keys:
