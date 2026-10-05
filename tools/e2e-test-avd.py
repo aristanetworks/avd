@@ -787,8 +787,6 @@ class AvdV6Build:
             else:
                 topology_file = fabric_doc_dir.joinpath(f"{fabric_name}-topology.yml")
             with topology_file.open("w", encoding="utf-8") as stream:
-                if isinstance(output.digital_twin, ContainerlabDigitalTwin):
-                    stream.write("# yaml-language-server: $schema=https://raw.githubusercontent.com/srl-labs/containerlab/main/schemas/clab.schema.json\n")
                 yaml.dump(
                     content,
                     stream=stream,

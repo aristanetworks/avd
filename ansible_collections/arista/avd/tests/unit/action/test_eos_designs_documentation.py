@@ -33,7 +33,6 @@ LOG_HANDLERS_PATH = "ansible_collections.arista.avd.plugins.plugin_utils.utils.a
 LOG_CONFIG_PATH = "ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_config"
 MOCK_TMP_DIR = "/avd/mocked/tmp"
 FABRIC_NAME = "DC1_FABRIC"
-CONTAINERLAB_SCHEMA_COMMENT = "# yaml-language-server: $schema=https://raw.githubusercontent.com/srl-labs/containerlab/main/schemas/clab.schema.json"
 
 
 """Default validated_args returned by the action module's argument-spec validation.
@@ -240,8 +239,7 @@ def test_main_writes_containerlab_topology_with_ordered_name_and_prefix(action_m
     ):
         module.main(task_vars={"fabric_name": FABRIC_NAME, "digital_twin": {"environment": "containerlab"}})
 
-    assert written_files[str(topology_file)].splitlines()[:4] == [CONTAINERLAB_SCHEMA_COMMENT, "---", "name: DC1", "prefix: ''"]
-    assert written_files[str(topology_file)].count(CONTAINERLAB_SCHEMA_COMMENT) == 1
+    assert written_files[str(topology_file)].splitlines()[:3] == ["---", "name: DC1", "prefix: ''"]
     assert json.loads(written_files[str(tmp_path / "interface_mapping.json")]) == {
         "ManagementIntf": {"eth0": "Management1"},
         "EthernetIntf": {"eth1": "Ethernet1"},
@@ -292,8 +290,7 @@ def test_main_writes_containerlab_topology_without_interface_mapping(action_modu
         module.main(task_vars={"fabric_name": FABRIC_NAME, "digital_twin": {"environment": "containerlab"}})
 
     assert list(written_files) == [str(topology_file)]
-    assert written_files[str(topology_file)].splitlines()[:4] == [CONTAINERLAB_SCHEMA_COMMENT, "---", "name: DC1", "prefix: ''"]
-    assert written_files[str(topology_file)].count(CONTAINERLAB_SCHEMA_COMMENT) == 1
+    assert written_files[str(topology_file)].splitlines()[:3] == ["---", "name: DC1", "prefix: ''"]
 
 
 def test_main_writes_act_topology_without_containerlab_post_processing(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
@@ -342,7 +339,6 @@ def test_main_writes_act_topology_without_containerlab_post_processing(action_mo
 
     assert list(written_files) == [str(topology_file)]
     assert written_files[str(topology_file)].splitlines()[:2] == ["---", "nodes:"]
-    assert CONTAINERLAB_SCHEMA_COMMENT not in written_files[str(topology_file)]
 
 
 # ---------------------------------------------------------------------------
