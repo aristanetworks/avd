@@ -20155,14 +20155,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             size: int | None
             """
             IPv4 software-forwarding MTU threshold in bytes.
-            Defaults to 1500 on EOS. This setting alone does
-            not enable dropping.
+            Defaults to 1500 on EOS.
             """
             exceed_action_drop: bool | None
             """
             Drop IPv4 packets larger than `mtu.size` in software.
-            Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M,
-            4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+            EOS version dependent. Supported starting EOS
+            4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
             """
 
             if TYPE_CHECKING:
@@ -20177,12 +20176,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         size:
                            IPv4 software-forwarding MTU threshold in bytes.
-                           Defaults to 1500 on EOS. This setting alone does
-                           not enable dropping.
+                           Defaults to 1500 on EOS.
                         exceed_action_drop:
                            Drop IPv4 packets larger than `mtu.size` in software.
-                           Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M,
-                           4.33.8M, 4.32.11M to mitigate Security Advisory 0142.
+                           EOS version dependent. Supported starting EOS
+                           4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
 
                     """
 

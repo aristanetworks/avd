@@ -23055,13 +23055,14 @@ class EosDesigns(EosDesignsRootModel):
         class IpSoftwareForwardingExceedActionDrop(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"enable": {"type": bool}, "mtu": {"type": int}}
-            enable: bool | None
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "mtu": {"type": int}}
+            enabled: bool | None
             mtu: int
+            """IPv4 software-forwarding MTU threshold in bytes."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enable: bool | UndefinedType | None = Undefined, mtu: int | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, mtu: int | UndefinedType = Undefined) -> None:
                     """
                     IpSoftwareForwardingExceedActionDrop.
 
@@ -23069,8 +23070,8 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        enable: enable
-                        mtu: mtu
+                        enabled: enabled
+                        mtu: IPv4 software-forwarding MTU threshold in bytes.
 
                     """
 

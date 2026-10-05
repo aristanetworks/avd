@@ -32,5 +32,5 @@ general_settings:
 
   # Test MTU exceed option drop
   ip_software_forwarding_exceed_action_drop:
-    enable: true
+    enabled: true
     mtu: 9000
