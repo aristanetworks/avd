@@ -1,0 +1,28 @@
+---
+# Tests for avd_design_future.fix_mlag_vrf_peer_group_address_families.
+# Each child group is an L3 MLAG pair with MLAG iBGP peering in a dual-stack VRF,
+# covering one combination of underlay inputs and MLAG peer groups.
+fabric_name: MLAG_VRF_PEER_GROUP_ADDRESS_FAMILIES
+type: l3leaf
+
+avd_design_future:
+  fix_mlag_vrf_peer_group_address_families: true
+  # Fixes for neighboring issues, so the rendered configurations are coherent.
+  fix_match_ipv6_prefix_list_on_mlag_route_map: true
+  only_configure_route_map_connected_to_bgp_vrfs_when_used: true
+  # TODO: Enable once https://github.com/aristanetworks/avd/pull/7521 is merged.
+  # fix_mlag_ibgp_peering_ipv6_pool: true
+
+tenants:
+  - name: TENANT_MLAG_VRF_PG_AF
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_DUAL_STACK
+        vrf_vni: 10
+        svis:
+          - id: 110
+            name: VLAN110_IPV4
+            ip_address_virtual: 10.10.110.1/24
+          - id: 111
+            name: VLAN111_IPV6
+            ipv6_address_virtuals: [2001:db8:111::1/64]

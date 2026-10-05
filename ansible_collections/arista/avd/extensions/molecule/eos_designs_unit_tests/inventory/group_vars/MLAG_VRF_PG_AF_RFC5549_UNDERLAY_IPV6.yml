@@ -1,0 +1,30 @@
+---
+# RFC5549 link-local MLAG iBGP peering in VRFs with underlay_ipv6, using a dedicated MLAG peer group.
+# Expected with the fix: the dedicated peer group activates IPv6, like the shared peer group already does.
+underlay_rfc5549: true
+underlay_ipv6: true
+overlay_mlag_rfc5549: true
+
+bgp_peer_groups:
+  mlag_ipv4_vrfs_peer:
+    name: MLAG-IPv4-VRFS-PEER
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    mlag_interfaces: [Ethernet11, Ethernet12]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv6_pool: 2001:db8:1::/48
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  node_groups:
+    - group: MLAG_VRF_PG_AF_RFC5549_UNDERLAY_IPV6
+      bgp_as: 65104
+      nodes:
+        - name: mlag-vrf-pg-af-rfc5549-underlay-ipv6-leaf1a
+          id: 7
+          mgmt_ip: 192.168.201.107/24
+        - name: mlag-vrf-pg-af-rfc5549-underlay-ipv6-leaf1b
+          id: 8
+          mgmt_ip: 192.168.201.108/24

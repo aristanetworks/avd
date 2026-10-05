@@ -235,6 +235,7 @@ class RouterBgpMixin(Protocol):
                         self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
                     else:
                         self.structured_config_utils.set_once_peer_group_mlag_ipv4_underlay_peer()
+                    self.structured_config_utils.set_once_mlag_vrfs_peer_group_address_families()
 
                 for bgp_peer in vrf.bgp_peers:
                     peer_ip = bgp_peer.ip_address

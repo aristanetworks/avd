@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'overlay_mlag_rfc5549: true' requires 'underlay_rfc5549: true' or 'underlay_ipv6_numbered: true' when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled.

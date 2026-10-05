@@ -1,0 +1,32 @@
+---
+# IPv6-numbered MLAG iBGP peering in VRFs without overlay_mlag_rfc5549, using a dedicated MLAG peer group.
+# Expected with the fix: the dedicated peer group activates IPv6 and no longer activates IPv4,
+# since IPv4 routes without an IPv6 next hop are dropped over the IPv6 session.
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+
+bgp_peer_groups:
+  mlag_ipv4_vrfs_peer:
+    name: MLAG-IPv4-VRFS-PEER
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    mlag_interfaces: [Ethernet11, Ethernet12]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    router_id_pool: 10.255.1.0/24
+    loopback_ipv6_pool: 2001:db8:1::/48
+    vtep_loopback_ipv6_pool: 2001:db8:5::/48
+    mlag_peer_address_family: ipv6
+    mlag_peer_ipv6_pool: 2001:db8:3::/48
+    mlag_peer_l3_ipv6_pool: 2001:db8:4::/48
+  node_groups:
+    - group: MLAG_VRF_PG_AF_IPV6_NUMBERED_NO_OVERLAY_RFC5549
+      bgp_as: 65103
+      nodes:
+        - name: mlag-vrf-pg-af-ipv6-numbered-no-overlay-rfc5549-leaf1a
+          id: 5
+          mgmt_ip: 192.168.201.105/24
+        - name: mlag-vrf-pg-af-ipv6-numbered-no-overlay-rfc5549-leaf1b
+          id: 6
+          mgmt_ip: 192.168.201.106/24

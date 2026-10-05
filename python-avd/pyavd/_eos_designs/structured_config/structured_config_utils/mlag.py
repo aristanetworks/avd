@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.run_once import run_once_method
 
@@ -59,9 +60,50 @@ class MlagMixin(Protocol):
         """Set router_bgp structured_config covering the MLAG peer_group(s) in case there are VRFs with iBGP peerings using a separate peer-group."""
         bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
         self.set_mlag_peer_group(bgp_peer_group)
+        if (
+            self.inputs.avd_design_future.fix_mlag_vrf_peer_group_address_families
+            and self.shared_utils.underlay_ipv6_numbered
+            and not self.inputs.overlay_mlag_rfc5549
+        ):
+            # Without the IPv6 next hop, IPv4 routes received over the IPv6 session are dropped by EOS.
+            return
         address_family_ipv4_peer_groups = self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
         if self.inputs.overlay_mlag_rfc5549:
             address_family_ipv4_peer_groups.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+
+    @run_once_method
+    def set_once_mlag_vrfs_peer_group_address_families(self: StructuredConfigUtilsProtocol) -> None:
+        """
+        Set the address families of the MLAG peer group used for iBGP peerings in VRFs, when these peerings use IPv6.
+
+        Only active with `avd_design_future.fix_mlag_vrf_peer_group_address_families`.
+
+        This is called from network services when the device has at least one MLAG iBGP peering in a VRF,
+        after the peer group itself has been set by `set_once_peer_group_mlag_ipv4_underlay_peer` or `set_once_peer_group_mlag_ipv4_vrfs_peer`.
+        """
+        if not self.inputs.avd_design_future.fix_mlag_vrf_peer_group_address_families:
+            return
+
+        ipv6_session = (self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549) or self.shared_utils.underlay_ipv6_numbered
+        if not ipv6_session:
+            if self.inputs.overlay_mlag_rfc5549:
+                msg = (
+                    "Invalid combination of inputs. 'overlay_mlag_rfc5549: true' requires 'underlay_rfc5549: true' or 'underlay_ipv6_numbered: true' "
+                    "when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+            return
+
+        peer_group_name = self.shared_utils.mlag_vrfs_peer_group_name
+        if self.inputs.overlay_mlag_rfc5549:
+            address_family_ipv4_peer_group = self.structured_config.router_bgp.address_family_ipv4.peer_groups.obtain(peer_group_name)
+            address_family_ipv4_peer_group.activate = True
+            address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+            if not self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
+                # The shared peer group also carries the underlay MLAG session in the default VRF.
+                self.structured_config.ip_routing_ipv6_interfaces = True
+        if self.shared_utils.underlay_ipv6:
+            self.structured_config.router_bgp.address_family_ipv6.peer_groups.obtain(peer_group_name).activate = True
 
     def set_mlag_peer_group(
         self: StructuredConfigUtilsProtocol, bgp_peer_group: EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer

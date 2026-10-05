@@ -1,0 +1,39 @@
+---
+# IPv4 underlay with overlay_mlag_rfc5549, but without MLAG iBGP peering in VRFs.
+# Expected with the fix: no error, since the error is only raised for devices with MLAG iBGP peerings in VRFs.
+overlay_mlag_rfc5549: true
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    mlag_interfaces: [Ethernet11, Ethernet12]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+  node_groups:
+    - group: MLAG_VRF_PG_AF_UNDERLAY_IPV4_NO_VRF_PEERING
+      bgp_as: 65108
+      nodes:
+        - name: mlag-vrf-pg-af-underlay-ipv4-no-vrf-peering-leaf1a
+          id: 15
+          mgmt_ip: 192.168.201.115/24
+        - name: mlag-vrf-pg-af-underlay-ipv4-no-vrf-peering-leaf1b
+          id: 16
+          mgmt_ip: 192.168.201.116/24
+
+tenants:
+  - name: TENANT_MLAG_VRF_PG_AF
+    mac_vrf_vni_base: 10000
+    enable_mlag_ibgp_peering_vrfs: false
+    vrfs:
+      - name: VRF_DUAL_STACK
+        vrf_vni: 10
+        svis:
+          - id: 110
+            name: VLAN110_IPV4
+            ip_address_virtual: 10.10.110.1/24
+          - id: 111
+            name: VLAN111_IPV6
+            ipv6_address_virtuals: [2001:db8:111::1/64]

@@ -514,6 +514,21 @@ keys:
           ipv6 address prefix-list`
 
           instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`.'
+      fix_mlag_vrf_peer_group_address_families:
+        type: bool
+        default: false
+        description: "Available from AVD 6.5.0.\nConfigure the same address families
+          on the shared `bgp_peer_groups.mlag_ipv4_underlay_peer` and the dedicated\n`bgp_peer_groups.mlag_ipv4_vrfs_peer`
+          BGP peer groups for MLAG iBGP peerings in VRFs, when the peering uses IPv6\n(`underlay_rfc5549`
+          with `overlay_mlag_rfc5549`, or `underlay_ipv6_numbered`):\n- With `overlay_mlag_rfc5549:
+          true`, activate IPv4 with `next-hop address-family ipv6 originate`.\n  On
+          `bgp_peer_groups.mlag_ipv4_underlay_peer`, this also applies to the MLAG
+          iBGP connection in the default VRF,\n  so `ip routing ipv6 interfaces` is
+          configured.\n- With `underlay_ipv6: true`, activate IPv6.\nWith `underlay_ipv6_numbered:
+          true` and `overlay_mlag_rfc5549: false`, IPv4 is no longer activated on
+          `bgp_peer_groups.mlag_ipv4_vrfs_peer`,\nmatching `bgp_peer_groups.mlag_ipv4_underlay_peer`.\nRaise
+          an error when `overlay_mlag_rfc5549: true` is used for MLAG iBGP peerings
+          in VRFs over IPv4."
       fix_radius_server_group_tls:
         type: bool
         default: false
@@ -8164,9 +8179,16 @@ keys:
   overlay_mlag_rfc5549:
     documentation_options:
       table: overlay-settings
-    description: 'IPv6 Unnumbered for MLAG iBGP connections.
+    description: 'Carry IPv4 routes with an IPv6 next hop over the MLAG iBGP connections
+      in VRFs.
 
-      Requires "underlay_rfc5549: true".
+      The connections use IPv6 link-local addresses (unnumbered) with `underlay_rfc5549:
+      true`,
+
+      or numbered IPv6 addresses with `underlay_ipv6_numbered: true`.
+
+      Requires `underlay_rfc5549: true`, or `underlay_ipv6_numbered: true` with `avd_design_future.fix_mlag_vrf_peer_group_address_families:
+      true`.
 
       '
     type: bool
