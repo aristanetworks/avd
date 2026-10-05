@@ -296,8 +296,8 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         Default pool is "loopback_ipv4_pool"
         Default offset from pool is `id + loopback_ipv4_offset`
         """
-        if self.shared_utils.node_config.loopback_ipv4_address:
-            return self.shared_utils.node_config.loopback_ipv4_address
+        if self._loopback_ipv4_address:
+            return self._loopback_ipv4_address
 
         loopback_pool = self._loopback_ipv4_pool if not self.shared_utils.underlay_ipv6_numbered else self._router_id_pool
 
