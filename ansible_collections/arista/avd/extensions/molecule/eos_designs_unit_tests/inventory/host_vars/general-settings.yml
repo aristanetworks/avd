@@ -30,7 +30,7 @@ general_settings:
     # Test with no name
     - id: 10
 
-  # Test MTU exceed option drop
+  # Test MTU exceed action drop
   ip_software_forwarding_exceed_action_drop:
     enabled: true
     mtu: 9000
