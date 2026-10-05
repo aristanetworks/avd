@@ -1996,6 +1996,8 @@ aaa accounting commands 3 default start-stop logging
 | Disable deauthorizing locked addresses upon MAC aging out | True |
 | Disable enforcement for locked ipv4 addresses | True |
 | Disable enforcement for locked ipv6 addresses | True |
+| Log events for denied address drops | True |
+| Log events for DHCP server to client packet drops | True |
 
 ### DHCP Servers
 
@@ -2044,6 +2046,8 @@ address locking
    locked-address expiration mac disabled
    locked-address ipv4 enforcement disabled
    locked-address ipv6 enforcement disabled
+   logging event denied-address drop
+   logging event dhcp server drop
 ```
 
 ## Management Security

@@ -32,6 +32,12 @@
 {%         if address_locking.locked_address.ipv6_enforcement_disabled is arista.avd.defined(true) %}
 | Disable enforcement for locked ipv6 addresses | True |
 {%         endif %}
+{%         if address_locking.logging_event.denied_address_drop is arista.avd.defined(true) %}
+| Log events for denied address drops | True |
+{%         endif %}
+{%         if address_locking.logging_event.dhcp_server_drop is arista.avd.defined(true) %}
+| Log events for DHCP server to client packet drops | True |
+{%         endif %}
 {%         if address_locking.dhcp_servers_ipv4 is arista.avd.defined or address_locking.dhcp_server_interfaces is arista.avd.defined %}
 
 ### DHCP Servers

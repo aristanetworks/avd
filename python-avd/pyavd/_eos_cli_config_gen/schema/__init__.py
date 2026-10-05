@@ -1362,6 +1362,32 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class LoggingEvent(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"denied_address_drop": {"type": bool}, "dhcp_server_drop": {"type": bool}}
+            denied_address_drop: bool | None
+            """Log events for denied address drops."""
+            dhcp_server_drop: bool | None
+            """Log events for DHCP server to client packet drops."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, denied_address_drop: bool | UndefinedType | None = Undefined, dhcp_server_drop: bool | UndefinedType | None = Undefined
+                ) -> None:
+                    """
+                    LoggingEvent.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        denied_address_drop: Log events for denied address drops.
+                        dhcp_server_drop: Log events for DHCP server to client packet drops.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
@@ -1369,6 +1395,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "leases": {"type": Leases},
             "local_interface": {"type": str},
             "locked_address": {"type": LockedAddress},
+            "logging_event": {"type": LoggingEvent},
         }
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
@@ -1387,6 +1414,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         local_interface: str | None
         locked_address: LockedAddress
         """Subclass of AvdModel."""
+        logging_event: LoggingEvent
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -1399,6 +1428,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 leases: Leases | UndefinedType = Undefined,
                 local_interface: str | UndefinedType | None = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
+                logging_event: LoggingEvent | UndefinedType = Undefined,
             ) -> None:
                 """
                 AddressLocking.
@@ -1418,6 +1448,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     leases: Subclass of AvdList with `LeasesItem` items.
                     local_interface: local_interface
                     locked_address: Subclass of AvdModel.
+                    logging_event: Subclass of AvdModel.
 
                 """
 
