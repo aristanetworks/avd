@@ -8,4 +8,3 @@ plugins/modules/cv_workflow.py validate-modules:missing-gplv3-license
 plugins/modules/eos_cli_config_gen.py validate-modules:missing-gplv3-license
 plugins/modules/anta_workflow.py validate-modules:missing-gplv3-license
 plugins/modules/validate_inputs.py validate-modules:missing-gplv3-license
-plugins/modules/legacy_role_vars.py validate-modules:missing-gplv3-license

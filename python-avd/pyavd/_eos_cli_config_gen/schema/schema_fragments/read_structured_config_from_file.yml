@@ -12,7 +12,7 @@ keys:
     type: bool
     default: true
     description: |
-      Read structured configuration from files in `eos_cli_config_gen_structured_dir`.
+      Read structured configuration from files in `avd_structured_dir`.
       If set to false, `eos_cli_config_gen` reads structured configuration from hostvars.
   read_structured_config_from_file:
     documentation_options:

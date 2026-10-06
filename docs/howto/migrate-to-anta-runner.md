@@ -72,12 +72,12 @@ In the legacy `eos_validate_state` role, output files were split between the `in
 To customize directory and report paths in `anta_runner`:
 
 ```yaml
-anta_runner_avd_catalogs_dir: "{{ inventory_dir }}/anta/avd_catalogs"
-anta_runner_user_catalogs_dir: "{{ inventory_dir }}/anta/user_catalogs"
-anta_runner_reports_dir: "{{ inventory_dir }}/anta/reports"
-anta_runner_report_md_path: "{{ anta_runner_reports_dir }}/anta_report.md"
-anta_runner_report_csv_path: "{{ anta_runner_reports_dir }}/anta_report.csv"
-anta_runner_report_json_path: "{{ anta_runner_reports_dir }}/anta_report.json"
+avd_catalogs_dir: "{{ inventory_dir }}/anta/avd_catalogs"
+avd_user_catalogs_dir: "{{ inventory_dir }}/anta/user_catalogs"
+avd_anta_reports_dir: "{{ inventory_dir }}/anta/reports"
+anta_runner_report_md_path: "{{ avd_anta_reports_dir }}/anta_report.md"
+anta_runner_report_csv_path: "{{ avd_anta_reports_dir }}/anta_report.csv"
+anta_runner_report_json_path: "{{ avd_anta_reports_dir }}/anta_report.json"
 ```
 
 ## Custom ANTA Catalogs

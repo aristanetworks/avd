@@ -2,15 +2,6 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
-- name: Validate legacy role variables
-  arista.avd.legacy_role_vars:
-    role_name: eos_config_deploy_eapi
-    aliases: "{{ eos_config_deploy_eapi_internal_legacy_var_aliases }}"
-    mode: "{{ avd_legacy_role_vars_mode | default('warning') }}"
-  delegate_to: localhost
-  run_once: true
-  check_mode: false
-
 - name: Verify Requirements
   delegate_to: localhost
   when: eos_config_deploy_eapi_requirements is not defined and avd_verify_requirements | default(true)
@@ -29,18 +20,18 @@
     state: directory
     mode: "0o775"
   loop:
-    - "{{ eos_config_deploy_eapi_internal_post_running_config_backup_dir }}"
-    - "{{ eos_config_deploy_eapi_internal_pre_running_config_backup_dir }}"
+    - "{{ eos_config_deploy_eapi_post_running_config_backup_dir }}"
+    - "{{ eos_config_deploy_eapi_pre_running_config_backup_dir }}"
   delegate_to: localhost
   run_once: true
 
 - name: Replace configuration with intended configuration
   arista.eos.eos_config:
-    src: "{{ eos_config_deploy_eapi_internal_config_dir }}/{{ inventory_hostname }}.cfg"
+    src: "{{ avd_eos_config_dir }}/{{ inventory_hostname }}.cfg"
     replace: config
     save_when: modified
     backup: "{{ eos_config_deploy_eapi_pre_running_config_backup }}"
     backup_options:
-      filename: "{{ eos_config_deploy_eapi_internal_pre_running_config_backup_filename }}"
-      dir_path: "{{ eos_config_deploy_eapi_internal_pre_running_config_backup_dir }}"
+      filename: "{{ eos_config_deploy_eapi_pre_running_config_backup_filename }}"
+      dir_path: "{{ eos_config_deploy_eapi_pre_running_config_backup_dir }}"
   notify: "backup config"

@@ -918,7 +918,7 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  eos_cli_config_gen_structured_config_file_format:
+  avd_structured_config_file_format:
     documentation_options:
       table: role-settings
     type: str
@@ -930,18 +930,7 @@ keys:
     description: 'The file format to use when loading structured configuration files.
 
       '
-  avd_structured_config_file_format:
-    documentation_options:
-      table: legacy-role-settings
-    type: str
-    valid_values:
-    - yml
-    - yaml
-    - json
-    description: 'Legacy alias for `eos_cli_config_gen_structured_config_file_format`.
-
-      '
-  eos_cli_config_gen_vault_id:
+  avd_vault_id:
     documentation_options:
       table: role-settings
     type: str
@@ -949,15 +938,9 @@ keys:
       Ansible Vault is not configured, this parameter has no effect and files are
       written as plain JSON.\nWhen Ansible Vault is configured, AVD encrypts files
       containing templated and validated data\nto prevent sensitive information from
-      being exposed in the temporary directories.\n  * When `eos_cli_config_gen_vault_id`
-      is not specified, AVD uses the *first* Vault ID in the list for encryption.\n
-      \ * When `eos_cli_config_gen_vault_id` is specified, AVD uses the specified
-      Vault ID for encryption."
-  avd_vault_id:
-    documentation_options:
-      table: legacy-role-settings
-    type: str
-    description: Legacy alias for `eos_cli_config_gen_vault_id`.
+      being exposed in the temporary directories.\n  * When `avd_vault_id` is not
+      specified, AVD uses the *first* Vault ID in the list for encryption.\n  * When
+      `avd_vault_id` is specified, AVD uses the specified Vault ID for encryption."
   banners:
     type: dict
     keys:
@@ -16488,7 +16471,7 @@ keys:
       table: role-settings
     type: bool
     default: true
-    description: 'Read structured configuration from files in `eos_cli_config_gen_structured_dir`.
+    description: 'Read structured configuration from files in `avd_structured_dir`.
 
       If set to false, `eos_cli_config_gen` reads structured configuration from hostvars.
 

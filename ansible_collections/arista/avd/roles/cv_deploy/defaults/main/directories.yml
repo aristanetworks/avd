@@ -1,5 +1,15 @@
 # Roles Defaults - directories
 
+# Collection-wide output paths. Existing unprefixed variables remain accepted
+# as legacy inputs when explicitly supplied by the user.
+avd_root_dir: "{{ root_dir | default(inventory_dir) }}"
+avd_output_dir_name: "{{ output_dir_name | default('intended') }}"
+avd_output_dir: "{{ output_dir | default(avd_root_dir ~ '/' ~ avd_output_dir_name) }}"
+avd_structured_dir_name: "{{ structured_dir_name | default('structured_configs') }}"
+avd_structured_dir: "{{ structured_dir | default(avd_output_dir ~ '/' ~ avd_structured_dir_name) }}"
+avd_eos_config_dir_name: "{{ eos_config_dir_name | default('configs') }}"
+avd_eos_config_dir: "{{ eos_config_dir | default(avd_output_dir ~ '/' ~ avd_eos_config_dir_name) }}"
+
 # Output directory for temporary files.
 # Contains templated and validated inputs used by the 'cv_deploy' role.
-cv_deploy_tmp_dir: '{{ cv_deploy_internal_output_dir }}/tmp_cv_deploy'
+cv_deploy_tmp_dir: '{{ avd_output_dir }}/tmp_cv_deploy'

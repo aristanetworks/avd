@@ -49,9 +49,9 @@ The following default variables are defined, and can be modified as desired:
 ```yaml
 ---
 
-eos_snapshot_root_dir: "{{ inventory_dir }}"
-eos_snapshot_backup_dir_name: "commands"
-eos_snapshot_backup_dir: "{{ eos_snapshot_root_dir }}/{{ eos_snapshot_backup_dir_name }}"
+avd_root_dir: "{{ inventory_dir }}"
+avd_snapshots_backup_dir_name: "snapshots"
+avd_snapshots_backup_dir: "{{ avd_root_dir }}/{{ avd_snapshots_backup_dir_name }}"
 
 # list of desired formats. Supported values are markdown, json and text.
 # text: one file per device and show command
@@ -71,6 +71,10 @@ eos_snapshot_commands:
   - show version
   - show running-config
 ```
+
+The previous `root_dir`, `snapshots_backup_dir`, and `snapshots_backup_dir_name`
+inputs remain supported silently. If both names are set, the `avd_*` value wins.
+Use `avd_snapshots_backup_dir` when sharing the snapshot path with another role.
 
 ## Requirements
 

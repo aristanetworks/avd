@@ -12,9 +12,7 @@ EOS_CLI_CONFIG_GEN_ROLE_KEYS = {
     "eos_cli_config_gen_custom_templates",
     "eos_cli_config_gen_documentation",
     "eos_cli_config_gen_read_structured_config_from_file",
-    "eos_cli_config_gen_structured_config_file_format",
     "eos_cli_config_gen_validate_inputs_batch_size",
-    "eos_cli_config_gen_vault_id",
     "read_structured_config_from_file",
 }
 """

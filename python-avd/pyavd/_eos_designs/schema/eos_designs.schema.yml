@@ -589,11 +589,10 @@ keys:
       and EOS configuration, device and fabric documentation) will replace original
       fabric artifacts.
 
-      To keep Digital Twin artifacts separate, adjust `eos_designs_output_dir_name`,
-      `eos_designs_documentation_dir_name`,
+      To keep Digital Twin artifacts separate, adjust `avd_output_dir_name`, `avd_documentation_dir_name`,
 
-      `eos_cli_config_gen_output_dir_name`, and `eos_cli_config_gen_documentation_dir_name`
-      to point to dedicated output locations.'
+      and any other `avd_*` output directory variables to point to dedicated output
+      locations.'
     default: false
   avd_digital_twin_mode:
     documentation_options:
@@ -636,7 +635,7 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  eos_designs_structured_config_file_format:
+  avd_structured_config_file_format:
     documentation_options:
       table: role-settings
     type: str
@@ -646,17 +645,6 @@ keys:
     - yaml
     - json
     description: 'The file format to use when dumping structured configuration files.
-
-      '
-  avd_structured_config_file_format:
-    documentation_options:
-      table: legacy-role-settings
-    type: str
-    valid_values:
-    - yml
-    - yaml
-    - json
-    description: 'Legacy alias for `eos_designs_structured_config_file_format`.
 
       '
   eos_designs_validation_configuration:
@@ -670,16 +658,11 @@ keys:
         default: true
         description: Emit a warning when EOS Config keys are detected in the AVD Design
           inputs.
-  eos_designs_vault_id:
+  avd_vault_id:
     documentation_options:
       table: role-settings
     type: str
-    $ref: eos_cli_config_gen#/keys/eos_cli_config_gen_vault_id
-  avd_vault_id:
-    documentation_options:
-      table: legacy-role-settings
-    type: str
-    description: Legacy alias for `eos_designs_vault_id`.
+    $ref: eos_cli_config_gen#/keys/avd_vault_id
   bfd_multihop:
     documentation_options:
       table: bfd-settings

@@ -1,4 +1,18 @@
 ---
 # defaults file for eos_snapshot
 
-# Alias-backed defaults are resolved in vars/main.yml.
+# Collection-wide snapshot path. Existing unprefixed variables remain accepted
+# as legacy inputs when explicitly supplied by the user.
+avd_root_dir: "{{ root_dir | default(inventory_dir) }}"
+avd_snapshots_backup_dir_name: "{{ snapshots_backup_dir_name | default('snapshots') }}"
+avd_snapshots_backup_dir: "{{ snapshots_backup_dir | default(avd_root_dir ~ '/' ~ avd_snapshots_backup_dir_name) }}"
+
+eos_snapshot_output_formats: "{{ output_format | default(['text', 'markdown']) }}"
+eos_snapshot_commands: >-
+  {{ commands_list | default([
+    'show lldp neighbors',
+    'show ip interface brief',
+    'show interfaces description',
+    'show version',
+    'show running-config'
+  ]) }}

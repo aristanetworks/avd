@@ -46,16 +46,18 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 ## Default Variables
 
 ```yaml
-eos_config_deploy_eapi_root_dir: "{{ inventory_dir }}"
-eos_config_deploy_eapi_output_dir_name: "intended"
-eos_config_deploy_eapi_output_dir: "{{ eos_config_deploy_eapi_root_dir }}/{{ eos_config_deploy_eapi_output_dir_name }}"
-eos_config_deploy_eapi_config_dir_name: "configs"
-eos_config_deploy_eapi_config_dir: "{{ eos_config_deploy_eapi_output_dir }}/{{ eos_config_deploy_eapi_config_dir_name }}"
-eos_config_deploy_eapi_pre_running_config_backup_dir_name: "config_backup"
-eos_config_deploy_eapi_post_running_config_backup_dir_name: "config_backup"
+avd_root_dir: "{{ inventory_dir }}"
+avd_output_dir_name: "intended"
+avd_output_dir: "{{ avd_root_dir }}/{{ avd_output_dir_name }}"
+avd_eos_config_dir_name: "configs"
+avd_eos_config_dir: "{{ avd_output_dir }}/{{ avd_eos_config_dir_name }}"
+avd_pre_running_config_backup_dir_name: "config_backup"
+avd_post_running_config_backup_dir_name: "config_backup"
 ```
 
-Legacy unprefixed aliases remain supported. The role-prefixed variable takes precedence when both names are set.
+Existing unprefixed inputs remain supported silently. If both names are set, the
+`avd_*` value wins. Use `avd_eos_config_dir` and the other `avd_*` paths for
+cross-role reuse; generic defaults are not guaranteed to be exported after a role.
 
 ## Requirements
 

@@ -341,7 +341,7 @@ Below is an example of the playbook we are leveraging to build and deploy our co
   collections:
     - arista.avd
   vars:
-    eos_designs_fabric_dir_name: "{{ fabric_name }}"
+    avd_fabric_dir_name: "{{ fabric_name }}"
   tasks:
 
     - name: Generate intended variables

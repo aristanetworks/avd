@@ -1,4 +1,18 @@
 # Roles Defaults - ouptput directories
 
+# Collection-wide output paths. Existing unprefixed variables remain accepted
+# as legacy inputs when explicitly supplied by the user.
+avd_root_dir: "{{ root_dir | default(inventory_dir) }}"
+avd_documentation_dir_name: "{{ documentation_dir_name | default('documentation') }}"
+avd_documentation_dir: "{{ documentation_dir | default(avd_root_dir ~ '/' ~ avd_documentation_dir_name) }}"
+avd_devices_dir_name: "{{ devices_dir_name | default('devices') }}"
+avd_devices_dir: "{{ devices_dir | default(avd_documentation_dir ~ '/' ~ avd_devices_dir_name) }}"
+avd_output_dir_name: "{{ output_dir_name | default('intended') }}"
+avd_output_dir: "{{ output_dir | default(avd_root_dir ~ '/' ~ avd_output_dir_name) }}"
+avd_structured_dir_name: "{{ structured_dir_name | default('structured_configs') }}"
+avd_structured_dir: "{{ structured_dir | default(avd_output_dir ~ '/' ~ avd_structured_dir_name) }}"
+avd_eos_config_dir_name: "{{ eos_config_dir_name | default('configs') }}"
+avd_eos_config_dir: "{{ eos_config_dir | default(avd_output_dir ~ '/' ~ avd_eos_config_dir_name) }}"
+
 # Output directory for temporary files.
-eos_cli_config_gen_tmp_dir: "{{ eos_cli_config_gen_internal_output_dir }}/tmp_eos_cli_config_gen"
+eos_cli_config_gen_tmp_dir: "{{ avd_output_dir }}/tmp_eos_cli_config_gen"

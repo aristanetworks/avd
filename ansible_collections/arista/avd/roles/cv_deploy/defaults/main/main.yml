@@ -4,6 +4,39 @@
 # When an Ansible Vault secret is set, temporary files holding input variables are encrypted. Decryption is required to inspect them.
 cv_deploy_keep_tmp_files: false
 
+avd_structured_config_file_format: "yml"
+avd_vault_id: null
+
+cv_deploy_inventory_hostname: "{{ cv_inventory_hostname | default('cloudvision') }}"
+cv_deploy_server: >-
+  {{ cv_server | default(hostvars[cv_deploy_inventory_hostname].ansible_host | default(None)) }}
+cv_deploy_token: >-
+  {{ cv_token | default(hostvars[cv_deploy_inventory_hostname].ansible_password | default(None)) }}
+cv_deploy_verify_certs: "{{ cv_verify_certs | default(true) }}"
+cv_deploy_grpc_keepalives: >-
+  {{ cv_grpc_keepalives | default({
+    'enabled': false,
+    'keepalive_time': 60,
+    'keepalive_timeout': 20,
+    'permit_without_calls': false
+  }) }}
+cv_deploy_proxy_port: "{{ proxy_port | default(8080) }}"
+cv_deploy_devices: "{{ cv_devices | default(ansible_play_hosts) }}"
+cv_deploy_skip_missing_devices: "{{ cv_skip_missing_devices | default(false) }}"
+cv_deploy_strict_system_mac_address: "{{ cv_strict_system_mac_address | default(false) }}"
+cv_deploy_submit_workspace: "{{ cv_submit_workspace | default(true) }}"
+cv_deploy_submit_workspace_force: "{{ cv_submit_workspace_force | default(false) }}"
+cv_deploy_workspace_build_warnings_enabled: "{{ cv_workspace_build_warnings_enabled | default(true) }}"
+cv_deploy_workspace_build_warnings_suppress_patterns: "{{ cv_workspace_build_warnings_suppress_patterns | default([]) }}"
+cv_deploy_workspace_build_warnings_suppress_portfast: "{{ cv_workspace_build_warnings_suppress_portfast | default(false) }}"
+cv_deploy_run_change_control: "{{ cv_run_change_control | default(false) }}"
+cv_deploy_strict_tags: "{{ cv_strict_tags | default(false) }}"
+cv_deploy_configlet_name_template: "{{ cv_configlet_name_template | default('AVD-${hostname}') }}"
+cv_deploy_register_detailed_results: "{{ cv_register_detailed_results | default(false) }}"
+cv_deploy_workspace_build_timeout: "{{ cv_workspace_build_timeout | default(300) }}"
+cv_deploy_workspace_max_sync_retries: "{{ cv_workspace_max_sync_retries | default(5) }}"
+cv_deploy_read_structured_config_from_file: "{{ read_structured_config_from_file | default(true) }}"
+
 # Opt-in to future cv_deploy behaviors which will become default behaviors in a future major version.
 # cv_deploy_future:
 #   # Use system certificates instead of Python's bundled certificate store.

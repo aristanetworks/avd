@@ -18,31 +18,32 @@ None
 
 ## Role Variables
 
-The role supports the following role-prefixed variables:
+The role supports the following collection-wide variables:
 
 ```yaml
 # Root directory where to build output structure
 # All folder below will be created in this directory folder.
-build_output_folders_root_dir: "{{ inventory_dir }}"
+avd_root_dir: "{{ inventory_dir }}"
 
 # Main output directory
-build_output_folders_output_dir_name: "intended"
+avd_output_dir_name: "intended"
 # Output for structured YAML files:
-build_output_folders_structured_dir_name: "structured_configs"
+avd_structured_dir_name: "structured_configs"
 # EOS configuration directory name
-build_output_folders_eos_config_dir_name: "configs"
+avd_eos_config_dir_name: "configs"
 # Main documentation folder
-build_output_folders_documentation_dir_name: "documentation"
+avd_documentation_dir_name: "documentation"
 # Fabric documentation
-build_output_folders_fabric_dir_name: "fabric"
+avd_fabric_dir_name: "fabric"
 # Device documentation
-build_output_folders_devices_dir_name: "devices"
+avd_devices_dir_name: "devices"
 # EOS config deploy eapi running config backup directory
-build_output_folders_post_running_config_backup_dir_name: "config_backup"
-build_output_folders_pre_running_config_backup_dir_name: "config_backup"
+avd_post_running_config_backup_dir_name: "config_backup"
+avd_pre_running_config_backup_dir_name: "config_backup"
 ```
 
-Legacy unprefixed aliases remain supported. The role-prefixed variable takes precedence when both names are set.
+Existing unprefixed inputs remain supported silently. If both names are set, the
+`avd_*` value wins. Use the `avd_*` paths when consuming the output from another role.
 
 Role will create following structure:
 

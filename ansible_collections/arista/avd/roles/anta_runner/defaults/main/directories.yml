@@ -1,5 +1,30 @@
 ---
 # Role defaults - directories and paths
 
-# Alias-backed directory defaults are resolved in vars/main.yml so canonical
-# variables remain undefined unless explicitly supplied by the user.
+# Collection-wide output paths. The unprefixed names are accepted as legacy
+# inputs when explicitly supplied by the user.
+avd_root_dir: "{{ root_dir | default(inventory_dir) }}"
+avd_output_dir_name: "{{ output_dir_name | default('intended') }}"
+avd_output_dir: "{{ output_dir | default(avd_root_dir ~ '/' ~ avd_output_dir_name) }}"
+avd_structured_dir_name: "{{ structured_dir_name | default('structured_configs') }}"
+avd_structured_dir: "{{ structured_dir | default(avd_output_dir ~ '/' ~ avd_structured_dir_name) }}"
+
+# Main ANTA directory.
+avd_anta_dir_name: "{{ anta_dir_name | default('anta') }}"
+avd_anta_dir: "{{ anta_dir | default(avd_root_dir ~ '/' ~ avd_anta_dir_name) }}"
+
+# Input for ANTA user-defined catalog files.
+avd_user_catalogs_dir_name: "{{ user_catalogs_dir_name | default('user_catalogs') }}"
+avd_user_catalogs_dir: "{{ user_catalogs_dir | default(avd_anta_dir ~ '/' ~ avd_user_catalogs_dir_name) }}"
+
+# Output for ANTA AVD catalog files.
+avd_catalogs_dir_name: "avd_catalogs"
+avd_catalogs_dir: "{{ avd_anta_dir ~ '/' ~ avd_catalogs_dir_name }}"
+
+# Output for ANTA reports.
+avd_anta_reports_dir_name: "{{ anta_reports_dir_name | default('reports') }}"
+avd_anta_reports_dir: "{{ anta_reports_dir | default(avd_anta_dir ~ '/' ~ avd_anta_reports_dir_name) }}"
+
+anta_runner_report_json_path: "{{ anta_report_json_path | default(avd_anta_reports_dir ~ '/anta_report.json') }}"
+anta_runner_report_md_path: "{{ anta_report_md_path | default(avd_anta_reports_dir ~ '/anta_report.md') }}"
+anta_runner_report_csv_path: "{{ anta_report_csv_path | default(avd_anta_reports_dir ~ '/anta_report.csv') }}"

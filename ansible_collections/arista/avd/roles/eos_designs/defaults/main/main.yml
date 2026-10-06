@@ -1,6 +1,12 @@
 ---
 # Roles Defaults - main
 
+avd_structured_config_file_format: "yml"
+avd_vault_id: null
+
+eos_designs_digital_twin_mode: "{{ avd_digital_twin_mode | default(false) }}"
+eos_designs_structured_config: "{{ avd_eos_designs_structured_config | default(true) }}"
+
 # Avoid deleting temporary files. Allows the user to inspect tmp files created by the role.
 eos_designs_keep_tmp_files: false
 

@@ -37,7 +37,7 @@ For the custom template to be automatically discovered and rendered by `eos_cli_
 The format of the variable should be as follows:
 
 ```yaml
-custom_templates:
+eos_cli_config_gen_custom_templates:
   - custom_template_name.j2
 ```
 
@@ -45,4 +45,4 @@ For more details, see [Extensibility with Custom Templates](../role-configuratio
 
 ## Adding the Custom Template to the `eos_cli_config_gen` Role
 
-Custom templates are rendered automatically when the `custom_templates` variable is set. The custom templates are always rendered *after* the builtin `eos_cli_config_gen` templates.
+Custom templates are rendered automatically when `eos_cli_config_gen_custom_templates` is set. The previous `custom_templates` input remains supported silently. If both names are set, `eos_cli_config_gen_custom_templates` takes precedence. The custom templates are always rendered *after* the builtin `eos_cli_config_gen` templates.

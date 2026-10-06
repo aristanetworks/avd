@@ -34,3 +34,27 @@
   ansible.builtin.assert:
     that:
       - result is success
+
+- name: Test legacy custom templates in eos_cli_config_gen
+  vars:
+    custom_templates:
+      - "{{ relative_custom_templates_dir }}/custom_template1.j2"
+  register: legacy_result
+  arista.avd.eos_cli_config_gen:
+    config_filename: "{{ actual_output_dir }}/testhost-legacy.cfg"
+    generate_device_doc: false
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen"
+  delegate_to: localhost
+
+- name: Compare legacy custom-template output with expected output
+  ansible.builtin.shell: >-
+    diff "{{ expected_output_dir }}/testhost.cfg"
+    "{{ actual_output_dir }}/testhost-legacy.cfg"
+  failed_when: legacy_diff.rc > 0
+  register: legacy_diff
+  delegate_to: localhost
+
+- name: Validate legacy result
+  ansible.builtin.assert:
+    that:
+      - legacy_result is success

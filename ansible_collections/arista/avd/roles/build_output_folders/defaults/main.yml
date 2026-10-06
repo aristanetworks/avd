@@ -1,5 +1,36 @@
 ---
 # defaults file for build_directories
 
-# Alias-backed directory defaults are resolved in vars/main.yml so canonical
-# variables remain undefined unless explicitly supplied by the user.
+# Collection-wide output paths. Existing unprefixed variables are accepted as
+# legacy inputs when explicitly supplied by the user.
+avd_root_dir: "{{ root_dir | default(inventory_dir) }}"
+avd_output_dir_name: "{{ output_dir_name | default('intended') }}"
+avd_output_dir: "{{ output_dir | default(avd_root_dir ~ '/' ~ avd_output_dir_name) }}"
+avd_structured_dir_name: "{{ structured_dir_name | default('structured_configs') }}"
+avd_structured_dir: "{{ structured_dir | default(avd_output_dir ~ '/' ~ avd_structured_dir_name) }}"
+avd_structured_cvp_dir_name: "{{ structured_cvp_dir_name | default('cvp') }}"
+avd_structured_cvp_dir: "{{ structured_cvp_dir | default(avd_structured_dir ~ '/' ~ avd_structured_cvp_dir_name) }}"
+avd_eos_config_dir_name: "{{ eos_config_dir_name | default('configs') }}"
+avd_eos_config_dir: "{{ eos_config_dir | default(avd_output_dir ~ '/' ~ avd_eos_config_dir_name) }}"
+avd_documentation_dir_name: "{{ documentation_dir_name | default('documentation') }}"
+avd_documentation_dir: "{{ documentation_dir | default(avd_root_dir ~ '/' ~ avd_documentation_dir_name) }}"
+avd_fabric_dir_name: "{{ fabric_dir_name | default('fabric') }}"
+avd_fabric_dir: "{{ fabric_dir | default(avd_documentation_dir ~ '/' ~ avd_fabric_dir_name) }}"
+avd_devices_dir_name: "{{ devices_dir_name | default('devices') }}"
+avd_devices_dir: "{{ devices_dir | default(avd_documentation_dir ~ '/' ~ avd_devices_dir_name) }}"
+avd_post_running_config_backup_dir_name: "{{ post_running_config_backup_dir_name | default('config_backup') }}"
+avd_post_running_config_backup_dir: >-
+  {{ post_running_config_backup_dir | default(avd_root_dir ~ '/' ~ avd_post_running_config_backup_dir_name) }}
+avd_pre_running_config_backup_dir_name: "{{ pre_running_config_backup_dir_name | default('config_backup') }}"
+avd_pre_running_config_backup_dir: >-
+  {{ pre_running_config_backup_dir | default(avd_root_dir ~ '/' ~ avd_pre_running_config_backup_dir_name) }}
+avd_snapshots_backup_dir_name: "{{ snapshots_backup_dir_name | default('snapshots') }}"
+avd_snapshots_backup_dir: "{{ snapshots_backup_dir | default(avd_root_dir ~ '/' ~ avd_snapshots_backup_dir_name) }}"
+avd_anta_dir_name: "{{ anta_dir_name | default('anta') }}"
+avd_anta_dir: "{{ anta_dir | default(avd_root_dir ~ '/' ~ avd_anta_dir_name) }}"
+avd_user_catalogs_dir_name: "{{ user_catalogs_dir_name | default('user_catalogs') }}"
+avd_user_catalogs_dir: "{{ user_catalogs_dir | default(avd_anta_dir ~ '/' ~ avd_user_catalogs_dir_name) }}"
+avd_catalogs_dir_name: "avd_catalogs"
+avd_catalogs_dir: "{{ avd_anta_dir ~ '/' ~ avd_catalogs_dir_name }}"
+avd_anta_reports_dir_name: "{{ anta_reports_dir_name | default('reports') }}"
+avd_anta_reports_dir: "{{ anta_reports_dir | default(avd_anta_dir ~ '/' ~ avd_anta_reports_dir_name) }}"

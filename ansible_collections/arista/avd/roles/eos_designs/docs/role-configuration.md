@@ -12,25 +12,30 @@ title: Role configuration for eos_designs
 
 Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
 
-## Role default output directories
+## Collection-wide output directories
 
-Default output directories can be updated with the role-prefixed variables:
+Default output directories use the collection-wide `avd_*` variables:
 
 ``` yaml
-eos_designs_root_dir: "{{ inventory_dir }}"
-eos_designs_documentation_dir_name: "documentation"
-eos_designs_documentation_dir: "{{ eos_designs_root_dir }}/{{ eos_designs_documentation_dir_name }}"
-eos_designs_fabric_dir_name: "fabric"
-eos_designs_fabric_dir: "{{ eos_designs_documentation_dir }}/{{ eos_designs_fabric_dir_name }}"
-eos_designs_output_dir_name: "intended"
-eos_designs_output_dir: "{{ eos_designs_root_dir }}/{{ eos_designs_output_dir_name }}"
-eos_designs_structured_dir_name: "structured_configs"
-eos_designs_structured_dir: "{{ eos_designs_output_dir }}/{{ eos_designs_structured_dir_name }}"
+avd_root_dir: "{{ inventory_dir }}"
+avd_documentation_dir_name: "documentation"
+avd_documentation_dir: "{{ avd_root_dir }}/{{ avd_documentation_dir_name }}"
+avd_fabric_dir_name: "fabric"
+avd_fabric_dir: "{{ avd_documentation_dir }}/{{ avd_fabric_dir_name }}"
+avd_output_dir_name: "intended"
+avd_output_dir: "{{ avd_root_dir }}/{{ avd_output_dir_name }}"
+avd_structured_dir_name: "structured_configs"
+avd_structured_dir: "{{ avd_output_dir }}/{{ avd_structured_dir_name }}"
 ```
 
 !!! tip
     To place the outputs outside the inventory directory, use a path relative to `inventory_dir`, for example
-    `eos_designs_root_dir: "{{ inventory_dir }}/../outputs"`.
+    `avd_root_dir: "{{ inventory_dir }}/../outputs"`.
+
+The previous unprefixed inputs (`root_dir`, `output_dir`, and related names) remain
+accepted silently. If both names are set, the `avd_*` value wins. Use `avd_*` when
+sharing output paths with another role; an unconfigured generic `output_dir` is not
+guaranteed to be exported after the role completes.
 
 ## Input Variables Validation
 
@@ -53,9 +58,10 @@ schemas/avd_design/docs/tables/role-settings.md
 schemas/avd_design/docs/tables/role-custom-templates.md
 --8<--
 
-## Legacy role variable aliases
+## Legacy input aliases
 
-Legacy unprefixed aliases remain supported. The role-prefixed variable takes precedence when both names are set.
+The previously supported generic inputs remain accepted silently. If both a
+generic name and its `avd_*` equivalent are set, the `avd_*` value wins.
 
 --8<--
 schemas/avd_design/docs/tables/legacy-role-settings.md
