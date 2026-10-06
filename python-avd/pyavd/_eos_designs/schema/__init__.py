@@ -119685,21 +119685,22 @@ class EosDesigns(EosDesignsRootModel):
       -
     "uplink_ipv6_pool" (or `downlink_pools`)
       - "vtep_loopback_ipv6_pool"
-      - "router_id_pool"
-    For
-    MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-      -
-    "mlag_peer_address_family: ipv6"
+      - "router_id_pool" or
+    "loopback_ipv4_address"
+    For MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on
+    the MLAG nodes:
+      - "mlag_peer_address_family: ipv6"
       - "mlag_peer_ipv6_pool"
-      - "mlag_peer_l3_ipv6_pool"
-    Some
-    settings are not yet supported with IPv6 underlay:
-      - underlay_multicast_pim_sm
       -
-    underlay_multicast_rp_interfaces
+    "mlag_peer_l3_ipv6_pool"
+    Some settings are not yet supported with IPv6 underlay:
+      -
+    underlay_multicast_pim_sm
+      - underlay_multicast_rp_interfaces
       - underlay_rfc5549
       - wan_role
-      - vtep_vvtep_ip
+      -
+    vtep_vvtep_ip
       - inband_ztp
 
     Default value: `False`
@@ -121679,21 +121680,22 @@ class EosDesigns(EosDesignsRootModel):
                      -
                    "uplink_ipv6_pool" (or `downlink_pools`)
                      - "vtep_loopback_ipv6_pool"
-                     - "router_id_pool"
-                   For
-                   MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-                     -
-                   "mlag_peer_address_family: ipv6"
+                     - "router_id_pool" or
+                   "loopback_ipv4_address"
+                   For MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on
+                   the MLAG nodes:
+                     - "mlag_peer_address_family: ipv6"
                      - "mlag_peer_ipv6_pool"
-                     - "mlag_peer_l3_ipv6_pool"
-                   Some
-                   settings are not yet supported with IPv6 underlay:
-                     - underlay_multicast_pim_sm
                      -
-                   underlay_multicast_rp_interfaces
+                   "mlag_peer_l3_ipv6_pool"
+                   Some settings are not yet supported with IPv6 underlay:
+                     -
+                   underlay_multicast_pim_sm
+                     - underlay_multicast_rp_interfaces
                      - underlay_rfc5549
                      - wan_role
-                     - vtep_vvtep_ip
+                     -
+                   vtep_vvtep_ip
                      - inband_ztp
                 underlay_isis_authentication_cleartext_key:
                    Cleartext password.
