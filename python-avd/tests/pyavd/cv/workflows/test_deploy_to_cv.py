@@ -17,7 +17,12 @@ import pytest
 from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.constants import DEFAULT_API_TIMEOUT
-from pyavd._cv.client.exceptions import CVResourceNotFound, CVWorkspaceSubmitFailedInactiveDevices, CVWorkspaceSynchronizationAttemptsExhausted
+from pyavd._cv.client.exceptions import (
+    CVInvalidInputsError,
+    CVResourceNotFound,
+    CVWorkspaceSubmitFailedInactiveDevices,
+    CVWorkspaceSynchronizationAttemptsExhausted,
+)
 from pyavd._cv.client.models import CVTagAssignment
 from pyavd._cv.client.versioning import CvVersion
 from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, deploy_to_cv
@@ -104,7 +109,7 @@ async def test_deploy_to_cv_rejects_existing_change_control_with_deployment_inpu
 
     with (
         patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
-        pytest.raises(ValueError, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
+        pytest.raises(CVInvalidInputsError, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
     ):
         await deploy_to_cv(
             cloudvision=CloudVision(

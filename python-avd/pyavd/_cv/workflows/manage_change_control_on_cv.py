@@ -7,7 +7,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
-from pyavd._cv.client.exceptions import CVChangeControlFailed
+from pyavd._cv.client.exceptions import CVChangeControlFailed, CVInvalidInputsError
 
 from .utils import update_change_control_details_on_cv
 
@@ -18,6 +18,10 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 
+# Statuses of the CloudVision Change Control which should not be moved back to a pre-execution state.
+CHANGE_CONTROL_EXECUTION_STATUSES: frozenset[ChangeControlStatus] = frozenset(
+    {ChangeControlStatus.RUNNING, ChangeControlStatus.SCHEDULED, ChangeControlStatus.COMPLETED}
+)
 CHANGE_CONTROL_STATUS_TO_STATE_MAP: dict[ChangeControlStatus, CVChangeControlState | None] = {
     ChangeControlStatus.COMPLETED: "completed",
     ChangeControlStatus.NOT_STARTED: None,
@@ -46,16 +50,31 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
     LOGGER.info("manage_change_control_on_cv: %s", change_control)
 
     if change_control.requested_state == "deleted":
-        msg = "The 'deleted' requested state is not supported for an existing Change Control."
-        raise ValueError(msg)
+        msg = f"Change Control '{change_control.id}': the 'deleted' requested state is not supported for an existing Change Control."
+        raise CVInvalidInputsError(msg)
 
     change_control.changed = False
 
-    cv_change_control, change_control.changed = await update_change_control_details_on_cv(change_control, cv_client)
+    # Fetch the current state of the CloudVision Change Control without performing any mutations
+    cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
     change_control.state = get_managed_change_control_state(cv_change_control)
     LOGGER.info("manage_change_control_on_cv: %s", change_control)
 
     # TODO: Add support for stopping, unscheduling, rolling back, and deleting a Change Control
+    # Change Control that has already entered execution state can't be moved back
+    if change_control.requested_state in {"pending approval", "approved"} and cv_change_control.status in CHANGE_CONTROL_EXECUTION_STATUSES:
+        msg = f"Change Control '{change_control.id}' is in '{change_control.state}' state and cannot be moved to '{change_control.requested_state}'."
+        raise CVChangeControlFailed(msg)
+
+    if change_control.requested_state in {"completed", "running"} and cv_change_control.status == ChangeControlStatus.COMPLETED:
+        if cv_change_control.error is not None:
+            msg = f"Change Control '{change_control.id}' was already completed with errors before this workflow ran: {cv_change_control.error}"
+            raise CVChangeControlFailed(msg)
+        return
+
+    # Update name/description on CloudVision if needed. Then re-fetch to get the latest timestamp for approval
+    cv_change_control, change_control.changed = await update_change_control_details_on_cv(change_control, cv_client)
+
     if change_control.requested_state == "pending approval":
         if cv_change_control.approve.value:
             await cv_client.unapprove_change_control(
@@ -67,17 +86,6 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
             change_control.changed = True
             LOGGER.info("manage_change_control_on_cv: %s", change_control)
         return
-
-    # Do not restart a completed Change Control when the requested state is "completed"
-    if change_control.requested_state == "completed" and cv_change_control.status == ChangeControlStatus.COMPLETED:
-        if cv_change_control.error is not None:
-            msg = f"Change Control '{change_control.id}' was already completed with errors before this workflow ran: {cv_change_control.error}"
-            raise CVChangeControlFailed(msg)
-        return
-
-    if change_control.requested_state == "running" and cv_change_control.status == ChangeControlStatus.COMPLETED:
-        msg = f"Change Control '{change_control.id}' is already completed and cannot be started."
-        raise CVChangeControlFailed(msg)
 
     if not cv_change_control.approve.value:
         await cv_client.approve_change_control(

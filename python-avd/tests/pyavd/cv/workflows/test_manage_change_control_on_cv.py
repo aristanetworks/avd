@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControlStatus
-from pyavd._cv.client.exceptions import CVChangeControlFailed
+from pyavd._cv.client.exceptions import CVChangeControlFailed, CVInvalidInputsError
 from pyavd._cv.workflows.manage_change_control_on_cv import get_managed_change_control_state, manage_change_control_on_cv
 from pyavd._cv.workflows.models import AvdChangeControl, CVChangeControl
 
@@ -74,23 +74,18 @@ async def test_manage_pending_approval(mock_cv_client: MagicMock) -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    ("status", "error", "expected_state"),
+    ("status", "expected_state"),
     [
-        pytest.param(ChangeControlStatus.NOT_STARTED, None, "pending approval", id="not_started"),
-        pytest.param(ChangeControlStatus.SCHEDULED, None, "scheduled", id="scheduled"),
-        pytest.param(ChangeControlStatus.RUNNING, None, "running", id="running"),
-        pytest.param(ChangeControlStatus.COMPLETED, None, "completed", id="completed"),
-        pytest.param(ChangeControlStatus.COMPLETED, "Execution failed", "failed", id="failed"),
-        pytest.param(ChangeControlStatus.UNSPECIFIED, None, "pending approval", id="unspecified"),
+        pytest.param(ChangeControlStatus.NOT_STARTED, "pending approval", id="not_started"),
+        pytest.param(ChangeControlStatus.UNSPECIFIED, "pending approval", id="unspecified"),
     ],
 )
 async def test_manage_unapproves_change_control(
     mock_cv_client: MagicMock,
     status: ChangeControlStatus,
-    error: str | None,
     expected_state: str,
 ) -> None:
-    """Test unapproving an existing Change Control while preserving its execution state."""
+    """Test unapproving an approved Change Control that has not yet entered execution."""
     local_cc = CVChangeControl(
         avd_change_control=AvdChangeControl(
             id="cc_id_1",
@@ -98,7 +93,7 @@ async def test_manage_unapproves_change_control(
             approval_note="Unapproved by operator",
         ),
     )
-    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=status, approved=True, error=error)
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=status, approved=True)
 
     await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
 
@@ -114,16 +109,103 @@ async def test_manage_unapproves_change_control(
 
 
 @pytest.mark.asyncio
-async def test_manage_rejects_deleted_before_updating_change_control(mock_cv_client: MagicMock) -> None:
-    """Test that deleting an existing Change Control is rejected before calling CloudVision."""
+@pytest.mark.parametrize(
+    ("status", "state"),
+    [
+        pytest.param(ChangeControlStatus.SCHEDULED, "scheduled", id="scheduled"),
+        pytest.param(ChangeControlStatus.RUNNING, "running", id="running"),
+        pytest.param(ChangeControlStatus.COMPLETED, "completed", id="completed"),
+        pytest.param(ChangeControlStatus.COMPLETED, "failed", id="completed_with_error"),
+    ],
+)
+async def test_manage_rejects_pending_approval_for_advanced_state(
+    mock_cv_client: MagicMock,
+    status: ChangeControlStatus,
+    state: str,
+) -> None:
+    """Test that requesting 'pending approval' fails without mutations when the Change Control is already in an advanced execution state."""
+    error = "Execution failed" if state == "failed" else None
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="pending approval"))
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=status, approved=True, error=error)
+
+    with pytest.raises(CVChangeControlFailed, match=rf"Change Control 'cc_id_1' is in '{state}' state and cannot be moved to 'pending approval'\."):
+        await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.unapprove_change_control.assert_not_called()
+    mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.start_change_control.assert_not_called()
+    assert local_cc.changed is False
+
+
+@pytest.mark.asyncio
+async def test_manage_rejects_deleted_before_fetching_change_control(mock_cv_client: MagicMock) -> None:
+    """Test that the 'deleted' requested state is rejected before calling CloudVision."""
     local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="deleted"))
 
-    with pytest.raises(ValueError, match="The 'deleted' requested state is not supported for an existing Change Control"):
+    with pytest.raises(
+        CVInvalidInputsError, match=r"Change Control 'cc_id_1': the 'deleted' requested state is not supported for an existing Change Control\."
+    ):
         await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
 
     mock_cv_client.get_change_control.assert_not_called()
     mock_cv_client.approve_change_control.assert_not_called()
     mock_cv_client.start_change_control.assert_not_called()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("status", "state"),
+    [
+        pytest.param(ChangeControlStatus.NOT_STARTED, "approved", id="not_started"),
+        pytest.param(ChangeControlStatus.UNSPECIFIED, "approved", id="unspecified"),
+    ],
+)
+async def test_manage_approves_change_control(
+    mock_cv_client: MagicMock,
+    status: ChangeControlStatus,
+    state: str,
+) -> None:
+    """Test that approving an unapproved Change Control that has not yet entered execution transitions it to 'approved'."""
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="approved"))
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=status, approved=False)
+
+    await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.approve_change_control.assert_called_once_with(
+        change_control_id="cc_id_1", timestamp=DEFAULT_TIMESTAMP, description="Automatic approval by AVD"
+    )
+    mock_cv_client.start_change_control.assert_not_called()
+    assert local_cc.state == state
+    assert local_cc.changed is True
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("status", "state"),
+    [
+        pytest.param(ChangeControlStatus.SCHEDULED, "scheduled", id="scheduled"),
+        pytest.param(ChangeControlStatus.RUNNING, "running", id="running"),
+        pytest.param(ChangeControlStatus.COMPLETED, "completed", id="completed"),
+        pytest.param(ChangeControlStatus.COMPLETED, "failed", id="completed_with_error"),
+    ],
+)
+async def test_manage_rejects_approved_for_advanced_state(
+    mock_cv_client: MagicMock,
+    status: ChangeControlStatus,
+    state: str,
+) -> None:
+    """Test that requesting 'approved' fails without mutations when the Change Control is already in an advanced execution state."""
+    error = "Execution failed" if state == "failed" else None
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="approved"))
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=status, approved=True, error=error)
+
+    with pytest.raises(CVChangeControlFailed, match=rf"Change Control 'cc_id_1' is in '{state}' state and cannot be moved to 'approved'\."):
+        await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.unapprove_change_control.assert_not_called()
+    mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.start_change_control.assert_not_called()
+    assert local_cc.changed is False
 
 
 @pytest.mark.asyncio
@@ -203,33 +285,6 @@ async def test_manage_already_running_to_completed_waits_for_completion(mock_cv_
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize(
-    ("status", "expected_state"),
-    [
-        pytest.param(ChangeControlStatus.SCHEDULED, "scheduled", id="scheduled"),
-        pytest.param(ChangeControlStatus.RUNNING, "running", id="running"),
-        pytest.param(ChangeControlStatus.COMPLETED, "completed", id="completed"),
-    ],
-)
-async def test_manage_approval_preserves_execution_state(
-    mock_cv_client: MagicMock,
-    status: ChangeControlStatus,
-    expected_state: str,
-) -> None:
-    """Test that approving an existing Change Control preserves its execution state."""
-    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="approved"))
-    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=status, approved=False)
-
-    await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
-
-    mock_cv_client.approve_change_control.assert_called_once_with(
-        change_control_id="cc_id_1", timestamp=DEFAULT_TIMESTAMP, description="Automatic approval by AVD"
-    )
-    assert local_cc.state == expected_state
-    assert local_cc.changed is True
-
-
-@pytest.mark.asyncio
 async def test_manage_completed_failure_raises_without_running_again(mock_cv_client: MagicMock) -> None:
     """Test that an existing failed execution raises without being run again."""
     local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="completed"))
@@ -252,21 +307,37 @@ async def test_manage_completed_failure_raises_without_running_again(mock_cv_cli
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("error", [None, "Previous execution failed"], ids=["successful", "failed"])
-async def test_manage_completed_change_control_cannot_be_started(mock_cv_client: MagicMock, error: str | None) -> None:
-    """Test that a completed Change Control cannot be started again."""
+async def test_manage_running_completed_successfully_is_idempotent(mock_cv_client: MagicMock) -> None:
+    """Test that requesting 'running' for an already successfully completed Change Control is a no-op."""
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="running"))
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(status=ChangeControlStatus.COMPLETED, approved=True)
+
+    await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.start_change_control.assert_not_called()
+    assert local_cc.state == "completed"
+    assert local_cc.changed is False
+
+
+@pytest.mark.asyncio
+async def test_manage_running_completed_with_errors_raises(mock_cv_client: MagicMock) -> None:
+    """Test that requesting 'running' for a Change Control that completed with errors raises without retrying."""
     local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="running"))
     mock_cv_client.get_change_control.return_value = create_grpc_change_control(
         status=ChangeControlStatus.COMPLETED,
         approved=True,
-        error=error,
+        error="Previous execution failed",
     )
 
-    with pytest.raises(CVChangeControlFailed, match="Change Control 'cc_id_1' is already completed and cannot be started"):
+    with pytest.raises(
+        CVChangeControlFailed,
+        match="Change Control 'cc_id_1' was already completed with errors before this workflow ran: Previous execution failed",
+    ):
         await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
 
     mock_cv_client.start_change_control.assert_not_called()
-    assert local_cc.state == ("failed" if error is not None else "completed")
+    assert local_cc.state == "failed"
     assert local_cc.changed is False
 
 

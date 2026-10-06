@@ -7,7 +7,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._cv.client import CVClient
-from pyavd._cv.client.exceptions import CVClientException, CVWorkspaceSynchronizationAttemptsExhausted
+from pyavd._cv.client.exceptions import CVClientException, CVInvalidInputsError, CVWorkspaceSynchronizationAttemptsExhausted
 
 from .create_workspace_on_cv import create_workspace_on_cv
 from .deploy_configs_to_cv import delete_configs_from_cv, deploy_configs_to_cv
@@ -240,7 +240,7 @@ async def deploy_to_cv(
         static_config_manifest_has_content = bool(static_config_manifest and (static_config_manifest.containers or static_config_manifest.configlets))
         if any((workspace, device_deployments, static_config_manifest_has_content, studio_inputs)):
             msg = "Change-Control-only mode cannot be combined with a Workspace or deployment inputs."
-            raise ValueError(msg)
+            raise CVInvalidInputsError(msg)
 
     result = DeployToCvResult(workspace=None if change_control_only else workspace or CVWorkspace(), change_control=change_control)
     if device_deployments is None:
