@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils.remove_cached_property_type import remove_cached_property_type
 
 from .mlag import MlagMixin
@@ -136,6 +136,9 @@ class EosDesignsFactsGeneratorProtocol(
         if self.shared_utils.underlay_router:
             if self.shared_utils.node_config.loopback_ipv4_address:
                 return None
+            if not self.shared_utils.node_config.loopback_ipv4_pool:
+                msg = "'loopback_ipv4_pool or loopback_ipv4_address' is required but was not found"
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             return self.shared_utils.node_config.loopback_ipv4_pool
         return None
 

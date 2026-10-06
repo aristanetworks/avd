@@ -31,14 +31,6 @@ class IpAddressingMixin(Protocol):
         return self.node_config.loopback_ipv6_pool
 
     @cached_property
-    def loopback_ipv4_pool(self: SharedUtilsProtocol) -> str:
-        if not self.node_config.loopback_ipv4_pool:
-            msg = "loopback_ipv4_pool or loopback_ipv4_address"
-            raise AristaAvdMissingVariableError(msg)
-
-        return self.node_config.loopback_ipv4_pool
-
-    @cached_property
     def vtep_loopback_ipv6_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.vtep_loopback_ipv6_pool:
             msg = "vtep_loopback_ipv6_pool"
