@@ -12031,7 +12031,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -12073,9 +12075,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         router_id_pool: str | None
         """
-        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-        will not exist on the device.
+        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+        and takes precedence over `router_id_pool`.
         """
         loopback_ipv6_pool: str | None
         """
@@ -13057,7 +13060,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -13085,9 +13090,10 @@ class EosDesigns(EosDesignsRootModel):
                        For example, set the minimum
                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                     router_id_pool:
-                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                       will not exist on the device.
+                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                       and takes precedence over `router_id_pool`.
                     loopback_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -17627,7 +17633,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -17669,9 +17677,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         router_id_pool: str | None
         """
-        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-        will not exist on the device.
+        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+        and takes precedence over `router_id_pool`.
         """
         loopback_ipv6_pool: str | None
         """
@@ -18661,7 +18670,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -18689,9 +18700,10 @@ class EosDesigns(EosDesignsRootModel):
                        For example, set the minimum
                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                     router_id_pool:
-                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                       will not exist on the device.
+                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                       and takes precedence over `router_id_pool`.
                     loopback_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -60198,7 +60210,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -60240,9 +60254,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -61203,7 +61218,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -61231,9 +61248,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -65774,7 +65792,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -65816,9 +65836,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         router_id_pool: str | None
                         """
-                        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                        will not exist on the device.
+                        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                        and takes precedence over `router_id_pool`.
                         """
                         loopback_ipv6_pool: str | None
                         """
@@ -66788,7 +66809,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -66816,9 +66839,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For example, set the minimum
                                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                     router_id_pool:
-                                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                       will not exist on the device.
+                                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                       and takes precedence over `router_id_pool`.
                                     loopback_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -71278,7 +71302,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -71320,9 +71346,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -72294,7 +72321,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -72322,9 +72351,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -76856,7 +76886,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -76898,9 +76930,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -77870,7 +77903,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -77898,9 +77933,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -98221,7 +98257,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -98263,9 +98301,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -99226,7 +99265,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -99254,9 +99295,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -103797,7 +103839,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -103839,9 +103883,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         router_id_pool: str | None
                         """
-                        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                        will not exist on the device.
+                        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                        and takes precedence over `router_id_pool`.
                         """
                         loopback_ipv6_pool: str | None
                         """
@@ -104811,7 +104856,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -104839,9 +104886,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For example, set the minimum
                                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                     router_id_pool:
-                                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                       will not exist on the device.
+                                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                       and takes precedence over `router_id_pool`.
                                     loopback_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -109301,7 +109349,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -109343,9 +109393,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -110317,7 +110368,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -110345,9 +110398,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -114879,7 +114933,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -114921,9 +114977,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -115893,7 +115950,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -115921,9 +115980,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -119664,21 +119724,22 @@ class EosDesigns(EosDesignsRootModel):
       -
     "uplink_ipv6_pool" (or `downlink_pools`)
       - "vtep_loopback_ipv6_pool"
-      - "router_id_pool"
-    For
-    MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-      -
-    "mlag_peer_address_family: ipv6"
+      - "router_id_pool" or
+    "loopback_ipv4_address"
+    For MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on
+    the MLAG nodes:
+      - "mlag_peer_address_family: ipv6"
       - "mlag_peer_ipv6_pool"
-      - "mlag_peer_l3_ipv6_pool"
-    Some
-    settings are not yet supported with IPv6 underlay:
-      - underlay_multicast_pim_sm
       -
-    underlay_multicast_rp_interfaces
+    "mlag_peer_l3_ipv6_pool"
+    Some settings are not yet supported with IPv6 underlay:
+      -
+    underlay_multicast_pim_sm
+      - underlay_multicast_rp_interfaces
       - underlay_rfc5549
       - wan_role
-      - vtep_vvtep_ip
+      -
+    vtep_vvtep_ip
       - inband_ztp
 
     Default value: `False`
@@ -121658,21 +121719,22 @@ class EosDesigns(EosDesignsRootModel):
                      -
                    "uplink_ipv6_pool" (or `downlink_pools`)
                      - "vtep_loopback_ipv6_pool"
-                     - "router_id_pool"
-                   For
-                   MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-                     -
-                   "mlag_peer_address_family: ipv6"
+                     - "router_id_pool" or
+                   "loopback_ipv4_address"
+                   For MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on
+                   the MLAG nodes:
+                     - "mlag_peer_address_family: ipv6"
                      - "mlag_peer_ipv6_pool"
-                     - "mlag_peer_l3_ipv6_pool"
-                   Some
-                   settings are not yet supported with IPv6 underlay:
-                     - underlay_multicast_pim_sm
                      -
-                   underlay_multicast_rp_interfaces
+                   "mlag_peer_l3_ipv6_pool"
+                   Some settings are not yet supported with IPv6 underlay:
+                     -
+                   underlay_multicast_pim_sm
+                     - underlay_multicast_rp_interfaces
                      - underlay_rfc5549
                      - wan_role
-                     - vtep_vvtep_ip
+                     -
+                   vtep_vvtep_ip
                      - inband_ztp
                 underlay_isis_authentication_cleartext_key:
                    Cleartext password.
