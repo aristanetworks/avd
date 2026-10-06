@@ -1639,6 +1639,29 @@ keys:
       existing keys will be replaced.\n"
     default:
     - custom_structured_configuration_
+  custom_system_mac_address:
+    documentation_options:
+      table: system-settings
+    type: str
+    description: "Set a custom EOS system MAC address using an AVD string formatter
+      template.\nWhen set, the rendered value is configured with `system mac-address`
+      and used as the effective system MAC address for EOS configuration, AVD metadata,
+      SNMP engine ID generation, CloudVision identification and the CloudVision-based
+      Zscaler integration.\nCan also be defined in node configuration. The node configuration
+      value takes precedence when both values are set.\nMutually exclusive with `system_mac_address`,
+      whether defined globally or in node configuration.\nIf unset, the existing `system_mac_address`
+      behavior is unchanged.\nThe rendered value must be a unicast MAC address in
+      `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is
+      a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.\nRegardless
+      of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format
+      in the generated EOS configuration and AVD metadata.\nOnly the following template
+      fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.\n\nExamples:\n
+      \ - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device
+      with ID 1 and `021c.7300.04d2` for device with ID 1234.\n  - template `021c.{hostname:0>4.3}.{device_id:04x}`
+      will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01`
+      (assuming first three characters of the hostname represent a numerical identifier
+      of the deployment site which we want to encode into the 3rd and 4th octets of
+      the generated MAC address)."
   cv_pathfinder_global_sites:
     documentation_options:
       table: wan-cv-pathfinder-regions
@@ -11043,6 +11066,9 @@ keys:
 
       If both are set, the value under node type settings takes precedence.
 
+      Mutually exclusive with "custom_system_mac_address", whether defined globally
+      or in node configuration.
+
       '
   tcam_profiles:
     type: list
@@ -13296,7 +13322,36 @@ $defs:
 
               If both are set, the setting under node type settings takes precedence.
 
+              Mutually exclusive with "custom_system_mac_address", whether defined
+              globally or in node configuration.
+
               '
+          custom_system_mac_address:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: "Set a custom EOS system MAC address using an AVD string
+              formatter template.\nWhen set, the rendered value is configured with
+              `system mac-address` and used as the effective system MAC address for
+              EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision
+              identification and the CloudVision-based Zscaler integration.\nThe node
+              configuration value takes precedence over the global `custom_system_mac_address`
+              value.\nMutually exclusive with `system_mac_address`, whether defined
+              globally or in node configuration.\nIf unset, the existing `system_mac_address`
+              behavior is unchanged.\nThe rendered value must be a unicast MAC address
+              in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where
+              `h` is a hexadecimal digit). The all-zero address is reserved and not
+              accepted by EOS.\nRegardless of the input format, the MAC address is
+              normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration
+              and AVD metadata.\nOnly the following template fields are supported:
+              `device_id` (AVD node ID as an integer) and `hostname`.\n\nExamples:\n
+              \ - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001`
+              for device with ID 1 and `021c.7300.04d2` for device with ID 1234.\n
+              \ - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2`
+              for device with ID 1234 and hostname `567-leaf01` (assuming first three
+              characters of the hostname represent a numerical identifier of the deployment
+              site which we want to encode into the 3rd and 4th octets of the generated
+              MAC address)."
           serial_number:
             documentation_options:
               table: node-type-common-configuration

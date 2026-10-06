@@ -7,6 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>custom_system_mac_address</samp>](## "custom_system_mac_address") | String |  |  |  | Set a custom EOS system MAC address using an AVD string formatter template.<br>When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.<br>Can also be defined in node configuration. The node configuration value takes precedence when both values are set.<br>Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.<br>If unset, the existing `system_mac_address` behavior is unchanged.<br>The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.<br>Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.<br>Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.<br><br>Examples:<br>  - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.<br>  - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address). |
     | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | `True` |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
     | [<samp>default_interface_mtu</samp>](## "default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Can be overridden per platform under platform settings.<br> |
     | [<samp>errdisable_settings</samp>](## "errdisable_settings") | Dictionary |  |  |  | Errdisable settings for the device.<br>Causes are filtered based on platform feature support defined in<br>`platform_settings.feature_support.errdisable_causes.<cause>.detection` and<br>`platform_settings.feature_support.errdisable_causes.<cause>.recovery`. |
@@ -181,11 +182,25 @@
     | [<samp>redundancy</samp>](## "redundancy") | Dictionary |  |  |  | Redundancy for chassis platforms with dual supervisors | Optional. |
     | [<samp>&nbsp;&nbsp;protocol</samp>](## "redundancy.protocol") | String |  |  | Valid Values:<br>- <code>sso</code><br>- <code>rpr</code> |  |
     | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used for documentation purpose in the fabric documentation as can also be used by the 'cv_deploy' role.<br>"serial_number" can also be set directly under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
-    | [<samp>system_mac_address</samp>](## "system_mac_address") | String |  |  |  | Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
+    | [<samp>system_mac_address</samp>](## "system_mac_address") | String |  |  |  | Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set under node type settings.<br>If both are set, the value under node type settings takes precedence.<br>Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.<br> |
 
 === "YAML"
 
     ```yaml
+    # Set a custom EOS system MAC address using an AVD string formatter template.
+    # When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.
+    # Can also be defined in node configuration. The node configuration value takes precedence when both values are set.
+    # Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.
+    # If unset, the existing `system_mac_address` behavior is unchanged.
+    # The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+    # Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+    # Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+    #
+    # Examples:
+    #   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+    #   - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address).
+    custom_system_mac_address: <str>
+
     # When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.
     default_igmp_snooping_enabled: <bool; default=True>
 
@@ -556,6 +571,7 @@
     # Set to the same MAC address as available in "show version" on the device.
     # "system_mac_address" can also be set under node type settings.
     # If both are set, the value under node type settings takes precedence.
+    # Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.
     system_mac_address: <str>
     ```
 
