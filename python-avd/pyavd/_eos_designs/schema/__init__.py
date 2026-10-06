@@ -12031,7 +12031,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -13057,7 +13059,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -17627,7 +17631,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -18661,7 +18667,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -60159,7 +60167,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -61164,7 +61174,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -65735,7 +65747,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -66749,7 +66763,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -71239,7 +71255,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -72255,7 +72273,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -76817,7 +76837,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -77831,7 +77853,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -98182,7 +98206,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -99187,7 +99213,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -103758,7 +103786,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -104772,7 +104802,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -109262,7 +109294,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -110278,7 +110312,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -114840,7 +114876,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -115854,7 +115892,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and

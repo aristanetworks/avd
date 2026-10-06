@@ -13942,6 +13942,9 @@ $defs:
 
               When set, it takes precedence over `loopback_ipv4_pool`.
 
+              For `underlay_ipv6_numbered` designs, this IPv4 address is used as the
+              BGP router-id.
+
               Note: AVD does not check for validity of the IPv4 address and does not
               catch duplicates.'
             type: str
