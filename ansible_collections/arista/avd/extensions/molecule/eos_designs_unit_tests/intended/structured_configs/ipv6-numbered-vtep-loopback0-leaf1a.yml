@@ -121,7 +121,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65101'
-  router_id: 10.255.1.1
+  router_id: 10.255.2.1
   maximum_paths:
     paths: 4
   bgp:
@@ -177,7 +177,7 @@ router_bgp:
     metadata:
       tenants:
       - TENANT1
-    rd: 10.255.1.1:10011
+    rd: 10.255.2.1:10011
     route_targets:
       both:
       - 10011:10011
@@ -187,7 +187,7 @@ router_bgp:
     metadata:
       tenants:
       - TENANT1
-    rd: 10.255.1.1:10012
+    rd: 10.255.2.1:10012
     route_targets:
       both:
       - 10012:10012
@@ -209,7 +209,7 @@ router_bgp:
       activate: true
   vrfs:
   - name: VRF10
-    rd: 10.255.1.1:10
+    rd: 10.255.2.1:10
     route_targets:
       import:
       - address_family: evpn
@@ -219,7 +219,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
-    router_id: 10.255.1.1
+    router_id: 10.255.2.1
     neighbors:
     - ip_address: 2001:db8:4::2
       peer_group: MLAG-IPv4-UNDERLAY-PEER

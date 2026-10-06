@@ -1,0 +1,52 @@
+---
+name: "Warm Ansible collection cache"
+
+# Warm the devel cache daily so pull requests targeting devel can reuse the
+# same collection dependencies instead of resolving them from Galaxy per job.
+# The PR workflow also fills the cache on a miss, including on devel pushes.
+# The key rotates daily and changes when requirements.yml changes.
+"on":
+  schedule:
+    - cron: "37 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  warm_cache:
+    name: Warm Ansible collection cache
+    runs-on: ubuntu-latest
+    if: github.repository == 'aristanetworks/avd' && github.ref == 'refs/heads/devel'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Install Ansible
+        run: python -m pip install "ansible-core<2.22.0" --upgrade
+      - name: Set Ansible collection cache key
+        id: collection_cache_key
+        env:
+          DEPENDENCY_HASH: ${{ hashFiles('ansible_collections/arista/avd/requirements.yml') }}
+        run: echo "value=$(date -u +'%Y-%m-%d')-ansible-collections-$DEPENDENCY_HASH" >> "$GITHUB_OUTPUT"
+      - name: Restore Ansible collection dependencies
+        id: restore_collection_cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.ansible/collections
+          key: ${{ steps.collection_cache_key.outputs.value }}
+      - name: Install Ansible collection dependencies
+        if: steps.restore_collection_cache.outputs.cache-hit != 'true'
+        run: |
+          ansible-galaxy collection install --requirements-file ansible_collections/arista/avd/requirements.yml
+          ansible-galaxy collection install ansible.utils
+      - name: Save Ansible collection dependencies
+        if: steps.restore_collection_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.ansible/collections
+          key: ${{ steps.collection_cache_key.outputs.value }}

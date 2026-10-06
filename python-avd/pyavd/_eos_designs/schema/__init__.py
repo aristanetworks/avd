@@ -11561,6 +11561,7 @@ class EosDesigns(EosDesignsRootModel):
             "platform": {"type": str},
             "mac_address": {"type": str},
             "system_mac_address": {"type": str},
+            "custom_system_mac_address": {"type": str},
             "serial_number": {"type": str},
             "rack": {"type": str},
             "mgmt_ip": {"type": str},
@@ -11723,6 +11724,37 @@ class EosDesigns(EosDesignsRootModel):
         "system_mac_address" can also be set directly as a
         hostvar.
         If both are set, the setting under node type settings takes precedence.
+        Mutually exclusive
+        with "custom_system_mac_address", whether defined globally or in node configuration.
+        """
+        custom_system_mac_address: str | None
+        """
+        Set a custom EOS system MAC address using an AVD string formatter template.
+        When set, the rendered
+        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+        CloudVision-based Zscaler integration.
+        The node configuration value takes precedence over the global
+        `custom_system_mac_address` value.
+        Mutually exclusive with `system_mac_address`, whether defined
+        globally or in node configuration.
+        If unset, the existing `system_mac_address` behavior is
+        unchanged.
+        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+        not accepted by EOS.
+        Regardless of the input format, the MAC address is normalized to
+        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+        Only the following
+        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+        Examples:
+        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+        `021c.7300.04d2` for device with ID 1234.
+          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+        characters of the hostname represent a numerical identifier of the deployment site which we want to
+        encode into the 3rd and 4th octets of the generated MAC address).
         """
         serial_number: str | None
         """
@@ -12021,7 +12053,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -12063,9 +12097,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         router_id_pool: str | None
         """
-        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-        will not exist on the device.
+        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+        and takes precedence over `router_id_pool`.
         """
         loopback_ipv6_pool: str | None
         """
@@ -12646,6 +12681,7 @@ class EosDesigns(EosDesignsRootModel):
                 platform: str | UndefinedType | None = Undefined,
                 mac_address: str | UndefinedType | None = Undefined,
                 system_mac_address: str | UndefinedType | None = Undefined,
+                custom_system_mac_address: str | UndefinedType | None = Undefined,
                 serial_number: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -12804,6 +12840,35 @@ class EosDesigns(EosDesignsRootModel):
                        "system_mac_address" can also be set directly as a
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
+                       Mutually exclusive
+                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                    custom_system_mac_address:
+                       Set a custom EOS system MAC address using an AVD string formatter template.
+                       When set, the rendered
+                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                       CloudVision-based Zscaler integration.
+                       The node configuration value takes precedence over the global
+                       `custom_system_mac_address` value.
+                       Mutually exclusive with `system_mac_address`, whether defined
+                       globally or in node configuration.
+                       If unset, the existing `system_mac_address` behavior is
+                       unchanged.
+                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                       not accepted by EOS.
+                       Regardless of the input format, the MAC address is normalized to
+                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                       Only the following
+                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                       Examples:  # fmt: skip
+                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                       `021c.7300.04d2` for device with ID 1234.
+                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                       encode into the 3rd and 4th octets of the generated MAC address).
                     serial_number:
                        Set to the Serial Number of the device.
                        Only used for documentation purpose in the fabric
@@ -13017,7 +13082,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -13045,9 +13112,10 @@ class EosDesigns(EosDesignsRootModel):
                        For example, set the minimum
                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                     router_id_pool:
-                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                       will not exist on the device.
+                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                       and takes precedence over `router_id_pool`.
                     loopback_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -17086,6 +17154,7 @@ class EosDesigns(EosDesignsRootModel):
             "platform": {"type": str},
             "mac_address": {"type": str},
             "system_mac_address": {"type": str},
+            "custom_system_mac_address": {"type": str},
             "serial_number": {"type": str},
             "rack": {"type": str},
             "mgmt_ip": {"type": str},
@@ -17257,6 +17326,37 @@ class EosDesigns(EosDesignsRootModel):
         "system_mac_address" can also be set directly as a
         hostvar.
         If both are set, the setting under node type settings takes precedence.
+        Mutually exclusive
+        with "custom_system_mac_address", whether defined globally or in node configuration.
+        """
+        custom_system_mac_address: str | None
+        """
+        Set a custom EOS system MAC address using an AVD string formatter template.
+        When set, the rendered
+        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+        CloudVision-based Zscaler integration.
+        The node configuration value takes precedence over the global
+        `custom_system_mac_address` value.
+        Mutually exclusive with `system_mac_address`, whether defined
+        globally or in node configuration.
+        If unset, the existing `system_mac_address` behavior is
+        unchanged.
+        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+        not accepted by EOS.
+        Regardless of the input format, the MAC address is normalized to
+        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+        Only the following
+        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+        Examples:
+        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+        `021c.7300.04d2` for device with ID 1234.
+          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+        characters of the hostname represent a numerical identifier of the deployment site which we want to
+        encode into the 3rd and 4th octets of the generated MAC address).
         """
         serial_number: str | None
         """
@@ -17555,7 +17655,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -17597,9 +17699,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         router_id_pool: str | None
         """
-        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-        will not exist on the device.
+        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+        and takes precedence over `router_id_pool`.
         """
         loopback_ipv6_pool: str | None
         """
@@ -18181,6 +18284,7 @@ class EosDesigns(EosDesignsRootModel):
                 platform: str | UndefinedType | None = Undefined,
                 mac_address: str | UndefinedType | None = Undefined,
                 system_mac_address: str | UndefinedType | None = Undefined,
+                custom_system_mac_address: str | UndefinedType | None = Undefined,
                 serial_number: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -18346,6 +18450,35 @@ class EosDesigns(EosDesignsRootModel):
                        "system_mac_address" can also be set directly as a
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
+                       Mutually exclusive
+                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                    custom_system_mac_address:
+                       Set a custom EOS system MAC address using an AVD string formatter template.
+                       When set, the rendered
+                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                       CloudVision-based Zscaler integration.
+                       The node configuration value takes precedence over the global
+                       `custom_system_mac_address` value.
+                       Mutually exclusive with `system_mac_address`, whether defined
+                       globally or in node configuration.
+                       If unset, the existing `system_mac_address` behavior is
+                       unchanged.
+                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                       not accepted by EOS.
+                       Regardless of the input format, the MAC address is normalized to
+                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                       Only the following
+                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                       Examples:  # fmt: skip
+                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                       `021c.7300.04d2` for device with ID 1234.
+                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                       encode into the 3rd and 4th octets of the generated MAC address).
                     serial_number:
                        Set to the Serial Number of the device.
                        Only used for documentation purpose in the fabric
@@ -18559,7 +18692,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -18587,9 +18722,10 @@ class EosDesigns(EosDesignsRootModel):
                        For example, set the minimum
                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                     router_id_pool:
-                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                       will not exist on the device.
+                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                       and takes precedence over `router_id_pool`.
                     loopback_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -23074,12 +23210,36 @@ class EosDesigns(EosDesignsRootModel):
 
         SuspendedVlans._item_type = SuspendedVlansItem
 
+        class IpSoftwareForwardingExceedActionDrop(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "mtu": {"type": int}}
+            enabled: bool
+            mtu: int
+            """IPv4 software-forwarding MTU threshold in bytes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, mtu: int | UndefinedType = Undefined) -> None:
+                    """
+                    IpSoftwareForwardingExceedActionDrop.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        mtu: IPv4 software-forwarding MTU threshold in bytes.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "interface_defaults": {"type": InterfaceDefaults},
             "arp": {"type": Arp},
             "ip_icmp_redirect": {"type": bool},
             "dhcp_relay": {"type": DhcpRelay},
             "suspended_vlans": {"type": SuspendedVlans},
+            "ip_software_forwarding_exceed_action_drop": {"type": IpSoftwareForwardingExceedActionDrop},
         }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
@@ -23098,6 +23258,14 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
         key is `id` (`int`).
         """
+        ip_software_forwarding_exceed_action_drop: IpSoftwareForwardingExceedActionDrop
+        """
+        Drop IPv4 packets larger than configured mtu (in bytes) in software.
+        Supported starting EOS 4.36.1F,
+        4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -23109,6 +23277,7 @@ class EosDesigns(EosDesignsRootModel):
                 ip_icmp_redirect: bool | UndefinedType | None = Undefined,
                 dhcp_relay: DhcpRelay | UndefinedType = Undefined,
                 suspended_vlans: SuspendedVlans | UndefinedType = Undefined,
+                ip_software_forwarding_exceed_action_drop: IpSoftwareForwardingExceedActionDrop | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -23129,6 +23298,12 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
                        key is `id` (`int`).
+                    ip_software_forwarding_exceed_action_drop:
+                       Drop IPv4 packets larger than configured mtu (in bytes) in software.
+                       Supported starting EOS 4.36.1F,
+                       4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -59600,6 +59775,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -59737,6 +59913,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -60035,7 +60242,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -60077,9 +60286,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -60656,6 +60866,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -60797,6 +61008,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -61010,7 +61250,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -61038,9 +61280,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -65104,6 +65347,7 @@ class EosDesigns(EosDesignsRootModel):
                             "platform": {"type": str},
                             "mac_address": {"type": str},
                             "system_mac_address": {"type": str},
+                            "custom_system_mac_address": {"type": str},
                             "serial_number": {"type": str},
                             "rack": {"type": str},
                             "mgmt_ip": {"type": str},
@@ -65251,6 +65495,37 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address" can also be set directly as a
                         hostvar.
                         If both are set, the setting under node type settings takes precedence.
+                        Mutually exclusive
+                        with "custom_system_mac_address", whether defined globally or in node configuration.
+                        """
+                        custom_system_mac_address: str | None
+                        """
+                        Set a custom EOS system MAC address using an AVD string formatter template.
+                        When set, the rendered
+                        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                        CloudVision-based Zscaler integration.
+                        The node configuration value takes precedence over the global
+                        `custom_system_mac_address` value.
+                        Mutually exclusive with `system_mac_address`, whether defined
+                        globally or in node configuration.
+                        If unset, the existing `system_mac_address` behavior is
+                        unchanged.
+                        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                        not accepted by EOS.
+                        Regardless of the input format, the MAC address is normalized to
+                        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                        Only the following
+                        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                        Examples:
+                        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                        `021c.7300.04d2` for device with ID 1234.
+                          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                        characters of the hostname represent a numerical identifier of the deployment site which we want to
+                        encode into the 3rd and 4th octets of the generated MAC address).
                         """
                         serial_number: str | None
                         """
@@ -65549,7 +65824,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -65591,9 +65868,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         router_id_pool: str | None
                         """
-                        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                        will not exist on the device.
+                        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                        and takes precedence over `router_id_pool`.
                         """
                         loopback_ipv6_pool: str | None
                         """
@@ -66172,6 +66450,7 @@ class EosDesigns(EosDesignsRootModel):
                                 platform: str | UndefinedType | None = Undefined,
                                 mac_address: str | UndefinedType | None = Undefined,
                                 system_mac_address: str | UndefinedType | None = Undefined,
+                                custom_system_mac_address: str | UndefinedType | None = Undefined,
                                 serial_number: str | UndefinedType | None = Undefined,
                                 rack: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -66320,6 +66599,35 @@ class EosDesigns(EosDesignsRootModel):
                                        "system_mac_address" can also be set directly as a
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
+                                       Mutually exclusive
+                                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                                    custom_system_mac_address:
+                                       Set a custom EOS system MAC address using an AVD string formatter template.
+                                       When set, the rendered
+                                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                       CloudVision-based Zscaler integration.
+                                       The node configuration value takes precedence over the global
+                                       `custom_system_mac_address` value.
+                                       Mutually exclusive with `system_mac_address`, whether defined
+                                       globally or in node configuration.
+                                       If unset, the existing `system_mac_address` behavior is
+                                       unchanged.
+                                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                       not accepted by EOS.
+                                       Regardless of the input format, the MAC address is normalized to
+                                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                       Only the following
+                                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                       Examples:  # fmt: skip
+                                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                       `021c.7300.04d2` for device with ID 1234.
+                                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                       encode into the 3rd and 4th octets of the generated MAC address).
                                     serial_number:
                                        Set to the Serial Number of the device.
                                        Only used for documentation purpose in the fabric
@@ -66533,7 +66841,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -66561,9 +66871,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For example, set the minimum
                                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                     router_id_pool:
-                                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                       will not exist on the device.
+                                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                       and takes precedence over `router_id_pool`.
                                     loopback_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -70543,6 +70854,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -70693,6 +71005,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -70991,7 +71334,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -71033,9 +71378,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -71614,6 +71960,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -71764,6 +72111,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -71977,7 +72353,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -72005,9 +72383,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -76062,6 +76441,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -76209,6 +76589,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -76507,7 +76918,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -76549,9 +76962,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -77130,6 +77544,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -77278,6 +77693,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -77491,7 +77935,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -77519,9 +77965,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -97385,6 +97832,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -97522,6 +97970,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -97820,7 +98299,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -97862,9 +98343,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -98441,6 +98923,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -98582,6 +99065,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -98795,7 +99307,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -98823,9 +99337,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -102889,6 +103404,7 @@ class EosDesigns(EosDesignsRootModel):
                             "platform": {"type": str},
                             "mac_address": {"type": str},
                             "system_mac_address": {"type": str},
+                            "custom_system_mac_address": {"type": str},
                             "serial_number": {"type": str},
                             "rack": {"type": str},
                             "mgmt_ip": {"type": str},
@@ -103036,6 +103552,37 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address" can also be set directly as a
                         hostvar.
                         If both are set, the setting under node type settings takes precedence.
+                        Mutually exclusive
+                        with "custom_system_mac_address", whether defined globally or in node configuration.
+                        """
+                        custom_system_mac_address: str | None
+                        """
+                        Set a custom EOS system MAC address using an AVD string formatter template.
+                        When set, the rendered
+                        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                        CloudVision-based Zscaler integration.
+                        The node configuration value takes precedence over the global
+                        `custom_system_mac_address` value.
+                        Mutually exclusive with `system_mac_address`, whether defined
+                        globally or in node configuration.
+                        If unset, the existing `system_mac_address` behavior is
+                        unchanged.
+                        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                        not accepted by EOS.
+                        Regardless of the input format, the MAC address is normalized to
+                        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                        Only the following
+                        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                        Examples:
+                        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                        `021c.7300.04d2` for device with ID 1234.
+                          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                        characters of the hostname represent a numerical identifier of the deployment site which we want to
+                        encode into the 3rd and 4th octets of the generated MAC address).
                         """
                         serial_number: str | None
                         """
@@ -103334,7 +103881,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -103376,9 +103925,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         router_id_pool: str | None
                         """
-                        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                        will not exist on the device.
+                        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                        and takes precedence over `router_id_pool`.
                         """
                         loopback_ipv6_pool: str | None
                         """
@@ -103957,6 +104507,7 @@ class EosDesigns(EosDesignsRootModel):
                                 platform: str | UndefinedType | None = Undefined,
                                 mac_address: str | UndefinedType | None = Undefined,
                                 system_mac_address: str | UndefinedType | None = Undefined,
+                                custom_system_mac_address: str | UndefinedType | None = Undefined,
                                 serial_number: str | UndefinedType | None = Undefined,
                                 rack: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -104105,6 +104656,35 @@ class EosDesigns(EosDesignsRootModel):
                                        "system_mac_address" can also be set directly as a
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
+                                       Mutually exclusive
+                                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                                    custom_system_mac_address:
+                                       Set a custom EOS system MAC address using an AVD string formatter template.
+                                       When set, the rendered
+                                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                       CloudVision-based Zscaler integration.
+                                       The node configuration value takes precedence over the global
+                                       `custom_system_mac_address` value.
+                                       Mutually exclusive with `system_mac_address`, whether defined
+                                       globally or in node configuration.
+                                       If unset, the existing `system_mac_address` behavior is
+                                       unchanged.
+                                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                       not accepted by EOS.
+                                       Regardless of the input format, the MAC address is normalized to
+                                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                       Only the following
+                                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                       Examples:  # fmt: skip
+                                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                       `021c.7300.04d2` for device with ID 1234.
+                                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                       encode into the 3rd and 4th octets of the generated MAC address).
                                     serial_number:
                                        Set to the Serial Number of the device.
                                        Only used for documentation purpose in the fabric
@@ -104318,7 +104898,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -104346,9 +104928,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For example, set the minimum
                                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                     router_id_pool:
-                                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                       will not exist on the device.
+                                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                       and takes precedence over `router_id_pool`.
                                     loopback_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -108328,6 +108911,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -108478,6 +109062,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -108776,7 +109391,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -108818,9 +109435,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -109399,6 +110017,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -109549,6 +110168,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -109762,7 +110410,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -109790,9 +110440,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -113847,6 +114498,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -113994,6 +114646,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -114292,7 +114975,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -114334,9 +115019,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -114915,6 +115601,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -115063,6 +115750,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -115276,7 +115992,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -115304,9 +116022,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -115896,6 +116615,7 @@ class EosDesigns(EosDesignsRootModel):
             "type": CustomStructuredConfigurationPrefix,
             "default": lambda cls: coerce_type(["custom_structured_configuration_"], target_type=cls),
         },
+        "custom_system_mac_address": {"type": str},
         "cv_pathfinder_global_sites": {"type": CvPathfinderGlobalSites},
         "cv_pathfinder_internet_exit_policies": {"type": CvPathfinderInternetExitPolicies},
         "cv_pathfinder_regions": {"type": CvPathfinderRegions},
@@ -117417,6 +118137,37 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of AvdList with `str` items.
 
     Default value: `lambda cls: coerce_type(["custom_structured_configuration_"], target_type=cls)`
+    """
+    custom_system_mac_address: str | None
+    """
+    Set a custom EOS system MAC address using an AVD string formatter template.
+    When set, the rendered
+    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+    CloudVision-based Zscaler integration.
+    Can also be defined in node configuration. The node
+    configuration value takes precedence when both values are set.
+    Mutually exclusive with
+    `system_mac_address`, whether defined globally or in node configuration.
+    If unset, the existing
+    `system_mac_address` behavior is unchanged.
+    The rendered value must be a unicast MAC address in
+    `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit).
+    The all-zero address is reserved and not accepted by EOS.
+    Regardless of the input format, the MAC
+    address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD
+    metadata.
+    Only the following template fields are supported: `device_id` (AVD node ID as an integer)
+    and `hostname`.
+
+    Examples:
+      - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001`
+    for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+      - template
+    `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and
+    hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical
+    identifier of the deployment site which we want to encode into the 3rd and 4th octets of the
+    generated MAC address).
     """
     cv_pathfinder_global_sites: CvPathfinderGlobalSites
     """
@@ -118942,6 +119693,8 @@ class EosDesigns(EosDesignsRootModel):
     also be set under node type settings.
     If both are set, the value under node type settings takes
     precedence.
+    Mutually exclusive with "custom_system_mac_address", whether defined globally or in node
+    configuration.
     """
     tcam_profiles: EosCliConfigGen.TcamProfile.Profiles
     """
@@ -119013,21 +119766,22 @@ class EosDesigns(EosDesignsRootModel):
       -
     "uplink_ipv6_pool" (or `downlink_pools`)
       - "vtep_loopback_ipv6_pool"
-      - "router_id_pool"
-    For
-    MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-      -
-    "mlag_peer_address_family: ipv6"
+      - "router_id_pool" or
+    "loopback_ipv4_address"
+    For MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on
+    the MLAG nodes:
+      - "mlag_peer_address_family: ipv6"
       - "mlag_peer_ipv6_pool"
-      - "mlag_peer_l3_ipv6_pool"
-    Some
-    settings are not yet supported with IPv6 underlay:
-      - underlay_multicast_pim_sm
       -
-    underlay_multicast_rp_interfaces
+    "mlag_peer_l3_ipv6_pool"
+    Some settings are not yet supported with IPv6 underlay:
+      -
+    underlay_multicast_pim_sm
+      - underlay_multicast_rp_interfaces
       - underlay_rfc5549
       - wan_role
-      - vtep_vvtep_ip
+      -
+    vtep_vvtep_ip
       - inband_ztp
 
     Default value: `False`
@@ -119382,6 +120136,7 @@ class EosDesigns(EosDesignsRootModel):
             core_interfaces: CoreInterfaces | UndefinedType = Undefined,
             custom_structured_configuration_list_merge: CustomStructuredConfigurationListMerge | UndefinedType = Undefined,
             custom_structured_configuration_prefix: CustomStructuredConfigurationPrefix | UndefinedType = Undefined,
+            custom_system_mac_address: str | UndefinedType | None = Undefined,
             cv_pathfinder_global_sites: CvPathfinderGlobalSites | UndefinedType = Undefined,
             cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies | UndefinedType = Undefined,
             cv_pathfinder_regions: CvPathfinderRegions | UndefinedType = Undefined,
@@ -119796,6 +120551,35 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdList with `str` items.
+                custom_system_mac_address:
+                   Set a custom EOS system MAC address using an AVD string formatter template.
+                   When set, the rendered
+                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                   CloudVision-based Zscaler integration.
+                   Can also be defined in node configuration. The node
+                   configuration value takes precedence when both values are set.
+                   Mutually exclusive with
+                   `system_mac_address`, whether defined globally or in node configuration.
+                   If unset, the existing
+                   `system_mac_address` behavior is unchanged.
+                   The rendered value must be a unicast MAC address in
+                   `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit).
+                   The all-zero address is reserved and not accepted by EOS.
+                   Regardless of the input format, the MAC
+                   address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD
+                   metadata.
+                   Only the following template fields are supported: `device_id` (AVD node ID as an integer)
+                   and `hostname`.
+
+                   Examples:  # fmt: skip
+                     - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001`
+                   for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+                     - template
+                   `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and
+                   hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical
+                   identifier of the deployment site which we want to encode into the 3rd and 4th octets of the
+                   generated MAC address).
                 cv_pathfinder_global_sites:
                    Define sites that are outside of the CV Pathfinder hierarchy.
                    This is used to arrange pathfinders in
@@ -120924,6 +121708,8 @@ class EosDesigns(EosDesignsRootModel):
                    also be set under node type settings.
                    If both are set, the value under node type settings takes
                    precedence.
+                   Mutually exclusive with "custom_system_mac_address", whether defined globally or in node
+                   configuration.
                 tcam_profiles:
                    List of TCAM profile definitions that can be referenced by platform_settings.
                    Profiles are
@@ -120975,21 +121761,22 @@ class EosDesigns(EosDesignsRootModel):
                      -
                    "uplink_ipv6_pool" (or `downlink_pools`)
                      - "vtep_loopback_ipv6_pool"
-                     - "router_id_pool"
-                   For
-                   MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-                     -
-                   "mlag_peer_address_family: ipv6"
+                     - "router_id_pool" or
+                   "loopback_ipv4_address"
+                   For MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on
+                   the MLAG nodes:
+                     - "mlag_peer_address_family: ipv6"
                      - "mlag_peer_ipv6_pool"
-                     - "mlag_peer_l3_ipv6_pool"
-                   Some
-                   settings are not yet supported with IPv6 underlay:
-                     - underlay_multicast_pim_sm
                      -
-                   underlay_multicast_rp_interfaces
+                   "mlag_peer_l3_ipv6_pool"
+                   Some settings are not yet supported with IPv6 underlay:
+                     -
+                   underlay_multicast_pim_sm
+                     - underlay_multicast_rp_interfaces
                      - underlay_rfc5549
                      - wan_role
-                     - vtep_vvtep_ip
+                     -
+                   vtep_vvtep_ip
                      - inband_ztp
                 underlay_isis_authentication_cleartext_key:
                    Cleartext password.
