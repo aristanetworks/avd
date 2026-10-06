@@ -12031,7 +12031,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
         Note: AVD does
         not check for validity of the IPv4 address and does not catch duplicates.
         """
@@ -13059,7 +13059,7 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                        Note: AVD does
                        not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
@@ -17631,7 +17631,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
         Note: AVD does
         not check for validity of the IPv4 address and does not catch duplicates.
         """
@@ -18667,7 +18667,7 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                        Note: AVD does
                        not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
@@ -60167,7 +60167,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                     Note: AVD does
                     not check for validity of the IPv4 address and does not catch duplicates.
                     """
@@ -61174,7 +61174,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                                    Note: AVD does
                                    not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
@@ -65747,7 +65747,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                         Note: AVD does
                         not check for validity of the IPv4 address and does not catch duplicates.
                         """
@@ -66763,7 +66763,7 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                                        Note: AVD does
                                        not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
@@ -71255,7 +71255,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                     Note: AVD does
                     not check for validity of the IPv4 address and does not catch duplicates.
                     """
@@ -72273,7 +72273,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                                    Note: AVD does
                                    not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
@@ -76837,7 +76837,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                     Note: AVD does
                     not check for validity of the IPv4 address and does not catch duplicates.
                     """
@@ -77853,7 +77853,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                                    Note: AVD does
                                    not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
@@ -98206,7 +98206,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                     Note: AVD does
                     not check for validity of the IPv4 address and does not catch duplicates.
                     """
@@ -99213,7 +99213,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                                    Note: AVD does
                                    not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
@@ -103786,7 +103786,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                         Note: AVD does
                         not check for validity of the IPv4 address and does not catch duplicates.
                         """
@@ -104802,7 +104802,7 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                                        Note: AVD does
                                        not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
@@ -109294,7 +109294,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                     Note: AVD does
                     not check for validity of the IPv4 address and does not catch duplicates.
                     """
@@ -110312,7 +110312,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                                    Note: AVD does
                                    not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
@@ -114876,7 +114876,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                     Note: AVD does
                     not check for validity of the IPv4 address and does not catch duplicates.
                     """
@@ -115892,7 +115892,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   For `underlay_ipv6_numbered` designs, this IPv4 address is used as the BGP router-id.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
                                    Note: AVD does
                                    not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
