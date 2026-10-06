@@ -1984,11 +1984,13 @@ To enable it, set `digital_twin.environment: containerlab` and run the same Digi
 
 For Containerlab, `digital_twin.fabric` is still required for schema validation, even if it is left empty as `fabric: {}`. This is a temporary limitation and it will be removed once the shared Digital Twin schema is updated.
 
-Important caveats for the current Containerlab implementation:
+Limitations of the current Containerlab implementation:
 
 - It is a `PREVIEW` feature and behavior may still change.
 - Only out-of-band management is supported.
+- Only `Management1` is supported as the management interface. This is the recommended default, and the management interface is not currently configurable.
 - Only a single IPv4 management subnet is supported across the lab.
+- Deploying multiple Containerlab Digital Twin topologies on the same host is not supported. The management network name is fixed to `custom_mgmt` and is not configurable. Sharing this network across topologies can cause management IP address collisions when subnets match, or deployment failures when subnets differ. Use a clean lab environment with only one topology deployed at a time.
 - Management IP addresses in the lab and production must currently match.
 - Each node must have a static `mgmt_ip`. Unset management IPs and `mgmt_ip: dhcp` are not supported.
 - `digital_twin.mgmt_ip` is not currently used by the Containerlab topology generator. Instead, topology generation uses each node's `mgmt_ip` value from the AVD fabric facts.
