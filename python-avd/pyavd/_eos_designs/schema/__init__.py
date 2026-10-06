@@ -12190,8 +12190,9 @@ class EosDesigns(EosDesignsRootModel):
         The IPv4
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+        true`.
         """
         mlag_peer_l3_ipv6_pool: str | None
         """
@@ -12217,12 +12218,15 @@ class EosDesigns(EosDesignsRootModel):
         This never changes which address families (NLRI) are activated on the MLAG BGP
         peerings.
         With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-        When
-        the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-        `mlag_peer_vlan`),
-        the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-        IP addresses,
-        so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+        The
+        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+        When the MLAG peer VLAN is also used for L3 peering
+        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+        the MLAG L3 peerings
+        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+        so this must be `ipv6`
+        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
         Default value: `"ipv4"`
         """
@@ -13130,8 +13134,9 @@ class EosDesigns(EosDesignsRootModel):
                        The IPv4
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                       true`.
                     mlag_peer_l3_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                        The IPv6
@@ -13148,12 +13153,15 @@ class EosDesigns(EosDesignsRootModel):
                        This never changes which address families (NLRI) are activated on the MLAG BGP
                        peerings.
                        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                       When
-                       the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                       `mlag_peer_vlan`),
-                       the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                       IP addresses,
-                       so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                       The
+                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                       When the MLAG peer VLAN is also used for L3 peering
+                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                       the MLAG L3 peerings
+                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                       so this must be `ipv6`
+                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                     mlag_peer_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
@@ -17742,8 +17750,9 @@ class EosDesigns(EosDesignsRootModel):
         The IPv4
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+        true`.
         """
         mlag_peer_l3_ipv6_pool: str | None
         """
@@ -17769,12 +17778,15 @@ class EosDesigns(EosDesignsRootModel):
         This never changes which address families (NLRI) are activated on the MLAG BGP
         peerings.
         With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-        When
-        the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-        `mlag_peer_vlan`),
-        the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-        IP addresses,
-        so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+        The
+        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+        When the MLAG peer VLAN is also used for L3 peering
+        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+        the MLAG L3 peerings
+        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+        so this must be `ipv6`
+        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
         Default value: `"ipv4"`
         """
@@ -18690,8 +18702,9 @@ class EosDesigns(EosDesignsRootModel):
                        The IPv4
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                       true`.
                     mlag_peer_l3_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                        The IPv6
@@ -18708,12 +18721,15 @@ class EosDesigns(EosDesignsRootModel):
                        This never changes which address families (NLRI) are activated on the MLAG BGP
                        peerings.
                        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                       When
-                       the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                       `mlag_peer_vlan`),
-                       the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                       IP addresses,
-                       so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                       The
+                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                       When the MLAG peer VLAN is also used for L3 peering
+                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                       the MLAG L3 peerings
+                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                       so this must be `ipv6`
+                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                     mlag_peer_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
@@ -60230,8 +60246,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -60257,12 +60274,15 @@ class EosDesigns(EosDesignsRootModel):
                     This never changes which address families (NLRI) are activated on the MLAG BGP
                     peerings.
                     With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                    When
-                    the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                    `mlag_peer_vlan`),
-                    the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                    IP addresses,
-                    so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -61149,8 +61169,9 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
@@ -61167,12 +61188,15 @@ class EosDesigns(EosDesignsRootModel):
                                    This never changes which address families (NLRI) are activated on the MLAG BGP
                                    peerings.
                                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                                   When
-                                   the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                                   `mlag_peer_vlan`),
-                                   the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                                   IP addresses,
-                                   so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -65762,8 +65786,9 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv4
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                        true`.
                         """
                         mlag_peer_l3_ipv6_pool: str | None
                         """
@@ -65789,12 +65814,15 @@ class EosDesigns(EosDesignsRootModel):
                         This never changes which address families (NLRI) are activated on the MLAG BGP
                         peerings.
                         With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                        When
-                        the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                        `mlag_peer_vlan`),
-                        the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                        IP addresses,
-                        so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                        The
+                        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                        When the MLAG peer VLAN is also used for L3 peering
+                        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                        the MLAG L3 peerings
+                        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                        so this must be `ipv6`
+                        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                         Default value: `"ipv4"`
                         """
@@ -66690,8 +66718,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The IPv4
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                       true`.
                                     mlag_peer_l3_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                        The IPv6
@@ -66708,12 +66737,15 @@ class EosDesigns(EosDesignsRootModel):
                                        This never changes which address families (NLRI) are activated on the MLAG BGP
                                        peerings.
                                        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                                       When
-                                       the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                                       `mlag_peer_vlan`),
-                                       the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                                       IP addresses,
-                                       so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                                       The
+                                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                       When the MLAG peer VLAN is also used for L3 peering
+                                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                       the MLAG L3 peerings
+                                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                       so this must be `ipv6`
+                                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                     mlag_peer_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
@@ -71222,8 +71254,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -71249,12 +71282,15 @@ class EosDesigns(EosDesignsRootModel):
                     This never changes which address families (NLRI) are activated on the MLAG BGP
                     peerings.
                     With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                    When
-                    the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                    `mlag_peer_vlan`),
-                    the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                    IP addresses,
-                    so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -72152,8 +72188,9 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
@@ -72170,12 +72207,15 @@ class EosDesigns(EosDesignsRootModel):
                                    This never changes which address families (NLRI) are activated on the MLAG BGP
                                    peerings.
                                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                                   When
-                                   the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                                   `mlag_peer_vlan`),
-                                   the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                                   IP addresses,
-                                   so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -76756,8 +76796,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -76783,12 +76824,15 @@ class EosDesigns(EosDesignsRootModel):
                     This never changes which address families (NLRI) are activated on the MLAG BGP
                     peerings.
                     With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                    When
-                    the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                    `mlag_peer_vlan`),
-                    the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                    IP addresses,
-                    so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -77684,8 +77728,9 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
@@ -77702,12 +77747,15 @@ class EosDesigns(EosDesignsRootModel):
                                    This never changes which address families (NLRI) are activated on the MLAG BGP
                                    peerings.
                                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                                   When
-                                   the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                                   `mlag_peer_vlan`),
-                                   the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                                   IP addresses,
-                                   so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -98077,8 +98125,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -98104,12 +98153,15 @@ class EosDesigns(EosDesignsRootModel):
                     This never changes which address families (NLRI) are activated on the MLAG BGP
                     peerings.
                     With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                    When
-                    the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                    `mlag_peer_vlan`),
-                    the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                    IP addresses,
-                    so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -98996,8 +99048,9 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
@@ -99014,12 +99067,15 @@ class EosDesigns(EosDesignsRootModel):
                                    This never changes which address families (NLRI) are activated on the MLAG BGP
                                    peerings.
                                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                                   When
-                                   the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                                   `mlag_peer_vlan`),
-                                   the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                                   IP addresses,
-                                   so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -103609,8 +103665,9 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv4
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                        true`.
                         """
                         mlag_peer_l3_ipv6_pool: str | None
                         """
@@ -103636,12 +103693,15 @@ class EosDesigns(EosDesignsRootModel):
                         This never changes which address families (NLRI) are activated on the MLAG BGP
                         peerings.
                         With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                        When
-                        the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                        `mlag_peer_vlan`),
-                        the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                        IP addresses,
-                        so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                        The
+                        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                        When the MLAG peer VLAN is also used for L3 peering
+                        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                        the MLAG L3 peerings
+                        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                        so this must be `ipv6`
+                        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                         Default value: `"ipv4"`
                         """
@@ -104537,8 +104597,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The IPv4
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                       true`.
                                     mlag_peer_l3_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                        The IPv6
@@ -104555,12 +104616,15 @@ class EosDesigns(EosDesignsRootModel):
                                        This never changes which address families (NLRI) are activated on the MLAG BGP
                                        peerings.
                                        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                                       When
-                                       the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                                       `mlag_peer_vlan`),
-                                       the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                                       IP addresses,
-                                       so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                                       The
+                                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                       When the MLAG peer VLAN is also used for L3 peering
+                                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                       the MLAG L3 peerings
+                                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                       so this must be `ipv6`
+                                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                     mlag_peer_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
@@ -109069,8 +109133,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -109096,12 +109161,15 @@ class EosDesigns(EosDesignsRootModel):
                     This never changes which address families (NLRI) are activated on the MLAG BGP
                     peerings.
                     With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                    When
-                    the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                    `mlag_peer_vlan`),
-                    the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                    IP addresses,
-                    so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -109999,8 +110067,9 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
@@ -110017,12 +110086,15 @@ class EosDesigns(EosDesignsRootModel):
                                    This never changes which address families (NLRI) are activated on the MLAG BGP
                                    peerings.
                                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                                   When
-                                   the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                                   `mlag_peer_vlan`),
-                                   the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                                   IP addresses,
-                                   so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -114603,8 +114675,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -114630,12 +114703,15 @@ class EosDesigns(EosDesignsRootModel):
                     This never changes which address families (NLRI) are activated on the MLAG BGP
                     peerings.
                     With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                    When
-                    the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                    `mlag_peer_vlan`),
-                    the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                    IP addresses,
-                    so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -115531,8 +115607,9 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
@@ -115549,12 +115626,15 @@ class EosDesigns(EosDesignsRootModel):
                                    This never changes which address families (NLRI) are activated on the MLAG BGP
                                    peerings.
                                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
-                                   When
-                                   the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as
-                                   `mlag_peer_vlan`),
-                                   the MLAG L3 peerings (underlay and VRFs) are established using the MLAG peer VLAN
-                                   IP addresses,
-                                   so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
