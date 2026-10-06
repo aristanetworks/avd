@@ -20160,8 +20160,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             exceed_action_drop: bool | None
             """
             Drop IPv4 packets larger than `mtu.size` in software.
-            EOS version dependent. Supported starting EOS
-            4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+            Supported starting EOS 4.36.1F, 4.35.4M,
+            4.34.6M, 4.33.8M, 4.32.11M.
             """
 
             if TYPE_CHECKING:
@@ -20179,8 +20179,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Defaults to 1500 on EOS.
                         exceed_action_drop:
                            Drop IPv4 packets larger than `mtu.size` in software.
-                           EOS version dependent. Supported starting EOS
-                           4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+                           Supported starting EOS 4.36.1F, 4.35.4M,
+                           4.34.6M, 4.33.8M, 4.32.11M.
 
                     """
 

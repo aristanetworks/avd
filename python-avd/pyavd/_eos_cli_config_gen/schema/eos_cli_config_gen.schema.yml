@@ -7865,8 +7865,7 @@ keys:
             type: bool
             description: 'Drop IPv4 packets larger than `mtu.size` in software.
 
-              EOS version dependent. Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M,
-              4.33.8M, 4.32.11M.'
+              Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.'
   ip_ssh_client:
     type: dict
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
