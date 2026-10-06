@@ -3854,6 +3854,23 @@ keys:
               max: 4094
             name:
               type: str
+      ip_software_forwarding_exceed_action_drop:
+        type: dict
+        documentation_options:
+          table: system-settings
+        description: 'Drop IPv4 packets larger than configured mtu (in bytes) in software.
+
+          Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.'
+        keys:
+          enabled:
+            type: bool
+            required: true
+          mtu:
+            type: int
+            description: IPv4 software-forwarding MTU threshold in bytes.
+            min: 68
+            max: 65535
+            required: true
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
