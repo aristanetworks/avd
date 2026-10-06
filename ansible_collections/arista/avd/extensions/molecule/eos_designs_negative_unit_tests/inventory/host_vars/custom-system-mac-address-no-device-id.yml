@@ -1,0 +1,13 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: custom-system-mac-address-no-device-id
+      mgmt_ip: 192.168.0.2/24
+
+custom_system_mac_address: 021c.7300.{device_id:04x}
+
+expected_error_message: >-
+  'custom_system_mac_address' uses formatter field 'device_id', but no AVD node ID could be resolved for host
+  'custom-system-mac-address-no-device-id'. Configure a node ID for this host or remove the field from the template.
