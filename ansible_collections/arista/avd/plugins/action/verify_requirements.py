@@ -197,7 +197,7 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
             continue
 
         if not _check_requirement(req, requirements_dict):
-                valid = False
+            valid = False
 
     info["python_requirements"] = requirements_dict
     return valid
