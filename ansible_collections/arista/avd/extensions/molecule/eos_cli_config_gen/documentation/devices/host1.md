@@ -177,6 +177,7 @@ Serial Number: DEADBEEFC0FFEW
 - [Routing](#routing)
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
+  - [VRRP](#vrrp)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -8724,6 +8725,19 @@ Multi agent routing protocol model enabled
 ```eos
 !
 service routing protocols model multi-agent
+```
+
+### VRRP
+
+#### VRRP Summary
+
+VRRPv2 IPv4 Authentication Anti-Replay: Enabled
+
+#### VRRP Device Configuration
+
+```eos
+!
+vrrp ipv4 authentication anti-replay
 ```
 
 ### Virtual Router MAC Address

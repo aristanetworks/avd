@@ -28190,6 +28190,20 @@ keys:
               description: Key only used for documentation or validation purposes.
               items:
                 type: str
+  vrrp:
+    type: dict
+    description: Global VRRP configuration.
+    keys:
+      ipv4:
+        type: dict
+        description: VRRP IPv4 configuration.
+        keys:
+          authentication_anti_replay:
+            type: bool
+            description: 'Enable anti-replay validation for authenticated IPv4 VRRPv2
+              advertisements.
+
+              Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.'
   vxlan_interface:
     type: dict
     keys:
