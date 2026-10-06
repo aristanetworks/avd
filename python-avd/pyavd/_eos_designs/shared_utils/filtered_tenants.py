@@ -305,7 +305,7 @@ class FilteredTenantsMixin(Protocol):
 
             vrf.additional_route_targets = vrf.additional_route_targets._filtered(lambda rt: bool(not rt.nodes or self.hostname in rt.nodes))
 
-            if vrf.ospfv3.enabled:
+            if self.is_ospfv3_enabled_on_node(vrf):
                 ipv4_enabled = vrf.ospfv3.address_family_ipv4.enabled
                 ipv6_enabled = vrf.ospfv3.address_family_ipv6.enabled
                 if not ipv4_enabled and not ipv6_enabled:

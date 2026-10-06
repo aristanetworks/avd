@@ -32805,12 +32805,12 @@ class EosDesigns(EosDesignsRootModel):
                     _fields: ClassVar[dict] = {"node": {"type": str}, "enabled": {"type": bool}}
                     node: str
                     """Name of the node for which this configuration applies."""
-                    enabled: bool | None
+                    enabled: bool
                     """Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, node: str | UndefinedType = Undefined, enabled: bool | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, node: str | UndefinedType = Undefined, enabled: bool | UndefinedType = Undefined) -> None:
                             """
                             NodesItem.
 
@@ -86279,12 +86279,12 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"node": {"type": str}, "enabled": {"type": bool}}
                             node: str
                             """Name of the node for which this configuration applies."""
-                            enabled: bool | None
+                            enabled: bool
                             """Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting."""
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, node: str | UndefinedType = Undefined, enabled: bool | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, node: str | UndefinedType = Undefined, enabled: bool | UndefinedType = Undefined) -> None:
                                     """
                                     NodesItem.
 

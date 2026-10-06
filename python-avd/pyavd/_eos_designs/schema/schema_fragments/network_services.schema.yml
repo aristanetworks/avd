@@ -889,6 +889,7 @@ keys:
                           description: Name of the node for which this configuration applies.
                         enabled:
                           type: bool
+                          required: true
                           description: Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting.
                   structured_config:
                     type: dict
