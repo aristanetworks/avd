@@ -162,10 +162,7 @@ class ActionModule(AVDActionPlugin):
 
     async def deploy(self, validated_args: dict) -> None:
         """Prepare data, perform deployment and convert result data."""
-        logged_args = validated_args.copy()
-        for key in ["cv_token", "cv_password", "proxy_password"]:
-            if key in logged_args:
-                logged_args[key] = self._REDACTED_VALUE
+        logged_args = self._prepare_logged_args(validated_args)
         self.logger.info("deploy: %s", logged_args)
 
         # Validate preview_features requirements before starting deployment.
@@ -219,9 +216,7 @@ class ActionModule(AVDActionPlugin):
             result_object = DeployToCvResult(workspace=None)
         else:
             # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
-            workspace_args = get(validated_args, "workspace", default={})
-            if "build_warnings" in workspace_args:
-                workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig.from_dict(workspace_args["build_warnings"])
+            workspace_args = self._prepare_workspace_args(validated_args)
 
             # Perform deployment of all objects, getting a DeployToCVResult object back.
             result_object = await deploy_to_cv(
@@ -239,8 +234,9 @@ class ActionModule(AVDActionPlugin):
             result_object.errors = [str(error) for error in result_object.errors]
             result_object.warnings = [str(warning) for warning in result_object.warnings]
 
-            # Add warnings caught by the logger.
-            result_object.warnings.extend(self.result.get("warnings", []))
+            # Preserve logged warnings in deployment result, independently of save_logs setting.
+            persisted_logger_warnings = [str(warning) for warning in self.result.get("logs", {}).get("warnings", [])]
+            result_object.warnings.extend(persisted_logger_warnings)
 
         # Build result with detailed data or summary based on return_details flag.
         if validated_args["return_details"]:
@@ -278,6 +274,21 @@ class ActionModule(AVDActionPlugin):
                 result_object.removed_interface_tags,
             ]
         )
+
+    def _prepare_logged_args(self, validated_args: dict[str, Any]) -> dict[str, Any]:
+        """Prepare args for logging by masking sensitive fields."""
+        logged_args = validated_args.copy()
+        for key in ["cv_token", "cv_password", "proxy_password"]:
+            if key in logged_args:
+                logged_args[key] = self._REDACTED_VALUE
+        return logged_args
+
+    def _prepare_workspace_args(self, validated_args: dict[str, Any]) -> dict[str, Any]:
+        """Prepare workspace args, converting build_warnings to AvdWorkspaceBuildWarningsConfig."""
+        workspace_args = get(validated_args, "workspace", default={})
+        if "build_warnings" in workspace_args:
+            workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig.from_dict(workspace_args["build_warnings"])
+        return workspace_args
 
     async def build_device_deployments(
         self,

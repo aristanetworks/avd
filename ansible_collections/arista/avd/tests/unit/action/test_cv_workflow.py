@@ -199,6 +199,56 @@ def test_deploy_uses_tmp_dir_when_read_from_validated_inputs(
     mock_get_tmp_paths.assert_called_once_with("/avd/tmp")
 
 
+def test_deploy_includes_static_config_manifest_when_provided(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify static_config_manifest is built when provided in validated_args."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(static_config_manifest={"containers": []})
+
+    with (
+        patch(f"{MODULE_PATH}.CloudVision", create=True),
+        patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], []), create=True),
+        patch(f"{MODULE_PATH}.AvdManifest") as mock_manifest,
+        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=_make_deploy_result_mock(), create=True),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+    ):
+        asyncio.run(module.deploy(validated_args))
+
+    mock_manifest.from_dict.assert_called_once()
+
+
+def test_deploy_includes_proxy_password_in_result_when_set(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify proxy_password is included in result when cloudvision.proxy_password is set."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(return_details=True)
+    deploy_result = _make_deploy_result_mock()
+    deploy_result.get_result.return_value = {}
+
+    mock_cloudvision = MagicMock()
+    mock_cloudvision.proxy_password = "secret-proxy-pass"  # noqa: S105
+
+    with (
+        patch(f"{MODULE_PATH}.CloudVision", return_value=mock_cloudvision, create=True),
+        patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
+        patch(f"{MODULE_PATH}.get_result", return_value={}, create=True),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], []), create=True),
+        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=deploy_result, create=True),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+    ):
+        asyncio.run(module.deploy(validated_args))
+
+    assert "cloudvision" in module.result
+    assert module.result["cloudvision"].get("proxy_password") == "<removed>"
+
+
 def test_deploy_updates_result_with_full_details_when_return_details_true(
     action_module: Callable[..., ActionModule],
 ) -> None:
@@ -249,6 +299,95 @@ def test_deploy_calls_deploy_to_cv_when_work_to_do(
 
     mock_deploy.assert_awaited_once()
     assert module.result.get("failed") is False
+
+
+def test_deploy_skips_deploy_to_cv_when_no_work_to_do(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify deploy_to_cv is not awaited when there are no configs, tags, or manifest to deploy."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args()
+
+    with (
+        patch(f"{MODULE_PATH}.CloudVision", create=True),
+        patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], []), create=True),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=_make_deploy_result_mock(), create=True) as mock_deploy,
+        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=_make_deploy_result_mock(), create=True),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+    ):
+        asyncio.run(module.deploy(validated_args))
+
+    mock_deploy.assert_not_awaited()
+    assert module.result.get("notes") == ["No configurations, tags, or static config manifest found to deploy."]
+
+
+def test_deploy_preserves_logged_warnings_in_result(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify logged warnings are captured and added to the deployment result warnings, independently of save_logs."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args()
+    logged_warnings_list = ["Warning 1: Device offline", "Warning 2: Config mismatch"]
+
+    with (
+        patch(f"{MODULE_PATH}.CloudVision", create=True),
+        patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([MagicMock()], [], [], []), create=True),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=_make_deploy_result_mock(), create=True),
+        patch(f"{MODULE_PATH}.CVChangeControl", create=True),
+        patch(f"{MODULE_PATH}.AvdChangeControl", create=True),
+        patch(f"{MODULE_PATH}.CVTimeOuts", create=True),
+        patch(f"{MODULE_PATH}.CVWorkspace", create=True),
+        patch(f"{MODULE_PATH}.AvdWorkspace", create=True),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+    ):
+        # Set up logged warnings in the result
+        module.result["logs"] = {"warnings": logged_warnings_list}
+        asyncio.run(module.deploy(validated_args))
+
+    # Verify logged warnings are preserved in the result
+    assert "warnings" in module.result
+    assert all(w in module.result["warnings"] for w in logged_warnings_list)
+
+
+# ---------------------------------------------------------------------------
+# Helper methods — testing coverage
+# ---------------------------------------------------------------------------
+
+
+def test_prepare_logged_args_masks_only_present_keys(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify _prepare_logged_args only masks keys that are present in the input."""
+    module = action_module(ActionModule)
+    # Only provide cv_token, not cv_password or proxy_password
+    validated_args = {"cv_token": "secret-token", "cv_servers": ["cv.example.com"]}
+
+    result = module._prepare_logged_args(validated_args)
+
+    assert result["cv_token"] == "<removed>"  # noqa: S105
+    assert result["cv_servers"] == ["cv.example.com"]
+    assert "cv_password" not in result or result.get("cv_password") is None
+
+
+def test_prepare_workspace_args_converts_build_warnings(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify _prepare_workspace_args converts build_warnings to AvdWorkspaceBuildWarningsConfig."""
+    module = action_module(ActionModule)
+    validated_args = {"workspace": {"build_warnings": {"errors": ["error1"]}}}
+
+    with patch(f"{MODULE_PATH}.AvdWorkspaceBuildWarningsConfig") as mock_config:
+        mock_config.from_dict.return_value = MagicMock()
+        result = module._prepare_workspace_args(validated_args)
+
+    mock_config.from_dict.assert_called_once_with({"errors": ["error1"]})
+    assert "build_warnings" in result
 
 
 # ---------------------------------------------------------------------------
