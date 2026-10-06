@@ -78986,7 +78986,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"authentication_anti_replay": {"type": bool}}
             authentication_anti_replay: bool | None
-            """Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements."""
+            """
+            Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
+            Supported in EOS
+            starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.
+            """
 
             if TYPE_CHECKING:
 
@@ -78998,16 +79002,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        authentication_anti_replay: Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
+                        authentication_anti_replay:
+                           Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
+                           Supported in EOS
+                           starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.
 
                     """
 
         _fields: ClassVar[dict] = {"ipv4": {"type": Ipv4}}
         ipv4: Ipv4
         """
-        VRRPv2 IPv4 Authentication configuration.
-        Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and
-        4.36.2F.
+        VRRP IPv4 configuration.
 
         Subclass of AvdModel.
         """
@@ -79023,9 +79028,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     ipv4:
-                       VRRPv2 IPv4 Authentication configuration.
-                       Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and
-                       4.36.2F.
+                       VRRP IPv4 configuration.
 
                        Subclass of AvdModel.
 

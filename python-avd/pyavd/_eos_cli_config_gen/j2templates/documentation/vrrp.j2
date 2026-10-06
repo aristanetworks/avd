@@ -4,16 +4,14 @@
  that can be found in the LICENSE file.
 #}
 {# doc - vrrp #}
-{% if vrrp is arista.avd.defined %}
+{% if vrrp.ipv4.authentication_anti_replay is arista.avd.defined(true) %}
 
 ### VRRP
 
 #### VRRP Summary
-{%     if vrrp.ipv4.authentication_anti_replay is arista.avd.defined(true) %}
 
-VRRP IPv4 Authentication Anti-Replay: Enabled
+VRRPv2 IPv4 Authentication Anti-Replay: Enabled
 
-{%     endif %}
 #### VRRP Device Configuration
 
 ```eos

@@ -8731,7 +8731,7 @@ service routing protocols model multi-agent
 
 #### VRRP Summary
 
-VRRP IPv4 Authentication Anti-Replay: Enabled
+VRRPv2 IPv4 Authentication Anti-Replay: Enabled
 
 #### VRRP Device Configuration
 
