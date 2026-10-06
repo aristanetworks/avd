@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from deepmerge.merger import Merger
 
 from deepmerge.strategy.core import STRATEGY_END
-from pyavd_utils.schema_store import get_list_primary_key
+from pyavd_utils.schema_store import get_schema_info
 
 SchemaName = Literal["eos_config", "avd_design"]
 VALID_SCHEMA_NAMES: frozenset[SchemaName] = frozenset(("eos_config", "avd_design"))
@@ -39,10 +39,12 @@ class MergeOnSchema:
             return None
 
         try:
-            return get_list_primary_key(cast("SchemaName", self.schema_name), [str(path_item) for path_item in path])
+            schema_info = get_schema_info(cast("SchemaName", self.schema_name), [str(path_item) for path_item in path])
+            primary_key = schema_info.primary_key if schema_info is not None else None
         except Exception as error:
             msg = f"Unable to get the primary key for schema '{self.schema_name}' at schema path {path}."
             raise RuntimeError(msg) from error
+        return primary_key
 
     def strategy(self, config: Merger, path: list, base: list, nxt: list) -> object:
         """Custom strategy to merge lists on schema primary key."""
