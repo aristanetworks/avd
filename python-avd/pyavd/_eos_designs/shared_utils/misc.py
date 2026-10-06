@@ -105,17 +105,6 @@ class MiscMixin(Protocol):
         return self.inputs.enable_trunk_groups and self.inputs.only_local_vlan_trunk_groups
 
     @cached_property
-    def system_mac_address(self: SharedUtilsProtocol) -> str | None:
-        """
-        system_mac_address.
-
-        system_mac_address is inherited from
-        Fabric Topology data model system_mac_address ->
-            Host variable var system_mac_address ->.
-        """
-        return default(self.node_config.system_mac_address, self.inputs.system_mac_address)
-
-    @cached_property
     def uplink_switches(self: SharedUtilsProtocol) -> list[str]:
         return self.node_config.uplink_switches._as_list() or self.cv_topology_config.uplink_switches._as_list()
 

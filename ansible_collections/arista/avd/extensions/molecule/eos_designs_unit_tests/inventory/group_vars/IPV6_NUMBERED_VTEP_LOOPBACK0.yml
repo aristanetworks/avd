@@ -66,6 +66,8 @@ l3leaf:
           mgmt_ip: 172.16.1.31/24
           uplink_switch_interfaces:
             - Ethernet1
+          # Testing loopback_ipv4_address with underlay_ipv6_numbered. This address is used as router_id.
+          loopback_ipv4_address: 10.255.2.1
         - name: ipv6-numbered-vtep-loopback0-leaf1b
           id: 2
           mgmt_ip: 172.16.1.32/24
