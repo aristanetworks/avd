@@ -12,6 +12,9 @@ address_locking:
     expiration_mac_disabled: true
     ipv4_enforcement_disabled: true
     ipv6_enforcement_disabled: true
+  logging_event:
+    denied_address_drop: true
+    dhcp_server_drop: true
 config_end: true
 enable_password:
   disabled: true
