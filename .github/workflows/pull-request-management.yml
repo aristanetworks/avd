@@ -29,6 +29,7 @@ env:
 jobs:
   required-checks: # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
     needs:
+      - build_collection
       - python_type_checking
       - python_requirements
       - molecule_eos_cli_config_gen
