@@ -1,0 +1,12 @@
+# This scenario validates the isolated connected-endpoints builder with normal
+# AVD inventory loading, schema validation, and facts. The external isolated
+# input schema is intentionally deferred, so the runner maps validated AVD data
+# into the same internal context used by regular builds.
+build_target = "connected_endpoints"
+device_configs = false
+inventory_file = "inventory.yml"
+structured_config_suffix = "json"
+
+[documentation]
+device_docs = false
+fabric_doc = false
