@@ -4,26 +4,20 @@
 from __future__ import annotations
 
 import json
-import logging
 from asyncio import gather, run
 from pathlib import Path
 from string import Template
 from typing import Any
 
-from ansible.errors import AnsibleActionFail
-from ansible.plugins.action import ActionBase, display
 from yaml import load
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AVDFileHandler,
     AVDVaultHandler,
-    PythonToAnsibleHandler,
     YamlLoader,
     get_tmp_paths,
-    raise_action_fail,
 )
-
-PLUGIN_NAME = "arista.avd.cv_workflow"
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
 try:
     from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
@@ -57,9 +51,6 @@ try:
 except ImportError:
     HAS_PYAVD = False
 
-
-LOGGER = logging.getLogger("ansible_collections.arista.avd")
-LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 ARGUMENT_SPEC = {
     "tmp_dir": {"type": "str", "required": False},
@@ -149,22 +140,13 @@ ARGUMENT_SPEC = {
 }
 
 
-class ActionModule(ActionBase):
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
-        self._supports_check_mode = False
+class ActionModule(AVDActionPlugin):
+    _logging_config = AVDLoggingConfig()
 
-        if task_vars is None:
-            task_vars = {}
-
-        result = super().run(tmp, task_vars)
-        del tmp  # tmp no longer has any effect
-
+    def main(self, _task_vars: dict[str, Any]) -> None:
         if not HAS_PYAVD:
             msg = "The 'arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error"
-            raise AnsibleActionFail(msg)
-
-        # Setup module logging
-        setup_module_logging(result)
+            raise ImportError(msg)
 
         # Get task arguments and validate them
         _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
@@ -174,9 +156,9 @@ class ActionModule(ActionBase):
         validated_args = json.loads(json.dumps(validated_args))
 
         # Running asyncio coroutine to deploy everything.
-        return run(self.deploy(validated_args, result))
+        run(self.deploy(validated_args))
 
-    async def deploy(self, validated_args: dict, result: dict) -> dict:
+    async def deploy(self, validated_args: dict) -> None:
         """Prepare data, perform deployment and convert result data."""
         logged_args = validated_args.copy()
         # Excempting the lines below from Ruff and Sonar since they think we are hardcoding a password,
@@ -187,145 +169,137 @@ class ActionModule(ActionBase):
             logged_args["cv_password"] = "<removed>"  # NOSONAR # noqa: S105
         if "proxy_password" in logged_args:
             logged_args["proxy_password"] = "<removed>"  # NOSONAR # noqa: S105
-        LOGGER.info("deploy: %s", logged_args)
+        self.logger.info("deploy: %s", logged_args)
 
         # Validate preview_features requirements before starting deployment.
         read_from_validated_inputs = get(validated_args, "preview_features.read_from_validated_inputs", False)
         tmp_dir = validated_args.get("tmp_dir")
         if read_from_validated_inputs and not tmp_dir:
             msg = "tmp_dir is required when preview_features.read_from_validated_inputs is true"
-            raise AnsibleActionFail(msg)
+            raise ValueError(msg)
 
-        try:
-            # Create CloudVision object
-            cloudvision = CloudVision(
-                servers=validated_args["cv_servers"],
-                token=validated_args.get("cv_token"),
-                username=validated_args.get("cv_username"),
-                password=validated_args.get("cv_password"),
-                verify_certs=validated_args["cv_verify_certs"],
-                deploy_future=CVDeployFuture(**get(validated_args, "cv_deploy_future", default={})),
-                proxy_host=validated_args.get("proxy_host"),
-                proxy_port=validated_args.get("proxy_port"),
-                proxy_username=validated_args.get("proxy_username"),
-                proxy_password=validated_args.get("proxy_password"),
-                grpc_channel_configuration=CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(**validated_args.get("grpc_keepalives", {}))),
+        # Create CloudVision object
+        cloudvision = CloudVision(
+            servers=validated_args["cv_servers"],
+            token=validated_args.get("cv_token"),
+            username=validated_args.get("cv_username"),
+            password=validated_args.get("cv_password"),
+            verify_certs=validated_args["cv_verify_certs"],
+            deploy_future=CVDeployFuture(**get(validated_args, "cv_deploy_future", default={})),
+            proxy_host=validated_args.get("proxy_host"),
+            proxy_port=validated_args.get("proxy_port"),
+            proxy_username=validated_args.get("proxy_username"),
+            proxy_password=validated_args.get("proxy_password"),
+            grpc_channel_configuration=CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(**validated_args.get("grpc_keepalives", {}))),
+        )
+
+        # If read_from_validated_inputs is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.
+        if read_from_validated_inputs:
+            _templated_path, validated_path = get_tmp_paths(tmp_dir)
+            structured_config_dir = str(validated_path)
+            structured_config_suffix = "json"
+        else:
+            structured_config_dir = validated_args.get("structured_config_dir")
+            structured_config_suffix = validated_args.get("structured_config_suffix")
+
+        # Build list of CVDeviceDeployment objects (one per deployed device).
+        device_deployments = await self.build_device_deployments(
+            device_list=get(validated_args, "device_list", default=[]),
+            structured_config_dir=structured_config_dir,
+            structured_config_suffix=structured_config_suffix,
+            configuration_dir=get(validated_args, "configuration_dir"),
+            configlet_name_template=get(validated_args, "configlet_name_template"),
+        )
+
+        # Extract to individual list objects to maintain the same Ansible result.
+        eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = extract_from_device_deployments(device_deployments)
+
+        # Build Static Config Studio manifest if necessary.
+        static_config_manifest = AvdManifest.from_dict(validated_args["static_config_manifest"]) if "static_config_manifest" in validated_args else None
+
+        # Add return data if relevant.
+        if validated_args["return_details"]:
+            # Objects are converted to JSON compatible dicts.
+            self.result.update(
+                cloudvision={
+                    **get_result(cloudvision),
+                    "token": "<removed>",
+                    **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
+                },
+                configs=[get_result(config) for config in eos_config_objects],
+                device_tags=[get_result(device_tag) for device_tag in device_tag_objects],
+                interface_tags=[get_result(interface_tag) for interface_tag in interface_tag_objects],
+                cv_pathfinder_metadata=[get_result(metadata) for metadata in cv_pathfinder_metadata_objects],
+                static_config_manifest=get_result(static_config_manifest) if static_config_manifest else None,
             )
 
-            # If read_from_validated_inputs is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.
-            if read_from_validated_inputs:
-                _templated_path, validated_path = get_tmp_paths(tmp_dir)
-                structured_config_dir = str(validated_path)
-                structured_config_suffix = "json"
-            else:
-                structured_config_dir = validated_args.get("structured_config_dir")
-                structured_config_suffix = validated_args.get("structured_config_suffix")
-
-            # Build list of CVDeviceDeployment objects (one per deployed device).
-            device_deployments = await self.build_device_deployments(
-                device_list=get(validated_args, "device_list", default=[]),
-                structured_config_dir=structured_config_dir,
-                structured_config_suffix=structured_config_suffix,
-                configuration_dir=get(validated_args, "configuration_dir"),
-                configlet_name_template=get(validated_args, "configlet_name_template"),
-            )
-
-            # Extract to individual list objects to maintain the same Ansible result.
-            eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = extract_from_device_deployments(device_deployments)
-
-            # Build Static Config Studio manifest if necessary.
-            static_config_manifest = AvdManifest.from_dict(validated_args["static_config_manifest"]) if "static_config_manifest" in validated_args else None
-
-            # Add return data if relevant.
-            if validated_args["return_details"]:
-                # Objects are converted to JSON compatible dicts.
-                result.update(
-                    cloudvision={
-                        **get_result(cloudvision),
-                        "token": "<removed>",
-                        **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
-                    },
-                    configs=[get_result(config) for config in eos_config_objects],
-                    device_tags=[get_result(device_tag) for device_tag in device_tag_objects],
-                    interface_tags=[get_result(interface_tag) for interface_tag in interface_tag_objects],
-                    cv_pathfinder_metadata=[get_result(metadata) for metadata in cv_pathfinder_metadata_objects],
-                    static_config_manifest=get_result(static_config_manifest) if static_config_manifest else None,
-                )
-
-            # Check if there is anything to deploy.
-            work_to_do = any(
-                [
-                    eos_config_objects,
-                    device_tag_objects,
-                    interface_tag_objects,
-                    cv_pathfinder_metadata_objects,
-                    static_config_manifest,
-                ]
-            )
-
-            if work_to_do:
-                # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
-                workspace_args = get(validated_args, "workspace", default={})
-                if "build_warnings" in workspace_args:
-                    workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig.from_dict(workspace_args["build_warnings"])
-
-                # Perform deployment of all objects, getting a DeployToCVResult object back.
-                result_object = await deploy_to_cv(
-                    change_control=CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={}))),
-                    cloudvision=cloudvision,
-                    device_deployments=device_deployments,
-                    static_config_manifest=static_config_manifest,
-                    skip_missing_devices=get(validated_args, "skip_missing_devices"),
-                    strict_system_mac_address=get(validated_args, "strict_system_mac_address"),
-                    strict_tags=get(validated_args, "strict_tags"),
-                    timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
-                    workspace=CVWorkspace(avd_workspace=AvdWorkspace(**workspace_args)),
-                )
-                # Errors and warnings are converted to JSON compatible strings.
-                result_object.errors = [str(error) for error in result_object.errors]
-                result_object.warnings = [str(warning) for warning in result_object.warnings]
-
-                # Add warnings caught by the logger.
-                result_object.warnings.extend(result.get("warnings", []))
-            else:
-                result_object = DeployToCvResult(workspace=None)
-                result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
-
-            # Add either all return data or only warnings, errors, failed.
-            if validated_args["return_details"]:
-                # Result object is converted to JSON compatible dict.
-                result.update(result_object.get_result())
-            else:
-                result.update(
-                    {
-                        "warnings": result_object.warnings,
-                        "errors": result_object.errors,
-                        "failed": result_object.failed,
-                    },
-                )
-
-            # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
-            change_indicators = [
-                result_object.deployed_configs,
-                result_object.deployed_static_config_containers,
-                result_object.deployed_static_config_configlets,
-                result_object.deployed_device_tags,
-                result_object.deployed_interface_tags,
-                result_object.deployed_cv_pathfinder_metadata,
-                result_object.removed_configs,
-                result_object.removed_static_config_containers,
-                result_object.removed_static_config_configlets,
-                result_object.removed_device_tags,
-                result_object.removed_interface_tags,
+        # Check if there is anything to deploy.
+        work_to_do = any(
+            [
+                eos_config_objects,
+                device_tag_objects,
+                interface_tag_objects,
+                cv_pathfinder_metadata_objects,
+                static_config_manifest,
             ]
-            result["changed"] = any(change_indicators)
+        )
 
-        except Exception as error:
-            # Recast errors as AnsibleActionFail
-            msg = f"Error during plugin execution: {error}"
-            raise_action_fail(msg, error)
+        if work_to_do:
+            # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
+            workspace_args = get(validated_args, "workspace", default={})
+            if "build_warnings" in workspace_args:
+                workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig.from_dict(workspace_args["build_warnings"])
 
-        return result
+            # Perform deployment of all objects, getting a DeployToCVResult object back.
+            result_object = await deploy_to_cv(
+                change_control=CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={}))),
+                cloudvision=cloudvision,
+                device_deployments=device_deployments,
+                static_config_manifest=static_config_manifest,
+                skip_missing_devices=get(validated_args, "skip_missing_devices"),
+                strict_system_mac_address=get(validated_args, "strict_system_mac_address"),
+                strict_tags=get(validated_args, "strict_tags"),
+                timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
+                workspace=CVWorkspace(avd_workspace=AvdWorkspace(**workspace_args)),
+            )
+            # Errors and warnings are converted to JSON compatible strings.
+            result_object.errors = [str(error) for error in result_object.errors]
+            result_object.warnings = [str(warning) for warning in result_object.warnings]
+
+            # Add warnings caught by the logger.
+            result_object.warnings.extend(self.result.get("warnings", []))
+        else:
+            result_object = DeployToCvResult(workspace=None)
+            self.result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
+
+        # Add either all return data or only warnings, errors, failed.
+        if validated_args["return_details"]:
+            # Result object is converted to JSON compatible dict.
+            self.result.update(result_object.get_result())
+        else:
+            self.result.update(
+                {
+                    "warnings": result_object.warnings,
+                    "errors": result_object.errors,
+                    "failed": result_object.failed,
+                },
+            )
+
+        # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
+        change_indicators = [
+            result_object.deployed_configs,
+            result_object.deployed_static_config_containers,
+            result_object.deployed_static_config_configlets,
+            result_object.deployed_device_tags,
+            result_object.deployed_interface_tags,
+            result_object.deployed_cv_pathfinder_metadata,
+            result_object.removed_configs,
+            result_object.removed_static_config_containers,
+            result_object.removed_static_config_configlets,
+            result_object.removed_device_tags,
+            result_object.removed_interface_tags,
+        ]
+        self.result["changed"] = any(change_indicators)
 
     async def build_device_deployments(
         self,
@@ -388,7 +362,7 @@ class ActionModule(ActionBase):
 
         TODO: Refactor into smaller functions.
         """
-        LOGGER.info("build_device_deployment: %s", hostname)
+        self.logger.info("build_device_deployment: %s", hostname)
 
         structured_config = self.load_structured_config(hostname, structured_config_dir, structured_config_suffix)
 
@@ -479,7 +453,7 @@ class ActionModule(ActionBase):
             Dict containing the structured config for the host.
         """
         if not structured_config_dir or not (file_path := Path(structured_config_dir, f"{hostname}.{structured_config_suffix}")).exists():
-            LOGGER.info("load_structured_config: No structured config file for %s", hostname)
+            self.logger.info("load_structured_config: No structured config file for %s", hostname)
             return {}
 
         if structured_config_suffix in ["yml", "yaml"]:
@@ -500,21 +474,3 @@ class ActionModule(ActionBase):
         vault_handler = AVDVaultHandler(self._loader)
         file_handler = AVDFileHandler(vault_handler)
         return file_handler.load_json(file_path)
-
-
-def setup_module_logging(result: dict) -> None:
-    """
-    Add a Handler to copy the logs from the plugin into Ansible output based on their level.
-
-    Parameters:
-        result: The dictionary used for the ansible module results
-    """
-    python_to_ansible_handler = PythonToAnsibleHandler(result, display)
-
-    # Modifying the root logger to also cover pyavd.
-    root_logger = logging.getLogger()
-    root_logger.addHandler(python_to_ansible_handler)
-    if display.verbosity >= 3:
-        root_logger.setLevel(logging.DEBUG)
-    elif display.verbosity >= 1:
-        root_logger.setLevel(logging.INFO)

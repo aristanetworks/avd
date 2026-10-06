@@ -18,6 +18,8 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.cv_workflow"
+LOG_HANDLERS_PATH = "ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers"
+LOG_CONFIG_PATH = "ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_config"
 AVD_LOGGER_NAME = "ansible_collections.arista.avd"
 
 
@@ -69,15 +71,46 @@ def _make_deploy_result_mock(**overrides: object) -> MagicMock:
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
     """AnsibleActionFail is raised immediately when pyavd is not available."""
     module = action_module(ActionModule)
+    module.ansible_name = "arista.avd.cv_workflow"
+    shared_display = MagicMock(verbosity=0)
+
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
+        patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
         pytest.raises(
             AnsibleActionFail,
             match=r"The 'arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error",
         ),
     ):
         module.run(task_vars={})
+
+
+def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., ActionModule]) -> None:
+    """Any exception raised during deploy() is wrapped by run() as AnsibleActionFail with chaining."""
+    module = action_module(ActionModule)
+    module.ansible_name = "arista.avd.cv_workflow"
+    original_error = RuntimeError("CloudVision connection failed")
+    shared_display = MagicMock(verbosity=0)
+    validated_args = _make_validated_args()
+
+    with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
+        patch(f"{MODULE_PATH}.strip_empties_from_dict", new=lambda x: x, create=True),
+        patch(f"{MODULE_PATH}.CloudVision", side_effect=original_error, create=True),
+        patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
+        patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
+        pytest.raises(
+            AnsibleActionFail,
+            match=r"Error during plugin 'arista.avd.cv_workflow' execution: CloudVision connection failed",
+        ) as exc_info,
+    ):
+        module.run(task_vars={})
+
+    assert exc_info.value.__cause__ is original_error
 
 
 # ---------------------------------------------------------------------------
@@ -108,11 +141,13 @@ def test_deploy_logs_info_with_redacted_secrets(
         patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
         caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
     ):
-        asyncio.run(module.deploy(validated_args, {}))
+        asyncio.run(module.deploy(validated_args))
 
     deploy_logs = [msg for msg in caplog.messages if msg.startswith("deploy:")]
     assert deploy_logs, "Expected at least one INFO log starting with 'deploy:'"
     assert "<removed>" in deploy_logs[0]
+    for secret in fake_credentials:
+        assert secret not in deploy_logs[0]
 
 
 # ---------------------------------------------------------------------------
@@ -123,35 +158,97 @@ def test_deploy_logs_info_with_redacted_secrets(
 def test_deploy_raises_when_read_from_validated_inputs_without_tmp_dir(
     action_module: Callable[..., ActionModule],
 ) -> None:
-    """AnsibleActionFail is raised when preview_features.read_from_validated_inputs=True but tmp_dir is absent."""
+    """ValueError is raised when preview_features.read_from_validated_inputs=True but tmp_dir is absent."""
     module = action_module(ActionModule)
     validated_args = _make_validated_args(preview_features={"read_from_validated_inputs": True})
 
     with pytest.raises(
-        AnsibleActionFail,
+        ValueError,
         match=r"tmp_dir is required when preview_features.read_from_validated_inputs is true",
     ):
-        asyncio.run(module.deploy(validated_args, {}))
+        asyncio.run(module.deploy(validated_args))
 
 
-def test_deploy_wraps_exceptions_as_action_fail(
+# ---------------------------------------------------------------------------
+# deploy() — behaviour tests
+# ---------------------------------------------------------------------------
+
+
+def test_deploy_uses_tmp_dir_when_read_from_validated_inputs(
     action_module: Callable[..., ActionModule],
 ) -> None:
-    """Any exception raised inside deploy() is caught and re-raised as AnsibleActionFail with chaining."""
+    """Verify get_tmp_paths is called with tmp_dir when read_from_validated_inputs=True."""
     module = action_module(ActionModule)
-    validated_args = _make_validated_args()
-    original_error = RuntimeError("CloudVision connection failed")
+    validated_args = _make_validated_args(
+        tmp_dir="/avd/tmp",
+        preview_features={"read_from_validated_inputs": True},
+    )
 
     with (
-        patch(f"{MODULE_PATH}.CloudVision", side_effect=original_error, create=True),
-        pytest.raises(
-            AnsibleActionFail,
-            match=r"Error during plugin execution: CloudVision connection failed",
-        ) as exc_info,
+        patch(f"{MODULE_PATH}.CloudVision", create=True),
+        patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
+        patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(MagicMock(), MagicMock())) as mock_get_tmp_paths,
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], []), create=True),
+        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=_make_deploy_result_mock(), create=True),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
     ):
-        asyncio.run(module.deploy(validated_args, {}))
+        asyncio.run(module.deploy(validated_args))
 
-    assert exc_info.value.__cause__ is original_error
+    mock_get_tmp_paths.assert_called_once_with("/avd/tmp")
+
+
+def test_deploy_updates_result_with_full_details_when_return_details_true(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify cloudvision and configs keys are added to result when return_details=True."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(return_details=True)
+    deploy_result = _make_deploy_result_mock()
+    deploy_result.get_result.return_value = {}
+
+    with (
+        patch(f"{MODULE_PATH}.CloudVision", create=True),
+        patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
+        patch(f"{MODULE_PATH}.get_result", return_value={}, create=True),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], []), create=True),
+        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=deploy_result, create=True),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+    ):
+        asyncio.run(module.deploy(validated_args))
+
+    assert "cloudvision" in module.result
+    assert "configs" in module.result
+
+
+def test_deploy_calls_deploy_to_cv_when_work_to_do(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify deploy_to_cv is awaited when extract_from_device_deployments returns at least one EOS config."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args()
+
+    with (
+        patch(f"{MODULE_PATH}.CloudVision", create=True),
+        patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
+        patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([MagicMock()], [], [], []), create=True),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=_make_deploy_result_mock(), create=True) as mock_deploy,
+        patch(f"{MODULE_PATH}.CVChangeControl", create=True),
+        patch(f"{MODULE_PATH}.AvdChangeControl", create=True),
+        patch(f"{MODULE_PATH}.CVTimeOuts", create=True),
+        patch(f"{MODULE_PATH}.CVWorkspace", create=True),
+        patch(f"{MODULE_PATH}.AvdWorkspace", create=True),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+    ):
+        asyncio.run(module.deploy(validated_args))
+
+    mock_deploy.assert_awaited_once()
+    assert module.result.get("failed") is False
 
 
 # ---------------------------------------------------------------------------
@@ -184,6 +281,47 @@ def test_load_structured_config_logs_info_when_file_unavailable(
 
 
 # ---------------------------------------------------------------------------
+# load_structured_config() — file-reading tests
+# ---------------------------------------------------------------------------
+
+
+def test_load_structured_config_reads_yaml_file(
+    action_module: Callable[..., ActionModule],
+    tmp_path: Path,
+) -> None:
+    """Verify a YAML structured config file is parsed and the metadata section is returned as a dict."""
+    module = action_module(ActionModule)
+    hostname = "spine1"
+    yaml_content = "hostname: spine1\nmetadata:\n  serial_number: ABC123\nother_key: value\n"
+    (tmp_path / f"{hostname}.yml").write_text(yaml_content, encoding="UTF-8")
+
+    result = module.load_structured_config(hostname, str(tmp_path), "yml")
+
+    assert result == {"metadata": {"serial_number": "ABC123"}}
+
+
+def test_load_structured_config_reads_json_file(
+    action_module: Callable[..., ActionModule],
+    tmp_path: Path,
+) -> None:
+    """Verify a JSON structured config file is loaded via AVDFileHandler and returned as a dict."""
+    module = action_module(ActionModule)
+    hostname = "spine1"
+    expected = {"hostname": "spine1", "serial_number": "XYZ789"}
+    (tmp_path / f"{hostname}.json").write_text("{}", encoding="UTF-8")
+
+    with (
+        patch(f"{MODULE_PATH}.AVDVaultHandler"),
+        patch(f"{MODULE_PATH}.AVDFileHandler") as mock_handler_cls,
+    ):
+        mock_handler_cls.return_value.load_json.return_value = expected
+        result = module.load_structured_config(hostname, str(tmp_path), "json")
+
+    mock_handler_cls.return_value.load_json.assert_called_once()
+    assert result == expected
+
+
+# ---------------------------------------------------------------------------
 # build_device_deployment() — logging tests
 # ---------------------------------------------------------------------------
 
@@ -206,3 +344,88 @@ def test_build_device_deployment_logs_info_for_each_device(
         asyncio.run(module.build_device_deployment("spine1", "/structured", "yml", "/configs", "AVD-${hostname}"))
 
     assert any("build_device_deployment: spine1" in msg for msg in caplog.messages)
+
+
+# ---------------------------------------------------------------------------
+# build_device_deployment() — behaviour tests
+# ---------------------------------------------------------------------------
+
+
+def test_build_device_deployment_returns_none_when_not_deployed(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify build_device_deployment returns None immediately when is_deployed=False in structured config."""
+    module = action_module(ActionModule)
+
+    with patch.object(module, "load_structured_config", return_value={"is_deployed": False}):
+        result = asyncio.run(module.build_device_deployment("leaf1", "/structured", "yml", "/configs", "AVD-${hostname}"))
+
+    assert result is None
+
+
+def test_build_device_deployment_skips_eos_config_when_using_manifest(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify CVEosConfig is not created and eos_config=None when cv_use_static_config_manifest=True."""
+    module = action_module(ActionModule)
+
+    with (
+        patch(f"{MODULE_PATH}.CVDeviceDeployment", create=True) as mock_deployment_cls,
+        patch(f"{MODULE_PATH}.CVDevice", create=True),
+        patch(f"{MODULE_PATH}.AvdDevice", create=True),
+        patch(f"{MODULE_PATH}.CVEosConfig", create=True) as mock_eos_config_cls,
+        patch.object(module, "load_structured_config", return_value={"cv_use_static_config_manifest": True}),
+    ):
+        asyncio.run(module.build_device_deployment("spine1", "/structured", "yml", "/configs", "AVD-${hostname}"))
+
+    mock_eos_config_cls.assert_not_called()
+    assert mock_deployment_cls.call_args.kwargs["eos_config"] is None
+    assert mock_deployment_cls.call_args.kwargs["use_static_config_manifest"] is True
+
+
+def test_build_device_deployment_creates_pathfinder_metadata_object(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify CVPathfinderMetadata is instantiated when cv_pathfinder_metadata is present in structured config."""
+    module = action_module(ActionModule)
+
+    with (
+        patch(f"{MODULE_PATH}.CVDeviceDeployment", create=True),
+        patch(f"{MODULE_PATH}.CVDevice", create=True),
+        patch(f"{MODULE_PATH}.AvdDevice", create=True),
+        patch(f"{MODULE_PATH}.CVEosConfig", create=True),
+        patch(f"{MODULE_PATH}.CVPathfinderMetadata", create=True) as mock_pathfinder_cls,
+        patch.object(module, "load_structured_config", return_value={"cv_pathfinder_metadata": {"wan_router": True}}),
+    ):
+        asyncio.run(module.build_device_deployment("spine1", "/structured", "yml", "/configs", "AVD-${hostname}"))
+
+    mock_pathfinder_cls.assert_called_once()
+
+
+# ---------------------------------------------------------------------------
+# build_device_deployments() — behaviour tests
+# ---------------------------------------------------------------------------
+
+
+def test_build_device_deployments_filters_none_results(
+    action_module: Callable[..., ActionModule],
+) -> None:
+    """Verify build_device_deployments runs one coroutine per host and drops None (not-deployed) entries."""
+    module = action_module(ActionModule)
+    mock_deployment = MagicMock()
+
+    async def fake_build(hostname: str, *_args: object, **_kwargs: object) -> MagicMock | None:
+        return mock_deployment if hostname == "deployed-device" else None
+
+    with patch.object(module, "build_device_deployment", side_effect=fake_build):
+        result = asyncio.run(
+            module.build_device_deployments(
+                device_list=["deployed-device", "not-deployed-device"],
+                structured_config_dir=None,
+                structured_config_suffix="yml",
+                configuration_dir="/configs",
+                configlet_name_template="AVD-${hostname}",
+            )
+        )
+
+    assert result == [mock_deployment]
