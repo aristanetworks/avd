@@ -16,6 +16,18 @@ ethernet_interfaces:
     peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet2
+  description: P2P_custom-templates-ipv6-numbered-l3leaf1b_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_addresses:
+  - 2001:db8:2:1::1/64
+  metadata:
+    peer: custom-templates-ipv6-numbered-l3leaf1b
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: custom-templates-ipv6-numbered-spine
 ip_routing: true
 ipv6_prefix_lists:
@@ -75,6 +87,12 @@ router_bgp:
     metadata:
       peer: custom-templates-ipv6-numbered-l3leaf1a
     description: custom-templates-ipv6-numbered-l3leaf1a_Ethernet1
+  - ip_address: 2001:db8:2:1::2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65101'
+    metadata:
+      peer: custom-templates-ipv6-numbered-l3leaf1b
+    description: custom-templates-ipv6-numbered-l3leaf1b_Ethernet1
   redistribute:
     connected:
       enabled: true

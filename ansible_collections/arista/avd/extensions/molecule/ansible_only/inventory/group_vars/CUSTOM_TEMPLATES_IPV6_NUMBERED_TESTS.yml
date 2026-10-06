@@ -77,6 +77,13 @@ l3leaf:
       bgp_as: 65101
       uplink_switch_interfaces:
         - Ethernet1
+    - name: custom-templates-ipv6-numbered-l3leaf1b
+      id: 2
+      mgmt_ip: 172.16.1.32/24
+      bgp_as: 65101
+      loopback_ipv4_address: 10.255.2.2
+      uplink_switch_interfaces:
+        - Ethernet2
 
 tenants:
   - name: TENANT1
