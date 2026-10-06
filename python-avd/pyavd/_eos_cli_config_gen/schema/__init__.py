@@ -4598,7 +4598,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Subclass of AvdModel.
         """
         reply_source_address_validation: bool | None
-        """Validate reply source address matches configured server."""
+        """
+        Validate reply source address matches configured server.
+        EOS version dependent. Supported starting
+        with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+        """
 
         if TYPE_CHECKING:
 
@@ -4625,7 +4629,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Configure DHCP client request settings.
 
                        Subclass of AvdModel.
-                    reply_source_address_validation: Validate reply source address matches configured server.
+                    reply_source_address_validation:
+                       Validate reply source address matches configured server.
+                       EOS version dependent. Supported starting
+                       with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
 
                 """
 

@@ -23120,7 +23120,11 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `False`
             """
             reply_source_address_validation: bool | None
-            """Validate reply source address matches configured server."""
+            """
+            Validate reply source address matches configured server.
+            EOS version dependent. Supported starting
+            with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+            """
 
             if TYPE_CHECKING:
 
@@ -23148,7 +23152,10 @@ class EosDesigns(EosDesignsRootModel):
                            Blocks DHCP relay for packets arriving via the MLAG peer-link.
                            This will only be configured on VXLAN
                            VTEPs which are also MLAG devices.
-                        reply_source_address_validation: Validate reply source address matches configured server.
+                        reply_source_address_validation:
+                           Validate reply source address matches configured server.
+                           EOS version dependent. Supported starting
+                           with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
 
                     """
 

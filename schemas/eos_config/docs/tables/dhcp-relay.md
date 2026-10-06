@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;client_requests</samp>](## "dhcp_relay.client_requests") | Dictionary |  |  |  | Configure DHCP client request settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flooding_suppression_vlans</samp>](## "dhcp_relay.client_requests.flooding_suppression_vlans") | List, items: String |  |  | Min Length: 1 | Suppress flooding of DHCP/DHCPv6 client requests to other interfaces in the specified VLANs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_relay.client_requests.flooding_suppression_vlans.[]") | String |  |  |  | VLAN ID or range of VLAN IDs, <1-4094>.<br>Example:<br>  - 1000<br>  - 500-510<br>  - 2000,3000 |
-    | [<samp>&nbsp;&nbsp;reply_source_address_validation</samp>](## "dhcp_relay.reply_source_address_validation") | Boolean |  |  |  | Validate reply source address matches configured server. |
+    | [<samp>&nbsp;&nbsp;reply_source_address_validation</samp>](## "dhcp_relay.reply_source_address_validation") | Boolean |  |  |  | Validate reply source address matches configured server.<br>EOS version dependent. Supported starting with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F. |
 
 === "YAML"
 
@@ -42,5 +42,6 @@
           - <str>
 
       # Validate reply source address matches configured server.
+      # EOS version dependent. Supported starting with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
       reply_source_address_validation: <bool>
     ```
