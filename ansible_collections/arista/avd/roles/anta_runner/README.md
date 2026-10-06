@@ -637,7 +637,7 @@ ansible-playbook playbooks/anta-runner.yml -vvv
 
 The verbosity levels control the loggers used by the role as follows:
 
-| Ansible verbosity | AVD action plugin | PyAVD and `schema_tools` | ANTA and `asynceapi` | Other external libraries |
+| Ansible verbosity | AVD action plugin | PyAVD | ANTA and `asynceapi` | Other external libraries |
 | :--- | :--- | :--- | :--- | :--- |
 | None | WARNING | WARNING | WARNING | WARNING |
 | `-v` | INFO | INFO | WARNING | WARNING |
@@ -646,6 +646,8 @@ The verbosity levels control the loggers used by the role as follows:
 | `-vvvv` | DEBUG | DEBUG | DEBUG | WARNING |
 | `-vvvvv` | DEBUG | DEBUG | DEBUG | INFO |
 | `-vvvvvv` or higher | DEBUG | DEBUG | DEBUG | DEBUG |
+
+The "Other external libraries" column includes dependencies such as `pyavd-utils`, `httpx`, `httpcore`, and `asyncio`. `pyavd-utils` has no dedicated verbosity setting and does not use the PyAVD column.
 
 !!! tip
     Running `ansible-playbook` with `-vv` is particularly helpful to troubleshoot why some specific AVD-generated tests are missing from a device's final catalog. PyAVD will output detailed information about skipped tests and the reasons for their exclusion.
