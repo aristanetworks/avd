@@ -9,8 +9,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-
-from .utils import resolve_profile
+from pyavd._utils.profiles import resolve_profile
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol

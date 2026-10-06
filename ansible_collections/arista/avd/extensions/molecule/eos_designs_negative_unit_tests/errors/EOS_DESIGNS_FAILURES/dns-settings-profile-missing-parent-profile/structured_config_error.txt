@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: Unresolved `parent_profile` references while trying to resolve profiles for EosDesigns.DnsSettings: {'missing_parent_profile'}
+pyavd._errors.AristaAvdInvalidInputsError: Unresolved profile `missing_parent_profile` while trying to resolve profiles for EosDesigns.DnsSettings: child_profile -> missing_parent_profile
