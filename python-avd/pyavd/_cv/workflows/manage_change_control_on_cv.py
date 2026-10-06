@@ -7,7 +7,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
-from pyavd._cv.client.exceptions import CVChangeControlFailed, CVInvalidInputsError
+from pyavd._cv.client.exceptions import CVChangeControlFailed, CVInvalidInputsError, CVResourceInvalidState
 
 from .utils import update_change_control_details_on_cv
 
@@ -33,6 +33,13 @@ CHANGE_CONTROL_STATUS_TO_STATE_MAP: dict[ChangeControlStatus, CVChangeControlSta
 
 def get_managed_change_control_state(cv_change_control: ChangeControl, *, approved: bool | None = None) -> CVChangeControlState:
     """Return the current state of an existing Change Control."""
+    if cv_change_control.status not in CHANGE_CONTROL_STATUS_TO_STATE_MAP:
+        msg = (
+            f"Cannot manage Change Control '{cv_change_control.key.id}' with unknown CloudVision status value '{cv_change_control.status.value}'. "
+            "AVD cannot safely determine current state of the Change Control."
+        )
+        raise CVResourceInvalidState(msg)
+
     if approved is None:
         approved = cv_change_control.approve.value
     approval_state = "approved" if approved else None
@@ -74,6 +81,7 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
 
     # Update name/description on CloudVision if needed. Then re-fetch to get the latest timestamp for approval
     cv_change_control, change_control.changed = await update_change_control_details_on_cv(change_control, cv_client)
+    change_control.state = get_managed_change_control_state(cv_change_control)
 
     if change_control.requested_state == "pending approval":
         if cv_change_control.approve.value:

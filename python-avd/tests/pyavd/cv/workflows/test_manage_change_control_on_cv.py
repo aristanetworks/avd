@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControlStatus
-from pyavd._cv.client.exceptions import CVChangeControlFailed, CVInvalidInputsError
+from pyavd._cv.client.exceptions import CVChangeControlFailed, CVInvalidInputsError, CVResourceInvalidState
 from pyavd._cv.workflows.manage_change_control_on_cv import get_managed_change_control_state, manage_change_control_on_cv
 from pyavd._cv.workflows.models import AvdChangeControl, CVChangeControl
 
@@ -41,6 +41,47 @@ def test_get_managed_change_control_state(
     cv_change_control = create_grpc_change_control(status=status, approved=approved, error=error)
 
     assert get_managed_change_control_state(cv_change_control) == expected_state
+
+
+@pytest.mark.parametrize(
+    ("approved", "error"),
+    [
+        pytest.param(False, None, id="pending-approval"),
+        pytest.param(True, None, id="approved"),
+        pytest.param(False, "CloudVision error", id="failed"),
+        pytest.param(True, "CloudVision error", id="approved-failed"),
+    ],
+)
+def test_get_managed_change_control_state_rejects_unknown_status(approved: bool, error: str | None) -> None:
+    """Test that unknown open-enum values raise a clear state error."""
+    cv_change_control = create_grpc_change_control(status=ChangeControlStatus.try_value(99), approved=approved, error=error)
+    cv_change_control.key.id = "cc_id_1"
+
+    with pytest.raises(
+        CVResourceInvalidState,
+        match="Cannot manage Change Control 'cc_id_1' with unknown CloudVision status value '99'",
+    ):
+        get_managed_change_control_state(cv_change_control)
+
+
+@pytest.mark.asyncio
+async def test_manage_rejects_unknown_status_after_refreshing_change_control(mock_cv_client: MagicMock) -> None:
+    """Test that an unknown status received during the details refresh prevents lifecycle mutations."""
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="running"))
+    cv_cc_unknown = create_grpc_change_control(status=ChangeControlStatus.try_value(99))
+    cv_cc_unknown.key.id = "cc_id_1"
+    mock_cv_client.get_change_control.side_effect = [create_grpc_change_control(), cv_cc_unknown]
+
+    with pytest.raises(
+        CVResourceInvalidState,
+        match="Cannot manage Change Control 'cc_id_1' with unknown CloudVision status value '99'",
+    ):
+        await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.set_change_control.assert_not_called()
+    mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.start_change_control.assert_not_called()
+    assert local_cc.changed is False
 
 
 @pytest.mark.asyncio
