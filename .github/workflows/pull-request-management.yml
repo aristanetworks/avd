@@ -43,6 +43,8 @@ jobs:
       - e2e
       - e2e_coverage
       - test_pyavd
+      - generate_pyavd_coverage_report
+      - codecov
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -98,6 +100,8 @@ jobs:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
             requirements:
+              - '.codecov.yml'
+              - '.github/workflows/codecov.yml'
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/meta/runtime.yml'
               - 'ansible_collections/arista/avd/requirements.yml'
@@ -773,7 +777,8 @@ jobs:
       needs.file-changes.outputs.pyavd == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
       needs.file-changes.outputs.e2e == 'true' ||
-      github.event_name == 'merge_group'
+      github.event_name == 'merge_group' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/devel')
     strategy:
       fail-fast: false
       matrix:
@@ -842,7 +847,8 @@ jobs:
       needs.file-changes.outputs.config_gen == 'true' ||
       needs.file-changes.outputs.pyavd == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
-      github.event_name == 'merge_group'
+      github.event_name == 'merge_group' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/devel')
     strategy:
       fail-fast: false
       matrix:
@@ -875,7 +881,7 @@ jobs:
   generate_pyavd_coverage_report:
     name: Test pyavd python 3.12 coverage report
     runs-on: ubuntu-latest
-    needs: [e2e_coverage, test_pyavd]
+    needs: [file-changes, e2e_coverage, test_pyavd]
     # Run with coverage from either producer when the other is skipped by path filtering, but not if either producer fails or both are skipped.
     if: |
       always() &&
@@ -899,17 +905,43 @@ jobs:
         with:
           pattern: coverage-data-*
           merge-multiple: true
-      - name: Combine and report test coverage
+      - name: Export coverage by test suite and check complete coverage
+        env:
+          PYAVD_RESULT: ${{ needs.test_pyavd.result }}
+          E2E_RESULT: ${{ needs.e2e_coverage.result }}
+          E2E_MATRIX: ${{ needs.file-changes.outputs.e2e_test_matrix }}
         run: |
-          set -ex
-          coverage combine coverage-*.dat
-          coverage report
-          coverage xml
-      - name: Upload pytest coverage report
+          set -euo pipefail
+          shopt -s nullglob
+          if [[ "$PYAVD_RESULT" == "success" ]]; then
+            test -f coverage-PyAVD.dat
+            COVERAGE_FILE=coverage-PyAVD.dat coverage xml --fail-under=0 -o pyavd-tests.xml
+          fi
+          if [[ "$E2E_RESULT" == "success" ]]; then
+            e2e_data=(coverage-End-to-End-*.dat)
+            expected_count=$(jq 'length' <<< "$E2E_MATRIX")
+            if (( expected_count == 0 || ${#e2e_data[@]} != expected_count )); then
+              echo "::error::Expected $expected_count E2E coverage reports, found ${#e2e_data[@]}"
+              exit 1
+            fi
+            COVERAGE_FILE=.coverage-e2e coverage combine --keep "${e2e_data[@]}"
+            COVERAGE_FILE=.coverage-e2e coverage xml --fail-under=0 -o e2e-tests.xml
+          fi
+          # The repository threshold requires both current-commit datasets.
+          if [[ "$PYAVD_RESULT" == "success" && "$E2E_RESULT" == "success" ]]; then
+            coverage combine coverage-*.dat
+            coverage report
+            coverage xml
+          fi
+      - name: Upload coverage reports
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: pytest-coverage
-          path: coverage.xml
+          if-no-files-found: error
+          path: |
+            pyavd-tests.xml
+            e2e-tests.xml
+            coverage.xml
 
   codecov:
     name: Upload coverage to codecov
@@ -917,8 +949,20 @@ jobs:
       - ansible_test_units
       - ansible_test_integration
       - generate_pyavd_coverage_report
-    if: github.repository == 'aristanetworks/avd'
+      - test_pyavd
+      - e2e_coverage
+    if: |
+      !cancelled() &&
+      github.repository == 'aristanetworks/avd' &&
+      needs.ansible_test_units.result == 'success' &&
+      needs.ansible_test_integration.result == 'success' &&
+      (needs.test_pyavd.result == 'success' || needs.test_pyavd.result == 'skipped') &&
+      (needs.e2e_coverage.result == 'success' || needs.e2e_coverage.result == 'skipped') &&
+      (needs.generate_pyavd_coverage_report.result == 'success' || needs.generate_pyavd_coverage_report.result == 'skipped')
     permissions:
       contents: read
       id-token: write
     uses: $/.github/workflows/codecov.yml
+    with:
+      pyavd_tests: ${{ needs.test_pyavd.result == 'success' }}
+      e2e_tests: ${{ needs.e2e_coverage.result == 'success' }}
