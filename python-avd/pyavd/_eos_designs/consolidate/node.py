@@ -10,9 +10,9 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns as AVDDesign
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default
+from pyavd._utils.default import default
 
-from .models import ConsolidatedNodeGroup
+from .model import ConsolidatedNodeGroup
 
 if TYPE_CHECKING:
     from .consolidator import AVDDesignConsolidatorProtocol
@@ -29,23 +29,49 @@ class NodeMixin(Protocol):
 
         device_config = AVDDesign.DevicesItem() if (device_config := self.inputs.devices.get(self.device_name, None)) is None else device_config._deepcopy()
 
-        if device_profile_name := default(device_config.profile, self.inputs.device_profile):
-            if not (source_device_profile := self.inputs.device_profiles.get(device_profile_name)):
-                msg = f"The Device Profile '{device_profile_name}' applied for the device '{self.device_name}' does not exist under `device_profiles`."
-                raise AristaAvdInvalidInputsError(msg, host=self.device_name)
-            device_profile = source_device_profile._deepcopy()
+        if not (device_profile_name := default(device_config.profile, self.inputs.device_profile)):
+            return device_config
 
-            device_config._deepinherit(device_profile._cast_as(AVDDesign.DevicesItem, ignore_extra_keys=True))
+        if not (source_device_profile := self.inputs.device_profiles.get(device_profile_name)):
+            msg = f"The Device Profile '{device_profile_name}' applied for the device '{self.device_name}' does not exist under `device_profiles`."
+            raise AristaAvdInvalidInputsError(msg, host=self.device_name)
 
-            if device_profile.parent_profile:
-                if not (parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
+        device_profile = source_device_profile._deepcopy()
+        resolved_profile = source_device_profile._deepcopy()
+        if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
+            profile_chain = []
+            seen_profile_names = {device_profile_name}
+            profile_name = device_profile_name
+            parent_profile_name = device_profile.parent_profile
+            while parent_profile_name:
+                if parent_profile_name not in self.inputs.device_profiles:
+                    msg = f"Parent profile '{parent_profile_name}' applied under profile '{profile_name}' does not exist in 'device_profiles'."
+                    raise AristaAvdInvalidInputsError(msg, host=self.device_name)
+                if parent_profile_name in seen_profile_names:
                     msg = (
-                        f"Device Profile '{device_profile.parent_profile}' applied as 'parent_profile' on the profile '{device_profile.name}' "
-                        "does not exist under 'device_profiles'."
+                        f"Circular profile dependency detected: Profile '{parent_profile_name}' cannot be applied as the parent profile of "
+                        f"'{profile_name}' in 'device_profiles' because it would create a loop."
                     )
                     raise AristaAvdInvalidInputsError(msg, host=self.device_name)
 
-                device_config._deepinherit(parent_profile._cast_as(AVDDesign.DevicesItem, ignore_extra_keys=True))
+                parent_profile = self.inputs.device_profiles[parent_profile_name]._deepcopy()
+                profile_chain.append(parent_profile)
+                seen_profile_names.add(parent_profile_name)
+                profile_name = parent_profile_name
+                parent_profile_name = parent_profile.parent_profile
+
+            for parent_profile in profile_chain:
+                resolved_profile._deepinherit(parent_profile)
+        elif device_profile.parent_profile:
+            if not (parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
+                msg = (
+                    f"Device Profile '{device_profile.parent_profile}' applied as 'parent_profile' on the profile '{device_profile.name}' "
+                    "does not exist under 'device_profiles'."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.device_name)
+            resolved_profile._deepinherit(parent_profile)
+
+        device_config._deepinherit(resolved_profile._cast_as(AVDDesign.DevicesItem, ignore_extra_keys=True))
 
         return device_config
 
@@ -230,11 +256,3 @@ class NodeMixin(Protocol):
     def set_group(self: AVDDesignConsolidatorProtocol) -> None:
         """Set the consolidated group."""
         self.consolidated.group = self.group
-
-    def prune_node_inputs(self: AVDDesignConsolidatorProtocol) -> None:
-        """Remove node input models consumed during consolidation."""
-        self._unset_avd_model(
-            self.inputs,
-            ("devices", "device_profiles", "device_profile", "default_node_types", "type", "node_type_keys"),
-        )
-        self._unset_avd_model(self.inputs._dynamic_keys, ("custom_node_types", "node_types"))

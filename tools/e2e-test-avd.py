@@ -509,8 +509,10 @@ class AvdV6Build:
     _avd_facts_shm_info: SharedMemoryMetadata | None
     """Shared memory metadata for avd_facts (created in common_build_stage, used by workers)."""
     _finalizer: weakref.finalize | None
-    _loaded_avd_designs: dict[str, ConsolidatedAVDDesign]
-    """Map of device -> ConsolidatedAVDDesign object. Created in consolidation_stage, passed to workers."""
+    _loaded_avd_designs: dict[str, AVDDesign]
+    """Map of device -> AVDDesign object. Created in consolidation_stage and used to build facts."""
+    _consolidated_avd_designs: dict[str, ConsolidatedAVDDesign]
+    """Map of device -> ConsolidatedAVDDesign object. Created in consolidation_stage and passed to workers."""
     _validated_inputs_dict: dict[str, dict]
     """Map of device -> validated inputs as dict. Created in validation_stage, passed to workers."""
 
@@ -534,6 +536,7 @@ class AvdV6Build:
         self._validated_inputs_dict = {}  # Store validated inputs as dicts in main process
         self._avd_facts_shm_info = None
         self._loaded_avd_designs = {}
+        self._consolidated_avd_designs = {}
 
         self._finalizer = None
 
@@ -612,9 +615,14 @@ class AvdV6Build:
 
     def consolidation_stage(self) -> Generator[bool, None, None]:
         """Consolidate input variables serially in the main process."""
+        from pyavd._eos_designs.consolidate.consolidator import consolidate_avd_design
+        from pyavd.api.schemas import AVDDesign
+
         for device, validated_inputs in self._validated_inputs_dict.items():
             try:
-                self._loaded_avd_designs[device] = ConsolidatedAVDDesign._from_avd_design(device, validated_inputs)
+                inputs = AVDDesign._from_dict(validated_inputs)
+                self._loaded_avd_designs[device] = inputs
+                self._consolidated_avd_designs[device] = consolidate_avd_design(device, inputs)
                 yield True
             except Exception as e:  # noqa: PERF203  # Errors must be reported separately for every device.
                 dump_exception(e, self.config, "consolidation", device)
@@ -641,7 +649,7 @@ class AvdV6Build:
         yield from self.context.executor.map(
             build_validate_and_render_for_one_device,
             validated_devices,
-            [self._loaded_avd_designs[d] for d in validated_devices] if self.config.avd_design else repeat(None),
+            [self._consolidated_avd_designs[d] for d in validated_devices] if self.config.avd_design else repeat(None),
             [self._validated_inputs_dict[d] for d in validated_devices],
             repeat(self._avd_facts_shm_info),
             repeat(self.config),
@@ -649,8 +657,9 @@ class AvdV6Build:
         )
 
         if self.config.avd_design:
-            # Clear loaded ConsolidatedAVDDesign objects and dicts - no longer needed
+            # Clear loaded AVDDesign and ConsolidatedAVDDesign objects and dicts - no longer needed
             self._loaded_avd_designs.clear()
+            self._consolidated_avd_designs.clear()
             self._validated_inputs_dict.clear()
 
     def common_build_stage(self) -> bool:
@@ -661,11 +670,13 @@ class AvdV6Build:
         """
         from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
         from pyavd.api.pool_manager import PoolManager
+
         pool_manager = PoolManager(self.config.full_output_dir)
         # Get avd_facts from PyAVD
         try:
             avd_facts = get_facts(
                 self._loaded_avd_designs,
+                all_consolidated_inputs=self._consolidated_avd_designs,
                 all_hostvars=self._validated_inputs_dict,
                 pool_manager=pool_manager,
                 templar=get_avd_templar(self.config),
@@ -864,6 +875,7 @@ def build_validate_and_render_for_one_device(
     if config.avd_design:
         from pyavd import validate_structured_config
         from pyavd._eos_designs.structured_config import get_structured_config
+        from pyavd.api.schemas import AVDDesign
 
         device_avd_consolidated_inputs = typing.cast("ConsolidatedAVDDesign", device_avd_consolidated_inputs)
 
@@ -874,7 +886,8 @@ def build_validate_and_render_for_one_device(
         try:
             eos_config = get_structured_config(
                 hostname=device,
-                inputs=device_avd_consolidated_inputs,
+                inputs=AVDDesign._from_dict(device_avd_validated_inputs_dict),
+                consolidated_inputs=device_avd_consolidated_inputs,
                 hostvars=device_avd_validated_inputs_dict,
                 all_facts=avd_facts,
                 templar=get_avd_templar(config),

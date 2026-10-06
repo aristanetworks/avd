@@ -14,10 +14,12 @@ if TYPE_CHECKING:
 
 
 def get_avd_facts(
-    all_inputs: Mapping[str, AVDDesign | Mapping | ConsolidatedAVDDesign],
+    all_inputs: Mapping[str, AVDDesign | Mapping],
     all_hostvars: Mapping[str, MutableMapping] | None = None,
     pool_manager: PoolManager | None = None,
     digital_twin: bool = False,
+    *,
+    all_consolidated_inputs: Mapping[str, ConsolidatedAVDDesign] | None = None,
 ) -> dict[str, EosDesignsFacts]:
     """
     Build avd_facts using the AVD eos_designs_facts logic.
@@ -39,16 +41,27 @@ def get_avd_facts(
             Used for dynamic ID allocations using the "pool_manager" feature.
         digital_twin:
             PREVIEW: Optional flag to enable digital-twin mode.
+        all_consolidated_inputs:
+            Optional dictionary of prebuilt consolidated AVD design inputs keyed by device hostname.
+            When omitted, consolidated inputs are built from `all_inputs`.
 
     Returns:
         Dictionary with various internal "facts" keyed by device hostname.
 
         The full dict must be given as argument to `pyavd.get_device_structured_config`.
     """
+    from ._eos_designs.consolidate.consolidator import consolidate_avd_design  # noqa: PLC0415
     from ._eos_designs.eos_designs_facts.get_facts import get_facts  # noqa: PLC0415
-    from .api.schemas import ConsolidatedAVDDesign  # noqa: PLC0415
+    from .api.schemas import AVDDesign  # noqa: PLC0415
 
-    # Normalize all inputs to ConsolidatedAVDDesign
-    all_consolidated_inputs = {device_name: ConsolidatedAVDDesign._from_avd_design(device_name, inputs) for device_name, inputs in all_inputs.items()}
+    normalized_inputs = {device_name: inputs if isinstance(inputs, AVDDesign) else AVDDesign._from_dict(inputs) for device_name, inputs in all_inputs.items()}
+    if all_consolidated_inputs is None:
+        all_consolidated_inputs = {device_name: consolidate_avd_design(device_name, inputs) for device_name, inputs in normalized_inputs.items()}
 
-    return get_facts(all_inputs=all_consolidated_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, digital_twin=digital_twin)
+    return get_facts(
+        all_inputs=normalized_inputs,
+        all_consolidated_inputs=all_consolidated_inputs,
+        all_hostvars=all_hostvars,
+        pool_manager=pool_manager,
+        digital_twin=digital_twin,
+    )

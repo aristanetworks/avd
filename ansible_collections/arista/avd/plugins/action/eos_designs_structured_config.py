@@ -15,7 +15,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AVDFileHandler,
     AvdSwitchFactsDefaultDict,
     AVDVaultHandler,
-    LazyJsonFileMapping,
     cprofile,
     get_consolidated_path,
     get_eos_designs_facts_path,
@@ -27,14 +26,12 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 
 # Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
 if TYPE_CHECKING:  # pragma: no cover
-    from collections.abc import MutableMapping
-
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils.merge import merge
     from pyavd._utils.strip_empties import strip_null_from_data
     from pyavd._utils.template import template as templater
-    from pyavd.api.schemas import ConsolidatedAVDDesign
+    from pyavd.api.schemas import AVDDesign, ConsolidatedAVDDesign
 
 try:
     from pyavd._eos_designs.structured_config import get_structured_config
@@ -42,7 +39,7 @@ try:
     from pyavd._utils.merge import merge
     from pyavd._utils.strip_empties import strip_null_from_data
     from pyavd._utils.template import template as templater
-    from pyavd.api.schemas import ConsolidatedAVDDesign
+    from pyavd.api.schemas import AVDDesign, ConsolidatedAVDDesign
 
     HAS_PYAVD = True
 except ImportError:
@@ -79,14 +76,15 @@ class ActionModule(AVDActionPlugin):
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
 
-        consolidated_inputs, host_hostvars = self.load_validated_inputs(hostname)
+        inputs, consolidated_inputs, host_hostvars = self.load_validated_inputs(hostname)
 
         all_facts = self.load_facts(hostname)
 
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
         structured_config = get_structured_config(
             hostname=hostname,
-            inputs=consolidated_inputs,
+            inputs=inputs,
+            consolidated_inputs=consolidated_inputs,
             all_facts=all_facts,
             hostvars=host_hostvars,
             templar=self.templar,
@@ -95,14 +93,14 @@ class ActionModule(AVDActionPlugin):
 
         output = structured_config._as_dict()
 
-        template_vars: ChainMap[str, Any] | None = None
+        # We use ChainMap to avoid copying large amounts of data around, mapping in
+        #  - output (containing structured_config at this point)
+        #  - templated, converted and validated version of all other vars
+        # Any var assignments will end up in output, so all other objects are protected.
+        template_vars = ChainMap(output, host_hostvars)
 
         # eos_designs_custom_templates can contain a list of jinja templates to run after PyAVD
         if eos_designs_custom_templates:
-            # The Ansible Jinja engine only accepts concrete dicts as ChainMap layers.
-            # Materialize the lazy hostvars only when a Jinja rendering path is enabled.
-            template_vars = ChainMap(output, dict(host_hostvars))
-
             # Load output schema used by merger on output of custom templates
             output_schema = AvdSchema(schema_id="eos_cli_config_gen")
 
@@ -140,8 +138,6 @@ class ActionModule(AVDActionPlugin):
         # If the argument 'template_output' is set, run the output data through another jinja2 rendering.
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
         if template_output:
-            if template_vars is None:
-                template_vars = ChainMap(output, dict(host_hostvars))
             with self._templar.set_temporary_context(available_variables=template_vars):
                 output = self._templar.template(output, fail_on_undefined=False)
 
@@ -168,15 +164,15 @@ class ActionModule(AVDActionPlugin):
         if return_structured_config:
             self.result["ansible_facts"] = output
 
-    def load_validated_inputs(self, hostname: str) -> tuple[ConsolidatedAVDDesign, MutableMapping[str, Any]]:
+    def load_validated_inputs(self, hostname: str) -> tuple[AVDDesign, ConsolidatedAVDDesign, dict[str, Any]]:
         """
-        Load consolidated inputs and retain lazy access to unconsolidated hostvars for the host.
+        Load validated and consolidated inputs and hostvars for the host.
 
         Args:
             hostname: Inventory hostname.
 
         Returns:
-            Tuple of consolidated AVD Design inputs and the lazily loaded, unconsolidated hostvars.
+            Tuple of validated inputs, consolidated inputs, and hostvars.
         """
         _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
         consolidated_path = get_consolidated_path(self.tmp_dir)
@@ -192,9 +188,11 @@ class ActionModule(AVDActionPlugin):
         # Read, unvault, and parse the JSON file
         vault_handler = AVDVaultHandler(self._loader)
         file_handler = AVDFileHandler(vault_handler)
-        consolidated_data = file_handler.load_json(consolidated_file_path)
+        host_hostvars = file_handler.load_json(validated_file_path)
+        inputs = AVDDesign._from_dict(host_hostvars)
+        consolidated_inputs = ConsolidatedAVDDesign._from_dict(file_handler.load_json(consolidated_file_path))
 
-        return ConsolidatedAVDDesign._from_dict(consolidated_data), LazyJsonFileMapping(file_handler, validated_file_path)
+        return inputs, consolidated_inputs, host_hostvars
 
     def load_facts(self, hostname: str) -> AvdSwitchFactsDefaultDict:
         """

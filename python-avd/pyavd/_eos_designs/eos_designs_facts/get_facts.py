@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
     from pyavd._eos_designs.consolidate.model import ConsolidatedAVDDesign
+    from pyavd._eos_designs.schema import EosDesigns as AVDDesign
     from pyavd._utils.avd_templar import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
 
@@ -20,7 +21,8 @@ if TYPE_CHECKING:
 
 
 def get_facts(
-    all_inputs: Mapping[str, ConsolidatedAVDDesign],
+    all_inputs: Mapping[str, AVDDesign],
+    all_consolidated_inputs: Mapping[str, ConsolidatedAVDDesign],
     all_hostvars: Mapping[str, MutableMapping[str, Any]] | None = None,
     templar: AVDTemplar | None = None,
     pool_manager: PoolManager | None = None,
@@ -31,7 +33,7 @@ def get_facts(
 
     Args:
         all_inputs: Dictionary where keys are hostnames and values are the AVDDesign instance per device.
-            Supporting dicts as well for backwards compatibility.
+        all_consolidated_inputs: Dictionary of consolidated AVD designs keyed by hostname.
         all_hostvars: Raw hostvars exposed to custom jinja templates or custom python logic for each device.
             This is optional and only needed if custom templates or python modules are used for descriptions or IP addressing.
         templar: AVDTemplar wrapper used to render custom jinja templates.
@@ -58,7 +60,15 @@ def get_facts(
         hostvars = all_hostvars.get(hostname, {})
 
         peer_facts_generators[hostname] = _create_generator_instance(
-            hostname, all_inputs[hostname], hostvars, templar, pool_manager, digital_twin, peer_facts_generators, mlag_groups
+            hostname,
+            all_inputs[hostname],
+            all_consolidated_inputs[hostname],
+            hostvars,
+            templar,
+            pool_manager,
+            digital_twin,
+            peer_facts_generators,
+            mlag_groups,
         )
 
     for generator in peer_facts_generators.values():
@@ -82,7 +92,8 @@ def get_facts(
 
 def _create_generator_instance(
     hostname: str,
-    artifact: ConsolidatedAVDDesign,
+    inputs: AVDDesign,
+    consolidated_inputs: ConsolidatedAVDDesign,
     hostvars: MutableMapping,
     templar: AVDTemplar | None,
     pool_manager: PoolManager | None,
@@ -91,12 +102,11 @@ def _create_generator_instance(
     mlag_groups: dict[str, set[str]],
 ) -> EosDesignsFactsGenerator:
     """Initialize SharedUtils and EosDesignsFactsGenerator and return the instance of the generator."""
-    inputs = artifact.inputs
     shared_utils = SharedUtils(
         hostname=hostname,
         hostvars=hostvars,
         inputs=inputs,
-        consolidated=artifact.consolidated,
+        consolidated=consolidated_inputs,
         templar=templar,
         peer_facts=peer_facts_generators,
         pool_manager=pool_manager,

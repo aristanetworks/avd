@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns as AVDDesign
 
-from .models import ConsolidatedNetworkServices, ConsolidatedNetworkServicesItem
+from .model import ConsolidatedNetworkServices, ConsolidatedNetworkServicesItem
 
 if TYPE_CHECKING:
     from .consolidator import AVDDesignConsolidatorProtocol
@@ -82,8 +82,3 @@ class NetworkServicesMixin(Protocol):
                 consolidated_groups.append(ConsolidatedNetworkServicesItem(key=source_key, tenants=tenants))
 
         self.consolidated.network_services = consolidated_groups
-
-    def prune_network_services_inputs(self: AVDDesignConsolidatorProtocol) -> None:
-        """Remove network-services inputs replaced by the consolidated groups."""
-        self._unset_avd_model(self.inputs, ("network_services", "network_services_keys"))
-        self._unset_avd_model(self.inputs._dynamic_keys, ("network_services",))

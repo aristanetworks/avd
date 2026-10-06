@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
@@ -22,7 +21,8 @@ from pyavd.j2filters import range_expand
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-    from pyavd._eos_designs.consolidate.models import ConsolidatedConnectedEndpointGroups
+    from pyavd._eos_designs.consolidate.model import ConsolidatedConnectedEndpointGroups
+    from pyavd._eos_designs.schema import EosDesigns
 
     from . import SharedUtilsProtocol
 

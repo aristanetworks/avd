@@ -3,42 +3,25 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from copy import copy
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns as AVDDesign
-from pyavd._schema.models.eos_designs_root_model import EosDesignsRootModel
-
-from .connected_endpoints import ConnectedEndpointsMixin
-from .models import ConsolidatedData
-from .network_services import NetworkServicesMixin
-from .node import NodeMixin
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
-    from pyavd._schema.models.avd_model import AvdModel
-
-
-class PrunedAVDDesign(AVDDesign):
-    """AVD Design inputs already normalized and pruned during consolidation."""
-
-    @classmethod
-    # pylint: disable-next=arguments-differ
-    def _from_dict(cls, data: Mapping) -> PrunedAVDDesign:  # pyright: ignore[reportIncompatibleMethodOverride]
-        """Load inputs without repeating dynamic-key and custom-structured-configuration preprocessing."""
-        return super(EosDesignsRootModel, cls)._from_dict(data)
+from .connected_endpoints import ConnectedEndpointsMixin
+from .model import ConsolidatedAVDDesign
+from .network_services import NetworkServicesMixin
+from .node import NodeMixin
 
 
 class AVDDesignConsolidatorProtocol(ConnectedEndpointsMixin, NetworkServicesMixin, NodeMixin, Protocol):
     """Protocol for mixins contributing to AVD design consolidation."""
 
     device_name: str
-    inputs: PrunedAVDDesign
-    consolidated: ConsolidatedData
-
-    @staticmethod
-    def _unset_avd_model(avd_model: AvdModel, attributes: tuple[str, ...]) -> None: ...
+    inputs: AVDDesign
+    consolidated: ConsolidatedAVDDesign
 
 
 class AVDDesignConsolidator(AVDDesignConsolidatorProtocol):
@@ -46,16 +29,10 @@ class AVDDesignConsolidator(AVDDesignConsolidatorProtocol):
 
     def __init__(self, device_name: str, avd_design: AVDDesign) -> None:
         self.device_name = device_name
-        self.inputs = avd_design._cast_as(PrunedAVDDesign)
-        self.consolidated = ConsolidatedData()
+        self.inputs = avd_design
+        self.consolidated = ConsolidatedAVDDesign()
 
-    @staticmethod
-    def _unset_avd_model(avd_model: AvdModel, attributes: tuple[str, ...]) -> None:
-        for attribute in attributes:
-            if attribute in avd_model.__dict__:
-                delattr(avd_model, attribute)
-
-    def consolidate(self) -> ConsolidatedData:
+    def consolidate(self) -> ConsolidatedAVDDesign:
         """Consolidate an AVD Design instance and return the device-local consolidated data."""
         self.set_type()
         self.set_node_type_keys_item()
@@ -67,15 +44,12 @@ class AVDDesignConsolidator(AVDDesignConsolidatorProtocol):
         self.set_port_profile_names()
         self.set_connected_endpoints()
         self.set_network_ports()
-        self.inputs._dynamic_keys = copy(self.inputs._dynamic_keys)
-        self.prune_connected_endpoint_inputs()
-        self.prune_network_services_inputs()
-        self.prune_node_inputs()
-        self.inputs._custom_data = {}
         return self.consolidated
 
 
-def consolidate_avd_design(device_name: str, avd_design: AVDDesign) -> tuple[PrunedAVDDesign, ConsolidatedData]:
+def consolidate_avd_design(device_name: str, avd_design: AVDDesign | Mapping) -> ConsolidatedAVDDesign:
     """Consolidate the AVD design for one device."""
-    consolidator = AVDDesignConsolidator(device_name, avd_design)
-    return consolidator.inputs, consolidator.consolidate()
+    if not isinstance(avd_design, AVDDesign):
+        avd_design = AVDDesign._from_dict(avd_design)
+
+    return AVDDesignConsolidator(device_name, avd_design).consolidate()

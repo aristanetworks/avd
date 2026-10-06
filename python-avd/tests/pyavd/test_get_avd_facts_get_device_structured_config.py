@@ -1,21 +1,30 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""
-Testing get_avd_facts and get_device_structured_config for the variations of supported inputs.
-
-Only covering variants not already handled in e2e-test-avd,
-and just testing that we don't raise.
-"""
+"""Test pyAVD entrypoint input variants and focused consolidation contracts not covered by e2e-test-avd."""
 
 import json
 
+import pytest
+
 from pyavd import get_avd_facts, get_device_structured_config
+from pyavd._eos_designs.consolidate.consolidator import consolidate_avd_design
+from pyavd.api.interface_descriptions import AvdInterfaceDescriptions, InterfaceDescriptionData
 from pyavd.api.schemas import AVDDesign, ConsolidatedAVDDesign
 
 INPUTS = {
     "testhost1": {"fabric_name": "FABRIC", "devices": [{"name": "testhost1", "type": "l2leaf"}]},
 }
+
+
+class RawInputsInterfaceDescriptions(AvdInterfaceDescriptions):
+    """Custom interface descriptions used to verify the public input attributes."""
+
+    def connected_endpoints_ethernet_interface(self, data: InterfaceDescriptionData) -> str:  # noqa: ARG002
+        assert self.inputs.devices
+        assert self.inputs.network_ports
+        assert self.shared_utils.inputs is self.inputs
+        return "RAW_INPUTS"
 
 
 def test_get_avd_facts_get_device_structured_config_dicts() -> None:
@@ -35,6 +44,36 @@ def test_get_avd_facts_get_device_structured_config_models() -> None:
     for hostname, model in models.items():
         structured_config = get_device_structured_config(hostname, model, avd_facts, hostvars=INPUTS[hostname])
         assert structured_config.hostname == hostname
+
+
+def test_custom_interface_descriptions_receive_raw_inputs(monkeypatch: pytest.MonkeyPatch) -> None:
+    raw_inputs = {
+        "fabric_name": "FABRIC",
+        "devices": [{"name": "testhost1", "type": "l2leaf"}],
+        "network_ports": [{"switches": ["testhost1"], "switch_ports": ["Ethernet1"], "mode": "access", "vlans": "10"}],
+        "network_services": [{"name": "TEST", "l2vlans": [{"id": 10}]}],
+    }
+    inputs = AVDDesign._load(raw_inputs)
+    node_type_key = next(node_type_key for node_type_key in inputs.node_type_keys if node_type_key.type == "l2leaf")
+    node_type_key.interface_descriptions.python_module = "custom_interface_descriptions"
+    consolidated_inputs = consolidate_avd_design("testhost1", inputs)
+    monkeypatch.setattr(
+        "pyavd._eos_designs.shared_utils.interface_descriptions.load_python_class",
+        lambda *_args: RawInputsInterfaceDescriptions,
+    )
+
+    avd_facts = get_avd_facts(
+        {"testhost1": inputs},
+        all_consolidated_inputs={"testhost1": consolidated_inputs},
+    )
+    structured_config = get_device_structured_config(
+        "testhost1",
+        inputs,
+        avd_facts,
+        consolidated_inputs=consolidated_inputs,
+    )
+
+    assert structured_config.ethernet_interfaces["Ethernet1"].description == "RAW_INPUTS"
 
 
 def test_get_avd_facts_does_not_mutate_input_models() -> None:
@@ -91,8 +130,12 @@ def test_get_avd_facts_does_not_mutate_input_models() -> None:
 
 
 def test_consolidated_avd_design_json_round_trip() -> None:
-    consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", INPUTS["testhost1"])
+    consolidated_inputs = consolidate_avd_design("testhost1", INPUTS["testhost1"])
     dumped_inputs = consolidated_inputs._dump()
+
+    assert "inputs" not in dumped_inputs
+    assert "consolidated" not in dumped_inputs
+    assert dumped_inputs["type"] == "l2leaf"
 
     loaded_inputs = ConsolidatedAVDDesign._from_dict(json.loads(json.dumps(dumped_inputs)))
 
@@ -100,7 +143,7 @@ def test_consolidated_avd_design_json_round_trip() -> None:
     assert loaded_inputs._dump() == dumped_inputs
 
 
-def test_connected_endpoints_are_consolidated_and_pruned() -> None:
+def test_connected_endpoints_are_consolidated() -> None:
     inputs = {
         "fabric_name": "FABRIC",
         "devices": [{"name": "testhost1", "type": "l2leaf"}],
@@ -121,23 +164,16 @@ def test_connected_endpoints_are_consolidated_and_pruned() -> None:
         ],
     }
 
-    consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", inputs)
+    consolidated_inputs = consolidate_avd_design("testhost1", inputs)
 
-    assert len(consolidated_inputs.consolidated.connected_endpoints) == 1
-    connected_endpoint = consolidated_inputs.consolidated.connected_endpoints["connected_endpoints"].value["server1"]
+    assert len(consolidated_inputs.connected_endpoints) == 1
+    connected_endpoint = consolidated_inputs.connected_endpoints["connected_endpoints"].value["server1"]
     assert connected_endpoint._adapter_indices == [1]
     assert connected_endpoint.adapters[0].mode == "access"
     assert connected_endpoint.adapters[0].vlans == "10"
-    assert [network_port._source_index for network_port in consolidated_inputs.consolidated.network_ports] == [1, 2]
-    assert consolidated_inputs.consolidated.network_ports[0].mode == "access"
-    assert [(profile.profile, profile.parent_profile) for profile in consolidated_inputs.consolidated.port_profile_names] == [("ACCESS_10", None)]
-
-    assert "connected_endpoints" not in consolidated_inputs.inputs.__dict__
-    assert "network_ports" not in consolidated_inputs.inputs.__dict__
-    assert "port_profiles" not in consolidated_inputs.inputs.__dict__
-
-    loaded_inputs = ConsolidatedAVDDesign._from_dict(json.loads(json.dumps(consolidated_inputs._dump())))
-    assert loaded_inputs._dump() == consolidated_inputs._dump()
+    assert [network_port._source_index for network_port in consolidated_inputs.network_ports] == [1, 2]
+    assert consolidated_inputs.network_ports[0].mode == "access"
+    assert [(profile.profile, profile.parent_profile) for profile in consolidated_inputs.port_profile_names] == [("ACCESS_10", None)]
 
 
 def test_network_port_context_is_restored_after_json_round_trip() -> None:
@@ -158,12 +194,23 @@ def test_network_port_context_is_restored_after_json_round_trip() -> None:
         ],
         "network_services": [{"name": "TEST", "l2vlans": [{"id": 10}, {"id": 20}]}],
     }
-    consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", inputs)
+    consolidated_inputs = consolidate_avd_design("testhost1", inputs)
     loaded_inputs = ConsolidatedAVDDesign._from_dict(json.loads(json.dumps(consolidated_inputs._dump())))
 
-    facts = get_avd_facts({"testhost1": loaded_inputs}, None)
+    facts = get_avd_facts(
+        {"testhost1": inputs},
+        None,
+        all_consolidated_inputs={"testhost1": loaded_inputs},
+    )
+    structured_config = get_device_structured_config(
+        "testhost1",
+        inputs,
+        facts,
+        consolidated_inputs=loaded_inputs,
+    )
 
     assert facts["testhost1"].vlans == "10,20"
+    assert [interface.name for interface in structured_config.ethernet_interfaces] == ["Ethernet1", "Ethernet2"]
 
 
 def test_unsupported_connected_endpoints_and_network_services_are_not_consolidated() -> None:
@@ -177,22 +224,17 @@ def test_unsupported_connected_endpoints_and_network_services_are_not_consolidat
         "network_services": [{"name": "UNUSED", "l2vlans": [{"id": 10}]}],
     }
 
-    consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", inputs)
+    consolidated_inputs = consolidate_avd_design("testhost1", inputs)
 
-    assert not consolidated_inputs.consolidated.connected_endpoints
-    assert not consolidated_inputs.consolidated.network_ports
-    assert not consolidated_inputs.consolidated.port_profile_names
-    assert not consolidated_inputs.consolidated.network_services
-    assert "connected_endpoints" not in consolidated_inputs.inputs.__dict__
-    assert "network_ports" not in consolidated_inputs.inputs.__dict__
-    assert "port_profiles" not in consolidated_inputs.inputs.__dict__
-    assert "network_services" not in consolidated_inputs.inputs.__dict__
+    assert not consolidated_inputs.connected_endpoints
+    assert not consolidated_inputs.network_ports
+    assert not consolidated_inputs.port_profile_names
+    assert not consolidated_inputs.network_services
 
 
-def test_network_services_are_consolidated_filtered_and_pruned() -> None:
+def test_network_services_are_consolidated_and_filtered() -> None:
     inputs = {
         "fabric_name": "FABRIC",
-        "_root_custom_data": {"raw": "discarded"},
         "devices": [
             {
                 "name": "testhost1",
@@ -228,22 +270,15 @@ def test_network_services_are_consolidated_filtered_and_pruned() -> None:
         "services_b": [{"name": "REJECTED", "l2vlans": [{"id": 31}]}],
     }
 
-    consolidated_inputs = ConsolidatedAVDDesign._from_avd_design("testhost1", inputs)
+    consolidated_inputs = consolidate_avd_design("testhost1", inputs)
 
-    assert list(consolidated_inputs.consolidated.network_services.keys()) == ["network_services", "services_a"]
-    assert [vlan.id for vlan in consolidated_inputs.consolidated.network_services["network_services"].tenants["ACCEPTED"].l2vlans] == [11]
-    assert [svi.id for svi in consolidated_inputs.consolidated.network_services["services_a"].tenants["ACCEPTED"].vrfs["BLUE"].svis] == [21]
-    assert "network_services" not in consolidated_inputs.inputs.__dict__
-    assert "network_services_keys" not in consolidated_inputs.inputs.__dict__
-    assert "network_services" not in consolidated_inputs.inputs._dynamic_keys.__dict__
-    assert consolidated_inputs.inputs._custom_data == {}
-    assert consolidated_inputs.consolidated.network_services["network_services"].tenants["ACCEPTED"]._custom_data == {
-        "_tenant_custom_data": {"future": "retained"}
-    }
+    assert list(consolidated_inputs.network_services.keys()) == ["network_services", "services_a"]
+    assert [vlan.id for vlan in consolidated_inputs.network_services["network_services"].tenants["ACCEPTED"].l2vlans] == [11]
+    assert [svi.id for svi in consolidated_inputs.network_services["services_a"].tenants["ACCEPTED"].vrfs["BLUE"].svis] == [21]
+    assert consolidated_inputs.network_services["network_services"].tenants["ACCEPTED"]._custom_data == {"_tenant_custom_data": {"future": "retained"}}
 
     loaded_inputs = ConsolidatedAVDDesign._from_dict(json.loads(json.dumps(consolidated_inputs._dump())))
-    assert loaded_inputs._dump() == consolidated_inputs._dump()
-    assert loaded_inputs.consolidated.network_services["network_services"].tenants["ACCEPTED"]._custom_data == {"_tenant_custom_data": {"future": "retained"}}
+    assert loaded_inputs.network_services["network_services"].tenants["ACCEPTED"]._custom_data == {"_tenant_custom_data": {"future": "retained"}}
 
 
 def test_consolidated_network_services_are_used_by_facts() -> None:

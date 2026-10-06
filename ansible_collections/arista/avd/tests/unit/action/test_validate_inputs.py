@@ -452,9 +452,9 @@ def test_validation_and_consolidation_workers_write_separate_avd_design_data(tmp
     with (
         patch(f"{MODULE_PATH}.get_validated_data", return_value=validated_data_result),
         patch(
-            f"{MODULE_PATH}.ConsolidatedAVDDesign._from_avd_design",
+            f"{MODULE_PATH}.consolidate_avd_design",
             return_value=consolidated_model,
-        ) as from_avd_design,
+        ) as consolidate_avd_design,
     ):
         result = _validate_host_worker(
             hostname="host1",
@@ -478,7 +478,7 @@ def test_validation_and_consolidation_workers_write_separate_avd_design_data(tmp
         call(validated_file, b'{"l3leaf":{}}'),
         call(consolidated_file, b'{"_type":"l3leaf"}'),
     ]
-    from_avd_design.assert_called_once_with("host1", {"l3leaf": {}})
+    consolidate_avd_design.assert_called_once_with("host1", {"l3leaf": {}})
 
 
 def test_run_validation_phase_sets_failed_when_validation_errors_and_fail_flag_true(

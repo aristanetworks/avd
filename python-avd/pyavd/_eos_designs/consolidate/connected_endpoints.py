@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Any, Protocol, cast, overload
 from pyavd._eos_designs.schema import EosDesigns as AVDDesign
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 
-from .models import (
+from .model import (
     ConsolidatedConnectedEndpoint,
     ConsolidatedConnectedEndpointGroups,
     ConsolidatedConnectedEndpoints,
@@ -58,7 +58,35 @@ class ConnectedEndpointsMixin(Protocol):
             msg = f"Profile '{profile_name}' applied under '{context}' does not exist in `port_profiles`."
             raise AristaAvdInvalidInputsError(msg, host=self.device_name)
 
+        root_profile_name = profile_name
         port_profile = self.inputs.port_profiles[profile_name]._deepcopy()
+        if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
+            profile_chain = []
+            seen_profile_names = {profile_name}
+            parent_profile_name = port_profile.parent_profile
+            while parent_profile_name:
+                if parent_profile_name not in self.inputs.port_profiles:
+                    msg = f"Parent profile '{parent_profile_name}' applied under profile '{profile_name}' does not exist in 'port_profiles'."
+                    raise AristaAvdInvalidInputsError(msg, host=self.device_name)
+                if parent_profile_name in seen_profile_names:
+                    msg = (
+                        f"Circular profile dependency detected: Profile '{parent_profile_name}' cannot be applied as the parent profile of "
+                        f"'{profile_name}' in 'port_profiles' because it would create a loop."
+                    )
+                    raise AristaAvdInvalidInputsError(msg, host=self.device_name)
+
+                parent_profile = self.inputs.port_profiles[parent_profile_name]._deepcopy()
+                profile_chain.append(parent_profile)
+                seen_profile_names.add(parent_profile_name)
+                profile_name = parent_profile_name
+                parent_profile_name = parent_profile.parent_profile
+
+            for parent_profile in profile_chain:
+                port_profile._deepinherit(parent_profile)
+            delattr(port_profile, "parent_profile")
+            self.resolved_port_profiles[root_profile_name] = port_profile
+            return port_profile
+
         if port_profile.parent_profile:
             if port_profile.parent_profile not in self.inputs.port_profiles:
                 msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
@@ -255,11 +283,3 @@ class ConnectedEndpointsMixin(Protocol):
         self.consolidated.port_profile_names = ConsolidatedPortProfileNames(
             ConsolidatedPortProfileName(profile=profile.profile, parent_profile=profile._get("parent_profile")) for profile in self.inputs.port_profiles
         )
-
-    def prune_connected_endpoint_inputs(self: AVDDesignConsolidatorProtocol) -> None:
-        """Remove connected endpoint inputs and profiles replaced by consolidated models."""
-        self._unset_avd_model(
-            self.inputs,
-            ("connected_endpoints", "connected_endpoints_keys", "custom_connected_endpoints_keys", "network_ports", "port_profiles"),
-        )
-        self._unset_avd_model(self.inputs._dynamic_keys, ("connected_endpoints", "custom_connected_endpoints"))

@@ -33,18 +33,18 @@ if TYPE_CHECKING:  # pragma: no cover
 
     from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
+    from pyavd._eos_designs.consolidate.consolidator import consolidate_avd_design
     from pyavd._schema.models.constants import CV_DEPLOY_INPUT_KEYS, EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
     from pyavd._utils.filtered_map_view import FilteredMapView
-    from pyavd.api.schemas import ConsolidatedAVDDesign
 
 try:
     from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
+    from pyavd._eos_designs.consolidate.consolidator import consolidate_avd_design
     from pyavd._schema.models.constants import CV_DEPLOY_INPUT_KEYS, EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
     from pyavd._utils.filtered_map_view import FilteredMapView
-    from pyavd.api.schemas import ConsolidatedAVDDesign
 
     HAS_PYAVD = True
 except ImportError:
@@ -655,7 +655,7 @@ def _consolidate_host_worker(hostname: str, input_path: Path, output_path: Path,
     """Load validated AVD Design inputs, consolidate them for one host, and write the result."""
     try:
         validated_data = file_handler.load_json(input_path / f"{hostname}.json")
-        consolidated_inputs = ConsolidatedAVDDesign._from_avd_design(hostname, validated_data)
+        consolidated_inputs = consolidate_avd_design(hostname, validated_data)
         consolidated_data = json.dumps(consolidated_inputs._dump(), separators=(",", ":")).encode("utf-8")
         output_file_path = output_path / f"{hostname}.json"
         file_handler.write_file(output_file_path, consolidated_data)

@@ -11,7 +11,8 @@ from unittest import mock
 import pytest
 from yaml import safe_dump
 
-from pyavd._eos_designs.consolidate.model import ConsolidatedAVDDesign
+from pyavd._eos_designs.consolidate.consolidator import consolidate_avd_design
+from pyavd._eos_designs.schema import EosDesigns as AVDDesign
 from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._schema.store import create_store
 from pyavd.api.pool_manager import PoolManager
@@ -249,12 +250,13 @@ def test_avdpoolmanager_pool(
             requested_id = requested_ids[index] if requested_ids else None
             _hostvars = hostvars.copy()
             hostname = _hostvars.pop("inventory_hostname")
-            artifact = ConsolidatedAVDDesign._from_avd_design(hostname, hostvars)
+            inputs = AVDDesign._from_dict(hostvars)
+            consolidated_inputs = consolidate_avd_design(hostname, inputs)
             shared_utils = SharedUtils(
                 hostname=hostname,
                 hostvars=_hostvars,
-                inputs=artifact.inputs,
-                consolidated=artifact.consolidated,
+                inputs=inputs,
+                consolidated=consolidated_inputs,
                 templar=object(),
                 peer_facts={},
             )
@@ -428,12 +430,13 @@ def test_avdpoolmanager_upgrade_old_data() -> None:
         # Initialize pool_manager and feed to shared_utils.
         pool_manager = PoolManager(Path(DUMMYDIR))
 
-        artifact = ConsolidatedAVDDesign._from_avd_design(hostname, hostvars)
+        inputs = AVDDesign._from_dict(hostvars)
+        consolidated_inputs = consolidate_avd_design(hostname, inputs)
         shared_utils = SharedUtils(
             hostname=hostname,
             hostvars=hostvars,
-            inputs=artifact.inputs,
-            consolidated=artifact.consolidated,
+            inputs=inputs,
+            consolidated=consolidated_inputs,
             templar=None,
             peer_facts={},
         )

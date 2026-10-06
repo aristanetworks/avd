@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.consolidate.model import ConsolidatedAVDDesign
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-    from pyavd._eos_designs.schema import EosDesigns
+    from pyavd._eos_designs.schema import EosDesigns as AVDDesign
     from pyavd._utils.avd_templar import AVDTemplar
 
     from .structured_config_generator import StructuredConfigGenerator
@@ -65,7 +65,8 @@ The order is important, since later modules can overwrite or read config created
 def get_structured_config(
     *,
     hostname: str,
-    inputs: ConsolidatedAVDDesign,
+    inputs: AVDDesign,
+    consolidated_inputs: ConsolidatedAVDDesign,
     all_facts: Mapping[str, EosDesignsFacts],
     hostvars: MutableMapping | None = None,
     templar: AVDTemplar | None = None,
@@ -78,7 +79,9 @@ def get_structured_config(
         hostname:
             The hostname of the device.
         inputs:
-            Validated inputs loaded into an instance of the ConsolidatedAVDDesign class.
+            Validated inputs loaded into an instance of the AVDDesign class.
+        consolidated_inputs:
+            Device-local consolidated AVD design inputs.
         all_facts:
             Map of all devices and their facts.
         hostvars:
@@ -96,15 +99,12 @@ def get_structured_config(
     if hostvars is None:
         hostvars = {}
 
-    artifact = inputs
-    pruned_inputs = artifact.inputs
-
     # Initialize SharedUtils class to be passed to each python_module below.
     shared_utils = SharedUtils(
         hostname=hostname,
         hostvars=hostvars,
-        inputs=pruned_inputs,
-        consolidated=artifact.consolidated,
+        inputs=inputs,
+        consolidated=consolidated_inputs,
         peer_facts=all_facts,
         templar=templar,
         digital_twin=digital_twin,
@@ -119,17 +119,17 @@ def get_structured_config(
     # "nested" is one instance of structured config merged onto during parsing of various models supporting a "structured_config" option.
     # We need these variants because the order of application is important (root first, then nested).
     #
-    custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(pruned_inputs.custom_structured_configuration_list_merge)
+    custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(inputs.custom_structured_configuration_list_merge)
 
     # Create a single shared structured config utils instance for all structured config classes.
     structured_config_utils = StructuredConfigUtils(
-        structured_config=structured_config, inputs=pruned_inputs, shared_utils=shared_utils, custom_structured_configs=custom_structured_configs
+        structured_config=structured_config, inputs=inputs, shared_utils=shared_utils, custom_structured_configs=custom_structured_configs
     )
 
     for cls in AVD_STRUCTURED_CONFIG_CLASSES:
         eos_designs_module = cls(
             hostvars=hostvars,
-            inputs=pruned_inputs,
+            inputs=inputs,
             facts=all_facts[hostname],
             shared_utils=shared_utils,
             structured_config=structured_config,

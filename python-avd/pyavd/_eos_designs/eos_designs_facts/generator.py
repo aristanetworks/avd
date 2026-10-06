@@ -301,9 +301,7 @@ class EosDesignsFactsGeneratorProtocol(
         """
         connected_endpoints_keys = EosDesignsFactsProtocol.ConnectedEndpointsKeys()
         for connected_endpoints in self.shared_utils.all_connected_endpoints:
-            connected_endpoints_keys.append_new(
-                key=connected_endpoints.key, type=connected_endpoints._internal_data.type, description=connected_endpoints._internal_data.description
-            )
+            connected_endpoints_keys.append_new(key=connected_endpoints.key, type=connected_endpoints.type, description=connected_endpoints.description)
 
         return connected_endpoints_keys
 
@@ -317,7 +315,7 @@ class EosDesignsFactsGeneratorProtocol(
         """
         return EosDesignsFactsProtocol.PortProfileNames(
             EosDesignsFactsProtocol.PortProfileNamesItem(profile=profile.profile, parent_profile=profile.parent_profile)
-            for profile in self.inputs.port_profiles
+            for profile in self.consolidated.port_profile_names
         )
 
     def _populate_downlink_switches_on_peers(self) -> None:
@@ -410,7 +408,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
 
     def update_mlag_groups(self) -> None:
         """Update the shared dict of MLAG groups. Used to deduct the MLAG pairs from the mlag_group set on each device."""
-        if self.shared_utils.mlag and self.shared_utils.device_config and (mlag_group := self.shared_utils.device_config.mlag_group):
+        if mlag_group := self.consolidated.device_mlag_group:
             self._mlag_groups.setdefault(mlag_group, set()).add(self.shared_utils.hostname)
 
     def cross_pollinate(self) -> None:
