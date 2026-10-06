@@ -382,8 +382,8 @@ def test__get_running_collection_version_not_running_from_source_skips_git(tmp_p
 # ---------------------------------------------------------------------------
 
 
-def test__validate_python_requirements_short_circuits_on_first_failure() -> None:
-    """Due to the `valid = valid and ...` pattern, only the first failing requirement is evaluated."""
+def test__validate_python_requirements_evaluates_all_on_failure() -> None:
+    """Every requirement is checked even when an earlier one fails."""
     result = {}
     requirements = ["first-dep>=1.0", "second-dep>=1.0"]
     checked_names: list[str] = []
@@ -397,7 +397,7 @@ def test__validate_python_requirements_short_circuits_on_first_failure() -> None
         is_valid = _validate_python_requirements(requirements, result)
 
     assert is_valid is False
-    assert checked_names == ["first-dep"]
+    assert checked_names == ["first-dep", "second-dep"]
 
 
 # ---------------------------------------------------------------------------
@@ -437,12 +437,7 @@ def test__check_requirement_duplicate_dist_alternate_satisfies() -> None:
 
 
 def test__check_requirement_duplicate_dist_none_satisfies() -> None:
-    """
-    When multiple dists exist and none satisfies the requirement, result is placed in mismatched.
-
-    Note: the function returns True in this case (falls through to `return True`) — a known
-    false-positive: the requirement is not met but no failure is signalled.
-    """
+    """When multiple dists exist and none satisfies the requirement, result is placed in mismatched and False is returned."""
     mock_req = MagicMock()
     mock_req.name = "test-dep"
     mock_req.specifier.contains.return_value = False
@@ -463,7 +458,7 @@ def test__check_requirement_duplicate_dist_none_satisfies() -> None:
         mock_dist_cls.discover.return_value = [mock_dist1, mock_dist2]
         is_valid = _check_requirement(mock_req, requirements_dict)
 
-    assert is_valid is True
+    assert is_valid is False
     assert "test-dep" in requirements_dict["mismatched"]
     entry = requirements_dict["mismatched"]["test-dep"]
     assert entry["installed"] == "4.0"

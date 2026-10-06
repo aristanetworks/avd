@@ -150,6 +150,7 @@ def _check_requirement(req: Requirement, requirements_dict: dict[str, Any]) -> b
             "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
         }
         LOGGER.error("Python library '%s' version running %s - requirement is %s", req.name, installed_version, str(req))
+        return False
     else:
         LOGGER.error("Python library '%s' version running %s - requirement is %s", req.name, installed_version, str(req))
         requirements_dict["mismatched"][req.name] = {
@@ -195,7 +196,8 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
             }
             continue
 
-        valid = valid and _check_requirement(req, requirements_dict)
+        if not _check_requirement(req, requirements_dict):
+                valid = False
 
     info["python_requirements"] = requirements_dict
     return valid
