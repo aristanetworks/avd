@@ -388,6 +388,7 @@ plugins/plugin_utils/utils/cprofile_decorator.py
 plugins/plugin_utils/utils/get_templar.py
 plugins/plugin_utils/utils/get_workers.py
 plugins/plugin_utils/utils/init_logging.py
+plugins/plugin_utils/utils/lazy_json_file_mapping.py
 plugins/plugin_utils/utils/parse_validation_result.py
 plugins/plugin_utils/utils/python_to_ansible_logging_handler.py
 plugins/plugin_utils/utils/raise_action_fail.py

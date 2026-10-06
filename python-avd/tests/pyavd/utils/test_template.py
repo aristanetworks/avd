@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from collections import ChainMap, UserDict
 from pathlib import Path
 
 import pytest
@@ -29,5 +30,20 @@ def test_template(tmp_path: Path) -> None:
     avd_templar = AVDTemplar(templar, loader, searchpath, ansible_above_2_19=True)
 
     result = template(str(file), {"my_var": 42}, avd_templar)
+
+    assert result == 42
+
+
+def test_template_materializes_non_dict_chainmap_layers(tmp_path: Path) -> None:
+    """Non-dict mappings are materialized only when passed to Ansible for rendering."""
+    file = tmp_path / "dummy.j2"
+    _ = file.write_text("{{ my_var }}")
+
+    loader = DataLoader()
+    templar = Templar(loader)
+    avd_templar = AVDTemplar(templar, loader, [str(tmp_path)], ansible_above_2_19=True)
+    template_vars = ChainMap({}, UserDict({"my_var": 42}))
+
+    result = template(str(file), template_vars, avd_templar)
 
     assert result == 42

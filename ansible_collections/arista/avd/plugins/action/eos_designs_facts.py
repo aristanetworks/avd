@@ -14,6 +14,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBL
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AVDFileHandler,
     AVDVaultHandler,
+    LazyJsonFileMapping,
     cprofile,
     get_eos_designs_facts_path,
     get_templar,
@@ -23,6 +24,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 
 # Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
 if TYPE_CHECKING:  # pragma: no cover
+    from collections.abc import Mapping, MutableMapping
+
     from ansible.playbook.task import Task
     from ansible.template import Templar
 
@@ -121,24 +124,19 @@ class ActionModule(AVDActionPlugin):
         # Converting to json and back to remove any AnsibleUnsafe types.
         return json.loads(json.dumps(validated_args))
 
-    def load_validated_inputs(self, fabric_hosts: list) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
+    def load_validated_inputs(self, fabric_hosts: list[str]) -> tuple[dict[str, AVDDesign], Mapping[str, MutableMapping[str, Any]]]:
         """
-        Load validated hostvars from temporary files for all hosts and load data into AVDDesign classes.
+        Load validated inputs and retain lazy access to raw hostvars for all hosts.
 
         Args:
             fabric_hosts: List of inventory hostnames.
 
         Returns:
-            Tuple of one dict with the loaded AVDDesign instances keyed by hostnames
-            and one dict of the raw hostvars also keyed by hostnames.
+            Tuple containing dictionaries of validated inputs and lazily loaded hostvars keyed by hostname.
 
-        TODO: Since hostvars are only used for custom templates, we should just give the raw hostvars object instead.
-              This will allow us to only serialize and deserialize what is relevant to the schema, and drop everything else.
-              As long as we support dynamic keys it would only be possible to drop the keys after validation, where we have
-              identified the relevant keys correctly.
         """
         all_inputs: dict[str, AVDDesign] = {}
-        all_hostvars: dict[str, dict] = {}
+        all_hostvars: dict[str, LazyJsonFileMapping] = {}
 
         _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
 
@@ -154,15 +152,19 @@ class ActionModule(AVDActionPlugin):
             # Read, unvault, and parse the JSON file
             vault_handler = AVDVaultHandler(self._loader)
             file_handler = AVDFileHandler(vault_handler)
-            host_hostvars = file_handler.load_json(file_path)
-
             # Load host hostvars into the AVDDesign data class.
-            all_inputs[host] = AVDDesign._from_dict(host_hostvars)
-            all_hostvars[host] = host_hostvars
+            all_inputs[host] = AVDDesign._from_dict(file_handler.load_json(file_path))
+            all_hostvars[host] = LazyJsonFileMapping(file_handler, file_path)
 
         return all_inputs, all_hostvars
 
-    def render_facts(self, all_inputs: dict[str, AVDDesign], pool_manager: PoolManager, all_hostvars: dict[str, dict], templar: Templar) -> dict[str, dict]:
+    def render_facts(
+        self,
+        all_inputs: dict[str, AVDDesign],
+        pool_manager: PoolManager,
+        all_hostvars: Mapping[str, MutableMapping[str, Any]],
+        templar: Templar,
+    ) -> dict[str, dict]:
         """
         Render facts.
 
@@ -185,7 +187,8 @@ class ActionModule(AVDActionPlugin):
             # If the argument 'template_output' is set, run the output data through jinja2 rendering.
             # This is to resolve any input values with inline jinja using variables/facts set by eos_designs_facts.
             if self.template_output:
-                available_variables = ChainMap({"switch": facts_dict}, all_hostvars[host])
+                # The Ansible Jinja engine only accepts concrete dicts as ChainMap layers.
+                available_variables = ChainMap({"switch": facts_dict}, dict(all_hostvars[host]))
                 with self._templar.set_temporary_context(available_variables=available_variables):
                     facts_dict = self._templar.template(facts_dict, fail_on_undefined=False)
 
