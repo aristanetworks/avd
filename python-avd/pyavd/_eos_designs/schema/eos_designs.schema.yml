@@ -3838,6 +3838,9 @@ keys:
 
               This will only be configured on VXLAN VTEPs which are also MLAG devices.'
             default: false
+          reply_source_address_validation:
+            type: bool
+            description: Validate reply source address matches configured server.
       suspended_vlans:
         type: list
         description: 'Suspended VLANs are rendered only as local suspended VLAN definitions.

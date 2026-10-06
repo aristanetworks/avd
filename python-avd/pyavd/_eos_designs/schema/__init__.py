@@ -23095,6 +23095,7 @@ class EosDesigns(EosDesignsRootModel):
                 "information_option": {"type": bool, "default": False},
                 "tunnel_requests_disabled": {"type": bool, "default": False},
                 "mlag_peerlink_requests_disabled": {"type": bool, "default": False},
+                "reply_source_address_validation": {"type": bool},
             }
             information_option: bool
             """
@@ -23118,6 +23119,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            reply_source_address_validation: bool | None
+            """Validate reply source address matches configured server."""
 
             if TYPE_CHECKING:
 
@@ -23127,6 +23130,7 @@ class EosDesigns(EosDesignsRootModel):
                     information_option: bool | UndefinedType = Undefined,
                     tunnel_requests_disabled: bool | UndefinedType = Undefined,
                     mlag_peerlink_requests_disabled: bool | UndefinedType = Undefined,
+                    reply_source_address_validation: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DhcpRelay.
@@ -23144,6 +23148,7 @@ class EosDesigns(EosDesignsRootModel):
                            Blocks DHCP relay for packets arriving via the MLAG peer-link.
                            This will only be configured on VXLAN
                            VTEPs which are also MLAG devices.
+                        reply_source_address_validation: Validate reply source address matches configured server.
 
                     """
 
