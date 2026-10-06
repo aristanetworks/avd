@@ -32799,10 +32799,36 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
-                class Nodes(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
+                class NodesItem(AvdModel):
+                    """Subclass of AvdModel."""
 
-                Nodes._item_type = str
+                    _fields: ClassVar[dict] = {"node": {"type": str}, "enabled": {"type": bool}}
+                    node: str
+                    """Name of the node for which this configuration applies."""
+                    enabled: bool | None
+                    """Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, node: str | UndefinedType = Undefined, enabled: bool | UndefinedType | None = Undefined) -> None:
+                            """
+                            NodesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                node: Name of the node for which this configuration applies.
+                                enabled: Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting.
+
+                            """
+
+                class Nodes(AvdIndexedList[str, NodesItem]):
+                    """Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "node"
+
+                Nodes._item_type = NodesItem
 
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
@@ -32847,7 +32873,12 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
                 """
                 nodes: Nodes
-                """Subclass of AvdList with `str` items."""
+                """
+                Per-node OSPFv3 settings to override the VRF-level configuration for specific nodes.
+
+                Subclass of
+                AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
+                """
                 structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem
                 """Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema."""
 
@@ -32891,7 +32922,11 @@ class EosDesigns(EosDesignsRootModel):
                                OSPFv3 IPv6 address family configuration.
 
                                Subclass of AvdModel.
-                            nodes: Subclass of AvdList with `str` items.
+                            nodes:
+                               Per-node OSPFv3 settings to override the VRF-level configuration for specific nodes.
+
+                               Subclass of
+                               AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                             structured_config: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
 
                         """
@@ -86238,10 +86273,36 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Nodes(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
+                        class NodesItem(AvdModel):
+                            """Subclass of AvdModel."""
 
-                        Nodes._item_type = str
+                            _fields: ClassVar[dict] = {"node": {"type": str}, "enabled": {"type": bool}}
+                            node: str
+                            """Name of the node for which this configuration applies."""
+                            enabled: bool | None
+                            """Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, node: str | UndefinedType = Undefined, enabled: bool | UndefinedType | None = Undefined) -> None:
+                                    """
+                                    NodesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        node: Name of the node for which this configuration applies.
+                                        enabled: Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting.
+
+                                    """
+
+                        class Nodes(AvdIndexedList[str, NodesItem]):
+                            """Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "node"
+
+                        Nodes._item_type = NodesItem
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
@@ -86286,7 +86347,12 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
                         """
                         nodes: Nodes
-                        """Subclass of AvdList with `str` items."""
+                        """
+                        Per-node OSPFv3 settings to override the VRF-level configuration for specific nodes.
+
+                        Subclass of
+                        AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
+                        """
                         structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem
                         """Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema."""
 
@@ -86330,7 +86396,11 @@ class EosDesigns(EosDesignsRootModel):
                                        OSPFv3 IPv6 address family configuration.
 
                                        Subclass of AvdModel.
-                                    nodes: Subclass of AvdList with `str` items.
+                                    nodes:
+                                       Per-node OSPFv3 settings to override the VRF-level configuration for specific nodes.
+
+                                       Subclass of
+                                       AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                                     structured_config: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
 
                                 """

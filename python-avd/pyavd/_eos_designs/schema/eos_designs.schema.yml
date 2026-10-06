@@ -6354,9 +6354,20 @@ keys:
                             description: Route-map name.
                   nodes:
                     type: list
+                    primary_key: node
+                    description: Per-node OSPFv3 settings to override the VRF-level
+                      configuration for specific nodes.
                     items:
-                      type: str
-                      description: Hostname.
+                      type: dict
+                      keys:
+                        node:
+                          type: str
+                          description: Name of the node for which this configuration
+                            applies.
+                        enabled:
+                          type: bool
+                          description: Enable or disable OSPFv3 for this specific
+                            node. Overrides the VRF-level `enabled` setting.
                   structured_config:
                     type: dict
                     description: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>]

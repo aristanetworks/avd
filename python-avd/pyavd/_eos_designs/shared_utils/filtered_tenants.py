@@ -568,7 +568,7 @@ class FilteredTenantsMixin(Protocol):
             self.update_ospf_authentication(config, svi, vrf, tenant)
 
         if isinstance(config, EosCliConfigGen.VlanInterfacesItem) and svi.ospfv3.enabled:
-            if not vrf.ospfv3.enabled:
+            if not self.is_ospfv3_enabled_on_node(vrf):
                 msg = f"OSPFv3 is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
                 raise AristaAvdInvalidInputsError(msg)
             if not svi.ipv6_enable and not svi.ipv6_address:
@@ -781,3 +781,25 @@ class FilteredTenantsMixin(Protocol):
                 self.is_wan_vrf(vrf),
             ]
         )
+
+    def is_ospfv3_enabled_on_node(
+        self: SharedUtilsProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> bool | None:
+        """
+        Check if OSPFv3 should be configured for the given VRF on the current node.
+
+        Per-node settings override VRF-level settings.
+
+        Returns True if:
+        - Current node is in vrf.ospfv3.nodes with enabled=True (overrides VRF-level), OR
+        - Current node NOT in vrf.ospfv3.nodes AND vrf.ospfv3.enabled=True (use VRF-level default)
+        """
+        ospfv3_node_config = next((node for node in vrf.ospfv3.nodes if node.node == self.hostname), None)
+
+        # Per-node config overrides VRF-level config
+        if ospfv3_node_config is not None:
+            return ospfv3_node_config.enabled
+
+        # Fall back to VRF-level setting if no per-node config
+        return vrf.ospfv3.enabled

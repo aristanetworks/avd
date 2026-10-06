@@ -93,7 +93,9 @@ tenants:
             redistribute_static:
               enabled: true
               route_map: ipv6_ospf_rm
-          nodes: [network-services-ospf-v3]
+          nodes:
+            - node: network-services-ospf-v3
+              enabled: true
         svis:
           - id: 202
             name: Tenant_OSPFv3_Redistribute_Route_Map_202
@@ -128,7 +130,9 @@ tenants:
             redistribute_static:
               enabled: true
               route_map: ipv6_ospf_rm
-          nodes: [network-services-ospf-v3]
+          nodes:
+            - node: network-services-ospf-v3
+              enabled: true
         svis:
           - id: 203
             name: Tenant_OSPFv3_Redistribute_IPv4_203
@@ -163,7 +167,9 @@ tenants:
             redistribute_static:
               enabled: true
               route_map: ipv6_ospf_rm
-          nodes: [network-services-ospf-v3]
+          nodes:
+            - node: network-services-ospf-v3
+              enabled: true
         svis:
           - id: 206
             name: Tenant_OSPFv3_Redistribute_IPv6_206

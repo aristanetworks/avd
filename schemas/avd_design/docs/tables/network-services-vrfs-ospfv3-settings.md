@@ -37,8 +37,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_static</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.address_family_ipv6.redistribute_static") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.address_family_ipv6.redistribute_static.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.address_family_ipv6.redistribute_static.route_map") | String |  |  |  | Route-map name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.nodes") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.nodes.[]") | String |  |  |  | Hostname. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.nodes") | List, items: Dictionary |  |  |  | Per-node OSPFv3 settings to override the VRF-level configuration for specific nodes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.nodes.[].node") | String | Required, Unique |  |  | Name of the node for which this configuration applies. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.nodes.[].enabled") | Boolean |  |  |  | Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospfv3") | Boolean |  | `True` |  | Enable BGP redistribution of OSPFv3 routes for this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "<network_services_keys.name>.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
@@ -95,8 +96,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_static</samp>](## "network_services.[].vrfs.[].ospfv3.address_family_ipv6.redistribute_static") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].ospfv3.address_family_ipv6.redistribute_static.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "network_services.[].vrfs.[].ospfv3.address_family_ipv6.redistribute_static.route_map") | String |  |  |  | Route-map name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "network_services.[].vrfs.[].ospfv3.nodes") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].ospfv3.nodes.[]") | String |  |  |  | Hostname. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "network_services.[].vrfs.[].ospfv3.nodes") | List, items: Dictionary |  |  |  | Per-node OSPFv3 settings to override the VRF-level configuration for specific nodes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "network_services.[].vrfs.[].ospfv3.nodes.[].node") | String | Required, Unique |  |  | Name of the node for which this configuration applies. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].ospfv3.nodes.[].enabled") | Boolean |  |  |  | Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_services.[].vrfs.[].ospfv3.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "network_services.[].vrfs.[].redistribute_ospfv3") | Boolean |  | `True` |  | Enable BGP redistribution of OSPFv3 routes for this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "network_services.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
@@ -223,10 +225,15 @@
 
                   # Route-map name.
                   route_map: <str>
+
+              # Per-node OSPFv3 settings to override the VRF-level configuration for specific nodes.
               nodes:
 
-                  # Hostname.
-                - <str>
+                  # Name of the node for which this configuration applies.
+                - node: <str; required; unique>
+
+                  # Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting.
+                  enabled: <bool>
 
               # Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
               structured_config: <dict>
@@ -363,10 +370,15 @@
 
                   # Route-map name.
                   route_map: <str>
+
+              # Per-node OSPFv3 settings to override the VRF-level configuration for specific nodes.
               nodes:
 
-                  # Hostname.
-                - <str>
+                  # Name of the node for which this configuration applies.
+                - node: <str; required; unique>
+
+                  # Enable or disable OSPFv3 for this specific node. Overrides the VRF-level `enabled` setting.
+                  enabled: <bool>
 
               # Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
               structured_config: <dict>

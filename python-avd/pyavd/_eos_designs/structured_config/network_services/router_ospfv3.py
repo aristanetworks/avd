@@ -29,18 +29,16 @@ class RouterOspfv3Mixin(Protocol):
 
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
-                if not vrf.ospfv3.enabled or (vrf.ospfv3.nodes and self.shared_utils.hostname not in vrf.ospfv3.nodes):
-                    continue
+                if self.shared_utils.is_ospfv3_enabled_on_node(vrf):
+                    vrf_config = EosCliConfigGen.RouterOspfv3.VrfsItem(
+                        name=vrf.name,
+                        router_id=self.get_protocol_vrf_router_id(vrf, tenant, vrf.ospfv3.router_id),
+                        passive_interface_default=vrf.ospfv3.passive_interface_default,
+                    )
 
-                vrf_config = EosCliConfigGen.RouterOspfv3.VrfsItem(
-                    name=vrf.name,
-                    router_id=self.get_protocol_vrf_router_id(vrf, tenant, vrf.ospfv3.router_id),
-                    passive_interface_default=vrf.ospfv3.passive_interface_default,
-                )
+                    self._update_ospfv3_redistribute(vrf_config, vrf)
 
-                self._update_ospfv3_redistribute(vrf_config, vrf)
-
-                self.structured_config.router_ospfv3.vrfs.append(vrf_config)
+                    self.structured_config.router_ospfv3.vrfs.append(vrf_config)
 
     def _update_ospfv3_redistribute(
         self: AvdStructuredConfigNetworkServicesProtocol,
