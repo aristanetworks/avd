@@ -302,7 +302,10 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         loopback_pool = self._loopback_ipv4_pool if not self.shared_utils.underlay_ipv6_numbered else self._router_id_pool
 
         if not loopback_pool:
-            msg = "loopback_ipv4_pool or loopback_ipv4_address or router_id_pool must be set to render router_id"
+            msg = (
+                "loopback_ipv4_pool or loopback_ipv4_address or router_id_pool(for underlay_ipv4_unnumbered)"
+                " must be set to render router_id"
+            )
             raise AristaAvdInvalidInputsError(msg)
 
         if template_path := self.shared_utils.node_type_key_data.ip_addressing.router_id:
