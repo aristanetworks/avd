@@ -148,8 +148,8 @@
     | [<samp>&nbsp;&nbsp;suspended_vlans</samp>](## "general_settings.suspended_vlans") | List, items: Dictionary |  |  |  | Suspended VLANs are rendered only as local suspended VLAN definitions.<br>They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs defined by network services. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "general_settings.suspended_vlans.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "general_settings.suspended_vlans.[].name") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;ip_software_forwarding_exceed_action_drop</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop") | Dictionary |  |  |  | Drop IPv4 packets larger than configured mtu (in bytes) in software.<br>EOS version dependent. Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;ip_software_forwarding_exceed_action_drop</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop") | Dictionary |  |  |  | Drop IPv4 packets larger than configured mtu (in bytes) in software.<br>Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop.mtu") | Integer | Required |  | Min: 68<br>Max: 65535 | IPv4 software-forwarding MTU threshold in bytes. |
     | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsibility of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
@@ -437,9 +437,9 @@
           name: <str>
 
       # Drop IPv4 packets larger than configured mtu (in bytes) in software.
-      # EOS version dependent. Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+      # Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
       ip_software_forwarding_exceed_action_drop:
-        enabled: <bool>
+        enabled: <bool; required>
 
         # IPv4 software-forwarding MTU threshold in bytes.
         mtu: <int; 68-65535; required>
