@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 
@@ -226,13 +226,13 @@ class EthernetInterfacesMixin(Protocol):
                         f"'pim: enabled' set on l3_interface '{interface.name}' on '{self.shared_utils.hostname}' requires "
                         f"'evpn_l3_multicast.enabled: true' under VRF '{vrf.name}' or Tenant '{tenant.name}'"
                     )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             if not getattr(vrf._internal_data, "pim_rp_addresses", None):
                 msg = (
                     f"'pim: enabled' set on l3_interface '{interface.name}' on '{self.shared_utils.hostname}' requires at least one RP"
                     f" defined in pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             interface.pim.ipv4.sparse_mode = True
 
     def _update_ethernet_interface_ipv6(
@@ -278,7 +278,7 @@ class EthernetInterfacesMixin(Protocol):
         for field_name, field_value in per_node_lists:
             if field_value and len(field_value) != nodes_length:
                 msg = f"Length of '{field_name}' ({len(field_value)}) must match length of 'nodes' ({nodes_length}) for {context}."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
     def _set_point_to_point_interfaces(
         self: AvdStructuredConfigNetworkServicesProtocol,
