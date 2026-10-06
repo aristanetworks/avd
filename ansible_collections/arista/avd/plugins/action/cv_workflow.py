@@ -141,7 +141,9 @@ ARGUMENT_SPEC = {
 
 
 class ActionModule(AVDActionPlugin):
+    _supports_check_mode = False
     _logging_config = AVDLoggingConfig()
+    _REDACTED_VALUE = "<removed>"
 
     def main(self, _task_vars: dict[str, Any]) -> None:
         if not HAS_PYAVD:
@@ -161,14 +163,9 @@ class ActionModule(AVDActionPlugin):
     async def deploy(self, validated_args: dict) -> None:
         """Prepare data, perform deployment and convert result data."""
         logged_args = validated_args.copy()
-        # Excempting the lines below from Ruff and Sonar since they think we are hardcoding a password,
-        # when we are actually just being conscious about not printing passwords.
-        if "cv_token" in logged_args:
-            logged_args["cv_token"] = "<removed>"  # noqa: S105
-        if "cv_password" in logged_args:
-            logged_args["cv_password"] = "<removed>"  # NOSONAR # noqa: S105
-        if "proxy_password" in logged_args:
-            logged_args["proxy_password"] = "<removed>"  # NOSONAR # noqa: S105
+        for key in ["cv_token", "cv_password", "proxy_password"]:
+            if key in logged_args:
+                logged_args[key] = self._REDACTED_VALUE
         self.logger.info("deploy: %s", logged_args)
 
         # Validate preview_features requirements before starting deployment.
@@ -193,14 +190,11 @@ class ActionModule(AVDActionPlugin):
             grpc_channel_configuration=CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(**validated_args.get("grpc_keepalives", {}))),
         )
 
-        # If read_from_validated_inputs is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.
         if read_from_validated_inputs:
             _templated_path, validated_path = get_tmp_paths(tmp_dir)
-            structured_config_dir = str(validated_path)
-            structured_config_suffix = "json"
+            structured_config_dir, structured_config_suffix = str(validated_path), "json"
         else:
-            structured_config_dir = validated_args.get("structured_config_dir")
-            structured_config_suffix = validated_args.get("structured_config_suffix")
+            structured_config_dir, structured_config_suffix = validated_args.get("structured_config_dir"), validated_args.get("structured_config_suffix")
 
         # Build list of CVDeviceDeployment objects (one per deployed device).
         device_deployments = await self.build_device_deployments(
@@ -217,34 +211,13 @@ class ActionModule(AVDActionPlugin):
         # Build Static Config Studio manifest if necessary.
         static_config_manifest = AvdManifest.from_dict(validated_args["static_config_manifest"]) if "static_config_manifest" in validated_args else None
 
-        # Add return data if relevant.
-        if validated_args["return_details"]:
-            # Objects are converted to JSON compatible dicts.
-            self.result.update(
-                cloudvision={
-                    **get_result(cloudvision),
-                    "token": "<removed>",
-                    **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
-                },
-                configs=[get_result(config) for config in eos_config_objects],
-                device_tags=[get_result(device_tag) for device_tag in device_tag_objects],
-                interface_tags=[get_result(interface_tag) for interface_tag in interface_tag_objects],
-                cv_pathfinder_metadata=[get_result(metadata) for metadata in cv_pathfinder_metadata_objects],
-                static_config_manifest=get_result(static_config_manifest) if static_config_manifest else None,
-            )
-
         # Check if there is anything to deploy.
-        work_to_do = any(
-            [
-                eos_config_objects,
-                device_tag_objects,
-                interface_tag_objects,
-                cv_pathfinder_metadata_objects,
-                static_config_manifest,
-            ]
-        )
+        work_to_do = any([eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects, static_config_manifest])
 
-        if work_to_do:
+        if not work_to_do:
+            self.result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
+            result_object = DeployToCvResult(workspace=None)
+        else:
             # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
             workspace_args = get(validated_args, "workspace", default={})
             if "build_warnings" in workspace_args:
@@ -268,38 +241,43 @@ class ActionModule(AVDActionPlugin):
 
             # Add warnings caught by the logger.
             result_object.warnings.extend(self.result.get("warnings", []))
-        else:
-            result_object = DeployToCvResult(workspace=None)
-            self.result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
 
-        # Add either all return data or only warnings, errors, failed.
+        # Build result with detailed data or summary based on return_details flag.
         if validated_args["return_details"]:
+            # Objects are converted to JSON compatible dicts.
+            self.result.update(
+                cloudvision={
+                    **get_result(cloudvision),
+                    "token": self._REDACTED_VALUE,
+                    **({"proxy_password": self._REDACTED_VALUE} if cloudvision.proxy_password is not None else {}),  # NOSONAR
+                },
+                configs=[get_result(config) for config in eos_config_objects],
+                device_tags=[get_result(device_tag) for device_tag in device_tag_objects],
+                interface_tags=[get_result(interface_tag) for interface_tag in interface_tag_objects],
+                cv_pathfinder_metadata=[get_result(metadata) for metadata in cv_pathfinder_metadata_objects],
+                static_config_manifest=get_result(static_config_manifest) if static_config_manifest else None,
+            )
             # Result object is converted to JSON compatible dict.
             self.result.update(result_object.get_result())
         else:
-            self.result.update(
-                {
-                    "warnings": result_object.warnings,
-                    "errors": result_object.errors,
-                    "failed": result_object.failed,
-                },
-            )
+            self.result.update({"warnings": result_object.warnings, "errors": result_object.errors, "failed": result_object.failed})
 
-        # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
-        change_indicators = [
-            result_object.deployed_configs,
-            result_object.deployed_static_config_containers,
-            result_object.deployed_static_config_configlets,
-            result_object.deployed_device_tags,
-            result_object.deployed_interface_tags,
-            result_object.deployed_cv_pathfinder_metadata,
-            result_object.removed_configs,
-            result_object.removed_static_config_containers,
-            result_object.removed_static_config_configlets,
-            result_object.removed_device_tags,
-            result_object.removed_interface_tags,
-        ]
-        self.result["changed"] = any(change_indicators)
+        # Set changed if we did anything.
+        self.result["changed"] = any(
+            [
+                result_object.deployed_configs,
+                result_object.deployed_static_config_containers,
+                result_object.deployed_static_config_configlets,
+                result_object.deployed_device_tags,
+                result_object.deployed_interface_tags,
+                result_object.deployed_cv_pathfinder_metadata,
+                result_object.removed_configs,
+                result_object.removed_static_config_containers,
+                result_object.removed_static_config_configlets,
+                result_object.removed_device_tags,
+                result_object.removed_interface_tags,
+            ]
+        )
 
     async def build_device_deployments(
         self,
