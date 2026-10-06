@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import logging
+import os
+import re
 import sys
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, mock_open, patch
@@ -30,6 +32,9 @@ from ansible_collections.arista.avd.plugins.action.anta_workflow import (
 if TYPE_CHECKING:
     from collections.abc import Callable
     from pathlib import Path
+    from typing import Any
+
+    from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import LoggingOutcome
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.anta_workflow"
 AVD_LOGGER_NAME = "ansible_collections.arista.avd"
@@ -453,6 +458,69 @@ def test_error_log_fails_successful_anta_result(action_module: Callable[..., Act
 
     assert result["failed"] is True
     assert result["msg"] == "Errors detected during ANTA workflow execution."
+
+
+@pytest.mark.parametrize(
+    ("log_level", "expected_failed", "log_key"),
+    [
+        pytest.param(logging.WARNING, False, "warnings", id="warning_does_not_fail"),
+        pytest.param(logging.ERROR, True, "errors", id="error_fails"),
+        pytest.param(logging.CRITICAL, True, "errors", id="critical_fails"),
+    ],
+)
+def test_worker_log_controls_final_anta_result(action_module: Callable[..., ActionModule], log_level: int, expected_failed: bool, log_key: str) -> None:
+    """Actual forked run_anta logs are drained before ANTA applies its final task-failure policy."""
+    module = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
+    parent_pid = os.getpid()
+    validated_args = {
+        "device_list": ["leaf1"],
+        "avd_catalogs": {"enabled": False},
+        "user_catalogs": {"enabled": True, "input_dir": "/some/catalogs"},
+        "runner": {"batch_size": 1, "tags": [], "dry_run": False},
+        "report": {"sorting": {"sort_fields": ["device"], "status_priority": ["success"]}},
+    }
+
+    async def successful_runner(result_manager: Any, *_args: Any, **_kwargs: Any) -> None:
+        """Stub network execution, but emit a log and return a real successful ANTA result in the worker."""
+        assert os.getpid() != parent_pid
+        result_manager.add(anta_module.TestResult(name="leaf1", test="ExampleTest", categories=[], description="Example test", result="success"))
+        anta_module.LOGGER.log(log_level, "Worker log from process %s", os.getpid())
+
+    original_handle_logging_outcome = module._handle_logging_outcome
+
+    def observe_logging_outcome(logging_outcome: LoggingOutcome) -> None:
+        """Verify worker records are already available when the plugin's result policy runs."""
+        assert logging_outcome.has_errors is expected_failed
+        assert module.result["anta_tests_summary"]["tests_passed"] == 1
+        assert len(module.result["logs"][log_key]) == 1
+        original_handle_logging_outcome(logging_outcome)
+
+    with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
+        patch(f"{MODULE_PATH}.PLUGIN_ARGS", new=None),
+        patch(f"{MODULE_PATH}.ANSIBLE_VARS", new=None),
+        patch(f"{MODULE_PATH}.USER_CATALOG", new=None),
+        patch(f"{MODULE_PATH}.setup_anta_debug_mode"),
+        patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
+        patch(f"{MODULE_PATH}.get_ansible_vars", return_value={"leaf1": {}}),
+        patch(f"{MODULE_PATH}.ActionPluginVars"),
+        patch(f"{MODULE_PATH}.load_user_catalogs", return_value=MagicMock(tests=["ExampleTest"])),
+        patch(f"{MODULE_PATH}.build_anta_runner_objects", return_value=(anta_module.ResultManager(), MagicMock(), MagicMock())),
+        patch(f"{MODULE_PATH}.anta_runner", new=successful_runner),
+        patch.object(module, "_handle_logging_outcome", side_effect=observe_logging_outcome) as policy_hook,
+    ):
+        result = module.run(task_vars={"ansible_forks": 2})
+
+    policy_hook.assert_called_once()
+    assert result.get("failed", False) is expected_failed
+    assert result["anta_tests_summary"]["total_tests"] == 1
+    assert result["anta_tests_summary"]["tests_failed"] == 0
+    assert result["anta_tests_summary"]["tests_error"] == 0
+    assert re.fullmatch(r"\[anta-run-[0-9a-f]{8}\] Worker log from process \d+", result["logs"][log_key][0])
+    if expected_failed:
+        assert result["msg"] == "Errors detected during ANTA workflow execution."
+    else:
+        assert result["msg"] == "ANTA tests completed without reported failures/errors."
 
 
 def test_setup_anta_debug_mode_raises_when_anta_logger_absent() -> None:
