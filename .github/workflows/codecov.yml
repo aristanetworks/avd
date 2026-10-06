@@ -2,6 +2,13 @@
 name: Publish coverage to CodeCov
 "on":
   workflow_call:
+    inputs:
+      pyavd_tests:
+        type: boolean
+        required: true
+      e2e_tests:
+        type: boolean
+        required: true
 
 jobs:
   codecov:
@@ -18,27 +25,65 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Download coverage from pytest
-        continue-on-error: true
+      - name: Download PyAVD coverage reports
+        if: inputs.pyavd_tests || inputs.e2e_tests
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: pytest-coverage
+          path: reports/pyavd
 
       - name: Download coverage from ansible-test units
-        continue-on-error: true
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ansible-test-units-coverage
+          path: reports/ansible
 
       - name: Download coverage from ansible-test integration
-        continue-on-error: true
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           pattern: ansible-test-integration-coverage-*
           merge-multiple: true
+          path: reports/ansible
 
-      - name: Upload coverage to Codecov
+      - name: Verify expected coverage reports
+        env:
+          PYAVD_TESTS: ${{ inputs.pyavd_tests }}
+          E2E_TESTS: ${{ inputs.e2e_tests }}
+        run: |
+          set -euo pipefail
+          test -f reports/ansible/units-coverage.xml
+          compgen -G 'reports/ansible/integration-coverage-*.xml' > /dev/null
+          if [[ "$PYAVD_TESTS" == "true" ]]; then
+            test -f reports/pyavd/pyavd-tests.xml
+          fi
+          if [[ "$E2E_TESTS" == "true" ]]; then
+            test -f reports/pyavd/e2e-tests.xml
+          fi
+
+      - name: Upload PyAVD pytest coverage
+        if: inputs.pyavd_tests
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           use_oidc: true
           fail_ci_if_error: false
+          disable_search: true
+          files: reports/pyavd/pyavd-tests.xml
+          flags: pyavd_tests
+
+      - name: Upload end-to-end coverage
+        if: inputs.e2e_tests
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          use_oidc: true
+          fail_ci_if_error: false
+          disable_search: true
+          files: reports/pyavd/e2e-tests.xml
+          flags: e2e_tests
+
+      - name: Upload Ansible coverage
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          use_oidc: true
+          fail_ci_if_error: false
+          directory: reports/ansible
+          flags: ansible_tests
