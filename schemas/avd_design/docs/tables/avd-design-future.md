@@ -16,6 +16,7 @@
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
     | [<samp>&nbsp;&nbsp;fix_address_locking_dhcp_server_interfaces</samp>](## "avd_design_future.fix_address_locking_dhcp_server_interfaces") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix support for `address_locking_settings.dhcp_server_interfaces`.<br>When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive. |
     | [<samp>&nbsp;&nbsp;fix_match_ipv6_prefix_list_on_mlag_route_map</samp>](## "avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`<br>instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`. |
+    | [<samp>&nbsp;&nbsp;fix_mlag_ibgp_peering_ipv6_pool</samp>](## "avd_design_future.fix_mlag_ibgp_peering_ipv6_pool") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Fix the MLAG iBGP peering BGP neighbor in VRFs when using `underlay_ipv6_numbered`.<br>When enabled, the BGP neighbor is derived from the same IPv6 pool as the MLAG iBGP peering SVI,<br>using `mlag_ibgp_peering_ipv6_pool` when set, and `mlag_ibgp_peering_ipv4_pool` is ignored. |
     | [<samp>&nbsp;&nbsp;fix_radius_server_group_tls</samp>](## "avd_design_future.fix_radius_server_group_tls") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
     | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
@@ -65,6 +66,12 @@
       # Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`
       # instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`.
       fix_match_ipv6_prefix_list_on_mlag_route_map: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # Fix the MLAG iBGP peering BGP neighbor in VRFs when using `underlay_ipv6_numbered`.
+      # When enabled, the BGP neighbor is derived from the same IPv6 pool as the MLAG iBGP peering SVI,
+      # using `mlag_ibgp_peering_ipv6_pool` when set, and `mlag_ibgp_peering_ipv4_pool` is ignored.
+      fix_mlag_ibgp_peering_ipv6_pool: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations.

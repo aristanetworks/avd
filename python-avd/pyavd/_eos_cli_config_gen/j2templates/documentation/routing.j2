@@ -22,13 +22,16 @@
        or router_isis is arista.avd.defined
        or router_bgp is arista.avd.defined
        or policy_maps.pbr is arista.avd.defined
-       or router_rip is arista.avd.defined %}
+       or router_rip is arista.avd.defined
+       or vrrp is arista.avd.defined %}
 
 ## Routing
 {## Service Routing Configuration #}
 {%     include 'documentation/service-routing-configuration-bgp.j2' %}
 {## Service Routing Protocols Model #}
 {%     include 'documentation/service-routing-protocols-model.j2' %}
+{## VRRP #}
+{%     include 'documentation/vrrp.j2' %}
 {## Virtual Router MAC Address #}
 {%     include 'documentation/ip-virtual-router-mac-address.j2' %}
 {## IP Routing #}

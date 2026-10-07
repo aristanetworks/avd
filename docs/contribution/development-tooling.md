@@ -8,7 +8,7 @@
 
 - To assist the AVD development community, we provide guidance to develop with two primary methods: VSCode dev containers or local Python environment.
   - You may also choose your own development methodology, however we may not be able to provide assistance in a timely manner.
-- This guide provides additional information about the development tools leveraged in the project: pre-commit, Molecule and ansible-test.
+- This guide provides additional information about the development tools leveraged in the project: pre-commit, the PyAVD end-to-end test tool, Molecule and ansible-test.
 - Please report any issues and optimization suggestions regarding the development workflow via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 !!! note
@@ -154,6 +154,8 @@ The AVD project leverages Molecule for:
 
 The Molecule scenarios are located under the `molecule` directory at the root of the collection (`ansible_collections/arista/avd/extensions/molecule`).
 
+The `eos_designs_negative_unit_tests` directory contains E2E-only fixtures and is not a Molecule scenario. Run and review these cases with the [PyAVD end-to-end test tool](e2e-test/using-the-tool.md#eos-designs-negative-tests).
+
 The directory name of each Molecule scenario folder is used as the `--scenario-name` when executing Molecule, i.e: `eos_cli_config_gen`, `eos_designs_unit_tests`.
 
 ### Executing Molecule with makefile method
@@ -222,6 +224,8 @@ molecule converge -s eos_designs_unit_tests -- -vvv
 ## Ansible-test
 
 The AVD project leverages [ansible-test](https://www.ansible.com/blog/introduction-to-ansible-test/) to run sanity, unit and integration tests for the `arista.avd` Ansible Collection.
+
+The `eos_designs_facts` and `eos_designs_structured_config` integration targets exercise the Ansible action plugins, including failed results. CI runs these targets against stable Ansible releases and the Ansible `milestone` branch. Exhaustive negative design cases run directly through PyAVD in E2E tests, while action-plugin unit tests cover exception propagation and conversion to Ansible failures.
 
 Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `ansible-test`:
 
