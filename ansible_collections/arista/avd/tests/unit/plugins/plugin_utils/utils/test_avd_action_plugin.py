@@ -97,6 +97,7 @@ class TestAVDActionPlugin:
                     "ansible_collections.arista.avd": logging.WARNING,
                     "pyavd": logging.WARNING,
                     "anta": logging.WARNING,
+                    "asynceapi": logging.WARNING,
                     "httpx": logging.WARNING,
                 },
                 id="v0-default_warning",
@@ -107,6 +108,7 @@ class TestAVDActionPlugin:
                     "ansible_collections.arista.avd": logging.INFO,
                     "pyavd": logging.INFO,
                     "anta": logging.WARNING,
+                    "asynceapi": logging.WARNING,
                     "httpx": logging.WARNING,
                 },
                 id="v1-avd_info",
@@ -117,9 +119,21 @@ class TestAVDActionPlugin:
                     "ansible_collections.arista.avd": logging.DEBUG,
                     "pyavd": logging.DEBUG,
                     "anta": logging.INFO,
+                    "asynceapi": logging.INFO,
                     "httpx": logging.WARNING,
                 },
                 id="v3-avd_debug_anta_info",
+            ),
+            pytest.param(
+                4,
+                {
+                    "ansible_collections.arista.avd": logging.DEBUG,
+                    "pyavd": logging.DEBUG,
+                    "anta": logging.DEBUG,
+                    "asynceapi": logging.DEBUG,
+                    "httpx": logging.WARNING,
+                },
+                id="v4-asynceapi_debug",
             ),
             pytest.param(
                 5,
@@ -127,6 +141,7 @@ class TestAVDActionPlugin:
                     "ansible_collections.arista.avd": logging.DEBUG,
                     "pyavd": logging.DEBUG,
                     "anta": logging.DEBUG,
+                    "asynceapi": logging.DEBUG,
                     "httpx": logging.INFO,
                 },
                 id="v5-external_libs_info",
@@ -137,6 +152,7 @@ class TestAVDActionPlugin:
                     "ansible_collections.arista.avd": logging.DEBUG,
                     "pyavd": logging.DEBUG,
                     "anta": logging.DEBUG,
+                    "asynceapi": logging.DEBUG,
                     "httpx": logging.DEBUG,
                 },
                 id="v6-all_debug",
@@ -147,6 +163,7 @@ class TestAVDActionPlugin:
                     "ansible_collections.arista.avd": logging.DEBUG,
                     "pyavd": logging.DEBUG,
                     "anta": logging.DEBUG,
+                    "asynceapi": logging.DEBUG,
                     "httpx": logging.DEBUG,
                 },
                 id="v99-fallback_to_max_debug",
@@ -176,19 +193,35 @@ class TestAVDActionPlugin:
         plugin.run()
 
     @pytest.mark.parametrize(
-        ("verbosity", "expected_methods_called"),
+        ("logger_name", "verbosity", "expected_info", "expected_debug"),
         [
-            pytest.param(0, ["warning", "error"], id="v0-warn_error_only"),
-            pytest.param(1, ["v", "warning", "error"], id="v1-info_enabled"),
-            pytest.param(3, ["vvv", "v", "warning", "error"], id="v3-debug_enabled"),
+            pytest.param("ansible_collections.arista.avd", 0, False, False, id="v0-warn_error_only"),
+            pytest.param("ansible_collections.arista.avd", 1, True, False, id="v1-avd_info_enabled"),
+            pytest.param("ansible_collections.arista.avd", 2, True, False, id="v2-avd_info_enabled"),
+            pytest.param("pyavd", 1, True, False, id="v1-pyavd_info_enabled"),
+            pytest.param("pyavd", 2, True, True, id="v2-pyavd_debug_enabled"),
+            pytest.param("schema_tools", 2, True, True, id="v2-schema_tools_debug_enabled"),
+            pytest.param("ansible_collections.arista.avd", 3, True, True, id="v3-avd_debug_enabled"),
+            pytest.param("anta", 2, False, False, id="v2-anta_warning_only"),
+            pytest.param("anta", 3, True, False, id="v3-anta_info_enabled"),
+            pytest.param("anta", 4, True, True, id="v4-anta_debug_enabled"),
         ],
     )
     def test_default_logging_behavior(
-        self, action_module: Callable[..., AVDActionPlugin], mock_display: MagicMock, verbosity: int, expected_methods_called: list[str]
+        self,
+        action_module: Callable[..., AVDActionPlugin],
+        mock_display: MagicMock,
+        logger_name: str,
+        verbosity: int,
+        expected_info: bool,
+        expected_debug: bool,
     ) -> None:
         """Test the end-to-end default logging behavior (live display on, save logs off)."""
 
         class ActionModule(AVDActionPlugin):
+            _primary_logger_name = logger_name
+            _logging_config = AVDLoggingConfig(target_loggers=(logger_name,))
+
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
                 self.logger.debug("A debug message.")
@@ -202,19 +235,17 @@ class TestAVDActionPlugin:
         mock_display.verbosity = verbosity
         result = plugin.run()
 
-        # Verify that the correct display methods were called
-        all_display_methods = {
-            "vvv": mock_display.vvv,
-            "v": mock_display.v,
-            "warning": mock_display.warning,
-            "error": mock_display.error,
-        }
-
-        for method_name, method_mock in all_display_methods.items():
-            if method_name in expected_methods_called:
-                method_mock.assert_called_once()
-            else:
-                method_mock.assert_not_called()
+        if expected_info:
+            mock_display.v.assert_called_once_with("An info message.")
+        else:
+            mock_display.v.assert_not_called()
+        if expected_debug:
+            mock_display.vv.assert_called_once_with("A debug message.")
+        else:
+            mock_display.vv.assert_not_called()
+        mock_display.vvv.assert_not_called()
+        mock_display.warning.assert_called_once_with("A warning message.")
+        mock_display.error.assert_called_once_with("An error message.", wrap_text=False)
 
         # Verify that logs were not saved
         assert "logs" not in result

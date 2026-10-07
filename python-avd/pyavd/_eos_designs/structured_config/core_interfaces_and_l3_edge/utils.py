@@ -141,6 +141,10 @@ class UtilsMixin(Protocol):
             msg = f"{self.data_model}.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses except for ISIS-SR."
             raise AristaAvdInvalidInputsError(msg)
 
+        if p2p_link.port_channel and p2p_link.macsec_profile:
+            msg = f"'macsec_profile' is not supported for {self.data_model}.p2p_links[{p2p_link_index}] when 'port_channel' is configured."
+            raise AristaAvdInvalidInputsError(msg)
+
         index = p2p_link.nodes.index(self.shared_utils.hostname)
         peer_index = (index + 1) % 2
         peer = p2p_link.nodes[peer_index]
@@ -364,18 +368,16 @@ class UtilsMixin(Protocol):
                 elif (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                     interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
-        if p2p_link.macsec_profile:
-            interface.mac_security.profile = p2p_link.macsec_profile
-
         interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             interface.name,
             default(p2p_link.sflow, self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge),
         )
 
-        # Adding type check to avoid confusing the type checker.
         if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR(S3923)
             interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
         else:
+            if p2p_link.macsec_profile:
+                interface.mac_security.profile = p2p_link.macsec_profile
             interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
 
         if self.shared_utils.mpls_lsr and default(p2p_link.mpls_ip, True):  # noqa: FBT003

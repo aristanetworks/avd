@@ -112,7 +112,7 @@ overwrite list data unintentionally. So going forward `replace` should be avoide
 ### Variables and Options
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-structured-configuration.md
+schemas/avd_design/docs/tables/custom-structured-configuration.md
 --8<--
 
 ### Examples

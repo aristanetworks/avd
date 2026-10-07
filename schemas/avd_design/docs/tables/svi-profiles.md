@@ -1,0 +1,695 @@
+<!--
+  ~ Copyright (c) 2026 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>svi_profiles</samp>](## "svi_profiles") | List, items: Dictionary |  |  |  | Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.<br>Keys are the same used under SVIs. Keys defined under SVIs take precedence.<br>Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:<br>1. svi.nodes[inventory_hostname].structured_config<br>2. svi_profile.nodes[inventory_hostname].structured_config<br>3. svi_parent_profile.nodes[inventory_hostname].structured_config<br>4. Further ancestor profiles' nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance is enabled)<br>5. svi.structured_config<br>6. svi_profile.structured_config<br>7. svi_parent_profile.structured_config<br>8. Further ancestor profiles' structured_config in nearest-to-farthest order (when recursive inheritance is enabled)<br> |
+    | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "svi_profiles.[].profile") | String | Required, Unique |  |  | Profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "svi_profiles.[].parent_profile") | String |  |  |  | Parent SVI profile name to apply.<br>By default, profile inheritance is limited to two levels: svi -> svi_profile -> parent_profile.<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "svi_profiles.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "svi_profiles.[].nodes.[].node") | String | Required, Unique |  |  | Node inventory hostname. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].nodes.[].name") | String |  |  |  | VLAN name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].enabled") | Boolean |  |  |  | Enable or disable interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;autostate</samp>](## "svi_profiles.[].nodes.[].autostate") | Boolean |  | `True` |  | Set to false to disable automatic management of the interface link state. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "svi_profiles.[].nodes.[].description") | String |  |  |  | SVI description. By default set to VLAN name.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "svi_profiles.[].nodes.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "svi_profiles.[].nodes.[].ip_address") | String |  |  |  | IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address_secondaries</samp>](## "svi_profiles.[].nodes.[].ip_address_secondaries") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ip_address_secondaries.[]") | String |  |  |  | IPv4_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "svi_profiles.[].nodes.[].ipv6_address") | String |  |  |  | IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "svi_profiles.[].nodes.[].ipv6_enable") | Boolean |  |  |  | Explicitly enable/disable link-local IPv6 addressing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address_virtual</samp>](## "svi_profiles.[].nodes.[].ip_address_virtual") | String |  |  |  | IPv4_address/Mask.<br>IPv4 VXLAN Anycast IP address.<br>Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_virtuals</samp>](## "svi_profiles.[].nodes.[].ipv6_address_virtuals") | List, items: String |  |  |  | IPv6 VXLAN Anycast IP addresses.<br>Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ipv6_address_virtuals.[]") | String |  |  |  | IPv6_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "svi_profiles.[].nodes.[].ipv6_nd") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertise_ipv6_address_virtuals</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.advertise_ipv6_address_virtuals") | Boolean |  |  |  | Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.valid_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.preferred_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra_dns_servers</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers") | Dictionary |  |  |  | List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.servers") | List, items: Dictionary |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.servers.[].address") | String | Required, Unique |  |  | IPv6 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.servers.[].lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Specifies the lifetime period for this server in seconds.<br>This value overrides lifetime value set by `dns_servers_lifetime` for this server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.dns_servers_lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Router Advertisement DNS server lifetime value in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay") | Dictionary |  |  |  | IPv6 DHCP relay settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destinations</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations") | List, items: Dictionary |  |  |  | List of IPv6 DHCP relay destinations. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].address") | String | Required, Unique |  |  | DHCP server's IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].vrf") | String |  |  |  | VRF used to reach the DHCP server.<br>If not set, the VRF of the destination matches the VRF of this interface.<br>Use the `default` to reach the DHCP server through the default VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].local_interface") | String |  |  |  | Local interface to communicate with DHCP server.<br>Mutually exclusive with `source_address` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].source_address") | String |  |  |  | Source IPv6 address to communicate with DHCP server.<br>Mutually exclusive with `local_interface`, which takes precedence if both are set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_address</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].link_address") | String |  |  |  | Override the default link address specified in the relayed DHCP packet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address_virtual_secondaries</samp>](## "svi_profiles.[].nodes.[].ip_address_virtual_secondaries") | List, items: String |  |  |  | Secondary IPv4 VXLAN Anycast IP addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ip_address_virtual_secondaries.[]") | String |  |  |  | IPv4_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_virtual_router_addresses</samp>](## "svi_profiles.[].nodes.[].ip_virtual_router_addresses") | List, items: String |  |  |  | IPv4 VARP addresses.<br>Requires an IP address to be configured on the SVI.<br>If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence<br>_if_ there is an ip_address configured for the node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ip_virtual_router_addresses.[]") | String |  |  |  | IPv4_address/Mask or IPv4_address.<br>IPv4_address/Mask will also configure a static route to the SVI per best practice.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_virtual_router_addresses</samp>](## "svi_profiles.[].nodes.[].ipv6_virtual_router_addresses") | List, items: String |  |  |  | IPv6 VARP addresses.<br>Requires an IPv6 address to be configured on the SVI.<br>If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence<br>_if_ there is an ipv6_address configured for the node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "svi_profiles.[].nodes.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "svi_profiles.[].nodes.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "svi_profiles.[].nodes.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.<br>Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "svi_profiles.[].nodes.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.<br>Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "svi_profiles.[].nodes.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface` will configure the OOB management interface as the source interface.<br>- `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.<br>- `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_vrf</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_vrf") | String |  |  |  | VRF to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source VRF name.<br>- If not set, EOS uses the VRF on the SVI. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "svi_profiles.[].nodes.[].static_routes") | List, items: Dictionary |  |  |  | Static routes to be configured on every device where the SVI is configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "svi_profiles.[].nodes.[].static_routes.[].prefix") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "svi_profiles.[].nodes.[].static_routes.[].next_hop") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;track_bfd</samp>](## "svi_profiles.[].nodes.[].static_routes.[].track_bfd") | Boolean |  |  |  | Track next-hop using BFD. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance</samp>](## "svi_profiles.[].nodes.[].static_routes.[].distance") | Integer |  |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tag</samp>](## "svi_profiles.[].nodes.[].static_routes.[].tag") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].nodes.[].static_routes.[].name") | String |  |  |  | description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric</samp>](## "svi_profiles.[].nodes.[].static_routes.[].metric") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "svi_profiles.[].nodes.[].static_routes.[].interface") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_static_routes</samp>](## "svi_profiles.[].nodes.[].ipv6_static_routes") | List, items: Dictionary |  |  |  | IPv6 static routes to be configured on every device where the SVI is configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "svi_profiles.[].nodes.[].ipv6_static_routes.[].prefix") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "svi_profiles.[].nodes.[].ipv6_static_routes.[].next_hop") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;track_bfd</samp>](## "svi_profiles.[].nodes.[].ipv6_static_routes.[].track_bfd") | Boolean |  |  |  | Track next-hop using BFD. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance</samp>](## "svi_profiles.[].nodes.[].ipv6_static_routes.[].distance") | Integer |  |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tag</samp>](## "svi_profiles.[].nodes.[].ipv6_static_routes.[].tag") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].nodes.[].ipv6_static_routes.[].name") | String |  |  |  | description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric</samp>](## "svi_profiles.[].nodes.[].ipv6_static_routes.[].metric") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "svi_profiles.[].nodes.[].ipv6_static_routes.[].interface") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_override</samp>](## "svi_profiles.[].nodes.[].vni_override") | Integer |  |  | Min: 1<br>Max: 16777215 | By default the VNI will be derived from "mac_vrf_vni_base".<br>The vni_override allows us to override this value and statically define it (optional).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_override</samp>](## "svi_profiles.[].nodes.[].rt_override") | String |  |  |  | By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rt_override will default to vni_override if set.<br><br>rt_override supports two formats:<br>  - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).<br>  - A full RT string with colon separator which will override the full RT.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_override</samp>](## "svi_profiles.[].nodes.[].rd_override") | String |  |  |  | By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rd_override will default to rt_override or vni_override if set.<br><br>rd_override supports two formats:<br>  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).<br>  - A full RD string with colon separator which will override the full RD.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "svi_profiles.[].nodes.[].trunk_groups") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].trunk_groups.[]") | String |  |  |  | Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.<br>Requires "enable_trunk_groups: true".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_redistribute_router_mac_system</samp>](## "svi_profiles.[].nodes.[].evpn_redistribute_router_mac_system") | Boolean |  | `False` |  | Configure 'redistribute router-mac system' under BGP for this L3 VLAN. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vxlan</samp>](## "svi_profiles.[].nodes.[].vxlan") | Boolean |  | `True` |  | Extend this SVI over VXLAN. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "svi_profiles.[].nodes.[].spanning_tree_priority") | Integer |  |  |  | Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.<br>The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "svi_profiles.[].nodes.[].mtu") | Integer |  |  |  | Interface MTU. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "svi_profiles.[].nodes.[].bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "svi_profiles.[].nodes.[].bgp.structured_config") | Dictionary |  |  |  | Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>].<br>This configuration will not be applied to vlan aware bundles.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "svi_profiles.[].nodes.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "svi_profiles.[].nodes.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the VLAN interface in the final EOS configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "svi_profiles.[].nodes.[].structured_config") | Dictionary |  |  |  | Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "svi_profiles.[].nodes.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].name") | String |  |  |  | VLAN name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].enabled") | Boolean |  |  |  | Enable or disable interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;autostate</samp>](## "svi_profiles.[].autostate") | Boolean |  | `True` |  | Set to false to disable automatic management of the interface link state. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "svi_profiles.[].description") | String |  |  |  | SVI description. By default set to VLAN name.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "svi_profiles.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "svi_profiles.[].ip_address") | String |  |  |  | IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_secondaries</samp>](## "svi_profiles.[].ip_address_secondaries") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ip_address_secondaries.[]") | String |  |  |  | IPv4_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "svi_profiles.[].ipv6_address") | String |  |  |  | IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "svi_profiles.[].ipv6_enable") | Boolean |  |  |  | Explicitly enable/disable link-local IPv6 addressing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_virtual</samp>](## "svi_profiles.[].ip_address_virtual") | String |  |  |  | IPv4_address/Mask.<br>IPv4 VXLAN Anycast IP address.<br>Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_virtuals</samp>](## "svi_profiles.[].ipv6_address_virtuals") | List, items: String |  |  |  | IPv6 VXLAN Anycast IP addresses.<br>Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ipv6_address_virtuals.[]") | String |  |  |  | IPv6_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "svi_profiles.[].ipv6_nd") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertise_ipv6_address_virtuals</samp>](## "svi_profiles.[].ipv6_nd.advertise_ipv6_address_virtuals") | Boolean |  |  |  | Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "svi_profiles.[].ipv6_nd.valid_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "svi_profiles.[].ipv6_nd.preferred_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra_dns_servers</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers") | Dictionary |  |  |  | List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.servers") | List, items: Dictionary |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.servers.[].address") | String | Required, Unique |  |  | IPv6 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.servers.[].lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Specifies the lifetime period for this server in seconds.<br>This value overrides lifetime value set by `dns_servers_lifetime` for this server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_lifetime</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.dns_servers_lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Router Advertisement DNS server lifetime value in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay</samp>](## "svi_profiles.[].ipv6_dhcp_relay") | Dictionary |  |  |  | IPv6 DHCP relay settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destinations</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations") | List, items: Dictionary |  |  |  | List of IPv6 DHCP relay destinations. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].address") | String | Required, Unique |  |  | DHCP server's IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].vrf") | String |  |  |  | VRF used to reach the DHCP server.<br>If not set, the VRF of the destination matches the VRF of this interface.<br>Use the `default` to reach the DHCP server through the default VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].local_interface") | String |  |  |  | Local interface to communicate with DHCP server.<br>Mutually exclusive with `source_address` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].source_address") | String |  |  |  | Source IPv6 address to communicate with DHCP server.<br>Mutually exclusive with `local_interface`, which takes precedence if both are set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_address</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].link_address") | String |  |  |  | Override the default link address specified in the relayed DHCP packet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_virtual_secondaries</samp>](## "svi_profiles.[].ip_address_virtual_secondaries") | List, items: String |  |  |  | Secondary IPv4 VXLAN Anycast IP addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ip_address_virtual_secondaries.[]") | String |  |  |  | IPv4_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_virtual_router_addresses</samp>](## "svi_profiles.[].ip_virtual_router_addresses") | List, items: String |  |  |  | IPv4 VARP addresses.<br>Requires an IP address to be configured on the SVI.<br>If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence<br>_if_ there is an ip_address configured for the node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ip_virtual_router_addresses.[]") | String |  |  |  | IPv4_address/Mask or IPv4_address.<br>IPv4_address/Mask will also configure a static route to the SVI per best practice.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_virtual_router_addresses</samp>](## "svi_profiles.[].ipv6_virtual_router_addresses") | List, items: String |  |  |  | IPv6 VARP addresses.<br>Requires an IPv6 address to be configured on the SVI.<br>If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence<br>_if_ there is an ipv6_address configured for the node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "svi_profiles.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "svi_profiles.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "svi_profiles.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.<br>Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "svi_profiles.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.<br>Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "svi_profiles.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "svi_profiles.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface` will configure the OOB management interface as the source interface.<br>- `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.<br>- `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_vrf</samp>](## "svi_profiles.[].ip_helpers.[].source_vrf") | String |  |  |  | VRF to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source VRF name.<br>- If not set, EOS uses the VRF on the SVI. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "svi_profiles.[].static_routes") | List, items: Dictionary |  |  |  | Static routes to be configured on every device where the SVI is configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "svi_profiles.[].static_routes.[].prefix") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "svi_profiles.[].static_routes.[].next_hop") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;track_bfd</samp>](## "svi_profiles.[].static_routes.[].track_bfd") | Boolean |  |  |  | Track next-hop using BFD. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance</samp>](## "svi_profiles.[].static_routes.[].distance") | Integer |  |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tag</samp>](## "svi_profiles.[].static_routes.[].tag") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].static_routes.[].name") | String |  |  |  | description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric</samp>](## "svi_profiles.[].static_routes.[].metric") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "svi_profiles.[].static_routes.[].interface") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_static_routes</samp>](## "svi_profiles.[].ipv6_static_routes") | List, items: Dictionary |  |  |  | IPv6 static routes to be configured on every device where the SVI is configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "svi_profiles.[].ipv6_static_routes.[].prefix") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "svi_profiles.[].ipv6_static_routes.[].next_hop") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;track_bfd</samp>](## "svi_profiles.[].ipv6_static_routes.[].track_bfd") | Boolean |  |  |  | Track next-hop using BFD. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance</samp>](## "svi_profiles.[].ipv6_static_routes.[].distance") | Integer |  |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tag</samp>](## "svi_profiles.[].ipv6_static_routes.[].tag") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].ipv6_static_routes.[].name") | String |  |  |  | description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric</samp>](## "svi_profiles.[].ipv6_static_routes.[].metric") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "svi_profiles.[].ipv6_static_routes.[].interface") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vni_override</samp>](## "svi_profiles.[].vni_override") | Integer |  |  | Min: 1<br>Max: 16777215 | By default the VNI will be derived from "mac_vrf_vni_base".<br>The vni_override allows us to override this value and statically define it (optional).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rt_override</samp>](## "svi_profiles.[].rt_override") | String |  |  |  | By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rt_override will default to vni_override if set.<br><br>rt_override supports two formats:<br>  - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).<br>  - A full RT string with colon separator which will override the full RT.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rd_override</samp>](## "svi_profiles.[].rd_override") | String |  |  |  | By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rd_override will default to rt_override or vni_override if set.<br><br>rd_override supports two formats:<br>  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).<br>  - A full RD string with colon separator which will override the full RD.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "svi_profiles.[].trunk_groups") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].trunk_groups.[]") | String |  |  |  | Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.<br>Requires "enable_trunk_groups: true".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_redistribute_router_mac_system</samp>](## "svi_profiles.[].evpn_redistribute_router_mac_system") | Boolean |  | `False` |  | Configure 'redistribute router-mac system' under BGP for this L3 VLAN. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vxlan</samp>](## "svi_profiles.[].vxlan") | Boolean |  | `True` |  | Extend this SVI over VXLAN. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "svi_profiles.[].spanning_tree_priority") | Integer |  |  |  | Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.<br>The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "svi_profiles.[].mtu") | Integer |  |  |  | Interface MTU. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "svi_profiles.[].bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "svi_profiles.[].bgp.structured_config") | Dictionary |  |  |  | Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>].<br>This configuration will not be applied to vlan aware bundles.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "svi_profiles.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "svi_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the VLAN interface in the final EOS configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "svi_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "svi_profiles.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant. |
+
+=== "YAML"
+
+    ```yaml
+    # Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
+    # Keys are the same used under SVIs. Keys defined under SVIs take precedence.
+    # Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
+    # 1. svi.nodes[inventory_hostname].structured_config
+    # 2. svi_profile.nodes[inventory_hostname].structured_config
+    # 3. svi_parent_profile.nodes[inventory_hostname].structured_config
+    # 4. Further ancestor profiles' nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance is enabled)
+    # 5. svi.structured_config
+    # 6. svi_profile.structured_config
+    # 7. svi_parent_profile.structured_config
+    # 8. Further ancestor profiles' structured_config in nearest-to-farthest order (when recursive inheritance is enabled)
+    svi_profiles:
+
+        # Profile name.
+      - profile: <str; required; unique>
+
+        # Parent SVI profile name to apply.
+        # By default, profile inheritance is limited to two levels: svi -> svi_profile -> parent_profile.
+        # From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+        # allows profiles to inherit settings across any number of levels.
+        parent_profile: <str>
+
+        # Define node specific configuration, such as unique IP addresses.
+        # Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.
+        nodes:
+
+            # Node inventory hostname.
+          - node: <str; required; unique>
+
+            # VLAN name.
+            name: <str>
+
+            # Enable or disable interface.
+            enabled: <bool>
+
+            # Set to false to disable automatic management of the interface link state.
+            autostate: <bool; default=True>
+
+            # SVI description. By default set to VLAN name.
+            description: <str>
+
+            # Accept gratuitous ARP.
+            arp_gratuitous_accept: <bool>
+
+            # IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+            ip_address: <str>
+            ip_address_secondaries:
+
+                # IPv4_address/Mask.
+              - <str>
+
+            # IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
+            ipv6_address: <str>
+
+            # Explicitly enable/disable link-local IPv6 addressing.
+            ipv6_enable: <bool>
+
+            # IPv4_address/Mask.
+            # IPv4 VXLAN Anycast IP address.
+            # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
+            ip_address_virtual: <str>
+
+            # IPv6 VXLAN Anycast IP addresses.
+            # Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.
+            ipv6_address_virtuals:
+
+                # IPv6_address/Mask.
+              - <str>
+            ipv6_nd:
+
+              # Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+              advertise_ipv6_address_virtuals: <bool>
+
+              # In seconds <0-4294967295> or infinite.
+              valid_lifetime: <str>
+
+              # In seconds <0-4294967295> or infinite.
+              preferred_lifetime: <str>
+
+              # List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+              ra_dns_servers:
+                servers: # >=1 items
+
+                    # IPv6 address of DNS server.
+                  - address: <str; required; unique>
+
+                    # Specifies the lifetime period for this server in seconds.
+                    # This value overrides lifetime value set by `dns_servers_lifetime` for this server.
+                    lifetime: <int; 0-4294967295>
+
+                # Router Advertisement DNS server lifetime value in seconds.
+                dns_servers_lifetime: <int; 0-4294967295>
+
+            # IPv6 DHCP relay settings.
+            ipv6_dhcp_relay:
+
+              # List of IPv6 DHCP relay destinations.
+              destinations:
+
+                  # DHCP server's IPv6 address.
+                - address: <str; required; unique>
+
+                  # VRF used to reach the DHCP server.
+                  # If not set, the VRF of the destination matches the VRF of this interface.
+                  # Use the `default` to reach the DHCP server through the default VRF.
+                  vrf: <str>
+
+                  # Local interface to communicate with DHCP server.
+                  # Mutually exclusive with `source_address` and takes precedence over it.
+                  local_interface: <str>
+
+                  # Source IPv6 address to communicate with DHCP server.
+                  # Mutually exclusive with `local_interface`, which takes precedence if both are set.
+                  source_address: <str>
+
+                  # Override the default link address specified in the relayed DHCP packet.
+                  link_address: <str>
+
+            # Secondary IPv4 VXLAN Anycast IP addresses.
+            ip_address_virtual_secondaries:
+
+                # IPv4_address/Mask.
+              - <str>
+
+            # IPv4 VARP addresses.
+            # Requires an IP address to be configured on the SVI.
+            # If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence
+            # _if_ there is an ip_address configured for the node.
+            ip_virtual_router_addresses:
+
+                # IPv4_address/Mask or IPv4_address.
+                # IPv4_address/Mask will also configure a static route to the SVI per best practice.
+              - <str>
+
+            # IPv6 VARP addresses.
+            # Requires an IPv6 address to be configured on the SVI.
+            # If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence
+            # _if_ there is an ipv6_address configured for the node.
+            ipv6_virtual_router_addresses:
+
+                # IPv6_address.
+              - <str>
+
+            # Name of the IPv4 access-list to be assigned in the ingress direction.
+            # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+            ipv4_acl_in: <str>
+
+            # Name of the IPv4 Access-list to be assigned in the egress direction.
+            # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+            ipv4_acl_out: <str>
+
+            # Name of the IPv6 access-list to be assigned in the ingress direction.
+            # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+            # resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+            # Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+            ipv6_acl_in: <str>
+
+            # Name of the IPv6 access-list to be assigned in the egress direction.
+            # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+            # resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+            # Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+            ipv6_acl_out: <str>
+
+            # IP helper for DHCP relay.
+            ip_helpers:
+
+                # IPv4 DHCP server IP.
+              - ip_helper: <str; required; unique>
+
+                # Interface name to originate DHCP relay packets to DHCP server.
+                # The value will be interpreted according to these rules:
+                # - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+                # - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+                # - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+                # - Any other string will be used directly as the source interface.
+                source_interface: <str>
+
+                # VRF to originate DHCP relay packets to DHCP server.
+                # The value will be interpreted according to these rules:
+                # - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                # - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                #   An error will be raised if inband management is not configured for the device.
+                # - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                # - Any other string will be used directly as the source VRF name.
+                # - If not set, EOS uses the VRF on the SVI.
+                source_vrf: <str>
+
+            # Static routes to be configured on every device where the SVI is configured.
+            static_routes:
+              - prefix: <str; required>
+                next_hop: <str>
+
+                # Track next-hop using BFD.
+                track_bfd: <bool>
+                distance: <int; 1-255>
+                tag: <int; 0-4294967295>
+
+                # description.
+                name: <str>
+                metric: <int; 0-4294967295>
+                interface: <str>
+
+            # IPv6 static routes to be configured on every device where the SVI is configured.
+            ipv6_static_routes:
+              - prefix: <str; required>
+                next_hop: <str>
+
+                # Track next-hop using BFD.
+                track_bfd: <bool>
+                distance: <int; 1-255>
+                tag: <int; 0-4294967295>
+
+                # description.
+                name: <str>
+                metric: <int; 0-4294967295>
+                interface: <str>
+
+            # By default the VNI will be derived from "mac_vrf_vni_base".
+            # The vni_override allows us to override this value and statically define it (optional).
+            vni_override: <int; 1-16777215>
+
+            # By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+            # The rt_override allows us to override this value and statically define it.
+            # rt_override will default to vni_override if set.
+            #
+            # rt_override supports two formats:
+            #   - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+            #   - A full RT string with colon separator which will override the full RT.
+            rt_override: <str>
+
+            # By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+            # The rt_override allows us to override this value and statically define it.
+            # rd_override will default to rt_override or vni_override if set.
+            #
+            # rd_override supports two formats:
+            #   - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+            #   - A full RD string with colon separator which will override the full RD.
+            rd_override: <str>
+            trunk_groups:
+
+                # Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.
+                # Requires "enable_trunk_groups: true".
+              - <str>
+
+            # Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+            evpn_redistribute_router_mac_system: <bool; default=False>
+
+            # Extend this SVI over VXLAN.
+            vxlan: <bool; default=True>
+
+            # Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.
+            # The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).
+            spanning_tree_priority: <int>
+
+            # Interface MTU.
+            mtu: <int>
+            bgp:
+
+              # Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>].
+              # This configuration will not be applied to vlan aware bundles.
+              structured_config: <dict>
+
+              # EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.
+              raw_eos_cli: <str>
+
+            # EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
+            raw_eos_cli: <str>
+
+            # Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
+            structured_config: <dict>
+
+            # Explicitly extend SVI to remote EVPN domains.
+            # Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
+            # Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant.
+            evpn_l2_multi_domain: <bool>
+
+        # VLAN name.
+        name: <str>
+
+        # Enable or disable interface.
+        enabled: <bool>
+
+        # Set to false to disable automatic management of the interface link state.
+        autostate: <bool; default=True>
+
+        # SVI description. By default set to VLAN name.
+        description: <str>
+
+        # Accept gratuitous ARP.
+        arp_gratuitous_accept: <bool>
+
+        # IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+        ip_address: <str>
+        ip_address_secondaries:
+
+            # IPv4_address/Mask.
+          - <str>
+
+        # IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
+        ipv6_address: <str>
+
+        # Explicitly enable/disable link-local IPv6 addressing.
+        ipv6_enable: <bool>
+
+        # IPv4_address/Mask.
+        # IPv4 VXLAN Anycast IP address.
+        # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
+        ip_address_virtual: <str>
+
+        # IPv6 VXLAN Anycast IP addresses.
+        # Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.
+        ipv6_address_virtuals:
+
+            # IPv6_address/Mask.
+          - <str>
+        ipv6_nd:
+
+          # Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+          advertise_ipv6_address_virtuals: <bool>
+
+          # In seconds <0-4294967295> or infinite.
+          valid_lifetime: <str>
+
+          # In seconds <0-4294967295> or infinite.
+          preferred_lifetime: <str>
+
+          # List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+          ra_dns_servers:
+            servers: # >=1 items
+
+                # IPv6 address of DNS server.
+              - address: <str; required; unique>
+
+                # Specifies the lifetime period for this server in seconds.
+                # This value overrides lifetime value set by `dns_servers_lifetime` for this server.
+                lifetime: <int; 0-4294967295>
+
+            # Router Advertisement DNS server lifetime value in seconds.
+            dns_servers_lifetime: <int; 0-4294967295>
+
+        # IPv6 DHCP relay settings.
+        ipv6_dhcp_relay:
+
+          # List of IPv6 DHCP relay destinations.
+          destinations:
+
+              # DHCP server's IPv6 address.
+            - address: <str; required; unique>
+
+              # VRF used to reach the DHCP server.
+              # If not set, the VRF of the destination matches the VRF of this interface.
+              # Use the `default` to reach the DHCP server through the default VRF.
+              vrf: <str>
+
+              # Local interface to communicate with DHCP server.
+              # Mutually exclusive with `source_address` and takes precedence over it.
+              local_interface: <str>
+
+              # Source IPv6 address to communicate with DHCP server.
+              # Mutually exclusive with `local_interface`, which takes precedence if both are set.
+              source_address: <str>
+
+              # Override the default link address specified in the relayed DHCP packet.
+              link_address: <str>
+
+        # Secondary IPv4 VXLAN Anycast IP addresses.
+        ip_address_virtual_secondaries:
+
+            # IPv4_address/Mask.
+          - <str>
+
+        # IPv4 VARP addresses.
+        # Requires an IP address to be configured on the SVI.
+        # If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence
+        # _if_ there is an ip_address configured for the node.
+        ip_virtual_router_addresses:
+
+            # IPv4_address/Mask or IPv4_address.
+            # IPv4_address/Mask will also configure a static route to the SVI per best practice.
+          - <str>
+
+        # IPv6 VARP addresses.
+        # Requires an IPv6 address to be configured on the SVI.
+        # If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence
+        # _if_ there is an ipv6_address configured for the node.
+        ipv6_virtual_router_addresses:
+
+            # IPv6_address.
+          - <str>
+
+        # Name of the IPv4 access-list to be assigned in the ingress direction.
+        # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+        ipv4_acl_in: <str>
+
+        # Name of the IPv4 Access-list to be assigned in the egress direction.
+        # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+        ipv4_acl_out: <str>
+
+        # Name of the IPv6 access-list to be assigned in the ingress direction.
+        # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+        # resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+        # Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+        ipv6_acl_in: <str>
+
+        # Name of the IPv6 access-list to be assigned in the egress direction.
+        # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+        # resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+        # Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+        ipv6_acl_out: <str>
+
+        # IP helper for DHCP relay.
+        ip_helpers:
+
+            # IPv4 DHCP server IP.
+          - ip_helper: <str; required; unique>
+
+            # Interface name to originate DHCP relay packets to DHCP server.
+            # The value will be interpreted according to these rules:
+            # - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+            # - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+            # - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+            # - Any other string will be used directly as the source interface.
+            source_interface: <str>
+
+            # VRF to originate DHCP relay packets to DHCP server.
+            # The value will be interpreted according to these rules:
+            # - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+            #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            # - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+            #   An error will be raised if inband management is not configured for the device.
+            # - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+            # - Any other string will be used directly as the source VRF name.
+            # - If not set, EOS uses the VRF on the SVI.
+            source_vrf: <str>
+
+        # Static routes to be configured on every device where the SVI is configured.
+        static_routes:
+          - prefix: <str; required>
+            next_hop: <str>
+
+            # Track next-hop using BFD.
+            track_bfd: <bool>
+            distance: <int; 1-255>
+            tag: <int; 0-4294967295>
+
+            # description.
+            name: <str>
+            metric: <int; 0-4294967295>
+            interface: <str>
+
+        # IPv6 static routes to be configured on every device where the SVI is configured.
+        ipv6_static_routes:
+          - prefix: <str; required>
+            next_hop: <str>
+
+            # Track next-hop using BFD.
+            track_bfd: <bool>
+            distance: <int; 1-255>
+            tag: <int; 0-4294967295>
+
+            # description.
+            name: <str>
+            metric: <int; 0-4294967295>
+            interface: <str>
+
+        # By default the VNI will be derived from "mac_vrf_vni_base".
+        # The vni_override allows us to override this value and statically define it (optional).
+        vni_override: <int; 1-16777215>
+
+        # By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+        # The rt_override allows us to override this value and statically define it.
+        # rt_override will default to vni_override if set.
+        #
+        # rt_override supports two formats:
+        #   - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+        #   - A full RT string with colon separator which will override the full RT.
+        rt_override: <str>
+
+        # By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+        # The rt_override allows us to override this value and statically define it.
+        # rd_override will default to rt_override or vni_override if set.
+        #
+        # rd_override supports two formats:
+        #   - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+        #   - A full RD string with colon separator which will override the full RD.
+        rd_override: <str>
+        trunk_groups:
+
+            # Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.
+            # Requires "enable_trunk_groups: true".
+          - <str>
+
+        # Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+        evpn_redistribute_router_mac_system: <bool; default=False>
+
+        # Extend this SVI over VXLAN.
+        vxlan: <bool; default=True>
+
+        # Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.
+        # The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).
+        spanning_tree_priority: <int>
+
+        # Interface MTU.
+        mtu: <int>
+        bgp:
+
+          # Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>].
+          # This configuration will not be applied to vlan aware bundles.
+          structured_config: <dict>
+
+          # EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.
+          raw_eos_cli: <str>
+
+        # EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
+        raw_eos_cli: <str>
+
+        # Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
+        structured_config: <dict>
+
+        # Explicitly extend SVI to remote EVPN domains.
+        # Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
+        # Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant.
+        evpn_l2_multi_domain: <bool>
+    ```

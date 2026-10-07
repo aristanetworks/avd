@@ -1,0 +1,30 @@
+---
+# Test case 5: no tcam_profile - check all additional_profiles are present
+# Expected output:
+# hardware tcam
+#    profile additional-profile
+#       source flash:/additional-profile.conf
+#    !
+#    profile custom-profile
+#       source flash:/custom-profile.conf
+#    !
+# (no system profile line)
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: tcam-profile-5
+      mgmt_ip: 192.168.0.2/24
+      platform: test-platform
+
+tcam_profiles:
+  - name: custom-profile
+    source: flash:/custom-profile.conf
+  - name: additional-profile
+    source: flash:/additional-profile.conf
+
+platform_settings:
+  - platforms: ["test-platform"]
+    additional_tcam_profiles:
+      - additional-profile
+      - custom-profile

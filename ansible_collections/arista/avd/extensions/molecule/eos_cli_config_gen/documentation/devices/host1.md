@@ -18,6 +18,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Clock Settings](#clock-settings)
   - [NTP](#ntp)
   - [PTP](#ptp)
+  - [System MAC Address](#system-mac-address)
   - [System Control-Plane](#system-control-plane)
   - [Management SSH](#management-ssh)
   - [Management Tech-Support](#management-tech-support)
@@ -176,6 +177,7 @@ Serial Number: DEADBEEFC0FFEW
 - [Routing](#routing)
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
+  - [VRRP](#vrrp)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -283,6 +285,9 @@ Serial Number: DEADBEEFC0FFEW
   - [NAT Synchronization](#nat-synchronization)
   - [NAT Translation Settings](#nat-translation-settings)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
+- [IP Software Forwarding](#ip-software-forwarding)
+  - [IP Software Forwarding Summary](#ip-software-forwarding-summary)
+  - [IP Software Forwarding Configuration](#ip-software-forwarding-configuration)
 - [IP Hardware FIB](#ip-hardware-fib)
   - [IP Hardware FIB Summary](#ip-hardware-fib-summary)
   - [IP Hardware FIB Configuration](#ip-hardware-fib-configuration)
@@ -822,6 +827,10 @@ ptp monitor threshold missing-message follow-up 203 sequence-ids
 ptp monitor threshold missing-message delay-resp 202 sequence-ids
 ptp monitor threshold missing-message announce 201 sequence-ids
 ```
+
+### System MAC Address
+
+**MAC address:** 00:1c:73:00:00:01
 
 ### System Control-Plane
 
@@ -2364,6 +2373,7 @@ alias siib show ip interface brief
 
 - DHCP Relay is disabled for tunnelled requests
 - DHCP Relay is disabled for MLAG peer-link requests
+- DHCP Relay reply source-address validation is enabled
 - Client requests flooding suppression for VLANs: 500-510,1000,2000,3000
 
 | DHCP Relay Servers |
@@ -2379,6 +2389,7 @@ dhcp relay
    tunnel requests disabled
    mlag peer-link requests disabled
    client requests flooding suppression vlan 500-510,1000,2000,3000
+   reply source-address validation
    server dhcp-relay-server1
    server dhcp-relay-server2
 ```
@@ -2653,16 +2664,16 @@ environment fan-speed minimum 60
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | mgt | key,<removed> | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | mgt | key,<removed> | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | /Sysdb/mcs/ | True |
 
 #### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy -flowdns=false -somecustomflag -grpcport=9910 -enablefeaturex=true -disablefeaturey=false
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -sysdbexcludes=/Sysdb/mcs/ -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy -flowdns=false -somecustomflag -grpcport=9910 -enablefeaturex=true -disablefeaturey=false
    no shutdown
 ```
 
@@ -2798,9 +2809,9 @@ no logging event link-status global
 
 MCS client is enabled
 
-| Secondary CVX cluster | Server Hosts | Enabled |
-| --------------------- | ------------ | ------- |
-| default | 10.90.224.188, 10.90.224.189, leaf2.atd.lab | True |
+| Secondary CVX cluster | Server Hosts | VRF | Source Interface | Enabled |
+| --------------------- | ------------ | --- | ---------------- | ------- |
+| default | 10.90.224.188, 10.90.224.189, leaf2.atd.lab | mgt | Loopback0 | True |
 
 #### MCS Client Device Configuration
 
@@ -2814,6 +2825,8 @@ mcs client
       server host 10.90.224.188
       server host 10.90.224.189
       server host leaf2.atd.lab
+      source-interface Loopback0
+      vrf mgt
 ```
 
 ### SNMP
@@ -2899,18 +2912,23 @@ mcs client
 
 #### SNMP Users Configuration
 
-| User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
-| ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
-| USER-READ-NO-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | - | - | - | - | - |
-| USER-READ-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | sha | - | - | - | - |
-| USER-READ-AUTH-PRIV | GRP-READ-ONLY | v3 | sha | aes | - | - | - |
-| USER-READ-NO-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | - | - | - | - | 424242424242424242 |
-| USER-READ-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - | - | - | 424242424242424242 |
-| USER-READ-AUTH-PRIV-LOC | GRP-READ-ONLY | v3 | sha | aes | - | - | 424242424242424242 |
-| USER-WRITE | GRP-READ-WRITE | v3 | sha | aes | - | - | - |
-| REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | 42.42.42.42 | - | - |
-| REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
-| REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | aes | 42.42.42.42 | - | DEADBEEFCAFE123456 |
+| User | Group | Version | Authentication | Auth Type | Privacy | Priv Type | Remote Address | Remote Port | Engine ID |
+| ---- | ----- | ------- | -------------- | --------- | ------- | --------- | -------------- | ----------- | --------- |
+| USER-READ-NO-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | - | - | - | - | - | - | - |
+| USER-READ-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | sha | - | - | - | - | - | - |
+| USER-READ-AUTH-PRIV | GRP-READ-ONLY | v3 | sha | - | aes | - | - | - | - |
+| USER-READ-NO-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | - | - | - | - | - | - | 424242424242424242 |
+| USER-READ-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - | - | - | - | - | 424242424242424242 |
+| USER-READ-AUTH-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - | aes | - | - | - | 424242424242424242 |
+| USER-WRITE | GRP-READ-WRITE | v3 | sha | - | aes | - | - | - | - |
+| REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | - | - | 42.42.42.42 | - | - |
+| REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | - | - | 42.42.42.42 | 666 | - |
+| REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | - | aes | - | 42.42.42.42 | - | DEADBEEFCAFE123456 |
+| USER-AUTH-TYPE7 | GRP-READ | v3 | md5 | 7 | - | - | - | - | f5717f500000bb417100 |
+| USER-AUTH-PRIV-TYPE0 | GRP-WRITE | v3 | sha | 0 | aes | 0 | - | - | f5717f500000bb417100 |
+| USER-AUTH-PRIV-WITHOUT-LOCALIZED | GRP-WRITE | v3 | sha | - | aes256 | - | - | - | - |
+| USER-LOCALIZED-TYPE7 | GRP-WRITE | v3 | sha | 7 | aes | 7 | - | - | f5717f500000bb417100 |
+| USER-REMOTE-TYPE7 | GRP-REMOTE | v3 | md5 | 7 | des | 7 | 10.1.1.1 | - | f5717f500000bb417100 |
 
 #### SNMP Extensions
 
@@ -2945,6 +2963,10 @@ snmp-server community <removed> view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
 snmp-server community <removed> ro
 snmp-server group GRP-READ-ONLY v3 priv read v3read
 snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
+snmp-server user USER-AUTH-PRIV-TYPE0 GRP-WRITE v3 localized f5717f500000bb417100 auth sha key 0 <removed> priv aes key 0 <removed>
+snmp-server user USER-AUTH-PRIV-WITHOUT-LOCALIZED GRP-WRITE v3 auth sha <removed> priv aes256 <removed>
+snmp-server user USER-AUTH-TYPE7 GRP-READ v3 localized f5717f500000bb417100 auth md5 key 7 <removed>
+snmp-server user USER-LOCALIZED-TYPE7 GRP-WRITE v3 localized f5717f500000bb417100 auth sha key 7 <removed> priv aes key 7 <removed>
 snmp-server user USER-READ-AUTH-NO-PRIV GRP-READ-ONLY v3 auth sha <removed>
 snmp-server user USER-READ-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha <removed>
 snmp-server user USER-READ-AUTH-PRIV GRP-READ-ONLY v3 auth sha <removed> priv aes <removed>
@@ -2959,6 +2981,7 @@ snmp-server engineID remote 42.42.42.42 udp-port 666 424242424242DEAD6666
 snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed> priv aes <removed>
 snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
 snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
+snmp-server user USER-REMOTE-TYPE7 GRP-REMOTE remote 10.1.1.1 v3 localized f5717f500000bb417100 auth md5 key 7 <removed> priv des key 7 <removed>
 snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ-AUTH-PRIV
 snmp-server host 10.6.75.121 vrf MGMT version 1 <removed>
 snmp-server host 10.6.75.121 vrf MGMT version 2c <removed>
@@ -6633,6 +6656,21 @@ interface Ethernet90
 | Port-Channel101 | 111 | - |
 | Port-Channel103 | - | True |
 
+##### Multicast Routing
+
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
+| --------- | ---------- | --------------------- | -------------------- |
+| Port-Channel99 | IPv4 | True | ACL_MULTICAST_OUTBOUND (out) |
+| Port-Channel99 | IPv6 | True | ff00::/8 (out), ff01::/16 (out) |
+| Port-Channel301 | IPv4 | - | ACL_NO_STATIC (out) |
+| Port-Channel301 | IPv6 | - | ff04::/16 (out) |
+| Port-Channel302 | IPv4 | True | MulticastBoundaryAcl, ACL_NO_OUT_FLAG |
+| Port-Channel302 | IPv6 | True | ACL_IPV6_MULTICAST (out), MulticastAclIpv6 (out) |
+| Port-Channel303 | IPv4 | True | 224.0.0.0/8 (out), 224.1.0.0/16 |
+| Port-Channel303 | IPv6 | True | ff02::/16 (out) |
+| Port-Channel400 | IPv4 | True | - |
+| Port-Channel400 | IPv6 | True | - |
+
 ##### VLAN Translations
 
 | Interface | Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
@@ -7071,6 +7109,11 @@ interface Port-Channel99
    pim ipv4 dr-priority 200
    pim ipv4 neighbor filter Test_Filter_PortChannel
    pim ipv4 bfd
+   multicast ipv4 boundary ACL_MULTICAST_OUTBOUND out
+   multicast ipv6 boundary ff00::/8 out
+   multicast ipv6 boundary ff01::/16 out
+   multicast ipv4 static
+   multicast ipv6 static
    no logging event storm-control discards
    vmtracer vmware-esx
 !
@@ -7496,6 +7539,8 @@ interface Port-Channel301
    ipv6 nd managed-config-flag
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:300::/64 400 200 no-autoconfig
+   multicast ipv4 boundary ACL_NO_STATIC out
+   multicast ipv6 boundary ff04::/16 out
    isis enable ISIS_TEST
    isis authentication mode md5 level-1
    isis authentication key 0 <removed> level-1
@@ -7505,11 +7550,22 @@ interface Port-Channel302
    no shutdown
    ipv6 address 2001:db8:302::1/64
    ipv6 nd managed-config-flag
+   multicast ipv4 boundary MulticastBoundaryAcl
+   multicast ipv4 boundary ACL_NO_OUT_FLAG
+   multicast ipv6 boundary ACL_IPV6_MULTICAST out
+   multicast ipv6 boundary MulticastAclIpv6 out
+   multicast ipv4 static
+   multicast ipv6 static
 !
 interface Port-Channel303
    description Traffic Engineering Static Delay Coverage
    no switchport
    ip address 100.64.127.10/31
+   multicast ipv4 boundary 224.0.0.0/8 out
+   multicast ipv4 boundary 224.1.0.0/16
+   multicast ipv6 boundary ff02::/16 out
+   multicast ipv4 static
+   multicast ipv6 static
    traffic-engineering
    traffic-engineering bandwidth 42 percent
    traffic-engineering min-delay static 7 microseconds
@@ -7543,6 +7599,8 @@ interface Port-Channel400
    ipv6 nd other-config-flag
    ipv6 access-group TEST-V6-IN in
    ipv6 access-group TEST-V6-OUT out
+   multicast ipv4 static
+   multicast ipv6 static
 !
 interface Port-Channel667
    description Multiple VRIDs
@@ -8667,6 +8725,19 @@ Multi agent routing protocol model enabled
 ```eos
 !
 service routing protocols model multi-agent
+```
+
+### VRRP
+
+#### VRRP Summary
+
+VRRPv2 IPv4 Authentication Anti-Replay: Enabled
+
+#### VRRP Device Configuration
+
+```eos
+!
+vrrp ipv4 authentication anti-replay
 ```
 
 ### Virtual Router MAC Address
@@ -10167,6 +10238,7 @@ ASN Notation: asdot
 | LFIB entry installation skipped | True |
 | Label local-termination | implicit-null |
 | Neighbor default next-hop-self | True |
+| Next-hop resolution | Disabled |
 
 ##### IPv4 BGP-LU Peer-groups
 
@@ -10269,6 +10341,7 @@ ASN Notation: asdot
 #### Router BGP VPN-IPv6 Address Family
 
 - VPN import pruning is **enabled**
+- Next-hop resolution is **disabled**
 
 ##### VPN-IPv6 Neighbors
 
@@ -10859,6 +10932,7 @@ router bgp 65101
       bgp additional-paths install
       bgp additional-paths receive
       bgp additional-paths send ecmp limit 20
+      next-hop resolution disabled
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor foo additional-paths receive
       neighbor foo prefix-list PL-BAR-v4-IN in
@@ -10945,6 +11019,7 @@ router bgp 65101
       bgp additional-paths send ecmp limit 20
       bgp next-hop-unchanged
       neighbor default next-hop-self
+      next-hop resolution disabled
       next-hop resolution ribs tunnel-rib colored system-colored-tunnel-rib tunnel-rib test-rib system-connected
       neighbor PG-BGP-LU activate
       neighbor PG-BGP-LU graceful-restart
@@ -11054,6 +11129,7 @@ router bgp 65101
       bgp additional-paths install ecmp-primary
       bgp additional-paths receive
       bgp additional-paths send any
+      next-hop resolution disabled
       neighbor baz additional-paths receive
       neighbor baz prefix-list PL-BAR-v6-IN in
       neighbor baz prefix-list PL-BAR-v6-OUT out
@@ -11259,6 +11335,7 @@ router bgp 65101
       neighbor 2001:cafe:192:168::5 default-route rcf Address_Family_VPN_IPV6_In()
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       domain identifier 65000:0
+      next-hop resolution disabled
       route import match-failure action discard
    !
    vrf BLUE-C1
@@ -14347,6 +14424,22 @@ ip nat synchronization
    local-interface Ethernet1
    port-range 1024 65535
    port-range split disabled
+```
+
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+| Setting | Value |
+| ------- | ----- |
+| MTU Size | 9000 |
+| MTU Exceed Action | Drop |
+
+### IP Software Forwarding Configuration
+
+```eos
+ip software forwarding mtu 9000
+ip software forwarding mtu exceed action drop
 ```
 
 ## IP Hardware FIB
