@@ -17,6 +17,7 @@ from pyavd._utils.run_once import RunOnceMethodStateHelper
 from .address_locking import AddressLockingMixin
 from .mlag import MlagMixin
 from .sflow import SflowMixin
+from .system import SystemMixin
 from .underlay import UnderlayMixin
 from .utils import UtilsMixin
 
@@ -27,7 +28,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
 
 
-class StructuredConfigUtilsProtocol(AddressLockingMixin, UtilsMixin, MlagMixin, UnderlayMixin, SflowMixin, Protocol):
+class StructuredConfigUtilsProtocol(AddressLockingMixin, UtilsMixin, MlagMixin, UnderlayMixin, SflowMixin, SystemMixin, Protocol):
     """Protocol for the StructuredConfigUtils Class with commonly used methods to be shared between all the python modules loaded in eos_designs."""
 
     structured_config: EosCliConfigGen
