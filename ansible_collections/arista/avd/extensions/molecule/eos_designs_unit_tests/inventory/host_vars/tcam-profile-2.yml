@@ -1,0 +1,23 @@
+---
+# Test case 2: custom profile in tcam_profile - check custom profile configured
+# Expected output:
+# hardware tcam
+#    profile custom-profile
+#       source flash:/custom-profile.conf
+#    !
+#    system profile custom-profile
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: tcam-profile-2
+      mgmt_ip: 192.168.0.2/24
+      platform: test-platform
+
+tcam_profiles:
+  - name: custom-profile
+    source: flash:/custom-profile.conf
+
+platform_settings:
+  - platforms: ["test-platform"]
+    tcam_profile: custom-profile

@@ -7,13 +7,14 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>svi_profiles</samp>](## "svi_profiles") | List, items: Dictionary |  |  |  | Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.<br>Keys are the same used under SVIs. Keys defined under SVIs take precedence.<br>Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:<br>1. svi.nodes[inventory_hostname].structured_config<br>2. svi_profile.nodes[inventory_hostname].structured_config<br>3. svi_parent_profile.nodes[inventory_hostname].structured_config<br>4. svi.structured_config<br>5. svi_profile.structured_config<br>6. svi_parent_profile.structured_config<br> |
+    | [<samp>svi_profiles</samp>](## "svi_profiles") | List, items: Dictionary |  |  |  | Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.<br>Keys are the same used under SVIs. Keys defined under SVIs take precedence.<br>Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:<br>1. svi.nodes[inventory_hostname].structured_config<br>2. svi_profile.nodes[inventory_hostname].structured_config<br>3. svi_parent_profile.nodes[inventory_hostname].structured_config<br>4. Further ancestor profiles' nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance is enabled)<br>5. svi.structured_config<br>6. svi_profile.structured_config<br>7. svi_parent_profile.structured_config<br>8. Further ancestor profiles' structured_config in nearest-to-farthest order (when recursive inheritance is enabled)<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "svi_profiles.[].profile") | String | Required, Unique |  |  | Profile name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "svi_profiles.[].parent_profile") | String |  |  |  | Parent SVI profile name to apply.<br>svi_profiles can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "svi_profiles.[].parent_profile") | String |  |  |  | Parent SVI profile name to apply.<br>By default, profile inheritance is limited to two levels: svi -> svi_profile -> parent_profile.<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "svi_profiles.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "svi_profiles.[].nodes.[].node") | String | Required, Unique |  |  | Node inventory hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].nodes.[].name") | String |  |  |  | VLAN name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].enabled") | Boolean |  |  |  | Enable or disable interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;autostate</samp>](## "svi_profiles.[].nodes.[].autostate") | Boolean |  | `True` |  | Set to false to disable automatic management of the interface link state. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "svi_profiles.[].nodes.[].description") | String |  |  |  | SVI description. By default set to VLAN name.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "svi_profiles.[].nodes.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "svi_profiles.[].nodes.[].ip_address") | String |  |  |  | IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node. |
@@ -89,6 +90,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "svi_profiles.[].nodes.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].name") | String |  |  |  | VLAN name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].enabled") | Boolean |  |  |  | Enable or disable interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;autostate</samp>](## "svi_profiles.[].autostate") | Boolean |  | `True` |  | Set to false to disable automatic management of the interface link state. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "svi_profiles.[].description") | String |  |  |  | SVI description. By default set to VLAN name.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "svi_profiles.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "svi_profiles.[].ip_address") | String |  |  |  | IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node. |
@@ -172,16 +174,20 @@
     # 1. svi.nodes[inventory_hostname].structured_config
     # 2. svi_profile.nodes[inventory_hostname].structured_config
     # 3. svi_parent_profile.nodes[inventory_hostname].structured_config
-    # 4. svi.structured_config
-    # 5. svi_profile.structured_config
-    # 6. svi_parent_profile.structured_config
+    # 4. Further ancestor profiles' nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance is enabled)
+    # 5. svi.structured_config
+    # 6. svi_profile.structured_config
+    # 7. svi_parent_profile.structured_config
+    # 8. Further ancestor profiles' structured_config in nearest-to-farthest order (when recursive inheritance is enabled)
     svi_profiles:
 
         # Profile name.
       - profile: <str; required; unique>
 
         # Parent SVI profile name to apply.
-        # svi_profiles can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+        # By default, profile inheritance is limited to two levels: svi -> svi_profile -> parent_profile.
+        # From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+        # allows profiles to inherit settings across any number of levels.
         parent_profile: <str>
 
         # Define node specific configuration, such as unique IP addresses.
@@ -196,6 +202,9 @@
 
             # Enable or disable interface.
             enabled: <bool>
+
+            # Set to false to disable automatic management of the interface link state.
+            autostate: <bool; default=True>
 
             # SVI description. By default set to VLAN name.
             description: <str>
@@ -441,6 +450,9 @@
 
         # Enable or disable interface.
         enabled: <bool>
+
+        # Set to false to disable automatic management of the interface link state.
+        autostate: <bool; default=True>
 
         # SVI description. By default set to VLAN name.
         description: <str>

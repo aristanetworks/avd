@@ -1918,6 +1918,9 @@ keys:
                 1000\n  - 500-510\n  - 2000,3000"
               convert_types:
               - int
+      reply_source_address_validation:
+        type: bool
+        description: Validate reply source address matches configured server.
   dhcp_servers:
     type: list
     primary_key: vrf
@@ -7843,6 +7846,26 @@ keys:
       connection_tx_interface_match_source_ip:
         type: bool
         description: Match source interface of the IPsec connection.
+  ip_software_forwarding:
+    type: dict
+    keys:
+      mtu:
+        type: dict
+        keys:
+          size:
+            type: int
+            convert_types:
+            - str
+            min: 68
+            max: 65535
+            description: 'IPv4 software-forwarding MTU threshold in bytes.
+
+              Defaults to 1500 on EOS.'
+          exceed_action_drop:
+            type: bool
+            description: 'Drop IPv4 packets larger than `mtu.size` in software.
+
+              Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.'
   ip_ssh_client:
     type: dict
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
@@ -9730,6 +9753,7 @@ keys:
         max: 86400
         convert_types:
         - str
+        description: Idle timeout in minutes.
   management_cvx:
     type: dict
     keys:
@@ -19062,6 +19086,11 @@ keys:
 
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes
                       precedence.'
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           redistribute_routes:
             type: list
             deprecation:
@@ -19432,6 +19461,11 @@ keys:
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes
                     precedence.'
                   type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           next_hops:
             type: list
             primary_key: ip_address
@@ -20122,6 +20156,11 @@ keys:
 
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes
                       precedence.'
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           redistribute_routes:
             type: list
             deprecation:
@@ -20821,6 +20860,11 @@ keys:
             keys:
               source_interface:
                 type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
       vrfs:
         type: list
         primary_key: name
@@ -25619,27 +25663,30 @@ keys:
           keys:
             name:
               type: str
-              description: Username.
+              description: 'SNMP username.
+
+                Maximum length is 32 characters.'
             group:
               type: str
               description: Group name.
             remote_address:
               type: str
-              description: 'Hostname or ip of remote engine.
+              description: 'Hostname or IP address of the remote SNMP engine.
 
-                The remote_address and udp_port are used for remote users.
+                When set, this user is rendered as a remote SNMPv3 user and optional
+                `udp_port` is appended.
 
-                A `snmp_server.engine_ids.remotes` entry with a matching address is
-                required when this is set
-
-                and `localized` is not set.
+                If `localized` is not set, a matching `snmp_server.engine_ids.remotes[].address`
+                entry is required.
 
                 '
             udp_port:
               type: int
               convert_types:
               - str
-              description: 'udp_port will not be used if no remote_address is configured.
+              description: 'UDP port of the remote SNMP engine.
+
+                Only used when `remote_address` is set.
 
                 '
             version:
@@ -25652,29 +25699,112 @@ keys:
               type: str
               convert_types:
               - int
-              description: 'Engine ID in hexadecimal for localizing auth and/or priv.
+              description: 'Engine ID in hexadecimal.
+
+                When set, auth and priv values are interpreted as localized key material
+
+                (RFC 2574, engine-ID specific) instead of cleartext passphrases.
+
+                Required to use `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
 
                 '
             auth:
               type: str
               description: 'Hash algorithm.
 
+                Required for rendering any authentication or privacy credential.
+
                 '
+            auth_key_type:
+              type: str
+              valid_values:
+              - '0'
+              - '7'
+              description: 'Authentication key type.
+
+                EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M,
+                and 4.36.2F.
+
+                Used with `auth_key`.
+
+                Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key`
+                to be set.
+
+                - `0`: Key string is not encrypted.
+
+                - `7`: Type-7 encrypted (HIDDEN) key.
+
+                '
+            auth_key:
+              type: str
+              description: 'Authentication key.
+
+                Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type`
+                to be set.
+
+                Takes precedence over `auth_passphrase` when both are set.'
             auth_passphrase:
               type: str
               description: 'Hashed authentication passphrase if localized is used
                 else cleartext authentication passphrase.
+
+                Rendered only when `auth` is set and `version` is `v3`.
+
+                Ignored when `auth_key_type` and `auth_key` are set with `localized`.
 
                 '
             priv:
               type: str
               description: 'Encryption algorithm.
 
+                Required for rendering any privacy credential.
+
                 '
+            priv_key_type:
+              type: str
+              valid_values:
+              - '0'
+              - '7'
+              description: 'Privacy key type.
+
+                EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M,
+                and 4.36.2F.
+
+                Used with `priv_key`.
+
+                Requires `localized` and `priv_key` to be set.
+
+                Rendered only when `priv`, `auth_key_type`, and `auth_key` are also
+                set.
+
+                - `0`: Key string is not encrypted.
+
+                - `7`: Type-7 encrypted (HIDDEN) key.
+
+                '
+            priv_key:
+              type: str
+              description: 'Privacy key.
+
+                Requires `localized` and `priv_key_type` to be set.
+
+                Takes precedence over `priv_passphrase` when both are set.
+
+                Rendered only when `priv`, `auth_key_type`, and `auth_key` are also
+                set.
+
+                Ignored when authentication is rendered from `auth_passphrase`.'
             priv_passphrase:
               type: str
               description: 'Hashed privacy passphrase if localized is used else cleartext
                 privacy passphrase.
+
+                Rendered only when `priv` is set and authentication is rendered from
+                `auth_passphrase`.
+
+                Ignored when `priv_key_type` and `priv_key` are set with `localized`.
+
+                Ignored when authentication is rendered from `auth_key_type`/`auth_key`.
 
                 '
       hosts:
@@ -26258,6 +26388,13 @@ keys:
             valid_values:
             - error
             - warn
+      mac_address:
+        type: str
+        description: Unicast (the least-significant bit of the first octet must be
+          zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal
+          digit).
+        convert_to_lower_case: true
+        pattern: '[0-9a-f][02468ace](:[0-9a-f]{2}){5}'
   tacacs_servers:
     type: dict
     keys:
@@ -28053,6 +28190,20 @@ keys:
               description: Key only used for documentation or validation purposes.
               items:
                 type: str
+  vrrp:
+    type: dict
+    description: Global VRRP configuration.
+    keys:
+      ipv4:
+        type: dict
+        description: VRRP IPv4 configuration.
+        keys:
+          authentication_anti_replay:
+            type: bool
+            description: 'Enable anti-replay validation for authenticated IPv4 VRRPv2
+              advertisements.
+
+              Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.'
   vxlan_interface:
     type: dict
     keys:
