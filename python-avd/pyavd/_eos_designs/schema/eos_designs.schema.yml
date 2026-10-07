@@ -3854,6 +3854,23 @@ keys:
               max: 4094
             name:
               type: str
+      ip_software_forwarding_exceed_action_drop:
+        type: dict
+        documentation_options:
+          table: system-settings
+        description: 'Drop IPv4 packets larger than configured mtu (in bytes) in software.
+
+          Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.'
+        keys:
+          enabled:
+            type: bool
+            required: true
+          mtu:
+            type: int
+            description: IPv4 software-forwarding MTU threshold in bytes.
+            min: 68
+            max: 65535
+            required: true
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
@@ -11206,11 +11223,11 @@ keys:
       BGP peer-groups are named with IPv4 by default. This can be modified under `bgp_peer_groups`.\nRequires
       (fabric-level):\n  - \"underlay_ipv6: true\"\n  - \"loopback_ipv6_pool\"\n  -
       \"underlay_routing_protocol: ebgp\"\nRequires (node-level):\n  - \"uplink_ipv6_pool\"
-      (or `downlink_pools`)\n  - \"vtep_loopback_ipv6_pool\"\n  - \"router_id_pool\"\nFor
-      MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG
-      nodes:\n  - \"mlag_peer_address_family: ipv6\"\n  - \"mlag_peer_ipv6_pool\"\n
-      \ - \"mlag_peer_l3_ipv6_pool\"\nSome settings are not yet supported with IPv6
-      underlay:\n  - underlay_multicast_pim_sm\n  - underlay_multicast_rp_interfaces\n
+      (or `downlink_pools`)\n  - \"vtep_loopback_ipv6_pool\"\n  - \"router_id_pool\"
+      or \"loopback_ipv4_address\"\nFor MLAG, the peer-link SVI uses IPv4 by default.
+      To use IPv6, also set on the MLAG nodes:\n  - \"mlag_peer_address_family: ipv6\"\n
+      \ - \"mlag_peer_ipv6_pool\"\n  - \"mlag_peer_l3_ipv6_pool\"\nSome settings are
+      not yet supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  - underlay_multicast_rp_interfaces\n
       \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
     type: bool
     default: false
@@ -13942,6 +13959,8 @@ $defs:
 
               When set, it takes precedence over `loopback_ipv4_pool`.
 
+              For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+
               Note: AVD does not check for validity of the IPv4 address and does not
               catch duplicates.'
             type: str
@@ -14003,10 +14022,11 @@ $defs:
           router_id_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
-            description: Required when underlay_ipv6_numbered is used to configured
-              an IPv6 underlay and IPv6 overlay. router_id_pool is an IPv4 subnet
-              used only for allocation of BGP router-id's since an IPv4 address will
-              not exist on the device.
+            description: Used for `underlay_ipv6_numbered` designs. `router_id_pool`
+              is an IPv4 subnet used only for allocation of BGP router-id's since
+              an IPv4 address will not exist on the device. `loopback_ipv4_address`
+              can also be used for `underlay_ipv6_numbered` designs to set the router-id
+              and takes precedence over `router_id_pool`.
             type: str
             format: ipv4_pool
           loopback_ipv6_pool:

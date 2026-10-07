@@ -20,7 +20,7 @@ keys:
       Requires (node-level):
         - "uplink_ipv6_pool" (or `downlink_pools`)
         - "vtep_loopback_ipv6_pool"
-        - "router_id_pool"
+        - "router_id_pool" or "loopback_ipv4_address"
       For MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
         - "mlag_peer_address_family: ipv6"
         - "mlag_peer_ipv6_pool"
