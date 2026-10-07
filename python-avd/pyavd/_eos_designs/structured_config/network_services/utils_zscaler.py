@@ -69,7 +69,7 @@ class UtilsZscalerMixin(Protocol):
                 avd_device=AvdDevice(
                     hostname=self.shared_utils.hostname,
                     serial_number=self.shared_utils.serial_number,
-                    system_mac_address=self.shared_utils.system_mac_address,
+                    system_mac_address=self.structured_config_utils.system_mac_address,
                 )
             )
             cv_inventory_devices: list[CVDevice] = await verify_devices_in_cloudvision_inventory(
