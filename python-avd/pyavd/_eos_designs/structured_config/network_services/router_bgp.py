@@ -426,7 +426,9 @@ class RouterBgpMixin(Protocol):
             elif isinstance(bgp_vrf, EosCliConfigGen.RouterBgp) and vrf._get_defined_attr("validate_bgp_peers") is False:
                 neighbor_interface.metadata.validate_state = False
         else:
-            if not vrf.mlag_ibgp_peering_ipv4_pool:
+            if self.inputs.avd_design_future.fix_mlag_ibgp_peering_ipv6_pool and self.shared_utils.underlay_ipv6_numbered:
+                ip_address = self.get_ipv6_mlag_peer_ibgp_peering_ip(vrf)
+            elif not vrf.mlag_ibgp_peering_ipv4_pool:
                 ip_address = self.shared_utils.mlag_peer_ibgp_ip
             elif self.shared_utils.mlag_role == "primary":
                 ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(vrf.mlag_ibgp_peering_ipv4_pool)
