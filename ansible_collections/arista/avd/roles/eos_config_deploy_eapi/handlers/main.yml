@@ -5,6 +5,7 @@
   # handlers file for eos_config_deploy_eapi
 
 - name: Backup running config
+  when: not ansible_check_mode
   arista.eos.eos_config:
     backup: true
     backup_options:
