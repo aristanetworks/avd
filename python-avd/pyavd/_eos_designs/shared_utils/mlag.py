@@ -77,11 +77,8 @@ class MlagMixin(Protocol):
     @cached_property
     def mlag_peer_l3_ipv6_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.mlag_peer_l3_ipv6_pool:
-            msg = (
-                f"The MLAG L3 peering VLAN {self.mlag_peer_l3_vlan} uses IPv6 since 'underlay_ipv6_numbered' is 'true', "
-                "regardless of 'mlag_peer_address_family'. 'mlag_peer_l3_ipv6_pool' is required"
-            )
-            raise AristaAvdInvalidInputsError(msg)
+            msg = "mlag_peer_l3_ipv6_pool"
+            raise AristaAvdMissingVariableError(msg)
         return self.node_config.mlag_peer_l3_ipv6_pool
 
     @cached_property

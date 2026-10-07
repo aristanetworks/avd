@@ -33,5 +33,4 @@ l3leaf:
           mgmt_ip: 192.168.201.115/24
 
 expected_error_message: >-
-  The MLAG L3 peering VLAN 4093 uses IPv6 since 'underlay_ipv6_numbered' is 'true', regardless of 'mlag_peer_address_family'.
-  'mlag_peer_l3_ipv6_pool' is required for host 'missing-mlag-peer-l3-ipv6-pool'.
+  'mlag_peer_l3_ipv6_pool' is required but was not found for host 'missing-mlag-peer-l3-ipv6-pool'.
