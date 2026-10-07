@@ -49934,15 +49934,19 @@ class EosDesigns(EosDesignsRootModel):
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
             Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
+            AuthKeyType: TypeAlias = Literal["0", "7"]
             Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
+            PrivKeyType: TypeAlias = Literal["0", "7"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "group": {"type": str},
                 "version": {"type": str},
                 "auth": {"type": str},
                 "auth_passphrase": {"type": str},
+                "auth_key_type": {"type": str},
                 "priv": {"type": str},
                 "priv_passphrase": {"type": str},
+                "priv_key_type": {"type": str},
             }
             name: str | None
             """Username."""
@@ -49952,9 +49956,29 @@ class EosDesigns(EosDesignsRootModel):
             auth: Auth | None
             auth_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set."""
+            auth_key_type: AuthKeyType | None
+            """
+            Authentication key type for localized SNMPv3 users.
+            Used only when `compute_v3_user_localized_key`
+            is `true`.
+            When set, AVD renders the computed localized authentication key using EOS `key <type>
+            <key>` syntax.
+            - `0`: Key string is not encrypted.
+            - `7`: Type-7 encrypted (HIDDEN) key.
+            """
             priv: Priv | None
             priv_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set."""
+            priv_key_type: PrivKeyType | None
+            """
+            Privacy key type for localized SNMPv3 users.
+            Used only when authentication is rendered using
+            `auth_key_type`.
+            Defaults to `auth_key_type` when unset.
+            - `0`: Key string is not encrypted.
+            - `7`:
+            Type-7 encrypted (HIDDEN) key.
+            """
 
             if TYPE_CHECKING:
 
@@ -49966,8 +49990,10 @@ class EosDesigns(EosDesignsRootModel):
                     version: Version | UndefinedType | None = Undefined,
                     auth: Auth | UndefinedType | None = Undefined,
                     auth_passphrase: str | UndefinedType | None = Undefined,
+                    auth_key_type: AuthKeyType | UndefinedType | None = Undefined,
                     priv: Priv | UndefinedType | None = Undefined,
                     priv_passphrase: str | UndefinedType | None = Undefined,
+                    priv_key_type: PrivKeyType | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     UsersItem.
@@ -49981,8 +50007,24 @@ class EosDesigns(EosDesignsRootModel):
                         version: version
                         auth: auth
                         auth_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+                        auth_key_type:
+                           Authentication key type for localized SNMPv3 users.
+                           Used only when `compute_v3_user_localized_key`
+                           is `true`.
+                           When set, AVD renders the computed localized authentication key using EOS `key <type>
+                           <key>` syntax.
+                           - `0`: Key string is not encrypted.
+                           - `7`: Type-7 encrypted (HIDDEN) key.
                         priv: priv
                         priv_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
+                        priv_key_type:
+                           Privacy key type for localized SNMPv3 users.
+                           Used only when authentication is rendered using
+                           `auth_key_type`.
+                           Defaults to `auth_key_type` when unset.
+                           - `0`: Key string is not encrypted.
+                           - `7`:
+                           Type-7 encrypted (HIDDEN) key.
 
                     """
 
