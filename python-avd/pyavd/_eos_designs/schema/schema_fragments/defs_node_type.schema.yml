@@ -554,6 +554,7 @@ $defs:
             description: |-
               IPv4 address without mask for Loopback0.
               When set, it takes precedence over `loopback_ipv4_pool`.
+              For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
               Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
             type: str
             format: ipv4
@@ -606,8 +607,9 @@ $defs:
             documentation_options:
               table: node-type-loopback-vtep-configuration
             description:
-              Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay. router_id_pool is an IPv4 subnet used only
+              Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only
               for allocation of BGP router-id's since an IPv4 address will not exist on the device.
+              `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id and takes precedence over `router_id_pool`.
             type: str
             format: ipv4_pool
           loopback_ipv6_pool:
