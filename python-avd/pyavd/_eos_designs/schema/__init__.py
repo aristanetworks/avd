@@ -23122,8 +23122,8 @@ class EosDesigns(EosDesignsRootModel):
             reply_source_address_validation: bool | None
             """
             Validate reply source address matches configured server.
-            EOS version dependent. Supported starting
-            with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+            Supported starting with 4.33.10M, 4.34.8M,
+            4.35.6M, and 4.36.2F.
             """
 
             if TYPE_CHECKING:
@@ -23154,8 +23154,8 @@ class EosDesigns(EosDesignsRootModel):
                            VTEPs which are also MLAG devices.
                         reply_source_address_validation:
                            Validate reply source address matches configured server.
-                           EOS version dependent. Supported starting
-                           with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+                           Supported starting with 4.33.10M, 4.34.8M,
+                           4.35.6M, and 4.36.2F.
 
                     """
 
