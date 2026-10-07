@@ -38,6 +38,9 @@ class RouterOspfv3Mixin(Protocol):
 
                     self._update_ospfv3_redistribute(vrf_config, vrf)
 
+                    if vrf.ospfv3.structured_config:
+                        vrf_config._deepmerge(vrf.ospfv3.structured_config)
+
                     self.structured_config.router_ospfv3.vrfs.append(vrf_config)
 
     def _update_ospfv3_redistribute(
