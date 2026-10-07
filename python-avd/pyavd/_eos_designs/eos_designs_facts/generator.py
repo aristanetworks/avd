@@ -136,9 +136,6 @@ class EosDesignsFactsGeneratorProtocol(
         if self.shared_utils.underlay_router:
             if self.shared_utils.node_config.loopback_ipv4_address:
                 return None
-            if not self.shared_utils.node_config.loopback_ipv4_pool:
-                msg = "'loopback_ipv4_pool or loopback_ipv4_address' is required but was not found"
-                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             return self.shared_utils.node_config.loopback_ipv4_pool
         return None
 
