@@ -196,18 +196,36 @@ class SnmpServerMixin(Protocol):
 
                 if user.auth is not None and user.auth_passphrase is not None:
                     user_dict.auth = user.auth
-                    hash_filter = {}
                     if compute_v3_user_localized_key:
-                        hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": engine_ids.local}
-                        user_dict.auth_passphrase = snmp_hash(hash_filter)
+                        auth_hash_filter = {
+                            "passphrase": user.auth_passphrase,
+                            "auth": user.auth,
+                            "engine_id": engine_ids.local,
+                        }
+                        auth_hash = snmp_hash(auth_hash_filter)
+                        if user.auth_key_type is not None:
+                            user_dict.auth_key_type = user.auth_key_type
+                            user_dict.auth_key = auth_hash
+                        else:
+                            user_dict.auth_passphrase = auth_hash
                     else:
                         user_dict.auth_passphrase = user.auth_passphrase
 
                     if user.priv is not None and user.priv_passphrase is not None:
                         user_dict.priv = user.priv
                         if compute_v3_user_localized_key:
-                            hash_filter.update({"passphrase": user.priv_passphrase, "priv": user.priv})
-                            user_dict.priv_passphrase = snmp_hash(hash_filter)
+                            priv_hash_filter = {
+                                "passphrase": user.priv_passphrase,
+                                "auth": user.auth,
+                                "priv": user.priv,
+                                "engine_id": engine_ids.local,
+                            }
+                            priv_hash = snmp_hash(priv_hash_filter)
+                            if user.auth_key_type is not None:
+                                user_dict.priv_key_type = default(user.priv_key_type, user.auth_key_type)
+                                user_dict.priv_key = priv_hash
+                            else:
+                                user_dict.priv_passphrase = priv_hash
                         else:
                             user_dict.priv_passphrase = user.priv_passphrase
 
