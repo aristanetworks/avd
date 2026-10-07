@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'custom_system_mac_address' and 'system_mac_address' cannot both be set. Remove 'system_mac_address' when using 'custom_system_mac_address'.
