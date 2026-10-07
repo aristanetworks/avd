@@ -40,4 +40,4 @@ keys:
         type: bool
         description: |-
           Validate reply source address matches configured server.
-          EOS version dependent. Supported starting with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+          Supported starting with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
