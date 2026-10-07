@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError
 from pyavd._utils.remove_cached_property_type import remove_cached_property_type
 
 from .mlag import MlagMixin
