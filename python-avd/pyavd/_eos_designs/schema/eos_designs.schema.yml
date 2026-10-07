@@ -514,6 +514,18 @@ keys:
           ipv6 address prefix-list`
 
           instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`.'
+      fix_mlag_ibgp_peering_ipv6_pool:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Fix the MLAG iBGP peering BGP neighbor in VRFs when using `underlay_ipv6_numbered`.
+
+          When enabled, the BGP neighbor is derived from the same IPv6 pool as the
+          MLAG iBGP peering SVI,
+
+          using `mlag_ibgp_peering_ipv6_pool` when set, and `mlag_ibgp_peering_ipv4_pool`
+          is ignored.'
       fix_radius_server_group_tls:
         type: bool
         default: false
@@ -5975,11 +5987,16 @@ keys:
                 description: 'Comma separated list of prefixes (IPv6 address/Mask)
                   or ranges (IPv6_address-IPv6_address).
 
+                  Only used when `underlay_ipv6_numbered` is set.
+
                   The subnet used for the iBGP peering in the VRF is derived from
                   this pool based on the ID of the first MLAG switch.
 
                   If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will
-                  be used.'
+                  be used.
+
+                  Set `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to
+                  also derive the BGP neighbor from this pool.'
                 format: ipv6_pool
               ip_helpers:
                 type: list
