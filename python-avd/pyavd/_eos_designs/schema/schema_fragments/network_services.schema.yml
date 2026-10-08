@@ -171,6 +171,13 @@ keys:
                     description: |-
                       Outbound RCF function name with parenthesis.
                       Example: MyFunction(myarg).
+                  default_originate:
+                    type: dict
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv6/keys/peer_groups/items/keys/default_originate"
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
                   prefix_list_in:
                     type: str
                     description: Inbound prefix-list name.
@@ -545,8 +552,10 @@ keys:
                 type: str
                 description: |-
                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                  Only used when `underlay_ipv6_numbered` is set.
                   The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.
                   If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                  Set `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this pool.
                 format: ipv6_pool
               ip_helpers:
                 type: list
@@ -890,6 +899,8 @@ keys:
                       description: |
                         SVI profile name to apply.
                         SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                        From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                        allows profiles to inherit settings across any number of levels.
                     tags:
                       type: list
                       description: |
@@ -1669,6 +1680,25 @@ keys:
                       - "none" will not configure a BGP Router ID for this VRF. EOS will use the main BGP Router ID.
                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
                     default: main_router_id
+                  graceful_restart:
+                    type: dict
+                    description: |
+                      BGP graceful-restart configuration for this VRF.
+                      This setting is not supported for VRF default. Use `bgp_graceful_restart` instead.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                        description: |
+                          Enable or disable BGP graceful-restart for this VRF.
+                      restart_time:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 1
+                        max: 3600
+                        default: 300
+                        description: Restart time in seconds.
                   raw_eos_cli:
                     type: str
                     description: |
@@ -1769,6 +1799,13 @@ keys:
                           description: |-
                             Outbound RCF function name with parenthesis.
                             Example: MyFunction(myarg).
+                        default_originate:
+                          type: dict
+                          $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv6/keys/peer_groups/items/keys/default_originate"
+                          keys:
+                            enabled:
+                              type: bool
+                              required: true
                         prefix_list_in:
                           type: str
                           description: Inbound prefix-list name.
@@ -1864,6 +1901,8 @@ keys:
                 description: |-
                   L2VLAN profile name.
                   The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                  From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                  allows profiles to inherit settings across any number of levels.
               tags:
                 type: list
                 description: |

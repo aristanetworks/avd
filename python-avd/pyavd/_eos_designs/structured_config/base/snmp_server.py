@@ -9,7 +9,9 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, default, strip_null_from_data
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
+from pyavd._utils.strip_empties import strip_null_from_data
 from pyavd.j2filters import natural_sort, snmp_hash
 
 if TYPE_CHECKING:
@@ -134,16 +136,16 @@ class SnmpServerMixin(Protocol):
                 # prefix with Enterprise Id + 05 to adhere to RCF3411 and RFC5343
                 # Arista Enterprise ID = 30065 (7571 in hex)
                 # 5th octet = 05 , meaning engine id is based on custom octet
-                if self.shared_utils.system_mac_address is None:
+                if self.structured_config_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: rfc3411_type3' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
-                local_engine_id = f"8000757103{str(self.shared_utils.system_mac_address).replace(':', '').lower()}"
+                local_engine_id = f"8000757103{str(self.structured_config_utils.system_mac_address).replace(':', '').lower()}"
             case "system_mac" | _:
                 # This is the default value of the engine ID on EOS. Note that is is not RFC3411 compliant.
-                if self.shared_utils.system_mac_address is None:
+                if self.structured_config_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
-                local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
+                local_engine_id = f"f5717f{str(self.structured_config_utils.system_mac_address).replace(':', '').lower()}00"
 
         self.structured_config.snmp_server.engine_ids.local = local_engine_id
 

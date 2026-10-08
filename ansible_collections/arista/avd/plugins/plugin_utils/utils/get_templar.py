@@ -16,10 +16,10 @@ from .compile_searchpath import compile_searchpath
 
 # Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
 if TYPE_CHECKING:  # pragma: no cover
-    from pyavd._utils import AVDTemplar
+    from pyavd._utils.avd_templar import AVDTemplar
 else:
     try:
-        from pyavd._utils import AVDTemplar
+        from pyavd._utils.avd_templar import AVDTemplar
     except ImportError as e:
         AVDTemplar = RaiseOnUse(ImportError(f"The 'arista.avd' collection requires the 'pyavd' Python library. Got import error {e}"))
 

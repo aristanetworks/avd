@@ -10,7 +10,7 @@ from contextlib import contextmanager
 import pytest
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import get
+from pyavd._utils.get import get
 
 
 @contextmanager

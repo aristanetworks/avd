@@ -10,9 +10,9 @@ ansible:
   cfg:
     defaults:
       gathering: explicit
-      vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/.vault"
+      vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/example_vault"
   playbooks:
-    converge: '../../../examples/cv-pathfinder/build.yml'
+    converge: "../../../examples/cv-pathfinder/build.yml"
 scenario:
   converge_sequence:
     - converge

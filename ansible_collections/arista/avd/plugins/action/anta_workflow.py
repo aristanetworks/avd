@@ -29,7 +29,9 @@ PLUGIN_NAME = "arista.avd.anta_workflow"
 
 try:
     from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
-    from pyavd._utils import default, get, strip_empties_from_dict
+    from pyavd._utils.default import default
+    from pyavd._utils.get import get
+    from pyavd._utils.strip_empties import strip_empties_from_dict
     from pyavd.api.anta import AVDCatalogGenerationSettings, AVDFabricData
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
@@ -62,6 +64,7 @@ ANTA_VARS = [
     "anta_enable_password",
     "anta_port",
     "anta_use_ssl",
+    "anta_use_session_auth",
     "anta_tags",
 ]
 
@@ -559,6 +562,7 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
     enable_mode = default(get(device_vars, "anta_enable"), get(device_vars, "ansible_become", default=False))
     enable_password = default(get(device_vars, "anta_enable_password"), get(device_vars, "ansible_become_password"))
     proto = "https" if default(get(device_vars, "anta_use_ssl"), get(device_vars, "ansible_httpapi_use_ssl", default=True)) else "http"
+    use_session_auth = get(device_vars, "anta_use_session_auth", default=False)
 
     device_settings = {
         "name": device,
@@ -571,6 +575,7 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
         "proto": proto,
         "timeout": get(PLUGIN_ARGS, "runner.timeout"),
         "tags": set(get(device_vars, "anta_tags", default=[])),
+        "use_session_auth": use_session_auth,
     }
 
     # Make sure we found all required connection settings. Other settings have defaults in the ANTA device object
@@ -716,12 +721,14 @@ def setup_root_logger(unique_id: str, log_queue: Queue, verbosity: int) -> None:
         # All loggers except low-level libraries (WARNING) will be at DEBUG
         root_logger.setLevel(logging.DEBUG)
     elif verbosity == 3:
-        # All loggers except anta (INFO) and low-level libraries (WARNING) will be at DEBUG
+        # All loggers except anta/asynceapi (INFO) and low-level libraries (WARNING) will be at DEBUG
         root_logger.setLevel(logging.DEBUG)
         logging.getLogger("anta").setLevel(logging.INFO)
+        logging.getLogger("asynceapi").setLevel(logging.INFO)
     elif verbosity in (1, 2):
-        # All loggers except low-level libraries (WARNING) will be at INFO
+        # All loggers except low-level libraries and asynceapi (WARNING) will be at INFO
         root_logger.setLevel(logging.INFO)
+        logging.getLogger("asynceapi").setLevel(logging.WARNING)
     else:
         # All loggers will be at WARNING
         root_logger.setLevel(logging.WARNING)

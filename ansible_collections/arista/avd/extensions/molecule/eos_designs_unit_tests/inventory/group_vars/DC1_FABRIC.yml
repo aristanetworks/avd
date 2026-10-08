@@ -52,6 +52,16 @@ spine:
       id: 1
       mgmt_ip: 192.168.200.101/24
       mac_address: '0c:1d:c0:1d:62:01'
+      evpn_gateway:
+        remote_peers:
+          # Test overlap with a learned EVPN Route Server client. Only the local core peering should be rendered.
+          - hostname: dc1-leaf1a
+          # Test overlap with a learned EVPN Route Server client using a different explicit IP. Both local peerings should be rendered.
+          - hostname: dc1-leaf2a
+            ip_address: 192.168.42.44
+          # Test overlap with a learned EVPN Route Server client using an explicit IP matching the regular peering address.
+          - hostname: dc1-leaf2b
+            ip_address: 192.168.255.11
     - name: dc1-spine2
       platform: 7500R
       id: 2
@@ -67,6 +77,10 @@ spine:
       id: 4
       mgmt_ip: 192.168.200.104/24
       mac_address: '0c:1d:c0:1d:62:01'
+      evpn_gateway:
+        remote_peers:
+          # Test reciprocal same-address EVPN Gateway core peering with dc1-bl1a.
+          - hostname: dc1-bl1a
 
 # Leaf switch groups
 # A maximum of two nodes can form a leaf group
@@ -226,7 +240,16 @@ l3leaf:
           uplink_switch_interfaces: [Ethernet22, Ethernet22, Ethernet22, Ethernet22]
           evpn_gateway:
             remote_peers:
+              # Test overlap with an EVPN Route Server derived from uplink_switches. Only the local core peering should be rendered.
               - hostname: dc1-spine1
+              # Test overlap using an explicit IP. Both the local regular peering and the additional core peering should be rendered.
+              - hostname: dc1-spine2
+                ip_address: 192.168.42.41
+              # Test overlap using an explicit IP matching the regular peering address. Only the local core peering should be rendered.
+              - hostname: dc1-spine3
+                ip_address: 192.168.255.3
+              # Test back-to-back same-address EVPN Gateway core peering with dc1-spine4.
+              - hostname: dc1-spine4
               - hostname: dc1-bl2a
                 # Testing below that the override is working
               - hostname: dc1-bl2b
@@ -243,8 +266,14 @@ l3leaf:
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [Ethernet23, Ethernet23, Ethernet23, Ethernet23]
+          evpn_route_servers: [dc1-spine1, dc1-spine2, dc1-spine3, dc1-spine4]
           evpn_gateway:
             remote_peers:
+              # Test overlap with an explicitly configured EVPN Route Server. Only the local core peering should be rendered.
+              - hostname: dc1-spine1
+              # Test overlap using an explicit IP. Both the local regular peering and the additional core peering should be rendered.
+              - hostname: dc1-spine2
+                ip_address: 192.168.42.43
               - hostname: MY_EVPN_GW1_USER_DEFINED
                 ip_address: 1.1.1.1
                 bgp_as: 65555

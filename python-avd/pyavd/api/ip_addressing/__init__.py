@@ -7,7 +7,7 @@ from typing import Any, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import get_ip_from_pool
+from pyavd._utils.get_ip_from_pool import get_ip_from_pool
 
 from .utils import UtilsMixin
 
@@ -154,9 +154,9 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
     def mlag_l3_ipv6_primary(self) -> str:
         """
-        Return IP for L3 Peerings for MLAG Primary.
+        Return IPv6 for L3 Peerings for MLAG Primary.
 
-        Default pool is "mlag_peer_l3_ipv4_pool"
+        Default pool is "mlag_peer_l3_ipv6_pool"
         """
         return self._mlag_ip(self._mlag_peer_l3_ipv6_pool, 0, address_family="ipv6")
 
@@ -178,9 +178,9 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
     def mlag_l3_ipv6_secondary(self) -> str:
         """
-        Return IP for L3 Peerings for MLAG Secondary.
+        Return IPv6 for L3 Peerings for MLAG Secondary.
 
-        Default pool is "mlag_peer_l3_ipv4_pool"
+        Default pool is "mlag_peer_l3_ipv6_pool"
         """
         return self._mlag_ip(self._mlag_peer_l3_ipv6_pool, 1, address_family="ipv6")
 

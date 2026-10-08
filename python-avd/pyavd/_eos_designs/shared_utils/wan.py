@@ -11,7 +11,10 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get, get_ip_from_ip_prefix, strip_empties_from_dict
+from pyavd._utils.default import default
+from pyavd._utils.get import get
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
+from pyavd._utils.strip_empties import strip_empties_from_dict
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:

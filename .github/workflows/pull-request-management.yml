@@ -29,6 +29,7 @@ env:
 jobs:
   required-checks: # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
     needs:
+      - build_collection
       - python_type_checking
       - python_requirements
       - molecule_eos_cli_config_gen
@@ -43,6 +44,7 @@ jobs:
       - e2e
       - e2e_coverage
       - test_pyavd
+      - generate_pyavd_coverage_report
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -102,6 +104,7 @@ jobs:
               - 'ansible_collections/arista/avd/meta/runtime.yml'
               - 'ansible_collections/arista/avd/requirements.yml'
               - '.github/workflows/pull-request-management.yml'
+              - '.github/workflows/warm-ansible-collections-cache.yml'
               - '.sonarcloud.properties'
               - '.pre-commit-config.yaml'
             pyavd:
@@ -138,7 +141,7 @@ jobs:
   # -------------------------------------- #
   build_pyavd:
     name: Build pyavd
-    uses: ./.github/workflows/build-pyavd-wheel.yml
+    uses: $/.github/workflows/build-pyavd-wheel.yml
 
   # -------------------------------------------- #
   # Python type checking not covered in pre-commit
@@ -297,16 +300,9 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.22.0"
             python_version: "3.14"
-          # TODO: This one in particular may be costly
-          - avd_scenario: "eos_designs_negative_unit_tests"
-            ansible_version: "ansible-core<2.22.0"
-            python_version: "3.14"
           # Test ansible-core milestone release
           # We need to ignore requirements checks to avoid raising an error with new ansible versions not officially supported
           - avd_scenario: "eos_designs_unit_tests -- -e avd_ignore_requirements=True"
-            ansible_version: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
-            python_version: "3.14"
-          - avd_scenario: "eos_designs_negative_unit_tests -- -e avd_ignore_requirements=True"
             ansible_version: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
             python_version: "3.14"
 
@@ -335,7 +331,6 @@ jobs:
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
-        if: "!contains(matrix.avd_scenario, 'eos_designs_negative_unit_test')"
         run: |
           sh .github/check-git-status.sh
 
@@ -543,6 +538,11 @@ jobs:
             python_version: "3.12"
             # TODO: Remove this exclusion once AVDActionPlugin stores log warnings in result["warnings"] for ansible-core <2.19.
             integration_args: "--exclude eos_designs_documentation"
+          # Exercise the design action plugins against the Ansible milestone branch.
+          - ansible_version: devel
+            pip_installation: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
+            python_version: "3.14"
+            integration_args: "eos_designs_facts eos_designs_structured_config"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -558,6 +558,7 @@ jobs:
         working-directory: ansible_collections/arista/avd
         run: |
           ansible-test integration --coverage --requirements -vv ${{ matrix.integration_args }}
+          ansible-test coverage report --show-missing
           ansible-test coverage xml
           mv tests/output/reports/coverage.xml "./integration-coverage-${{ matrix.ansible_version }}.xml"
       - name: Upload coverage from ansible-test integration
@@ -572,6 +573,8 @@ jobs:
   build_collection:
     name: Build Ansible collection
     runs-on: ubuntu-latest
+    outputs:
+      collection_cache_key: ${{ steps.collection_cache_key.outputs.value }}
     steps:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -582,8 +585,29 @@ jobs:
           persist-credentials: false
       - name: Install Python & Ansible requirements
         run: |
-          # distlib is required when using manifest
-          pip install "ansible-core<2.22.0" distlib --upgrade
+          pip install "ansible-core<2.22.0" --upgrade
+      - name: Set Ansible collection cache key
+        id: collection_cache_key
+        env:
+          DEPENDENCY_HASH: ${{ hashFiles('ansible_collections/arista/avd/requirements.yml') }}
+        run: echo "value=$(date -u +'%Y-%m-%d')-ansible-collections-$DEPENDENCY_HASH" >> "$GITHUB_OUTPUT"
+      - name: Restore Ansible collection dependencies
+        id: restore_collection_cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.ansible/collections
+          key: ${{ steps.collection_cache_key.outputs.value }}
+      - name: Install Ansible collection dependencies
+        if: steps.restore_collection_cache.outputs.cache-hit != 'true'
+        run: |
+          ansible-galaxy collection install --requirements-file ansible_collections/arista/avd/requirements.yml
+          ansible-galaxy collection install ansible.utils
+      - name: Save Ansible collection dependencies
+        if: steps.restore_collection_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.ansible/collections
+          key: ${{ steps.collection_cache_key.outputs.value }}
       - name: Build Ansible collection
         run: |
           ansible-galaxy collection build -vvv --force ansible_collections/arista/avd
@@ -712,10 +736,16 @@ jobs:
         with:
           name: avd-collection
           path: /tmp/avd-collection/
-      - name: Install Ansible collections
+      - name: Restore Ansible collection dependencies
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.ansible/collections
+          key: ${{ needs.build_collection.outputs.collection_cache_key }}
+          fail-on-cache-miss: true
+      - name: Install AVD collection
         run: |
           uv run --no-project --with-requirements tools/e2e-test-avd.py \
-            ansible-galaxy collection install /tmp/avd-collection/arista-avd-*.tar.gz ansible.utils
+            ansible-galaxy collection install /tmp/avd-collection/arista-avd-*.tar.gz --no-deps
       - name: Run end-to-end tests
         run: make e2e
       - name: Print new end-to-end errors
@@ -767,8 +797,14 @@ jobs:
         with:
           name: avd-collection
           path: /tmp/avd-collection/
-      - name: Install Ansible collections for coverage
-        run: ansible-galaxy collection install /tmp/avd-collection/arista-avd-*.tar.gz ansible.utils
+      - name: Restore Ansible collection dependencies
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.ansible/collections
+          key: ${{ needs.build_collection.outputs.collection_cache_key }}
+          fail-on-cache-miss: true
+      - name: Install AVD collection
+        run: ansible-galaxy collection install /tmp/avd-collection/arista-avd-*.tar.gz --no-deps
       - name: Run end-to-end tests with coverage
         run: |
           coverage run tools/e2e-test-avd.py ${{ matrix.e2e_test_project.path }}
@@ -803,8 +839,10 @@ jobs:
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.plugins == 'true' ||
       needs.file-changes.outputs.pyavd == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
+      needs.file-changes.outputs.e2e == 'true' ||
       github.event_name == 'merge_group'
     strategy:
       fail-fast: false
@@ -839,12 +877,10 @@ jobs:
     name: Test pyavd python 3.12 coverage report
     runs-on: ubuntu-latest
     needs: [e2e_coverage, test_pyavd]
-    # Run with coverage from either producer when the other is skipped by path filtering, but not if either producer fails or both are skipped.
+    # The coverage threshold requires data from both producers.
     if: |
-      always() &&
-      (needs.e2e_coverage.result == 'success' || needs.e2e_coverage.result == 'skipped') &&
-      (needs.test_pyavd.result == 'success' || needs.test_pyavd.result == 'skipped') &&
-      (needs.e2e_coverage.result == 'success' || needs.test_pyavd.result == 'success')
+      needs.e2e_coverage.result == 'success' &&
+      needs.test_pyavd.result == 'success'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -884,4 +920,4 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/codecov.yml
+    uses: $/.github/workflows/codecov.yml

@@ -407,6 +407,8 @@ vlan_interfaces:
         source_address: a0::6
         link_address: a0::7
       - address: a0::8
+    ip_nat:
+      service_profile: PROFILE1
 
   - name: Vlan50
     description: IP NAT Testing

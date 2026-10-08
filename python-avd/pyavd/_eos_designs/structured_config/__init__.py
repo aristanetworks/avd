@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._utils import AVDTemplar
+    from pyavd._utils.avd_templar import AVDTemplar
 
     from .structured_config_generator import StructuredConfigGenerator
 

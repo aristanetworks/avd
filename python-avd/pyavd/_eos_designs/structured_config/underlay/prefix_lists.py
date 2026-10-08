@@ -8,7 +8,7 @@ from ipaddress import collapse_addresses
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._utils import get_ipv4_networks_from_pool, get_ipv6_networks_from_pool
+from pyavd._utils.get_ip_from_pool import get_ipv4_networks_from_pool, get_ipv6_networks_from_pool
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:

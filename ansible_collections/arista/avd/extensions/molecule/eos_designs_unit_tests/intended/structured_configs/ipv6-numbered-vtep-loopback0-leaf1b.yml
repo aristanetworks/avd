@@ -49,7 +49,7 @@ ipv6_prefix_lists:
 - name: PL-MLAG-PEER-VRFS
   sequence_numbers:
   - sequence: 10
-    action: permit 2001:db8:4::/64
+    action: permit 2001:db8:10::/64
 ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
@@ -199,12 +199,6 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
-    - name: MLAG-IPv4-UNDERLAY-PEER
-      activate: true
-      next_hop:
-        address_family_ipv6:
-          enabled: true
-          originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   address_family_ipv6:
@@ -280,7 +274,7 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ipv6_addresses:
-  - 2001:db8:4::2/64
+  - 2001:db8:10::2/64
   mtu: 9214
   metadata:
     tenants:

@@ -10,8 +10,11 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdDeprecationWarning
-from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.run_once import run_once_method
+from pyavd._utils.strip_empties import strip_empties_from_dict
+from pyavd._utils.undefined import Undefined
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -497,8 +500,14 @@ class RouterBgpMixin(Protocol):
 
     def _set_neighbors(self: AvdStructuredConfigOverlayProtocol) -> None:
         neighbors = self.structured_config.router_bgp.neighbors
+        evpn_gateway_remote_peer_ip_by_hostname = {
+            remote_peer.hostname: remote_peer.ip_address for remote_peer in self.shared_utils.node_config.evpn_gateway.remote_peers
+        }
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             for route_server, data in natural_sort(self._evpn_route_servers.items()):
+                # Suppress the regular EVPN neighbor when the EVPN Gateway core neighbor uses the same peering address.
+                if evpn_gateway_remote_peer_ip_by_hostname.get(route_server, Undefined) in (None, data["ip_address"]):
+                    continue
                 remote_as = data["bgp_as"]
                 remote_ip_address = data["ip_address"]
                 if remote_as is None:
@@ -530,6 +539,9 @@ class RouterBgpMixin(Protocol):
                 self.set_once_peer_group_evpn_overlay_peers()
 
             for route_client, data in natural_sort(self._evpn_route_clients.items()):
+                # Suppress the regular EVPN neighbor when the EVPN Gateway core neighbor uses the same peering address.
+                if evpn_gateway_remote_peer_ip_by_hostname.get(route_client, Undefined) in (None, data["ip_address"]):
+                    continue
                 neighbor = self._create_neighbor(
                     data["ip_address"],
                     route_client,
@@ -566,6 +578,9 @@ class RouterBgpMixin(Protocol):
 
             if self.shared_utils.overlay_evpn_vxlan is True:
                 for route_server, data in natural_sort(self._evpn_route_servers.items()):
+                    # Suppress the regular EVPN neighbor when the EVPN Gateway core neighbor uses the same peering address.
+                    if evpn_gateway_remote_peer_ip_by_hostname.get(route_server, Undefined) in (None, data["ip_address"]):
+                        continue
                     neighbor = self._create_neighbor(
                         data["ip_address"],
                         route_server,
@@ -578,6 +593,9 @@ class RouterBgpMixin(Protocol):
                     self.set_once_peer_group_evpn_overlay_peers()
 
                 for route_client, data in natural_sort(self._evpn_route_clients.items()):
+                    # Suppress the regular EVPN neighbor when the EVPN Gateway core neighbor uses the same peering address.
+                    if evpn_gateway_remote_peer_ip_by_hostname.get(route_client, Undefined) in (None, data["ip_address"]):
+                        continue
                     neighbor = self._create_neighbor(
                         data["ip_address"],
                         route_client,
@@ -670,13 +688,6 @@ class RouterBgpMixin(Protocol):
             if bgp_as is None or ip_address is None:
                 msg = f"The EVPN Gateway remote peer '{remote_peer_name}' is missing either `bgp_as` or `ip_address`."
                 raise AristaAvdError(msg)
-
-            if remote_peer_name in self.shared_utils.node_config.evpn_route_servers:
-                msg = (
-                    f"EVPN Gateway remote peer '{remote_peer_name}' is also configured under 'evpn_route_servers'. "
-                    "Use each inventory hostname in only one of these inputs."
-                )
-                raise AristaAvdInvalidInputsError(msg)
 
             neighbor = self._create_neighbor(ip_address, remote_peer_name, self.inputs.bgp_peer_groups.evpn_overlay_core.name, bgp_as, overlay_peering_address)
             self.structured_config.router_bgp.neighbors.append(neighbor)

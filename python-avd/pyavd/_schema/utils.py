@@ -4,7 +4,7 @@
 from collections import ChainMap
 from typing import Any
 
-from pyavd._utils import get
+from pyavd._utils.get import get
 
 
 def get_instance_with_defaults(instance: dict[str, Any], dynamic_key_path: str, schema: dict) -> dict | ChainMap:

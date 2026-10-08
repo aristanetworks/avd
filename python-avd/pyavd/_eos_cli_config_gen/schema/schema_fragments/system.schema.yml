@@ -69,3 +69,8 @@ keys:
             valid_values:
               - "error"
               - "warn"
+      mac_address:
+        type: str
+        description: Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit).
+        convert_to_lower_case: true
+        pattern: "[0-9a-f][02468ace](:[0-9a-f]{2}){5}"

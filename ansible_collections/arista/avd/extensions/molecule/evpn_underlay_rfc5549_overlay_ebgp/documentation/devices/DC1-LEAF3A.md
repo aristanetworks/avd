@@ -183,9 +183,9 @@ Enable password has been disabled
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 192.168.200.11:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | - | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | - | - | False |
 
 #### TerminAttr Daemon Device Configuration
 
@@ -902,15 +902,15 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 2001:1::5 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_APP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_DB_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_WEB_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_B_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_C_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 2001:1::5 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_APP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_DB_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_WEB_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_B_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_C_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
 
 #### BGP Neighbor Interfaces
 

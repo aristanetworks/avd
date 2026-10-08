@@ -1,0 +1,24 @@
+---
+- name: Validate inputs with invalid fabric_name for avd_design
+  vars:
+    fabric_name: invalid_fabric_name
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    read_from_input_dir: false
+    tmp_dir: "{{ actual_output_dir }}/tmp_validate_inputs_invalid_fabric_name"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+  ignore_errors: true
+  register: result
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == expected_error
+  vars:
+    expected_error: >-
+      Error during plugin 'arista.avd.validate_inputs' execution: Invalid/missing 'fabric_name' variable.
+      All hosts in the play must have the same 'fabric_name' value which must point to an Ansible Group
+      containing the hosts.play_hosts: ['testhost']

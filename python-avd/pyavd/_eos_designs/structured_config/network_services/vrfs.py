@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from ipaddress import ip_address, ip_network
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -73,4 +74,31 @@ class VrfsMixin(Protocol):
             any(svi.ipv6_address or svi.ipv6_address_virtuals for svi in vrf.svis)
             or any(l3_interface.ipv6_addresses for l3_interface in vrf.l3_interfaces)
             or any(l3_port_channel.ipv6_addresses for l3_port_channel in vrf.l3_port_channels)
+        )
+
+    def _has_ipv4(
+        self: AvdStructuredConfigNetworkServicesProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
+    ) -> bool:
+        """
+        Return bool if IPv4 is configured in the given VRF.
+
+        Expects a VRF definition coming from filtered_tenants, where all keys have been set and filtered
+        """
+        return (
+            any(svi.ip_address or svi.ip_address_virtual for svi in vrf.svis)
+            or any(l3_interface.ip_addresses for l3_interface in vrf.l3_interfaces)
+            or any(l3_port_channel.ip_address for l3_port_channel in vrf.l3_port_channels)
+            or any(loopback.ip_address for loopback in vrf.loopbacks)
+            or (vrf.vtep_diagnostic.loopback is not None and bool(self._get_vtep_diagnostic_loopback_pools(vrf)[0]))
+            or any(ip_network(static_route.prefix, strict=False).version == 4 for static_route in vrf.static_routes)
+            or any(ip_address(bgp_peer.ip_address).version == 4 for bgp_peer in vrf.bgp_peers)
+            or any(
+                self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname)
+                and any(ip_network(listen_range.prefix, strict=False).version == 4 for listen_range in bgp_peer_group.listen_ranges)
+                for bgp_peer_group in vrf.bgp_peer_groups
+            )
+            or (
+                vrf.name == self.shared_utils.inband_mgmt_vrf
+                and any(parent_vlan["ipv4"] for parent_vlan in self.shared_utils.inband_management_parent_vlans.values())
+            )
         )

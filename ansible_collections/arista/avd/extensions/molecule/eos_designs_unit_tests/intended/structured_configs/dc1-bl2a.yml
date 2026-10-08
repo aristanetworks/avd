@@ -220,6 +220,14 @@ router_bgp:
     remote_as: '667'
     description: Tenant C peer group2
     update_source: lo0
+  - name: Tenant_C_BGP_PEER_GROUP_IPV6_DEFAULT_ORIGINATE
+    remote_as: '669'
+    description: Tenant C peer group for IPv6 default-originate route-map
+    update_source: lo0
+  - name: Tenant_C_BGP_PEER_GROUP_IPV6_DEFAULT_ORIGINATE_DISABLED
+    remote_as: '670'
+    description: Tenant C peer group for IPv6 default-originate disabled
+    update_source: lo0
   neighbors:
   - ip_address: 172.31.254.224
     peer_group: UNDERLAY-PEERS
@@ -356,6 +364,16 @@ router_bgp:
       activate: true
       rcf_in: TEST_RCF_IN()
       rcf_out: TEST_RCF_OUT()
+    - name: Tenant_C_BGP_PEER_GROUP_IPV6_DEFAULT_ORIGINATE
+      activate: true
+      default_originate:
+        enabled: true
+        route_map: TEST_OUT
+    - name: Tenant_C_BGP_PEER_GROUP_IPV6_DEFAULT_ORIGINATE_DISABLED
+      activate: true
+      default_originate:
+        enabled: false
+        always: true
   address_family_vpn_ipv4:
     domain_identifier: '65000:4'
     peer_groups:

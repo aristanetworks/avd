@@ -66,6 +66,8 @@ ipv6_prefix_lists:
     action: permit 2001:db8:2::/64
   - sequence: 20
     action: permit 2001:db8:4::/64
+  - sequence: 30
+    action: permit 2001:db8:14::/64
 ipv6_unicast_routing: true
 local_users:
 - name: admin
@@ -296,18 +298,32 @@ router_bgp:
       - 10032:10032
     redistribute_routes:
     - learned
+  - id: 41
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 10.255.1.1:10041
+    route_targets:
+      both:
+      - 10041:10041
+    redistribute_routes:
+    - learned
+  - id: 51
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 10.255.1.1:10051
+    route_targets:
+      both:
+      - 10051:10051
+    redistribute_routes:
+    - learned
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
   address_family_ipv4:
     peer_groups:
-    - name: MLAG-IPv6-UNDERLAY-PEER
-      activate: true
-      next_hop:
-        address_family_ipv6:
-          enabled: true
-          originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   address_family_ipv6:
@@ -370,9 +386,49 @@ router_bgp:
         - '12:12'
     router_id: 10.255.1.1
     neighbors:
-    - ip_address: 2001:db8:4::2
+    - ip_address: 2001:db8:2::2
       peer_group: MLAG-IPv6-UNDERLAY-PEER
       description: ipv6-numbered-leaf1b_Vlan3011
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
+  - name: VRF13
+    rd: 10.255.1.1:13
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '13:13'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '13:13'
+    router_id: 10.255.1.1
+    neighbors:
+    - ip_address: 2001:db8:4::2
+      peer_group: MLAG-IPv6-UNDERLAY-PEER
+      description: ipv6-numbered-leaf1b_Vlan3012
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
+  - name: VRF14
+    rd: 10.255.1.1:14
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '14:14'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '14:14'
+    router_id: 10.255.1.1
+    neighbors:
+    - ip_address: 2001:db8:14::2
+      peer_group: MLAG-IPv6-UNDERLAY-PEER
+      description: ipv6-numbered-leaf1b_Vlan3013
     redistribute:
       connected:
         enabled: true
@@ -493,6 +549,48 @@ vlan_interfaces:
     tenants:
     - TENANT1
     type: underlay_peering
+- name: Vlan41
+  description: VRF13_VLAN41
+  shutdown: false
+  vrf: VRF13
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:41::1/48
+  metadata:
+    tenants:
+    - TENANT1
+- name: Vlan3012
+  description: MLAG_L3_VRF_VRF13
+  shutdown: false
+  vrf: VRF13
+  ipv6_addresses:
+  - 2001:db8:4::1/64
+  mtu: 1500
+  metadata:
+    tenants:
+    - TENANT1
+    type: underlay_peering
+- name: Vlan51
+  description: VRF14_VLAN51
+  shutdown: false
+  vrf: VRF14
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:51::1/48
+  metadata:
+    tenants:
+    - TENANT1
+- name: Vlan3013
+  description: MLAG_L3_VRF_VRF14
+  shutdown: false
+  vrf: VRF14
+  ipv6_addresses:
+  - 2001:db8:14::1/64
+  mtu: 1500
+  metadata:
+    tenants:
+    - TENANT1
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
@@ -564,6 +662,30 @@ vlans:
   metadata:
     tenants:
     - TENANT1
+- id: 41
+  name: VRF13_VLAN41
+  metadata:
+    tenants:
+    - TENANT1
+- id: 3012
+  name: MLAG_L3_VRF_VRF13
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - TENANT1
+- id: 51
+  name: VRF14_VLAN51
+  metadata:
+    tenants:
+    - TENANT1
+- id: 3013
+  name: MLAG_L3_VRF_VRF14
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -579,6 +701,18 @@ vrfs:
     tenants:
     - TENANT1
 - name: VRF12
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT1
+- name: VRF13
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT1
+- name: VRF14
   ip_routing: true
   ipv6_routing: true
   metadata:
@@ -606,6 +740,10 @@ vxlan_interface:
         vni: 10031
       - id: 32
         vni: 10032
+      - id: 41
+        vni: 10041
+      - id: 51
+        vni: 10051
       vrfs:
       - name: VRF10
         vni: 10
@@ -613,3 +751,7 @@ vxlan_interface:
         vni: 11
       - name: VRF12
         vni: 12
+      - name: VRF13
+        vni: 13
+      - name: VRF14
+        vni: 14

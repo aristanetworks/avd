@@ -102,6 +102,13 @@ options:
         * When `vault_id` is specified, AVD uses the specified Vault ID for encryption.
     type: str
     required: false
+  template_with_multiprocessing:
+    description: |-
+      Use Multiprocessing for variable templating.
+      Disable this when templating of input variables invokes code that uses locks or background threads.
+      Forked worker processes may inherit locked state, potentially causing deadlocks.
+    type: bool
+    default: true
 """
 
 EXAMPLES = r"""

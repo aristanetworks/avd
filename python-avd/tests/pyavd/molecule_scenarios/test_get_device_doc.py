@@ -4,7 +4,7 @@
 import pytest
 
 from pyavd import get_device_doc, validate_structured_config
-from pyavd._utils import get
+from pyavd._utils.get import get
 from tests.models import MoleculeHost
 
 

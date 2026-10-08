@@ -41,14 +41,14 @@ SCHEMAS = {
         pickled_schema=EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("eos_cli_config_gen.schema.pickle"),
         fragments_dir=EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("schema_fragments"),
         python_class=EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath(PYTHON_CLASS_INIT_PATH),
-        docs_path=REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/eos_cli_config_gen/docs"),
+        docs_path=SCHEMAS_DIR.joinpath("eos_config/docs"),
     ),
     "eos_designs": SchemaPaths(
         yaml_file=EOS_DESIGNS_SCHEMA_DIR.joinpath("eos_designs.schema.yml"),
         pickled_schema=EOS_DESIGNS_SCHEMA_DIR.joinpath("eos_designs.schema.pickle"),
         fragments_dir=EOS_DESIGNS_SCHEMA_DIR.joinpath("schema_fragments"),
         python_class=EOS_DESIGNS_SCHEMA_DIR.joinpath(PYTHON_CLASS_INIT_PATH),
-        docs_path=REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/eos_designs/docs"),
+        docs_path=SCHEMAS_DIR.joinpath("avd_design/docs"),
     ),
     "eos_designs_facts_protocol": SchemaPaths(
         yaml_file=EOS_DESIGNS_FACTS_SCHEMA_DIR.joinpath("eos_designs_facts.schema.yml"),
@@ -66,3 +66,4 @@ SCHEMAS = {
 }
 
 SCHEMA_STORE_GZ_FILE = PYAVD_DIR.joinpath("_schema/schemas.json.gz")
+SCHEMA_STORE_ARCHIVE_FILE = PYAVD_DIR.joinpath("_schema/schemas.rkyv")

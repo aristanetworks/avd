@@ -11,7 +11,7 @@ from pyavd._schema.models.avd_list import AvdList
 from pyavd._schema.models.avd_model import AvdModel
 
 if TYPE_CHECKING:
-    from pyavd._utils import Undefined, UndefinedType
+    from pyavd._utils.undefined import Undefined, UndefinedType
 
 
 class CvDeploy(AvdModel):

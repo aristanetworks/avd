@@ -49,7 +49,9 @@ try:
         DeployToCvResult,
     )
     from pyavd._cv.workflows.utils import extract_from_device_deployments, get_result
-    from pyavd._utils import default, get, strip_empties_from_dict
+    from pyavd._utils.default import default
+    from pyavd._utils.get import get
+    from pyavd._utils.strip_empties import strip_empties_from_dict
 
     HAS_PYAVD = True
 except ImportError:
@@ -117,6 +119,7 @@ ARGUMENT_SPEC = {
                     "suppress_portfast": {"type": "bool", "required": False, "default": False},
                 },
             },
+            "max_sync_retries": {"type": "int", "required": False, "default": 5},
         },
     },
     "change_control": {
