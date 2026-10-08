@@ -1111,12 +1111,12 @@ class EosDesigns(EosDesignsRootModel):
           address family are activated on the MLAG peer group used for VRFs, either
         the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`
           or the dedicated
-        `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally on MLAG
-        L3 nodes,
-          and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing vrf <vrf>` are
-        configured for VRFs with MLAG iBGP peering.
-          This allows dual-stack VRFs over a numbered IPv6
-        underlay.
+        `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when
+        using the shared
+          peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing
+        vrf <vrf>` are configured for VRFs with MLAG iBGP peering.
+          This allows dual-stack VRFs over a
+        numbered IPv6 underlay.
 
         Default value: `False`
         """
@@ -1283,12 +1283,12 @@ class EosDesigns(EosDesignsRootModel):
                          address family are activated on the MLAG peer group used for VRFs, either
                        the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`
                          or the dedicated
-                       `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally on MLAG
-                       L3 nodes,
-                         and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing vrf <vrf>` are
-                       configured for VRFs with MLAG iBGP peering.
-                         This allows dual-stack VRFs over a numbered IPv6
-                       underlay.
+                       `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when
+                       using the shared
+                         peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing
+                       vrf <vrf>` are configured for VRFs with MLAG iBGP peering.
+                         This allows dual-stack VRFs over a
+                       numbered IPv6 underlay.
                     fix_radius_server_group_tls:
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global

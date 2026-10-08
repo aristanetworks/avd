@@ -541,10 +541,10 @@ keys:
           originate`) and the IPv6\n  address family are activated on the MLAG peer
           group used for VRFs, either the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`\n
           \ or the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6
-          interfaces` is configured globally on MLAG L3 nodes,\n  and `ip routing
-          ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing vrf <vrf>` are configured
-          for VRFs with MLAG iBGP peering.\n  This allows dual-stack VRFs over a numbered
-          IPv6 underlay."
+          interfaces` is configured globally when using the shared\n  peer group,
+          and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing vrf
+          <vrf>` are configured for VRFs with MLAG iBGP peering.\n  This allows dual-stack
+          VRFs over a numbered IPv6 underlay."
       fix_radius_server_group_tls:
         type: bool
         default: false

@@ -27,7 +27,7 @@ ethernet_interfaces:
 hostname: mlag-vrfs-ipv6-numbered-dedicated-rfc5549-l3leaf1b
 ip_igmp_snooping:
   globally_enabled: true
-ip_routing_ipv6_interfaces: true
+ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 ipv6_prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY-V6
