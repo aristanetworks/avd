@@ -3850,6 +3850,11 @@ keys:
 
               This will only be configured on VXLAN VTEPs which are also MLAG devices.'
             default: false
+          reply_source_address_validation:
+            type: bool
+            description: 'Validate reply source address matches configured server.
+
+              Supported starting with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.'
       suspended_vlans:
         type: list
         description: 'Suspended VLANs are rendered only as local suspended VLAN definitions.
@@ -11375,11 +11380,14 @@ keys:
       (fabric-level):\n  - \"underlay_ipv6: true\"\n  - \"loopback_ipv6_pool\"\n  -
       \"underlay_routing_protocol: ebgp\"\nRequires (node-level):\n  - \"uplink_ipv6_pool\"
       (or `downlink_pools`)\n  - \"vtep_loopback_ipv6_pool\"\n  - \"router_id_pool\"
-      or \"loopback_ipv4_address\"\nFor MLAG, the peer-link SVI uses IPv4 by default.
-      To use IPv6, also set on the MLAG nodes:\n  - \"mlag_peer_address_family: ipv6\"\n
-      \ - \"mlag_peer_ipv6_pool\"\n  - \"mlag_peer_l3_ipv6_pool\"\nSome settings are
-      not yet supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  - underlay_multicast_rp_interfaces\n
-      \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
+      or \"loopback_ipv4_address\"\nFor MLAG, set on the MLAG nodes:\n  - \"mlag_peer_l3_ipv6_pool\"
+      when using a separate MLAG L3 peering VLAN (default).\n  - \"mlag_peer_address_family:
+      ipv6\" and \"mlag_peer_ipv6_pool\" when `mlag_peer_l3_vlan` is 0 or the same
+      as `mlag_peer_vlan`.\n    With a separate MLAG L3 peering VLAN, these keys are
+      optional and only set the MLAG peer link (control link) to IPv6.\nSome settings
+      are not yet supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  -
+      underlay_multicast_rp_interfaces\n  - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n
+      \ - inband_ztp\n"
     type: bool
     default: false
   underlay_isis_authentication_cleartext_key:
@@ -14664,6 +14672,9 @@ $defs:
               If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will
               be used for L3 peering.
 
+              See `mlag_peer_address_family` for the supported address families in
+              that case.
+
               '
             type: int
             convert_types:
@@ -14681,8 +14692,11 @@ $defs:
               The IPv4 subnet used for MLAG underlay L3 peering is derived from this
               pool based on the node id of the first MLAG switch.
 
-              Required when MLAG leafs present in topology and they are using a separate
-              L3 peering VLAN.
+              Required when MLAG leafs present in topology are using a separate L3
+              peering VLAN,
+
+              unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true`
+              and `overlay_mlag_rfc5549: true`.
 
               '
             type: str
@@ -14696,8 +14710,8 @@ $defs:
               The IPv6 subnet used for MLAG underlay L3 peering is derived from this
               pool based on the node id of the first MLAG switch.
 
-              Required when MLAG leafs present in topology and they are using a separate
-              L3 peering VLAN.
+              Required when MLAG leafs present in topology are using `underlay_ipv6_numbered:
+              true` and a separate L3 peering VLAN.
 
               '
             type: str
@@ -14724,8 +14738,23 @@ $defs:
 
               `ipv6` requires EOS version 4.31.1F or higher.
 
-              Note: `ipv6` is not supported in combination with a common MLAG peer
-              link VLAN (ex. `mlag_peer_l3_vlan` set to 4094).'
+              This never changes which address families (NLRI) are activated on the
+              MLAG BGP peerings.
+
+              With a separate MLAG L3 peering VLAN (default), this only affects the
+              MLAG Peer Link.
+
+              The MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with
+              `underlay_ipv6_numbered: true` and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+
+              When the MLAG peer VLAN is also used for L3 peering (`mlag_peer_l3_vlan`
+              set to 0 or to the same VLAN as `mlag_peer_vlan`),
+
+              the MLAG L3 peerings (underlay and VRFs) are established using the MLAG
+              peer VLAN IP addresses,
+
+              so this must be `ipv6` with `underlay_ipv6_numbered: true` and `ipv4`
+              otherwise.'
             type: str
             valid_values:
             - ipv4
