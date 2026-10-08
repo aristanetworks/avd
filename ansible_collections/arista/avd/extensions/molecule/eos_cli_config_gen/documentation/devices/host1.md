@@ -10063,6 +10063,18 @@ ASN Notation: asdot
 | -------- | ----- |
 | Session tracker | ST2 |
 
+##### TTL-MAXIMUM
+
+| Settings | Value |
+| -------- | ----- |
+| TTL Max Hops | 254 |
+
+##### TTL-ZERO
+
+| Settings | Value |
+| -------- | ----- |
+| TTL Max Hops | 0 |
+
 ##### WELCOME_ROUTERS
 
 | Settings | Value |
@@ -10136,6 +10148,14 @@ ASN Notation: asdot
 | 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | extended | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
 | 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | large | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
 | 10.255.251.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | True | - | - | - | - |
+| 192.0.2.1 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | Inherited from peer group TEST |
+| 192.0.2.2 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | 0 |
+| 192.0.2.3 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | 254 |
+| 192.0.2.4 | 65001 | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | - |
+| 192.0.2.5 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | Inherited from peer group TTL-ZERO |
+| 192.0.2.6 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | Inherited from peer group TTL-MAXIMUM |
+| 192.0.2.7 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | Inherited from peer group test-passive | - |
+| 192.0.2.8 | 65001 | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | 1 |
 | 1.1.1.1 | - | VRF02 | - | - | - | - | - | - | - | - | - | - | - |
 | 192.168.0.10 | - | VRF02 | - | - | - | 10 (never warn) | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
@@ -10423,6 +10443,7 @@ ASN Notation: asdot
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | - | IPv4: True<br>Transit: True |
 | TENANT_A_PROJECT04 | 192.168.255.3:14 | - | - | IPv4: True<br>Transit: False |
 | Tenant_B | 10.50.64.15:30002 | - | - | IPv4: False<br>Transit: False |
+| TTL-SECURITY | - | - | - | IPv4: False<br>Transit: False |
 | VRF01 | - | user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
 | VRF02 | - | dynamic<br>user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
 | VRF03 | - | dynamic | - | IPv4: False<br>Transit: False |
@@ -10609,6 +10630,10 @@ router bgp 65101
    neighbor TEST-PASSIVE description BGP Connection in passive mode
    neighbor test-session-tracker peer group
    neighbor test-session-tracker session tracker ST2
+   neighbor TTL-MAXIMUM peer group
+   neighbor TTL-MAXIMUM ttl maximum-hops 254
+   neighbor TTL-ZERO peer group
+   neighbor TTL-ZERO ttl maximum-hops 0
    neighbor WELCOME_ROUTERS peer group
    neighbor WELCOME_ROUTERS remote-as 65001
    neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
@@ -11528,6 +11553,19 @@ router bgp 65101
       route-target import evpn 1:30002
       route-target export evpn 1:30002
       route-target export evpn route-map RM-DEFAULT-EXTRA-COMM
+   !
+   vrf TTL-SECURITY
+      neighbor 192.0.2.1 peer group TEST
+      neighbor 192.0.2.2 peer group TEST
+      neighbor 192.0.2.2 ttl maximum-hops 0
+      neighbor 192.0.2.3 peer group TEST
+      neighbor 192.0.2.3 ttl maximum-hops 254
+      neighbor 192.0.2.4 remote-as 65001
+      neighbor 192.0.2.5 peer group TTL-ZERO
+      neighbor 192.0.2.6 peer group TTL-MAXIMUM
+      neighbor 192.0.2.7 peer group test-passive
+      neighbor 192.0.2.8 remote-as 65001
+      neighbor 192.0.2.8 ttl maximum-hops 1
    !
    vrf VRF01
       bgp additional-paths install

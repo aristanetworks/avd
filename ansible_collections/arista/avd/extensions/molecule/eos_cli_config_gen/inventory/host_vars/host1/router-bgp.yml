@@ -294,6 +294,10 @@ router_bgp:
       ttl_maximum_hops: 42
       maximum_advertised_routes: 120000
       maximum_advertised_routes_warning_limit: 1000
+    - name: TTL-ZERO
+      ttl_maximum_hops: 0
+    - name: TTL-MAXIMUM
+      ttl_maximum_hops: 254
     - name: OBS_WAN
       metadata:
         type: ipv4
@@ -1775,6 +1779,34 @@ router_bgp:
       no_redistribute_routes:
         - learned
   vrfs:
+    - name: TTL-SECURITY
+      neighbors:
+        # Inherit TTL security from a peer group.
+        - ip_address: 192.0.2.1
+          peer_group: TEST
+        # An explicit zero overrides the inherited value.
+        - ip_address: 192.0.2.2
+          peer_group: TEST
+          ttl_maximum_hops: 0
+        # An explicit maximum overrides the inherited value.
+        - ip_address: 192.0.2.3
+          peer_group: TEST
+          ttl_maximum_hops: 254
+        # A missing setting must not inherit state from the preceding neighbor.
+        - ip_address: 192.0.2.4
+          remote_as: "65001"
+        # Inherited boundary values must be documented, including zero.
+        - ip_address: 192.0.2.5
+          peer_group: TTL-ZERO
+        - ip_address: 192.0.2.6
+          peer_group: TTL-MAXIMUM
+        # A peer group without TTL security must use the missing-value fallback.
+        - ip_address: 192.0.2.7
+          peer_group: test-passive
+        # Match global neighbor string-to-integer conversion.
+        - ip_address: 192.0.2.8
+          remote_as: "65001"
+          ttl_maximum_hops: "1"
     - name: VRF01
       redistribute:
         user:
