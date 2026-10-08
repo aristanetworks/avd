@@ -483,9 +483,17 @@ jobs:
           ansible-test sanity --color yes -v ${{ matrix.skip_test }}
 
   ansible_test_units:
-    name: Run ansible-test units test cases
+    name: Run ansible-test units test cases (${{ matrix.ansible_version }})
     runs-on: ubuntu-latest
     needs: [file-changes, build_pyavd]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ansible_version: latest_stable
+            pip_installation: "ansible-core<2.22.0"
+          - ansible_version: ansible_core_2_18
+            pip_installation: "ansible-core>=2.18.0,<2.19.0"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -504,18 +512,18 @@ jobs:
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          pip install "ansible-core<2.22.0" "$WHEEL_FILE[ansible-collection]"
+          pip install "${{ matrix.pip_installation }}" "$WHEEL_FILE[ansible-collection]"
       - name: Run ansible-test units
         working-directory: ansible_collections/arista/avd
         run: |
           ansible-test units --coverage --requirements -vv
           ansible-test coverage xml
-          mv tests/output/reports/coverage.xml ./units-coverage.xml
+          mv tests/output/reports/coverage.xml "./units-coverage-${{ matrix.ansible_version }}.xml"
       - name: Upload coverage from ansible-test units
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: ansible-test-units-coverage
-          path: ansible_collections/arista/avd/units-coverage.xml
+          name: ansible-test-units-coverage-${{ matrix.ansible_version }}
+          path: ansible_collections/arista/avd/units-coverage-${{ matrix.ansible_version }}.xml
 
   ansible_test_integration:
     name: Run ansible-test integration test cases (${{ matrix.ansible_version }})
