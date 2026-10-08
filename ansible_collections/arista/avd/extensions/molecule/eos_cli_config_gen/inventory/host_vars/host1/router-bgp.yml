@@ -2399,6 +2399,7 @@ router_bgp:
           remote_as: 1234
           local_as: 123
           description: Tenant A BGP Peer
+          ttl_maximum_hops: 1
           remove_private_as:
             enabled: true
             all: true

@@ -10129,7 +10129,7 @@ ASN Notation: asdot
 | 11.11.11.0 | - | NHP-PEER1 | - | - | - | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 0 (no limit) | - | - | - | - | - | - | - |
-| 10.2.3.4 | 1234 | TENANT_A_PROJECT01 | - | all | 0 (no limit) (warning-limit 100, warning-only) | 1000 (warning-limit 80 percent) | - | - | - | - | - | - | - |
+| 10.2.3.4 | 1234 | TENANT_A_PROJECT01 | - | all | 0 (no limit) (warning-limit 100, warning-only) | 1000 (warning-limit 80 percent) | - | - | - | - | - | - | 1 |
 | 11.1.1.1 | - | TENANT_A_PROJECT01 | - | - | - | 0 (no limit) (warning-limit 80 percent) | - | - | - | - | - | - | - |
 | 12.1.1.1 | - | TENANT_A_PROJECT01 | - | - | - | 0 (no limit) (warning-limit 180) | - | - | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | standard | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
@@ -11435,6 +11435,7 @@ router bgp 65101
       neighbor 10.2.3.4 local-as 123 no-prepend replace-as
       neighbor 10.2.3.4 description Tenant A BGP Peer
       neighbor 10.2.3.4 ebgp-multihop 3
+      neighbor 10.2.3.4 ttl maximum-hops 1
       neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
       neighbor 10.2.3.4 default-originate route-map RM-10.2.3.4-SET-NEXT-HOP-OUT always
       neighbor 10.2.3.4 send-community

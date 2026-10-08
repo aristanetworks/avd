@@ -21264,6 +21264,13 @@ keys:
                     min: 1
                     max: 255
                     description: Time-to-live in range of hops.
+                  ttl_maximum_hops:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 254
+                    description: Maximum number of hops.
                   next_hop_peer:
                     type: bool
                   next_hop_self:

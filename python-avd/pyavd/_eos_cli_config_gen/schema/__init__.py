@@ -57621,6 +57621,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "description": {"type": str},
                     "route_reflector_client": {"type": bool},
                     "ebgp_multihop": {"type": int},
+                    "ttl_maximum_hops": {"type": int},
                     "next_hop_peer": {"type": bool},
                     "next_hop_self": {"type": bool},
                     "shutdown": {"type": bool},
@@ -57684,6 +57685,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 route_reflector_client: bool | None
                 ebgp_multihop: int | None
                 """Time-to-live in range of hops."""
+                ttl_maximum_hops: int | None
+                """Maximum number of hops."""
                 next_hop_peer: bool | None
                 next_hop_self: bool | None
                 shutdown: bool | None
@@ -57750,6 +57753,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         description: str | UndefinedType | None = Undefined,
                         route_reflector_client: bool | UndefinedType | None = Undefined,
                         ebgp_multihop: int | UndefinedType | None = Undefined,
+                        ttl_maximum_hops: int | UndefinedType | None = Undefined,
                         next_hop_peer: bool | UndefinedType | None = Undefined,
                         next_hop_self: bool | UndefinedType | None = Undefined,
                         shutdown: bool | UndefinedType | None = Undefined,
@@ -57808,6 +57812,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             description: description
                             route_reflector_client: route_reflector_client
                             ebgp_multihop: Time-to-live in range of hops.
+                            ttl_maximum_hops: Maximum number of hops.
                             next_hop_peer: next_hop_peer
                             next_hop_self: next_hop_self
                             shutdown: shutdown
