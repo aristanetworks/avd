@@ -134,8 +134,6 @@ class EosDesignsFactsGeneratorProtocol(
         if self.shared_utils.underlay_ipv6_numbered:
             return None
         if self.shared_utils.underlay_router:
-            if self.shared_utils.node_config.loopback_ipv4_address:
-                return None
             return self.shared_utils.node_config.loopback_ipv4_pool
         return None
 
