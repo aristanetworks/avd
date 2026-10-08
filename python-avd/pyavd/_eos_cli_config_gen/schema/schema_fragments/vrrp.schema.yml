@@ -6,23 +6,16 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  ip_software_forwarding:
+  vrrp:
     type: dict
+    description: Global VRRP configuration.
     keys:
-      mtu:
+      ipv4:
         type: dict
+        description: VRRP IPv4 configuration.
         keys:
-          size:
-            type: int
-            convert_types:
-              - str
-            min: 68
-            max: 65535
-            description: |-
-              IPv4 software-forwarding MTU threshold in bytes.
-              Defaults to 1500 on EOS.
-          exceed_action_drop:
+          authentication_anti_replay:
             type: bool
             description: |-
-              Drop IPv4 packets larger than `mtu.size` in software.
-              Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+              Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
+              Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.
