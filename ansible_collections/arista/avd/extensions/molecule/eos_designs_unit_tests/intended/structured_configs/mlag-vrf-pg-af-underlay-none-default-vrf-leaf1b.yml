@@ -5,53 +5,48 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet11
-  description: MLAG_mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1b_Ethernet11
+  description: MLAG_mlag-vrf-pg-af-underlay-none-default-vrf-leaf1a_Ethernet11
   shutdown: false
   channel_group:
     id: 11
     mode: active
   metadata:
-    peer: mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1b
+    peer: mlag-vrf-pg-af-underlay-none-default-vrf-leaf1a
     peer_interface: Ethernet11
     peer_type: mlag_peer
 - name: Ethernet12
-  description: MLAG_mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1b_Ethernet12
+  description: MLAG_mlag-vrf-pg-af-underlay-none-default-vrf-leaf1a_Ethernet12
   shutdown: false
   channel_group:
     id: 11
     mode: active
   metadata:
-    peer: mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1b
+    peer: mlag-vrf-pg-af-underlay-none-default-vrf-leaf1a
     peer_interface: Ethernet12
     peer_type: mlag_peer
-hostname: mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1a
+hostname: mlag-vrf-pg-af-underlay-none-default-vrf-leaf1b
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing_ipv6_interfaces: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
-ipv6_prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY-V6
-  sequence_numbers:
-  - sequence: 10
-    action: permit 2001:db8:1::/48 eq 128
 ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.13/32
+  ip_address: 192.168.255.18/32
   ipv6_addresses:
-  - 2001:db8:1::d/128
+  - 2001:db8:1::12/128
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.254.13/32
+  ip_address: 192.168.254.17/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.201.113/24
+  ip_address: 192.168.201.118/24
   type: oob
 metadata:
   is_deployed: true
@@ -60,15 +55,15 @@ metadata:
   validate_hardware:
     enabled: false
 mlag_configuration:
-  domain_id: MLAG_VRF_PG_AF_RFC5549_NO_OVERLAY_RFC5549
+  domain_id: MLAG_VRF_PG_AF_UNDERLAY_NONE_DEFAULT_VRF
   local_interface: Vlan4094
-  peer_address: 10.255.252.25
+  peer_address: 10.255.252.32
   peer_link: Port-Channel11
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel11
-  description: MLAG_mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1b_Port-Channel11
+  description: MLAG_mlag-vrf-pg-af-underlay-none-default-vrf-leaf1a_Port-Channel11
   shutdown: false
   switchport:
     enabled: true
@@ -77,17 +72,17 @@ port_channel_interfaces:
       groups:
       - MLAG
 prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-SVI-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
-    action: permit 192.168.255.0/24 eq 32
-  - sequence: 20
-    action: permit 192.168.254.0/24 eq 32
-- name: PL-MLAG-PEER-VRFS
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.255.251.24/31
+    action: permit 10.10.100.0/24
 route_maps:
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
   - sequence: 10
@@ -97,71 +92,67 @@ route_maps:
     - origin incomplete
 - name: RM-CONN-2-BGP
   sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
   - sequence: 30
     type: permit
     match:
-    - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
-- name: RM-CONN-2-BGP-VRFS
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - ip address prefix-list PL-MLAG-PEER-VRFS
-  - sequence: 20
-    type: permit
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65107'
-  router_id: 192.168.255.13
+  as: '65109'
+  router_id: 192.168.255.18
   maximum_paths:
     paths: 4
   bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: MLAG-IPv4-UNDERLAY-PEER
-    metadata:
-      type: ipv4
-    remote_as: '65107'
-    description: mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1b
-    next_hop_self: true
-    send_community: all
-    maximum_routes: 256000
-    route_map_in: RM-MLAG-PEER-IN
   - name: MLAG-IPv4-VRFS-PEER
     metadata:
       type: ipv4
-    remote_as: '65107'
-    description: mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1b
+    remote_as: '65109'
+    description: mlag-vrf-pg-af-underlay-none-default-vrf-leaf1a
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbor_interfaces:
-  - name: Vlan4093
-    remote_as: '65107'
-    metadata:
-      peer: mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1b
-    peer_group: MLAG-IPv4-UNDERLAY-PEER
-    description: mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1b_Vlan4093
+  - name: Vlan3000
+    remote_as: '65109'
+    peer_group: MLAG-IPv4-VRFS-PEER
+    description: mlag-vrf-pg-af-underlay-none-default-vrf-leaf1a_Vlan3000
   redistribute:
     connected:
       enabled: true
-      route_map: RM-CONN-2-BGP
   vlans:
+  - id: 100
+    metadata:
+      tenants:
+      - TENANT_MLAG_VRF_PG_AF
+    rd: 192.168.255.18:10100
+    route_targets:
+      both:
+      - 10100:10100
+    redistribute_routes:
+    - learned
+  - id: 101
+    metadata:
+      tenants:
+      - TENANT_MLAG_VRF_PG_AF
+    rd: 192.168.255.18:10101
+    route_targets:
+      both:
+      - 10101:10101
+    redistribute_routes:
+    - learned
   - id: 110
     metadata:
       tenants:
       - TENANT_MLAG_VRF_PG_AF
-    rd: 192.168.255.13:10110
+    rd: 192.168.255.18:10110
     route_targets:
       both:
       - 10110:10110
@@ -171,7 +162,7 @@ router_bgp:
     metadata:
       tenants:
       - TENANT_MLAG_VRF_PG_AF
-    rd: 192.168.255.13:10111
+    rd: 192.168.255.18:10111
     route_targets:
       both:
       - 10111:10111
@@ -179,21 +170,31 @@ router_bgp:
     - learned
   address_family_ipv4:
     peer_groups:
-    - name: MLAG-IPv4-UNDERLAY-PEER
+    - name: MLAG-IPv4-VRFS-PEER
       activate: true
       next_hop:
         address_family_ipv6:
           enabled: true
           originate: true
-    - name: MLAG-IPv4-VRFS-PEER
-      activate: true
   address_family_ipv6:
     peer_groups:
-    - name: MLAG-IPv4-UNDERLAY-PEER
+    - name: MLAG-IPv4-VRFS-PEER
       activate: true
   vrfs:
+  - name: default
+    rd: 192.168.255.18:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: VRF_DUAL_STACK
-    rd: 192.168.255.13:10
+    rd: 192.168.255.18:10
     route_targets:
       import:
       - address_family: evpn
@@ -203,31 +204,52 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
-    router_id: 192.168.255.13
-    neighbors:
-    - ip_address: 10.255.251.25
+    router_id: 192.168.255.18
+    neighbor_interfaces:
+    - name: Vlan3009
+      remote_as: '65109'
       peer_group: MLAG-IPv4-VRFS-PEER
-      description: mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1b_Vlan3009
+      description: mlag-vrf-pg-af-underlay-none-default-vrf-leaf1a_Vlan3009
     redistribute:
       connected:
         enabled: true
-        route_map: RM-CONN-2-BGP-VRFS
 service_routing_protocols_model: multi-agent
 spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
-- name: Vlan4093
-  description: MLAG_L3
-  shutdown: false
-  ipv6_enable: true
-  mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
-  ip_address: 10.255.252.24/31
+  ip_address: 10.255.252.33/31
   mtu: 9214
   no_autostate: true
+- name: Vlan100
+  description: VLAN100_DEFAULT_IPV4
+  shutdown: true
+  ip_address_virtual: 10.10.100.1/24
+  metadata:
+    tenants:
+    - TENANT_MLAG_VRF_PG_AF
+- name: Vlan101
+  description: VLAN101_DEFAULT_IPV6
+  shutdown: true
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:db8:101::1/64
+  metadata:
+    tenants:
+    - TENANT_MLAG_VRF_PG_AF
+- name: Vlan3000
+  description: MLAG_L3_VRF_default
+  shutdown: false
+  vrf: default
+  ipv6_enable: true
+  mtu: 9214
+  metadata:
+    tenants:
+    - TENANT_MLAG_VRF_PG_AF
+    type: underlay_peering
 - name: Vlan110
   description: VLAN110_IPV4
   shutdown: true
@@ -250,7 +272,7 @@ vlan_interfaces:
   description: MLAG_L3_VRF_VRF_DUAL_STACK
   shutdown: false
   vrf: VRF_DUAL_STACK
-  ip_address: 10.255.251.24/31
+  ipv6_enable: true
   mtu: 9214
   metadata:
     tenants:
@@ -262,13 +284,6 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 4093
-  name: MLAG_L3
-  trunk_groups:
-  - MLAG
-  metadata:
-    tenants:
-    - system
 - id: 4094
   name: MLAG
   trunk_groups:
@@ -276,6 +291,23 @@ vlans:
   metadata:
     tenants:
     - system
+- id: 100
+  name: VLAN100_DEFAULT_IPV4
+  metadata:
+    tenants:
+    - TENANT_MLAG_VRF_PG_AF
+- id: 101
+  name: VLAN101_DEFAULT_IPV6
+  metadata:
+    tenants:
+    - TENANT_MLAG_VRF_PG_AF
+- id: 3000
+  name: MLAG_L3_VRF_default
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - TENANT_MLAG_VRF_PG_AF
 - id: 110
   name: VLAN110_IPV4
   metadata:
@@ -297,23 +329,29 @@ vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF_DUAL_STACK
-  ip_routing: true
   ipv6_routing: true
+  ip_routing_ipv6_interfaces: true
   metadata:
     tenants:
     - TENANT_MLAG_VRF_PG_AF
 vxlan_interface:
   vxlan1:
-    description: mlag-vrf-pg-af-rfc5549-no-overlay-rfc5549-leaf1a_VTEP
+    description: mlag-vrf-pg-af-underlay-none-default-vrf-leaf1b_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
+      - id: 100
+        vni: 10100
+      - id: 101
+        vni: 10101
       - id: 110
         vni: 10110
       - id: 111
         vni: 10111
       vrfs:
+      - name: default
+        vni: 1
       - name: VRF_DUAL_STACK
         vni: 10

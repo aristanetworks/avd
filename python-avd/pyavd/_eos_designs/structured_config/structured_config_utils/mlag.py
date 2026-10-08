@@ -74,7 +74,9 @@ class MlagMixin(Protocol):
     @run_once_method
     def set_once_mlag_vrfs_peer_group_address_families(self: StructuredConfigUtilsProtocol) -> None:
         """
-        Set the address families of the MLAG peer group used for iBGP peerings in VRFs, when these peerings use IPv6.
+        Set the address families of the MLAG peer group used for iBGP peerings in VRFs, when these sessions run over IPv6.
+
+        Raise when these sessions run over IPv4 with `overlay_mlag_rfc5549` or `underlay_ipv6`, since they cannot carry the requested routes.
 
         Only active with `avd_design_future.fix_mlag_vrf_peer_group_address_families`.
 
@@ -90,6 +92,14 @@ class MlagMixin(Protocol):
                 msg = (
                     "Invalid combination of inputs. 'overlay_mlag_rfc5549: true' requires 'underlay_rfc5549: true' or 'underlay_ipv6_numbered: true' "
                     "when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+            if self.shared_utils.underlay_ipv6:
+                msg = (
+                    "Invalid combination of inputs. IPv6 routes requested with 'underlay_ipv6: true' cannot be carried over the MLAG iBGP peerings in VRFs, "
+                    "since these sessions run over IPv4. "
+                    "With 'underlay_rfc5549: true', set 'overlay_mlag_rfc5549: true' to run these sessions over IPv6. "
+                    "Otherwise, this combination is not supported yet when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled."
                 )
                 raise AristaAvdInvalidInputsError(msg)
             return

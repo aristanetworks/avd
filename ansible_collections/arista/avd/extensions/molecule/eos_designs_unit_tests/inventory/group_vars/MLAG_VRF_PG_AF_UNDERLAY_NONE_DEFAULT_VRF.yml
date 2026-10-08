@@ -1,0 +1,57 @@
+---
+# RFC5549 link-local MLAG iBGP peering in VRFs with underlay_ipv6 and underlay_routing_protocol none, using a dedicated MLAG peer group.
+# With underlay_routing_protocol none, VRF default also has an MLAG iBGP peering.
+# Expected with the fix: the dedicated peer group activates IPv4 with `next-hop address-family ipv6 originate` and IPv6,
+# for VRF default and the other VRFs. `ip routing ipv6 interfaces` comes from underlay_rfc5549.
+underlay_routing_protocol: none
+underlay_rfc5549: true
+underlay_ipv6: true
+overlay_mlag_rfc5549: true
+
+bgp_peer_groups:
+  mlag_ipv4_vrfs_peer:
+    name: MLAG-IPv4-VRFS-PEER
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    mlag_interfaces: [Ethernet11, Ethernet12]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv6_pool: 2001:db8:1::/48
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  node_groups:
+    - group: MLAG_VRF_PG_AF_UNDERLAY_NONE_DEFAULT_VRF
+      bgp_as: 65109
+      nodes:
+        - name: mlag-vrf-pg-af-underlay-none-default-vrf-leaf1a
+          id: 17
+          mgmt_ip: 192.168.201.117/24
+        - name: mlag-vrf-pg-af-underlay-none-default-vrf-leaf1b
+          id: 18
+          mgmt_ip: 192.168.201.118/24
+
+tenants:
+  - name: TENANT_MLAG_VRF_PG_AF
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: default
+        vrf_id: 1
+        mlag_ibgp_peering_vlan: 3000
+        svis:
+          - id: 100
+            name: VLAN100_DEFAULT_IPV4
+            ip_address_virtual: 10.10.100.1/24
+          - id: 101
+            name: VLAN101_DEFAULT_IPV6
+            ipv6_address_virtuals: [2001:db8:101::1/64]
+      - name: VRF_DUAL_STACK
+        vrf_vni: 10
+        svis:
+          - id: 110
+            name: VLAN110_IPV4
+            ip_address_virtual: 10.10.110.1/24
+          - id: 111
+            name: VLAN111_IPV6
+            ipv6_address_virtuals: [2001:db8:111::1/64]

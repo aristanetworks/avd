@@ -75,16 +75,19 @@ keys:
         default: false
         description: |-
           Available from AVD 6.5.0.
-          Configure the same address families on the shared `bgp_peer_groups.mlag_ipv4_underlay_peer` and the dedicated
-          `bgp_peer_groups.mlag_ipv4_vrfs_peer` BGP peer groups for MLAG iBGP peerings in VRFs, when the peering uses IPv6
-          (`underlay_rfc5549` with `overlay_mlag_rfc5549`, or `underlay_ipv6_numbered`):
+          Configure the same address families on the shared (`bgp_peer_groups.mlag_ipv4_underlay_peer`) and the dedicated
+          (`bgp_peer_groups.mlag_ipv4_vrfs_peer`) BGP peer groups for MLAG iBGP peerings in VRFs,
+          including the default VRF with `underlay_routing_protocol: none`.
+          The address families of the shared peer group also apply to the underlay MLAG iBGP peering in the default VRF.
+          The MLAG iBGP sessions in VRFs run over IPv6 with `underlay_rfc5549` and `overlay_mlag_rfc5549` (link-local), or with `underlay_ipv6_numbered`.
+          They run over IPv4 otherwise.
+          When they run over IPv6:
           - With `overlay_mlag_rfc5549: true`, activate IPv4 with `next-hop address-family ipv6 originate`.
-            On `bgp_peer_groups.mlag_ipv4_underlay_peer`, this also applies to the MLAG iBGP connection in the default VRF,
-            so `ip routing ipv6 interfaces` is configured.
+            With the shared peer group, `ip routing ipv6 interfaces` is also configured for the underlay MLAG iBGP peering.
+          - With `overlay_mlag_rfc5549: false`, IPv4 is not activated, since IPv4 routes without an IPv6 next hop cannot be used.
           - With `underlay_ipv6: true`, activate IPv6.
-          With `underlay_ipv6_numbered: true` and `overlay_mlag_rfc5549: false`, IPv4 is no longer activated on `bgp_peer_groups.mlag_ipv4_vrfs_peer`,
-          matching `bgp_peer_groups.mlag_ipv4_underlay_peer`.
-          Raise an error when `overlay_mlag_rfc5549: true` is used for MLAG iBGP peerings in VRFs over IPv4.
+          `underlay_ipv6: true` is the way to carry IPv6 routes over the MLAG iBGP peerings in VRFs, and it only works when these sessions run over IPv6.
+          Raise an error when the MLAG iBGP sessions in VRFs run over IPv4 with `overlay_mlag_rfc5549: true` or with `underlay_ipv6: true`.
       fix_radius_server_group_tls:
         type: bool
         default: false
