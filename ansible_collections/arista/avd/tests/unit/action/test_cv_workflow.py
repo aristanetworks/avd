@@ -202,7 +202,7 @@ def test_deploy_uses_tmp_dir_when_read_from_validated_inputs(
 def test_deploy_includes_static_config_manifest_when_provided(
     action_module: Callable[..., ActionModule],
 ) -> None:
-    """Verify static_config_manifest is built when provided in validated_args."""
+    """Verify the manifest built from validated args is passed to deployment."""
     module = action_module(ActionModule)
     validated_args = _make_validated_args(static_config_manifest={"containers": []})
 
@@ -213,12 +213,14 @@ def test_deploy_includes_static_config_manifest_when_provided(
         patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
         patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], []), create=True),
         patch(f"{MODULE_PATH}.AvdManifest") as mock_manifest,
-        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=_make_deploy_result_mock(), create=True),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=_make_deploy_result_mock(), create=True) as mock_deploy,
         patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
     ):
         asyncio.run(module.deploy(validated_args))
 
-    mock_manifest.from_dict.assert_called_once()
+    mock_manifest.from_dict.assert_called_once_with(validated_args["static_config_manifest"])
+    mock_deploy.assert_awaited_once()
+    assert mock_deploy.await_args.kwargs["static_config_manifest"] is mock_manifest.from_dict.return_value
 
 
 def test_deploy_includes_proxy_password_in_result_when_set(
@@ -324,35 +326,61 @@ def test_deploy_skips_deploy_to_cv_when_no_work_to_do(
     assert module.result.get("notes") == ["No configurations, tags, or static config manifest found to deploy."]
 
 
+@pytest.mark.parametrize("live_display", [False, True])
+@pytest.mark.parametrize("save_logs", [False, True])
+@pytest.mark.parametrize("return_details", [False, True])
+@pytest.mark.parametrize("work_to_do", [False, True])
 def test_deploy_preserves_logged_warnings_in_result(
     action_module: Callable[..., ActionModule],
+    save_logs: bool,
+    return_details: bool,
+    work_to_do: bool,
+    live_display: bool,
 ) -> None:
-    """Verify logged warnings are captured and added to the deployment result warnings, independently of save_logs."""
-    module = action_module(ActionModule)
-    validated_args = _make_validated_args()
-    logged_warnings_list = ["Warning 1: Device offline", "Warning 2: Config mismatch"]
+    """Actual pyavd warnings are returned and displayed independently of save_logs."""
+    module = action_module(ActionModule, task_args={"save_logs": save_logs, "live_display": live_display})
+    module.ansible_name = "arista.avd.cv_workflow"
+    validated_args = _make_validated_args(return_details=return_details)
+    deploy_result = _make_deploy_result_mock(warnings=["Deployment warning"] if work_to_do else [])
+    deploy_result.get_result.side_effect = lambda: {"warnings": deploy_result.warnings}
+    shared_display = MagicMock(verbosity=0)
+
+    async def build_device_deployments(**_kwargs: object) -> list:
+        logging.getLogger("pyavd._cv").warning("Device offline")
+        module.result["warnings"] = ["Existing warning"]
+        return []
 
     with (
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
+        patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
+        patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
         patch(f"{MODULE_PATH}.CloudVision", create=True),
         patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
         patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
         patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
-        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([MagicMock()], [], [], []), create=True),
-        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=_make_deploy_result_mock(), create=True),
+        patch(f"{MODULE_PATH}.get_result", return_value={}, create=True),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([MagicMock()] if work_to_do else [], [], [], []), create=True),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=deploy_result, create=True),
+        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=deploy_result, create=True),
         patch(f"{MODULE_PATH}.CVChangeControl", create=True),
         patch(f"{MODULE_PATH}.AvdChangeControl", create=True),
         patch(f"{MODULE_PATH}.CVTimeOuts", create=True),
         patch(f"{MODULE_PATH}.CVWorkspace", create=True),
         patch(f"{MODULE_PATH}.AvdWorkspace", create=True),
-        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch.object(module, "build_device_deployments", side_effect=build_device_deployments),
     ):
-        # Set up logged warnings in the result
-        module.result["logs"] = {"warnings": logged_warnings_list}
-        asyncio.run(module.deploy(validated_args))
+        result = module.run(task_vars={})
 
-    # Verify logged warnings are preserved in the result
-    assert "warnings" in module.result
-    assert all(w in module.result["warnings"] for w in logged_warnings_list)
+    assert result["warnings"] == (["Deployment warning"] if work_to_do else []) + ["Device offline", "Existing warning"]
+    if live_display:
+        shared_display.warning.assert_called_once_with("Device offline")
+    else:
+        shared_display.warning.assert_not_called()
+    if save_logs:
+        assert result["logs"]["warnings"] == ["Device offline"]
+    else:
+        assert "logs" not in result
 
 
 # ---------------------------------------------------------------------------
