@@ -5,9 +5,10 @@ from __future__ import annotations
 
 import json
 from asyncio import gather, run
+from contextlib import contextmanager
 from pathlib import Path
 from string import Template
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from yaml import load
 
@@ -18,6 +19,11 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     get_tmp_paths,
 )
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import SaveToResultHandler
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
+    from logging import Filter, Handler
 
 try:
     from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
@@ -145,6 +151,15 @@ class ActionModule(AVDActionPlugin):
     _logging_config = AVDLoggingConfig()
     _REDACTED_VALUE = "<removed>"
 
+    @contextmanager
+    def _logging_context(self, temp_handlers: list[Handler], temp_filters: list[Filter], log_format: str) -> Generator[None, None, None]:
+        """Capture deployment warnings while retaining the configured logging behavior."""
+        captured_logs: dict[str, Any] = {}
+        warning_handler = SaveToResultHandler(captured_logs)
+        self._logged_warnings = captured_logs["logs"]["warnings"]
+        with super()._logging_context([*temp_handlers, warning_handler], temp_filters, log_format):
+            yield
+
     def main(self, _task_vars: dict[str, Any]) -> None:
         if not HAS_PYAVD:
             msg = "The 'arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error"
@@ -234,9 +249,9 @@ class ActionModule(AVDActionPlugin):
             result_object.errors = [str(error) for error in result_object.errors]
             result_object.warnings = [str(warning) for warning in result_object.warnings]
 
-            # Preserve logged warnings in deployment result, independently of save_logs setting.
-            persisted_logger_warnings = [str(warning) for warning in self.result.get("logs", {}).get("warnings", [])]
-            result_object.warnings.extend(persisted_logger_warnings)
+        # Preserve logged and existing warnings, independently of save_logs setting.
+        result_object.warnings.extend(getattr(self, "_logged_warnings", []))
+        result_object.warnings.extend(self.result.get("warnings", []))
 
         # Build result with detailed data or summary based on return_details flag.
         if validated_args["return_details"]:
