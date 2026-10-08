@@ -38,6 +38,16 @@ snmp_server:
     auth: sha512
     auth_key_type: '7'
     auth_key: 075F71184C5C4D57404B5D085D297D707B6364261505175058045801070C5A061E405A0D54070450015B0257025C52554653550C5E500C761D4D5C49521414585A01737C742C37347B4105445651505B5A5002575049400B5904500A0201525E575F0903574103050B0F530E71144A5E4D5C45475354057B7D267D623674450213
+  - name: usertest-auth-priv-key0
+    group: usergroup
+    version: v3
+    localized: f5717f42424242424200
+    auth: sha
+    auth_key_type: '0'
+    auth_key: 6c3164e279e6606e37028356bfbe9f1d0ad65ec1
+    priv: aes192
+    priv_key_type: '0'
+    priv_key: cf2421b898bda979625eb46b766dce3e13044c78633b2762
   - name: usertest-no-auth-no-priv
     group: usergroup
     version: v3
