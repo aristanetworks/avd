@@ -14,8 +14,10 @@ if TYPE_CHECKING:
     from pyavd_utils.validation import Violation
     from typing_extensions import Self
 
+
 class AristaAvdWarning(UserWarning):
-    """Inherit Python Warning class for AVD.""" 
+    """Inherit Python Warning class for AVD."""
+
     host: str | None
 
     def __init__(self, message: str, host: str | None = None) -> None:
@@ -31,6 +33,7 @@ class AristaAvdWarning(UserWarning):
             message = self.message
 
         warnings.warn(message, category=self.__class__, stacklevel=stacklevel)
+
 
 class AristaAvdError(Exception):
     host: str | None
