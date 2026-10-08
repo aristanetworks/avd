@@ -71,3 +71,10 @@ keys:
           Available from AVD 6.4.0.
           When `true`, the '!' separator before 'boot secret' is only rendered when `boot.secret.key` is provided.
           When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+      ospfv3_render_no_passive_interface:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.5.0.
+          When `false` (default), the `no ospfv3 passive-interface` command is not rendered on SVIs, even when `vlan_interfaces[].ospfv3.passive_interface` is set to `false`.
+          When `true`, explicitly renders `no ospfv3 passive-interface` on SVIs when `vlan_interfaces[].ospfv3.passive_interface` is `false`.

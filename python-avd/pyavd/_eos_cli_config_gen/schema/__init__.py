@@ -6680,6 +6680,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
             "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
             "only_render_separator_with_boot_secret_key": {"type": bool, "default": False},
+            "ospfv3_render_no_passive_interface": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6769,6 +6770,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        ospfv3_render_no_passive_interface: bool
+        """
+        Available from AVD 6.5.0.
+        When `false` (default), the `no ospfv3 passive-interface` command is not
+        rendered on SVIs, even when `vlan_interfaces[].ospfv3.passive_interface` is set to `false`.
+        When
+        `true`, explicitly renders `no ospfv3 passive-interface` on SVIs when
+        `vlan_interfaces[].ospfv3.passive_interface` is `false`.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6783,6 +6795,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
                 render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
                 only_render_separator_with_boot_secret_key: bool | UndefinedType = Undefined,
+                ospfv3_render_no_passive_interface: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6847,6 +6860,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `boot.secret.key` is provided.
                        When `false` (default), the '!' separator is always rendered when
                        `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+                    ospfv3_render_no_passive_interface:
+                       Available from AVD 6.5.0.
+                       When `false` (default), the `no ospfv3 passive-interface` command is not
+                       rendered on SVIs, even when `vlan_interfaces[].ospfv3.passive_interface` is set to `false`.
+                       When
+                       `true`, explicitly renders `no ospfv3 passive-interface` on SVIs when
+                       `vlan_interfaces[].ospfv3.passive_interface` is `false`.
 
                 """
 

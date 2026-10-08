@@ -1,3 +1,4 @@
 eos_config_future:
   only_render_separator_with_boot_secret_key: true
   render_monitor_layer1_without_enabled: true
+  ospfv3_render_no_passive_interface: true

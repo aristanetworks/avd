@@ -16,6 +16,7 @@
     | [<samp>&nbsp;&nbsp;render_monitor_layer1_without_enabled</samp>](## "eos_config_future.render_monitor_layer1_without_enabled") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>When `true`, renders the `monitor layer1` CLI block only if `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no matter the value of `monitor_layer1.enabled` is `true` or `false`.<br>When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`. |
     | [<samp>&nbsp;&nbsp;render_spanning_tree_portfast_edge</samp>](## "eos_config_future.render_spanning_tree_portfast_edge") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>When `true`, renders `spanning-tree portfast edge` on `ethernet_interfaces` and `port_channel_interfaces` when `spanning_tree_portfast` is set to `edge`, matching the running-config preserved by EOS 4.33.2F and later.<br>When `false` (default), renders the legacy `spanning-tree portfast` without the `edge` keyword. |
     | [<samp>&nbsp;&nbsp;only_render_separator_with_boot_secret_key</samp>](## "eos_config_future.only_render_separator_with_boot_secret_key") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>When `true`, the '!' separator before 'boot secret' is only rendered when `boot.secret.key` is provided.<br>When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility. |
+    | [<samp>&nbsp;&nbsp;ospfv3_render_no_passive_interface</samp>](## "eos_config_future.ospfv3_render_no_passive_interface") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>When `false` (default), the `no ospfv3 passive-interface` command is not rendered on SVIs, even when `vlan_interfaces[].ospfv3.passive_interface` is set to `false`.<br>When `true`, explicitly renders `no ospfv3 passive-interface` on SVIs when `vlan_interfaces[].ospfv3.passive_interface` is `false`. |
 
 === "YAML"
 
@@ -66,4 +67,9 @@
       # When `true`, the '!' separator before 'boot secret' is only rendered when `boot.secret.key` is provided.
       # When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
       only_render_separator_with_boot_secret_key: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # When `false` (default), the `no ospfv3 passive-interface` command is not rendered on SVIs, even when `vlan_interfaces[].ospfv3.passive_interface` is set to `false`.
+      # When `true`, explicitly renders `no ospfv3 passive-interface` on SVIs when `vlan_interfaces[].ospfv3.passive_interface` is `false`.
+      ospfv3_render_no_passive_interface: <bool; default=False>
     ```

@@ -1026,7 +1026,7 @@ interface Dps1
 | Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
 | --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
 | Vlan85 | True | True | 0.0.0.0 | 1000 |
-| Vlan1000 | - | - | 1000 | 0.0.0.0 |
+| Vlan1000 | False | - | 1000 | 0.0.0.0 |
 | Vlan1001 | True | True | 1000 | 0.0.0.0 |
 
 ##### ISIS
@@ -1057,6 +1057,7 @@ interface Vlan85
 !
 interface Vlan1000
    description Vlan with minimal ospfv3 configurations
+   no ospfv3 passive-interface
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0
 !
