@@ -9,7 +9,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Protocol, overload
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdWarning
 from pyavd._utils.template_var import template_var
 from pyavd._utils.undefined import Undefined
 from pyavd.j2filters import range_expand
@@ -391,7 +391,8 @@ class UtilsMixin(Protocol):
         This function emits the warning unconditionally so it is the responsibility of the caller to consider the toggle.
         """
         msg = (
-            f"The 'parent_profile' set under '{context}[profile={parent_profile}]' is ignored for device '{self.hostname}', because the profile is itself used as a parent profile."
+            f"The 'parent_profile' set under '{context}[profile={parent_profile}]' is ignored because the profile is itself used as a parent profile."
             " Set 'avd_design_future.allow_recursive_profile_inheritance' to inherit through multiple levels, or remove the 'parent_profile'."
         )
-        warnings.warn(msg, stacklevel=2)
+        alert = AristaAvdWarning(msg, host=self.hostname)
+        alert._warn()
