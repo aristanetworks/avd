@@ -7,10 +7,6 @@ type: l3leaf
 
 avd_design_future:
   fix_mlag_vrf_peer_group_address_families: true
-  # Fixes for neighboring issues, so the rendered configurations are coherent.
-  fix_match_ipv6_prefix_list_on_mlag_route_map: true
-  only_configure_route_map_connected_to_bgp_vrfs_when_used: true
-  fix_mlag_ibgp_peering_ipv6_pool: true
 
 tenants:
   - name: TENANT_MLAG_VRF_PG_AF

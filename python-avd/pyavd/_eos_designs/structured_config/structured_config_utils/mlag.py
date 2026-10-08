@@ -89,22 +89,46 @@ class MlagMixin(Protocol):
         ipv6_session = (self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549) or self.shared_utils.underlay_ipv6_numbered
         if not ipv6_session:
             if self.inputs.overlay_mlag_rfc5549:
+                if self.shared_utils.underlay_routing_protocol == "ebgp":
+                    if self.shared_utils.underlay_ipv6:
+                        transport_fix = "Set 'underlay_rfc5549: true' or 'underlay_ipv6_numbered: true' to run these sessions over IPv6."
+                    else:
+                        transport_fix = (
+                            "Set 'underlay_rfc5549: true', or set both 'underlay_ipv6: true' and 'underlay_ipv6_numbered: true', "
+                            "to run these sessions over IPv6."
+                        )
+                elif self.shared_utils.underlay_routing_protocol == "none":
+                    transport_fix = "Set 'underlay_rfc5549: true' to run these sessions over IPv6."
+                else:
+                    transport_fix = "There is no supported IPv6 transport for these sessions with this underlay routing protocol."
+                disabled_inputs = "'overlay_mlag_rfc5549'" if not self.shared_utils.underlay_ipv6 else "'overlay_mlag_rfc5549' and 'underlay_ipv6'"
                 msg = (
-                    "Invalid combination of inputs. 'overlay_mlag_rfc5549: true' requires 'underlay_rfc5549: true' or 'underlay_ipv6_numbered: true' "
-                    "when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled."
+                    "Invalid combination of inputs. IPv4 routes requested with 'overlay_mlag_rfc5549: true' cannot be carried over the MLAG iBGP peerings "
+                    "in VRFs, since these sessions run over IPv4. "
+                    f"{transport_fix} Disable {disabled_inputs}, or disable the MLAG iBGP peerings in VRFs with 'enable_mlag_ibgp_peering_vrfs: false'. "
+                    "This is checked when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled."
                 )
                 raise AristaAvdInvalidInputsError(msg)
             if self.shared_utils.underlay_ipv6:
-                if self.inputs.underlay_rfc5549:
-                    fix = "Set 'overlay_mlag_rfc5549: true' to run these sessions over IPv6, or disable"
-                elif self.shared_utils.underlay_routing_protocol == "ebgp":
-                    fix = "Set 'underlay_ipv6_numbered: true' to run these sessions over IPv6, or disable"
+                if self.shared_utils.underlay_routing_protocol == "ebgp":
+                    if self.inputs.underlay_rfc5549:
+                        transport_fix = "Set 'overlay_mlag_rfc5549: true' to run these sessions over IPv6."
+                    else:
+                        transport_fix = (
+                            "Set both 'underlay_rfc5549: true' and 'overlay_mlag_rfc5549: true', or set 'underlay_ipv6_numbered: true', "
+                            "to run these sessions over IPv6."
+                        )
+                elif self.shared_utils.underlay_routing_protocol == "none":
+                    if self.inputs.underlay_rfc5549:
+                        transport_fix = "Set 'overlay_mlag_rfc5549: true' to run these sessions over IPv6."
+                    else:
+                        transport_fix = "Set both 'underlay_rfc5549: true' and 'overlay_mlag_rfc5549: true' to run these sessions over IPv6."
                 else:
-                    fix = "Disable"
+                    transport_fix = "There is no supported IPv6 transport for these sessions with this underlay routing protocol."
                 msg = (
                     "Invalid combination of inputs. IPv6 routes requested with 'underlay_ipv6: true' cannot be carried over the MLAG iBGP peerings in VRFs, "
                     "since these sessions run over IPv4. "
-                    f"{fix} the MLAG iBGP peerings in VRFs with 'enable_mlag_ibgp_peering_vrfs: false'. "
+                    f"{transport_fix} Disable the MLAG iBGP peerings in VRFs with 'enable_mlag_ibgp_peering_vrfs: false'. "
                     "This is checked when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled."
                 )
                 raise AristaAvdInvalidInputsError(msg)

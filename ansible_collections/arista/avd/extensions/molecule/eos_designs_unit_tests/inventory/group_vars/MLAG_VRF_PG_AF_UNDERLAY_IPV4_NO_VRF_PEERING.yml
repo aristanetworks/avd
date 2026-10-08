@@ -1,7 +1,12 @@
 ---
 # IPv4 underlay with overlay_mlag_rfc5549, but without MLAG iBGP peering in VRFs.
 # Expected with the fix: no error, since the error is only raised for devices with MLAG iBGP peerings in VRFs.
+# The unused dedicated group is rendered with only_configure_mlag_vrfs_peer_group_when_used disabled.
 overlay_mlag_rfc5549: true
+
+bgp_peer_groups:
+  mlag_ipv4_vrfs_peer:
+    name: MLAG-IPv4-VRFS-PEER
 
 l3leaf:
   defaults:

@@ -1,0 +1,23 @@
+---
+# IS-IS baseline using the shared MLAG peer group and the MLAG peer VLAN for L3 peering.
+underlay_routing_protocol: isis
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    mlag_interfaces: [Ethernet11, Ethernet12]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_vlan: 4094
+  node_groups:
+    - group: MLAG_VRF_PG_AF_ISIS_BASELINE_SHARED_VLAN
+      bgp_as: 65126
+      nodes:
+        - name: mlag-vrf-pg-af-isis-baseline-shared-vlan-leaf1a
+          id: 31
+          mgmt_ip: 192.168.201.131/24
+        - name: mlag-vrf-pg-af-isis-baseline-shared-vlan-leaf1b
+          id: 32
+          mgmt_ip: 192.168.201.132/24

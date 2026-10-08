@@ -1,0 +1,43 @@
+---
+# A dedicated MLAG VRF peer group is not rendered when it is unused and only_configure_mlag_vrfs_peer_group_when_used is enabled.
+avd_design_future:
+  only_configure_mlag_vrfs_peer_group_when_used: true
+
+bgp_peer_groups:
+  mlag_ipv4_vrfs_peer:
+    name: MLAG-IPv4-VRFS-PEER
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    mlag_interfaces: [Ethernet11, Ethernet12]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+  node_groups:
+    - group: MLAG_VRF_PG_AF_NO_VRF_PEERING_ONLY_CONFIG_TRUE
+      bgp_as: 65128
+      nodes:
+        - name: mlag-vrf-pg-af-no-vrf-peering-only-config-true-leaf1a
+          id: 35
+          mgmt_ip: 192.168.201.135/24
+        - name: mlag-vrf-pg-af-no-vrf-peering-only-config-true-leaf1b
+          id: 36
+          mgmt_ip: 192.168.201.136/24
+
+tenants:
+  - name: TENANT_MLAG_VRF_PG_AF
+    mac_vrf_vni_base: 10000
+    enable_mlag_ibgp_peering_vrfs: false
+    vrfs:
+      - name: VRF_DUAL_STACK
+        vrf_vni: 10
+        svis:
+          - id: 110
+            name: VLAN110_IPV4
+            ip_address_virtual: 10.10.110.1/24
+          - id: 111
+            name: VLAN111_IPV6
+            ipv6_address_virtuals: [2001:db8:111::1/64]

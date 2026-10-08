@@ -1,0 +1,45 @@
+---
+type: l3leaf
+
+avd_design_future:
+  fix_mlag_vrf_peer_group_address_families: true
+
+underlay_routing_protocol: none
+overlay_mlag_rfc5549: true
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.68.0.0/24
+    vtep_loopback_ipv4_pool: 10.69.0.0/24
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    virtual_router_mac_address: 00:1c:73:00:00:99
+  node_groups:
+    - group: mlag-vrf-overlay-rfc5549-underlay-none
+      bgp_as: 65133
+      nodes:
+        - name: mlag-vrf-overlay-rfc5549-underlay-none-1
+          id: 1
+          mgmt_ip: 192.168.0.227/24
+        - name: mlag-vrf-overlay-rfc5549-underlay-none-2
+          id: 2
+          mgmt_ip: 192.168.0.228/24
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: default
+        vrf_id: 1
+        mlag_ibgp_peering_vlan: 3000
+        svis:
+          - id: 11
+            name: VLAN11
+            ip_address_virtual: 10.10.11.1/24
+
+expected_error_message: >-
+  Invalid combination of inputs. IPv4 routes requested with 'overlay_mlag_rfc5549: true' cannot be carried over the MLAG iBGP peerings in VRFs,
+  since these sessions run over IPv4. Set 'underlay_rfc5549: true' to run these sessions over IPv6.
+  Disable 'overlay_mlag_rfc5549', or disable the MLAG iBGP peerings in VRFs with 'enable_mlag_ibgp_peering_vrfs: false'.
+  This is checked when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled.

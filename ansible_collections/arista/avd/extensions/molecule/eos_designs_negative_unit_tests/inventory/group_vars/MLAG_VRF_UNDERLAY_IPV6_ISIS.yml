@@ -46,6 +46,6 @@ tenants:
 
 expected_error_message: >-
   Invalid combination of inputs. IPv6 routes requested with 'underlay_ipv6: true' cannot be carried over the MLAG iBGP peerings in VRFs,
-  since these sessions run over IPv4.
+  since these sessions run over IPv4. There is no supported IPv6 transport for these sessions with this underlay routing protocol.
   Disable the MLAG iBGP peerings in VRFs with 'enable_mlag_ibgp_peering_vrfs: false'.
   This is checked when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled.

@@ -1,0 +1,23 @@
+---
+# RFC5549 underlay without overlay_mlag_rfc5549, using the shared MLAG peer group.
+underlay_rfc5549: true
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    mlag_interfaces: [Ethernet11, Ethernet12]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+  node_groups:
+    - group: MLAG_VRF_PG_AF_RFC5549_NO_OVERLAY_SHARED
+      bgp_as: 65122
+      nodes:
+        - name: mlag-vrf-pg-af-rfc5549-no-overlay-shared-leaf1a
+          id: 23
+          mgmt_ip: 192.168.201.123/24
+        - name: mlag-vrf-pg-af-rfc5549-no-overlay-shared-leaf1b
+          id: 24
+          mgmt_ip: 192.168.201.124/24

@@ -112,6 +112,15 @@ router_bgp:
     send_community: all
     maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
+  - name: MLAG-IPv4-VRFS-PEER
+    metadata:
+      type: ipv4
+    remote_as: '65108'
+    description: mlag-vrf-pg-af-underlay-ipv4-no-vrf-peering-leaf1a
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 256000
+    route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 10.255.251.28
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -147,6 +156,12 @@ router_bgp:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
+    - name: MLAG-IPv4-VRFS-PEER
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
   vrfs:
   - name: VRF_DUAL_STACK
     rd: 192.168.255.16:10

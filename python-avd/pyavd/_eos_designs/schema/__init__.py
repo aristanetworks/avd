@@ -1120,6 +1120,15 @@ class EosDesigns(EosDesignsRootModel):
         sessions run over IPv6.
         Raise an error when the MLAG iBGP sessions in VRFs run over IPv4 with
         `overlay_mlag_rfc5549: true` or with `underlay_ipv6: true`.
+        Companion fixes:
+        - With
+        `underlay_ipv6_numbered`, also enable `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool` so the BGP
+        neighbor is derived from the same
+          IPv6 pool as the MLAG iBGP peering SVI.
+        - When carrying IPv6
+        routes, also enable `avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map` so `RM-
+        CONN-2-BGP-VRFS` matches
+          the IPv6 prefix list with `match ipv6 address prefix-list`.
 
         Default value: `False`
         """
@@ -1295,6 +1304,15 @@ class EosDesigns(EosDesignsRootModel):
                        sessions run over IPv6.
                        Raise an error when the MLAG iBGP sessions in VRFs run over IPv4 with
                        `overlay_mlag_rfc5549: true` or with `underlay_ipv6: true`.
+                       Companion fixes:
+                       - With
+                       `underlay_ipv6_numbered`, also enable `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool` so the BGP
+                       neighbor is derived from the same
+                         IPv6 pool as the MLAG iBGP peering SVI.
+                       - When carrying IPv6
+                       routes, also enable `avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map` so `RM-
+                       CONN-2-BGP-VRFS` matches
+                         the IPv6 prefix list with `match ipv6 address prefix-list`.
                     fix_radius_server_group_tls:
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global

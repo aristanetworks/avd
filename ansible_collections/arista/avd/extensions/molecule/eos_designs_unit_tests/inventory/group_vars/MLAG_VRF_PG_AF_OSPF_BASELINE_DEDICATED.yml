@@ -1,0 +1,27 @@
+---
+# OSPF baseline using a dedicated MLAG VRF peer group.
+underlay_routing_protocol: ospf
+
+bgp_peer_groups:
+  mlag_ipv4_vrfs_peer:
+    name: MLAG-IPv4-VRFS-PEER
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    mlag_interfaces: [Ethernet11, Ethernet12]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+  node_groups:
+    - group: MLAG_VRF_PG_AF_OSPF_BASELINE_DEDICATED
+      bgp_as: 65127
+      nodes:
+        - name: mlag-vrf-pg-af-ospf-baseline-dedicated-leaf1a
+          id: 33
+          mgmt_ip: 192.168.201.133/24
+        - name: mlag-vrf-pg-af-ospf-baseline-dedicated-leaf1b
+          id: 34
+          mgmt_ip: 192.168.201.134/24

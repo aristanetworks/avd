@@ -544,7 +544,12 @@ keys:
           true`, activate IPv6.\n`underlay_ipv6: true` is the way to carry IPv6 routes
           over the MLAG iBGP peerings in VRFs, and it only works when these sessions
           run over IPv6.\nRaise an error when the MLAG iBGP sessions in VRFs run over
-          IPv4 with `overlay_mlag_rfc5549: true` or with `underlay_ipv6: true`."
+          IPv4 with `overlay_mlag_rfc5549: true` or with `underlay_ipv6: true`.\nCompanion
+          fixes:\n- With `underlay_ipv6_numbered`, also enable `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool`
+          so the BGP neighbor is derived from the same\n  IPv6 pool as the MLAG iBGP
+          peering SVI.\n- When carrying IPv6 routes, also enable `avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map`
+          so `RM-CONN-2-BGP-VRFS` matches\n  the IPv6 prefix list with `match ipv6
+          address prefix-list`."
       fix_radius_server_group_tls:
         type: bool
         default: false
