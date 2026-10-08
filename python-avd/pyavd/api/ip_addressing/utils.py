@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
@@ -84,7 +84,10 @@ class UtilsMixin(Protocol):
         return self.shared_utils.node_config.loopback_ipv4_address
 
     @cached_property
-    def _loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str | None:
+    def _loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str:
+        if not self.shared_utils.node_config.loopback_ipv4_pool:
+            msg = "loopback_ipv4_pool"
+            raise AristaAvdMissingVariableError(msg)
         return self.shared_utils.node_config.loopback_ipv4_pool
 
     @cached_property
