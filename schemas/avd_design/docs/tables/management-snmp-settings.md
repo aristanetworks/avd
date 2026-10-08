@@ -27,10 +27,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_settings.users.[].version") | String |  |  | Valid Values:<br>- <code>v1</code><br>- <code>v2c</code><br>- <code>v3</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_settings.users.[].auth") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_settings.users.[].auth_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_key_type</samp>](## "snmp_settings.users.[].auth_key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code> | Authentication key type for localized SNMPv3 users.<br>Used only when `compute_v3_user_localized_key` is `true`.<br>When set, AVD renders the computed localized authentication key using EOS `key <type> <key>` syntax.<br>- `0`: Key string is not encrypted.<br>- `7`: Type-7 encrypted (HIDDEN) key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "snmp_settings.users.[].key_type") | String |  | `disabled` | Valid Values:<br>- <code>disabled</code><br>- <code>0</code><br>- <code>7</code> | Key type for the computed localized SNMPv3 auth and priv keys.<br>Used only when `compute_v3_user_localized_key` is `true`.<br>When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type> <key>` syntax for both auth and priv.<br>- `disabled`: Use legacy syntax without key type (auth_passphrase rendered directly). Default for backward compatibility.<br>- `0`: Key string is plaintext. AVD renders the raw computed localized key.<br>- `7`: Type-7 encrypted (HIDDEN) key. AVD applies Type-7 obfuscation to the computed localized key before rendering. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_settings.users.[].priv") | String |  |  | Valid Values:<br>- <code>des</code><br>- <code>aes</code><br>- <code>aes192</code><br>- <code>aes256</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_settings.users.[].priv_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_key_type</samp>](## "snmp_settings.users.[].priv_key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code> | Privacy key type for localized SNMPv3 users.<br>Used only when authentication is rendered using `auth_key_type`.<br>Defaults to `auth_key_type` when unset.<br>- `0`: Key string is not encrypted.<br>- `7`: Type-7 encrypted (HIDDEN) key. |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "snmp_settings.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "snmp_settings.hosts.[].host") | String |  |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_settings.hosts.[].vrf") | String |  |  |  | VRF Name.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed. |
@@ -166,23 +165,17 @@
           # Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
           auth_passphrase: <str>
 
-          # Authentication key type for localized SNMPv3 users.
+          # Key type for the computed localized SNMPv3 auth and priv keys.
           # Used only when `compute_v3_user_localized_key` is `true`.
-          # When set, AVD renders the computed localized authentication key using EOS `key <type> <key>` syntax.
-          # - `0`: Key string is not encrypted.
-          # - `7`: Type-7 encrypted (HIDDEN) key.
-          auth_key_type: <str; "0" | "7">
+          # When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type> <key>` syntax for both auth and priv.
+          # - `disabled`: Use legacy syntax without key type (auth_passphrase rendered directly). Default for backward compatibility.
+          # - `0`: Key string is plaintext. AVD renders the raw computed localized key.
+          # - `7`: Type-7 encrypted (HIDDEN) key. AVD applies Type-7 obfuscation to the computed localized key before rendering.
+          key_type: <str; "disabled" | "0" | "7"; default="disabled">
           priv: <str; "des" | "aes" | "aes192" | "aes256">
 
           # Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
           priv_passphrase: <str>
-
-          # Privacy key type for localized SNMPv3 users.
-          # Used only when authentication is rendered using `auth_key_type`.
-          # Defaults to `auth_key_type` when unset.
-          # - `0`: Key string is not encrypted.
-          # - `7`: Type-7 encrypted (HIDDEN) key.
-          priv_key_type: <str; "0" | "7">
       hosts:
 
           # Host IP address or name.

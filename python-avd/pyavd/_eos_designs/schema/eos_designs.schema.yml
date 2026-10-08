@@ -10675,21 +10675,29 @@ keys:
               type: str
               description: Cleartext passphrase so the recommendation is to use vault.
                 Requires 'auth' to be set.
-            auth_key_type:
+            key_type:
               type: str
               valid_values:
+              - disabled
               - '0'
               - '7'
-              description: 'Authentication key type for localized SNMPv3 users.
+              default: disabled
+              description: 'Key type for the computed localized SNMPv3 auth and priv
+                keys.
 
                 Used only when `compute_v3_user_localized_key` is `true`.
 
-                When set, AVD renders the computed localized authentication key using
-                EOS `key <type> <key>` syntax.
+                When set to `0` or `7`, AVD renders the computed localized keys using
+                EOS `key <type> <key>` syntax for both auth and priv.
 
-                - `0`: Key string is not encrypted.
+                - `disabled`: Use legacy syntax without key type (auth_passphrase
+                rendered directly). Default for backward compatibility.
 
-                - `7`: Type-7 encrypted (HIDDEN) key.'
+                - `0`: Key string is plaintext. AVD renders the raw computed localized
+                key.
+
+                - `7`: Type-7 encrypted (HIDDEN) key. AVD applies Type-7 obfuscation
+                to the computed localized key before rendering.'
             priv:
               type: str
               valid_values:
@@ -10701,20 +10709,6 @@ keys:
               type: str
               description: Cleartext passphrase so the recommendation is to use vault.
                 Requires 'priv' to be set.
-            priv_key_type:
-              type: str
-              valid_values:
-              - '0'
-              - '7'
-              description: 'Privacy key type for localized SNMPv3 users.
-
-                Used only when authentication is rendered using `auth_key_type`.
-
-                Defaults to `auth_key_type` when unset.
-
-                - `0`: Key string is not encrypted.
-
-                - `7`: Type-7 encrypted (HIDDEN) key.'
       hosts:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/hosts
