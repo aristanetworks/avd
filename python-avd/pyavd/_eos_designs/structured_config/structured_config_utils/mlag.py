@@ -95,11 +95,17 @@ class MlagMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
             if self.shared_utils.underlay_ipv6:
+                if self.inputs.underlay_rfc5549:
+                    fix = "Set 'overlay_mlag_rfc5549: true' to run these sessions over IPv6, or disable"
+                elif self.shared_utils.underlay_routing_protocol == "ebgp":
+                    fix = "Set 'underlay_ipv6_numbered: true' to run these sessions over IPv6, or disable"
+                else:
+                    fix = "Disable"
                 msg = (
                     "Invalid combination of inputs. IPv6 routes requested with 'underlay_ipv6: true' cannot be carried over the MLAG iBGP peerings in VRFs, "
                     "since these sessions run over IPv4. "
-                    "With 'underlay_rfc5549: true', set 'overlay_mlag_rfc5549: true' to run these sessions over IPv6. "
-                    "Otherwise, this combination is not supported yet when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled."
+                    f"{fix} the MLAG iBGP peerings in VRFs with 'enable_mlag_ibgp_peering_vrfs: false'. "
+                    "This is checked when 'avd_design_future.fix_mlag_vrf_peer_group_address_families' is enabled."
                 )
                 raise AristaAvdInvalidInputsError(msg)
             return
