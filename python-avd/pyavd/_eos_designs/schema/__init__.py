@@ -40104,8 +40104,8 @@ class EosDesigns(EosDesignsRootModel):
             vrf_id: int | None
             """
             Required if "vrf_vni" is not set.
-            "vrf_id" is used as default value for "vrf_vni", "ospf.process_id"
-            and "ospfv3.router_id" unless those are set.
+            "vrf_id" is used as default value for "vrf_vni" and
+            "ospf.process_id" unless those are set.
             "vrf_id" may also be used for VRF RD/RT ID. See
             "overlay_rd_type" and "overlay_rt_type" for details.
             "vrf_id" is preferred over "vrf_vni" for MLAG
@@ -40492,8 +40492,8 @@ class EosDesigns(EosDesignsRootModel):
                            "mac_vrf_vni_base" accordingly to avoid overlap.
                         vrf_id:
                            Required if "vrf_vni" is not set.
-                           "vrf_id" is used as default value for "vrf_vni", "ospf.process_id"
-                           and "ospfv3.router_id" unless those are set.
+                           "vrf_id" is used as default value for "vrf_vni" and
+                           "ospf.process_id" unless those are set.
                            "vrf_id" may also be used for VRF RD/RT ID. See
                            "overlay_rd_type" and "overlay_rt_type" for details.
                            "vrf_id" is preferred over "vrf_vni" for MLAG
@@ -93892,8 +93892,8 @@ class EosDesigns(EosDesignsRootModel):
                     vrf_id: int | None
                     """
                     Required if "vrf_vni" is not set.
-                    "vrf_id" is used as default value for "vrf_vni", "ospf.process_id"
-                    and "ospfv3.router_id" unless those are set.
+                    "vrf_id" is used as default value for "vrf_vni" and
+                    "ospf.process_id" unless those are set.
                     "vrf_id" may also be used for VRF RD/RT ID. See
                     "overlay_rd_type" and "overlay_rt_type" for details.
                     "vrf_id" is preferred over "vrf_vni" for MLAG
@@ -94280,8 +94280,8 @@ class EosDesigns(EosDesignsRootModel):
                                    "mac_vrf_vni_base" accordingly to avoid overlap.
                                 vrf_id:
                                    Required if "vrf_vni" is not set.
-                                   "vrf_id" is used as default value for "vrf_vni", "ospf.process_id"
-                                   and "ospfv3.router_id" unless those are set.
+                                   "vrf_id" is used as default value for "vrf_vni" and
+                                   "ospf.process_id" unless those are set.
                                    "vrf_id" may also be used for VRF RD/RT ID. See
                                    "overlay_rd_type" and "overlay_rt_type" for details.
                                    "vrf_id" is preferred over "vrf_vni" for MLAG

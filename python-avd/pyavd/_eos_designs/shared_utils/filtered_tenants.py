@@ -567,24 +567,52 @@ class FilteredTenantsMixin(Protocol):
             )
             self.update_ospf_authentication(config, svi, vrf, tenant)
 
-        if isinstance(config, EosCliConfigGen.VlanInterfacesItem) and svi.ospfv3.enabled:
-            if not self.is_ospfv3_enabled_on_node(vrf):
-                msg = f"OSPFv3 is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
+        if svi.ospfv3.enabled and self.is_ospfv3_enabled_on_node(vrf):
+            if vrf.name == "default":
+                msg = f"The default VRF is not supported inside 'network_services.tenants[name={tenant.name}].vrfs[name={vrf.name}.svis[id={svi.id}]'."
                 raise AristaAvdInvalidInputsError(msg)
-            if not svi.ipv6_enable and not svi.ipv6_address:
+
+            if self.uplink_type in ["lan", "port-channel"]:
                 msg = (
-                    f"OSPFv3 is enabled on SVI '{svi.name}' but neither 'ipv6_enable' nor 'ipv6_address' is set under"
-                    f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
+                    f"OSPFv3 is enabled on SVI '{svi.name}' but this node has uplink_type '{self.uplink_type}', "
+                    f"which renders SVIs as Ethernet subinterfaces. OSPFv3 on Ethernet subinterfaces is not yet supported."
                 )
                 raise AristaAvdInvalidInputsError(msg)
-            if svi.ospfv3.address_family_ipv4.enabled:
-                config.ospfv3.ipv4.area = svi.ospfv3.address_family_ipv4.area
-            if svi.ospfv3.address_family_ipv6.enabled:
-                config.ospfv3.ipv6.area = svi.ospfv3.address_family_ipv6.area
-            config.ospfv3._update(
-                passive_interface=svi.ospfv3.passive_interface,
-                network_point_to_point=svi.ospfv3.network_point_to_point,
-            )
+
+            if isinstance(config, EosCliConfigGen.VlanInterfacesItem):
+                if not svi.ipv6_address:
+                    # OSPFv3 runs over the IPv6 link-local address, even for the IPv4 address family.
+                    svi.ipv6_enable = default(svi.ipv6_enable, True)
+                    if not svi.ipv6_enable:
+                        msg = (
+                            f"OSPFv3 is enabled on SVI '{svi.name}' but 'ipv6_enable' is set to false and no 'ipv6_address' is set under"
+                            f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
+
+                if svi.ospfv3.address_family_ipv4.enabled:
+                    if not vrf.ospfv3.address_family_ipv4.enabled:
+                        msg = f"OSPFv3 IPv4 address family is enabled on SVI '{svi.name}' but not enabled on VRF '{vrf.name}'."
+                        raise AristaAvdInvalidInputsError(msg)
+                    # TODO: Check if ip_address_secondaries is needed
+                    if not svi.ip_address and not svi.ip_address_secondaries:
+                        msg = (
+                            f"OSPFv3 IPv4 address family is enabled on SVI '{svi.name}' but no IPv4 address is set under"
+                            f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
+                    config.ospfv3.ipv4.area = svi.ospfv3.address_family_ipv4.area
+
+                if svi.ospfv3.address_family_ipv6.enabled:
+                    if not vrf.ospfv3.address_family_ipv6.enabled:
+                        msg = f"OSPFv3 IPv6 address family is enabled on SVI '{svi.name}' but not enabled on VRF '{vrf.name}'."
+                        raise AristaAvdInvalidInputsError(msg)
+                    config.ospfv3.ipv6.area = svi.ospfv3.address_family_ipv6.area
+
+                config.ospfv3._update(
+                    passive_interface=svi.ospfv3.passive_interface,
+                    network_point_to_point=svi.ospfv3.network_point_to_point,
+                )
 
     @overload
     def update_ospf_authentication(

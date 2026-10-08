@@ -293,6 +293,7 @@ vlan_interfaces:
   description: Tenant_OSPFv3_Redistribute_201 description
   shutdown: false
   vrf: Tenant_OSPFv3_Redistribute_VRF
+  ip_address: 10.201.1.1/24
   ipv6_enable: true
   ipv6_addresses:
   - cafe::cafe/64
@@ -310,13 +311,12 @@ vlan_interfaces:
   description: Tenant_OSPFv3_Redistribute_IPv4_203 description
   shutdown: false
   vrf: Tenant_OSPFv3_Redistribute_IPv4
+  ip_address: 10.203.1.1/24
   ipv6_enable: true
   ipv6_addresses:
   - cafe::ca/64
   ospfv3:
     ipv4:
-      area: 1.1.1.1
-    ipv6:
       area: 1.1.1.1
     passive_interface: true
     network_point_to_point: true
@@ -330,6 +330,11 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_addresses:
   - ca::ca/64
+  ospfv3:
+    ipv6:
+      area: 1.1.1.1
+    passive_interface: true
+    network_point_to_point: true
   metadata:
     tenants:
     - Tenant_OSPFv3_Redistribute_IPv6
@@ -337,6 +342,7 @@ vlan_interfaces:
   description: Tenant_OSPFv3_Redistribute_Route_Map_202 description
   shutdown: false
   vrf: Tenant_OSPFv3_Redistribute_Route_Map_VRF
+  ip_address: 10.202.1.1/24
   ipv6_enable: true
   ipv6_addresses:
   - cafe::/64
@@ -354,9 +360,6 @@ vlan_interfaces:
   description: Tenant_OSPFv3_Structured_Config_206 description
   shutdown: false
   vrf: Tenant_OSPFv3_Structured_Config_VRF
-  ipv6_enable: true
-  ipv6_addresses:
-  - ca::ca/64
   metadata:
     tenants:
     - Tenant_OSPFv3_Structured_Config

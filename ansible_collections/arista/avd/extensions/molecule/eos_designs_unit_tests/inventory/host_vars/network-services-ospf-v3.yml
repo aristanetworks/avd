@@ -49,6 +49,7 @@ tenants:
             name: Tenant_OSPFv3_Redistribute_201
             description: "Tenant_OSPFv3_Redistribute_201 description"
             enabled: true
+            ip_address: 10.201.1.1/24
             ipv6_address: cafe::cafe/64
             ipv6_enable: true
             ospfv3:
@@ -101,6 +102,7 @@ tenants:
             name: Tenant_OSPFv3_Redistribute_Route_Map_202
             description: "Tenant_OSPFv3_Redistribute_Route_Map_202 description"
             enabled: true
+            ip_address: 10.202.1.1/24
             ipv6_address: cafe::/64
             ipv6_enable: true
             ospfv3:
@@ -138,14 +140,12 @@ tenants:
             name: Tenant_OSPFv3_Redistribute_IPv4_203
             description: "Tenant_OSPFv3_Redistribute_IPv4_203 description"
             enabled: true
+            ip_address: 10.203.1.1/24
             ipv6_address: cafe::ca/64
             ipv6_enable: true
             ospfv3:
               enabled: true
               address_family_ipv4:
-                enabled: true
-                area: 1.1.1.1
-              address_family_ipv6:
                 enabled: true
                 area: 1.1.1.1
               passive_interface: true
@@ -177,6 +177,13 @@ tenants:
             enabled: true
             ipv6_address: ca::ca/64
             ipv6_enable: true
+            ospfv3:
+              enabled: true
+              address_family_ipv6:
+                enabled: true
+                area: 1.1.1.1
+              passive_interface: true
+              network_point_to_point: true
   # Test OSPFv3 structured configs
   - name: Tenant_OSPFv3_Structured_Config
     mac_vrf_vni_base: 10000
@@ -206,10 +213,9 @@ tenants:
                 bgp:
                   enabled: true
                   include_leaked: true
+        # Added to test ipv6 unicast routing enabled with router ospfv3
         svis:
           - id: 207
             name: Tenant_OSPFv3_Structured_Config_206
             description: "Tenant_OSPFv3_Structured_Config_206 description"
             enabled: true
-            ipv6_address: ca::ca/64
-            ipv6_enable: true

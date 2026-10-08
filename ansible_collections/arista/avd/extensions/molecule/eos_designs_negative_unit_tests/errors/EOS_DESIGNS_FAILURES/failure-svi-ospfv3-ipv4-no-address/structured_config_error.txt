@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: OSPFv3 IPv4 address family is enabled on SVI 'OSPFv3_IPv4_No_Address_SVI' but no IPv4 address is set under 'tenants[name=Tenant_OSPFv3_IPv4_No_Address].vrfs[name=OSPFV3_IPv4_No_Address_VRF].svis[id=214]'.

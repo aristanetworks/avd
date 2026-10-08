@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -30,6 +31,10 @@ class RouterOspfv3Mixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 if self.shared_utils.is_ospfv3_enabled_on_node(vrf):
+                    if vrf.name == "default":
+                        msg = f"The default VRF is not supported inside 'network_services.tenants[name={tenant.name}].vrfs'."
+                        raise AristaAvdInvalidInputsError(msg)
+
                     vrf_config = EosCliConfigGen.RouterOspfv3.VrfsItem(
                         name=vrf.name,
                         router_id=self.get_protocol_vrf_router_id(vrf, tenant, vrf.ospfv3.router_id),
@@ -39,7 +44,7 @@ class RouterOspfv3Mixin(Protocol):
                     self._update_ospfv3_redistribute(vrf_config, vrf)
 
                     if vrf.ospfv3.structured_config:
-                        vrf_config._deepmerge(vrf.ospfv3.structured_config)
+                        vrf_config._deepmerge(vrf.ospfv3.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy)
 
                     self.structured_config.router_ospfv3.vrfs.append(vrf_config)
 

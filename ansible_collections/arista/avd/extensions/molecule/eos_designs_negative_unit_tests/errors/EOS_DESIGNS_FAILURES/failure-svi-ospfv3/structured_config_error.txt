@@ -1,1 +1,0 @@
-pyavd._errors.AristaAvdInvalidInputsError: OSPFv3 is enabled on SVI 'Tenant_OSPFv3_Node_Override_Disabled_210' but not under 'tenants[name=Tenant_OSPFv3_Node_Override_Disabled].vrfs[name=Tenant_OSPFv3_Node_Override_Disabled_VRF]'.

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: OSPFv3 is enabled on SVI 'OSPFv3_IPv6_Disabled_SVI' but 'ipv6_enable' is set to false and no 'ipv6_address' is set under 'tenants[name=Tenant_OSPFv3_IPv6_Disabled].vrfs[name=OSPFV3_IPv6_Disabled_VRF].svis[id=213]'.
