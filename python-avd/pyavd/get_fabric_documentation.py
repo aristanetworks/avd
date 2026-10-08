@@ -15,7 +15,7 @@ from pyavd.api.fabric_documentation import (
     FabricDocumentation,
 )
 
-ACT_NODE_TYPE_FEATURES = Literal[
+ActNodeTypeFeature = Literal[
     "node_type",
     "device_model",
     "version",
@@ -29,7 +29,7 @@ ACT_NODE_TYPE_FEATURES = Literal[
     "neighbors",
     "instance_type",
 ]
-ACT_NODE_TYPE_FEATURES_MAP: dict[str, frozenset[ACT_NODE_TYPE_FEATURES]] = {
+ACT_NODE_TYPE_FEATURES_MAP: dict[str, frozenset[ActNodeTypeFeature]] = {
     "cloudeos": frozenset({"internet_access", "serial_number", "system_mac_address", "ztp"}),
     "veos": frozenset({"internet_access", "ports", "serial_number", "system_mac_address", "ztp"}),
 }
@@ -40,7 +40,7 @@ if TYPE_CHECKING:
     from .api.schemas import EOSConfig
 
 
-def _act_node_supported_feature(node_type: str, feature: str) -> bool:
+def _act_node_supported_feature(node_type: str, feature: ActNodeTypeFeature) -> bool:
     """Return True if an ACT node type supports specific ACT node-level feature."""
     return feature in ACT_NODE_TYPE_FEATURES_MAP.get(node_type, frozenset())
 
