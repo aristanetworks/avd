@@ -591,6 +591,9 @@ class AvdStructuredConfigBaseProtocol(
         if not (relay_settings := self.inputs.general_settings.dhcp_relay):
             return
 
+        if relay_settings.reply_source_address_validation:
+            self.structured_config.dhcp_relay.reply_source_address_validation = relay_settings.reply_source_address_validation
+
         if self.shared_utils.vtep:
             if relay_settings.tunnel_requests_disabled:
                 self.structured_config.dhcp_relay.tunnel_requests_disabled = relay_settings.tunnel_requests_disabled
