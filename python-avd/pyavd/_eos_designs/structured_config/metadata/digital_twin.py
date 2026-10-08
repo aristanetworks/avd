@@ -41,13 +41,15 @@ class DigitalTwinMixin(Protocol):
         match environment:
             case "act":
                 digital_twin_node_type = self.shared_utils.platform_settings.digital_twin.act_node_type
+                node_config_digital_twin = self.shared_utils.node_config.digital_twin
+                fabric_hardware_identity = self.inputs.digital_twin.fabric.hardware_identity
                 if not (isinstance(digital_twin_node_type, str) and digital_twin_node_type):
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}' using platform '{self.shared_utils.platform}'."
                         f" 'digital_twin.{environment}_node_type' key is missing in platform settings."
                     )
                     raise AristaAvdError(msg)
-                ip_addr = default(self.shared_utils.node_config.digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip)
+                ip_addr = default(node_config_digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip)
                 if not ip_addr and digital_twin_node_type not in ["cloudeos", "veos"]:
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
@@ -61,7 +63,7 @@ class DigitalTwinMixin(Protocol):
                     )
                     raise AristaAvdError(msg)
                 version = default(
-                    self.shared_utils.node_config.digital_twin.act_os_version,
+                    node_config_digital_twin.act_os_version,
                     self.inputs.digital_twin.fabric.act_os_version,
                     get(self.DEFAULT_OS_VERSION_MAP, f"act..{digital_twin_node_type}", separator=".."),
                 )
@@ -75,14 +77,27 @@ class DigitalTwinMixin(Protocol):
                     username=username,
                     password=password,
                 )
-                # Set internet_access flag if node_type is cloudeos or veos
-                if (
-                    act_internet_access := default(
+                # Set settings supported on cloudeos or veos node types only
+                if digital_twin_node_type in ["cloudeos", "veos"]:
+                    # Set internet_access flag
+                    if act_internet_access := default(
                         self.shared_utils.node_config.digital_twin.act_internet_access,
                         self.inputs.digital_twin.fabric.act_internet_access,
-                    )
-                ) and digital_twin_node_type in ["cloudeos", "veos"]:
-                    self.structured_config.metadata.digital_twin._update(
-                        internet_access=act_internet_access,
-                    )
+                    ):
+                        self.structured_config.metadata.digital_twin._update(
+                            internet_access=act_internet_access,
+                        )
+                    # Set serial_number
+                    if default(node_config_digital_twin.hardware_identity.serial_number, fabric_hardware_identity.serial_number):
+                        self.structured_config.metadata.digital_twin._update(
+                            serial_number=default(node_config_digital_twin.serial_number, self.shared_utils.serial_number),
+                        )
+                    # Set system_mac_address
+                    if default(node_config_digital_twin.hardware_identity.system_mac_address, fabric_hardware_identity.system_mac_address):
+                        self.structured_config.metadata.digital_twin._update(
+                            system_mac_address=default(node_config_digital_twin.system_mac_address, self.structured_config_utils.system_mac_address),
+                        )
+                    # Set ZTP
+                    if ztp := default(node_config_digital_twin.ztp, self.inputs.digital_twin.fabric.ztp):
+                        self.structured_config.metadata.digital_twin._update(ztp=ztp)
                 return

@@ -21,6 +21,9 @@ class ActNodeSettings:
     node_type: str
     ip_addr: str | None
     version: str
+    serial_number: str | None
+    system_mac_address: str | None
+    ztp: bool | None
     # internet_access attribute is only applicable to cloudeos and veos node types and is ignored by ACT for all other node types
     internet_access: bool | None
     ports: tuple[str, ...] | None

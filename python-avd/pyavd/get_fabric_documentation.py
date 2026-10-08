@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from re import findall as re_findall
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Literal, cast
 
 from pyavd._utils.get import get
 from pyavd.api.fabric_documentation import (
@@ -15,10 +15,34 @@ from pyavd.api.fabric_documentation import (
     FabricDocumentation,
 )
 
+ACT_NODE_TYPE_FEATURES = Literal[
+    "node_type",
+    "device_model",
+    "version",
+    "ip_addr",
+    "system_mac_address",
+    "serial_number",
+    "ztp",
+    "internet_access",
+    "system_ports",
+    "ports",
+    "neighbors",
+    "instance_type",
+]
+ACT_NODE_TYPE_FEATURES_MAP: dict[str, frozenset[ACT_NODE_TYPE_FEATURES]] = {
+    "cloudeos": frozenset({"internet_access", "serial_number", "system_mac_address", "ztp"}),
+    "veos": frozenset({"internet_access", "ports", "serial_number", "system_mac_address", "ztp"}),
+}
+
 if TYPE_CHECKING:
     from ._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from ._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
     from .api.schemas import EOSConfig
+
+
+def _act_node_supported_feature(node_type: str, feature: str) -> bool:
+    """Return True if an ACT node type supports specific ACT node-level feature."""
+    return feature in ACT_NODE_TYPE_FEATURES_MAP.get(node_type, frozenset())
 
 
 def get_fabric_documentation(
@@ -237,6 +261,17 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                     node_type=digital_twin_node_type,
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
+                    system_mac_address=get(
+                        fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..system_mac_address", separator=".."
+                    )
+                    if _act_node_supported_feature(digital_twin_node_type, "system_mac_address")
+                    else None,
+                    serial_number=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..serial_number", separator="..")
+                    if _act_node_supported_feature(digital_twin_node_type, "serial_number")
+                    else None,
+                    ztp=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ztp", separator="..")
+                    if _act_node_supported_feature(digital_twin_node_type, "ztp")
+                    else None,
                     # Set internet_access to None unless it is a cloudeos or veos node and its metadata.digital_twin.internet_access is True
                     internet_access=internet_access
                     if (
@@ -245,7 +280,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                                 fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator=".."
                             )
                         )
-                        and digital_twin_node_type in ["cloudeos", "veos"]
+                        and _act_node_supported_feature(digital_twin_node_type, "internet_access")
                     )
                     else None,
                     # Render Ethernet ports for veos node type devices (excluding subinterfaces).
@@ -265,7 +300,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                         )
                     )
                     or None
-                    if digital_twin_node_type == "veos"
+                    if _act_node_supported_feature(digital_twin_node_type, "ports")
                     else None,
                 )
             }
