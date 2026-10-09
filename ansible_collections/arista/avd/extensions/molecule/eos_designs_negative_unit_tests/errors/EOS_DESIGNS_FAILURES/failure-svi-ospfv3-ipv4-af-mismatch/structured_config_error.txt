@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: OSPFv3 IPv4 address family is enabled on SVI 'OSPFv3_IPv4_AF_Mismatch_SVI' but not enabled on VRF 'OSPFV3_IPv4_AF_Mismatch_VRF'.

@@ -1,0 +1,39 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: failure-ospfv3-no-af
+      bgp_as: 65108
+      id: 8
+      mgmt_ip: 192.168.200.108/24
+
+tenants:
+  # OSPFv3 requires at least one address family (IPv4 or IPv6) to be enabled
+  - name: Tenant_OSPFv3_No_AF
+    mac_vrf_vni_base: 18000
+    mac_vrf_id_base: 28000
+    vrfs:
+      - name: OSPFV3_No_AF_VRF
+        vrf_vni: 112
+        vrf_id: 54
+        ospfv3:
+          enabled: true
+          router_id: 192.168.255.112
+          address_family_ipv4:
+            enabled: false
+          address_family_ipv6:
+            enabled: false
+        svis:
+          - id: 217
+            name: OSPFv3_No_AF_SVI
+            enabled: true
+            ip_address: 10.7.1.1/24
+            ipv6_address: dead::7/64
+
+expected_error_message: >-
+  OSPFv3 is enabled on VRF 'OSPFV3_No_AF_VRF' but neither IPv4 nor IPv6 address family is enabled.
+  At least one address family must be enabled under 'tenants[name=Tenant_OSPFv3_No_AF].vrfs[name=OSPFV3_No_AF_VRF].ospfv3'.

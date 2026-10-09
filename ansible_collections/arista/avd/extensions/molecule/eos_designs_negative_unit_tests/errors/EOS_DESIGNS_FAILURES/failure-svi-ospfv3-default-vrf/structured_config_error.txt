@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The default VRF is not supported inside 'network_services.tenants[name=Tenant_OSPFv3_Default_VRF].vrfs[name=default.svis[id=211]'.

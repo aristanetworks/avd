@@ -1,0 +1,158 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: failure-svi-ospfv3-uplink-lan
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.3/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.3/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.103/24
+  type: oob
+metadata:
+  is_deployed: true
+  platform: vEOS-LAB
+  fabric_name: EOS_DESIGNS_FAILURES
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65103'
+  router_id: 192.168.255.3
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 212
+    metadata:
+      tenants:
+      - Tenant_OSPFv3_Uplink_Lan
+    rd: 192.168.255.3:23212
+    route_targets:
+      both:
+      - 23212:23212
+    redistribute_routes:
+    - learned
+  vrfs:
+  - name: OSPFV3_LAN_VRF
+    rd: 192.168.255.3:49
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '49:49'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '49:49'
+    router_id: 192.168.255.3
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+router_ospfv3:
+  vrfs:
+  - name: OSPFV3_LAN_VRF
+    router_id: 192.168.255.107
+    passive_interface_default: true
+    address_family_ipv4:
+      enabled: true
+      redistribute:
+        bgp:
+          enabled: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan212
+  description: OSPFv3_LAN_SVI
+  shutdown: false
+  vrf: OSPFV3_LAN_VRF
+  ip_address: 10.2.1.1/24
+  ipv6_addresses:
+  - dead::2/64
+  ospfv3:
+    ipv4:
+      area: 0.0.0.0
+    ipv6:
+      area: 0.0.0.0
+    passive_interface: false
+    network_point_to_point: false
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Uplink_Lan
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 212
+  name: OSPFv3_LAN_SVI
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Uplink_Lan
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: OSPFV3_LAN_VRF
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Uplink_Lan
+vxlan_interface:
+  vxlan1:
+    description: failure-svi-ospfv3-uplink-lan_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 212
+        vni: 13212
+      vrfs:
+      - name: OSPFV3_LAN_VRF
+        vni: 107

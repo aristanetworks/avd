@@ -1,0 +1,42 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: failure-svi-ospfv3-default-vrf
+      bgp_as: 65102
+      id: 2
+      mgmt_ip: 192.168.200.102/24
+
+tenants:
+  # Default VRF is not supported in network_services
+  - name: Tenant_OSPFv3_Default_VRF
+    mac_vrf_vni_base: 12000
+    mac_vrf_id_base: 22000
+    vrfs:
+      - name: default
+        ospfv3:
+          enabled: true
+          router_id: 192.168.255.106
+          address_family_ipv4:
+            enabled: true
+          address_family_ipv6:
+            enabled: true
+        svis:
+          - id: 211
+            name: Tenant_OSPFv3_Default_VRF_SVI
+            enabled: true
+            ip_address: 10.1.1.1/24
+            ipv6_address: dead::1/64
+            ospfv3:
+              enabled: true
+              address_family_ipv4:
+                enabled: true
+              address_family_ipv6:
+                enabled: true
+
+expected_error_message: >-
+  The default VRF is not supported inside 'network_services.tenants[name=Tenant_OSPFv3_Default_VRF].vrfs[name=default].svis[id=211]'.

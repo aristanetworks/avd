@@ -1,0 +1,44 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: failure-svi-ospfv3-ipv4-af-mismatch
+      bgp_as: 65106
+      id: 6
+      mgmt_ip: 192.168.200.106/24
+
+tenants:
+  # SVI has OSPFv3 IPv4 address family enabled but VRF does not
+  - name: Tenant_OSPFv3_IPv4_AF_Mismatch
+    mac_vrf_vni_base: 16000
+    mac_vrf_id_base: 26000
+    vrfs:
+      - name: OSPFV3_IPv4_AF_Mismatch_VRF
+        vrf_vni: 110
+        vrf_id: 52
+        ospfv3:
+          enabled: true
+          router_id: 192.168.255.110
+          address_family_ipv4:
+            enabled: false
+          address_family_ipv6:
+            enabled: true
+        svis:
+          - id: 215
+            name: OSPFv3_IPv4_AF_Mismatch_SVI
+            enabled: true
+            ip_address: 10.5.1.1/24
+            ipv6_address: dead::5/64
+            ospfv3:
+              enabled: true
+              address_family_ipv4:
+                enabled: true
+              address_family_ipv6:
+                enabled: true
+
+expected_error_message: >-
+  OSPFv3 IPv4 address family is enabled on SVI 'OSPFv3_IPv4_AF_Mismatch_SVI' but not enabled on VRF 'OSPFV3_IPv4_AF_Mismatch_VRF'.
