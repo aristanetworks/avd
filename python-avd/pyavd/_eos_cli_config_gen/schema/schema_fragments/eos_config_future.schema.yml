@@ -71,3 +71,9 @@ keys:
           Available from AVD 6.4.0.
           When `true`, the '!' separator before 'boot secret' is only rendered when `boot.secret.key` is provided.
           When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+      new_bgp_peer_group_cli_order:
+        type: bool
+        default: false
+        description: |-
+          When `true`, renders BGP peer groups in case-sensitive natural order, with uppercase names before lowercase names, matching EOS CLI ordering.
+          When `false` (default), preserves the legacy case-insensitive natural order.

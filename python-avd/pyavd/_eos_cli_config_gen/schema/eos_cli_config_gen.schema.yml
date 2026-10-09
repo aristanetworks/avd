@@ -2755,6 +2755,13 @@ keys:
 
           When `false` (default), the ''!'' separator is always rendered when `boot.secret`
           is defined, even if `boot.secret.key` is missing, for backward compatibility.'
+      new_bgp_peer_group_cli_order:
+        type: bool
+        default: false
+        description: 'When `true`, renders BGP peer groups in case-sensitive natural
+          order, with uppercase names before lowercase names, matching EOS CLI ordering.
+
+          When `false` (default), preserves the legacy case-insensitive natural order.'
   errdisable:
     type: dict
     keys:
@@ -21266,8 +21273,6 @@ keys:
                     description: Time-to-live in range of hops.
                   ttl_maximum_hops:
                     type: int
-                    convert_types:
-                    - str
                     min: 0
                     max: 254
                     description: Maximum number of hops.

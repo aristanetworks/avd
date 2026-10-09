@@ -10063,18 +10063,6 @@ ASN Notation: asdot
 | -------- | ----- |
 | Session tracker | ST2 |
 
-##### TTL-MAXIMUM
-
-| Settings | Value |
-| -------- | ----- |
-| TTL Max Hops | 254 |
-
-##### TTL-ZERO
-
-| Settings | Value |
-| -------- | ----- |
-| TTL Max Hops | 0 |
-
 ##### WELCOME_ROUTERS
 
 | Settings | Value |
@@ -10150,12 +10138,6 @@ ASN Notation: asdot
 | 10.255.251.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | True | - | - | - | - |
 | 192.0.2.1 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | Inherited from peer group TEST |
 | 192.0.2.2 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | 0 |
-| 192.0.2.3 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | 254 |
-| 192.0.2.4 | 65001 | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | - |
-| 192.0.2.5 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | Inherited from peer group TTL-ZERO |
-| 192.0.2.6 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | Inherited from peer group TTL-MAXIMUM |
-| 192.0.2.7 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | Inherited from peer group test-passive | - |
-| 192.0.2.8 | 65001 | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | 1 |
 | 1.1.1.1 | - | VRF02 | - | - | - | - | - | - | - | - | - | - | - |
 | 192.168.0.10 | - | VRF02 | - | - | - | 10 (never warn) | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
@@ -10516,13 +10498,6 @@ router bgp 65101
    neighbor EXTENDED-COMMUNITY peer group
    neighbor EXTENDED-COMMUNITY send-community extended
    neighbor EXTENDED-COMMUNITY maximum-advertised-routes 0
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
-   no neighbor IPv4-UNDERLAY-PEERS rib-in pre-policy retain
-   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 0 warning-limit 140
    neighbor IPV6-UNDERLAY peer group
    neighbor IPV6-UNDERLAY remote-as 65000
    neighbor IPV6-UNDERLAY password 7 <removed>
@@ -10537,6 +10512,13 @@ router bgp 65101
    neighbor IPV6-UNDERLAY-MLAG maximum-routes 12000
    neighbor IPV6-UNDERLAY-MLAG missing-policy address-family all include sub-route-map direction in action deny
    no neighbor IPV6-UNDERLAY-MLAG remove-private-as ingress
+   neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
+   no neighbor IPv4-UNDERLAY-PEERS rib-in pre-policy retain
+   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
+   neighbor IPv4-UNDERLAY-PEERS send-community
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 0 warning-limit 140
    neighbor LARGE-COMMUNITY peer group
    neighbor LARGE-COMMUNITY send-community large
    neighbor LOCAL-AS peer group
@@ -10615,6 +10597,13 @@ router bgp 65101
    no neighbor TEST-ENFORCE-FIRST-AS-FALSE enforce-first-as
    neighbor TEST-ENFORCE-FIRST-AS-TRUE peer group
    neighbor TEST-ENFORCE-FIRST-AS-TRUE enforce-first-as
+   neighbor TEST-PASSIVE peer group
+   neighbor TEST-PASSIVE remote-as 65003
+   neighbor TEST-PASSIVE passive
+   neighbor TEST-PASSIVE description BGP Connection in passive mode
+   neighbor WELCOME_ROUTERS peer group
+   neighbor WELCOME_ROUTERS remote-as 65001
+   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    neighbor test-link-bandwidth1 peer group
    neighbor test-link-bandwidth1 ttl maximum-hops 1
    neighbor test-link-bandwidth1 missing-policy address-family all include community-list prefix-list direction in action deny
@@ -10624,19 +10613,8 @@ router bgp 65101
    neighbor test-link-bandwidth2 link-bandwidth
    neighbor test-passive peer group
    neighbor test-passive passive
-   neighbor TEST-PASSIVE peer group
-   neighbor TEST-PASSIVE remote-as 65003
-   neighbor TEST-PASSIVE passive
-   neighbor TEST-PASSIVE description BGP Connection in passive mode
    neighbor test-session-tracker peer group
    neighbor test-session-tracker session tracker ST2
-   neighbor TTL-MAXIMUM peer group
-   neighbor TTL-MAXIMUM ttl maximum-hops 254
-   neighbor TTL-ZERO peer group
-   neighbor TTL-ZERO ttl maximum-hops 0
-   neighbor WELCOME_ROUTERS peer group
-   neighbor WELCOME_ROUTERS remote-as 65001
-   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    neighbor 1.1.1.1 remote-as 1
    neighbor 1.1.1.1 next-hop-peer
    neighbor 1.1.1.1 description TEST
@@ -11558,14 +11536,6 @@ router bgp 65101
       neighbor 192.0.2.1 peer group TEST
       neighbor 192.0.2.2 peer group TEST
       neighbor 192.0.2.2 ttl maximum-hops 0
-      neighbor 192.0.2.3 peer group TEST
-      neighbor 192.0.2.3 ttl maximum-hops 254
-      neighbor 192.0.2.4 remote-as 65001
-      neighbor 192.0.2.5 peer group TTL-ZERO
-      neighbor 192.0.2.6 peer group TTL-MAXIMUM
-      neighbor 192.0.2.7 peer group test-passive
-      neighbor 192.0.2.8 remote-as 65001
-      neighbor 192.0.2.8 ttl maximum-hops 1
    !
    vrf VRF01
       bgp additional-paths install

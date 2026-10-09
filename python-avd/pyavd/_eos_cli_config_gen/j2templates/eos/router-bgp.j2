@@ -154,7 +154,8 @@ router bgp {{ router_bgp.as }}
 {%     elif router_bgp.neighbor_default.send_community is arista.avd.defined %}
    neighbor default send-community {{ router_bgp.neighbor_default.send_community }}
 {%     endif %}
-{%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort(sort_key='name') %}
+{%     set peer_group_ignore_case = eos_config_future.new_bgp_peer_group_cli_order is not arista.avd.defined(true) %}
+{%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort(sort_key='name', ignore_case=peer_group_ignore_case) %}
    neighbor {{ peer_group.name }} peer group
 {%         if peer_group.remote_as is arista.avd.defined %}
    neighbor {{ peer_group.name }} remote-as {{ peer_group.remote_as }}
