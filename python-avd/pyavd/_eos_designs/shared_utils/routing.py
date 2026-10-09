@@ -41,18 +41,18 @@ class RoutingMixin(Protocol):
 
     @cached_property
     def underlay_routing_protocol(self: SharedUtilsProtocol) -> str:
-        default_underlay_routing_protocol = self.node_type_key_data.default_underlay_routing_protocol
+        default_underlay_routing_protocol = self.consolidated.node_type_keys_item.default_underlay_routing_protocol
         return (self.inputs.underlay_routing_protocol or default_underlay_routing_protocol).lower()
 
     @cached_property
     def overlay_routing_protocol(self: SharedUtilsProtocol) -> str:
-        default_overlay_routing_protocol = self.node_type_key_data.default_overlay_routing_protocol
+        default_overlay_routing_protocol = self.consolidated.node_type_keys_item.default_overlay_routing_protocol
         return (self.inputs.overlay_routing_protocol or default_overlay_routing_protocol).lower()
 
     @cached_property
     def overlay_address_families(self: SharedUtilsProtocol) -> list[str]:
         if self.overlay_routing_protocol in ["ebgp", "ibgp"]:
-            default_overlay_address_families = self.node_type_key_data.default_overlay_address_families
+            default_overlay_address_families = self.consolidated.node_type_keys_item.default_overlay_address_families
             return self.node_config.overlay_address_families._as_list() or default_overlay_address_families._as_list()
         return []
 

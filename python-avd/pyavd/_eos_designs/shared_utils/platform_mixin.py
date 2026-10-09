@@ -69,12 +69,12 @@ class PlatformMixin(Protocol):
 
         # First look for a matching default interface set that matches our platform and type
         for default_interface in self.inputs.default_interfaces:
-            if self.match_regexes(default_interface.platforms, device_platform) and self.type in default_interface.types:
+            if self.match_regexes(default_interface.platforms, device_platform) and self.consolidated.type in default_interface.types:
                 return default_interface
 
         # If not found, then look for a default default_interface that matches our type
         for default_interface in self.inputs.default_interfaces:
-            if "default" in default_interface.platforms and self.type in default_interface.types:
+            if "default" in default_interface.platforms and self.consolidated.type in default_interface.types:
                 return default_interface
 
         return EosDesigns.DefaultInterfacesItem()

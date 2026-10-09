@@ -16,6 +16,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AvdSwitchFactsDefaultDict,
     AVDVaultHandler,
     cprofile,
+    get_consolidated_path,
     get_eos_designs_facts_path,
     get_templar,
     get_tmp_paths,
@@ -30,7 +31,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from pyavd._utils.merge import merge
     from pyavd._utils.strip_empties import strip_null_from_data
     from pyavd._utils.template import template as templater
-    from pyavd.api.schemas import AVDDesign
+    from pyavd.api.schemas import AVDDesign, ConsolidatedAVDDesign
 
 try:
     from pyavd._eos_designs.structured_config import get_structured_config
@@ -38,7 +39,7 @@ try:
     from pyavd._utils.merge import merge
     from pyavd._utils.strip_empties import strip_null_from_data
     from pyavd._utils.template import template as templater
-    from pyavd.api.schemas import AVDDesign
+    from pyavd.api.schemas import AVDDesign, ConsolidatedAVDDesign
 
     HAS_PYAVD = True
 except ImportError:
@@ -75,14 +76,15 @@ class ActionModule(AVDActionPlugin):
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
 
-        avd_design, host_hostvars = self.load_validated_inputs(hostname)
+        inputs, consolidated_inputs, host_hostvars = self.load_validated_inputs(hostname)
 
         all_facts = self.load_facts(hostname)
 
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
         structured_config = get_structured_config(
             hostname=hostname,
-            inputs=avd_design,
+            inputs=inputs,
+            consolidated_inputs=consolidated_inputs,
             all_facts=all_facts,
             hostvars=host_hostvars,
             templar=self.templar,
@@ -162,19 +164,21 @@ class ActionModule(AVDActionPlugin):
         if return_structured_config:
             self.result["ansible_facts"] = output
 
-    def load_validated_inputs(self, hostname: str) -> tuple[AVDDesign, dict[str, Any]]:
+    def load_validated_inputs(self, hostname: str) -> tuple[AVDDesign, ConsolidatedAVDDesign, dict[str, Any]]:
         """
-        Load validated hostvars from the temporary file for the host and load them into AVDDesign class.
+        Load validated and consolidated inputs and hostvars for the host.
 
         Args:
             hostname: Inventory hostname.
 
         Returns:
-            Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the raw hostvars.
+            Tuple of validated inputs, consolidated inputs, and hostvars.
         """
         _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
-        file_path = validated_path / f"{hostname}.json"
-        if not file_path.exists():
+        consolidated_path = get_consolidated_path(self.tmp_dir)
+        validated_file_path = validated_path / f"{hostname}.json"
+        consolidated_file_path = consolidated_path / f"{hostname}.json"
+        if not validated_file_path.exists() or not consolidated_file_path.exists():
             msg = (
                 f"Missing validated inputs for host '{hostname}'. "
                 "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
@@ -184,12 +188,11 @@ class ActionModule(AVDActionPlugin):
         # Read, unvault, and parse the JSON file
         vault_handler = AVDVaultHandler(self._loader)
         file_handler = AVDFileHandler(vault_handler)
-        host_hostvars = file_handler.load_json(file_path)
+        host_hostvars = file_handler.load_json(validated_file_path)
+        inputs = AVDDesign._from_dict(host_hostvars)
+        consolidated_inputs = ConsolidatedAVDDesign._from_dict(file_handler.load_json(consolidated_file_path))
 
-        # Load host hostvars into the AVDDesign data class.
-        avd_design = AVDDesign._from_dict(host_hostvars)
-
-        return avd_design, host_hostvars
+        return inputs, consolidated_inputs, host_hostvars
 
     def load_facts(self, hostname: str) -> AvdSwitchFactsDefaultDict:
         """

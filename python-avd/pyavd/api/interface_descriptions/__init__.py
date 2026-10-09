@@ -34,7 +34,7 @@ class AvdInterfaceDescriptions(AvdFacts):
     """
 
     def _template(self, template_path: str, **kwargs: Any) -> str:
-        template_vars = ChainMap(kwargs, self._hostvars)
+        template_vars = ChainMap(kwargs, self._get_hostvars_for_template())
         return self.shared_utils.template_var(template_path, template_vars)
 
     def underlay_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
@@ -73,7 +73,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                 ),
             )
 
-        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.underlay_ethernet_interfaces:
+        if template_path := self.consolidated.node_type_keys_item.interface_descriptions.underlay_ethernet_interfaces:
             return self._template(
                 template_path,
                 link_type=data.link_type,
@@ -174,7 +174,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                 ),
             )
 
-        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.underlay_port_channel_interfaces:
+        if template_path := self.consolidated.node_type_keys_item.interface_descriptions.underlay_port_channel_interfaces:
             return self._template(
                 template_path,
                 interface=data.interface,
@@ -263,7 +263,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type.
         """
-        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.mlag_ethernet_interfaces:
+        if template_path := self.consolidated.node_type_keys_item.interface_descriptions.mlag_ethernet_interfaces:
             return self._template(
                 template_path,
                 # TODO: AVD 7.0.0 - Change this to interface=data.interface for consistency.
@@ -302,7 +302,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type.
         """
-        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.mlag_port_channel_interfaces:
+        if template_path := self.consolidated.node_type_keys_item.interface_descriptions.mlag_port_channel_interfaces:
             return self._template(
                 template_path,
                 interface=data.interface,
@@ -417,7 +417,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type.
         """
-        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.connected_endpoints_ethernet_interfaces:
+        if template_path := self.consolidated.node_type_keys_item.interface_descriptions.connected_endpoints_ethernet_interfaces:
             return self._template(
                 template_path,
                 interface=data.interface,
@@ -468,7 +468,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type.
         """
-        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.connected_endpoints_port_channel_interfaces:
+        if template_path := self.consolidated.node_type_keys_item.interface_descriptions.connected_endpoints_port_channel_interfaces:
             return self._template(
                 template_path,
                 interface=data.interface,
@@ -530,7 +530,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type.
         """
-        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.router_id_loopback_interface:
+        if template_path := self.consolidated.node_type_keys_item.interface_descriptions.router_id_loopback_interface:
             return self._template(template_path, interface=data.interface, router_id_loopback_description=data.description)
 
         return data.description
@@ -547,7 +547,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type
         """
-        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.vtep_loopback_interface:
+        if template_path := self.consolidated.node_type_keys_item.interface_descriptions.vtep_loopback_interface:
             return self._template(template_path, interface=data.interface, vtep_loopback_description=data.description)
 
         return data.description
@@ -707,4 +707,4 @@ class InterfaceDescriptionData:
 
     @property
     def type(self) -> str:
-        return self._shared_utils.type
+        return self._shared_utils.consolidated.type
