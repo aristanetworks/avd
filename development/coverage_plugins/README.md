@@ -20,6 +20,8 @@ The plugin is intended for this workflow:
 
 The report step must not require compiled template artifacts. This keeps downstream tools such as Codecov focused on checked-in source files instead of generated, gitignored files.
 
+Before importing compiled templates for a coverage run, run `python -m coverage_plugins.jinja.instrument` using the same coverage configuration (`--rcfile` is supported). This development-only step adds explicit `else: pass` statements to eligible terminal no-else guards in generated root functions, and maps those passes to the matching source `endif`. Run it after compilation; recompilation replaces the instrumentation. Repeating instrumentation is safe. The production compiler and source templates are unchanged, and instrumented templates render the same output.
+
 ## Configuration
 
 Enable the plugin in `pyproject.toml`:
@@ -87,6 +89,8 @@ Normal `for` loops without an explicit `{% else %}` do not report the empty-iter
 Top-level optional guards without `elif` or `else` are marked as no-branch lines. These are commonly used to wrap optional EOS feature sections and would otherwise add noisy `line->exit` misses across many templates.
 
 Some Jinja body statements, especially `set`, `do`, and static output, execute through generated Python scaffolding instead of clean source-to-source arcs. When coverage records generated code entering a reportable body line, the plugin credits the corresponding source branch arc. This prevents false partial branches for conditionals whose body was executed but whose body statement did not produce a normal Python frame mapped directly from the source `if` line.
+
+Terminal guards need explicit false-path evidence: the instrumentation's generated pass executes only after the condition evaluated false. A true-only run still misses the false branch, and an exception evaluating a condition does not cover either outcome. An uninstrumented condition-to-exit arc remains ambiguous and does not receive false-branch credit. Guards inside loops, macros, blocks, or generated cleanup continuations, and guards without distinct source body and `endif` endpoints, are left unchanged.
 
 ## Expected Noise
 

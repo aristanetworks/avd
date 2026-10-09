@@ -807,6 +807,7 @@ jobs:
         run: ansible-galaxy collection install /tmp/avd-collection/arista-avd-*.tar.gz --no-deps
       - name: Run end-to-end tests with coverage
         run: |
+          python -m coverage_plugins.jinja.instrument
           coverage run tools/e2e-test-avd.py ${{ matrix.e2e_test_project.path }}
           # Workers inherit each E2E project's working directory, so collect their parallel data files recursively.
           mapfile -t coverage_files < <(find . -type f -name '.coverage.*' -print | sort)
