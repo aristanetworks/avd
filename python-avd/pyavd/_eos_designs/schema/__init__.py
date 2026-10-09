@@ -1000,6 +1000,7 @@ class EosDesigns(EosDesignsRootModel):
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
+            "fix_mlag_ibgp_peering_ipv6_pool": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
@@ -1075,6 +1076,18 @@ class EosDesigns(EosDesignsRootModel):
         ipv6 address prefix-list`
         instead of `match ip address prefix-list` when using
         `underlay_ipv6_numbered`.
+
+        Default value: `False`
+        """
+        fix_mlag_ibgp_peering_ipv6_pool: bool
+        """
+        Available from AVD 6.5.0.
+        Fix the MLAG iBGP peering BGP neighbor in VRFs when using
+        `underlay_ipv6_numbered`.
+        When enabled, the BGP neighbor is derived from the same IPv6 pool as the
+        MLAG iBGP peering SVI,
+        using `mlag_ibgp_peering_ipv6_pool` when set, and
+        `mlag_ibgp_peering_ipv4_pool` is ignored.
 
         Default value: `False`
         """
@@ -1160,6 +1173,7 @@ class EosDesigns(EosDesignsRootModel):
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
+                fix_mlag_ibgp_peering_ipv6_pool: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
@@ -1213,6 +1227,14 @@ class EosDesigns(EosDesignsRootModel):
                        ipv6 address prefix-list`
                        instead of `match ip address prefix-list` when using
                        `underlay_ipv6_numbered`.
+                    fix_mlag_ibgp_peering_ipv6_pool:
+                       Available from AVD 6.5.0.
+                       Fix the MLAG iBGP peering BGP neighbor in VRFs when using
+                       `underlay_ipv6_numbered`.
+                       When enabled, the BGP neighbor is derived from the same IPv6 pool as the
+                       MLAG iBGP peering SVI,
+                       using `mlag_ibgp_peering_ipv6_pool` when set, and
+                       `mlag_ibgp_peering_ipv4_pool` is ignored.
                     fix_radius_server_group_tls:
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global
@@ -12206,7 +12228,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -12248,9 +12272,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         router_id_pool: str | None
         """
-        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-        will not exist on the device.
+        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+        and takes precedence over `router_id_pool`.
         """
         loopback_ipv6_pool: str | None
         """
@@ -12386,6 +12411,8 @@ class EosDesigns(EosDesignsRootModel):
         Underlay L3 peering SVI interface id.
         If set to 0 or the same vlan as mlag_peer_vlan, the
         mlag_peer_vlan will be used for L3 peering.
+        See `mlag_peer_address_family` for the supported address
+        families in that case.
 
         Default value: `4093`
         """
@@ -12395,8 +12422,9 @@ class EosDesigns(EosDesignsRootModel):
         The IPv4
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+        true`.
         """
         mlag_peer_l3_ipv6_pool: str | None
         """
@@ -12404,8 +12432,8 @@ class EosDesigns(EosDesignsRootModel):
         The IPv6
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+        and a separate L3 peering VLAN.
         """
         mlag_peer_vlan: int
         """
@@ -12419,8 +12447,18 @@ class EosDesigns(EosDesignsRootModel):
         IP address family used to establish MLAG Peer Link (control link).
         `ipv6` requires EOS version
         4.31.1F or higher.
-        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-        (ex. `mlag_peer_l3_vlan` set to 4094).
+        This never changes which address families (NLRI) are activated on the MLAG BGP
+        peerings.
+        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+        The
+        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+        When the MLAG peer VLAN is also used for L3 peering
+        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+        the MLAG L3 peerings
+        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+        so this must be `ipv6`
+        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
         Default value: `"ipv4"`
         """
@@ -13232,7 +13270,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -13260,9 +13300,10 @@ class EosDesigns(EosDesignsRootModel):
                        For example, set the minimum
                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                     router_id_pool:
-                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                       will not exist on the device.
+                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                       and takes precedence over `router_id_pool`.
                     loopback_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -13351,28 +13392,41 @@ class EosDesigns(EosDesignsRootModel):
                        Underlay L3 peering SVI interface id.
                        If set to 0 or the same vlan as mlag_peer_vlan, the
                        mlag_peer_vlan will be used for L3 peering.
+                       See `mlag_peer_address_family` for the supported address
+                       families in that case.
                     mlag_peer_l3_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                       true`.
                     mlag_peer_l3_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                        The IPv6
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                       and a separate L3 peering VLAN.
                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                     mlag_peer_address_family:
                        IP address family used to establish MLAG Peer Link (control link).
                        `ipv6` requires EOS version
                        4.31.1F or higher.
-                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                       peerings.
+                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                       The
+                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                       When the MLAG peer VLAN is also used for L3 peering
+                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                       the MLAG L3 peerings
+                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                       so this must be `ipv6`
+                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                     mlag_peer_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
@@ -17802,7 +17856,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -17844,9 +17900,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         router_id_pool: str | None
         """
-        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-        will not exist on the device.
+        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+        and takes precedence over `router_id_pool`.
         """
         loopback_ipv6_pool: str | None
         """
@@ -17982,6 +18039,8 @@ class EosDesigns(EosDesignsRootModel):
         Underlay L3 peering SVI interface id.
         If set to 0 or the same vlan as mlag_peer_vlan, the
         mlag_peer_vlan will be used for L3 peering.
+        See `mlag_peer_address_family` for the supported address
+        families in that case.
 
         Default value: `4093`
         """
@@ -17991,8 +18050,9 @@ class EosDesigns(EosDesignsRootModel):
         The IPv4
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+        true`.
         """
         mlag_peer_l3_ipv6_pool: str | None
         """
@@ -18000,8 +18060,8 @@ class EosDesigns(EosDesignsRootModel):
         The IPv6
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+        and a separate L3 peering VLAN.
         """
         mlag_peer_vlan: int
         """
@@ -18015,8 +18075,18 @@ class EosDesigns(EosDesignsRootModel):
         IP address family used to establish MLAG Peer Link (control link).
         `ipv6` requires EOS version
         4.31.1F or higher.
-        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-        (ex. `mlag_peer_l3_vlan` set to 4094).
+        This never changes which address families (NLRI) are activated on the MLAG BGP
+        peerings.
+        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+        The
+        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+        When the MLAG peer VLAN is also used for L3 peering
+        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+        the MLAG L3 peerings
+        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+        so this must be `ipv6`
+        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
         Default value: `"ipv4"`
         """
@@ -18836,7 +18906,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -18864,9 +18936,10 @@ class EosDesigns(EosDesignsRootModel):
                        For example, set the minimum
                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                     router_id_pool:
-                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                       will not exist on the device.
+                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                       and takes precedence over `router_id_pool`.
                     loopback_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -18955,28 +19028,41 @@ class EosDesigns(EosDesignsRootModel):
                        Underlay L3 peering SVI interface id.
                        If set to 0 or the same vlan as mlag_peer_vlan, the
                        mlag_peer_vlan will be used for L3 peering.
+                       See `mlag_peer_address_family` for the supported address
+                       families in that case.
                     mlag_peer_l3_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                       true`.
                     mlag_peer_l3_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                        The IPv6
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                       and a separate L3 peering VLAN.
                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                     mlag_peer_address_family:
                        IP address family used to establish MLAG Peer Link (control link).
                        `ipv6` requires EOS version
                        4.31.1F or higher.
-                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                       peerings.
+                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                       The
+                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                       When the MLAG peer VLAN is also used for L3 peering
+                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                       the MLAG L3 peerings
+                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                       so this must be `ipv6`
+                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                     mlag_peer_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
@@ -23270,6 +23356,7 @@ class EosDesigns(EosDesignsRootModel):
                 "information_option": {"type": bool, "default": False},
                 "tunnel_requests_disabled": {"type": bool, "default": False},
                 "mlag_peerlink_requests_disabled": {"type": bool, "default": False},
+                "reply_source_address_validation": {"type": bool},
             }
             information_option: bool
             """
@@ -23293,6 +23380,12 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            reply_source_address_validation: bool | None
+            """
+            Validate reply source address matches configured server.
+            Supported starting with 4.33.10M, 4.34.8M,
+            4.35.6M, and 4.36.2F.
+            """
 
             if TYPE_CHECKING:
 
@@ -23302,6 +23395,7 @@ class EosDesigns(EosDesignsRootModel):
                     information_option: bool | UndefinedType = Undefined,
                     tunnel_requests_disabled: bool | UndefinedType = Undefined,
                     mlag_peerlink_requests_disabled: bool | UndefinedType = Undefined,
+                    reply_source_address_validation: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DhcpRelay.
@@ -23319,6 +23413,10 @@ class EosDesigns(EosDesignsRootModel):
                            Blocks DHCP relay for packets arriving via the MLAG peer-link.
                            This will only be configured on VXLAN
                            VTEPs which are also MLAG devices.
+                        reply_source_address_validation:
+                           Validate reply source address matches configured server.
+                           Supported starting with 4.33.10M, 4.34.8M,
+                           4.35.6M, and 4.36.2F.
 
                     """
 
@@ -23351,12 +23449,36 @@ class EosDesigns(EosDesignsRootModel):
 
         SuspendedVlans._item_type = SuspendedVlansItem
 
+        class IpSoftwareForwardingExceedActionDrop(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "mtu": {"type": int}}
+            enabled: bool
+            mtu: int
+            """IPv4 software-forwarding MTU threshold in bytes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, mtu: int | UndefinedType = Undefined) -> None:
+                    """
+                    IpSoftwareForwardingExceedActionDrop.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        mtu: IPv4 software-forwarding MTU threshold in bytes.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "interface_defaults": {"type": InterfaceDefaults},
             "arp": {"type": Arp},
             "ip_icmp_redirect": {"type": bool},
             "dhcp_relay": {"type": DhcpRelay},
             "suspended_vlans": {"type": SuspendedVlans},
+            "ip_software_forwarding_exceed_action_drop": {"type": IpSoftwareForwardingExceedActionDrop},
         }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
@@ -23375,6 +23497,14 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
         key is `id` (`int`).
         """
+        ip_software_forwarding_exceed_action_drop: IpSoftwareForwardingExceedActionDrop
+        """
+        Drop IPv4 packets larger than configured mtu (in bytes) in software.
+        Supported starting EOS 4.36.1F,
+        4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -23386,6 +23516,7 @@ class EosDesigns(EosDesignsRootModel):
                 ip_icmp_redirect: bool | UndefinedType | None = Undefined,
                 dhcp_relay: DhcpRelay | UndefinedType = Undefined,
                 suspended_vlans: SuspendedVlans | UndefinedType = Undefined,
+                ip_software_forwarding_exceed_action_drop: IpSoftwareForwardingExceedActionDrop | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -23406,6 +23537,12 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
                        key is `id` (`int`).
+                    ip_software_forwarding_exceed_action_drop:
+                       Drop IPv4 packets larger than configured mtu (in bytes) in software.
+                       Supported starting EOS 4.36.1F,
+                       4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -39674,10 +39811,15 @@ class EosDesigns(EosDesignsRootModel):
             mlag_ibgp_peering_ipv6_pool: str | None
             """
             Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-            The
-            subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-            MLAG switch.
-            If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+            Only
+            used when `underlay_ipv6_numbered` is set.
+            The subnet used for the iBGP peering in the VRF is
+            derived from this pool based on the ID of the first MLAG switch.
+            If not set,
+            "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+            Set
+            `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+            pool.
             """
             ip_helpers: IpHelpers
             """
@@ -40010,10 +40152,15 @@ class EosDesigns(EosDesignsRootModel):
                            If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
                         mlag_ibgp_peering_ipv6_pool:
                            Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-                           The
-                           subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-                           MLAG switch.
-                           If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                           Only
+                           used when `underlay_ipv6_numbered` is set.
+                           The subnet used for the iBGP peering in the VRF is
+                           derived from this pool based on the ID of the first MLAG switch.
+                           If not set,
+                           "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                           Set
+                           `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+                           pool.
                         ip_helpers:
                            IP helper for DHCP relay.
 
@@ -60334,7 +60481,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -60376,9 +60525,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -60514,6 +60664,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -60523,8 +60675,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -60532,8 +60685,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -60547,8 +60700,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -61339,7 +61502,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -61367,9 +61532,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -61458,28 +61624,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -65910,7 +66089,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -65952,9 +66133,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         router_id_pool: str | None
                         """
-                        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                        will not exist on the device.
+                        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                        and takes precedence over `router_id_pool`.
                         """
                         loopback_ipv6_pool: str | None
                         """
@@ -66090,6 +66272,8 @@ class EosDesigns(EosDesignsRootModel):
                         Underlay L3 peering SVI interface id.
                         If set to 0 or the same vlan as mlag_peer_vlan, the
                         mlag_peer_vlan will be used for L3 peering.
+                        See `mlag_peer_address_family` for the supported address
+                        families in that case.
 
                         Default value: `4093`
                         """
@@ -66099,8 +66283,9 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv4
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                        true`.
                         """
                         mlag_peer_l3_ipv6_pool: str | None
                         """
@@ -66108,8 +66293,8 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv6
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                        and a separate L3 peering VLAN.
                         """
                         mlag_peer_vlan: int
                         """
@@ -66123,8 +66308,18 @@ class EosDesigns(EosDesignsRootModel):
                         IP address family used to establish MLAG Peer Link (control link).
                         `ipv6` requires EOS version
                         4.31.1F or higher.
-                        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                        (ex. `mlag_peer_l3_vlan` set to 4094).
+                        This never changes which address families (NLRI) are activated on the MLAG BGP
+                        peerings.
+                        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                        The
+                        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                        When the MLAG peer VLAN is also used for L3 peering
+                        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                        the MLAG L3 peerings
+                        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                        so this must be `ipv6`
+                        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                         Default value: `"ipv4"`
                         """
@@ -66924,7 +67119,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -66952,9 +67149,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For example, set the minimum
                                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                     router_id_pool:
-                                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                       will not exist on the device.
+                                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                       and takes precedence over `router_id_pool`.
                                     loopback_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -67043,28 +67241,41 @@ class EosDesigns(EosDesignsRootModel):
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
                                        mlag_peer_vlan will be used for L3 peering.
+                                       See `mlag_peer_address_family` for the supported address
+                                       families in that case.
                                     mlag_peer_l3_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                       true`.
                                     mlag_peer_l3_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                        The IPv6
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                       and a separate L3 peering VLAN.
                                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                     mlag_peer_address_family:
                                        IP address family used to establish MLAG Peer Link (control link).
                                        `ipv6` requires EOS version
                                        4.31.1F or higher.
-                                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                                       peerings.
+                                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                       The
+                                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                       When the MLAG peer VLAN is also used for L3 peering
+                                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                       the MLAG L3 peerings
+                                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                       so this must be `ipv6`
+                                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                     mlag_peer_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
@@ -71414,7 +71625,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -71456,9 +71669,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -71594,6 +71808,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -71603,8 +71819,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -71612,8 +71829,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -71627,8 +71844,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -72430,7 +72657,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -72458,9 +72687,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -72549,28 +72779,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -76992,7 +77235,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -77034,9 +77279,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -77172,6 +77418,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -77181,8 +77429,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -77190,8 +77439,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -77205,8 +77454,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -78006,7 +78265,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -78034,9 +78295,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -78125,28 +78387,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -92512,10 +92787,15 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_ibgp_peering_ipv6_pool: str | None
                     """
                     Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-                    The
-                    subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-                    MLAG switch.
-                    If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                    Only
+                    used when `underlay_ipv6_numbered` is set.
+                    The subnet used for the iBGP peering in the VRF is
+                    derived from this pool based on the ID of the first MLAG switch.
+                    If not set,
+                    "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                    Set
+                    `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+                    pool.
                     """
                     ip_helpers: IpHelpers
                     """
@@ -92848,10 +93128,15 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
                                 mlag_ibgp_peering_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-                                   The
-                                   subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-                                   MLAG switch.
-                                   If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                                   Only
+                                   used when `underlay_ipv6_numbered` is set.
+                                   The subnet used for the iBGP peering in the VRF is
+                                   derived from this pool based on the ID of the first MLAG switch.
+                                   If not set,
+                                   "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                                   Set
+                                   `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+                                   pool.
                                 ip_helpers:
                                    IP helper for DHCP relay.
 
@@ -98357,7 +98642,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -98399,9 +98686,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -98537,6 +98825,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -98546,8 +98836,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -98555,8 +98846,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -98570,8 +98861,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -99362,7 +99663,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -99390,9 +99693,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -99481,28 +99785,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -103933,7 +104250,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -103975,9 +104294,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         router_id_pool: str | None
                         """
-                        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                        will not exist on the device.
+                        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                        and takes precedence over `router_id_pool`.
                         """
                         loopback_ipv6_pool: str | None
                         """
@@ -104113,6 +104433,8 @@ class EosDesigns(EosDesignsRootModel):
                         Underlay L3 peering SVI interface id.
                         If set to 0 or the same vlan as mlag_peer_vlan, the
                         mlag_peer_vlan will be used for L3 peering.
+                        See `mlag_peer_address_family` for the supported address
+                        families in that case.
 
                         Default value: `4093`
                         """
@@ -104122,8 +104444,9 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv4
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                        true`.
                         """
                         mlag_peer_l3_ipv6_pool: str | None
                         """
@@ -104131,8 +104454,8 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv6
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                        and a separate L3 peering VLAN.
                         """
                         mlag_peer_vlan: int
                         """
@@ -104146,8 +104469,18 @@ class EosDesigns(EosDesignsRootModel):
                         IP address family used to establish MLAG Peer Link (control link).
                         `ipv6` requires EOS version
                         4.31.1F or higher.
-                        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                        (ex. `mlag_peer_l3_vlan` set to 4094).
+                        This never changes which address families (NLRI) are activated on the MLAG BGP
+                        peerings.
+                        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                        The
+                        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                        When the MLAG peer VLAN is also used for L3 peering
+                        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                        the MLAG L3 peerings
+                        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                        so this must be `ipv6`
+                        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                         Default value: `"ipv4"`
                         """
@@ -104947,7 +105280,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -104975,9 +105310,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For example, set the minimum
                                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                     router_id_pool:
-                                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                       will not exist on the device.
+                                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                       and takes precedence over `router_id_pool`.
                                     loopback_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -105066,28 +105402,41 @@ class EosDesigns(EosDesignsRootModel):
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
                                        mlag_peer_vlan will be used for L3 peering.
+                                       See `mlag_peer_address_family` for the supported address
+                                       families in that case.
                                     mlag_peer_l3_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                       true`.
                                     mlag_peer_l3_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                        The IPv6
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                       and a separate L3 peering VLAN.
                                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                     mlag_peer_address_family:
                                        IP address family used to establish MLAG Peer Link (control link).
                                        `ipv6` requires EOS version
                                        4.31.1F or higher.
-                                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                                       peerings.
+                                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                       The
+                                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                       When the MLAG peer VLAN is also used for L3 peering
+                                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                       the MLAG L3 peerings
+                                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                       so this must be `ipv6`
+                                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                     mlag_peer_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
@@ -109437,7 +109786,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -109479,9 +109830,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -109617,6 +109969,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -109626,8 +109980,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -109635,8 +109990,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -109650,8 +110005,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -110453,7 +110818,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -110481,9 +110848,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -110572,28 +110940,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -115015,7 +115396,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -115057,9 +115440,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -115195,6 +115579,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -115204,8 +115590,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -115213,8 +115600,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -115228,8 +115615,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -116029,7 +116426,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -116057,9 +116456,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -116148,28 +116548,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -119817,22 +120230,24 @@ class EosDesigns(EosDesignsRootModel):
       -
     "uplink_ipv6_pool" (or `downlink_pools`)
       - "vtep_loopback_ipv6_pool"
-      - "router_id_pool"
-    For
-    MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-      -
-    "mlag_peer_address_family: ipv6"
-      - "mlag_peer_ipv6_pool"
-      - "mlag_peer_l3_ipv6_pool"
-    Some
-    settings are not yet supported with IPv6 underlay:
+      - "router_id_pool" or
+    "loopback_ipv4_address"
+    For MLAG, set on the MLAG nodes:
+      - "mlag_peer_l3_ipv6_pool" when using a
+    separate MLAG L3 peering VLAN (default).
+      - "mlag_peer_address_family: ipv6" and
+    "mlag_peer_ipv6_pool" when `mlag_peer_l3_vlan` is 0 or the same as `mlag_peer_vlan`.
+        With a
+    separate MLAG L3 peering VLAN, these keys are optional and only set the MLAG peer link (control
+    link) to IPv6.
+    Some settings are not yet supported with IPv6 underlay:
       - underlay_multicast_pim_sm
-      -
-    underlay_multicast_rp_interfaces
+    - underlay_multicast_rp_interfaces
       - underlay_rfc5549
       - wan_role
       - vtep_vvtep_ip
-      - inband_ztp
+      -
+    inband_ztp
 
     Default value: `False`
     """
@@ -121819,22 +122234,24 @@ class EosDesigns(EosDesignsRootModel):
                      -
                    "uplink_ipv6_pool" (or `downlink_pools`)
                      - "vtep_loopback_ipv6_pool"
-                     - "router_id_pool"
-                   For
-                   MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-                     -
-                   "mlag_peer_address_family: ipv6"
-                     - "mlag_peer_ipv6_pool"
-                     - "mlag_peer_l3_ipv6_pool"
-                   Some
-                   settings are not yet supported with IPv6 underlay:
+                     - "router_id_pool" or
+                   "loopback_ipv4_address"
+                   For MLAG, set on the MLAG nodes:
+                     - "mlag_peer_l3_ipv6_pool" when using a
+                   separate MLAG L3 peering VLAN (default).
+                     - "mlag_peer_address_family: ipv6" and
+                   "mlag_peer_ipv6_pool" when `mlag_peer_l3_vlan` is 0 or the same as `mlag_peer_vlan`.
+                       With a
+                   separate MLAG L3 peering VLAN, these keys are optional and only set the MLAG peer link (control
+                   link) to IPv6.
+                   Some settings are not yet supported with IPv6 underlay:
                      - underlay_multicast_pim_sm
-                     -
-                   underlay_multicast_rp_interfaces
+                   - underlay_multicast_rp_interfaces
                      - underlay_rfc5549
                      - wan_role
                      - vtep_vvtep_ip
-                     - inband_ztp
+                     -
+                   inband_ztp
                 underlay_isis_authentication_cleartext_key:
                    Cleartext password.
                    Encrypted to Type 7 by AVD.
