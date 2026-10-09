@@ -2757,17 +2757,6 @@ keys:
 
           When `false` (default), the ''!'' separator is always rendered when `boot.secret`
           is defined, even if `boot.secret.key` is missing, for backward compatibility.'
-      ospfv3_render_no_passive_interface:
-        type: bool
-        default: false
-        description: 'Available from AVD 6.5.0.
-
-          When `false` (default), the `no ospfv3 passive-interface` command is not
-          rendered on SVIs, even when `vlan_interfaces[].ospfv3.passive_interface`
-          is set to `false`.
-
-          When `true`, explicitly renders `no ospfv3 passive-interface` on SVIs when
-          `vlan_interfaces[].ospfv3.passive_interface` is `false`.'
   errdisable:
     type: dict
     keys:
@@ -27638,7 +27627,12 @@ keys:
                     0 to 4294967295).'
             passive_interface:
               type: bool
-              description: Include interface but without actively running OSPF.
+              description: Include interface but without actively running OSPF. Mutually
+                exclusive with `no_passive_interface`.
+            no_passive_interface:
+              type: bool
+              description: Disable passive interface mode. Mutually exclusive with
+                `passive_interface`.
             network_point_to_point:
               type: bool
         ospf_cost:

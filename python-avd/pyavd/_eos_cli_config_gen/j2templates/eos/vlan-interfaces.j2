@@ -364,7 +364,7 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ospfv3 is arista.avd.defined %}
 {%         if vlan_interface.ospfv3.passive_interface is arista.avd.defined(true) %}
    ospfv3 passive-interface
-{%         elif vlan_interface.ospfv3.passive_interface is arista.avd.defined(false) and eos_config_future.ospfv3_render_no_passive_interface is arista.avd.defined(true) %}
+{%         elif vlan_interface.ospfv3.no_passive_interface is arista.avd.defined(true) %}
    no ospfv3 passive-interface
 {%         endif %}
 {%         if vlan_interface.ospfv3.network_point_to_point is arista.avd.defined(true) %}
