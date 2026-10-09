@@ -2,7 +2,7 @@
 # pyavd minimal requirements when running from source
 dev = [
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.10",
+    "pyavd-utils==0.0.12",
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"
@@ -61,6 +61,7 @@ pytest = [
     {include-group = "schema-tools"},
 ]
 schema-tools = [
+    "pyavd-utils-gen==0.0.12",
     "deepmerge>=1.1.0",
     "jsonschema-rs>=0.46.0",
     "pydantic>=2.11.10",
