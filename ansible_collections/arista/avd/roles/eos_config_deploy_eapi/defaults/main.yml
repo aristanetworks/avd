@@ -1,27 +1,23 @@
 # Perform config backup before config replace
 eos_config_deploy_eapi_pre_running_config_backup: false
 
-# Root directory where to build output structure
-root_dir: '{{ inventory_dir }}'
+# Collection-wide output paths. Existing unprefixed variables remain accepted
+# as legacy inputs when explicitly supplied by the user.
+avd_root_dir: "{{ root_dir | default(inventory_dir) }}"
+avd_output_dir_name: "{{ output_dir_name | default('intended') }}"
+avd_output_dir: "{{ output_dir | default(avd_root_dir ~ '/' ~ avd_output_dir_name) }}"
+avd_eos_config_dir_name: "{{ eos_config_dir_name | default('configs') }}"
+avd_eos_config_dir: "{{ eos_config_dir | default(avd_output_dir ~ '/' ~ avd_eos_config_dir_name) }}"
+avd_post_running_config_backup_dir_name: "{{ post_running_config_backup_dir_name | default('config_backup') }}"
+avd_post_running_config_backup_dir: >-
+  {{ post_running_config_backup_dir | default(avd_root_dir ~ '/' ~ avd_post_running_config_backup_dir_name) }}
+avd_pre_running_config_backup_dir_name: "{{ pre_running_config_backup_dir_name | default('config_backup') }}"
+avd_pre_running_config_backup_dir: >-
+  {{ pre_running_config_backup_dir | default(avd_root_dir ~ '/' ~ avd_pre_running_config_backup_dir_name) }}
 
-# AVD configurations output
-# Main output directory
-output_dir_name: 'intended'
-output_dir: '{{ root_dir }}/{{ output_dir_name }}'
-
-# Output for structured YAML files:
-structured_dir_name: 'structured_configs'
-structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
-
-# EOS Configuration Directory name
-eos_config_dir_name: 'configs'
-eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
-
-# Backup directories path and filenames
-post_running_config_backup_filename: "{{ inventory_hostname }}_post_running-config.conf"
-post_running_config_backup_dir_name: 'config_backup'
-post_running_config_backup_dir: '{{ root_dir }}/{{ post_running_config_backup_dir_name }}'
-
-pre_running_config_backup_filename: "{{ inventory_hostname }}_pre_running-config.conf"
-pre_running_config_backup_dir_name: 'config_backup'
-pre_running_config_backup_dir: '{{ root_dir }}/{{ pre_running_config_backup_dir_name }}'
+eos_config_deploy_eapi_post_running_config_backup_filename: >-
+  {{ post_running_config_backup_filename | default(inventory_hostname ~ '_post_running-config.conf') }}
+eos_config_deploy_eapi_post_running_config_backup_dir: "{{ avd_post_running_config_backup_dir }}"
+eos_config_deploy_eapi_pre_running_config_backup_filename: >-
+  {{ pre_running_config_backup_filename | default(inventory_hostname ~ '_pre_running-config.conf') }}
+eos_config_deploy_eapi_pre_running_config_backup_dir: "{{ avd_pre_running_config_backup_dir }}"

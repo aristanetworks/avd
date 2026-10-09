@@ -587,7 +587,7 @@ keys:
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
           IPv4 is activated by default instead of always deactivating it.'
         default: false
-  avd_digital_twin_mode:
+  eos_designs_digital_twin_mode:
     documentation_options:
       table: role-settings
     type: bool
@@ -601,10 +601,16 @@ keys:
       and EOS configuration, device and fabric documentation) will replace original
       fabric artifacts.
 
-      To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name`
-      variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated
-      output location.'
+      To keep Digital Twin artifacts separate, adjust `avd_output_dir_name`, `avd_documentation_dir_name`,
+
+      and any other `avd_*` output directory variables to point to dedicated output
+      locations.'
     default: false
+  avd_digital_twin_mode:
+    documentation_options:
+      table: legacy-role-settings
+    type: bool
+    description: Legacy alias for `eos_designs_digital_twin_mode`.
   avd_eos_designs_debug:
     documentation_options:
       table: role-settings
@@ -622,12 +628,17 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_eos_designs_structured_config:
+  eos_designs_structured_config:
     documentation_options:
       table: role-settings
     type: bool
     default: true
     description: Generate structured configuration per device.
+  avd_eos_designs_structured_config:
+    documentation_options:
+      table: legacy-role-settings
+    type: bool
+    description: Legacy alias for `eos_designs_structured_config`.
   avd_eos_designs_unset_facts:
     documentation_options:
       table: role-settings

@@ -8,10 +8,10 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_6_behaviors</samp>](## "avd_6_behaviors") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
-    | [<samp>avd_digital_twin_mode</samp>](## "avd_digital_twin_mode") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).<br>By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.<br>To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location. |
+    | [<samp>eos_designs_digital_twin_mode</samp>](## "eos_designs_digital_twin_mode") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).<br>By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.<br>To keep Digital Twin artifacts separate, adjust `avd_output_dir_name`, `avd_documentation_dir_name`,<br>and any other `avd_*` output directory variables to point to dedicated output locations. |
     | [<samp>avd_eos_designs_debug</samp>](## "avd_eos_designs_debug") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>eos_designs_keep_tmp_files</samp> instead.</span> |
     | [<samp>avd_eos_designs_enforce_duplication_checks_across_all_models</samp>](## "avd_eos_designs_enforce_duplication_checks_across_all_models") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
-    | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
+    | [<samp>eos_designs_structured_config</samp>](## "eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
     | [<samp>avd_eos_designs_unset_facts</samp>](## "avd_eos_designs_unset_facts") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
     | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when dumping structured configuration files.<br> |
     | [<samp>eos_designs_validation_configuration</samp>](## "eos_designs_validation_configuration") | Dictionary |  |  |  | Validation configuration options when validating AVD Design inputs. |
@@ -35,11 +35,12 @@
     # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
     # Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).
     # By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.
-    # To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location.
-    avd_digital_twin_mode: <bool; default=False>
+    # To keep Digital Twin artifacts separate, adjust `avd_output_dir_name`, `avd_documentation_dir_name`,
+    # and any other `avd_*` output directory variables to point to dedicated output locations.
+    eos_designs_digital_twin_mode: <bool; default=False>
 
     # Generate structured configuration per device.
-    avd_eos_designs_structured_config: <bool; default=True>
+    eos_designs_structured_config: <bool; default=True>
 
     # The file format to use when dumping structured configuration files.
     avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">

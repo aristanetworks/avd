@@ -18,29 +18,32 @@ None
 
 ## Role Variables
 
-Role support following variables:
+The role supports the following collection-wide variables:
 
 ```yaml
 # Root directory where to build output structure
 # All folder below will be created in this directory folder.
-root_dir: '{{ inventory_dir }}'
+avd_root_dir: "{{ inventory_dir }}"
 
 # Main output directory
-output_dir_name: 'intended'
+avd_output_dir_name: "intended"
 # Output for structured YAML files:
-structured_dir_name: 'structured_configs'
+avd_structured_dir_name: "structured_configs"
 # EOS configuration directory name
-eos_config_dir_name: 'configs'
+avd_eos_config_dir_name: "configs"
 # Main documentation folder
-documentation_dir_name: 'documentation'
+avd_documentation_dir_name: "documentation"
 # Fabric documentation
-fabric_dir_name: 'fabric'
+avd_fabric_dir_name: "fabric"
 # Device documentation
-devices_dir_name: 'devices'
+avd_devices_dir_name: "devices"
 # EOS config deploy eapi running config backup directory
-post_running_config_backup_dir_name: 'config_backup'
-pre_running_config_backup_dir_name: 'config_backup'
+avd_post_running_config_backup_dir_name: "config_backup"
+avd_pre_running_config_backup_dir_name: "config_backup"
 ```
+
+Existing unprefixed inputs remain supported silently. If both names are set, the
+`avd_*` value wins. Use the `avd_*` paths when consuming the output from another role.
 
 Role will create following structure:
 

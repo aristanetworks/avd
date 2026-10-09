@@ -3529,6 +3529,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class EosCliConfigGenCustomTemplates(AvdList[str]):
+        """Subclass of AvdList with `str` items."""
+
+    EosCliConfigGenCustomTemplates._item_type = str
+
     class CustomTemplates(AvdList[str]):
         """Subclass of AvdList with `str` items."""
 
@@ -79628,6 +79633,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "clock": {"type": Clock},
         "config_comment": {"type": str},
         "config_end": {"type": bool, "default": False},
+        "eos_cli_config_gen_custom_templates": {"type": EosCliConfigGenCustomTemplates},
         "custom_templates": {"type": CustomTemplates},
         "cvx": {"type": Cvx},
         "daemon_terminattr": {"type": DaemonTerminattr},
@@ -79761,7 +79767,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "queue_monitor_streaming": {"type": QueueMonitorStreaming},
         "radius_proxy": {"type": RadiusProxy},
         "radius_server": {"type": RadiusServer},
-        "read_structured_config_from_file": {"type": bool, "default": True},
+        "eos_cli_config_gen_read_structured_config_from_file": {"type": bool, "default": True},
+        "read_structured_config_from_file": {"type": bool},
         "redundancy": {"type": Redundancy},
         "roles": {"type": Roles},
         "route_maps": {"type": RouteMaps},
@@ -79912,7 +79919,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Default value: `False`
     """
-    custom_templates: CustomTemplates
+    eos_cli_config_gen_custom_templates: EosCliConfigGenCustomTemplates
     """
     - Custom templates can be added below the playbook directory.
     - If a location above the directory is
@@ -79931,7 +79938,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     - It is recommended to use a
     `!` delimiter at the top of each custom template.
 
-    Add `custom_templates` to group/host variables:
+    Add `eos_cli_config_gen_custom_templates` to
+    group/host variables:
+
+
+    Subclass of AvdList with `str` items.
+    """
+    custom_templates: CustomTemplates
+    """
+    Legacy alias for `eos_cli_config_gen_custom_templates`.
+
     Subclass of AvdList with `str` items.
     """
     cvx: Cvx
@@ -80320,15 +80336,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     radius_server: RadiusServer
     """Subclass of AvdModel."""
-    read_structured_config_from_file: bool
+    eos_cli_config_gen_read_structured_config_from_file: bool
     """
-    Read structured configuration from files in `structured_dir` (default directory also used by the
-    `eos_designs` role).
-    If set to false, `eos_cli_config_gen` will read structured configuration from
-    hostvars.
+    Read structured configuration from files in `avd_structured_dir`.
+    If set to false,
+    `eos_cli_config_gen` reads structured configuration from hostvars.
 
     Default value: `True`
     """
+    read_structured_config_from_file: bool | None
+    """Legacy alias for `eos_cli_config_gen_read_structured_config_from_file`."""
     redundancy: Redundancy
     """Subclass of AvdModel."""
     roles: Roles
@@ -80513,6 +80530,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             clock: Clock | UndefinedType = Undefined,
             config_comment: str | UndefinedType | None = Undefined,
             config_end: bool | UndefinedType = Undefined,
+            eos_cli_config_gen_custom_templates: EosCliConfigGenCustomTemplates | UndefinedType = Undefined,
             custom_templates: CustomTemplates | UndefinedType = Undefined,
             cvx: Cvx | UndefinedType = Undefined,
             daemon_terminattr: DaemonTerminattr | UndefinedType = Undefined,
@@ -80646,7 +80664,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             queue_monitor_streaming: QueueMonitorStreaming | UndefinedType = Undefined,
             radius_proxy: RadiusProxy | UndefinedType = Undefined,
             radius_server: RadiusServer | UndefinedType = Undefined,
-            read_structured_config_from_file: bool | UndefinedType = Undefined,
+            eos_cli_config_gen_read_structured_config_from_file: bool | UndefinedType = Undefined,
+            read_structured_config_from_file: bool | UndefinedType | None = Undefined,
             redundancy: Redundancy | UndefinedType = Undefined,
             roles: Roles | UndefinedType = Undefined,
             route_maps: RouteMaps | UndefinedType = Undefined,
@@ -80767,7 +80786,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    This comment will be rendered at the
                    top of the generated configuration.
                 config_end: Render `end` at the end of the configuration.
-                custom_templates:
+                eos_cli_config_gen_custom_templates:
                    - Custom templates can be added below the playbook directory.
                    - If a location above the directory is
                    desired, a symbolic link can be used.
@@ -80785,7 +80804,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    - It is recommended to use a
                    `!` delimiter at the top of each custom template.
 
-                   Add `custom_templates` to group/host variables:
+                   Add `eos_cli_config_gen_custom_templates` to
+                   group/host variables:
+
+
+                   Subclass of AvdList with `str` items.
+                custom_templates:
+                   Legacy alias for `eos_cli_config_gen_custom_templates`.
+
                    Subclass of AvdList with `str` items.
                 cvx:
                    CVX server features are not supported on physical switches. See `management_cvx` for client
@@ -81022,11 +81048,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 radius_server: Subclass of AvdModel.
-                read_structured_config_from_file:
-                   Read structured configuration from files in `structured_dir` (default directory also used by the
-                   `eos_designs` role).
-                   If set to false, `eos_cli_config_gen` will read structured configuration from
-                   hostvars.
+                eos_cli_config_gen_read_structured_config_from_file:
+                   Read structured configuration from files in `avd_structured_dir`.
+                   If set to false,
+                   `eos_cli_config_gen` reads structured configuration from hostvars.
+                read_structured_config_from_file: Legacy alias for `eos_cli_config_gen_read_structured_config_from_file`.
                 redundancy: Subclass of AvdModel.
                 roles: Subclass of AvdIndexedList with `RolesItem` items. Primary key is `name` (`str`).
                 route_maps: Subclass of AvdIndexedList with `RouteMapsItem` items. Primary key is `name` (`str`).

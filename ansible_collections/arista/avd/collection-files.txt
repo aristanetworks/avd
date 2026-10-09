@@ -4,7 +4,6 @@
 # Regenerate with: pre-commit run collection-files --all-files
 # Do not edit manually.
 .ansible-lint
-.ansible-lint-ignore
 CHANGELOG.rst
 FILES.json
 LICENSE
@@ -431,7 +430,6 @@ roles/eos_cli_config_gen/meta/main.yml
 roles/eos_cli_config_gen/tasks/main.yml
 roles/eos_cli_config_gen/templates/documentation/custom-templates.j2
 roles/eos_cli_config_gen/templates/eos/custom-templates.j2
-roles/eos_cli_config_gen/vars/main.yml
 roles/eos_config_deploy_cvp/README.md
 roles/eos_config_deploy_cvp/meta/main.yml
 roles/eos_config_deploy_cvp/tasks/main.yml
@@ -455,7 +453,6 @@ roles/eos_designs/docs/node-type-variables.md
 roles/eos_designs/docs/role-configuration.md
 roles/eos_designs/meta/main.yml
 roles/eos_designs/tasks/main.yml
-roles/eos_designs/vars/main.yml
 roles/eos_snapshot/README.md
 roles/eos_snapshot/defaults/main.yml
 roles/eos_snapshot/media/role_eos_snapshot.png

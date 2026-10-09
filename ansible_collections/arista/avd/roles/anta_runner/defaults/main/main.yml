@@ -3,18 +3,18 @@
 
 # Run ANTA for these devices.
 # Defaults to all hosts in the play.
-# This means the role must be imported/included in a play targeting only the relevant EOS devices - *not* CloudVision.
-anta_devices: "{{ ansible_play_hosts }}"
+# This means the role must be imported/included in a play targeting only the relevant EOS devices - not CloudVision.
+anta_runner_devices: "{{ anta_devices | default(ansible_play_hosts) }}"
 
 # Enable AVD catalogs generation.
-avd_catalogs_enabled: true
+anta_runner_avd_catalogs_enabled: "{{ avd_catalogs_enabled | default(true) }}"
 
-# Disable used-defined catalogs generation.
-user_catalogs_enabled: false
+# Disable user-defined catalogs generation.
+anta_runner_user_catalogs_enabled: "{{ user_catalogs_enabled | default(false) }}"
 
-# Generate extra fabric-wide validation tests (e.g., reachability and routing tests).
-# This can generate many additional test inputs in the catalogs, and validation may take longer on large fabrics.
-avd_catalogs_extra_fabric_validation: false
+# Generate extra fabric-wide validation tests.
+anta_runner_avd_catalogs_extra_fabric_validation: "{{ avd_catalogs_extra_fabric_validation | default(false) }}"
+anta_runner_avd_catalogs_filters: "{{ avd_catalogs_filters | default([]) }}"
 
 # Global timeout for the ANTA runner.
 anta_runner_timeout: 30
@@ -26,18 +26,11 @@ anta_runner_batch_size: 5
 anta_runner_dry_run: false
 
 # Structured configuration file format. Supported formats: yml, yaml, json.
-avd_structured_config_file_format: "yml"
+anta_runner_structured_config_file_format: "{{ avd_structured_config_file_format | default('yml') }}"
 
 # ANTA runner reports sorting settings.
-# `anta_report_status_priority` defines the primary grouping order of the results by test status.
-# Unlisted statuses appear at the bottom, grouped alphabetically.
-# Within each status group, tests are sub-sorted using the attributes defined in `anta_report_sort_fields`.
-anta_report_status_priority: ["error", "failure", "skipped", "success", "unset"]
-anta_report_sort_fields: ["device", "categories", "test", "description", "custom_field"]
-
-# Controls the granularity of the Markdown report. When enabled, test entries
-# are expanded to show the individual status of every check performed.
-anta_report_expand_results: false
-
-# Controls whether the `custom_field` column is generated in the Markdown report.
-anta_report_custom_field: false
+anta_runner_report_status_priority: "{{ anta_report_status_priority | default(['error', 'failure', 'skipped', 'success', 'unset']) }}"
+anta_runner_report_sort_fields: "{{ anta_report_sort_fields | default(['device', 'categories', 'test', 'description', 'custom_field']) }}"
+anta_runner_report_expand_results: "{{ anta_report_expand_results | default(false) }}"
+anta_runner_report_custom_field: "{{ anta_report_custom_field | default(false) }}"
+anta_runner_report_exclude_statuses: "{{ anta_report_exclude_statuses | default([]) }}"

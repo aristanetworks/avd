@@ -1,0 +1,135 @@
+---
+- name: Verify legacy generic path inputs remain compatible
+  hosts: legacy
+  gather_facts: false
+  vars:
+    root_dir: /tmp/legacy-root
+    output_dir_name: legacy-output
+    structured_dir_name: legacy-structured
+    role_default_files:
+      - "{{ playbook_dir }}/../../../../roles/eos_designs/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_designs/defaults/main/output_directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_cli_config_gen/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_cli_config_gen/defaults/main/output_directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/anta_runner/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/anta_runner/defaults/main/directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/build_output_folders/defaults/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/cv_deploy/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/cv_deploy/defaults/main/directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_config_deploy_eapi/defaults/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_snapshot/defaults/main.yml"
+  tasks:
+    - name: Load role defaults
+      ansible.builtin.include_vars:
+        file: "{{ item }}"
+      loop: "{{ role_default_files }}"
+      loop_control:
+        label: "{{ item | basename }}"
+
+    - name: Assert legacy inputs resolve to canonical collection variables
+      ansible.builtin.assert:
+        that:
+          - avd_root_dir == '/tmp/legacy-root'
+          - avd_output_dir_name == 'legacy-output'
+          - avd_output_dir == '/tmp/legacy-root/legacy-output'
+          - avd_structured_dir_name == 'legacy-structured'
+          - avd_structured_dir == '/tmp/legacy-root/legacy-output/legacy-structured'
+          - avd_structured_config_file_format == 'yml'
+          - avd_vault_id is none
+          - eos_cli_config_gen_structured_config_file_format is not defined
+          - eos_cli_config_gen_vault_id is not defined
+          - eos_designs_structured_config_file_format is not defined
+          - eos_designs_vault_id is not defined
+          - cv_deploy_vault_id is not defined
+
+- name: Verify canonical collection variables take precedence
+  hosts: canonical
+  gather_facts: false
+  vars:
+    root_dir: /tmp/legacy-root
+    output_dir: /tmp/legacy-output
+    output_dir_name: legacy-output
+    avd_root_dir: /tmp/canonical-root
+    avd_output_dir: /tmp/canonical-output
+    avd_output_dir_name: canonical-output
+    avd_structured_config_file_format: json
+    avd_vault_id: canonical-vault
+    role_default_files:
+      - "{{ playbook_dir }}/../../../../roles/eos_designs/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_designs/defaults/main/output_directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_cli_config_gen/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_cli_config_gen/defaults/main/output_directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/anta_runner/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/anta_runner/defaults/main/directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/build_output_folders/defaults/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/cv_deploy/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/cv_deploy/defaults/main/directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_config_deploy_eapi/defaults/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_snapshot/defaults/main.yml"
+  tasks:
+    - name: Load role defaults
+      ansible.builtin.include_vars:
+        file: "{{ item }}"
+        name: loaded_role_defaults
+        hash_behaviour: merge
+      loop: "{{ role_default_files }}"
+      loop_control:
+        label: "{{ item | basename }}"
+
+    - name: Assert explicit canonical values remain authoritative
+      ansible.builtin.assert:
+        that:
+          - avd_root_dir == '/tmp/canonical-root'
+          - avd_output_dir == '/tmp/canonical-output'
+          - avd_output_dir_name == 'canonical-output'
+          - avd_structured_config_file_format == 'json'
+          - avd_vault_id == 'canonical-vault'
+          - loaded_role_defaults.avd_root_dir == '/tmp/legacy-root'
+          - loaded_role_defaults.avd_output_dir == '/tmp/legacy-output'
+          - loaded_role_defaults.avd_output_dir_name == 'legacy-output'
+          - loaded_role_defaults.avd_structured_config_file_format == 'yml'
+          - loaded_role_defaults.avd_vault_id is none
+          - eos_cli_config_gen_structured_config_file_format is not defined
+          - eos_cli_config_gen_vault_id is not defined
+          - eos_designs_structured_config_file_format is not defined
+          - eos_designs_vault_id is not defined
+          - cv_deploy_vault_id is not defined
+
+- name: Verify defaults do not export generic path variables
+  hosts: isolated
+  gather_facts: false
+  vars:
+    role_default_files:
+      - "{{ playbook_dir }}/../../../../roles/eos_designs/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_designs/defaults/main/output_directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_cli_config_gen/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_cli_config_gen/defaults/main/output_directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/anta_runner/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/anta_runner/defaults/main/directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/build_output_folders/defaults/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/cv_deploy/defaults/main/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/cv_deploy/defaults/main/directories.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_config_deploy_eapi/defaults/main.yml"
+      - "{{ playbook_dir }}/../../../../roles/eos_snapshot/defaults/main.yml"
+  tasks:
+    - name: Load role defaults
+      ansible.builtin.include_vars:
+        file: "{{ item }}"
+      loop: "{{ role_default_files }}"
+      loop_control:
+        label: "{{ item | basename }}"
+
+    - name: Assert only canonical defaults are available
+      ansible.builtin.assert:
+        that:
+          - root_dir is not defined
+          - output_dir is not defined
+          - avd_root_dir == inventory_dir
+          - avd_output_dir == inventory_dir ~ '/intended'
+          - avd_structured_config_file_format == 'yml'
+          - avd_vault_id is none
+          - eos_cli_config_gen_structured_config_file_format is not defined
+          - eos_cli_config_gen_vault_id is not defined
+          - eos_designs_structured_config_file_format is not defined
+          - eos_designs_vault_id is not defined
+          - cv_deploy_vault_id is not defined

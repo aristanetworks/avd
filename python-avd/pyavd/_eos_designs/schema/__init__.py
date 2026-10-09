@@ -116838,8 +116838,10 @@ class EosDesigns(EosDesignsRootModel):
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_design_future": {"type": AvdDesignFuture},
-        "avd_digital_twin_mode": {"type": bool, "default": False},
-        "avd_eos_designs_structured_config": {"type": bool, "default": True},
+        "eos_designs_digital_twin_mode": {"type": bool, "default": False},
+        "avd_digital_twin_mode": {"type": bool},
+        "eos_designs_structured_config": {"type": bool, "default": True},
+        "avd_eos_designs_structured_config": {"type": bool},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "eos_designs_validation_configuration": {"type": EosDesignsValidationConfiguration},
         "avd_vault_id": {"type": str},
@@ -118130,7 +118132,7 @@ class EosDesigns(EosDesignsRootModel):
     Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
     Subclass of AvdModel.
     """
-    avd_digital_twin_mode: bool
+    eos_designs_digital_twin_mode: bool
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
     change at any time.
@@ -118139,18 +118141,23 @@ class EosDesigns(EosDesignsRootModel):
     By default, Digital Twin artifacts (such as the topology
     file, adjusted structured and EOS configuration, device and fabric documentation) will replace
     original fabric artifacts.
-    To keep Digital Twin artifacts separate, adjust the `output_dir_name` and
-    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
-    dedicated output location.
+    To keep Digital Twin artifacts separate, adjust `avd_output_dir_name`,
+    `avd_documentation_dir_name`,
+    and any other `avd_*` output directory variables to point to dedicated
+    output locations.
 
     Default value: `False`
     """
-    avd_eos_designs_structured_config: bool
+    avd_digital_twin_mode: bool | None
+    """Legacy alias for `eos_designs_digital_twin_mode`."""
+    eos_designs_structured_config: bool
     """
     Generate structured configuration per device.
 
     Default value: `True`
     """
+    avd_eos_designs_structured_config: bool | None
+    """Legacy alias for `eos_designs_structured_config`."""
     avd_structured_config_file_format: AvdStructuredConfigFileFormat
     """
     The file format to use when dumping structured configuration files.
@@ -120382,8 +120389,10 @@ class EosDesigns(EosDesignsRootModel):
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_design_future: AvdDesignFuture | UndefinedType = Undefined,
-            avd_digital_twin_mode: bool | UndefinedType = Undefined,
-            avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
+            eos_designs_digital_twin_mode: bool | UndefinedType = Undefined,
+            avd_digital_twin_mode: bool | UndefinedType | None = Undefined,
+            eos_designs_structured_config: bool | UndefinedType = Undefined,
+            avd_eos_designs_structured_config: bool | UndefinedType | None = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             eos_designs_validation_configuration: EosDesignsValidationConfiguration | UndefinedType = Undefined,
             avd_vault_id: str | UndefinedType | None = Undefined,
@@ -120620,7 +120629,7 @@ class EosDesigns(EosDesignsRootModel):
                 avd_design_future:
                    Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
                    Subclass of AvdModel.
-                avd_digital_twin_mode:
+                eos_designs_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
                    Enable generation of the Digital Twin version of the fabric (Digital Twin
@@ -120628,10 +120637,13 @@ class EosDesigns(EosDesignsRootModel):
                    By default, Digital Twin artifacts (such as the topology
                    file, adjusted structured and EOS configuration, device and fabric documentation) will replace
                    original fabric artifacts.
-                   To keep Digital Twin artifacts separate, adjust the `output_dir_name` and
-                   `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
-                   dedicated output location.
-                avd_eos_designs_structured_config: Generate structured configuration per device.
+                   To keep Digital Twin artifacts separate, adjust `avd_output_dir_name`,
+                   `avd_documentation_dir_name`,
+                   and any other `avd_*` output directory variables to point to dedicated
+                   output locations.
+                avd_digital_twin_mode: Legacy alias for `eos_designs_digital_twin_mode`.
+                eos_designs_structured_config: Generate structured configuration per device.
+                avd_eos_designs_structured_config: Legacy alias for `eos_designs_structured_config`.
                 avd_structured_config_file_format: The file format to use when dumping structured configuration files.
                 eos_designs_validation_configuration:
                    Validation configuration options when validating AVD Design inputs.
