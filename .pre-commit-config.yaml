@@ -139,7 +139,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: a56c0b927e6465d37cae3e97d35d4d18ab2b96cd  # frozen: v0.16.9
+    rev: f12be1ebaa5351c1fc76472de98db2c3446c8253  # frozen: v0.16.10
     hooks:
       # Run the linter.
       - id: ruff
@@ -165,7 +165,8 @@ repos:
           - 'gitpython>=3.1.57'
           - 'jinja2>=3.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.10'
+          - 'pyavd-utils==0.0.12'
+          - 'pyavd-utils-gen==0.0.12'
           - 'pydantic>=2.3.0'
           - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
@@ -174,7 +175,7 @@ repos:
           - 'setuptools>=82.0.1'
 
   - repo: https://github.com/pycqa/pylint
-    rev: "2754353f422a9984015937c5effe831cc7a168ca"  # frozen: v4.0.9
+    rev: "40be3a2f729cdf667eae46272369aeffe1abf651"  # frozen: v4.1.2
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
@@ -310,7 +311,7 @@ repos:
         additional_dependencies:
           - deepmerge>=1.1.0
           - PyYAML>=6.0.0
-          - pyavd-utils==0.0.10
+          - pyavd-utils-gen==0.0.12
           - pydantic>=2.3.0
           - jsonschema-rs>=0.24
           - referencing>=0.35.0
@@ -337,7 +338,7 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.10', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.12', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -345,7 +346,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.10', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.12', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: 916ad0aaa108c64d294101002066f530ea170b10  # frozen: v0.23.3

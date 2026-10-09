@@ -1446,6 +1446,14 @@ html.style-none #schema-navbar { display: none !important; }
   white-space: nowrap;
 }
 
+:where(.schema-spa-host, .schema-embed) .schema-reference-nav-row--context .schema-reference-nav-key {
+  color: var(--se-muted);
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-nav-row--context.active .schema-reference-nav-key {
+  color: inherit;
+}
+
 :where(.schema-spa-host, .schema-embed) .schema-reference-nav-row.active .schema-reference-nav-key,
 :where(.schema-spa-host, .schema-embed) .schema-reference-nav-key:hover {
   background: rgba(68, 115, 169, 0.16);
@@ -1476,6 +1484,50 @@ html.style-none #schema-navbar { display: none !important; }
 :where(.schema-spa-host, .schema-embed) .schema-reference-breadcrumb {
   margin-bottom: 1.2rem;
   color: var(--se-muted);
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0.35rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-breadcrumb-item.active span {
+  color: var(--md-default-fg-color, inherit);
+  font-weight: 600;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-breadcrumb-module span {
+  color: var(--se-muted);
+  font-weight: 600;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-breadcrumb-separator {
+  display: inline-flex;
+  align-items: center;
+  color: var(--se-muted);
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-breadcrumb-link {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-detail h2 {

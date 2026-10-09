@@ -1920,7 +1920,9 @@ keys:
               - int
       reply_source_address_validation:
         type: bool
-        description: Validate reply source address matches configured server.
+        description: 'Validate reply source address matches configured server.
+
+          Supported starting with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.'
   dhcp_servers:
     type: list
     primary_key: vrf
@@ -7860,13 +7862,12 @@ keys:
             max: 65535
             description: 'IPv4 software-forwarding MTU threshold in bytes.
 
-              Defaults to 1500 on EOS. This setting alone does not enable dropping.'
+              Defaults to 1500 on EOS.'
           exceed_action_drop:
             type: bool
             description: 'Drop IPv4 packets larger than `mtu.size` in software.
 
-              Introduced in EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M to mitigate
-              Security Advisory 0142.'
+              Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.'
   ip_ssh_client:
     type: dict
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
@@ -9754,6 +9755,7 @@ keys:
         max: 86400
         convert_types:
         - str
+        description: Idle timeout in minutes.
   management_cvx:
     type: dict
     keys:
@@ -26388,6 +26390,13 @@ keys:
             valid_values:
             - error
             - warn
+      mac_address:
+        type: str
+        description: Unicast (the least-significant bit of the first octet must be
+          zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal
+          digit).
+        convert_to_lower_case: true
+        pattern: '[0-9a-f][02468ace](:[0-9a-f]{2}){5}'
   tacacs_servers:
     type: dict
     keys:
@@ -28183,6 +28192,20 @@ keys:
               description: Key only used for documentation or validation purposes.
               items:
                 type: str
+  vrrp:
+    type: dict
+    description: Global VRRP configuration.
+    keys:
+      ipv4:
+        type: dict
+        description: VRRP IPv4 configuration.
+        keys:
+          authentication_anti_replay:
+            type: bool
+            description: 'Enable anti-replay validation for authenticated IPv4 VRRPv2
+              advertisements.
+
+              Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.'
   vxlan_interface:
     type: dict
     keys:

@@ -39,6 +39,7 @@ from .ptp import PtpMixin
 from .router_bgp import RouterBgpMixin
 from .router_general import RouterGeneralMixin
 from .snmp_server import SnmpServerMixin
+from .system import SystemMixin
 from .utils import UtilsMixin
 
 
@@ -56,6 +57,7 @@ class AvdStructuredConfigBaseProtocol(
     NtpMixin,
     PtpMixin,
     SnmpServerMixin,
+    SystemMixin,
     RouterBgpMixin,
     RouterGeneralMixin,
     PlatformMixin,
@@ -589,11 +591,21 @@ class AvdStructuredConfigBaseProtocol(
         if not (relay_settings := self.inputs.general_settings.dhcp_relay):
             return
 
+        if relay_settings.reply_source_address_validation:
+            self.structured_config.dhcp_relay.reply_source_address_validation = relay_settings.reply_source_address_validation
+
         if self.shared_utils.vtep:
             if relay_settings.tunnel_requests_disabled:
                 self.structured_config.dhcp_relay.tunnel_requests_disabled = relay_settings.tunnel_requests_disabled
             if self.shared_utils.mlag and relay_settings.mlag_peerlink_requests_disabled:
                 self.structured_config.dhcp_relay.mlag_peerlink_requests_disabled = relay_settings.mlag_peerlink_requests_disabled
+
+    @structured_config_contributor
+    def ip_software_forwarding(self: AvdStructuredConfigBaseProtocol) -> None:
+        """Set IP software forwarding configuration."""
+        if software_settings := self.inputs.general_settings.ip_software_forwarding_exceed_action_drop:
+            self.structured_config.ip_software_forwarding.mtu.exceed_action_drop = software_settings.enabled
+            self.structured_config.ip_software_forwarding.mtu.size = software_settings.mtu
 
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):

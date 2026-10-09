@@ -7,6 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>custom_system_mac_address</samp>](## "custom_system_mac_address") | String |  |  |  | Set a custom EOS system MAC address using an AVD string formatter template.<br>When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.<br>Can also be defined in node configuration. The node configuration value takes precedence when both values are set.<br>Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.<br>If unset, the existing `system_mac_address` behavior is unchanged.<br>The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.<br>Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.<br>Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.<br><br>Examples:<br>  - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.<br>  - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address). |
     | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | `True` |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
     | [<samp>default_interface_mtu</samp>](## "default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Can be overridden per platform under platform settings.<br> |
     | [<samp>errdisable_settings</samp>](## "errdisable_settings") | Dictionary |  |  |  | Errdisable settings for the device.<br>Causes are filtered based on platform feature support defined in<br>`platform_settings.feature_support.errdisable_causes.<cause>.detection` and<br>`platform_settings.feature_support.errdisable_causes.<cause>.recovery`. |
@@ -144,9 +145,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;information_option</samp>](## "general_settings.dhcp_relay.information_option") | Boolean |  | `False` |  | Enables the insertion of DHCP Relay Agent Information (Option 82). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tunnel_requests_disabled</samp>](## "general_settings.dhcp_relay.tunnel_requests_disabled") | Boolean |  | `False` |  | Blocks DHCP relay for packets received over VXLAN tunnels.<br>This is a VTEP-specific optimization and will only be configured on VXLAN VTEPs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peerlink_requests_disabled</samp>](## "general_settings.dhcp_relay.mlag_peerlink_requests_disabled") | Boolean |  | `False` |  | Blocks DHCP relay for packets arriving via the MLAG peer-link.<br>This will only be configured on VXLAN VTEPs which are also MLAG devices. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;reply_source_address_validation</samp>](## "general_settings.dhcp_relay.reply_source_address_validation") | Boolean |  |  |  | Validate reply source address matches configured server.<br>Supported starting with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F. |
     | [<samp>&nbsp;&nbsp;suspended_vlans</samp>](## "general_settings.suspended_vlans") | List, items: Dictionary |  |  |  | Suspended VLANs are rendered only as local suspended VLAN definitions.<br>They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs defined by network services. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "general_settings.suspended_vlans.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "general_settings.suspended_vlans.[].name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;ip_software_forwarding_exceed_action_drop</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop") | Dictionary |  |  |  | Drop IPv4 packets larger than configured mtu (in bytes) in software.<br>Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "general_settings.ip_software_forwarding_exceed_action_drop.mtu") | Integer | Required |  | Min: 68<br>Max: 65535 | IPv4 software-forwarding MTU threshold in bytes. |
     | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsibility of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "hardware_counters.features.[].name") | String | Required |  | Valid Values:<br>- <code>acl</code><br>- <code>decap-group</code><br>- <code>directflow</code><br>- <code>ecn</code><br>- <code>flow-spec</code><br>- <code>gre tunnel interface</code><br>- <code>ip</code><br>- <code>mpls interface</code><br>- <code>mpls lfib</code><br>- <code>mpls tunnel</code><br>- <code>multicast</code><br>- <code>nexthop</code><br>- <code>pbr</code><br>- <code>pdp</code><br>- <code>policing interface</code><br>- <code>qos</code><br>- <code>qos dual-rate-policer</code><br>- <code>route</code><br>- <code>routed-port</code><br>- <code>segment-security</code><br>- <code>subinterface</code><br>- <code>tapagg</code><br>- <code>traffic-class</code><br>- <code>traffic-policy</code><br>- <code>traffic-policy vlan-interface</code><br>- <code>vlan</code><br>- <code>vlan-interface</code><br>- <code>vni decap</code><br>- <code>vni encap</code><br>- <code>vtep decap</code><br>- <code>vtep encap</code> |  |
@@ -178,11 +183,25 @@
     | [<samp>redundancy</samp>](## "redundancy") | Dictionary |  |  |  | Redundancy for chassis platforms with dual supervisors | Optional. |
     | [<samp>&nbsp;&nbsp;protocol</samp>](## "redundancy.protocol") | String |  |  | Valid Values:<br>- <code>sso</code><br>- <code>rpr</code> |  |
     | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used for documentation purpose in the fabric documentation as can also be used by the 'cv_deploy' role.<br>"serial_number" can also be set directly under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
-    | [<samp>system_mac_address</samp>](## "system_mac_address") | String |  |  |  | Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
+    | [<samp>system_mac_address</samp>](## "system_mac_address") | String |  |  |  | Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set under node type settings.<br>If both are set, the value under node type settings takes precedence.<br>Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.<br> |
 
 === "YAML"
 
     ```yaml
+    # Set a custom EOS system MAC address using an AVD string formatter template.
+    # When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.
+    # Can also be defined in node configuration. The node configuration value takes precedence when both values are set.
+    # Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.
+    # If unset, the existing `system_mac_address` behavior is unchanged.
+    # The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+    # Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+    # Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+    #
+    # Examples:
+    #   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+    #   - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address).
+    custom_system_mac_address: <str>
+
     # When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.
     default_igmp_snooping_enabled: <bool; default=True>
 
@@ -412,11 +431,23 @@
         # This will only be configured on VXLAN VTEPs which are also MLAG devices.
         mlag_peerlink_requests_disabled: <bool; default=False>
 
+        # Validate reply source address matches configured server.
+        # Supported starting with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+        reply_source_address_validation: <bool>
+
       # Suspended VLANs are rendered only as local suspended VLAN definitions.
       # They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs defined by network services.
       suspended_vlans:
         - id: <int; 1-4094; required; unique>
           name: <str>
+
+      # Drop IPv4 packets larger than configured mtu (in bytes) in software.
+      # Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+      ip_software_forwarding_exceed_action_drop:
+        enabled: <bool; required>
+
+        # IPv4 software-forwarding MTU threshold in bytes.
+        mtu: <int; 68-65535; required>
     hardware_counters:
 
       # This data model allows to configure the list of hardware counters feature
@@ -545,6 +576,7 @@
     # Set to the same MAC address as available in "show version" on the device.
     # "system_mac_address" can also be set under node type settings.
     # If both are set, the value under node type settings takes precedence.
+    # Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.
     system_mac_address: <str>
     ```
 
