@@ -613,8 +613,8 @@ def test_sort_result_manager_orders_status_then_requested_fields() -> None:
     """Known statuses use the configured rank and unknown statuses sort last alphabetically."""
     results = [
         SimpleNamespace(result="success", name="leaf2", categories=["routing"], test="TestB", description="b", custom_field=None),
-        SimpleNamespace(result="success", name="leaf4", categories=["routing"], test="TestB", description="b", custom_field=None),
-        SimpleNamespace(result="success", name="leaf4", categories=["routing"], test="TestA", description="a", custom_field=None),
+        SimpleNamespace(result="success", name="leaf4", categories=["a"], test="TestB", description="b", custom_field=None),
+        SimpleNamespace(result="success", name="leaf4", categories=["z"], test="TestA", description="a", custom_field=None),
         SimpleNamespace(result="mystery", name="leaf1", categories=["routing"], test="TestA", description="a", custom_field=None),
         SimpleNamespace(result="failure", name="leaf3", categories=["routing"], test="TestA", description="a", custom_field=None),
         SimpleNamespace(result="success", name="leaf1", categories=["routing"], test="TestA", description="a", custom_field=None),
