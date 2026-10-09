@@ -146,7 +146,7 @@ def build_schema_classes() -> None:
 def build_schemas() -> None:
     """Combines the schema fragments, and rebuild the pickled schemas."""
     combine_schemas()
-    from pyavd_utils.schema_store import compile_schema_archive  # noqa: PLC0415
+    from pyavd_utils_gen.schema_store import compile_schema_archive  # noqa: PLC0415
 
     LOGGER.info("Compiling archived schema store")
     compile_schema_archive(SCHEMA_STORE_GZ_FILE, SCHEMA_STORE_ARCHIVE_FILE)
