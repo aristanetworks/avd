@@ -4,39 +4,27 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet11
-  description: MLAG_ipv6-numbered-vtep-loopback0-leaf1b_Ethernet11
+- name: Ethernet5
+  description: MLAG_mlag-peer-vlan-l3-ipv6-numbered-l3leaf1a_Ethernet5
   shutdown: false
   channel_group:
-    id: 11
+    id: 5
     mode: active
   metadata:
-    peer: ipv6-numbered-vtep-loopback0-leaf1b
-    peer_interface: Ethernet11
+    peer: mlag-peer-vlan-l3-ipv6-numbered-l3leaf1a
+    peer_interface: Ethernet5
     peer_type: mlag_peer
-- name: Ethernet12
-  description: MLAG_ipv6-numbered-vtep-loopback0-leaf1b_Ethernet12
+- name: Ethernet6
+  description: MLAG_mlag-peer-vlan-l3-ipv6-numbered-l3leaf1a_Ethernet6
   shutdown: false
   channel_group:
-    id: 11
+    id: 5
     mode: active
   metadata:
-    peer: ipv6-numbered-vtep-loopback0-leaf1b
-    peer_interface: Ethernet12
+    peer: mlag-peer-vlan-l3-ipv6-numbered-l3leaf1a
+    peer_interface: Ethernet6
     peer_type: mlag_peer
-- name: Ethernet1
-  description: P2P_ipv6-numbered-vtep-loopback0-spine_Ethernet1
-  shutdown: false
-  mtu: 9214
-  ipv6_addresses:
-  - 2001:db8:2::2/64
-  metadata:
-    peer: ipv6-numbered-vtep-loopback0-spine
-    peer_interface: Ethernet1
-    peer_type: spine
-  switchport:
-    enabled: false
-hostname: ipv6-numbered-vtep-loopback0-leaf1a
+hostname: mlag-peer-vlan-l3-ipv6-numbered-l3leaf1b
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -45,46 +33,46 @@ ipv6_prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY-V6
   sequence_numbers:
   - sequence: 10
-    action: permit 2001:db8:1::/48 eq 128
+    action: permit 2001:db8:50::/48 eq 128
+  - sequence: 20
+    action: permit 2001:db8:51::/48 eq 128
 - name: PL-MLAG-PEER-VRFS
   sequence_numbers:
   - sequence: 10
-    action: permit 2001:db8:10::/64
+    action: permit 2001:db8:52::/64
 ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
   ipv6_addresses:
-  - 2001:db8:1::1/128
-- name: Loopback10
-  description: DIAG_VRF_VRF10
+  - 2001:db8:50::2/128
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  vrf: VRF10
-  ip_address: 10.255.10.1/32
+  ipv6_addresses:
+  - 2001:db8:51:1::1/128
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 172.16.1.31/24
+  ip_address: 192.168.201.121/24
   type: oob
 metadata:
   is_deployed: true
-  platform: vEOS-lab
-  fabric_name: EOS_DESIGNS_UNIT_TESTS
-  validate_hardware:
-    enabled: false
+  platform: vEOS-LAB
+  fabric_name: FABRIC_IP_ADDRESSING
 mlag_configuration:
-  domain_id: DC1_L3_LEAF1
+  domain_id: MLAG_PEER_VLAN_L3_IPV6_NUMBERED
   local_interface: Vlan4094
-  peer_address: 2001:db8:3::2
-  peer_link: Port-Channel11
+  peer_address: 2001:db8:52::1
+  peer_link: Port-Channel5
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
-- name: Port-Channel11
-  description: MLAG_ipv6-numbered-vtep-loopback0-leaf1b_Port-Channel11
+- name: Port-Channel5
+  description: MLAG_mlag-peer-vlan-l3-ipv6-numbered-l3leaf1a_Port-Channel5
   shutdown: false
   switchport:
     enabled: true
@@ -111,7 +99,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - ip address prefix-list PL-MLAG-PEER-VRFS
+    - ipv6 address prefix-list PL-MLAG-PEER-VRFS
   - sequence: 20
     type: permit
 router_bfd:
@@ -120,10 +108,12 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65101'
-  router_id: 10.255.2.1
+  as: '65150'
+  router_id: 10.10.50.2
   maximum_paths:
     paths: 4
+  updates:
+    wait_install: true
   bgp:
     default:
       ipv4_unicast: false
@@ -131,43 +121,18 @@ router_bgp:
   - name: MLAG-IPv4-UNDERLAY-PEER
     metadata:
       type: ipv4
-    remote_as: '65101'
-    description: ipv6-numbered-vtep-loopback0-leaf1b
+    remote_as: '65150'
+    description: mlag-peer-vlan-l3-ipv6-numbered-l3leaf1a
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv6
-    send_community: all
-    maximum_routes: 256000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   neighbors:
-  - ip_address: 2001:db8:4::2
+  - ip_address: 2001:db8:52::1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: ipv6-numbered-vtep-loopback0-leaf1b
-    description: ipv6-numbered-vtep-loopback0-leaf1b_Vlan4093
-  - ip_address: 2001:db8:2::1
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65100'
-    metadata:
-      peer: ipv6-numbered-vtep-loopback0-spine
-    description: ipv6-numbered-vtep-loopback0-spine_Ethernet1
-  - ip_address: 2001:db8::1
-    peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '65100'
-    metadata:
-      peer: ipv6-numbered-vtep-loopback0-spine
-    description: ipv6-numbered-vtep-loopback0-spine_Loopback0
+      peer: mlag-peer-vlan-l3-ipv6-numbered-l3leaf1a
+    description: mlag-peer-vlan-l3-ipv6-numbered-l3leaf1a_Vlan4094
   redistribute:
     connected:
       enabled: true
@@ -177,39 +142,29 @@ router_bgp:
     metadata:
       tenants:
       - TENANT1
-    rd: 10.255.2.1:10011
+    rd: 10.10.50.2:10011
     route_targets:
       both:
       - 10011:10011
     redistribute_routes:
     - learned
-  - id: 12
+  - id: 21
     metadata:
       tenants:
       - TENANT1
-    rd: 10.255.2.1:10012
+    rd: 10.10.50.2:10021
     route_targets:
       both:
-      - 10012:10012
+      - 10021:10021
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   address_family_ipv6:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
   vrfs:
   - name: VRF10
-    rd: 10.255.2.1:10
+    rd: 10.10.50.2:10
     route_targets:
       import:
       - address_family: evpn
@@ -219,53 +174,58 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
-    router_id: 10.255.2.1
+    router_id: 10.10.50.2
+    updates:
+      wait_install: true
     neighbors:
-    - ip_address: 2001:db8:4::2
+    - ip_address: 2001:db8:52::1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: ipv6-numbered-vtep-loopback0-leaf1b_Vlan3009
+      description: mlag-peer-vlan-l3-ipv6-numbered-l3leaf1a_Vlan3009
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
+  - name: VRF11
+    rd: 10.10.50.2:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 10.10.50.2
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 2001:db8:52::1
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: mlag-peer-vlan-l3-ipv6-numbered-l3leaf1a_Vlan3010
     redistribute:
       connected:
         enabled: true
         route_map: RM-CONN-2-BGP-VRFS
 service_routing_protocols_model: multi-agent
 spanning_tree:
-  mode: mstp
-  mst_instances:
-  - id: '0'
-    priority: 4096
-  no_spanning_tree_vlan: 4093-4094
+  no_spanning_tree_vlan: '4094'
 transceiver_qsfp_default_mode_4x10: true
-virtual_source_nat_vrfs:
-- name: VRF10
-  ip_address: 10.255.10.1
 vlan_interfaces:
-- name: Vlan4093
-  description: MLAG_L3
-  shutdown: false
-  ipv6_addresses:
-  - 2001:db8:4::1/64
-  mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
   ipv6_addresses:
-  - 2001:db8:3::1/64
+  - 2001:db8:52::2/64
   mtu: 9214
   no_autostate: true
 - name: Vlan11
   description: VRF10_VLAN11
-  shutdown: false
+  shutdown: true
   vrf: VRF10
-  ip_address_virtual: 10.10.11.1/24
-  metadata:
-    tenants:
-    - TENANT1
-- name: Vlan12
-  description: VRF10_VLAN12
-  shutdown: false
-  vrf: VRF10
-  ip_address_virtual: 10.10.12.1/24
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:11::1/64
   metadata:
     tenants:
     - TENANT1
@@ -274,7 +234,28 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ipv6_addresses:
-  - 2001:db8:10::1/64
+  - 2001:db8:52::2/64
+  mtu: 9214
+  metadata:
+    tenants:
+    - TENANT1
+    type: underlay_peering
+- name: Vlan21
+  description: VRF11_VLAN21
+  shutdown: true
+  vrf: VRF11
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:21::1/64
+  metadata:
+    tenants:
+    - TENANT1
+- name: Vlan3010
+  description: MLAG_L3_VRF_VRF11
+  shutdown: false
+  vrf: VRF11
+  ipv6_addresses:
+  - 2001:db8:52::2/64
   mtu: 9214
   metadata:
     tenants:
@@ -286,13 +267,6 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 4093
-  name: MLAG_L3
-  trunk_groups:
-  - MLAG
-  metadata:
-    tenants:
-    - system
 - id: 4094
   name: MLAG
   trunk_groups:
@@ -305,13 +279,20 @@ vlans:
   metadata:
     tenants:
     - TENANT1
-- id: 12
-  name: VRF10_VLAN12
+- id: 3009
+  name: MLAG_L3_VRF_VRF10
+  trunk_groups:
+  - MLAG
   metadata:
     tenants:
     - TENANT1
-- id: 3009
-  name: MLAG_L3_VRF_VRF10
+- id: 21
+  name: VRF11_VLAN21
+  metadata:
+    tenants:
+    - TENANT1
+- id: 3010
+  name: MLAG_L3_VRF_VRF11
   trunk_groups:
   - MLAG
   metadata:
@@ -322,14 +303,21 @@ vrfs:
   ip_routing: false
 - name: VRF10
   ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT1
+- name: VRF11
+  ip_routing: true
+  ipv6_routing: true
   metadata:
     tenants:
     - TENANT1
 vxlan_interface:
   vxlan1:
-    description: ipv6-numbered-vtep-loopback0-leaf1a_VTEP
+    description: mlag-peer-vlan-l3-ipv6-numbered-l3leaf1b_VTEP
     vxlan:
-      source_interface: Loopback0
+      source_interface: Loopback1
       udp_port: 4789
       encapsulations:
         ipv6: true
@@ -337,8 +325,10 @@ vxlan_interface:
       vlans:
       - id: 11
         vni: 10011
-      - id: 12
-        vni: 10012
+      - id: 21
+        vni: 10021
       vrfs:
       - name: VRF10
         vni: 10
+      - name: VRF11
+        vni: 11
