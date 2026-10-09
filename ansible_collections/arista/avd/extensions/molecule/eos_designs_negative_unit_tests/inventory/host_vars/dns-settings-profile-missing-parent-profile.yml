@@ -1,0 +1,13 @@
+---
+devices:
+  - name: dns-settings-profile-missing-parent-profile
+    type: l2leaf
+    dns_settings_profile: child_profile
+
+dns_settings_profiles:
+  - profile: child_profile
+    parent_profile: missing_parent_profile
+
+expected_error_message: >-
+  Error during plugin 'arista.avd.eos_designs_structured_config' execution: Unresolved profile `missing_parent_profile`
+  while trying to resolve profiles for EosDesigns.DnsSettings: child_profile -> missing_parent_profile

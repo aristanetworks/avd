@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Cycle detected while trying to resolve profiles for EosDesigns.DnsSettings: p1 -> p2 -> p3 -> p4 -> p1

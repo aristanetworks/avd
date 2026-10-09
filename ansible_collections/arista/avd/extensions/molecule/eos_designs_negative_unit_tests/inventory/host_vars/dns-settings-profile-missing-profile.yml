@@ -1,0 +1,11 @@
+---
+devices:
+  - name: dns-settings-profile-missing-profile
+    type: l2leaf
+    dns_settings_profile: missing_profile
+
+dns_settings_profiles:
+  - profile: existing_profile
+
+expected_error_message: >-
+  Profile 'missing_profile' is missing while trying to resolve profiles for EosDesigns.DnsSettings

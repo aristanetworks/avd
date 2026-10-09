@@ -1,0 +1,18 @@
+---
+devices:
+  - name: dns-settings-profile-cycle
+    type: l2leaf
+    dns_settings_profile: p4
+
+dns_settings_profiles:
+  - profile: p1
+    parent_profile: p4
+  - profile: p2
+    parent_profile: p1
+  - profile: p3
+    parent_profile: p2
+  - profile: p4
+    parent_profile: p3
+
+expected_error_message: >-
+  Cycle detected while trying to resolve profiles for EosDesigns.DnsSettings: p1 -> p2 -> p3 -> p4 -> p1

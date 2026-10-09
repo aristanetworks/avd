@@ -19,8 +19,8 @@ keys:
         $ref: "eos_cli_config_gen#/keys/domain_list"
       servers:
         type: list
-        required: true
         min_length: 1
+        description: List of DNS servers to configure.
         items:
           type: dict
           keys:
@@ -51,6 +51,7 @@ keys:
       vrfs:
         type: list
         primary_key: name
+        description: Per-VRF DNS lookup source-interface settings.
         items:
           type: dict
           keys:
@@ -73,3 +74,4 @@ keys:
       ip_hosts:
         type: list
         $ref: "eos_cli_config_gen#/keys/ip_hosts"
+        description: Static hostname-to-IP address mappings to configure in the local host table.
