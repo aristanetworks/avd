@@ -15,7 +15,6 @@ config_end: true
 dot1x:
   system_auth_control: true
   protocol_lldp_bypass: true
-  protocol_bpdu_bypass: true
   dynamic_authorization: true
   radius_av_pair:
     dhcp:
