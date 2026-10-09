@@ -103,7 +103,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_ports.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_ports.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port.<br>With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.<br>See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.<br>With the future key set to `false`, AVD renders supported interface Address Locking configuration without validating the global Address Locking operating mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "network_ports.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>For Port-Channels, only `ipv4: false` is supported.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "network_ports.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For Port-Channels, only `ipv6: false` is supported.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "network_ports.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
@@ -442,6 +442,9 @@
                 traffic_allow: <bool>
 
         # Address locking settings applied on the port.
+        # With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.
+        # See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+        # With the future key set to `false`, AVD renders supported interface Address Locking configuration without validating the global Address Locking operating mode.
         address_locking:
 
           # Enable address locking for IPv4.

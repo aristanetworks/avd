@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].l2vlans.[].profile") | String |  |  |  | L2VLAN profile name.<br>The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<network_services_keys.name>.[].l2vlans.[].tags") | List, items: String |  | `['all']` |  | Tags leveraged for networks services filtering.<br>Tags are matched against filter.tags defined under node type settings.<br>Tags are also matched against the node_group name under node type settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].l2vlans.[].tags.[]") | String |  | `all` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking") | Dictionary |  |  |  | With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.<br>See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.<br>With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_override</samp>](## "<network_services_keys.name>.[].l2vlans.[].vni_override") | Integer |  |  | Min: 1<br>Max: 16777215 | By default the VNI will be derived from mac_vrf_vni_base.<br>The vni_override, allows to override this value and statically define it.<br> |
@@ -36,7 +36,7 @@
     | [<samp>l2vlan_profiles</samp>](## "l2vlan_profiles") | List, items: Dictionary |  |  |  | Profiles to inherit common settings for l2vlans defined under the network_services key. |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "l2vlan_profiles.[].profile") | String | Required, Unique |  |  | Profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "l2vlan_profiles.[].parent_profile") | String |  |  |  | Name of parent L2VLAN profile to apply.<br>By default, profile inheritance is limited to two levels: (l2vlan -> l2vlan_profile -> parent_profile).<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "l2vlan_profiles.[].address_locking") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "l2vlan_profiles.[].address_locking") | Dictionary |  |  |  | With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.<br>See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.<br>With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "l2vlan_profiles.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "l2vlan_profiles.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vni_override</samp>](## "l2vlan_profiles.[].vni_override") | Integer |  |  | Min: 1<br>Max: 16777215 | By default the VNI will be derived from mac_vrf_vni_base.<br>The vni_override, allows to override this value and statically define it.<br> |
@@ -62,7 +62,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_services.[].l2vlans.[].profile") | String |  |  |  | L2VLAN profile name.<br>The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "network_services.[].l2vlans.[].tags") | List, items: String |  | `['all']` |  | Tags leveraged for networks services filtering.<br>Tags are matched against filter.tags defined under node type settings.<br>Tags are also matched against the node_group name under node type settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].l2vlans.[].tags.[]") | String |  | `all` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_services.[].l2vlans.[].address_locking") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_services.[].l2vlans.[].address_locking") | Dictionary |  |  |  | With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.<br>See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.<br>With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "network_services.[].l2vlans.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "network_services.[].l2vlans.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_override</samp>](## "network_services.[].l2vlans.[].vni_override") | Integer |  |  | Min: 1<br>Max: 16777215 | By default the VNI will be derived from mac_vrf_vni_base.<br>The vni_override, allows to override this value and statically define it.<br> |
@@ -111,6 +111,10 @@
             # Tags are also matched against the node_group name under node type settings.
             tags: # default=['all']
               - <str; default="all">
+
+            # With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.
+            # See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+            # With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
             address_locking:
 
               # Enable address locking for IPv4.
@@ -185,6 +189,10 @@
         # From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
         # allows profiles to inherit settings across any number of levels.
         parent_profile: <str>
+
+        # With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.
+        # See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+        # With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
         address_locking:
 
           # Enable address locking for IPv4.
@@ -274,6 +282,10 @@
             # Tags are also matched against the node_group name under node type settings.
             tags: # default=['all']
               - <str; default="all">
+
+            # With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.
+            # See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+            # With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
             address_locking:
 
               # Enable address locking for IPv4.

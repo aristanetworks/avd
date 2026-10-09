@@ -206,7 +206,11 @@ $defs:
                   On EOS, the access list is only applied when `dot1x.mac_based_access_list` is enabled on the interface.
       address_locking:
         type: dict
-        description: Address locking settings applied on the port.
+        description: |-
+          Address locking settings applied on the port.
+          With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.
+          See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+          With the future key set to `false`, AVD renders supported interface Address Locking configuration without validating the global Address Locking operating mode.
         keys:
           ipv4:
             type: bool

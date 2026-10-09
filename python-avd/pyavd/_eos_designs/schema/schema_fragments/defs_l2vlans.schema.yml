@@ -14,6 +14,10 @@ $defs:
         address_locking:
           type: dict
           $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family"
+          description: |-
+            With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family requires compatible global Address Locking settings.
+            See `address_locking_settings` for the IPv4 LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+            With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
         vni_override:
           type: int
           convert_types:
