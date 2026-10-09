@@ -997,6 +997,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "allow_recursive_profile_inheritance": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
+            "fix_sflow_parent_subinterface_conflicts": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
@@ -1046,6 +1047,22 @@ class EosDesigns(EosDesignsRootModel):
         """
         Available from AVD 6.2.0.
         Configure `inband_mgmt_vrf` for IPv6 inband management.
+
+        Default value: `False`
+        """
+        fix_sflow_parent_subinterface_conflicts: bool
+        """
+        Available from AVD 6.5.0.
+        Resolve sFlow conflicts between physical interfaces and their
+        subinterfaces on platforms that support sFlow subinterfaces.
+        For AVD-managed fabric links, sFlow is
+        disabled on child subinterfaces when it is enabled on the physical link.
+        For node-level and Network
+        Services `l3_interfaces`, sFlow is explicitly disabled on an automatically created physical parent
+        when it is enabled on a child subinterface.
+        For these `l3_interfaces` data models, an error is
+        raised when both a physical interface and one of its child subinterfaces are explicitly configured
+        with sFlow enabled.
 
         Default value: `False`
         """
@@ -1170,6 +1187,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 allow_recursive_profile_inheritance: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
+                fix_sflow_parent_subinterface_conflicts: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
@@ -1209,6 +1227,18 @@ class EosDesigns(EosDesignsRootModel):
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
+                    fix_sflow_parent_subinterface_conflicts:
+                       Available from AVD 6.5.0.
+                       Resolve sFlow conflicts between physical interfaces and their
+                       subinterfaces on platforms that support sFlow subinterfaces.
+                       For AVD-managed fabric links, sFlow is
+                       disabled on child subinterfaces when it is enabled on the physical link.
+                       For node-level and Network
+                       Services `l3_interfaces`, sFlow is explicitly disabled on an automatically created physical parent
+                       when it is enabled on a child subinterface.
+                       For these `l3_interfaces` data models, an error is
+                       raised when both a physical interface and one of its child subinterfaces are explicitly configured
+                       with sFlow enabled.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk

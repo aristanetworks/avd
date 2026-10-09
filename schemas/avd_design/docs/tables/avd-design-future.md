@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_inband_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'. |
     | [<samp>&nbsp;&nbsp;allow_recursive_profile_inheritance</samp>](## "avd_design_future.allow_recursive_profile_inheritance") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Allow `parent_profile` to inherit from its own `parent_profile` in `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `inband_mgmt_vrf` for IPv6 inband management. |
+    | [<samp>&nbsp;&nbsp;fix_sflow_parent_subinterface_conflicts</samp>](## "avd_design_future.fix_sflow_parent_subinterface_conflicts") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Resolve sFlow conflicts between physical interfaces and their subinterfaces on platforms that support sFlow subinterfaces.<br>For AVD-managed fabric links, sFlow is disabled on child subinterfaces when it is enabled on the physical link.<br>For node-level and Network Services `l3_interfaces`, sFlow is explicitly disabled on an automatically created physical parent when it is enabled on a child subinterface.<br>For these `l3_interfaces` data models, an error is raised when both a physical interface and one of its child subinterfaces are explicitly configured with sFlow enabled. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
     | [<samp>&nbsp;&nbsp;fix_address_locking_dhcp_server_interfaces</samp>](## "avd_design_future.fix_address_locking_dhcp_server_interfaces") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix support for `address_locking_settings.dhcp_server_interfaces`.<br>When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive. |
     | [<samp>&nbsp;&nbsp;fix_match_ipv6_prefix_list_on_mlag_route_map</samp>](## "avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`<br>instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`. |
@@ -51,6 +52,13 @@
       # Available from AVD 6.2.0.
       # Configure `inband_mgmt_vrf` for IPv6 inband management.
       configure_inband_mgmt_ipv6_vrf: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # Resolve sFlow conflicts between physical interfaces and their subinterfaces on platforms that support sFlow subinterfaces.
+      # For AVD-managed fabric links, sFlow is disabled on child subinterfaces when it is enabled on the physical link.
+      # For node-level and Network Services `l3_interfaces`, sFlow is explicitly disabled on an automatically created physical parent when it is enabled on a child subinterface.
+      # For these `l3_interfaces` data models, an error is raised when both a physical interface and one of its child subinterfaces are explicitly configured with sFlow enabled.
+      fix_sflow_parent_subinterface_conflicts: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
