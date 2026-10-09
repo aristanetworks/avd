@@ -6680,6 +6680,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
             "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
             "only_render_separator_with_boot_secret_key": {"type": bool, "default": False},
+            "new_bgp_peer_group_cli_order": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6769,6 +6770,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        new_bgp_peer_group_cli_order: bool
+        """
+        When `true`, renders BGP peer groups in case-sensitive natural order, with uppercase names before
+        lowercase names, matching EOS CLI ordering.
+        When `false` (default), preserves the legacy case-
+        insensitive natural order.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6783,6 +6793,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
                 render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
                 only_render_separator_with_boot_secret_key: bool | UndefinedType = Undefined,
+                new_bgp_peer_group_cli_order: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6847,6 +6858,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `boot.secret.key` is provided.
                        When `false` (default), the '!' separator is always rendered when
                        `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+                    new_bgp_peer_group_cli_order:
+                       When `true`, renders BGP peer groups in case-sensitive natural order, with uppercase names before
+                       lowercase names, matching EOS CLI ordering.
+                       When `false` (default), preserves the legacy case-
+                       insensitive natural order.
 
                 """
 
@@ -57628,6 +57644,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "description": {"type": str},
                     "route_reflector_client": {"type": bool},
                     "ebgp_multihop": {"type": int},
+                    "ttl_maximum_hops": {"type": int},
                     "next_hop_peer": {"type": bool},
                     "next_hop_self": {"type": bool},
                     "shutdown": {"type": bool},
@@ -57691,6 +57708,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 route_reflector_client: bool | None
                 ebgp_multihop: int | None
                 """Time-to-live in range of hops."""
+                ttl_maximum_hops: int | None
+                """Maximum number of hops."""
                 next_hop_peer: bool | None
                 next_hop_self: bool | None
                 shutdown: bool | None
@@ -57757,6 +57776,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         description: str | UndefinedType | None = Undefined,
                         route_reflector_client: bool | UndefinedType | None = Undefined,
                         ebgp_multihop: int | UndefinedType | None = Undefined,
+                        ttl_maximum_hops: int | UndefinedType | None = Undefined,
                         next_hop_peer: bool | UndefinedType | None = Undefined,
                         next_hop_self: bool | UndefinedType | None = Undefined,
                         shutdown: bool | UndefinedType | None = Undefined,
@@ -57815,6 +57835,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             description: description
                             route_reflector_client: route_reflector_client
                             ebgp_multihop: Time-to-live in range of hops.
+                            ttl_maximum_hops: Maximum number of hops.
                             next_hop_peer: next_hop_peer
                             next_hop_self: next_hop_self
                             shutdown: shutdown

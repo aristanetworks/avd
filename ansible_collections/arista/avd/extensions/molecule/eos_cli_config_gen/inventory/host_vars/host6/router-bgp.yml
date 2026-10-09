@@ -39,3 +39,8 @@ router_bgp:
         bgp:
           additional_paths:
             install_ecmp_primary: true
+  peer_groups:
+    - name: ZULU
+      remote_as: "65002"
+      description: Uppercase peer group for legacy ordering
+    - name: alpha

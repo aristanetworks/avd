@@ -16,6 +16,7 @@
     | [<samp>&nbsp;&nbsp;render_monitor_layer1_without_enabled</samp>](## "eos_config_future.render_monitor_layer1_without_enabled") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>When `true`, renders the `monitor layer1` CLI block only if `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no matter the value of `monitor_layer1.enabled` is `true` or `false`.<br>When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`. |
     | [<samp>&nbsp;&nbsp;render_spanning_tree_portfast_edge</samp>](## "eos_config_future.render_spanning_tree_portfast_edge") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>When `true`, renders `spanning-tree portfast edge` on `ethernet_interfaces` and `port_channel_interfaces` when `spanning_tree_portfast` is set to `edge`, matching the running-config preserved by EOS 4.33.2F and later.<br>When `false` (default), renders the legacy `spanning-tree portfast` without the `edge` keyword. |
     | [<samp>&nbsp;&nbsp;only_render_separator_with_boot_secret_key</samp>](## "eos_config_future.only_render_separator_with_boot_secret_key") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>When `true`, the '!' separator before 'boot secret' is only rendered when `boot.secret.key` is provided.<br>When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility. |
+    | [<samp>&nbsp;&nbsp;new_bgp_peer_group_cli_order</samp>](## "eos_config_future.new_bgp_peer_group_cli_order") | Boolean |  | `False` |  | When `true`, renders BGP peer groups in case-sensitive natural order, with uppercase names before lowercase names, matching EOS CLI ordering.<br>When `false` (default), preserves the legacy case-insensitive natural order. |
 
 === "YAML"
 
@@ -66,4 +67,8 @@
       # When `true`, the '!' separator before 'boot secret' is only rendered when `boot.secret.key` is provided.
       # When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
       only_render_separator_with_boot_secret_key: <bool; default=False>
+
+      # When `true`, renders BGP peer groups in case-sensitive natural order, with uppercase names before lowercase names, matching EOS CLI ordering.
+      # When `false` (default), preserves the legacy case-insensitive natural order.
+      new_bgp_peer_group_cli_order: <bool; default=False>
     ```

@@ -2399,6 +2399,7 @@ router_bgp:
           remote_as: 1234
           local_as: 123
           description: Tenant A BGP Peer
+          ttl_maximum_hops: 1
           remove_private_as:
             enabled: true
             all: true
@@ -2567,6 +2568,15 @@ router_bgp:
           - address_family: evpn
             route_targets:
               - "14:14"
+    - name: TTL-SECURITY
+      neighbors:
+        # Documentation-only inheritance check: EOS inherits the peer-group setting natively.
+        - ip_address: 192.0.2.1
+          peer_group: TEST
+        # Explicit zero must render in CLI and override inheritance in documentation.
+        - ip_address: 192.0.2.2
+          peer_group: TEST
+          ttl_maximum_hops: 0
   eos_cli: |-
     address-family evpn
        evpn ethernet-segment domain all
