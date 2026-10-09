@@ -12,7 +12,7 @@
 
     AVD Design provides opinionated yet flexible network-wide data models expressing the intent of your network design and configuration.
 
-    [Data Models](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md) · <a href="../schema-explorer.html#/eos_designs">Schema Explorer</a>
+    [Data Models](../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/data-models.md) · <a href="../schema-explorer.html#/eos_designs">Schema Explorer</a>
 
 - :material-file-document:{ .lg .middle } **EOS Config**
 

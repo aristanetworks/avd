@@ -70,7 +70,7 @@ ip name-server vrf MGMT 10.10.128.11
 
 ## eos_designs with eos_cli_config_gen
 
-The [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) role uses an abstracted data model, [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md), to deploy various network designs. Instead of defining low-level device configuration, you describe your network design intent; then `eos_designs` generates the structured configuration, which is then processed by [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) role.
+The [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) role uses an abstracted data model, [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/data-models.md), to deploy various network designs. Instead of defining low-level device configuration, you describe your network design intent; then `eos_designs` generates the structured configuration, which is then processed by [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) role.
 
 ### AVD Design Data Model with eos_designs
 
@@ -84,7 +84,7 @@ graph LR
     D --> E[EOS CLI Configuration]
 ```
 
-The [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) role implements Arista's best practices and design patterns. You provide high-level design parameters using the [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md) data model, like fabric topology, VLANs and VRFs, and the role will:
+The [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) role implements Arista's best practices and design patterns. You provide high-level design parameters using the [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/data-models.md) data model, like fabric topology, VLANs and VRFs, and the role will:
 
 1. Generate the complete structured configuration following the [EOS Config](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) data model.
 2. Pass this to [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) for EOS configuration generation.
@@ -361,5 +361,5 @@ ip name-server vrf MGMT 10.20.20.10
 Review the following resources to learn more:
 
 - [Custom Structured Configuration How-To](../../ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md) for advanced patterns.
-- [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md) data model for available design options.
+- [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/data-models.md) data model for available design options.
 - [EOS Config](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) data model for available EOS configuration options.

@@ -238,7 +238,22 @@ nav:
   - User Manual:
       - Data Models:
           - Overview: docs/data-models/README.md
-          - AVD Design: ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md
+          - AVD Design:
+              - Overview: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/data-models.md
+              - Topology: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/topology.md
+              - Node Type: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/node-type.md
+              - Network Services: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/network-services.md
+              - Endpoint Connectivity: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/endpoint-connectivity.md
+              - L3 and Core: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/l3-and-core.md
+              - WAN: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/wan.md
+              - CloudVision: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/cloudvision.md
+              - Digital Twin: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/digital-twin.md
+              - Management Settings: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/management-settings.md
+              - Monitoring: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/monitoring.md
+              - Platform and System: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/platform-and-system.md
+              - Catalogs: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/catalog.md
+              - ANTA Runner: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/anta-runner.md
+              - Future Behaviors: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/future-behaviors.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
           - Schema Explorer: docs/schema-explorer.md
       - Ansible and AVD: docs/user-manual/intro-to-ansible-and-avd.md

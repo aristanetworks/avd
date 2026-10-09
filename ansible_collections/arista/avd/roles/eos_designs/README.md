@@ -35,7 +35,7 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 
 **Inputs:**
 
-- [AVD Design](./docs/data-models.md) inputs according to supported data models.
+- [AVD Design](./docs/user-manual/data-models.md) inputs according to supported data models.
 - Desired variables are defined in: role defaults, group_vars, and host_vars variables.
 - If desired, the role can be extended to leverage data from dynamic sources such as an IPAM or CMDB.
 
@@ -153,7 +153,7 @@ Requirements are located in the [collection installation guide](../../../../../d
 
 ## Input Variables
 
-The input variables are documented in the [Input Variables](docs/data-models.md) section.
+The input variables are documented in the [Input Variables](docs/user-manual/data-models.md) section.
 
 Input variables are grouped by configuration elements and are typically stored in different group_vars files.
 
