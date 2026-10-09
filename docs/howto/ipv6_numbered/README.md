@@ -45,6 +45,48 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
     - `loopback_ipv6_pool` defined for each node type
     - `router_id_pool` for BGP Router ID (IPv4 format required by BGP)
 
+## Optional BGP Peer-Group Naming
+
+You can customize BGP peer-group selections for both IPv4 and IPv6 underlays using the selectors `underlay_ipv4_peer_group` and `underlay_ipv6_peer_group`.
+
+### Underlay Peer Group Selectors
+
+Each selector accepts three options:
+
+- `underlay_peers` - Generic peer group (works for both IPv4 and IPv6)
+- `ipv4_underlay_peers` - IPv4-specific peer group
+- `ipv6_underlay_peers` - IPv6-specific peer group
+
+### Configuration Examples
+
+For IPv6 numbered underlay with IPv6-specific peer group:
+
+```yaml title="IPv6 Underlay Peer Group"
+underlay_ipv4_peer_group: ipv4_underlay_peers
+underlay_ipv6_peer_group: ipv6_underlay_peers
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    name: IPV4-UNDERLAY-PEERS
+    password: "{{ vault_bgp_password }}"
+    bfd: true
+  ipv6_underlay_peers:
+    name: IPV6-UNDERLAY-PEERS
+    password: "{{ vault_bgp_password }}"
+    bfd: true
+```
+
+Or use a generic peer group for both IPv4 and IPv6:
+
+```yaml title="Generic Underlay Peer Group for Both IPv4 and IPv6"
+underlay_ipv4_peer_group: underlay_peers
+underlay_ipv6_peer_group: underlay_peers
+bgp_peer_groups:
+  underlay_peers:
+    name: UNDERLAY-PEERS
+    password: "{{ vault_bgp_password }}"
+    bfd: true
+```
+
 ## IPv6 Pool Types
 
 AVD uses several IPv6 pools for different purposes:

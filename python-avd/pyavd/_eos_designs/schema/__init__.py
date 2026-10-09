@@ -1361,8 +1361,83 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    UnderlayIpv4PeerGroup: TypeAlias = Literal["ipv4_underlay_peers", "ipv6_underlay_peers", "underlay_peers"]
+    UnderlayIpv6PeerGroup: TypeAlias = Literal["ipv4_underlay_peers", "ipv6_underlay_peers", "underlay_peers"]
+
     class BgpPeerGroups(AvdModel):
         """Subclass of AvdModel."""
+
+        class UnderlayPeers(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str, "default": "UNDERLAY-PEERS"},
+                "password": {"type": str},
+                "cleartext_password": {"type": str},
+                "bfd": {"type": bool, "default": False},
+                "maximum_routes": {"type": int, "default": 256000},
+                "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
+            }
+            name: str
+            """
+            Name of peer group.
+
+            Default value: `"UNDERLAY-PEERS"`
+            """
+            password: str | None
+            """
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
+            bfd: bool
+            """Default value: `False`"""
+            maximum_routes: int
+            """
+            Maximum number of routes (0 means unlimited).
+
+            Default value: `256000`
+            """
+            structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    password: str | UndefinedType | None = Undefined,
+                    cleartext_password: str | UndefinedType | None = Undefined,
+                    bfd: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
+                    structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    UnderlayPeers.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Name of peer group.
+                        password:
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
+                        bfd: bfd
+                        maximum_routes: Maximum number of routes (0 means unlimited).
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
+
+                    """
 
         class Ipv4UnderlayPeers(AvdModel):
             """Subclass of AvdModel."""
@@ -1417,6 +1492,78 @@ class EosDesigns(EosDesignsRootModel):
                 ) -> None:
                     """
                     Ipv4UnderlayPeers.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Name of peer group.
+                        password:
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
+                        bfd: bfd
+                        maximum_routes: Maximum number of routes (0 means unlimited).
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
+
+                    """
+
+        class Ipv6UnderlayPeers(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str, "default": "IPV6-UNDERLAY-PEERS"},
+                "password": {"type": str},
+                "cleartext_password": {"type": str},
+                "bfd": {"type": bool, "default": False},
+                "maximum_routes": {"type": int, "default": 256000},
+                "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
+            }
+            name: str
+            """
+            Name of peer group.
+
+            Default value: `"IPV6-UNDERLAY-PEERS"`
+            """
+            password: str | None
+            """
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
+            bfd: bool
+            """Default value: `False`"""
+            maximum_routes: int
+            """
+            Maximum number of routes (0 means unlimited).
+
+            Default value: `256000`
+            """
+            structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    password: str | UndefinedType | None = Undefined,
+                    cleartext_password: str | UndefinedType | None = Undefined,
+                    bfd: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
+                    structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6UnderlayPeers.
 
 
                     Subclass of AvdModel.
@@ -2241,7 +2388,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
+            "underlay_peers": {"type": UnderlayPeers},
             "ipv4_underlay_peers": {"type": Ipv4UnderlayPeers},
+            "ipv6_underlay_peers": {"type": Ipv6UnderlayPeers},
             "mlag_ipv4_vrfs_peer": {"type": MlagIpv4VrfsPeer},
             "mlag_ipv4_underlay_peer": {"type": MlagIpv4UnderlayPeer},
             "evpn_overlay_peers": {"type": EvpnOverlayPeers},
@@ -2252,8 +2401,22 @@ class EosDesigns(EosDesignsRootModel):
             "wan_overlay_peers": {"type": WanOverlayPeers},
             "wan_rr_overlay_peers": {"type": WanRrOverlayPeers},
         }
+        underlay_peers: UnderlayPeers
+        """
+        This key takes precedence over `ipv4_underlay_peers` when set.
+
+        Subclass of AvdModel.
+        """
         ipv4_underlay_peers: Ipv4UnderlayPeers
         """Subclass of AvdModel."""
+        ipv6_underlay_peers: Ipv6UnderlayPeers
+        """
+        Peer group for IPv6 underlay BGP peers.
+        This key is optional and will only be used when explicitly
+        referenced via `underlay_ipv6_peer_group`.
+
+        Subclass of AvdModel.
+        """
         mlag_ipv4_vrfs_peer: MlagIpv4VrfsPeer
         """
         Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
@@ -2292,7 +2455,9 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                underlay_peers: UnderlayPeers | UndefinedType = Undefined,
                 ipv4_underlay_peers: Ipv4UnderlayPeers | UndefinedType = Undefined,
+                ipv6_underlay_peers: Ipv6UnderlayPeers | UndefinedType = Undefined,
                 mlag_ipv4_vrfs_peer: MlagIpv4VrfsPeer | UndefinedType = Undefined,
                 mlag_ipv4_underlay_peer: MlagIpv4UnderlayPeer | UndefinedType = Undefined,
                 evpn_overlay_peers: EvpnOverlayPeers | UndefinedType = Undefined,
@@ -2310,7 +2475,17 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    underlay_peers:
+                       This key takes precedence over `ipv4_underlay_peers` when set.
+
+                       Subclass of AvdModel.
                     ipv4_underlay_peers: Subclass of AvdModel.
+                    ipv6_underlay_peers:
+                       Peer group for IPv6 underlay BGP peers.
+                       This key is optional and will only be used when explicitly
+                       referenced via `underlay_ipv6_peer_group`.
+
+                       Subclass of AvdModel.
                     mlag_ipv4_vrfs_peer:
                        Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
                        By default AVD
@@ -116853,6 +117028,8 @@ class EosDesigns(EosDesignsRootModel):
         "bgp_maximum_paths": {"type": int},
         "bgp_mesh_pes": {"type": bool, "default": False},
         "bgp_peer_filters_catalog": {"type": EosCliConfigGen.PeerFilters},
+        "underlay_ipv4_peer_group": {"type": str, "default": "ipv4_underlay_peers"},
+        "underlay_ipv6_peer_group": {"type": str, "default": "ipv4_underlay_peers"},
         "bgp_peer_groups": {"type": BgpPeerGroups},
         "bgp_update_wait_install": {"type": bool, "default": True},
         "bgp_update_wait_for_convergence": {"type": bool, "default": False},
@@ -118246,6 +118423,21 @@ class EosDesigns(EosDesignsRootModel):
     Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in
     the configuration when
     they are explicitly referenced in listen ranges.
+    """
+    underlay_ipv4_peer_group: UnderlayIpv4PeerGroup
+    """
+    Select the BGP peer group to use for underlay IPv4 peerings.
+
+    Default value: `"ipv4_underlay_peers"`
+    """
+    underlay_ipv6_peer_group: UnderlayIpv6PeerGroup
+    """
+    Select the BGP peer group to use for underlay IPv6 peerings.
+    Note: Default is "ipv4_underlay_peers"
+    to maintain backward compatibility. Consider changing to "ipv6_underlay_peers" for IPv6-specific
+    configuration.
+
+    Default value: `"ipv4_underlay_peers"`
     """
     bgp_peer_groups: BgpPeerGroups
     """
@@ -120397,6 +120589,8 @@ class EosDesigns(EosDesignsRootModel):
             bgp_maximum_paths: int | UndefinedType | None = Undefined,
             bgp_mesh_pes: bool | UndefinedType = Undefined,
             bgp_peer_filters_catalog: EosCliConfigGen.PeerFilters | UndefinedType = Undefined,
+            underlay_ipv4_peer_group: UnderlayIpv4PeerGroup | UndefinedType = Undefined,
+            underlay_ipv6_peer_group: UnderlayIpv6PeerGroup | UndefinedType = Undefined,
             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
             bgp_update_wait_install: bool | UndefinedType = Undefined,
             bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
@@ -120694,6 +120888,12 @@ class EosDesigns(EosDesignsRootModel):
                    Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in
                    the configuration when
                    they are explicitly referenced in listen ranges.
+                underlay_ipv4_peer_group: Select the BGP peer group to use for underlay IPv4 peerings.
+                underlay_ipv6_peer_group:
+                   Select the BGP peer group to use for underlay IPv6 peerings.
+                   Note: Default is "ipv4_underlay_peers"
+                   to maintain backward compatibility. Consider changing to "ipv6_underlay_peers" for IPv6-specific
+                   configuration.
                 bgp_peer_groups:
                    Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
                    Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
