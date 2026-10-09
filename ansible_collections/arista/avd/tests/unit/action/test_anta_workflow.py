@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import logging
 import sys
+from types import SimpleNamespace
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, mock_open, patch
 
@@ -25,6 +26,7 @@ from ansible_collections.arista.avd.plugins.action.anta_workflow import (
     run_anta,
     setup_anta_debug_mode,
     setup_root_logger,
+    update_ansible_result,
 )
 
 if TYPE_CHECKING:
@@ -260,7 +262,7 @@ def test_run_anta_logs_info_for_start_and_completion(
     with (
         patch(f"{MODULE_PATH}.setup_child_process_logging"),
         patch(f"{MODULE_PATH}.build_anta_runner_objects", return_value=(MagicMock(), MagicMock(), MagicMock())),
-        patch(f"{MODULE_PATH}.anta_runner", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.anta_runner", new_callable=MagicMock, return_value=MagicMock()),
         patch(f"{MODULE_PATH}.run"),
         caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
     ):
@@ -538,3 +540,242 @@ def test_load_one_structured_config_raises_for_missing_file(tmp_path: Path) -> N
     """FileNotFoundError is raised when the structured config file does not exist."""
     with pytest.raises(FileNotFoundError, match=r"Structured configuration file for device 'leaf1' not found"):
         load_one_structured_config("leaf1", str(tmp_path), "yml")
+
+
+@pytest.mark.parametrize(
+    ("summary_overrides", "has_errors", "expected_failed", "expected_msg"),
+    [
+        pytest.param(
+            {"total_tests": 2},
+            False,
+            False,
+            "ANTA tests completed without reported failures/errors.",
+            id="success",
+        ),
+        pytest.param(
+            {"total_tests": 2},
+            True,
+            True,
+            "Errors detected during ANTA workflow execution.",
+            id="workflow-error",
+        ),
+        pytest.param(
+            {"total_tests": 0},
+            False,
+            True,
+            "No ANTA tests were run.",
+            id="no-tests",
+        ),
+        pytest.param(
+            {"total_tests": 2, "tests_failed": 1},
+            False,
+            True,
+            "Task failed due to ANTA test failures/errors.",
+            id="test-failure",
+        ),
+        pytest.param(
+            {"total_tests": 2, "tests_error": 1, "tests_failed": 1},
+            True,
+            True,
+            "Errors detected during ANTA workflow execution. ANTA tests reported failures/errors.",
+            id="workflow-and-test-errors",
+        ),
+    ],
+)
+def test_update_ansible_result_maps_all_outcomes(
+    *,
+    summary_overrides: dict[str, int],
+    has_errors: bool,
+    expected_failed: bool,
+    expected_msg: str,
+) -> None:
+    """Workflow log errors and ANTA test statistics produce the documented Ansible result."""
+    summary = {
+        "total_tests": 2,
+        "tests_passed": 2,
+        "tests_failed": 0,
+        "tests_error": 0,
+        "tests_skipped": 0,
+        "tests_unset": 0,
+        "devices_with_test_failures": [],
+        "devices_with_test_errors": [],
+        **summary_overrides,
+    }
+
+    result = update_ansible_result({"failed": False}, summary, [has_errors])
+
+    assert result["failed"] is expected_failed
+    assert result["msg"] == expected_msg
+    assert result["anta_tests_summary"] is summary
+
+
+def test_sort_result_manager_orders_status_then_requested_fields() -> None:
+    """Known statuses use the configured rank and unknown statuses sort last alphabetically."""
+    results = [
+        SimpleNamespace(result="success", name="leaf2", categories=["routing"], test="TestB", description="b", custom_field=None),
+        SimpleNamespace(result="success", name="leaf4", categories=["a"], test="TestB", description="b", custom_field=None),
+        SimpleNamespace(result="success", name="leaf4", categories=["z"], test="TestA", description="a", custom_field=None),
+        SimpleNamespace(result="mystery", name="leaf1", categories=["routing"], test="TestA", description="a", custom_field=None),
+        SimpleNamespace(result="failure", name="leaf3", categories=["routing"], test="TestA", description="a", custom_field=None),
+        SimpleNamespace(result="success", name="leaf1", categories=["routing"], test="TestA", description="a", custom_field=None),
+        SimpleNamespace(result="unset", name="leaf0", categories=["routing"], test="TestA", description="a", custom_field=None),
+    ]
+    result_manager = SimpleNamespace(results=results)
+
+    anta_module.sort_result_manager(result_manager, ["failure", "success"], ["device", "test"])
+
+    assert [(result.result, result.name, result.test) for result in result_manager.results] == [
+        ("failure", "leaf3", "TestA"),
+        ("success", "leaf1", "TestA"),
+        ("success", "leaf2", "TestB"),
+        ("success", "leaf4", "TestA"),
+        ("success", "leaf4", "TestB"),
+        ("mystery", "leaf1", "TestA"),
+        ("unset", "leaf0", "TestA"),
+    ]
+
+
+def test_build_reports_aggregates_results_and_device_statistics() -> None:
+    """Batch results are merged and converted into the summary consumed by Ansible."""
+
+    class FakeResultManager:
+        def __init__(self) -> None:
+            self.results = []
+            self.device_stats = {
+                "leaf1": SimpleNamespace(tests_failure_count=1, tests_error_count=0),
+                "leaf2": SimpleNamespace(tests_failure_count=0, tests_error_count=1),
+            }
+
+        def add(self, result: SimpleNamespace) -> None:
+            self.results.append(result)
+
+        def get_total_results(self, statuses: set[str] | None = None) -> int:
+            if statuses is None:
+                return len(self.results)
+            return sum(result.result in statuses for result in self.results)
+
+    batch_results = [
+        SimpleNamespace(
+            results=[
+                SimpleNamespace(result="failure", name="leaf1", categories=[], test="TestB", description="b", custom_field=None),
+                SimpleNamespace(result="success", name="leaf2", categories=[], test="TestA", description="a", custom_field=None),
+            ],
+        ),
+        SimpleNamespace(
+            results=[SimpleNamespace(result="error", name="leaf2", categories=[], test="TestC", description="c", custom_field=None)],
+        ),
+    ]
+    report_settings = {
+        "sorting": {"sort_fields": ["device", "test"], "status_priority": ["error", "failure", "success"]},
+        "filters": {},
+    }
+
+    with patch(f"{MODULE_PATH}.ResultManager", FakeResultManager):
+        summary = build_reports(iter(batch_results), report_settings)
+
+    assert summary == {
+        "total_tests": 3,
+        "tests_passed": 1,
+        "tests_failed": 1,
+        "tests_error": 1,
+        "tests_skipped": 0,
+        "tests_unset": 0,
+        "devices_with_test_failures": ["leaf1"],
+        "devices_with_test_errors": ["leaf2"],
+    }
+
+
+def test_build_anta_runner_objects_builds_catalog_and_inventory_without_connecting(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Catalog generation and device construction can be tested without invoking ANTA or eAPI."""
+    structured_config = {"leaf1": {"management_api_http": {"enable_https": True}}}
+    monkeypatch.setattr(anta_module, "STRUCTURED_CONFIGS", structured_config)
+    monkeypatch.setattr(anta_module, "FABRIC_DATA", MagicMock(name="fabric_data"))
+    monkeypatch.setattr(
+        anta_module,
+        "PLUGIN_ARGS",
+        {
+            "avd_catalogs": {
+                "extra_fabric_validation": True,
+                "output_dir": "/out",
+                "filters": [{"device_list": ["leaf1"], "run_tests": ["TestBGP"]}],
+            },
+        },
+    )
+    user_catalog = MagicMock(name="user_catalog")
+    monkeypatch.setattr(anta_module, "USER_CATALOG", user_catalog)
+    inventory = MagicMock(name="inventory")
+    device = MagicMock(name="device")
+    generated_catalog = MagicMock(name="generated_catalog")
+    merged_catalog = MagicMock(name="merged_catalog")
+
+    with (
+        patch(f"{MODULE_PATH}.ResultManager", return_value=MagicMock()) as result_manager,
+        patch(f"{MODULE_PATH}.AntaInventory", return_value=inventory),
+        patch(f"{MODULE_PATH}.AntaCatalog") as catalog,
+        patch(f"{MODULE_PATH}.AVDCatalogGenerationSettings", return_value=MagicMock()) as settings,
+        patch(f"{MODULE_PATH}.get_device_test_catalog", return_value=generated_catalog) as get_catalog,
+        patch(f"{MODULE_PATH}.build_anta_device", return_value=device),
+    ):
+        catalog.merge_catalogs.return_value = merged_catalog
+        returned_result_manager, returned_inventory, returned_catalog = build_anta_runner_objects(["leaf1"])
+
+    assert returned_result_manager is result_manager.return_value
+    assert returned_inventory is inventory
+    assert returned_catalog is merged_catalog
+    settings.assert_called_once_with(extra_fabric_validation=True, output_dir="/out", run_tests=["TestBGP"], skip_tests=[])
+    get_catalog.assert_called_once_with(
+        hostname="leaf1",
+        structured_config=structured_config["leaf1"],
+        fabric_data=anta_module.FABRIC_DATA,
+        settings=settings.return_value,
+    )
+    inventory.add_device.assert_called_once_with(device)
+    catalog.merge_catalogs.assert_called_once_with([user_catalog, generated_catalog])
+
+
+def test_build_anta_device_applies_anta_overrides_and_connection_defaults(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Explicit ANTA inventory variables override their Ansible equivalents."""
+    monkeypatch.setattr(
+        anta_module,
+        "ANSIBLE_VARS",
+        {
+            "leaf1": {
+                "inventory_hostname": "leaf1",
+                "ansible_host": "10.0.0.1",
+                "ansible_user": "ansible-user",
+                "ansible_password": "ansible-password",
+                "ansible_httpapi_port": 443,
+                "ansible_httpapi_use_ssl": True,
+                "anta_user": "anta-user",
+                "anta_password": "anta-password",
+                "anta_enable": True,
+                "anta_enable_password": "enable-password",
+                "anta_port": 8443,
+                "anta_use_ssl": False,
+                "anta_tags": ["fabric"],
+                "anta_use_session_auth": True,
+            },
+        },
+    )
+    monkeypatch.setattr(anta_module, "PLUGIN_ARGS", {"runner": {"timeout": 42.0}})
+
+    with patch(f"{MODULE_PATH}.AsyncEOSDevice") as device:
+        build_anta_device("leaf1")
+
+    device.assert_called_once_with(
+        name="leaf1",
+        host="10.0.0.1",
+        username="anta-user",
+        password="anta-password",  # noqa: S106 - deliberate connection precedence test value
+        enable=True,
+        enable_password="enable-password",  # noqa: S106 - deliberate connection precedence test value
+        port=8443,
+        proto="http",
+        timeout=42.0,
+        tags={"fabric"},
+        use_session_auth=True,
+    )
