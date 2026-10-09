@@ -271,6 +271,8 @@ jobs:
       matrix:
         avd_scenario:
           - "ansible_only"
+          - "digital_twin_containerlab"
+          - "digital_twin_containerlab_negative_tests"
           - "example-cv-pathfinder"
           - "howto"
         ansible_version:

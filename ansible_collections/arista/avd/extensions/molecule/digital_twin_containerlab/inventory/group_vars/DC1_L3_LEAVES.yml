@@ -1,0 +1,23 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.255.1.0/27
+    vtep_loopback_ipv4_pool: 10.255.2.0/27
+    uplink_switches: [dc1-spine1, dc1-spine2]
+    uplink_ipv4_pool: 10.255.255.0/26
+  nodes:
+    - name: dc1-leaf1a
+      id: 1
+      bgp_as: 65101
+      mgmt_ip: 172.16.1.101/24
+      uplink_interfaces: [Ethernet1, Ethernet1/2]
+      uplink_switch_interfaces: [Ethernet1, Ethernet1/2]
+    - name: dc1-leaf2a
+      id: 2
+      bgp_as: 65102
+      mgmt_ip: 172.16.1.102/24
+      uplink_interfaces: [Ethernet1/1, Ethernet2]
+      uplink_switch_interfaces: [Ethernet1/3, Ethernet2]

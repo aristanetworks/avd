@@ -1,0 +1,41 @@
+---
+name: DIGITAL_TWIN_CONTAINERLAB
+prefix: ''
+mgmt:
+  network: custom_mgmt
+  ipv4-subnet: 172.16.1.0/24
+topology:
+  defaults:
+    kind: arista_ceos
+  kinds:
+    arista_ceos:
+      enforce-startup-config: true
+      image: arista/ceos:latest
+      binds:
+      - interface_mapping.json:/mnt/flash/EosIntfMapping.json:ro
+  nodes:
+    dc1-leaf1a:
+      mgmt-ipv4: 172.16.1.101
+      startup-config: intended/configs/dc1-leaf1a.cfg
+    dc1-leaf2a:
+      mgmt-ipv4: 172.16.1.102
+      startup-config: intended/configs/dc1-leaf2a.cfg
+    dc1-spine1:
+      mgmt-ipv4: 172.16.1.11
+      startup-config: intended/configs/dc1-spine1.cfg
+    dc1-spine2:
+      mgmt-ipv4: 172.16.1.12
+      startup-config: intended/configs/dc1-spine2.cfg
+  links:
+  - endpoints:
+    - dc1-leaf1a:eth1
+    - dc1-spine1:eth1
+  - endpoints:
+    - dc1-leaf1a:eth1_2
+    - dc1-spine2:eth1_2
+  - endpoints:
+    - dc1-leaf2a:eth1_1
+    - dc1-spine1:eth1_3
+  - endpoints:
+    - dc1-leaf2a:eth2
+    - dc1-spine2:eth2

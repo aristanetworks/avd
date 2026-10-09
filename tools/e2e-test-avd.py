@@ -764,6 +764,8 @@ class AvdV6Build:
             fabric_doc_dir.joinpath(f"{fabric_name}-p2p-links.csv").write_text(output.p2p_links_csv)
 
         if output.digital_twin:
+            from pyavd.api.fabric_documentation import ContainerlabDigitalTwin
+
             content = strip_empties_from_dict(
                 {
                     str(key).replace("_", "-"): list(value) if isinstance(value, tuple) else value
@@ -771,8 +773,29 @@ class AvdV6Build:
                 }
             )
             fabric_doc_dir.mkdir(parents=True, exist_ok=True)
-            with fabric_doc_dir.joinpath(f"{fabric_name}-topology.yml").open("w", encoding="utf-8") as stream:
-                yaml.dump(content, stream=stream, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130)
+            if isinstance(output.digital_twin, ContainerlabDigitalTwin):
+                from pyavd._utils.normalize_yaml_data import normalize_yaml_data
+
+                content = strip_empties_from_dict(normalize_yaml_data(output.digital_twin))
+                topology_dir = self.config.full_output_dir.parent
+                if interface_mapping := content.pop("interface_mapping", None):
+                    topology_dir.joinpath("interface_mapping.json").write_text(json.dumps(interface_mapping, indent=4) + "\n", encoding="utf-8")
+                for node_name, node_settings in content["topology"]["nodes"].items():
+                    node_settings["startup-config"] = f"intended/configs/{node_name}.cfg"
+                content = {"name": content.pop("name"), "prefix": output.digital_twin.prefix, **content}
+                topology_file = topology_dir.joinpath(f"{fabric_name}-topology.clab.yml")
+            else:
+                topology_file = fabric_doc_dir.joinpath(f"{fabric_name}-topology.yml")
+            with topology_file.open("w", encoding="utf-8") as stream:
+                yaml.dump(
+                    content,
+                    stream=stream,
+                    Dumper=AnsibleDumper,
+                    sort_keys=False,
+                    indent=2,
+                    width=130,
+                    explicit_start=isinstance(output.digital_twin, ContainerlabDigitalTwin),
+                )
 
         return True
 
