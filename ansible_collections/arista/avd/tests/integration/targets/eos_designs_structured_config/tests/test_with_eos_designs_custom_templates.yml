@@ -47,3 +47,6 @@
       - result.ansible_facts.custom_template2_none_var is none
       - result.ansible_facts.my_is_deployed is defined
       - result.ansible_facts.my_is_deployed == true
+      - result.ansible_facts.vrfs | length == 1
+      - result.ansible_facts.vrfs[0].name == "MGMT"
+      - result.ansible_facts.vrfs[0].ip_routing == true

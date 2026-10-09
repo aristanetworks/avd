@@ -28,7 +28,7 @@ dependencies = [
     # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
     "grpclib>=0.4.8",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.10",
+    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils.git@e3fa3f7fcd79d2df552d6b388eaea1595456e0f5",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
@@ -52,7 +52,8 @@ requires = [
     "deepmerge>=1.1.0",
     "jinja2>=3.0",
     "jsonschema-rs>=0.24",
-    "pyavd-utils==0.0.10",
+    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils.git@e3fa3f7fcd79d2df552d6b388eaea1595456e0f5",
+    "pyavd-utils-gen @ git+https://github.com/aristanetworks/pyavd-utils.git@e3fa3f7fcd79d2df552d6b388eaea1595456e0f5#subdirectory=python/pyavd-utils-gen",
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
