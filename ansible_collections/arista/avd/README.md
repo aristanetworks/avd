@@ -70,7 +70,7 @@ collections:
     version: <version> # Optional
 ```
 
-Note that if you install the collection from Ansible Galaxy, it will not be upgraded automatically when you upgrade the Ansible package.
+Note that if the Ansible collection is already present, it will not be upgraded automatically.
 
 To upgrade the collection to the latest available version, run the following command:
 
@@ -128,6 +128,6 @@ Please see the [release notes](https://avd.arista.com/stable/docs/release-notes/
 
 ## License Information
 
-Copyright (c) 2019-2024 Arista Networks, Inc.
+Copyright (c) 2019-2026 Arista Networks, Inc.
 
 The project is published under [Apache 2.0 License](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/LICENSE)

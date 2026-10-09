@@ -5,6 +5,7 @@
 # Do not edit manually.
 .ansible-lint
 .ansible-lint-ignore
+.ansible-lint-offline
 CHANGELOG.rst
 FILES.json
 LICENSE
