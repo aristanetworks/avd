@@ -1001,6 +1001,7 @@ class EosDesigns(EosDesignsRootModel):
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
             "fix_mlag_ibgp_peering_ipv6_pool": {"type": bool, "default": False},
+            "fix_mlag_ibgp_peering_vrfs_address_families": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
@@ -1091,6 +1092,34 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        fix_mlag_ibgp_peering_vrfs_address_families: bool
+        """
+        Available from AVD 6.5.0.
+        Fix the BGP address families of the MLAG iBGP peerings in VRFs when using
+        `underlay_ipv6_numbered`.
+        These iBGP sessions run over IPv6, so when enabled:
+        - With
+        `overlay_mlag_rfc5549: false`, the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer` peer group
+        activates the IPv6 address family
+          instead of the IPv4 address family. An error is raised if a VRF
+        with MLAG iBGP peering has IPv4 configured, with either the shared
+          or the dedicated peer group,
+        since IPv4 routes cannot be exchanged over these sessions without `overlay_mlag_rfc5549: true`.
+        -
+        With `overlay_mlag_rfc5549: true`, both the IPv4 address family (with `next-hop address-family ipv6
+        originate`) and the IPv6
+          address family are activated on the MLAG peer group used for VRFs, either
+        the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`
+          or the dedicated
+        `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when
+        using the shared
+          peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing
+        vrf <vrf>` are configured for VRFs with MLAG iBGP peering.
+          This allows dual-stack VRFs over a
+        numbered IPv6 underlay.
+
+        Default value: `False`
+        """
         fix_radius_server_group_tls: bool
         """
         Available from AVD 6.2.0.
@@ -1174,6 +1203,7 @@ class EosDesigns(EosDesignsRootModel):
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
                 fix_mlag_ibgp_peering_ipv6_pool: bool | UndefinedType = Undefined,
+                fix_mlag_ibgp_peering_vrfs_address_families: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
@@ -1235,6 +1265,30 @@ class EosDesigns(EosDesignsRootModel):
                        MLAG iBGP peering SVI,
                        using `mlag_ibgp_peering_ipv6_pool` when set, and
                        `mlag_ibgp_peering_ipv4_pool` is ignored.
+                    fix_mlag_ibgp_peering_vrfs_address_families:
+                       Available from AVD 6.5.0.
+                       Fix the BGP address families of the MLAG iBGP peerings in VRFs when using
+                       `underlay_ipv6_numbered`.
+                       These iBGP sessions run over IPv6, so when enabled:
+                       - With
+                       `overlay_mlag_rfc5549: false`, the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer` peer group
+                       activates the IPv6 address family
+                         instead of the IPv4 address family. An error is raised if a VRF
+                       with MLAG iBGP peering has IPv4 configured, with either the shared
+                         or the dedicated peer group,
+                       since IPv4 routes cannot be exchanged over these sessions without `overlay_mlag_rfc5549: true`.
+                       -
+                       With `overlay_mlag_rfc5549: true`, both the IPv4 address family (with `next-hop address-family ipv6
+                       originate`) and the IPv6
+                         address family are activated on the MLAG peer group used for VRFs, either
+                       the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`
+                         or the dedicated
+                       `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when
+                       using the shared
+                         peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing
+                       vrf <vrf>` are configured for VRFs with MLAG iBGP peering.
+                         This allows dual-stack VRFs over a
+                       numbered IPv6 underlay.
                     fix_radius_server_group_tls:
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global
@@ -119699,8 +119753,15 @@ class EosDesigns(EosDesignsRootModel):
     """
     overlay_mlag_rfc5549: bool
     """
-    IPv6 Unnumbered for MLAG iBGP connections.
-    Requires "underlay_rfc5549: true".
+    Exchange IPv4 routes with an IPv6 next hop (RFC5549) over the MLAG iBGP peerings in VRFs.
+    Requires
+    one of:
+    - `underlay_rfc5549: true`: The MLAG iBGP peerings in VRFs use IPv6 link-local addresses
+    (unnumbered).
+    - `underlay_ipv6_numbered: true` and
+    `avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true`:
+      The MLAG iBGP peerings in
+    VRFs use numbered IPv6 addresses, allowing dual-stack VRFs over a numbered IPv6 underlay.
 
     Default value: `False`
     """
@@ -121782,8 +121843,15 @@ class EosDesigns(EosDesignsRootModel):
                    This is useful
                    if Border Leaf switches are dividing the VXLAN overlay into separate domains.
                 overlay_mlag_rfc5549:
-                   IPv6 Unnumbered for MLAG iBGP connections.
-                   Requires "underlay_rfc5549: true".
+                   Exchange IPv4 routes with an IPv6 next hop (RFC5549) over the MLAG iBGP peerings in VRFs.
+                   Requires
+                   one of:
+                   - `underlay_rfc5549: true`: The MLAG iBGP peerings in VRFs use IPv6 link-local addresses
+                   (unnumbered).
+                   - `underlay_ipv6_numbered: true` and
+                   `avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true`:
+                     The MLAG iBGP peerings in
+                   VRFs use numbered IPv6 addresses, allowing dual-stack VRFs over a numbered IPv6 underlay.
                 overlay_rd_type:
                    Configuration options for the Administrator subfield (first part of RD) and the Assigned Number
                    subfield (second part of RD).

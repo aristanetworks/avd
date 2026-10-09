@@ -1,0 +1,76 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_mlag-vrfs-ipv6-numbered-shared-ipv4-inband-mgmt-1_Ethernet10
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: mlag-vrfs-ipv6-numbered-shared-ipv4-inband-mgmt-1
+    peer_interface: Ethernet10
+    peer_type: l3leaf
+- name: Ethernet2
+  description: L2_mlag-vrfs-ipv6-numbered-shared-ipv4-inband-mgmt-2_Ethernet10
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: mlag-vrfs-ipv6-numbered-shared-ipv4-inband-mgmt-2
+    peer_interface: Ethernet10
+    peer_type: l3leaf
+hostname: mlag-vrfs-ipv6-numbered-shared-ipv4-inband-mgmt-l2leaf
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_FAILURES
+port_channel_interfaces:
+- name: Port-Channel1
+  description: L2_mlag-vrfs-ipv6-numbered-shared-ipv4-inband-mgmt_Port-Channel10
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: VRF10
+  prefix: 0.0.0.0/0
+  next_hop: 10.201.0.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  vrf: VRF10
+  ip_address: 10.201.0.4/24
+  mtu: 1500
+  metadata:
+    type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VRF10_VLAN11
+  metadata:
+    tenants:
+    - TENANT1
+- id: 4092
+  name: INBAND_MGMT
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF10

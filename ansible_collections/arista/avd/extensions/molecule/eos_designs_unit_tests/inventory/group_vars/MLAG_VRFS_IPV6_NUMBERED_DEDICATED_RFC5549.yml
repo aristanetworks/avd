@@ -1,0 +1,59 @@
+---
+# Testing 'avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families' with numbered IPv6 underlay,
+# 'overlay_mlag_rfc5549: true', a dedicated MLAG peer group for VRFs and dual-stack VRFs.
+# The dedicated peer group activates both the IPv4 address family with an IPv6 next hop and the IPv6 address family.
+# The underlay MLAG peer group only activates the IPv6 address family.
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+overlay_mlag_rfc5549: true
+
+avd_design_future:
+  fix_match_ipv6_prefix_list_on_mlag_route_map: true
+  fix_mlag_ibgp_peering_ipv6_pool: true
+  fix_mlag_ibgp_peering_vrfs_address_families: true
+
+bgp_peer_groups:
+  mlag_ipv4_vrfs_peer:
+    name: MLAG-IPv6-VRFS-PEER
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    router_id_pool: 10.10.74.0/24
+    loopback_ipv6_pool: 2001:DB8:74::/48
+    vtep_loopback_ipv6_pool: 2001:DB8:75::/48
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_peer_ipv4_pool: 10.10.76.0/24
+    mlag_peer_l3_ipv6_pool: 2001:DB8:77::/48
+    virtual_router_mac_address: 00:1c:73:00:00:99
+  node_groups:
+    - group: MLAG_VRFS_IPV6_NUMBERED_DEDICATED_RFC5549
+      bgp_as: 65180
+      nodes:
+        - name: mlag-vrfs-ipv6-numbered-dedicated-rfc5549-l3leaf1a
+          id: 1
+          mgmt_ip: 192.168.201.126/24
+        - name: mlag-vrfs-ipv6-numbered-dedicated-rfc5549-l3leaf1b
+          id: 2
+          mgmt_ip: 192.168.201.127/24
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      # Dual-stack VRF.
+      - name: VRF10
+        vrf_vni: 10
+        svis:
+          - id: 11
+            name: VRF10_VLAN11
+            ip_address_virtual: 10.10.11.1/24
+            ipv6_address_virtuals: [2001:DB8:11::1/64]
+      # IPv6-only VRF using a dedicated MLAG iBGP peering pool.
+      - name: VRF11
+        vrf_vni: 11
+        mlag_ibgp_peering_ipv6_pool: 2001:DB8:78::/64
+        svis:
+          - id: 21
+            name: VRF11_VLAN21
+            ipv6_address_virtuals: [2001:DB8:21::1/64]
