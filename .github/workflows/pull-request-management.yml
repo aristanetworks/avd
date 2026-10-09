@@ -494,6 +494,16 @@ jobs:
           - ansible_version: latest_stable
             pip_installation: "ansible-core<2.22.0"
             integration_args: ""
+          # Exercise the minimum supported Python and Ansible controller versions.
+          - ansible_version: first_stable
+            python_version: "3.10"
+            pip_installation: "ansible-core>=2.16.0,<2.17.0"
+            # Log warnings are not returned in result["warnings"] on ansible-core <2.19.
+            integration_args: "--exclude eos_designs_documentation"
+          - ansible_version: ansible_core_2_18
+            python_version: "3.11"
+            pip_installation: "ansible-core>=2.18.0,<2.19.0"
+            integration_args: "--exclude eos_designs_documentation"
           - ansible_version: ansible_core_2_18
             python_version: "3.12"
             pip_installation: "ansible-core>=2.18.0,<2.19.0"
