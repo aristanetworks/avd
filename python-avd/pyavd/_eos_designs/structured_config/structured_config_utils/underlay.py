@@ -23,10 +23,7 @@ class UnderlayMixin(Protocol):
         Also adds required route-maps and prefix-lists.
         """
         af_type = "ipv4" if not self.shared_utils.underlay_ipv6_numbered else "ipv6"
-        if af_type == "ipv4":
-            bgp_peer_group = self.shared_utils.underlay_bgp_ipv4_peer_group
-        else:
-            bgp_peer_group = self.shared_utils.underlay_bgp_ipv6_peer_group
+        bgp_peer_group = self.shared_utils.underlay_bgp_ipv4_peer_group if af_type == "ipv4" else self.shared_utils.underlay_bgp_ipv6_peer_group
 
         peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=bgp_peer_group.name,

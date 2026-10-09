@@ -47,24 +47,44 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 
 ## Optional BGP Peer-Group Naming
 
-When using `underlay_ipv6: true` and `underlay_ipv6_numbered: true`, you can use IPv6-friendly BGP peer-group names under `bgp_peer_groups`.
+You can customize BGP peer-group selections for both IPv4 and IPv6 underlays using the selectors `underlay_ipv4_peer_group` and `underlay_ipv6_peer_group`.
 
-Use the new keys below to override the legacy IPv4-named keys:
+### Underlay Peer Group Selectors
 
-- `bgp_peer_groups.underlay_peers` (takes precedence over `bgp_peer_groups.ipv4_underlay_peers`)
-- `bgp_peer_groups.mlag_underlay_peer` (takes precedence over `bgp_peer_groups.mlag_ipv4_underlay_peer`)
-- `bgp_peer_groups.mlag_vrfs_peer` (takes precedence over `bgp_peer_groups.mlag_ipv4_vrfs_peer`)
+Each selector accepts three options:
 
-The new keys do not have a default `name`, so setting `name` is the signal to use them.
+- `underlay_peers` - Generic peer group (works for both IPv4 and IPv6)
+- `ipv4_underlay_peers` - IPv4-specific peer group
+- `ipv6_underlay_peers` - IPv6-specific peer group
 
-```yaml title="IPv6-friendly peer-group names"
+### Configuration Examples
+
+For IPv6 numbered underlay with IPv6-specific peer group:
+
+```yaml title="IPv6 Underlay Peer Group"
+underlay_ipv4_peer_group: ipv4_underlay_peers
+underlay_ipv6_peer_group: ipv6_underlay_peers
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    name: IPV4-UNDERLAY-PEERS
+    password: "{{ vault_bgp_password }}"
+    bfd: true
+  ipv6_underlay_peers:
+    name: IPV6-UNDERLAY-PEERS
+    password: "{{ vault_bgp_password }}"
+    bfd: true
+```
+
+Or use a generic peer group for both IPv4 and IPv6:
+
+```yaml title="Generic Underlay Peer Group for Both IPv4 and IPv6"
+underlay_ipv4_peer_group: underlay_peers
+underlay_ipv6_peer_group: underlay_peers
 bgp_peer_groups:
   underlay_peers:
     name: UNDERLAY-PEERS
-  mlag_underlay_peer:
-    name: MLAG-UNDERLAY-PEER
-  mlag_vrfs_peer:
-    name: MLAG-VRFS-PEER
+    password: "{{ vault_bgp_password }}"
+    bfd: true
 ```
 
 ## IPv6 Pool Types
