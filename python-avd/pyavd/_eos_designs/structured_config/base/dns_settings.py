@@ -6,10 +6,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils.profiles import resolve_profile
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol
@@ -29,11 +27,7 @@ class DnsSettingsMixin(Protocol):
 
         Sets IP name servers (with VRF and priority), IP hosts, DNS domain, domain list, and domain-lookup source interfaces per VRF.
         """
-        dns_settings = resolve_profile(
-            self.inputs.dns_settings or EosDesigns.DnsSettings(),
-            self.inputs.dns_settings_profiles,
-            self.shared_utils.node_config.dns_settings_profile,
-        )
+        dns_settings = self.shared_utils.dns_settings
         if not dns_settings:
             return
 

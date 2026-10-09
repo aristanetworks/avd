@@ -69,14 +69,8 @@ class _ProfileGraphNode(Generic[T_AvdModel, T_ProfileModel]):
         self.children: list[_ProfileGraphNode[T_AvdModel, T_ProfileModel]] = []
         self.target_cls = target_cls
 
-    def copy_data(self) -> T_AvdModel:
-        """
-        Return a deep copy of the node data.
-
-        Access data through this property to avoid overwriting an original data. Also, this
-        makes data copy a lazy operation, i.e. it's only executed if that's really needed to
-        resolve profile
-        """
+    def _copy_data(self) -> T_AvdModel:
+        """Return a deep copy of the node data, cast to the target model type if needed."""
         data = self.profile._deepcopy()
         if not isinstance(data, self.target_cls):
             data = data._cast_as(self.target_cls, ignore_extra_keys=True)
@@ -85,12 +79,11 @@ class _ProfileGraphNode(Generic[T_AvdModel, T_ProfileModel]):
     @functools.cached_property
     def _deepinherit(self) -> T_AvdModel:
         """
-        Get the target model with all profile chain applied to it.
+        Get the target model with the full profile chain applied.
 
-        Child profile attributes take precedence over parent profile. Target model's attributes take precedence
-        over profile's attributes.
+        Profile attributes override the target model (root). Child profile attributes override parent profile attributes.
         """
-        data = self.copy_data()
+        data = self._copy_data()
         if self.parent is not None:
             data._deepinherit(self.parent._deepinherit)
         return data
@@ -117,12 +110,11 @@ class _ProfileGraph(Generic[T_AvdModel, T_ProfileModel]):
 
     def __init__(self, target_object: T_AvdModel, profile_catalog: AvdIndexedList[str, T_ProfileModel]) -> None:
         """
-        Initialize an empty profile graph.
+        Initialize a profile graph.
 
         Args:
-            target_object_cls: Target model class used when casting profile models during resolution.
-            profile_catalog: Profile catalog keyed by profile ID.
             target_object: Base target model used as the synthetic root profile.
+            profile_catalog: Profile catalog keyed by profile ID.
         """
         self._target_object_cls = type(target_object)
 
@@ -149,8 +141,8 @@ class _ProfileGraph(Generic[T_AvdModel, T_ProfileModel]):
         if visited is None:
             visited = OrderedDict()
 
-        # O(1) check for cycles
         if profile_id in visited:
+            # profile_id appears again in the current chain — cycle detected
             cycle_path = list(visited)
             cycle_path = list(reversed(cycle_path[cycle_path.index(profile_id) :]))
             cycle_path.append(cycle_path[0])
@@ -166,8 +158,8 @@ class _ProfileGraph(Generic[T_AvdModel, T_ProfileModel]):
 
         if profile_id not in self._profiles_mapping:
             chain_keys = list(visited.keys())
+            # profile_id was added to visited above, so len > 1 means it was reached via a parent chain
             if len(chain_keys) > 1:
-                # profile_id is already in visited; len > 1 means there's a parent chain
                 chain_str = " -> ".join(chain_keys)
                 msg = f"Unresolved profile `{profile_id}` while trying to resolve profiles for {self._target_object_cls.__qualname__}: {chain_str}"
             else:
@@ -190,12 +182,12 @@ class _ProfileGraph(Generic[T_AvdModel, T_ProfileModel]):
 
     def _get_profile(self, profile_id: str) -> _UnifiedGraphNode:
         """
-        Get the lazy object associated with the target object and the profile applied to it.
+        Return the graph node for the given profile, building the chain lazily.
 
         Args:
-            profile_id: ID of the profile to apply on the target model.
+            profile_id: ID of the profile to resolve.
 
         Returns:
-            Lazy object representation with the profile applied based on profile key
+            Graph node with parent links wired which could be used to get the merged model.
         """
         return self.__get_profile_node(profile_id)
