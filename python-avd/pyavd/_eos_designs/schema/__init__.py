@@ -50055,14 +50055,16 @@ class EosDesigns(EosDesignsRootModel):
             Key type for the computed localized SNMPv3 auth and priv keys.
             Used only when
             `compute_v3_user_localized_key` is `true`.
-            When set to `0` or `7`, AVD renders the computed
-            localized keys using EOS `key <type> <key>` syntax for both auth and priv.
-            - `disabled`: Use legacy
-            syntax without key type (auth_passphrase rendered directly). Default for backward compatibility.
-            -
-            `0`: Key string is plaintext. AVD renders the raw computed localized key.
-            - `7`: Type-7 encrypted
-            (HIDDEN) key. AVD applies Type-7 obfuscation to the computed localized key before rendering.
+            Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+            4.36.2F.
+            When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type>
+            <key>` syntax for both auth and priv.
+            - `disabled`: Use legacy syntax without key type
+            (auth_passphrase rendered directly). Default for backward compatibility.
+            - `0`: Key string is
+            plaintext. AVD renders the raw computed localized key.
+            - `7`: Type-7 encrypted (HIDDEN) key. AVD
+            applies Type-7 obfuscation to the computed localized key before rendering.
 
             Default value: `"disabled"`
             """
@@ -50100,14 +50102,16 @@ class EosDesigns(EosDesignsRootModel):
                            Key type for the computed localized SNMPv3 auth and priv keys.
                            Used only when
                            `compute_v3_user_localized_key` is `true`.
-                           When set to `0` or `7`, AVD renders the computed
-                           localized keys using EOS `key <type> <key>` syntax for both auth and priv.
-                           - `disabled`: Use legacy
-                           syntax without key type (auth_passphrase rendered directly). Default for backward compatibility.
-                           -
-                           `0`: Key string is plaintext. AVD renders the raw computed localized key.
-                           - `7`: Type-7 encrypted
-                           (HIDDEN) key. AVD applies Type-7 obfuscation to the computed localized key before rendering.
+                           Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+                           4.36.2F.
+                           When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type>
+                           <key>` syntax for both auth and priv.
+                           - `disabled`: Use legacy syntax without key type
+                           (auth_passphrase rendered directly). Default for backward compatibility.
+                           - `0`: Key string is
+                           plaintext. AVD renders the raw computed localized key.
+                           - `7`: Type-7 encrypted (HIDDEN) key. AVD
+                           applies Type-7 obfuscation to the computed localized key before rendering.
                         priv: priv
                         priv_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
 
