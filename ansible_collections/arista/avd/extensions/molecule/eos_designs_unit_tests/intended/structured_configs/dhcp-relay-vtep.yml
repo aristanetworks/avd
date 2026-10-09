@@ -3,6 +3,7 @@ aaa_root:
 config_end: true
 dhcp_relay:
   tunnel_requests_disabled: true
+  reply_source_address_validation: true
 enable_password:
   disabled: true
 hostname: dhcp-relay-vtep
