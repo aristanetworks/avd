@@ -551,6 +551,15 @@ keys:
           ipv6_enforcement_disabled:
             type: bool
             description: Configure enforcement for locked IPv6 addresses.
+      logging_event:
+        type: dict
+        keys:
+          denied_address_drop:
+            type: bool
+            description: Log events for denied address drops.
+          dhcp_server_drop:
+            type: bool
+            description: Log events for DHCP server to client packet drops.
   agents:
     type: list
     primary_key: name

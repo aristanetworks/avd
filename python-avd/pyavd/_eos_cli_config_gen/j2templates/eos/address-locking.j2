@@ -31,4 +31,10 @@ address locking
 {%     if address_locking.locked_address.ipv6_enforcement_disabled is arista.avd.defined(true) %}
    locked-address ipv6 enforcement disabled
 {%     endif %}
+{%     if address_locking.logging_event.denied_address_drop is arista.avd.defined(true) %}
+   logging event denied-address drop
+{%     endif %}
+{%     if address_locking.logging_event.dhcp_server_drop is arista.avd.defined(true) %}
+   logging event dhcp server drop
+{%     endif %}
 {% endif %}

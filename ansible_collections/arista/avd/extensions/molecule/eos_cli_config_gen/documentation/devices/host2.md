@@ -25,6 +25,9 @@
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
+- [Address Locking](#address-locking)
+  - [Address Locking Summary](#address-locking-summary)
+  - [Address Locking Device Configuration](#address-locking-device-configuration)
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
@@ -515,6 +518,23 @@ aaa accounting system default none
 aaa accounting dot1x default start-stop logging
 aaa accounting commands all default none
 aaa accounting commands 0 default none
+```
+
+## Address Locking
+
+### Address Locking Summary
+
+| Setting | Value |
+| -------- | ----- |
+| Disable IP locking on configured ports | False |
+| Local Interface | Loopback0 |
+
+### Address Locking Device Configuration
+
+```eos
+!
+address locking
+   local-interface Loopback0
 ```
 
 ## Management Security

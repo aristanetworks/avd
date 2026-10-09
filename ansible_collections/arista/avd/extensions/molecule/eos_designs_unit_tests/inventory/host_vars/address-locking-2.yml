@@ -27,6 +27,11 @@ address_locking_settings:
   # Testing use_mgmt_interface
   local_interface: use_mgmt_interface
 
+  # Testing logging event settings
+  logging_event:
+    denied_address_drop: true
+    dhcp_server_drop: true
+
 tenants:
   - name: TENANT1
     mac_vrf_vni_base: 10000

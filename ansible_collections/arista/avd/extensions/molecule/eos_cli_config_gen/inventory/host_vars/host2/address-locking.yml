@@ -1,0 +1,7 @@
+---
+### Address Locking ###
+address_locking:
+  local_interface: Loopback0
+  logging_event:
+    denied_address_drop: false
+    dhcp_server_drop: false
