@@ -76653,6 +76653,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "ipv4": {"type": Ipv4},
                 "ipv6": {"type": Ipv6},
                 "passive_interface": {"type": bool},
+                "no_passive_interface": {"type": bool},
                 "network_point_to_point": {"type": bool},
             }
             ipv4: Ipv4
@@ -76660,7 +76661,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv6: Ipv6
             """Subclass of AvdModel."""
             passive_interface: bool | None
-            """Include interface but without actively running OSPF."""
+            """Include interface but without actively running OSPF. Mutually exclusive with `no_passive_interface`."""
+            no_passive_interface: bool | None
+            """Disable passive interface mode. Mutually exclusive with `passive_interface`."""
             network_point_to_point: bool | None
 
             if TYPE_CHECKING:
@@ -76671,6 +76674,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv4: Ipv4 | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
                     passive_interface: bool | UndefinedType | None = Undefined,
+                    no_passive_interface: bool | UndefinedType | None = Undefined,
                     network_point_to_point: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -76682,7 +76686,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
-                        passive_interface: Include interface but without actively running OSPF.
+                        passive_interface: Include interface but without actively running OSPF. Mutually exclusive with `no_passive_interface`.
+                        no_passive_interface: Disable passive interface mode. Mutually exclusive with `passive_interface`.
                         network_point_to_point: network_point_to_point
 
                     """
