@@ -63,12 +63,16 @@ class UnderlayMixin(Protocol):
         return self.inputs.underlay_ipv6 and self.underlay_router
 
     @cached_property
-    def underlay_bgp_peer_group(
+    def underlay_bgp_ipv4_peer_group(
         self: SharedUtilsProtocol,
     ) -> EosDesigns.BgpPeerGroups.UnderlayPeers | EosDesigns.BgpPeerGroups.Ipv4UnderlayPeers | EosDesigns.BgpPeerGroups.Ipv6UnderlayPeers:
-        if self.underlay_ipv6_numbered:
-            return getattr(self.inputs.bgp_peer_groups, self.inputs.underlay_ipv6_peer_group)
         return getattr(self.inputs.bgp_peer_groups, self.inputs.underlay_ipv4_peer_group)
+
+    @cached_property
+    def underlay_bgp_ipv6_peer_group(
+        self: SharedUtilsProtocol,
+    ) -> EosDesigns.BgpPeerGroups.UnderlayPeers | EosDesigns.BgpPeerGroups.Ipv4UnderlayPeers | EosDesigns.BgpPeerGroups.Ipv6UnderlayPeers:
+        return getattr(self.inputs.bgp_peer_groups, self.inputs.underlay_ipv6_peer_group)
 
     @cached_property
     def underlay_multicast_pim_sm_enabled(self: SharedUtilsProtocol) -> bool:

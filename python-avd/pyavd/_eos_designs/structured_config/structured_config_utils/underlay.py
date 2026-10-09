@@ -16,14 +16,17 @@ if TYPE_CHECKING:
 
 class UnderlayMixin(Protocol):
     @run_once_method
-    def set_once_peer_group_ipv4_underlay_peers(self: StructuredConfigUtilsProtocol) -> None:
+    def set_once_peer_group_underlay_peers(self: StructuredConfigUtilsProtocol) -> None:
         """
-        Add IPv4 underlay peer group to structured_config.
+        Add underlay peer group to structured_config.
 
         Also adds required route-maps and prefix-lists.
         """
         af_type = "ipv4" if not self.shared_utils.underlay_ipv6_numbered else "ipv6"
-        bgp_peer_group = self.shared_utils.underlay_bgp_peer_group
+        if af_type == "ipv4":
+            bgp_peer_group = self.shared_utils.underlay_bgp_ipv4_peer_group
+        else:
+            bgp_peer_group = self.shared_utils.underlay_bgp_ipv6_peer_group
 
         peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=bgp_peer_group.name,

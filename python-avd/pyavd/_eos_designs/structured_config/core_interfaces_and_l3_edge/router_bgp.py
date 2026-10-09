@@ -27,7 +27,12 @@ class RouterBgpMixin(Protocol):
         """Set the structured config for router_bgp."""
         if not self.shared_utils.underlay_bgp:
             return
-        underlay_bgp_peer_group_name = self.shared_utils.underlay_bgp_peer_group.name
+
+        if self.shared_utils.underlay_ipv6_numbered:
+            underlay_bgp_peer_group_name = self.shared_utils.underlay_bgp_ipv6_peer_group.name
+        else:
+            underlay_bgp_peer_group_name = self.shared_utils.underlay_bgp_ipv4_peer_group.name
+
         for p2p_link, p2p_link_data in self._filtered_p2p_links:
             if not p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol != "ebgp":
                 continue
@@ -37,7 +42,7 @@ class RouterBgpMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             if p2p_link.include_in_underlay_protocol:
-                self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers()
+                self.structured_config_utils.set_once_peer_group_underlay_peers()
 
             # RFC5549
             # When routing protocol is not set, we just add the neighbor_interface and continue.
