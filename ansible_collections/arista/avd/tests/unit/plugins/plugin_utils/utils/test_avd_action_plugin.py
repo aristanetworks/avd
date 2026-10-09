@@ -1,11 +1,16 @@
 # Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
+
 import logging
 import warnings
-from collections.abc import Callable, Generator
+from concurrent.futures import ProcessPoolExecutor
 from contextlib import ExitStack
-from typing import Any
+from logging.handlers import QueueHandler
+from multiprocessing import get_context
+from threading import Thread
+from typing import TYPE_CHECKING, Any
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -13,8 +18,46 @@ from ansible.errors import AnsibleActionFail
 from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import AnsibleDisplayHandler
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import AnsibleDisplayHandler, LoggingOutcome, log_context
 from pyavd._errors import AvdDeprecationWarning
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Generator
+
+
+def _emit_logs_from_worker(logger_name: str, worker_log_context: str | None = None, python_warning: bool = False) -> None:
+    """Emit records from a forked worker for queue logging tests."""
+    with log_context(worker_log_context):
+        logger = logging.getLogger(logger_name)
+        logger.warning("A warning from a worker.")
+        logger.error("An error from a worker.")
+        if python_warning:
+            warnings.warn("A Python warning from a pool worker.", UserWarning, stacklevel=1)
+
+
+def _emit_log_and_raise_from_worker(logger_name: str) -> None:
+    """Emit a record and raise from a forked worker for queue cleanup tests."""
+    logging.getLogger(logger_name).warning("A warning before a worker exception.")
+    msg = "Worker failed"
+    raise RuntimeError(msg)
+
+
+def _emit_log_from_thread_in_worker(logger_name: str, worker_log_context: str) -> None:
+    """Emit a record from a new thread in a forked worker."""
+    with log_context(worker_log_context):
+        thread = Thread(target=logging.getLogger(logger_name).warning, args=("A warning from a worker thread.",))
+        thread.start()
+        thread.join()
+
+
+def _emit_warning_from_worker(warning: Warning, in_thread: bool) -> None:
+    """Emit an inherited warning object without pickling its custom constructor."""
+    if in_thread:
+        thread = Thread(target=warnings.warn, args=(warning,))
+        thread.start()
+        thread.join()
+    else:
+        warnings.warn(warning, stacklevel=1)
 
 
 class TestAVDActionPlugin:
@@ -322,6 +365,222 @@ class TestAVDActionPlugin:
         # Assert the display handler was NOT called
         mock_display.warning.assert_not_called()
 
+    @pytest.mark.usefixtures("mock_display")
+    @pytest.mark.parametrize("unknown_item", [False, True])
+    def test_multiprocessing_logs_are_saved_without_failing_action(self, action_module: Callable[..., AVDActionPlugin], unknown_item: bool) -> None:
+        """Log records and unknown-item diagnostics are drained without directly controlling task failure."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(
+                target_loggers=("", "ansible_collections.arista.avd"),
+                track_log_errors=True,
+                use_multiprocessing_queue=True,
+            )
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_logs_from_worker, "custom_anta_test.ExampleTest", python_warning=True).result()
+                if unknown_item:
+                    assert isinstance(self.logger.handlers[0], QueueHandler)
+                    self.logger.handlers[0].queue.put_nowait({"unexpected": "payload"})
+
+            def _handle_logging_outcome(self, logging_outcome: LoggingOutcome) -> None:
+                self.result["has_log_errors"] = logging_outcome.has_errors
+
+        plugin = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
+        result = plugin.run()
+
+        expected_warnings = ["A warning from a worker."]
+        if unknown_item:
+            expected_warnings.append("Ignoring unexpected item of type 'dict' in the AVD multiprocessing queue.")
+        assert result["logs"] == {
+            "warnings": expected_warnings,
+            "errors": ["An error from a worker."],
+        }
+        assert result["has_log_errors"] is True
+        assert "failed" not in result
+        assert result["warnings"] == ["A Python warning from a pool worker."]
+
+    def test_multiprocessing_logs_are_displayed_once(self, action_module: Callable[..., AVDActionPlugin], mock_display: MagicMock) -> None:
+        """A forked worker record is displayed exactly once by the parent listener."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_logs_from_worker, self._primary_logger_name).result()
+
+        plugin = action_module(ActionModule)
+        plugin.run()
+
+        mock_display.warning.assert_called_once_with("A warning from a worker.")
+        mock_display.error.assert_called_once_with("An error from a worker.", wrap_text=False)
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_multiprocessing_logs_are_drained_when_worker_raises(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Queued records are drained before a worker exception is recast as AnsibleActionFail."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_log_and_raise_from_worker, self._primary_logger_name).result()
+
+        plugin = action_module(ActionModule, task_args={"save_logs": True, "live_display": False}, ansible_name="pytest_action_plugin")
+
+        with pytest.raises(AnsibleActionFail, match="Error during plugin 'pytest_action_plugin' execution: Worker failed"):
+            plugin.run()
+
+        assert plugin.result["logs"]["warnings"] == ["A warning before a worker exception."]
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_multiprocessing_context_is_applied_in_parent_listener(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Role and hostname context is formatted by the parent-side sink handler."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(
+                add_hostname_context=True,
+                add_role_context=True,
+                log_context="anta-workflow",
+                use_multiprocessing_queue=True,
+            )
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_logs_from_worker, self._primary_logger_name, "anta-run-12345678").result()
+
+        plugin = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
+        result = plugin.run(task_vars={"inventory_hostname": "leaf1", "ansible_role_name": "anta_runner"})
+
+        assert result["logs"]["warnings"] == ["[anta_runner] - <leaf1> [anta-run-12345678] A warning from a worker."]
+        assert result["logs"]["errors"] == ["[anta_runner] - <leaf1> [anta-run-12345678] An error from a worker."]
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_multiprocessing_context_is_available_to_worker_threads(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """A raw worker thread uses the process context when no task-local context is available."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(log_context="anta-workflow", use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_log_from_thread_in_worker, self._primary_logger_name, "anta-run-12345678").result()
+
+        plugin = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
+        result = plugin.run()
+
+        assert result["logs"]["warnings"] == ["[anta-run-12345678] A warning from a worker thread."]
+
+    def test_multiprocessing_queue_tracks_errors_without_output_sinks(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Queue mode still transports Python warnings without log sinks or error tracking."""
+
+        class UntrackedActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                self.logger.error("Dropped because no sinks are enabled.")
+                assert not self.logger.handlers
+                worker = get_context("fork").Process(target=_emit_warning_from_worker, args=(UserWarning("A worker warning without log sinks."), False))
+                worker.start()
+                worker.join(timeout=10)
+                assert worker.exitcode == 0
+
+        untracked_plugin = action_module(UntrackedActionModule, task_args={"save_logs": False, "live_display": False})
+        untracked_result = untracked_plugin.run()
+
+        assert "failed" not in untracked_result
+        assert "logs" not in untracked_result
+        assert untracked_result["warnings"] == ["A worker warning without log sinks."]
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(track_log_errors=True, use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                self.logger.error("Dropped because no sinks are enabled.")
+
+            def _handle_logging_outcome(self, logging_outcome: LoggingOutcome) -> None:
+                self.result["has_log_errors"] = logging_outcome.has_errors
+
+        plugin = action_module(ActionModule, task_args={"save_logs": False, "live_display": False})
+        result = plugin.run()
+
+        assert result["has_log_errors"] is True
+        assert "failed" not in result
+        assert "logs" not in result
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_multiprocessing_descendant_records_are_not_duplicated(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Overlapping configured logger roots still handle descendant records once."""
+        child_logger_name = "ansible_collections.arista.avd.worker"
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(
+                target_loggers=("ansible_collections.arista.avd", child_logger_name),
+                use_multiprocessing_queue=True,
+            )
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                with ProcessPoolExecutor(max_workers=1, mp_context=get_context("fork")) as executor:
+                    executor.submit(_emit_logs_from_worker, f"{child_logger_name}.descendant").result()
+
+        plugin = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
+        result = plugin.run()
+
+        assert result["logs"]["warnings"] == ["A warning from a worker."]
+        assert result["logs"]["errors"] == ["An error from a worker."]
+
+    @pytest.mark.usefixtures("mock_display")
+    @pytest.mark.parametrize("raises", [False, True])
+    def test_multiprocessing_context_restores_dirty_logger_state(self, action_module: Callable[..., AVDActionPlugin], raises: bool) -> None:
+        """Queue mode restores logging and warning state, including after an exception."""
+
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(use_multiprocessing_queue=True)
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                assert len(self.logger.handlers) == 1
+                assert isinstance(self.logger.handlers[0], QueueHandler)
+                assert warnings.showwarning is not original_showwarning
+                if raises:
+                    msg = "Intentional failure"
+                    raise RuntimeError(msg)
+
+        logger = logging.getLogger("ansible_collections.arista.avd")
+        sticky_handler = logging.StreamHandler()
+        original_handlers = logger.handlers[:]
+        original_level = logger.level
+        original_propagate = logger.propagate
+        original_showwarning = warnings.showwarning
+
+        try:
+            logger.addHandler(sticky_handler)
+            expected_handlers = [*original_handlers, sticky_handler]
+            plugin = action_module(ActionModule)
+            if raises:
+                with pytest.raises(AnsibleActionFail, match="Intentional failure"):
+                    plugin.run()
+            else:
+                plugin.run()
+
+            assert logger.handlers == expected_handlers
+            assert logger.level == original_level
+            assert logger.propagate == original_propagate
+            assert warnings.showwarning is original_showwarning
+        finally:
+            logger.removeHandler(sticky_handler)
+            sticky_handler.close()
+
     @pytest.mark.parametrize(
         ("warning", "expected_result"),
         [
@@ -363,24 +622,69 @@ class TestAVDActionPlugin:
                 },
                 id="deprecation_warning_with_date",
             ),
+            pytest.param(
+                AvdDeprecationWarning(["old_key"], remove_in_version="7.0.0", remove_after_date="2027-01-01"),
+                {
+                    "warnings": [],
+                    "deprecations": [{"msg": "The input data model 'old_key' is deprecated.", "date": "2027-01-01", "collection_name": "arista.avd"}],
+                },
+                id="deprecation_warning_date_over_version",
+            ),
         ],
     )
+    @pytest.mark.parametrize("warning_source", ["parent", "parent_queued", "worker", "worker_thread", "worker_no_sinks", "mixed"])
     def test_warning_capture(
-        self, action_module: Callable[..., AVDActionPlugin], warning: Warning, expected_result: dict[str, list[str | dict[str, str]]]
+        self,
+        action_module: Callable[..., AVDActionPlugin],
+        mock_display: MagicMock,
+        warning: Warning,
+        expected_result: dict[str, list[str | dict[str, str]]],
+        warning_source: str,
     ) -> None:
-        """Test that Python warnings are captured and added to the correct list in the result."""
+        """Parent and worker Python warnings retain their category and deprecation metadata, without becoming logs."""
 
         class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(use_multiprocessing_queue=warning_source != "parent", track_log_errors=True)
+
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
-                warnings.warn(warning, stacklevel=1)
+                if warning_source in {"parent", "parent_queued", "mixed"}:
+                    warnings.warn(warning, stacklevel=1)
+                if warning_source in {"worker", "worker_thread", "worker_no_sinks", "mixed"}:
+                    # Fork inherits the custom warning object; only WarningEvent goes through the queue.
+                    worker = get_context("fork").Process(target=_emit_warning_from_worker, args=(warning, warning_source == "worker_thread"))
+                    with warnings.catch_warnings():
+                        warnings.filterwarnings(
+                            "ignore",
+                            message=r"This process \(pid=\d+\) is multi-threaded, use of fork\(\) may lead to deadlocks in the child\.",
+                            category=DeprecationWarning,
+                        )
+                        worker.start()
+                    worker.join(timeout=10)
+                    assert worker.exitcode == 0
 
-        plugin = action_module(ActionModule)
+            def _handle_logging_outcome(self, logging_outcome: LoggingOutcome) -> None:
+                self.result["has_log_errors"] = logging_outcome.has_errors
 
+        # Disable even the error-tracking sink to verify warning-only queue transport.
+        if warning_source == "worker_no_sinks":
+            ActionModule._logging_config = AVDLoggingConfig(use_multiprocessing_queue=True)
+        plugin = action_module(
+            ActionModule,
+            task_args={"live_display": warning_source != "worker_no_sinks", "save_logs": warning_source != "worker_no_sinks"},
+        )
+
+        original_showwarning = warnings.showwarning
         result = plugin.run()
 
-        assert result["warnings"] == expected_result["warnings"]
-        assert result["deprecations"] == expected_result["deprecations"]
+        count = 2 if warning_source == "mixed" else 1
+        assert result["warnings"] == expected_result["warnings"] * count
+        assert result["deprecations"] == expected_result["deprecations"] * count
+        assert warnings.showwarning is original_showwarning
+        assert result.get("has_log_errors", False) is False
+        assert result.get("logs", {"warnings": [], "errors": []}) == {"warnings": [], "errors": []}
+        mock_display.warning.assert_not_called()
+        mock_display.error.assert_not_called()
 
     def test_handles_dirty_logger_state(self, action_module: Callable[..., AVDActionPlugin]) -> None:
         """Test that the plugin can handle a logger with pre-existing handlers and restore them correctly upon exit."""
