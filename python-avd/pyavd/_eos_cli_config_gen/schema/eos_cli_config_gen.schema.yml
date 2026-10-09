@@ -11378,6 +11378,20 @@ keys:
 
               ACT does not provide direct Internet access to `cloudeos` or `veos`
               devices by default.'
+          serial_number:
+            type: str
+            description: Resolved serial number for the Digital Twin device.
+          system_mac_address:
+            type: str
+            description: Resolved system MAC address for the Digital Twin device.
+          ztp:
+            type: bool
+            description: 'Enable ZTP (Zero Touch Provisioning) mode for the Digital
+              Twin device when supported by the Digital Twin environment.
+
+              Supported Digital Twin environments:
+
+              - `act`: Applies only to `veos` and `cloudeos` node types.'
       validate_no_errors_period:
         type: int
         convert_types:

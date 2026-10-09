@@ -237,18 +237,14 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                     node_type=digital_twin_node_type,
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
-                    # Set internet_access to None unless it is a cloudeos or veos node and its metadata.digital_twin.internet_access is True
-                    internet_access=internet_access
-                    if (
-                        (
-                            internet_access := get(
-                                fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator=".."
-                            )
-                        )
-                        and digital_twin_node_type in ["cloudeos", "veos"]
-                    )
-                    else None,
+                    serial_number=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..serial_number", separator=".."),
+                    system_mac_address=get(
+                        fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..system_mac_address", separator=".."
+                    ),
+                    ztp=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ztp", separator=".."),
+                    internet_access=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator=".."),
                     # Render Ethernet ports for veos node type devices (excluding subinterfaces).
+                    # ports are not derived from gated metadata therefore node type check is enforced here
                     ports=tuple(
                         sorted(
                             (

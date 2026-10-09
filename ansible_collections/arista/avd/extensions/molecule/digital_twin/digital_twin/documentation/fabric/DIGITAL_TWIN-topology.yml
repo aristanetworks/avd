@@ -75,6 +75,28 @@ nodes:
     node_type: third-party
     ip_addr: 192.169.3.3/32
     version: byod
+- digital-twin-hardware-identity-disabled-tests-veos:
+    node_type: veos
+    ip_addr: 192.168.10.10/32
+    version: 4.33.1.1F
+- digital-twin-hardware-identity-tests-cloudeos:
+    node_type: cloudeos
+    ip_addr: 192.168.10.12/32
+    version: 4.33.2F
+    serial_number: DT-CLOUDEOS-SERIAL
+    system_mac_address: 02:1c:73:00:10:12
+    ztp: true
+- digital-twin-hardware-identity-tests-third-party:
+    node_type: third-party
+    ip_addr: 192.168.10.13/32
+    version: byod
+- digital-twin-hardware-identity-tests-veos:
+    node_type: veos
+    ip_addr: 192.168.10.11/32
+    version: 4.33.1.1F
+    serial_number: PROD-VEOS-SERIAL
+    system_mac_address: 02:1c:73:00:00:11
+    ztp: true
 - digital-twin-veos-no-mgmt:
     node_type: veos
     version: 4.33.1.1F

@@ -55,6 +55,37 @@ keys:
               Clients connecting to device eAPI through ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated management VRF, this primary eAPI connectivity can be unintentionally broken.
               Set this to `true` to enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the default VRF and preserving this connectivity.
             default: false
+          hardware_identity:
+            type: dict
+            description: |-
+              Settings controlling use of hardware identity values for Digital Twin devices.
+            keys:
+              serial_number:
+                type: bool
+                default: false
+                description: |-
+                  When set to `true`, provides the resolved device serial number as an input value to the Digital Twin environment.
+                  A per-node `digital_twin.serial_number` value overrides the regular device `serial_number` for the Digital Twin device.
+                  Can be overridden by `digital_twin.hardware_identity.serial_number` at node level.
+                  Supported Digital Twin environments:
+                  - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+              system_mac_address:
+                type: bool
+                default: false
+                description: |-
+                  When set to `true`, provides the resolved device system MAC address as an input value to the Digital Twin environment.
+                  A per-node `digital_twin.system_mac_address` value overrides the regular device `system_mac_address` for the Digital Twin device.
+                  Can be overridden by `digital_twin.hardware_identity.system_mac_address` at node level.
+                  Supported Digital Twin environments:
+                  - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+          ztp:
+            type: bool
+            default: false
+            description: |-
+              Enable ZTP (Zero Touch Provisioning) mode for all Digital Twin devices.
+              Can be overridden by `digital_twin.ztp` at node level.
+              Supported Digital Twin environments:
+              - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
       use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false

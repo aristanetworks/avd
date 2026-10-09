@@ -2524,6 +2524,55 @@ keys:
               eAPI over HTTPS is always enabled in the default VRF and preserving
               this connectivity.'
             default: false
+          hardware_identity:
+            type: dict
+            description: Settings controlling use of hardware identity values for
+              Digital Twin devices.
+            keys:
+              serial_number:
+                type: bool
+                default: false
+                description: 'When set to `true`, provides the resolved device serial
+                  number as an input value to the Digital Twin environment.
+
+                  A per-node `digital_twin.serial_number` value overrides the regular
+                  device `serial_number` for the Digital Twin device.
+
+                  Can be overridden by `digital_twin.hardware_identity.serial_number`
+                  at node level.
+
+                  Supported Digital Twin environments:
+
+                  - `act`: Applies only to `veos` and `cloudeos` node types. Ignored
+                  for all other node types.'
+              system_mac_address:
+                type: bool
+                default: false
+                description: 'When set to `true`, provides the resolved device system
+                  MAC address as an input value to the Digital Twin environment.
+
+                  A per-node `digital_twin.system_mac_address` value overrides the
+                  regular device `system_mac_address` for the Digital Twin device.
+
+                  Can be overridden by `digital_twin.hardware_identity.system_mac_address`
+                  at node level.
+
+                  Supported Digital Twin environments:
+
+                  - `act`: Applies only to `veos` and `cloudeos` node types. Ignored
+                  for all other node types.'
+          ztp:
+            type: bool
+            default: false
+            description: 'Enable ZTP (Zero Touch Provisioning) mode for all Digital
+              Twin devices.
+
+              Can be overridden by `digital_twin.ztp` at node level.
+
+              Supported Digital Twin environments:
+
+              - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for
+              all other node types.'
       use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false
@@ -15572,6 +15621,62 @@ $defs:
                   devices by default.
 
                   Overrides global `digital_twin.fabric.act_internet_access` flag.'
+              hardware_identity:
+                type: dict
+                description: 'Settings controlling use of hardware identity values
+                  for the Digital Twin device.
+
+                  Each setting overrides the corresponding global `digital_twin.fabric.hardware_identity`
+                  setting when defined.'
+                keys:
+                  serial_number:
+                    type: bool
+                    description: 'When set to `true`, provides the resolved device
+                      serial number as an input value to the Digital Twin environment.
+
+                      A per-node `digital_twin.serial_number` value overrides the
+                      regular device `serial_number` for the Digital Twin device.
+
+                      Supported Digital Twin environments:
+
+                      - `act`: Applies only to `veos` and `cloudeos` node types. Ignored
+                      for all other node types.'
+                  system_mac_address:
+                    type: bool
+                    description: 'When set to `true`, provides the resolved device
+                      system MAC address as an input value to the Digital Twin environment.
+
+                      A per-node `digital_twin.system_mac_address` value overrides
+                      the regular device `system_mac_address` for the Digital Twin
+                      device.
+
+                      Supported Digital Twin environments:
+
+                      - `act`: Applies only to `veos` and `cloudeos` node types. Ignored
+                      for all other node types.'
+              serial_number:
+                type: str
+                description: 'Serial number override for this Digital Twin device.
+
+                  Used when `digital_twin.hardware_identity.serial_number` is set
+                  to `true`.'
+              system_mac_address:
+                type: str
+                description: 'System MAC address override for this Digital Twin device.
+
+                  Used when `digital_twin.hardware_identity.system_mac_address` is
+                  set to `true`.'
+              ztp:
+                type: bool
+                description: 'Enable ZTP (Zero Touch Provisioning) mode for this Digital
+                  Twin device.
+
+                  Supported Digital Twin environments:
+
+                  - `act`: Applies only to `veos` and `cloudeos` node types. Ignored
+                  for all other node types.
+
+                  Overrides global `digital_twin.fabric.ztp` when defined.'
           uplink_structured_config:
             documentation_options:
               table: node-type-uplink-configuration
