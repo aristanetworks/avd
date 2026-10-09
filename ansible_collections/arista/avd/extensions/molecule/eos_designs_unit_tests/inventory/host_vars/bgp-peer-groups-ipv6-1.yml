@@ -4,7 +4,7 @@ underlay_ipv6_numbered: true
 underlay_ipv6: true
 
 bgp_peer_groups:
-  underlay_peers:
+  ipv4_underlay_peers:
     name: IPV6-UNDERLAY-PEERS
     # Testing BFD
     bfd: true

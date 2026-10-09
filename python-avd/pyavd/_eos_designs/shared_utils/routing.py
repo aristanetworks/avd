@@ -17,16 +17,15 @@ if TYPE_CHECKING:
     BgpPeerGroupOrNeighbor = (
         EosDesigns.BgpPeerGroups.UnderlayPeers
         | EosDesigns.BgpPeerGroups.Ipv4UnderlayPeers
-        | EosDesigns.BgpPeerGroups.MlagUnderlayPeer
+        | EosDesigns.BgpPeerGroups.Ipv6UnderlayPeers
         | EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer
+        | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer
         | EosDesigns.BgpPeerGroups.WanOverlayPeers
         | EosDesigns.BgpPeerGroups.WanRrOverlayPeers
         | EosDesigns.BgpPeerGroups.MplsOverlayPeers
         | EosDesigns.BgpPeerGroups.EvpnOverlayCore
         | EosDesigns.BgpPeerGroups.EvpnOverlayPeers
         | EosDesigns.BgpPeerGroups.RrOverlayPeers
-        | EosDesigns.BgpPeerGroups.MlagVrfsPeer
-        | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer
         | EosDesigns.BgpPeerGroups.IpvpnGatewayPeers
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.BgpPeerGroupsItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeerGroupsItem

@@ -6,6 +6,29 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
+  underlay_ipv4_peer_group:
+    type: str
+    documentation_options:
+      table: bgp-settings
+    description: |-
+      Select the BGP peer group to use for underlay IPv4 peerings.
+    valid_values:
+      - ipv4_underlay_peers
+      - ipv6_underlay_peers
+      - underlay_peers
+    default: ipv4_underlay_peers
+  underlay_ipv6_peer_group:
+    type: str
+    documentation_options:
+      table: bgp-settings
+    description: |-
+      Select the BGP peer group to use for underlay IPv6 peerings.
+      Note: Default is "ipv4_underlay_peers" to maintain backward compatibility. Consider changing to "ipv6_underlay_peers" for IPv6-specific configuration.
+    valid_values:
+      - ipv4_underlay_peers
+      - ipv6_underlay_peers
+      - underlay_peers
+    default: ipv4_underlay_peers
   bgp_peer_groups:
     documentation_options:
       table: bgp-settings
@@ -21,7 +44,7 @@ keys:
         keys:
           name:
             type: str
-            required: true
+            default: UNDERLAY-PEERS
             description: Name of peer group.
           password:
             type: str
@@ -53,11 +76,6 @@ keys:
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
       ipv4_underlay_peers:
         type: dict
-        deprecation:
-          warning: true
-          removed: false
-          remove_in_version: 7.0.0
-          new_key: underlay_peers
         keys:
           name:
             type: str
@@ -91,21 +109,16 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
-      mlag_vrfs_peer:
+      ipv6_underlay_peers:
         type: dict
         description: |-
-          Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
-          By default AVD uses the `mlag_underlay_peer` peer group for the Underlay and for all the VRFs.
-
-          If `mlag_vrfs_peer.name` and `mlag_underlay_peer.name` are the same,
-          then all the attributes set here are ignored.
-
-          This key takes precedence over `mlag_ipv4_vrfs_peer` when set.
+          Peer group for IPv6 underlay BGP peers.
+          This key is optional and will only be used when explicitly referenced via `underlay_ipv6_peer_group`.
         keys:
           name:
             type: str
+            default: IPV6-UNDERLAY-PEERS
             description: Name of peer group.
-            required: true
           password:
             type: str
             description: |-
@@ -142,53 +155,11 @@ keys:
 
           If `mlag_ipv4_vrfs_peer.name` and `mlag_ipv4_underlay_peer.name` are the same,
           then all the attributes set here are ignored.
-        deprecation:
-          warning: true
-          removed: false
-          remove_in_version: 7.0.0
-          new_key: mlag_vrfs_peer
         keys:
           name:
             type: str
             description: Name of peer group.
             required: true
-          password:
-            type: str
-            description: |-
-              BGP peer group Type 7 encrypted password.
-              Takes precedence over `cleartext_password`.
-          cleartext_password:
-            type: str
-            description: |-
-              BGP peer group cleartext password.
-              To protect the password at rest it is strongly recommended to make use of a vault or similar.
-          bfd:
-            type: bool
-            default: false
-          maximum_routes:
-            type: int
-            convert_types:
-              - str
-            description: Maximum number of routes (0 means unlimited).
-            default: 256000
-            min: 0
-            max: 4294967294
-          structured_config:
-            type: dict
-            relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
-            documentation_options:
-              hide_keys: true
-            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
-      mlag_underlay_peer:
-        type: dict
-        description: |-
-          This key takes precedence over `mlag_ipv4_underlay_peer` when set.
-        keys:
-          name:
-            type: str
-            required: true
-            description: Name of peer group.
           password:
             type: str
             description: |-
@@ -219,11 +190,6 @@ keys:
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
       mlag_ipv4_underlay_peer:
         type: dict
-        deprecation:
-          warning: true
-          removed: false
-          remove_in_version: 7.0.0
-          new_key: mlag_underlay_peer
         keys:
           name:
             type: str

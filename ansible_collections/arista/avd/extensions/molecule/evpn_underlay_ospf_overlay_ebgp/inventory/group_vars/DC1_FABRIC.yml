@@ -45,13 +45,11 @@ bgp_ecmp: 10
 
 # bgp peer groups passwords
 bgp_peer_groups:
-  underlay_peers:
-    name: IPv4-UNDERLAY-PEERS
+  ipv4_underlay_peers:
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
   evpn_overlay_peers:
     password: "q+VNViP5i4rVjW1cxFv2wA=="
-  mlag_underlay_peer:
-    name: MLAG-IPv4-UNDERLAY-PEER
+  mlag_ipv4_underlay_peer:
     password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 # Spine Switches

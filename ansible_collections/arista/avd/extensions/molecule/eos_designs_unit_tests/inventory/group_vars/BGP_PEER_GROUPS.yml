@@ -43,22 +43,20 @@ node_type_keys:
     default_evpn_encapsulation: mpls
 
 bgp_peer_groups:
-  underlay_peers:
-    name: IPv4-UNDERLAY-PEERS
+  ipv4_underlay_peers:
     bfd: true
     maximum_routes: 12001
     cleartext_password: arista
     # Custom structured config added under router_bgp.peer_groups.<name> in the final structured config.
     structured_config:
       description: Description for ipv4_underlay_peers via structured_config
-  mlag_underlay_peer:
-    name: MLAG-IPv4-UNDERLAY-PEER
+  mlag_ipv4_underlay_peer:
     bfd: true
     maximum_routes: 12002
     # Custom structured config added under router_bgp.peer_groups.<name> in the final structured config.
     structured_config:
       description: Description for mlag_ipv4_underlay_peer via structured_config
-  mlag_vrfs_peer:
+  mlag_ipv4_vrfs_peer:
     name: MLAG-IPv4-VRFS-PEER
     bfd: false
     maximum_routes: 12003
