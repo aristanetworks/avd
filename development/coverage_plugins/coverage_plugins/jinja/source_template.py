@@ -98,7 +98,9 @@ def covered_multiline_tag_branch_arcs(
         if not all((line_number, line_number + 1) in recorded_arc_set for line_number in range(start_line, end_line)):
             continue
 
-        if any(raw_to_line == to_line and raw_from_line not in reportable_lines for raw_from_line, raw_to_line in recorded_arcs):
+        if (end_line, to_line) in recorded_arc_set or any(
+            raw_to_line == to_line and raw_from_line not in reportable_lines for raw_from_line, raw_to_line in recorded_arcs
+        ):
             covered_branch_arcs.add((from_line, to_line))
 
     return covered_branch_arcs
@@ -190,6 +192,7 @@ def covered_adjacent_static_branch_arcs(
     recorded_arcs: tuple[tuple[int, int], ...],
     possible_arcs: Collection[tuple[int, int]],
     reportable_lines: Collection[int],
+    source_filename: Path,
 ) -> set[tuple[int, int]]:
     """
     Return branch arcs covered by jumps from adjacent rendered output.
@@ -199,6 +202,15 @@ def covered_adjacent_static_branch_arcs(
     shape, coverage sees an arc from the previous rendered line into the body
     when the condition is true, or around the body when it is false.
     """
+    try:
+        source = source_filename.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return set()
+
+    static_line_set = {line for line, _text in static_template_lines(source)}
+    static_line_set.difference_update(_control_statement_lines(source))
+    block_lines = {line for line, _name in block_statement_lines(source)}
+    elif_lines = _control_statement_lines(source, names={"elif"})
     covered_branch_arcs: set[tuple[int, int]] = set()
     reportable_line_set = set(reportable_lines)
     recorded_line_set = {line for recorded_arc in recorded_arcs for line in recorded_arc if line > 0}
@@ -208,11 +220,15 @@ def covered_adjacent_static_branch_arcs(
             possible_arcs_by_from_line.setdefault(from_line, set()).add(to_line)
 
     for from_line, to_lines in possible_arcs_by_from_line.items():
-        if len(to_lines) < 2:
+        # The previous static line before an elif belongs to an earlier arm,
+        # which can bypass this condition entirely when that arm is true.
+        if len(to_lines) < 2 or from_line in elif_lines:
             continue
 
         previous_line = _previous_reportable_line(reportable_line_set, from_line)
-        if previous_line is None or previous_line not in recorded_line_set:
+        if previous_line is None or previous_line not in static_line_set or previous_line not in recorded_line_set:
+            continue
+        if any(previous_line < block_line < from_line for block_line in block_lines):
             continue
 
         forward_targets = {to_line for to_line in to_lines if to_line > from_line}
@@ -229,7 +245,7 @@ def covered_adjacent_static_branch_arcs(
 
         predecessor_lines = {previous_line, from_line - 1}
         if not any(
-            raw_from_line in predecessor_lines and (raw_to_line < from_line or raw_to_line >= first_skipped_target)
+            raw_from_line in predecessor_lines and raw_to_line > 0 and (raw_to_line < from_line or raw_to_line >= first_skipped_target)
             for raw_from_line, raw_to_line in recorded_arcs
         ):
             continue
