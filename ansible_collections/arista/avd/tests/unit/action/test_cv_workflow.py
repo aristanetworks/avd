@@ -206,3 +206,27 @@ def test_build_device_deployment_logs_info_for_each_device(
         asyncio.run(module.build_device_deployment("spine1", "/structured", "yml", "/configs", "AVD-${hostname}"))
 
     assert any("build_device_deployment: spine1" in msg for msg in caplog.messages)
+
+
+def test_build_decommission_device_deployment_preserves_tag_metadata(action_module: Callable[..., ActionModule]) -> None:
+    """Tag objects are built for decommission devices but no EOS config object is built."""
+    module = action_module(ActionModule)
+    structured_config = {
+        "metadata": {
+            "is_deployed": False,
+            "serial_number": "SN1",
+            "cv_tags": {
+                "device_tags": [{"name": "role", "value": "leaf"}],
+                "interface_tags": [{"interface": "Ethernet1", "tags": [{"name": "link_type", "value": "underlay"}]}],
+            },
+        }
+    }
+
+    with patch.object(module, "load_structured_config", return_value=structured_config):
+        deployment = asyncio.run(module.build_device_deployment("leaf1", "/structured", "yml", "/configs", "AVD-${hostname}", inventory_mode="controlled"))
+
+    assert deployment is not None
+    assert deployment.device.action == "decommission"
+    assert deployment.eos_config is None
+    assert [(tag.label, tag.value) for tag in deployment.device_tags] == [("role", "leaf")]
+    assert [(tag.interface, tag.label, tag.value) for tag in deployment.interface_tags] == [("Ethernet1", "link_type", "underlay")]
