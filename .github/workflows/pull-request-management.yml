@@ -486,7 +486,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [file-changes]
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         ansible_version: [latest_stable]
         python_version: ["3.12", "3.13", "3.14"]
