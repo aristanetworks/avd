@@ -23,3 +23,5 @@ tenants:
 general_settings:
   dhcp_relay:
     tunnel_requests_disabled: true
+    # testing for reply_source_address_validation
+    reply_source_address_validation: true
