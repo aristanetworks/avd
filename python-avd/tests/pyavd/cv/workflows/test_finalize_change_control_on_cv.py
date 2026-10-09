@@ -6,11 +6,64 @@ from unittest.mock import MagicMock, call
 import pytest
 
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControlStatus
-from pyavd._cv.client.exceptions import CVChangeControlFailed
-from pyavd._cv.workflows.finalize_change_control_on_cv import finalize_change_control_on_cv
+from pyavd._cv.client.exceptions import CVChangeControlFailed, CVResourceInvalidState
+from pyavd._cv.workflows.finalize_change_control_on_cv import finalize_change_control_on_cv, get_change_control_state
 from pyavd._cv.workflows.models import AvdChangeControl, CVChangeControl
 
 from .helpers import DEFAULT_TIMESTAMP, create_grpc_change_control
+
+
+@pytest.mark.parametrize(
+    ("status", "approved", "error", "expected_state"),
+    [
+        pytest.param(ChangeControlStatus.COMPLETED, False, None, "completed", id="completed"),
+        pytest.param(ChangeControlStatus.COMPLETED, True, None, "completed", id="completed-approved"),
+        pytest.param(ChangeControlStatus.RUNNING, False, None, "running", id="running"),
+        pytest.param(ChangeControlStatus.RUNNING, True, None, "running", id="running-approved"),
+        pytest.param(ChangeControlStatus.SCHEDULED, False, None, "scheduled", id="scheduled"),
+        pytest.param(ChangeControlStatus.SCHEDULED, True, None, "scheduled", id="scheduled-approved"),
+        pytest.param(ChangeControlStatus.NOT_STARTED, False, None, "pending approval", id="not-started-pending-approval"),
+        pytest.param(ChangeControlStatus.NOT_STARTED, True, None, "approved", id="not-started-approved"),
+        pytest.param(ChangeControlStatus.UNSPECIFIED, False, None, "pending approval", id="unspecified-pending-approval"),
+        pytest.param(ChangeControlStatus.UNSPECIFIED, True, None, "approved", id="unspecified-approved"),
+        pytest.param(ChangeControlStatus.COMPLETED, False, "Something went wrong", "completed", id="completed-failed"),
+        pytest.param(ChangeControlStatus.COMPLETED, True, "Something went wrong", "completed", id="completed-approved-failed"),
+        pytest.param(ChangeControlStatus.RUNNING, False, "Something went wrong", "running", id="running-failed"),
+        pytest.param(ChangeControlStatus.RUNNING, True, "Something went wrong", "running", id="running-approved-failed"),
+        pytest.param(ChangeControlStatus.SCHEDULED, False, "Something went wrong", "scheduled", id="scheduled-failed"),
+        pytest.param(ChangeControlStatus.SCHEDULED, True, "Something went wrong", "scheduled", id="scheduled-approved-failed"),
+        pytest.param(ChangeControlStatus.UNSPECIFIED, False, "Something went wrong", "failed", id="unspecified-failed"),
+        pytest.param(ChangeControlStatus.UNSPECIFIED, True, "Something went wrong", "approved", id="unspecified-approved-failed"),
+        pytest.param(ChangeControlStatus.NOT_STARTED, False, "Something went wrong", "failed", id="not-started-failed"),
+        pytest.param(ChangeControlStatus.NOT_STARTED, True, "Something went wrong", "approved", id="not-started-approved-failed"),
+    ],
+)
+def test_get_change_control_state(status: ChangeControlStatus, approved: bool, error: str | None, expected_state: str) -> None:
+    """Test that every supported Change Control status is mapped explicitly."""
+    cv_change_control = create_grpc_change_control(status=status, approved=approved, error=error)
+
+    assert get_change_control_state(cv_change_control) == expected_state
+
+
+@pytest.mark.parametrize(
+    ("approved", "error"),
+    [
+        pytest.param(False, None, id="pending-approval"),
+        pytest.param(True, None, id="approved"),
+        pytest.param(False, "Something went wrong", id="failed"),
+        pytest.param(True, "Something went wrong", id="approved-failed"),
+    ],
+)
+def test_get_change_control_state_rejects_unknown_status(approved: bool, error: str | None) -> None:
+    """Test that unknown open-enum values raise a clear state error."""
+    cv_change_control = create_grpc_change_control(status=ChangeControlStatus.try_value(99), approved=approved, error=error)
+    cv_change_control.key.id = "cc_id_1"
+
+    with pytest.raises(
+        CVResourceInvalidState,
+        match="Cannot finalize Change Control 'cc_id_1' with unknown CloudVision status value '99'",
+    ):
+        get_change_control_state(cv_change_control)
 
 
 @pytest.mark.asyncio

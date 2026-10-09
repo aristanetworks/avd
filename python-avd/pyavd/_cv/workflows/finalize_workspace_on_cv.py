@@ -89,9 +89,9 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
             workspace_id=workspace.id,
             request_id=cast("str", workspace_config.request_params.request_id),
         )
-        # Form a list of known inactive existing devices
-        if inactive_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device.streaming is False]:
-            msg = f"Inactive devices present: {inactive_devices}"
+        # Form a list of existing devices which are not known to be streaming
+        if non_streaming_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device.streaming is not True]:
+            msg = f"Non-streaming devices present: {non_streaming_devices}"
             warnings.append(msg)
         if submit_result.status != ResponseStatus.SUCCESS:
             workspace.state = "submit failed"
@@ -104,15 +104,15 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
 
             # Unforced Workspace submission failed due to inactive devices.
             if submit_result.code == ResponseCode.INACTIVE_DEVICES_EXIST:
-                # Use case where some of the devices that we targeted were known to be inactive prior to Workspace submission
-                if inactive_devices:
+                # Use case where some of the devices that we targeted were not known to be streaming prior to Workspace submission
+                if non_streaming_devices:
                     msg = (
-                        f"Failed to submit CloudVision Workspace due to the presence of inactive devices: {inactive_devices}. "
+                        f"Failed to submit CloudVision Workspace due to the presence of non-streaming devices: {non_streaming_devices}. "
                         f"Use `cv_submit_workspace_force: true` (if using role `cv_deploy`) or `workspace['force']: true` "
                         f"(if using action plugin `cv_workflow`) to override."
                     )
                     raise CVWorkspaceSubmitFailedInactiveDevices(msg)
-                # Use case where all devices were actively streaming prior to Workspace submission
+                # Use case where all devices were known to be streaming prior to Workspace submission
                 msg = (
                     "Failed to submit CloudVision Workspace due to the presence of inactive devices. "
                     "Use `cv_submit_workspace_force: true` (if using role `cv_deploy`) or `workspace['force']: true` "
