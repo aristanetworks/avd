@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING
 
 from pyavd._utils.json_path_to_string import json_path_to_string
@@ -12,6 +13,26 @@ if TYPE_CHECKING:
 
     from pyavd_utils.validation import Violation
     from typing_extensions import Self
+
+
+class AristaAvdWarning(UserWarning):
+    """Inherit Python Warning class for AVD."""
+
+    host: str | None
+
+    def __init__(self, message: str, host: str | None = None) -> None:
+        self.host = host
+        self.message = message
+        super().__init__(self.message)
+
+    def _warn(self, stacklevel: int = 2, host: str | None = None) -> None:
+        """Emit a warning with the given message and stack level."""
+        if self.host:
+            message = f"{self.message} for host '{self.host}'"
+        else:
+            message = self.message
+
+        warnings.warn(message, category=self.__class__, stacklevel=stacklevel)
 
 
 class AristaAvdError(Exception):

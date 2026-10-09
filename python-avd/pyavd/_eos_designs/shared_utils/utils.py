@@ -8,7 +8,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Protocol, overload
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdWarning
 from pyavd._utils.template_var import template_var
 from pyavd._utils.undefined import Undefined
 from pyavd.j2filters import range_expand
@@ -129,21 +129,24 @@ class UtilsMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         port_profile = self.inputs.port_profiles[profile_name]._deepcopy()
-        resolved_profile = self.inputs.port_profiles[profile_name]._deepcopy()
         if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
             return self.return_resolved_profile_for_multilevel_inheritance("port_profiles", port_profile, self.inputs.port_profiles)
 
-        if resolved_profile.parent_profile:
-            if resolved_profile.parent_profile not in self.inputs.port_profiles:
-                msg = f"Profile '{resolved_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
+        if port_profile.parent_profile:
+            if port_profile.parent_profile not in self.inputs.port_profiles:
+                msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
                 raise AristaAvdInvalidInputsError(msg)
 
-            parent_profile = self.inputs.port_profiles[resolved_profile.parent_profile]._deepcopy()
-            resolved_profile._deepinherit(parent_profile)
+            parent_profile_item = self.inputs.port_profiles[port_profile.parent_profile]._deepcopy()
+            if parent_profile_item.parent_profile:
+                self.raise_warning_for_grandparent_profile(parent_profile_item.profile, context="port_profiles")
+            # Warn if parent profile has a parent profile set.
+            # Notice reuse of the same variable with the merged content.
+            port_profile._deepinherit(parent_profile_item)
 
-        # Parent_profile is not mentioned in port_profile.
-        delattr(resolved_profile, "parent_profile")
-        return resolved_profile
+        delattr(port_profile, "parent_profile")
+
+        return port_profile
 
     def get_merged_adapter_settings(self: SharedUtilsProtocol, adapter_or_network_port_settings: ADAPTER_SETTINGS) -> ADAPTER_SETTINGS:
         """
@@ -379,3 +382,16 @@ class UtilsMixin(Protocol):
         if resolved_profile._get_defined_attr("parent_profile") is not Undefined:
             delattr(resolved_profile, "parent_profile")
         return resolved_profile
+
+    def raise_warning_for_grandparent_profile(self: SharedUtilsProtocol, parent_profile: str, context: str) -> None:
+        """
+        Raise warning when parent_profile is mentioned for a parent profile but 'avd_design_future.allow_recursive_profile_inheritance' is not set.
+
+        This function emits the warning unconditionally so it is the responsibility of the caller to consider the toggle.
+        """
+        msg = (
+            f"The 'parent_profile' set under '{context}[profile={parent_profile}]' is ignored because the profile is itself used as a parent profile."
+            " Set 'avd_design_future.allow_recursive_profile_inheritance' to inherit through multiple levels, or remove the 'parent_profile'."
+        )
+        alert = AristaAvdWarning(msg, host=self.hostname)
+        alert._warn()
