@@ -10498,6 +10498,13 @@ router bgp 65101
    neighbor EXTENDED-COMMUNITY peer group
    neighbor EXTENDED-COMMUNITY send-community extended
    neighbor EXTENDED-COMMUNITY maximum-advertised-routes 0
+   neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
+   no neighbor IPv4-UNDERLAY-PEERS rib-in pre-policy retain
+   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
+   neighbor IPv4-UNDERLAY-PEERS send-community
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 0 warning-limit 140
    neighbor IPV6-UNDERLAY peer group
    neighbor IPV6-UNDERLAY remote-as 65000
    neighbor IPV6-UNDERLAY password 7 <removed>
@@ -10512,13 +10519,6 @@ router bgp 65101
    neighbor IPV6-UNDERLAY-MLAG maximum-routes 12000
    neighbor IPV6-UNDERLAY-MLAG missing-policy address-family all include sub-route-map direction in action deny
    no neighbor IPV6-UNDERLAY-MLAG remove-private-as ingress
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
-   no neighbor IPv4-UNDERLAY-PEERS rib-in pre-policy retain
-   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 0 warning-limit 140
    neighbor LARGE-COMMUNITY peer group
    neighbor LARGE-COMMUNITY send-community large
    neighbor LOCAL-AS peer group
@@ -10597,13 +10597,6 @@ router bgp 65101
    no neighbor TEST-ENFORCE-FIRST-AS-FALSE enforce-first-as
    neighbor TEST-ENFORCE-FIRST-AS-TRUE peer group
    neighbor TEST-ENFORCE-FIRST-AS-TRUE enforce-first-as
-   neighbor TEST-PASSIVE peer group
-   neighbor TEST-PASSIVE remote-as 65003
-   neighbor TEST-PASSIVE passive
-   neighbor TEST-PASSIVE description BGP Connection in passive mode
-   neighbor WELCOME_ROUTERS peer group
-   neighbor WELCOME_ROUTERS remote-as 65001
-   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    neighbor test-link-bandwidth1 peer group
    neighbor test-link-bandwidth1 ttl maximum-hops 1
    neighbor test-link-bandwidth1 missing-policy address-family all include community-list prefix-list direction in action deny
@@ -10613,8 +10606,15 @@ router bgp 65101
    neighbor test-link-bandwidth2 link-bandwidth
    neighbor test-passive peer group
    neighbor test-passive passive
+   neighbor TEST-PASSIVE peer group
+   neighbor TEST-PASSIVE remote-as 65003
+   neighbor TEST-PASSIVE passive
+   neighbor TEST-PASSIVE description BGP Connection in passive mode
    neighbor test-session-tracker peer group
    neighbor test-session-tracker session tracker ST2
+   neighbor WELCOME_ROUTERS peer group
+   neighbor WELCOME_ROUTERS remote-as 65001
+   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    neighbor 1.1.1.1 remote-as 1
    neighbor 1.1.1.1 next-hop-peer
    neighbor 1.1.1.1 description TEST

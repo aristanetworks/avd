@@ -369,19 +369,6 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send limit 6 |
 
-#### Router BGP Peer Groups
-
-##### alpha
-
-| Settings | Value |
-| -------- | ----- |
-
-##### ZULU
-
-| Settings | Value |
-| -------- | ----- |
-| Remote AS | 65002 |
-
 #### Router BGP IPv4 Labeled Unicast
 
 ##### General Settings
@@ -403,10 +390,6 @@ ASN Notation: asplain
 !
 router bgp 65006
    bgp additional-paths send limit 6
-   neighbor alpha peer group
-   neighbor ZULU peer group
-   neighbor ZULU remote-as 65002
-   neighbor ZULU description Uppercase peer group for legacy ordering
    redistribute ospf include leaked route-map RM-BGP-OSPF
    !
    address-family ipv4
