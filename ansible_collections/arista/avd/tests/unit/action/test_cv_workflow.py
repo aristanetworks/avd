@@ -141,7 +141,8 @@ def test_deploy_logs_info_with_redacted_secrets(
         patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
         caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
     ):
-        result = asyncio.run(module.deploy(validated_args, {}))
+        asyncio.run(module.deploy(validated_args))
+        result = module.result
 
     deploy_logs = [msg for msg in caplog.messages if msg.startswith("deploy:")]
     assert deploy_logs, "Expected at least one INFO log starting with 'deploy:'"
@@ -195,7 +196,9 @@ def test_deploy_converts_successful_deployment_to_ansible_result(
         patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[device_deployment]),
         patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=result_object) as deploy_to_cv,
     ):
-        result = asyncio.run(module.deploy(validated_args, {"warnings": ["logger-warning"]}))
+        module.result["warnings"] = ["logger-warning"]
+        asyncio.run(module.deploy(validated_args))
+        result = module.result
 
     deploy_to_cv.assert_awaited_once()
     assert result["cloudvision"]["token"] == "<removed>"  # noqa: S105 - deliberate redaction test
@@ -229,13 +232,14 @@ def test_deploy_reads_validated_inputs_from_tmp_dir(
         patch(f"{MODULE_PATH}.CVDeployFuture", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.CVGRPCKeepalives", return_value=MagicMock()),
-        patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(tmp_path / "templated", validated_path)),
+        patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(tmp_path / "templated", validated_path)) as get_tmp_paths,
         patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], [])),
         patch(f"{MODULE_PATH}.DeployToCvResult", return_value=empty_result),
         patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]) as build_deployments,
     ):
-        asyncio.run(module.deploy(validated_args, {}))
+        asyncio.run(module.deploy(validated_args))
 
+    get_tmp_paths.assert_called_once_with(str(tmp_path))
     build_deployments.assert_awaited_once_with(
         device_list=[],
         structured_config_dir=str(validated_path),
@@ -269,31 +273,6 @@ def test_deploy_raises_when_read_from_validated_inputs_without_tmp_dir(
 # ---------------------------------------------------------------------------
 
 
-def test_deploy_uses_tmp_dir_when_read_from_validated_inputs(
-    action_module: Callable[..., ActionModule],
-) -> None:
-    """Verify get_tmp_paths is called with tmp_dir when read_from_validated_inputs=True."""
-    module = action_module(ActionModule)
-    validated_args = _make_validated_args(
-        tmp_dir="/avd/tmp",
-        preview_features={"read_from_validated_inputs": True},
-    )
-
-    with (
-        patch(f"{MODULE_PATH}.CloudVision", create=True),
-        patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
-        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
-        patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
-        patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(MagicMock(), MagicMock())) as mock_get_tmp_paths,
-        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], []), create=True),
-        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=_make_deploy_result_mock(), create=True),
-        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
-    ):
-        asyncio.run(module.deploy(validated_args))
-
-    mock_get_tmp_paths.assert_called_once_with("/avd/tmp")
-
-
 def test_deploy_includes_static_config_manifest_when_provided(
     action_module: Callable[..., ActionModule],
 ) -> None:
@@ -316,59 +295,6 @@ def test_deploy_includes_static_config_manifest_when_provided(
     mock_manifest.from_dict.assert_called_once_with(validated_args["static_config_manifest"])
     mock_deploy.assert_awaited_once()
     assert mock_deploy.await_args.kwargs["static_config_manifest"] is mock_manifest.from_dict.return_value
-
-
-def test_deploy_includes_proxy_password_in_result_when_set(
-    action_module: Callable[..., ActionModule],
-) -> None:
-    """Verify proxy_password is included in result when cloudvision.proxy_password is set."""
-    module = action_module(ActionModule)
-    validated_args = _make_validated_args(return_details=True)
-    deploy_result = _make_deploy_result_mock()
-    deploy_result.get_result.return_value = {}
-
-    mock_cloudvision = MagicMock()
-    mock_cloudvision.proxy_password = "secret-proxy-pass"  # noqa: S105
-
-    with (
-        patch(f"{MODULE_PATH}.CloudVision", return_value=mock_cloudvision, create=True),
-        patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
-        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
-        patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
-        patch(f"{MODULE_PATH}.get_result", return_value={}, create=True),
-        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], []), create=True),
-        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=deploy_result, create=True),
-        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
-    ):
-        asyncio.run(module.deploy(validated_args))
-
-    assert "cloudvision" in module.result
-    assert module.result["cloudvision"].get("proxy_password") == "<removed>"
-
-
-def test_deploy_updates_result_with_full_details_when_return_details_true(
-    action_module: Callable[..., ActionModule],
-) -> None:
-    """Verify cloudvision and configs keys are added to result when return_details=True."""
-    module = action_module(ActionModule)
-    validated_args = _make_validated_args(return_details=True)
-    deploy_result = _make_deploy_result_mock()
-    deploy_result.get_result.return_value = {}
-
-    with (
-        patch(f"{MODULE_PATH}.CloudVision", create=True),
-        patch(f"{MODULE_PATH}.CVDeployFuture", create=True),
-        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", create=True),
-        patch(f"{MODULE_PATH}.CVGRPCKeepalives", create=True),
-        patch(f"{MODULE_PATH}.get_result", return_value={}, create=True),
-        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], []), create=True),
-        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=deploy_result, create=True),
-        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
-    ):
-        asyncio.run(module.deploy(validated_args))
-
-    assert "cloudvision" in module.result
-    assert "configs" in module.result
 
 
 def test_deploy_calls_deploy_to_cv_when_work_to_do(
