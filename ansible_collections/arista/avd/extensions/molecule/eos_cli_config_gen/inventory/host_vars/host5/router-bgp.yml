@@ -10,3 +10,19 @@ router_bgp:
     next_hop_mpls_resolution_ribs:
       - rib_type: tunnel-rib
         rib_name: host5-rib
+  # One mixed-case pair verifies future ordering globally and in IPv4/IPv6 address families.
+  peer_groups:
+    - name: evpn-overlay-peers
+    - name: IPV4-UNDERLAY-PEERS
+  address_family_ipv4:
+    peer_groups:
+      - name: evpn-overlay-peers
+        activate: true
+      - name: IPV4-UNDERLAY-PEERS
+        activate: true
+  address_family_ipv6:
+    peer_groups:
+      - name: evpn-overlay-peers
+        activate: true
+      - name: IPV4-UNDERLAY-PEERS
+        activate: true

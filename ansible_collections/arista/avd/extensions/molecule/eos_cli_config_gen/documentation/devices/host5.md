@@ -174,6 +174,18 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send backup |
 
+#### Router BGP Peer Groups
+
+##### evpn-overlay-peers
+
+| Settings | Value |
+| -------- | ----- |
+
+##### IPV4-UNDERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+
 #### Router BGP EVPN Address Family
 
 - Next-hop-unchanged is explicitly configured (default behaviour)
@@ -186,10 +198,20 @@ ASN Notation: asplain
 router bgp 65005
    router-id 192.0.2.5
    bgp additional-paths send backup
+   neighbor IPV4-UNDERLAY-PEERS peer group
+   neighbor evpn-overlay-peers peer group
    !
    address-family evpn
       bgp next-hop-unchanged
       next-hop mpls resolution ribs tunnel-rib host5-rib
+   !
+   address-family ipv4
+      neighbor IPV4-UNDERLAY-PEERS activate
+      neighbor evpn-overlay-peers activate
+   !
+   address-family ipv6
+      neighbor IPV4-UNDERLAY-PEERS activate
+      neighbor evpn-overlay-peers activate
 ```
 
 ## Multicast
