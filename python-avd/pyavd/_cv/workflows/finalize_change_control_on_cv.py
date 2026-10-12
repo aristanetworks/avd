@@ -31,8 +31,8 @@ def get_change_control_state(cv_change_control: ChangeControl) -> str:
     """Resolve CloudVision status, approval, and error details to an AVD Change Control state."""
     if cv_change_control.status not in CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP:
         msg = (
-            f"Cannot finalize Change Control '{cv_change_control.key.id}' with unknown CloudVision status value '{cv_change_control.status.value}'. "
-            "AVD cannot safely determine current state of the Change Control."
+            f"Cannot finalize the Change Control '{cv_change_control.key.id}' with unknown CloudVision status value '{cv_change_control.status.value}'. "
+            "AVD cannot safely determine the current state of the Change Control."
         )
         raise CVResourceInvalidState(msg)
 
