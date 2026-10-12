@@ -2554,51 +2554,30 @@ class EosDesigns(EosDesignsRootModel):
         mlag_vrfs_peer: MlagVrfsPeer
         """
         Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
-        By default AVD
-        uses the `mlag_underlay_peer` peer group for the Underlay and for all the VRFs.
 
-        If
-        `mlag_vrfs_peer.name` and `mlag_underlay_peer.name` are the same,
-        then all the attributes set here
-        are ignored.
-
-        Subclass of AvdModel.
+        Subclass of
+        AvdModel.
         """
         mlag_ipv4_vrfs_peer: MlagIpv4VrfsPeer
         """
         Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
-        By default AVD
-        uses the `mlag_ipv4_underlay_peer` peer group for the Underlay and for all the VRFs.
 
-        If
-        `mlag_ipv4_vrfs_peer.name` and `mlag_ipv4_underlay_peer.name` are the same,
-        then all the attributes
-        set here are ignored.
-
-        Subclass of AvdModel.
+        Subclass of
+        AvdModel.
         """
         mlag_ipv6_vrfs_peer: MlagIpv6VrfsPeer
         """
         Peer group for MLAG VRF IPv6 peerings.
-        This key is optional and will only be used when explicitly
-        referenced via `mlag_ipv6_vrfs_peer_group`.
 
         Subclass of AvdModel.
         """
         mlag_underlay_peer: MlagUnderlayPeer
-        """
-        This key takes precedence over both `mlag_ipv4_underlay_peer` and `mlag_ipv6_underlay_peer` when
-        set.
-
-        Subclass of AvdModel.
-        """
+        """Subclass of AvdModel."""
         mlag_ipv4_underlay_peer: MlagIpv4UnderlayPeer
         """Subclass of AvdModel."""
         mlag_ipv6_underlay_peer: MlagIpv6UnderlayPeer
         """
         Peer group for MLAG underlay IPv6 peerings.
-        This key is optional and will only be used when
-        explicitly referenced via `mlag_ipv6_underlay_peer_group`.
 
         Subclass of AvdModel.
         """
@@ -2650,42 +2629,22 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_underlay_peers: Subclass of AvdModel.
                     mlag_vrfs_peer:
                        Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
-                       By default AVD
-                       uses the `mlag_underlay_peer` peer group for the Underlay and for all the VRFs.
 
-                       If
-                       `mlag_vrfs_peer.name` and `mlag_underlay_peer.name` are the same,
-                       then all the attributes set here
-                       are ignored.
-
-                       Subclass of AvdModel.
+                       Subclass of
+                       AvdModel.
                     mlag_ipv4_vrfs_peer:
                        Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
-                       By default AVD
-                       uses the `mlag_ipv4_underlay_peer` peer group for the Underlay and for all the VRFs.
 
-                       If
-                       `mlag_ipv4_vrfs_peer.name` and `mlag_ipv4_underlay_peer.name` are the same,
-                       then all the attributes
-                       set here are ignored.
-
-                       Subclass of AvdModel.
+                       Subclass of
+                       AvdModel.
                     mlag_ipv6_vrfs_peer:
                        Peer group for MLAG VRF IPv6 peerings.
-                       This key is optional and will only be used when explicitly
-                       referenced via `mlag_ipv6_vrfs_peer_group`.
 
                        Subclass of AvdModel.
-                    mlag_underlay_peer:
-                       This key takes precedence over both `mlag_ipv4_underlay_peer` and `mlag_ipv6_underlay_peer` when
-                       set.
-
-                       Subclass of AvdModel.
+                    mlag_underlay_peer: Subclass of AvdModel.
                     mlag_ipv4_underlay_peer: Subclass of AvdModel.
                     mlag_ipv6_underlay_peer:
                        Peer group for MLAG underlay IPv6 peerings.
-                       This key is optional and will only be used when
-                       explicitly referenced via `mlag_ipv6_underlay_peer_group`.
 
                        Subclass of AvdModel.
                     evpn_overlay_peers: Subclass of AvdModel.

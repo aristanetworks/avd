@@ -60,11 +60,7 @@ class MlagMixin(Protocol):
 
     @run_once_method
     def set_once_peer_group_mlag_vrfs_peer(self: StructuredConfigUtilsProtocol) -> None:
-        """Set the MLAG VRF peer group, reusing the underlay group unless a separate group is needed."""
-        if not self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
-            self.set_once_peer_group_mlag_underlay_peer()
-            return
-
+        """Set the separate MLAG VRF peer group and its address-family activation."""
         bgp_peer_group = (
             self.shared_utils.mlag_bgp_ipv6_vrfs_peer_group if self.shared_utils.underlay_ipv6_numbered else self.shared_utils.mlag_bgp_ipv4_vrfs_peer_group
         )

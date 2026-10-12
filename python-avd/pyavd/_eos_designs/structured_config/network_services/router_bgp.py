@@ -231,7 +231,10 @@ class RouterBgpMixin(Protocol):
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                     self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
-                    self.structured_config_utils.set_once_peer_group_mlag_vrfs_peer()
+                    if self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
+                        self.structured_config_utils.set_once_peer_group_mlag_vrfs_peer()
+                    else:
+                        self.structured_config_utils.set_once_peer_group_mlag_underlay_peer()
 
                 for bgp_peer in vrf.bgp_peers:
                     peer_ip = bgp_peer.ip_address
