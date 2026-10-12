@@ -6,10 +6,11 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils.profiles import resolve_profile
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import SharedUtilsProtocol
 
 
@@ -23,9 +24,16 @@ class ProfiledDataMixin(Protocol):
 
     @cached_property
     def dns_settings(self: SharedUtilsProtocol) -> EosDesigns.DnsSettings:
-        """DNS settings with the node's dns_settings_profile resolved and merged in."""
+        """
+        DNS settings with the node's `dns_settings_profile` resolved and merged in.
+
+        If `dns_settings_profile` is not defined, the root-level `dns_settings` is returned.
+        """
+        if not self.node_config.dns_settings_profile:
+            return self.inputs.dns_settings
         return resolve_profile(
-            self.inputs.dns_settings or EosDesigns.DnsSettings(),
+            self.inputs.dns_settings,
             self.inputs.dns_settings_profiles,
             self.node_config.dns_settings_profile,
+            target_name="dns_settings",
         )

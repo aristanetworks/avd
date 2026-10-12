@@ -15,4 +15,4 @@ dns_settings_profiles:
     parent_profile: p3
 
 expected_error_message: >-
-  Cycle detected while trying to resolve profiles for EosDesigns.DnsSettings: p1 -> p2 -> p3 -> p4 -> p1
+  Cycle detected while trying to resolve profiles for 'dns_settings': p1 -> p2 -> p3 -> p4 -> p1

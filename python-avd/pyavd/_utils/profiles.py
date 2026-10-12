@@ -26,27 +26,25 @@ class _ProfileModelProtocol(Protocol):
 def resolve_profile(
     target_object: T_AvdModel,
     profile_list: AvdIndexedList[str, T_ProfileModel],
-    profile_id: str | None,
+    profile_id: str,
+    target_name: str,
 ) -> T_AvdModel:
     """
     Resolve the selected profile into a target input model.
 
-    When no profile is selected, the provided target object is returned unchanged.
-    Otherwise, the profile catalog is converted into a graph and the selected profile,
+    The profile catalog is converted into a graph and the selected profile,
     including any parent profiles, is merged into a copy of the target object.
 
     Args:
         target_object: Input model receiving the resolved profile values.
         profile_list: Catalog of available profiles.
         profile_id: Selected profile ID to resolve.
+        target_name: Human-readable name of the target to include in error messages.
 
     Returns:
         The target object with the selected profile applied.
     """
-    if not profile_id:
-        return target_object
-
-    graph = _ProfileGraph(target_object, profile_list)
+    graph = _ProfileGraph(target_object, profile_list, target_name=target_name)
     graph_node = graph._get_profile(profile_id)
     return graph_node._deepinherit
 
@@ -108,19 +106,19 @@ class _ProfileGraph(Generic[T_AvdModel, T_ProfileModel]):
     # To avoid a slightest chance of naming conflicts we just assume it to be empty string
     ROOT_NODE_ID = ""
 
-    def __init__(self, target_object: T_AvdModel, profile_catalog: AvdIndexedList[str, T_ProfileModel]) -> None:
+    def __init__(self, target_object: T_AvdModel, profile_catalog: AvdIndexedList[str, T_ProfileModel], target_name: str = "") -> None:
         """
         Initialize a profile graph.
 
         Args:
             target_object: Base target model used as the synthetic root profile.
             profile_catalog: Profile catalog keyed by profile ID.
+            target_name: Human-readable target name used in error messages. Defaults to the target object's class qualified name.
         """
         self._target_object_cls = type(target_object)
-
-        self.nodes: dict[str, _UnifiedGraphNode] = {self.ROOT_NODE_ID: _UnifiedGraphNode(self.ROOT_NODE_ID, self._target_object_cls, target_object)}
-
+        self._nodes: dict[str, _UnifiedGraphNode] = {self.ROOT_NODE_ID: _UnifiedGraphNode(self.ROOT_NODE_ID, self._target_object_cls, target_object)}
         self._profiles_mapping = profile_catalog
+        self._target_name = target_name or self._target_object_cls.__qualname__
 
     def __get_profile_node(self, profile_id: str, visited: OrderedDict[str, Any] | None = None) -> _UnifiedGraphNode:
         """
@@ -147,23 +145,23 @@ class _ProfileGraph(Generic[T_AvdModel, T_ProfileModel]):
             cycle_path = list(reversed(cycle_path[cycle_path.index(profile_id) :]))
             cycle_path.append(cycle_path[0])
 
-            msg = "Cycle detected while trying to resolve profiles for " + self._target_object_cls.__qualname__ + ": " + " -> ".join(cycle_path)
+            msg = f"Cycle detected while trying to resolve profiles for '{self._target_name}': " + " -> ".join(cycle_path)
             raise AristaAvdInvalidInputsError(msg)
 
         visited[profile_id] = True
 
         # Check if profile is already resolved. Will stop when reaching the root node
-        if profile_id in self.nodes:
-            return self.nodes[profile_id]
+        if profile_id in self._nodes:
+            return self._nodes[profile_id]
 
         if profile_id not in self._profiles_mapping:
             chain_keys = list(visited.keys())
             # profile_id was added to visited above, so len > 1 means it was reached via a parent chain
             if len(chain_keys) > 1:
                 chain_str = " -> ".join(chain_keys)
-                msg = f"Unresolved profile `{profile_id}` while trying to resolve profiles for {self._target_object_cls.__qualname__}: {chain_str}"
+                msg = f"Unresolved profile '{profile_id}' while trying to resolve profiles for '{self._target_name}': {chain_str}"
             else:
-                msg = f"Profile '{profile_id}' is missing while trying to resolve profiles for {self._target_object_cls.__qualname__}"
+                msg = f"Profile '{profile_id}' is missing while trying to resolve profiles for '{self._target_name}'"
             raise AristaAvdInvalidInputsError(msg)
 
         profile_data_item = self._profiles_mapping[profile_id]
@@ -171,7 +169,7 @@ class _ProfileGraph(Generic[T_AvdModel, T_ProfileModel]):
         profile_data = cast("_ProfileModelProtocol", profile_data_item)
 
         node = _UnifiedGraphNode(profile_id, self._target_object_cls, profile_data_item)
-        self.nodes[profile_id] = node
+        self._nodes[profile_id] = node
 
         # Recursively move up to the parent profile
         parent_node = self.__get_profile_node(profile_data.parent_profile, visited=visited)

@@ -8,4 +8,4 @@ dns_settings_profiles:
   - profile: existing_profile
 
 expected_error_message: >-
-  Profile 'missing_profile' is missing while trying to resolve profiles for EosDesigns.DnsSettings
+  Profile 'missing_profile' is missing while trying to resolve profiles for 'dns_settings'
