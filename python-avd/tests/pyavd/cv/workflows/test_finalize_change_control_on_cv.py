@@ -61,7 +61,7 @@ def test_get_change_control_state_rejects_unknown_status(approved: bool, error: 
 
     with pytest.raises(
         CVResourceInvalidState,
-        match="Cannot finalize Change Control 'cc_id_1' with unknown CloudVision status value '99'",
+        match="Cannot finalize the Change Control 'cc_id_1' with unknown CloudVision status value '99'",
     ):
         get_change_control_state(cv_change_control)
 
