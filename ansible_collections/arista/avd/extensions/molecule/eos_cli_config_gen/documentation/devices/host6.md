@@ -390,6 +390,13 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 
+##### IPv4 BGP-LU Peer-groups
+
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| evpn-overlay-peers | True | - | - | - | - | - | - |
+| IPV4-UNDERLAY-PEERS | True | - | - | - | - | - | - |
+
 #### Router BGP Path-Selection Address Family
 
 #### Router BGP VRFs
@@ -419,6 +426,8 @@ router bgp 65006
    !
    address-family ipv4 labeled-unicast
       no bgp additional-paths send
+      neighbor evpn-overlay-peers activate
+      neighbor IPV4-UNDERLAY-PEERS activate
    !
    address-family ipv6
       no bgp additional-paths send

@@ -1600,7 +1600,7 @@ router bgp {{ router_bgp.as }}
       next-hop resolution ribs {{ v4_bgp_lu_resolution_ribs | join(" ") }}
 {%             endif %}
 {%         endif %}
-{%         for peer in router_bgp.address_family_ipv4_labeled_unicast.peer_groups | arista.avd.natural_sort(sort_key='name') %}
+{%         for peer in router_bgp.address_family_ipv4_labeled_unicast.peer_groups | arista.avd.natural_sort(sort_key='name', ignore_case=peer_group_ignore_case) %}
 {%             if peer.activate is arista.avd.defined(true) %}
       neighbor {{ peer.name }} activate
 {%             else %}

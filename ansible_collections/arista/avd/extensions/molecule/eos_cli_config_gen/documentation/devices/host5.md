@@ -191,6 +191,20 @@ ASN Notation: asplain
 - Next-hop-unchanged is explicitly configured (default behaviour)
 - Next-hop MPLS resolution Primary-RIB : tunnel-rib host5-rib
 
+#### Router BGP IPv4 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+
+##### IPv4 BGP-LU Peer-groups
+
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| evpn-overlay-peers | True | - | - | - | - | - | - |
+| IPV4-UNDERLAY-PEERS | True | - | - | - | - | - | - |
+
 #### Router BGP Device Configuration
 
 ```eos
@@ -206,6 +220,10 @@ router bgp 65005
       next-hop mpls resolution ribs tunnel-rib host5-rib
    !
    address-family ipv4
+      neighbor IPV4-UNDERLAY-PEERS activate
+      neighbor evpn-overlay-peers activate
+   !
+   address-family ipv4 labeled-unicast
       neighbor IPV4-UNDERLAY-PEERS activate
       neighbor evpn-overlay-peers activate
    !
