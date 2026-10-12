@@ -76661,9 +76661,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv6: Ipv6
             """Subclass of AvdModel."""
             passive_interface: bool | None
-            """Include interface but without actively running OSPF. Mutually exclusive with `no_passive_interface`."""
+            """Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`."""
             no_passive_interface: bool | None
-            """Disable passive interface mode. Mutually exclusive with `passive_interface`."""
+            """Disable passive interface mode."""
             network_point_to_point: bool | None
 
             if TYPE_CHECKING:
@@ -76686,8 +76686,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
-                        passive_interface: Include interface but without actively running OSPF. Mutually exclusive with `no_passive_interface`.
-                        no_passive_interface: Disable passive interface mode. Mutually exclusive with `passive_interface`.
+                        passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
+                        no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point
 
                     """
