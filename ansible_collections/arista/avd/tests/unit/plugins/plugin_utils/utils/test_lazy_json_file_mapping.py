@@ -38,3 +38,22 @@ def test_lazy_json_file_mapping_rejects_non_mapping_json() -> None:
 
     with pytest.raises(TypeError, match=r"Expected a JSON object in 'validated/device.json'\."):
         len(data)
+
+
+def test_lazy_json_file_mapping_data_reuses_loaded_dict() -> None:
+    """The data accessor returns the cached dictionary and shares mutations with the mapping."""
+    file_handler = MagicMock()
+    file_handler.load_json.return_value = {"key": "value"}
+    file_path = Path("validated/device.json")
+    mapping = LazyJsonFileMapping(file_handler, file_path)
+
+    file_handler.load_json.assert_not_called()
+    data = mapping.data
+
+    assert data is file_handler.load_json.return_value
+    assert mapping.data is data
+    data["other_key"] = "other_value"
+    assert mapping["other_key"] == "other_value"
+    mapping["key"] = "updated"
+    assert data["key"] == "updated"
+    file_handler.load_json.assert_called_once_with(file_path)

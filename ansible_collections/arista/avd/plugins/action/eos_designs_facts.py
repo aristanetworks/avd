@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import json
-from collections import ChainMap
+from collections import ChainMap, UserDict
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -188,7 +188,9 @@ class ActionModule(AVDActionPlugin):
             # This is to resolve any input values with inline jinja using variables/facts set by eos_designs_facts.
             if self.template_output:
                 # The Ansible Jinja engine only accepts concrete dicts as ChainMap layers.
-                available_variables = ChainMap({"switch": facts_dict}, dict(all_hostvars[host]))
+                available_variables = ChainMap(
+                    {"switch": facts_dict}, all_hostvars[host].data if isinstance(all_hostvars[host], UserDict) else dict(all_hostvars[host])
+                )
                 with self._templar.set_temporary_context(available_variables=available_variables):
                     facts_dict = self._templar.template(facts_dict, fail_on_undefined=False)
 

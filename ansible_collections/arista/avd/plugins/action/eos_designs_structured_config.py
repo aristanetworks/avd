@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import json
-from collections import ChainMap
+from collections import ChainMap, UserDict
 from typing import TYPE_CHECKING, Any
 
 import yaml
@@ -100,7 +100,7 @@ class ActionModule(AVDActionPlugin):
         if eos_designs_custom_templates:
             # The Ansible Jinja engine only accepts concrete dicts as ChainMap layers.
             # Materialize the lazy hostvars only when a Jinja rendering path is enabled.
-            template_vars = ChainMap(output, dict(host_hostvars))
+            template_vars = ChainMap(output, host_hostvars.data if isinstance(host_hostvars, UserDict) else dict(host_hostvars))
 
             # Load output schema used by merger on output of custom templates
             output_schema = AvdSchema(schema_id="eos_cli_config_gen")
@@ -140,7 +140,7 @@ class ActionModule(AVDActionPlugin):
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
         if template_output:
             if template_vars is None:
-                template_vars = ChainMap(output, dict(host_hostvars))
+                template_vars = ChainMap(output, host_hostvars.data if isinstance(host_hostvars, UserDict) else dict(host_hostvars))
             with self._templar.set_temporary_context(available_variables=template_vars):
                 output = self._templar.template(output, fail_on_undefined=False)
 
