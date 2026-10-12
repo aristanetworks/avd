@@ -98,6 +98,8 @@ aaa_settings:
     servers:
       - host: 11.10.10.11
         vrf: default
+        timeout: 10
+        retransmit: 3
         key: 071B245F5A
         # key take precedence over cleartext_key
         cleartext_key: arista
@@ -107,6 +109,7 @@ aaa_settings:
       # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
       - host: 11.10.10.1
         vrf: use_mgmt_interface_vrf
+        timeout: 20
         key: 071B245F5A
         groups:
           - RADIUS1

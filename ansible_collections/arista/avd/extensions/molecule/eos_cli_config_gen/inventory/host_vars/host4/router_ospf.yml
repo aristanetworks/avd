@@ -1,0 +1,6 @@
+router_ospf:
+  process_ids:
+    - id: 703
+      router_id: 10.255.0.4
+      segment_routing_mpls:
+        enabled: false

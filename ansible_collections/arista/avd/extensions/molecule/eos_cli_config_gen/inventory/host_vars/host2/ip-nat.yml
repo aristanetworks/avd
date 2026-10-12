@@ -1,6 +1,9 @@
 ---
 ### IP NAT ###
 ip_nat:
+  pools:
+    - name: host2-pool
+      prefix_length: 32
   synchronization:
     shutdown: false
     port_range:

@@ -71,9 +71,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -116,9 +116,9 @@ ip name-server vrf MGMT 192.168.200.5
 
 NTP servers VRF: MGMT
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 192.168.200.5 | True | - | - | - | - | - | - | - |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 192.168.200.5 | True | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -183,9 +183,9 @@ Enable password has been disabled
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 192.168.200.11:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | - | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | - | - | False |
 
 #### TerminAttr Daemon Device Configuration
 
@@ -396,10 +396,10 @@ vlan 4094
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Ethernet1 | P2P_DC1-SPINE5_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - | - | - |
-| Ethernet2 | P2P_DC1-SPINE5_Ethernet3 | - | - | default | 1500 | False | - | - | - | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Ethernet1 | P2P_DC1-SPINE5_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_DC1-SPINE5_Ethernet3 | - | - | default | 1500 | False | - | - | - | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -812,13 +812,13 @@ ip routing vrf Tenant_C_OP_Zone
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| Tenant_A_APP_Zone | false |
-| Tenant_A_DB_Zone | false |
-| Tenant_A_OP_Zone | false |
-| Tenant_A_WEB_Zone | false |
-| Tenant_B_OP_Zone | false |
-| Tenant_C_OP_Zone | false |
+| MGMT | False |
+| Tenant_A_APP_Zone | False |
+| Tenant_A_DB_Zone | False |
+| Tenant_A_OP_Zone | False |
+| Tenant_A_WEB_Zone | False |
+| Tenant_B_OP_Zone | False |
+| Tenant_C_OP_Zone | False |
 
 #### IPv6 Routing Device Configuration
 
@@ -902,15 +902,15 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 2001:1::5 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_APP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_DB_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_WEB_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_B_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - |
-| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_C_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 2001:1::5 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_APP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_DB_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_A_WEB_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_B_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_VRFS_PEER | Tenant_C_OP_Zone | - | Inherited from peer group MLAG_VRFS_PEER | Inherited from peer group MLAG_VRFS_PEER | - | - | - | - | - | - | - | - |
 
 #### BGP Neighbor Interfaces
 

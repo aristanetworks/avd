@@ -1,0 +1,26 @@
+---
+all:
+  children:
+    FABRIC:
+      children:
+        WAN1:
+          children:
+            WAN1_P_ROUTERS:
+              hosts:
+                p1:
+                p2:
+                p3:
+                p4:
+            WAN1_PE_ROUTERS:
+              hosts:
+                pe1:
+                pe2:
+                pe3:
+            WAN1_RR_ROUTERS:
+              hosts:
+                rr1:
+                rr2:
+
+        NETWORK_SERVICES: # (1)!
+          children:
+            WAN1_PE_ROUTERS:

@@ -5,7 +5,8 @@ from __future__ import annotations
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
-from pyavd._utils import AvdStringFormatter, default
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import list_compress
@@ -193,7 +194,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             # except in the case where the same trunk group name is defined.
             port_channel_interface.switchport.trunk.groups.append(self.inputs.trunk_groups.mlag_l3.name)
 
-        port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(port_channel_interface.name, self.inputs.fabric_sflow.mlag_interfaces)
+        port_channel_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
+            port_channel_interface.name, self.inputs.fabric_sflow.mlag_interfaces
+        )
 
         if self.shared_utils.ptp_enabled and self.shared_utils.node_config.ptp.mlag:
             ptp_profile_config = self.shared_utils.ptp_profile._deepcopy()
@@ -242,10 +245,10 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             reload_delay_mlag=str(default(self.shared_utils.platform_settings.reload_delay.mlag, "")) or None,
             reload_delay_non_mlag=str(default(self.shared_utils.platform_settings.reload_delay.non_mlag, "")) or None,
         )
-        if self.shared_utils.node_config.mlag_dual_primary_detection and self.shared_utils.mlag_peer_mgmt_ip and self.inputs.mgmt_interface_vrf:
+        if self.shared_utils.node_config.mlag_dual_primary_detection and self.shared_utils.mlag_peer_mgmt_ip and self.shared_utils.mgmt_interface_vrf:
             mlag_configuration.peer_address_heartbeat._update(
                 peer_ip=self.shared_utils.mlag_peer_mgmt_ip,
-                vrf=self.inputs.mgmt_interface_vrf,
+                vrf=self.shared_utils.mgmt_interface_vrf,
             )
             mlag_configuration.dual_primary_detection_delay = 5
         self.structured_config.mlag_configuration = mlag_configuration

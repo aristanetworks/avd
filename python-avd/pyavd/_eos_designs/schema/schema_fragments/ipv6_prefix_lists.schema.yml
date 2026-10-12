@@ -1,0 +1,38 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+type: dict
+keys:
+  ipv6_prefix_list_catalog:
+    type: list
+    primary_key: name
+    description: |-
+      IPv6 prefix-list catalog.
+      Entries are only rendered when explicitly referenced by `ipv6_prefix_list_in` or
+      `ipv6_prefix_list_out` under BGP on an L3 interface or L3 Port-Channel.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Prefix-list Name.
+        sequence_numbers:
+          type: list
+          primary_key: sequence
+          required: true
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                description: Sequence ID.
+                convert_types:
+                  - str
+              action:
+                type: str
+                required: true
+                description: |-
+                  Action as string.
+                  Example: "permit 2001:db8::/32 le 128"

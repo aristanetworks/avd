@@ -69,5 +69,5 @@ router_bgp:
             enabled: true
 
 expected_error_message: >-
-  Missing the validated structured config for host 'conflicting-deprecated-and-new-keys'.
+  Error during plugin 'arista.avd.eos_cli_config_gen' execution: Missing the validated structured config for host 'conflicting-deprecated-and-new-keys'.
   Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred.

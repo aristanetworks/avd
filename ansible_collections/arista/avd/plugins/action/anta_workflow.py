@@ -21,14 +21,17 @@ from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaWorkflowFilter, AntaWorkflowHandler, raise_action_fail
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Iterator
 
 PLUGIN_NAME = "arista.avd.anta_workflow"
 
 try:
     from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
-    from pyavd._utils import default, get, strip_empties_from_dict
+    from pyavd._utils.default import default
+    from pyavd._utils.get import get
+    from pyavd._utils.strip_empties import strip_empties_from_dict
     from pyavd.api.anta import AVDCatalogGenerationSettings, AVDFabricData
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
@@ -61,6 +64,7 @@ ANTA_VARS = [
     "anta_enable_password",
     "anta_port",
     "anta_use_ssl",
+    "anta_use_session_auth",
     "anta_tags",
 ]
 
@@ -68,6 +72,7 @@ ARGUMENT_SPEC = {
     "device_list": {"type": "list", "elements": "str", "required": True},
     "avd_catalogs": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "enabled": {"type": "bool", "default": True},
             "output_dir": {"type": "str"},
@@ -87,6 +92,7 @@ ARGUMENT_SPEC = {
     },
     "user_catalogs": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "enabled": {"type": "bool", "default": False},
             "input_dir": {"type": "str"},
@@ -94,6 +100,7 @@ ARGUMENT_SPEC = {
     },
     "runner": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "timeout": {"type": "float", "default": 30.0},
             "batch_size": {"type": "int", "default": 5},
@@ -103,6 +110,7 @@ ARGUMENT_SPEC = {
     },
     "report": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "expand_results": {"type": "bool", "default": False},
             "generate_custom_field": {"type": "bool", "default": False},
@@ -115,6 +123,7 @@ ARGUMENT_SPEC = {
             },
             "sorting": {
                 "type": "dict",
+                "apply_defaults": True,
                 "options": {
                     "status_priority": {
                         "type": "list",
@@ -553,6 +562,7 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
     enable_mode = default(get(device_vars, "anta_enable"), get(device_vars, "ansible_become", default=False))
     enable_password = default(get(device_vars, "anta_enable_password"), get(device_vars, "ansible_become_password"))
     proto = "https" if default(get(device_vars, "anta_use_ssl"), get(device_vars, "ansible_httpapi_use_ssl", default=True)) else "http"
+    use_session_auth = get(device_vars, "anta_use_session_auth", default=False)
 
     device_settings = {
         "name": device,
@@ -565,6 +575,7 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
         "proto": proto,
         "timeout": get(PLUGIN_ARGS, "runner.timeout"),
         "tags": set(get(device_vars, "anta_tags", default=[])),
+        "use_session_auth": use_session_auth,
     }
 
     # Make sure we found all required connection settings. Other settings have defaults in the ANTA device object
@@ -710,12 +721,14 @@ def setup_root_logger(unique_id: str, log_queue: Queue, verbosity: int) -> None:
         # All loggers except low-level libraries (WARNING) will be at DEBUG
         root_logger.setLevel(logging.DEBUG)
     elif verbosity == 3:
-        # All loggers except anta (INFO) and low-level libraries (WARNING) will be at DEBUG
+        # All loggers except anta/asynceapi (INFO) and low-level libraries (WARNING) will be at DEBUG
         root_logger.setLevel(logging.DEBUG)
         logging.getLogger("anta").setLevel(logging.INFO)
+        logging.getLogger("asynceapi").setLevel(logging.INFO)
     elif verbosity in (1, 2):
-        # All loggers except low-level libraries (WARNING) will be at INFO
+        # All loggers except low-level libraries and asynceapi (WARNING) will be at INFO
         root_logger.setLevel(logging.INFO)
+        logging.getLogger("asynceapi").setLevel(logging.WARNING)
     else:
         # All loggers will be at WARNING
         root_logger.setLevel(logging.WARNING)

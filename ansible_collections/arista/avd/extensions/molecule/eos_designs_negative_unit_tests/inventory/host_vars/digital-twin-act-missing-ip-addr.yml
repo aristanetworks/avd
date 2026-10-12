@@ -11,9 +11,7 @@ platform_settings:
   - platforms: [vEOS-lab]
     digital_twin:
       platform: vEOS-lab
-      act_node_type: veos
-
-avd_digital_twin_mode: true
+      act_node_type: generic
 
 expected_error_message: >-
   Failed to generate ACT Digital Twin metadata for device 'digital-twin-act-missing-ip-addr'.

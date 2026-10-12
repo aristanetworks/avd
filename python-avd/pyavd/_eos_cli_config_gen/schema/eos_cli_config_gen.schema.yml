@@ -222,6 +222,8 @@ keys:
 
               - "group radius group MYGROUP local"
 
+              - "group ldap"
+
               '
           command_api:
             type: str
@@ -337,6 +339,8 @@ keys:
 
               - "group radius group MYGROUP local"
 
+              - "group ldap"
+
               '
       config_commands:
         type: bool
@@ -409,8 +413,12 @@ keys:
       type: dict
       keys:
         name:
-          description: Group name.
+          description: 'Group name.
+
+            The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved by EOS
+            and must not be used.'
           type: str
+          pattern: (?!radius$|tacacs\+$|ldap$).+
         type:
           type: str
           valid_values:
@@ -505,6 +513,14 @@ keys:
         items:
           type: str
           description: DHCP server IPv4 address.
+      dhcp_server_interfaces:
+        type: list
+        description: 'The list of interfaces connected to the DHCP server.
+
+          Requires EOS version 4.36 or later.'
+        items:
+          type: str
+          description: Interface name.
       disabled:
         type: bool
         description: Disable IP locking on configured ports.
@@ -1412,6 +1428,94 @@ keys:
                 valid_values:
                 - control-plane
                 - data-plane
+          openstack:
+            type: dict
+            description: OpenStack services.
+            keys:
+              authentication:
+                type: dict
+                keys:
+                  role:
+                    type: str
+                    description: API authentication user role.
+              grace_period:
+                type: int
+                description: Set the grace period in seconds for which the OpenStack
+                  agent waits for OpenStack region data.
+                min: 0
+                max: 14400
+                convert_types:
+                - str
+              ip_access_group_name:
+                type: str
+                convert_types:
+                - int
+              ipv6_access_group_name:
+                type: str
+                convert_types:
+                - int
+              name_resolution:
+                type: dict
+                keys:
+                  force:
+                    type: bool
+                    description: Get the tenant and VM names from OpenStack immediately.
+                  interval:
+                    type: int
+                    min: 0
+                    max: 86400
+                    convert_types:
+                    - str
+                    description: Set the time interval in seconds between name updates,
+                      0 to disable.
+              network_type_driver:
+                type: dict
+                keys:
+                  vlan:
+                    type: str
+                    valid_values:
+                    - arista
+                    - default
+              regions:
+                type: list
+                min_length: 1
+                primary_key: name
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      description: The name of the region. This must match what is
+                        in use in the ML2 driver configuration.
+                      type: str
+                      convert_types:
+                      - int
+                    username:
+                      type: str
+                      description: '''admin'' or valid keystone user.'
+                    password:
+                      type: str
+                      convert_types:
+                      - int
+                    password_type:
+                      type: str
+                      default: '7'
+                      valid_values:
+                      - '0'
+                      - '7'
+                      - 8a
+                      convert_types:
+                      - int
+                    tenant:
+                      type: str
+                      description: Tenant name.
+                    keystone:
+                      type: dict
+                      keys:
+                        auth_url:
+                          type: str
+                          pattern: ^https?://(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,6}\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?/v(2\.0|3)/$
+              shutdown:
+                type: bool
   daemon_terminattr:
     type: dict
     description: "You can either provide a list of IPs/FQDNs to target on-premise
@@ -1654,6 +1758,13 @@ keys:
           e.g. "ale,flexCounter,hardware,kni,pulse,strata"
 
           '
+      sysdbexcludes:
+        type: str
+        description: 'Exclude paths from Sysdb.
+
+          e.g. "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
+
+          '
       taillogs:
         type: str
         description: 'Enable log file collection; /var/log/messages is streamed by
@@ -1707,6 +1818,58 @@ keys:
           The recommended timeout is five minutes.'
         convert_types:
         - str
+      cvtargetconfigs:
+        type: list
+        min_length: 1
+        description: 'Set the target configuration path(s) for dynamic device configuration
+          from CloudVision.
+
+          Used for MSS (Multi-Domain Segmentation Service) integrations.
+
+          '
+        items:
+          type: str
+      flowdns:
+        type: bool
+        description: 'Enable DNS resolution for flow records (TerminAttr default is
+          true).
+
+          Set to false to disable DNS lookups on sFlow/IPFIX flow records.
+
+          '
+      custom_cv_options:
+        type: list
+        description: 'TerminAttr CLI options not covered by the schema.
+
+          Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>`
+          when `value` is omitted.
+
+          Options are appended at the end of the TerminAttr exec command line after
+          all other flags.
+
+          '
+        items:
+          type: dict
+          keys:
+            flag:
+              type: str
+              required: true
+              min_length: 1
+              pattern: ^(?!-)(?!.*[\s=]).+$
+              description: 'TerminAttr CLI flag name without the leading dash.
+
+                '
+            value:
+              type: str
+              description: 'Flag value. If omitted, the flag is rendered without a
+                value (e.g. `-someflag`).
+
+                If set, the flag is rendered as `-flag=value`.
+
+                '
+              convert_types:
+              - bool
+              - int
   daemons:
     type: list
     primary_key: name
@@ -1740,6 +1903,26 @@ keys:
         type: bool
       mlag_peerlink_requests_disabled:
         type: bool
+      client_requests:
+        type: dict
+        description: Configure DHCP client request settings.
+        keys:
+          flooding_suppression_vlans:
+            type: list
+            description: Suppress flooding of DHCP/DHCPv6 client requests to other
+              interfaces in the specified VLANs.
+            min_length: 1
+            items:
+              type: str
+              description: "VLAN ID or range of VLAN IDs, <1-4094>.\nExample:\n  -
+                1000\n  - 500-510\n  - 2000,3000"
+              convert_types:
+              - int
+      reply_source_address_validation:
+        type: bool
+        description: 'Validate reply source address matches configured server.
+
+          Supported starting with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.'
   dhcp_servers:
     type: list
     primary_key: vrf
@@ -2211,7 +2394,7 @@ keys:
             description: Set captive-portal start limit to infinite.
           access_list_ipv4:
             type: str
-            description: Standard access-list name.
+            description: Extended access-list name.
       supplicant:
         type: dict
         keys:
@@ -2391,6 +2574,17 @@ keys:
           on an EOS device.
 
           '
+  environment_fan_speed:
+    type: dict
+    description: Environment fan-speed settings.
+    keys:
+      minimum:
+        type: int
+        convert_types:
+        - str
+        min: 30
+        max: 100
+        description: Set the minimum fan speed in percent.
   eos_cli:
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level
@@ -2473,22 +2667,96 @@ keys:
     description: Opt-in to future EOS CLI behaviors which will become default behaviors
       in a future AVD major version.
     keys:
+      always_render_ip_routing_separator:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.2.0.
+
+          Always render a ''!'' before the ''(no) ip routing'' command section.
+
+          Without this the ''!'' is missing when only configuring routing for VRFs.'
+      render_combined_separator_for_ipv6_hardware_and_unicast_routing:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Render a single ''!'' separator for the combined IPv6 routing block when
+          any of these are rendered:
+
+          - ''ipv6 unicast-routing''
+
+          - ''ipv6 unicast-routing vrf <vrf_name>''
+
+          - ''ipv6 hardware fib optimize prefixes profile <profile_name>''
+
+          Also render the ''!'' separator before the VRF IPv6 unicast-routing section
+          even when ''ipv6 unicast-routing'' and ''ipv6 hardware fib optimize prefixes''
+          are not present globally, as long as at least one VRF is configured for
+          IPv6 routing.
+
+          When ''false'', separators are handled by each individual section.'
       new_ip_radius_cli_order:
         type: bool
         default: false
-        description: 'When `true`, renders the new EOS CLI order using `ip_radius`,
-          sorted by VRF name.
+        description: 'Available from AVD 6.1.0.
+
+          When `true`, renders the new EOS CLI order using `ip_radius`, sorted by
+          VRF name.
 
           When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`,
           sorted by source interface name.'
       new_ip_tacacs_cli_order:
         type: bool
         default: false
-        description: 'When `true`, renders the new EOS CLI order using `ip_tacacs`,
-          sorted by VRF name.
+        description: 'Available from AVD 6.1.0.
+
+          When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by
+          VRF name.
 
           When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
           sorted by source interface name.'
+      only_render_mpls_rsvp_with_settings:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.2.0.
+
+          When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*`
+          setting is defined.
+
+          When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined,
+          even if no sub-settings are set.'
+      render_monitor_layer1_without_enabled:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.3.0.
+
+          When `true`, renders the `monitor layer1` CLI block only if `monitor_layer1.logging_transceiver.*`
+          / `monitor_layer1.logging_mac_fault` sub-setting is `true` no matter the
+          value of `monitor_layer1.enabled` is `true` or `false`.
+
+          When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled`
+          is `true`.'
+      render_spanning_tree_portfast_edge:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.3.0.
+
+          When `true`, renders `spanning-tree portfast edge` on `ethernet_interfaces`
+          and `port_channel_interfaces` when `spanning_tree_portfast` is set to `edge`,
+          matching the running-config preserved by EOS 4.33.2F and later.
+
+          When `false` (default), renders the legacy `spanning-tree portfast` without
+          the `edge` keyword.'
+      only_render_separator_with_boot_secret_key:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          When `true`, the ''!'' separator before ''boot secret'' is only rendered
+          when `boot.secret.key` is provided.
+
+          When `false` (default), the ''!'' separator is always rendered when `boot.secret`
+          is defined, even if `boot.secret.key` is missing, for backward compatibility.'
   errdisable:
     type: dict
     keys:
@@ -2523,8 +2791,92 @@ keys:
               - xcvr-misconfigured
               - xcvr-overheat
               - xcvr-power-unsupported
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: detect_cause
+      detect_cause:
+        type: dict
+        description: 'Specifies the events that should trigger this action.
+
+          The list of supported causes depends on both the EOS version and the hardware
+          platform.'
+        keys:
+          acl:
+            type: bool
+            description: Enable/Disable detection for ACL errors.
+          arp_inspection:
+            type: bool
+            description: Enable/Disable detection for ARP inspection errors.
+          dot1x:
+            type: bool
+            description: Enable/Disable detection for 802.1X errors.
+          dot1x_coa:
+            type: bool
+            description: Enable/Disable detection for 802.1X Change of Authorization
+              errors.
+          dot1x_phone_classification:
+            type: bool
+            description: Enable/Disable detection for 802.1X phone classification
+              errors.
+          dot1x_session_replace:
+            type: bool
+            description: Enable/Disable detection for 802.1X session replace errors.
+          error_correction_encoding:
+            type: bool
+            description: Enable/Disable detection for error correction encoding errors.
+          fabric_capacity_low:
+            type: bool
+            description: Enable/Disable detection for fabric capacity low errors.
+          hardware_speed_group:
+            type: bool
+            description: Enable/Disable detection for hardware speed group errors.
+          interface_speed:
+            type: bool
+            description: Enable/Disable detection for interface speed errors.
+          internal_error:
+            type: bool
+            description: Enable/Disable detection for internal errors.
+          link_change:
+            type: bool
+            description: Enable/Disable detection for link change errors.
+          port_breakout:
+            type: bool
+            description: Enable/Disable detection for port breakout errors.
+          storm_control:
+            type: bool
+            description: Enable/Disable detection for storm control errors.
+          switchcard_unreachable:
+            type: bool
+            description: Enable/Disable detection for switchcard unreachable errors.
+          tapagg:
+            type: bool
+            description: Enable/Disable detection for tap aggregation errors.
+          tpid:
+            type: bool
+            description: Enable/Disable detection for TPID errors.
+          transceiver_adapter:
+            type: bool
+            description: Enable/Disable detection for transceiver adapter errors.
+          xcvr_misconfigured:
+            type: bool
+            description: Enable/Disable detection for transceiver misconfiguration
+              errors.
+          xcvr_overheat:
+            type: bool
+            description: Enable/Disable detection for transceiver overheat errors.
+          xcvr_power_unsupported:
+            type: bool
+            description: Enable/Disable detection for unsupported transceiver power
+              errors.
       recovery:
         type: dict
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: recovery_cause or recovery_interval
         keys:
           causes:
             type: list
@@ -2584,6 +2936,473 @@ keys:
             description: Interval in seconds.
             min: 30
             max: 86400
+      recovery_cause:
+        type: dict
+        description: 'Specifies the type of event that can trigger recovery actions.
+
+          The list of supported causes depends on both the EOS version and the hardware
+          platform.'
+        keys:
+          acl:
+            type: dict
+            description: Recovery settings for ACL errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for ACL errors.
+              interval:
+                type: int
+                description: Interval for ACL recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          arp_inspection:
+            type: dict
+            description: Recovery settings for ARP inspection errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for ARP inspection errors.
+              interval:
+                type: int
+                description: Interval for ARP inspection recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          bpduguard:
+            type: dict
+            description: Recovery settings for BPDU guard errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for BPDU guard errors.
+              interval:
+                type: int
+                description: Interval for BPDU guard recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          dot1x:
+            type: dict
+            description: Recovery settings for 802.1X errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for 802.1X errors.
+              interval:
+                type: int
+                description: Interval for 802.1X recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          dot1x_coa:
+            type: dict
+            description: Recovery settings for 802.1X Change of Authorization errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for 802.1X Change of Authorization errors.
+              interval:
+                type: int
+                description: Interval for 802.1X Change of Authorization recovery
+                  in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          dot1x_phone_classification:
+            type: dict
+            description: Recovery settings for 802.1X phone classification errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for 802.1X phone classification errors.
+              interval:
+                type: int
+                description: Interval for 802.1X phone classification recovery in
+                  seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          dot1x_session_replace:
+            type: dict
+            description: Recovery settings for 802.1X session replace errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for 802.1X session replace errors.
+              interval:
+                type: int
+                description: Interval for 802.1X session replace recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          error_correction_encoding:
+            type: dict
+            description: Recovery settings for error correction encoding errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for error correction encoding errors.
+              interval:
+                type: int
+                description: Interval for error correction encoding recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          fabric_capacity_low:
+            type: dict
+            description: Recovery settings for fabric capacity low errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for fabric capacity low errors.
+              interval:
+                type: int
+                description: Interval for fabric capacity low recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          hardware_speed_group:
+            type: dict
+            description: Recovery settings for hardware speed group errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for hardware speed group errors.
+              interval:
+                type: int
+                description: Interval for hardware speed group recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          hitless_reload_down:
+            type: dict
+            description: Recovery settings for hitless reload down errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for hitless reload down errors.
+              interval:
+                type: int
+                description: Interval for hitless reload down recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          interface_speed:
+            type: dict
+            description: Recovery settings for interface speed errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for interface speed errors.
+              interval:
+                type: int
+                description: Interval for interface speed recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          internal_error:
+            type: dict
+            description: Recovery settings for internal errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for internal errors.
+              interval:
+                type: int
+                description: Interval for internal error recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          lacp_rate_limit:
+            type: dict
+            description: Recovery settings for LACP rate limit errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for LACP rate limit errors.
+              interval:
+                type: int
+                description: Interval for LACP rate limit recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          link_flap:
+            type: dict
+            description: Recovery settings for link flap errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for link flap errors.
+              interval:
+                type: int
+                description: Interval for link flap recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          no_internal_vlan:
+            type: dict
+            description: Recovery settings for no internal VLAN errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for no internal VLAN errors.
+              interval:
+                type: int
+                description: Interval for no internal VLAN recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          port_breakout:
+            type: dict
+            description: Recovery settings for port breakout errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for port breakout errors.
+              interval:
+                type: int
+                description: Interval for port breakout recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          portchannelguard:
+            type: dict
+            description: Recovery settings for port-channel guard errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for port-channel guard errors.
+              interval:
+                type: int
+                description: Interval for port-channel guard recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          portsec:
+            type: dict
+            description: Recovery settings for port security errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for port security errors.
+              interval:
+                type: int
+                description: Interval for port security recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          speed_misconfigured:
+            type: dict
+            description: Recovery settings for speed misconfigured errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for speed misconfigured errors.
+              interval:
+                type: int
+                description: Interval for speed misconfigured recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          storm_control:
+            type: dict
+            description: Recovery settings for storm control errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for storm control errors.
+              interval:
+                type: int
+                description: Interval for storm control recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          stuck_queue:
+            type: dict
+            description: Recovery settings for stuck queue errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for stuck queue errors.
+              interval:
+                type: int
+                description: Interval for stuck queue recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          switchcard_unreachable:
+            type: dict
+            description: Recovery settings for switchcard unreachable errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for switchcard unreachable errors.
+              interval:
+                type: int
+                description: Interval for switchcard unreachable recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          tap_port_init:
+            type: dict
+            description: Recovery settings for tap port init errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for tap port init errors.
+              interval:
+                type: int
+                description: Interval for tap port init recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          tapagg:
+            type: dict
+            description: Recovery settings for tap aggregation errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for tap aggregation errors.
+              interval:
+                type: int
+                description: Interval for tap aggregation recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          tpid:
+            type: dict
+            description: Recovery settings for TPID errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for TPID errors.
+              interval:
+                type: int
+                description: Interval for TPID recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          transceiver_adapter:
+            type: dict
+            description: Recovery settings for transceiver adapter errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for transceiver adapter errors.
+              interval:
+                type: int
+                description: Interval for transceiver adapter recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          uplink_failure_detection:
+            type: dict
+            description: Recovery settings for uplink failure detection errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for uplink failure detection errors.
+              interval:
+                type: int
+                description: Interval for uplink failure detection recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          xcvr_misconfigured:
+            type: dict
+            description: Recovery settings for transceiver misconfiguration errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for transceiver misconfiguration errors.
+              interval:
+                type: int
+                description: Interval for transceiver misconfiguration recovery in
+                  seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          xcvr_overheat:
+            type: dict
+            description: Recovery settings for transceiver overheat errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for transceiver overheat errors.
+              interval:
+                type: int
+                description: Interval for transceiver overheat recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          xcvr_power_unsupported:
+            type: dict
+            description: Recovery settings for unsupported transceiver power errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for unsupported transceiver power errors.
+              interval:
+                type: int
+                description: Interval for unsupported transceiver power recovery in
+                  seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          xcvr_unsupported:
+            type: dict
+            description: Recovery settings for unsupported transceiver errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for unsupported transceiver errors.
+              interval:
+                type: int
+                description: Interval for unsupported transceiver recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+      recovery_interval:
+        type: int
+        convert_types:
+        - str
+        description: Default recovery interval in seconds applied to all recovery
+          causes. EOS default is 300 seconds.
+        min: 30
+        max: 86400
   ethernet_interfaces:
     type: list
     primary_key: name
@@ -3173,6 +3992,11 @@ keys:
                 required: true
               vrf:
                 type: str
+                description: 'VRF used to reach the DHCP server.
+
+                  If not set, the VRF of the destination matches the VRF of this interface.
+
+                  Use the `default` to reach the DHCP server through the default VRF.'
                 convert_types:
                 - int
               local_interface:
@@ -3207,7 +4031,7 @@ keys:
           description: MAC access list name.
         multicast:
           type: dict
-          description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix
+          description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix
             but not combination of both.
           keys:
             ipv4:
@@ -3220,7 +4044,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet.
+                        description: Standard IPv4 access-list name or IPv4 multicast
+                          group prefix with mask.
                       out:
                         type: bool
                 static:
@@ -3235,7 +4060,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet.
+                        description: Standard IPv6 access-list name or IPv6 multicast
+                          group prefix with mask.
                 static:
                   type: bool
         ospf_network_point_to_point:
@@ -3557,6 +4383,15 @@ keys:
                       valid_values:
                       - forwardable
                       - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                  - str
             sync_message:
               type: dict
               keys:
@@ -3580,6 +4415,12 @@ keys:
               - ipv4
               - ipv6
               - layer2
+            management:
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         profile:
           type: str
           description: Interface profile.
@@ -3718,6 +4559,12 @@ keys:
                   max: 4094
                   convert_types:
                   - str
+                allow_access_list:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Name of the IPv4/IPv6 standard/extended access list
+                    to be applied to unauthenticated traffic.
             host_mode:
               type: dict
               keys:
@@ -3977,6 +4824,12 @@ keys:
                   type: str
                   required: true
                   description: Quality of Service Policy-map name.
+        cpu_traffic_policy_fallback_vrf:
+          type: str
+          description: 'CPU traffic policy name.
+
+            Fallback to the CPU traffic policy applied to the VRF in which this interface
+            is configured.'
         mpls:
           type: dict
           keys:
@@ -6995,6 +7848,26 @@ keys:
       connection_tx_interface_match_source_ip:
         type: bool
         description: Match source interface of the IPsec connection.
+  ip_software_forwarding:
+    type: dict
+    keys:
+      mtu:
+        type: dict
+        keys:
+          size:
+            type: int
+            convert_types:
+            - str
+            min: 68
+            max: 65535
+            description: 'IPv4 software-forwarding MTU threshold in bytes.
+
+              Defaults to 1500 on EOS.'
+          exceed_action_drop:
+            type: bool
+            description: 'Drop IPv4 packets larger than `mtu.size` in software.
+
+              Supported starting EOS 4.36.1F, 4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.'
   ip_ssh_client:
     type: dict
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
@@ -8573,7 +9446,13 @@ keys:
               keys:
                 route_map_inout:
                   type: str
-                  description: Route Map.
+                  description: Route Map applied to both inbound and outbound directions.
+                route_map_in:
+                  type: str
+                  description: Inbound Route Map.
+                route_map_out:
+                  type: str
+                  description: Outbound Route Map.
       unit_profiles:
         type: list
         primary_key: name
@@ -8876,6 +9755,7 @@ keys:
         max: 86400
         convert_types:
         - str
+        description: Idle timeout in minutes.
   management_cvx:
     type: dict
     keys:
@@ -9063,9 +9943,400 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface
             in the final EOS configuration.
+  management_ldap:
+    type: dict
+    keys:
+      server_defaults:
+        type: dict
+        description: Default LDAP options applied to all servers unless overridden
+          per host.
+        keys:
+          base_dn:
+            type: str
+            description: Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
+          rdn_attribute_user:
+            type: str
+            description: Relative Distinguished Name attribute(s) for user lookup
+              (e.g., cn).
+          ssl_profile:
+            type: str
+            description: SSL profile name to secure LDAP connections.
+          authorization_group_policy:
+            type: str
+            description: LDAP group policy name to use for user authorization.
+          timeout:
+            type: int
+            min: 1
+            max: 1000
+            description: Time in seconds (EOS default 30 seconds) to wait for a response
+              from this LDAP server.
+            convert_types:
+            - str
+          search:
+            type: dict
+            description: Credentials used by the switch to perform LDAP search bind
+              operations.
+            keys:
+              username:
+                type: str
+                required: true
+                description: LDAP username (full DN) for search bind operations (e.g.,
+                  cn=ldap-admin,dc=example,dc=com).
+              password:
+                type: str
+                required: true
+                description: Password for the search bind user.
+                convert_types:
+                - int
+              password_type:
+                type: str
+                valid_values:
+                - '0'
+                - '7'
+                - 8a
+                description: 'Password encryption type.
+
+                  - 0 = clear text
+
+                  - 7 = obfuscated
+
+                  - 8a = AES-256-GCM encrypted.
+
+                  Omit to provide an unobfuscated string (EOS will store it obfuscated).'
+                convert_types:
+                - int
+      server_hosts:
+        type: list
+        description: 'List of LDAP server hosts.
+
+          Combination of ''host'', ''port'' and ''vrf'' should be unique.'
+        items:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/management_ldap/keys/server_defaults
+          keys:
+            host:
+              type: str
+              required: true
+              description: Hostname or IP address of the LDAP server.
+            port:
+              type: int
+              description: Port of LDAP server (EOS default 389).
+              min: 0
+              max: 65535
+              convert_types:
+              - str
+            vrf:
+              type: str
+              convert_types:
+              - int
+      group_policies:
+        type: list
+        primary_key: policy
+        description: Named LDAP group policies that map LDAP groups to EOS roles and
+          privilege levels.
+        items:
+          type: dict
+          keys:
+            policy:
+              type: str
+              description: Group policy name. Referenced by server authorization_group_policy.
+            search_filter:
+              type: dict
+              description: LDAP search filter used to enumerate group membership.
+              keys:
+                objectclass:
+                  type: str
+                  required: true
+                  description: LDAP objectclass value to match (e.g., group).
+                attribute:
+                  type: str
+                  required: true
+                  description: LDAP attribute that holds group member DNs (e.g., member).
+            groups:
+              type: list
+              primary_key: name
+              description: List of LDAP group-to-role mappings within this policy.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: LDAP group name.
+                  role:
+                    type: str
+                    required: true
+                    description: EOS role assigned to members of this LDAP group.
+                  privilege:
+                    type: int
+                    min: 0
+                    max: 15
+                    description: Optional privilege level (0-15) assigned alongside
+                      the role.
+                    convert_types:
+                    - str
   management_security:
     type: dict
     keys:
+      auto_certificate:
+        type: dict
+        keys:
+          profiles:
+            type: list
+            primary_key: name
+            description: Profiles for automatic certificate enrollment and renewal.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Name of the certificate profile.
+                digest:
+                  type: str
+                  description: Digest algorithm used to sign the Certificate Signing
+                    Request. Defaults to sha256 on EOS if unset.
+                  valid_values:
+                  - sha256
+                  - sha384
+                  - sha512
+                key:
+                  type: str
+                  description: Filename of the private key in the switch `sslkey:`
+                    directory.
+                protocol_instance_name:
+                  type: str
+                  description: EST protocol profile name.
+                renewal:
+                  description: Renewal time in seconds. EOS default is 7200 seconds
+                    (2 hours).
+                  type: int
+                  min: 1
+                  max: 4294967295
+                  convert_types:
+                  - str
+                parameters:
+                  description: Parameters of the distinguished name and subject alternative
+                    name for the CSR.
+                  type: dict
+                  keys:
+                    distinguished_name:
+                      type: dict
+                      keys:
+                        common_name:
+                          type: str
+                        country:
+                          type: str
+                          description: 'ISO 3166-1 alpha-2 two-letter country code.
+
+                            Example:
+
+                            "US" for United States,
+
+                            "DE" for Germany,
+
+                            "IN" for India.'
+                          pattern: ^[A-Z]{2}$
+                        email:
+                          type: str
+                          pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+                        locality:
+                          type: str
+                        organization:
+                          type: str
+                        organization_unit:
+                          type: str
+                          convert_types:
+                          - int
+                        serial_number:
+                          type: str
+                          description: 'Serial Number for use in subject.
+
+                            system: Use the device''s serial number in subject.'
+                          convert_types:
+                          - int
+                        state:
+                          type: str
+                    subject_alternative_name:
+                      type: dict
+                      keys:
+                        dns:
+                          type: list
+                          items:
+                            type: str
+                        email:
+                          type: list
+                          items:
+                            type: str
+                            pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+                        ip:
+                          type: list
+                          description: IPv4/IPv6 addresses for use in subject-alternative-name.
+                          items:
+                            type: str
+                        uri:
+                          type: list
+                          items:
+                            type: str
+          protocols:
+            type: list
+            primary_key: name
+            description: Protocols for automatic certificate enrollment and renewal.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Name of the EST profile.
+                protocol:
+                  type: str
+                  valid_values:
+                  - est
+                  required: true
+                  description: Protocol to use to communicate with endpoint; only
+                    EST is supported currently.
+                disabled:
+                  type: bool
+                  description: Temporarily disable sending requests to the server.
+                connection_retry:
+                  type: dict
+                  keys:
+                    count:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 4294967295
+                      description: Number of retries to attempt before giving up,
+                        if not configured the number of retries is infinite.
+                    interval:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4294967295
+                      description: Number of seconds between retries.
+                    exponential_backoff:
+                      type: bool
+                      description: Exponentially increase the interval between retries
+                        to a maximum of 24 hours.
+                credentials:
+                  type: dict
+                  keys:
+                    enroll:
+                      type: dict
+                      description: 'Token or username/secret for initial certificate
+                        enrollment.
+
+                        If both token and username/secret are defined, token will
+                        take precedence.
+
+                        '
+                      keys:
+                        token:
+                          type: str
+                          description: JSON Web Token for Bearer Authentication.
+                        token_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                        username:
+                          type: str
+                          description: Username for HTTP Basic Authentication.
+                        secret:
+                          type: str
+                          description: Password for HTTP Basic Authentication.
+                        secret_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                    re_enroll:
+                      type: dict
+                      description: 'Token or username/secret for certificate re-enrollment.
+
+                        If both token and username/secret are defined, token will
+                        take precedence.
+
+                        '
+                      keys:
+                        token:
+                          type: str
+                          description: JSON Web Token for Bearer Authentication.
+                        token_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                        username:
+                          type: str
+                          description: Username for HTTP Basic Authentication.
+                        secret:
+                          type: str
+                          description: Password for HTTP Basic Authentication.
+                        secret_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                server:
+                  type: dict
+                  keys:
+                    ssl_profile:
+                      type: str
+                      description: SSL profile name.
+                    url:
+                      type: str
+                      pattern: https://.+[^/]
+                      description: EST server URL. Must begin with `https://`. Should
+                        not end with `/` (the well-known EST paths are appended automatically).
+                    vrf:
+                      type: str
+                      description: VRF used to reach the EST server. If unset, the
+                        default VRF is used on EOS.
       entropy_sources:
         type: dict
         description: Source of entropy.
@@ -9256,6 +10527,13 @@ keys:
                   type: str
                 key:
                   type: str
+                auto_certificate:
+                  description: 'Automatically managed certificate profile.
+
+                    Mutually exclusive with ''file'' and ''key''.'
+                  type: str
+                  convert_types:
+                  - int
             certificate_revocation_lists:
               type: list
               description: 'List of CRLs (Certificate Revocation List).
@@ -9621,6 +10899,12 @@ keys:
             items:
               type: str
               description: IP or hostname.
+          vrf:
+            type: str
+            description: VRF name.
+          source_interface:
+            type: str
+            description: Source interface name.
   metadata:
     type: dict
     description: 'The data under `metadata` is used for documentation, validation
@@ -9703,6 +10987,11 @@ keys:
             default:
             - Arista Networks
             - Arastra, Inc.
+          ignore_no_transceivers:
+            type: bool
+            description: Accept ports with no transceiver as valid when checking the
+              approved manufacturers.
+            default: true
       cv_tags:
         type: dict
         keys:
@@ -9736,6 +11025,21 @@ keys:
                       value:
                         type: str
                         required: true
+      cv_use_static_config_manifest:
+        type: bool
+        description: 'PREVIEW: This option is marked as "preview", meaning the data
+          models or generated configuration can change at any time.
+
+
+          The device configuration is expected to be deployed via the
+
+          `static_config_manifest` / `cv_static_config_manifest` hierarchy instead
+          of the
+
+          flat "AVD Configurations" layout in the Static Configlet Studio.
+
+          The device will still be verified and onboarded in the Inventory & Topology
+          Studio.'
       cv_pathfinder:
         type: dict
         description: Metadata used for CV Pathfinder visualization on CloudVision.
@@ -10101,6 +11405,19 @@ keys:
                 description: Only validate interfaces defined in the AVD structured
                   configuration for errdisabled state.
                 default: false
+      bgp:
+        type: dict
+        description: Validation settings for BGP.
+        keys:
+          check_tcp_queues:
+            type: bool
+            description: Flag to check if the TCP session queues are empty for all
+              BGP peers.
+          minimum_established_time:
+            type: int
+            convert_types:
+            - str
+            description: Minimum established time (seconds) for all BGP sessions.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -10352,7 +11669,6 @@ keys:
     keys:
       enabled:
         type: bool
-        required: true
         description: Enable monitor layer1.
       logging_mac_fault:
         type: bool
@@ -11273,6 +12589,79 @@ keys:
           shutdown:
             type: bool
             description: Make `shutdown` key false for `no shutdown` cli.
+      label_ranges:
+        description: 'MPLS label ranges configuration.
+
+          Ranges cannot overlap except for `bgp_sr`, `ospf_sr` and `isis_sr`.
+
+          Requires EOS 4.31.1F or later.'
+        type: dict
+        keys:
+          bgp_sr:
+            description: Label range for BGP SR global segment identifiers.
+            type: dict
+            keys:
+              base:
+                type: int
+                required: true
+                convert_types:
+                - str
+                description: First label of range.
+                min: 16
+                max: 1048575
+              size:
+                type: int
+                required: true
+                convert_types:
+                - str
+                description: Size of range.
+                min: 0
+                max: 1048560
+          dynamic:
+            description: Label range for dynamic assignment.
+            type: dict
+            keys:
+              base:
+                type: int
+                required: true
+                convert_types:
+                - str
+                description: First label of range.
+                min: 16
+                max: 1048575
+              size:
+                type: int
+                required: true
+                convert_types:
+                - str
+                description: Size of range.
+                min: 131072
+                max: 1048560
+          isis_sr:
+            description: Label range for IS-IS SR global segment identifiers.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          l2evpn:
+            description: Label range for L2 EVPN routes.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          l2evpn_ethernet_segment:
+            description: Labels reserved for L2 EVPN A-D per ES routes for split-horizon
+              filtering.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          ospf_sr:
+            description: Label range for OSPF Segment Routing Global Block (SRGB).
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          srlb:
+            description: Label range for SR local segment identifiers.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          static:
+            description: Label range for static MPLS routes.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
       tunnel:
         description: Configure MPLS tunnel.
         type: dict
@@ -11353,7 +12742,17 @@ keys:
               - str
             local_interface:
               type: str
-              description: Source interface.
+              description: 'Source interface.
+
+                Mutually exclusive with ''source_address''. Takes precedence if both
+                are set.'
+            source_address:
+              type: str
+              description: 'Source IPv4/IPv6 address. If ''name'' is an IP address,
+                ''source_address'' must use the same IP version.
+
+                Mutually exclusive with ''local_interface''. ''local_interface'' takes
+                precedence if both are set.'
             maxpoll:
               type: int
               min: 3
@@ -11381,6 +12780,7 @@ keys:
               deprecation:
                 warning: true
                 removed: true
+                remove_in_version: 6.0.0
                 new_key: ntp.vrf
       vrf:
         type: str
@@ -11912,7 +13312,7 @@ keys:
                 type: str
                 valid_values:
                 - ingress
-                - egress
+                - fabric-egress
           mdb_profile:
             type: str
             description: 'Sand platforms MDB Profile configuration. Note: l3-xxxl
@@ -12325,6 +13725,9 @@ keys:
             "l2 mru" CLI.
 
             '
+        loop_protection:
+          type: bool
+          description: Enable/disable loop protection.
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
@@ -12342,6 +13745,9 @@ keys:
                 ipv4:
                   type: bool
                   description: Enable/disable address locking for IPv4.
+                ipv6:
+                  type: bool
+                  description: Enable/disable address locking for IPv6.
         encapsulation_dot1q:
           type: dict
           keys:
@@ -12634,6 +14040,12 @@ keys:
                   type: str
                   required: true
                   description: Quality of Service Policy-map name.
+        cpu_traffic_policy_fallback_vrf:
+          type: str
+          description: 'CPU traffic policy name.
+
+            Fallback to the CPU traffic policy applied to the VRF in which this interface
+            is configured.'
         mpls:
           type: dict
           keys:
@@ -12905,6 +14317,15 @@ keys:
                       valid_values:
                       - forwardable
                       - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                  - str
             sync_message:
               type: dict
               keys:
@@ -12938,6 +14359,12 @@ keys:
 
                 Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
                 devices.'
+            management:
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".
@@ -13098,6 +14525,47 @@ keys:
                       min: 1
                       max: 65535
                       description: PIM hello interval in seconds.
+        multicast:
+          type: dict
+          description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix
+            but not combination of both.
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                boundaries:
+                  type: list
+                  primary_key: boundary
+                  items:
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        description: Standard IPv4 access-list name or IPv4 multicast
+                          group prefix with mask.
+                      out:
+                        type: bool
+                        description: Restrict multicast routing to and from the interface
+                          for group.
+                static:
+                  type: bool
+            ipv6:
+              type: dict
+              description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix
+                but not combination of both.
+              keys:
+                boundaries:
+                  type: list
+                  primary_key: boundary
+                  items:
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        description: Standard IPv6 access-list name or IPv6 multicast
+                          group prefix with mask.
+                static:
+                  type: bool
         service_profile:
           type: str
           description: QOS profile.
@@ -14155,6 +15623,37 @@ keys:
                   chip_based:
                     type: bool
                     description: Allow non-ect chip-based.
+              global_buffer:
+                type: dict
+                description: Set global shared memory thresholds.
+                keys:
+                  units:
+                    required: true
+                    type: str
+                    valid_values:
+                    - segments
+                    - bytes
+                    - kbytes
+                    - mbytes
+                    description: 'Units to be used for the threshold values.
+
+                      Threshold values depend on the hardware platform.
+
+                      '
+                  min:
+                    type: int
+                    required: true
+                    min: 1
+                    convert_types:
+                    - str
+                    description: Random-detect ECN minimum-threshold.
+                  max:
+                    type: int
+                    required: true
+                    min: 1
+                    convert_types:
+                    - str
+                    description: Random-detect ECN maximum-threshold.
       tx_queue:
         type: dict
         description: Global transmit queue settings.
@@ -14951,9 +16450,18 @@ keys:
               - str
             key:
               type: str
-              description: 'Encrypted key - only type 7 supported.
+              description: 'Encrypted key.
 
                 When TLS is configured, `key` is ignored.'
+            key_type:
+              type: str
+              convert_types:
+              - int
+              valid_values:
+              - '0'
+              - '7'
+              - 8a
+              default: '7'
       vrfs:
         type: list
         primary_key: name
@@ -15581,6 +17089,22 @@ keys:
       bgp:
         type: dict
         keys:
+          convergence:
+            type: dict
+            keys:
+              slow_peer_time:
+                type: int
+                min: 1
+                max: 3600
+                description: Maximum amount of time to wait in seconds before declaring
+                  initial BGP convergence for peers that do not establish session
+                  within a reasonable time.
+              time:
+                type: int
+                min: 1
+                max: 3600
+                description: Maximum amount of time to wait in seconds before declaring
+                  initial BGP convergence.
           default:
             type: dict
             keys:
@@ -15820,6 +17344,9 @@ keys:
                 route_map:
                   type: str
                   description: Route-map name.
+            enforce_first_as:
+              type: bool
+              description: Enforce the first AS in eBGP updates. EOS default is true.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -15844,6 +17371,9 @@ keys:
               - int
             maximum_routes_warning_only:
               type: bool
+            maximum_accepted_routes:
+              type: dict
+              $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
             missing_policy:
               type: dict
               description: Missing policy configuration for all address-families.
@@ -15970,6 +17500,22 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
+            maximum_advertised_routes:
+              type: int
+              description: Maximum number of advertised routes (0 means unlimited).
+              min: 0
+              max: 4294967294
+            maximum_advertised_routes_warning_limit:
+              type: str
+              convert_types:
+              - int
+              description: 'Maximum number of advertised routes ("<0-4294967294>")
+                after which a warning is issued (0 means never warn) or
+
+                Percentage of maximum number of routes at which to warn ("<1-100>
+                percent").
+
+                '
       neighbors:
         type: list
         primary_key: ip_address
@@ -16099,6 +17645,9 @@ keys:
                   type: bool
                 route_map:
                   type: str
+            enforce_first_as:
+              type: bool
+              description: Enforce the first AS in eBGP updates. EOS default is true.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -16123,6 +17672,9 @@ keys:
               - int
             maximum_routes_warning_only:
               type: bool
+            maximum_accepted_routes:
+              type: dict
+              $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
             missing_policy:
               type: dict
               description: Missing policy configuration for all address-families.
@@ -16255,6 +17807,22 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
+            maximum_advertised_routes:
+              type: int
+              description: Maximum number of advertised routes (0 means unlimited).
+              min: 0
+              max: 4294967294
+            maximum_advertised_routes_warning_limit:
+              type: str
+              convert_types:
+              - int
+              description: 'Maximum number of advertised routes ("<0-4294967294>")
+                after which a warning is issued (0 means never warn) or
+
+                Percentage of maximum number of routes at which to warn ("<1-100>
+                percent").
+
+                '
       neighbor_interfaces:
         type: list
         primary_key: name
@@ -17180,6 +18748,25 @@ keys:
                           required: true
                         originate:
                           type: bool
+                maximum_advertised_routes:
+                  type: int
+                  description: Maximum number of advertised routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                maximum_advertised_routes_warning_limit:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
+
+                    Percentage of maximum number of routes at which to warn ("<1-100>
+                    percent").
+
+                    '
+                maximum_accepted_routes:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
           neighbors:
             type: list
             primary_key: ip_address
@@ -17246,6 +18833,25 @@ keys:
                             capability.
                         originate:
                           type: bool
+                maximum_advertised_routes:
+                  type: int
+                  description: Maximum number of advertised routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                maximum_advertised_routes_warning_limit:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
+
+                    Percentage of maximum number of routes at which to warn ("<1-100>
+                    percent").
+
+                    '
+                maximum_accepted_routes:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -17482,6 +19088,11 @@ keys:
 
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes
                       precedence.'
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           redistribute_routes:
             type: list
             deprecation:
@@ -17601,7 +19212,7 @@ keys:
                       type: str
                 maximum_advertised_routes:
                   type: int
-                  description: Maximum number of routes (0 means unlimited).
+                  description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
                   convert_types:
@@ -17610,8 +19221,8 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'Maximum number of routes after which a warning is
-                    issued (0 means never warn) or
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
 
                     Percentage of maximum number of routes at which to warn ("<1-100>
                     percent").
@@ -17729,7 +19340,7 @@ keys:
                       type: str
                 maximum_advertised_routes:
                   type: int
-                  description: Maximum number of routes (0 means unlimited).
+                  description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
                   convert_types:
@@ -17738,8 +19349,8 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'Maximum number of routes after which a warning is
-                    issued (0 means never warn) or
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
 
                     Percentage of maximum number of routes at which to warn ("<1-100>
                     percent").
@@ -17852,6 +19463,11 @@ keys:
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes
                     precedence.'
                   type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           next_hops:
             type: list
             primary_key: ip_address
@@ -18259,12 +19875,33 @@ keys:
                 default_originate:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
                     always:
                       type: bool
                       description: Always advertise a default route to this peer.
                     route_map:
                       type: str
                       description: Route-map name.
+                maximum_advertised_routes:
+                  type: int
+                  description: Maximum number of advertised routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                maximum_advertised_routes_warning_limit:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
+
+                    Percentage of maximum number of routes at which to warn ("<1-100>
+                    percent").
+
+                    '
+                maximum_accepted_routes:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
           neighbors:
             type: list
             primary_key: ip_address
@@ -18303,6 +19940,17 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                default_originate:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    always:
+                      type: bool
+                      description: Always advertise a default route to this peer.
+                    route_map:
+                      type: str
+                      description: Route-map name.
                 additional_paths:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
@@ -18311,6 +19959,25 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                maximum_advertised_routes:
+                  type: int
+                  description: Maximum number of advertised routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                maximum_advertised_routes_warning_limit:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Maximum number of advertised routes ("<0-4294967294>")
+                    after which a warning is issued (0 means never warn) or
+
+                    Percentage of maximum number of routes at which to warn ("<1-100>
+                    percent").
+
+                    '
+                maximum_accepted_routes:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -18491,6 +20158,11 @@ keys:
 
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes
                       precedence.'
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           redistribute_routes:
             type: list
             deprecation:
@@ -19079,6 +20751,11 @@ keys:
             keys:
               source_interface:
                 type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
       address_family_vpn_ipv6:
         type: dict
         keys:
@@ -19185,6 +20862,11 @@ keys:
             keys:
               source_interface:
                 type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
       vrfs:
         type: list
         primary_key: name
@@ -19411,6 +21093,12 @@ keys:
                   min: 1
                   max: 3600
                   description: Number of seconds.
+            no_graceful_restart:
+              type: bool
+              description: 'Disables graceful-restart for this VRF. Mutually exclusive
+                with `graceful_restart`. `graceful_restart` takes precedence.
+
+                '
             networks:
               type: list
               primary_key: prefix
@@ -19647,6 +21335,9 @@ keys:
                       '
                   maximum_routes_warning_only:
                     type: bool
+                  maximum_accepted_routes:
+                    type: dict
+                    $ref: eos_cli_config_gen#/$defs/maximum_accepted_routes
                   allowas_in:
                     type: dict
                     keys:
@@ -19668,6 +21359,10 @@ keys:
                         type: bool
                       route_map:
                         type: str
+                  enforce_first_as:
+                    type: bool
+                    description: Enforce the first AS in eBGP updates. EOS default
+                      is true.
                   update_source:
                     type: str
                   route_map_in:
@@ -22476,10 +24171,237 @@ keys:
               type: bool
             mpls_ldp_sync_default:
               type: bool
+            segment_routing_mpls:
+              type: dict
+              description: OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or
+                later.
+              keys:
+                enabled:
+                  type: bool
+                  required: true
+                  description: 'Enable the configuration mode.
+
+                    This does not control the shutdown command.'
+                shutdown:
+                  type: bool
+                prefix_segments:
+                  type: list
+                  primary_key: prefix
+                  unique_keys:
+                  - index
+                  description: Prefix Segment Identifier (Prefix-SID) configuration.
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv4 prefix (e.g. 192.0.2.1/32).
+                      index:
+                        type: int
+                        required: true
+                        convert_types:
+                        - str
+                        description: SID index value.
+                        min: 0
+                        max: 65535
+                adjacency_segment_allocation:
+                  type: str
+                  valid_values:
+                  - all-interfaces
+                  - none
+                  - sr-peers
+                  description: Adjacency segment allocation mode.
             eos_cli:
               type: str
               description: Multiline EOS CLI rendered directly on the Router OSPF
                 process ID in the final EOS configuration.
+  router_ospfv3:
+    type: dict
+    display_name: Router OSPFv3 Configuration
+    description: 'Mutually exclusive with ''ipv6_router_ospf'' on EOS.
+
+      Use only one style across all VRFs and instances.'
+    keys:
+      router_id:
+        type: str
+        description: 32-bit OSPF router ID as an IP address.
+      passive_interface_default:
+        type: bool
+      auto_cost_reference_bandwidth:
+        type: int
+        convert_types:
+        - str
+        min: 1
+        max: 4294967
+        description: Reference bandwidth in Mbps.
+      address_family_ipv4:
+        type: dict
+        description: 'Address family IPv4 configuration.
+
+          Common configurations defined at the router-level and address-family level
+          are mutually exclusive.
+
+          If both are provided, the address-family level configuration takes precedence.'
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Activate the address family.
+          router_id:
+            type: str
+            description: 32-bit OSPF router ID as an IP address.
+          passive_interface_default:
+            type: bool
+          auto_cost_reference_bandwidth:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967
+            description: Reference bandwidth in Mbps.
+          redistribute:
+            type: dict
+            description: Redistribute routes into OSPFv3.
+            keys:
+              bgp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              connected:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              isis:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  level:
+                    type: str
+                    valid_values:
+                    - level-1
+                    - level-2
+                    - level-1-2
+                  route_map:
+                    type: str
+                  include_leaked:
+                    type: bool
+              ospfv3:
+                type: dict
+                keys:
+                  leaked:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                        description: Redistribute OSPFv3 leaked routes.
+                      match_internal:
+                        type: bool
+                        description: Redistribute internal OSPFv3 leaked routes.
+                      route_map:
+                        type: str
+                  leaked_match_external:
+                    type: dict
+                    description: Redistribute external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                  leaked_match_nssa_external:
+                    type: dict
+                    description: Redistribute NSSA external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+      address_family_ipv6:
+        type: dict
+        description: 'Address family IPv6 configuration.
+
+          Common configurations defined at the router-level and address-family level
+          are mutually exclusive.
+
+          If both are provided, the address-family level configuration takes precedence.'
+        $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4
+        keys:
+          redistribute:
+            type: dict
+            description: Redistribute routes into OSPFv3.
+            keys:
+              dhcp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: 'VRF name.
+
+                VRF ''default'' must be configured directly under ''router_ospfv3''.'
+              pattern: (?!default$).+
+            router_id:
+              type: str
+              description: 32-bit OSPF router ID as an IP address.
+            passive_interface_default:
+              type: bool
+            auto_cost_reference_bandwidth:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4294967
+              description: Reference bandwidth in Mbps.
+            address_family_ipv4:
+              type: dict
+              $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4
+            address_family_ipv6:
+              type: dict
+              $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv6
+            eos_cli:
+              type: str
+              description: Multiline EOS CLI rendered directly on this VRF OSPFv3
+                instance.
+      eos_cli:
+        type: str
+        description: Multiline EOS CLI rendered directly on the default VRF OSPFv3
+          instance.
   router_path_selection:
     type: dict
     description: Dynamic path selection configuration.
@@ -22804,6 +24726,10 @@ keys:
           make_before_break:
             type: bool
             description: Enable/Disable Make-Before-Break.
+          message_hello_address_secondary_ipv6:
+            type: bool
+            description: Include the IPv6 address in PIM hellos for PIM IPv4 over
+              IPv6 next-hops.
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.
@@ -23310,6 +25236,103 @@ keys:
                 be less than the value of B) formats. Example. 30-34,55,RED
               convert_types:
               - int
+  schedule:
+    type: dict
+    description: Configuration of EOS scheduled jobs.
+    keys:
+      config:
+        type: dict
+        description: Global schedule configuration.
+        keys:
+          max_concurrent_jobs:
+            type: int
+            min: 1
+            max: 4
+            convert_types:
+            - str
+            description: Maximum number of concurrent scheduled jobs.
+          prepend_hostname_logfile:
+            type: bool
+            description: Prepend hostname to the log file name.
+      jobs:
+        type: list
+        primary_key: name
+        description: List of schedule jobs.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Schedule job name.
+              pattern: (?!config)(?!summary$)[a-z0-9_-]+
+            interval:
+              type: int
+              min: 2
+              max: 1440
+              convert_types:
+              - str
+              description: 'Interval in minutes. Used as the standalone interval when
+                `at` is not set,
+
+                or as the recurring interval when combined with `at` and `at.once`
+                is not True.'
+            at:
+              type: dict
+              description: Schedule job at a specific time on a specific date.
+              keys:
+                time:
+                  required: true
+                  type: str
+                  description: Start time in HH:MM:SS format.
+                date:
+                  required: true
+                  type: str
+                  description: 'Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd.'
+                once:
+                  type: bool
+                  description: 'Run the command a single time at the given time/date.
+
+                    Mutually exclusive with `interval`. `once` takes precedence if
+                    both are set.'
+            timeout:
+              type: int
+              min: 1
+              max: 480
+              convert_types:
+              - str
+              description: Job timeout in minutes for CLI command execution. Must
+                be less than the job interval.
+            max_log_files:
+              type: int
+              required: true
+              min: 0
+              max: 10000
+              convert_types:
+              - str
+              description: Maximum number of log files to retain.
+            logging_verbose:
+              type: bool
+              description: Enable verbose logging.
+            loglocation:
+              type: str
+              description: Log file location path (e.g. flash:/schedule/logs).
+            max_total_size:
+              type: str
+              description: 'Maximum total size of log files (e.g. 110m, 1g).
+
+                Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes),
+                g (gigabytes).'
+            compression:
+              type: str
+              valid_values:
+              - gzip
+              - bzip2
+              - xz
+              description: Compression algorithm for log files.
+            command:
+              type: str
+              required: true
+              description: EOS CLI command to execute.
   service_routing_configuration_bgp:
     type: dict
     keys:
@@ -23506,6 +25529,23 @@ keys:
                   type: int
                   convert_types:
                   - str
+      extensions:
+        type: list
+        primary_key: oid
+        items:
+          type: dict
+          keys:
+            oid:
+              type: str
+              description: Object Identifier (OID) for the SNMP extension.
+              pattern: \.[0-9]+(\.[0-9]+)*
+            path:
+              type: str
+              required: true
+              description: Path to the script or MIB file on the device (e.g., flash:/script.py).
+            one_shot:
+              type: bool
+              description: Enable one-shot mode for the extension script.
       contact:
         type: str
         description: SNMP contact.
@@ -23649,27 +25689,30 @@ keys:
           keys:
             name:
               type: str
-              description: Username.
+              description: 'SNMP username.
+
+                Maximum length is 32 characters.'
             group:
               type: str
               description: Group name.
             remote_address:
               type: str
-              description: 'Hostname or ip of remote engine.
+              description: 'Hostname or IP address of the remote SNMP engine.
 
-                The remote_address and udp_port are used for remote users.
+                When set, this user is rendered as a remote SNMPv3 user and optional
+                `udp_port` is appended.
 
-                A `snmp_server.engine_ids.remotes` entry with a matching address is
-                required when this is set
-
-                and `localized` is not set.
+                If `localized` is not set, a matching `snmp_server.engine_ids.remotes[].address`
+                entry is required.
 
                 '
             udp_port:
               type: int
               convert_types:
               - str
-              description: 'udp_port will not be used if no remote_address is configured.
+              description: 'UDP port of the remote SNMP engine.
+
+                Only used when `remote_address` is set.
 
                 '
             version:
@@ -23682,29 +25725,112 @@ keys:
               type: str
               convert_types:
               - int
-              description: 'Engine ID in hexadecimal for localizing auth and/or priv.
+              description: 'Engine ID in hexadecimal.
+
+                When set, auth and priv values are interpreted as localized key material
+
+                (RFC 2574, engine-ID specific) instead of cleartext passphrases.
+
+                Required to use `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
 
                 '
             auth:
               type: str
               description: 'Hash algorithm.
 
+                Required for rendering any authentication or privacy credential.
+
                 '
+            auth_key_type:
+              type: str
+              valid_values:
+              - '0'
+              - '7'
+              description: 'Authentication key type.
+
+                EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M,
+                and 4.36.2F.
+
+                Used with `auth_key`.
+
+                Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key`
+                to be set.
+
+                - `0`: Key string is not encrypted.
+
+                - `7`: Type-7 encrypted (HIDDEN) key.
+
+                '
+            auth_key:
+              type: str
+              description: 'Authentication key.
+
+                Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type`
+                to be set.
+
+                Takes precedence over `auth_passphrase` when both are set.'
             auth_passphrase:
               type: str
               description: 'Hashed authentication passphrase if localized is used
                 else cleartext authentication passphrase.
+
+                Rendered only when `auth` is set and `version` is `v3`.
+
+                Ignored when `auth_key_type` and `auth_key` are set with `localized`.
 
                 '
             priv:
               type: str
               description: 'Encryption algorithm.
 
+                Required for rendering any privacy credential.
+
                 '
+            priv_key_type:
+              type: str
+              valid_values:
+              - '0'
+              - '7'
+              description: 'Privacy key type.
+
+                EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M,
+                and 4.36.2F.
+
+                Used with `priv_key`.
+
+                Requires `localized` and `priv_key` to be set.
+
+                Rendered only when `priv`, `auth_key_type`, and `auth_key` are also
+                set.
+
+                - `0`: Key string is not encrypted.
+
+                - `7`: Type-7 encrypted (HIDDEN) key.
+
+                '
+            priv_key:
+              type: str
+              description: 'Privacy key.
+
+                Requires `localized` and `priv_key_type` to be set.
+
+                Takes precedence over `priv_passphrase` when both are set.
+
+                Rendered only when `priv`, `auth_key_type`, and `auth_key` are also
+                set.
+
+                Ignored when authentication is rendered from `auth_passphrase`.'
             priv_passphrase:
               type: str
               description: 'Hashed privacy passphrase if localized is used else cleartext
                 privacy passphrase.
+
+                Rendered only when `priv` is set and authentication is rendered from
+                `auth_passphrase`.
+
+                Ignored when `priv_key_type` and `priv_key` are set with `localized`.
+
+                Ignored when authentication is rendered from `auth_key_type`/`auth_key`.
 
                 '
       hosts:
@@ -23926,6 +26052,9 @@ keys:
             required: true
             convert_types:
             - str
+      loop_guard_default:
+        description: Enable loopguard by default on all ports.
+        type: bool
   standard_access_lists:
     type: list
     primary_key: name
@@ -24202,6 +26331,9 @@ keys:
             valid_values:
             - cos
             - dscp
+  switchport_ethernet_llc_validation:
+    type: bool
+    description: Enable Ethernet LLC header validation.
   switchport_port_security:
     type: dict
     keys:
@@ -24216,6 +26348,9 @@ keys:
         type: bool
       violation_protect_chip_based:
         type: bool
+  switchport_vlan_tag_validation:
+    type: bool
+    description: Enable VLAN tag validation.
   sync_e:
     type: dict
     keys:
@@ -24288,6 +26423,13 @@ keys:
             valid_values:
             - error
             - warn
+      mac_address:
+        type: str
+        description: Unicast (the least-significant bit of the first octet must be
+          zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal
+          digit).
+        convert_to_lower_case: true
+        pattern: '[0-9a-f][02468ace](:[0-9a-f]{2}){5}'
   tacacs_servers:
     type: dict
     keys:
@@ -24467,6 +26609,28 @@ keys:
   traffic_policies:
     type: dict
     keys:
+      cpu_traffic_policy:
+        type: dict
+        keys:
+          vrf_all:
+            type: dict
+            keys:
+              name:
+                type: str
+                convert_types:
+                - int
+                required: true
+                description: Traffic policy name for all VRFs.
+              enforcement_management:
+                type: bool
+                description: Enforce CPU traffic-policy on management ports.
+          enforcement_ip_ttl_expired:
+            type: bool
+            description: Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets.
+          fragment_implicit_permit_disabled:
+            type: bool
+            description: Disable the addition of implicit rules that allow fragmented
+              packets for Layer 4 rules.
       vrfs:
         type: list
         primary_key: name
@@ -25066,7 +27230,11 @@ keys:
           type: bool
         ip_address:
           type: str
-          description: IPv4_address/Mask.
+          description: IPv4_address/Mask or dhcp.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP. This is only applicable
+            when `ip_address` is configured as 'dhcp'.
         ip_address_secondaries:
           type: list
           items:
@@ -25182,6 +27350,10 @@ keys:
         ip_nat:
           type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
+          keys:
+            service_profile:
+              type: str
+              description: NAT interface profile.
         dhcp_server_ipv4:
           type: bool
           description: Enable IPv4 DHCP server.
@@ -25313,6 +27485,11 @@ keys:
                 description: DHCP server's IPv6 address.
               vrf:
                 type: str
+                description: 'VRF used to reach the DHCP server.
+
+                  If not set, the VRF of the destination matches the VRF of this interface.
+
+                  Use the `default` to reach the DHCP server through the default VRF.'
                 convert_types:
                 - int
               local_interface:
@@ -25362,7 +27539,7 @@ keys:
               keys:
                 boundaries:
                   type: list
-                  description: Boundaries can be either 1 ACL or a list of multicast
+                  description: Boundaries can be either list of ACLs or multicast
                     IP address_range(s)/prefix but not combination of both.
                   primary_key: boundary
                   items:
@@ -25370,8 +27547,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: IPv4 access-list name or IPv4 multicast group
-                          prefix with mask.
+                        description: Standard IPv4 access-list name or IPv4 multicast
+                          group prefix with mask.
                         convert_types:
                         - int
                       out:
@@ -25395,7 +27572,7 @@ keys:
               keys:
                 boundaries:
                   type: list
-                  description: Boundaries can be either 1 ACL or a list of multicast
+                  description: Boundaries can be either list of ACLs or multicast
                     IP address_range(s)/prefix but not combination of both.
                   primary_key: boundary
                   items:
@@ -25403,8 +27580,8 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: IPv6 access-list name or IPv6 multicast group
-                          prefix with mask.
+                        description: Standard IPv6 access-list name or IPv6 multicast
+                          group prefix with mask.
                         convert_types:
                         - int
                 source_route_export:
@@ -25429,7 +27606,10 @@ keys:
           - int
         ipv6_ospf:
           type: dict
-          description: IPv6 OSPF configuration for the interface.
+          description: 'IPv6 OSPF configuration for the interface. Mutually exclusive
+            with ''ospfv3''. Ignored when ''ospfv3'' is also configured.
+
+            Use only one style throughout the configuration.'
           keys:
             process:
               type: dict
@@ -25449,6 +27629,38 @@ keys:
                   convert_types:
                   - int
                   required: true
+            network_point_to_point:
+              type: bool
+        ospfv3:
+          type: dict
+          description: 'Mutually exclusive with ''ipv6_ospf'' and takes precedence
+            over it.
+
+            Use only one style throughout the configuration.'
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  convert_types:
+                  - int
+                  required: true
+                  description: 'OSPF area ID in IPv4 address or decimal format (range:
+                    0 to 4294967295).'
+            ipv6:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  convert_types:
+                  - int
+                  required: true
+                  description: 'OSPF area ID in IPv4 address or decimal format (range:
+                    0 to 4294967295).'
+            passive_interface:
+              type: bool
+              description: Include interface but without actively running OSPF.
             network_point_to_point:
               type: bool
         ospf_cost:
@@ -25562,6 +27774,14 @@ keys:
           convert_types:
           - str
         isis_network_point_to_point:
+          type: bool
+        isis_circuit_type:
+          type: str
+          valid_values:
+          - level-1-2
+          - level-1
+          - level-2
+        isis_hello_padding:
           type: bool
         isis_authentication:
           type: dict
@@ -25756,6 +27976,32 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4.
+              min: 64
+              max: 65495
+              convert_types:
+              - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6.
+              min: 64
+              max: 65475
+              convert_types:
+              - str
+            direction:
+              type: str
+              valid_values:
+              - ingress
+              - egress
+              description: 'Optional direction (''ingress'', ''egress'')  for tcp
+                mss ceiling.
+
+                '
         traffic_policy:
           type: dict
           keys:
@@ -25765,6 +28011,22 @@ keys:
             output:
               type: str
               description: Egress traffic policy.
+        mpls:
+          type: dict
+          keys:
+            ip:
+              type: bool
+              description: Enable MPLS traffic on interface if MPLS enabled globally.
+            ldp:
+              type: dict
+              keys:
+                interface:
+                  type: bool
+                  description: Enable LDP on this interface.
+                igp_sync:
+                  type: bool
+                  description: Tell the IGP to keep a link at max metric until LDP
+                    labels are ready.
         ntp_serve:
           type: bool
           description: Enable/disable serving NTP to clients.
@@ -25936,6 +28198,15 @@ keys:
           - int
         description:
           type: str
+        rd:
+          type: str
+          description: 'Renders Route Distinguisher under ''vrf instance''.
+
+            This is deprecated in EOS; configure the Route Distinguisher under ''router
+            bgp'' VRF submode instead using `router_bgp.vrfs[].rd`.
+
+            This key is kept only to support existing/legacy device configurations
+            and is intentionally not shown in the generated device documentation.'
         ip_routing:
           type: bool
         ipv6_routing:
@@ -25954,6 +28225,20 @@ keys:
               description: Key only used for documentation or validation purposes.
               items:
                 type: str
+  vrrp:
+    type: dict
+    description: Global VRRP configuration.
+    keys:
+      ipv4:
+        type: dict
+        description: VRRP IPv4 configuration.
+        keys:
+          authentication_anti_replay:
+            type: bool
+            description: 'Enable anti-replay validation for authenticated IPv4 VRRPv2
+              advertisements.
+
+              Supported in EOS starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.'
   vxlan_interface:
     type: dict
     keys:
@@ -26229,9 +28514,20 @@ $defs:
         items:
           type: str
           description: TCP Flag Name.
+      copy_captive_portal:
+        type: bool
+        description: 'Copy packet to CPU queue for dot1x captive-portal.
+
+          Only supported with deny entries.
+
+          For deny entries, mutually exclusive with `log`. `copy_captive_portal` takes
+          precedence.'
       log:
         type: bool
-        description: Log matches against this rule.
+        description: 'Log matches against this rule.
+
+          For deny entries, mutually exclusive with `copy_captive_portal`. `copy_captive_portal`
+          takes precedence.'
       icmp_type:
         type: str
         convert_types:
@@ -26389,6 +28685,34 @@ $defs:
         - str
         min: 2
         max: 64
+  maximum_accepted_routes:
+    type: dict
+    keys:
+      limit:
+        type: int
+        description: Maximum number of routes (0 means unlimited) that can be accepted
+          from the BGP neighbor.
+        min: 0
+        max: 4294967294
+        required: true
+      warning_limit:
+        type: dict
+        description: Warning threshold for the maximum number of accepted routes.
+        keys:
+          count:
+            type: int
+            description: Maximum number of routes after which a warning is issued
+              (0 means never warn). Mutually exclusive with `percent`. `count` takes
+              precedence.
+            min: 0
+            max: 4294967294
+          percent:
+            type: int
+            description: Percentage of the maximum number of accepted routes at which
+              a warning is issued. Mutually exclusive with `count`. `count` takes
+              precedence.
+            min: 1
+            max: 100
   subnets:
     type: list
     primary_key: subnet
@@ -26705,6 +29029,29 @@ $defs:
               route_preference:
                 type: bool
                 description: Accept route preference from received Router Advertisements.
+          dns_servers:
+            type: list
+            primary_key: address
+            min_length: 1
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  description: IPv6 address of DNS server.
+                lifetime:
+                  type: int
+                  description: 'Specifies the lifetime period for this server in seconds.
+
+                    This value overrides lifetime value set by `dns_servers_lifetime`
+                    for this server.'
+                  min: 0
+                  max: 4294967295
+          dns_servers_lifetime:
+            type: int
+            description: Router Advertisement DNS server lifetime value in seconds.
+            min: 0
+            max: 4294967295
       managed_config_flag:
         type: bool
         description: Set the "Managed Address Configuration" (M) flag in Router Advertisements.

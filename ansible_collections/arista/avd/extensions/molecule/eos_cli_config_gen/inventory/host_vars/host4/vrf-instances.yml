@@ -1,0 +1,4 @@
+---
+vrfs:
+  - name: FUTURE_IPV4
+    ip_routing: true

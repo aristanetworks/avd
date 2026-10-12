@@ -1,0 +1,59 @@
+---
+# Minimum config to only test the specific feature.
+node_type_keys:
+  - key: pe
+    type: pe
+    mpls_lsr: true
+    default_mpls_overlay_role: client
+    default_evpn_role: client
+    network_services:
+      l1: true
+      l2: true
+      l3: true
+    default_overlay_routing_protocol: ibgp
+    default_overlay_address_families: [evpn]
+    default_evpn_encapsulation: mpls
+
+platform_settings:
+  - platforms:
+      - PLATFORM_WITHOUT_SUBINTERFACE_MONITOR_SESSION
+    feature_support:
+      subinterface_monitor_session: false
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+
+pe:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+  nodes:
+    - name: network-services-monitor-session-subinterface-platform-unsupported
+      id: 42
+      platform: PLATFORM_WITHOUT_SUBINTERFACE_MONITOR_SESSION
+
+type: pe
+
+tenants:
+  - name: TENANT_A
+    vrfs:
+      - name: VRF_A
+        vrf_id: 10
+        l3_interfaces:
+          - description: SITE_A
+            enabled: true
+            interfaces:
+              - Ethernet6.101
+            ip_addresses:
+              - 192.168.48.4/31
+            nodes:
+              - network-services-monitor-session-subinterface-platform-unsupported
+            monitor_sessions:
+              - name: SESSION-ON-SUBINTERFACE-UNSUPPORTED-PLATFORM
+                role: source
+                source_settings:
+                  direction: rx
+
+expected_error_message: >-
+  Monitor session on sub-interfaces is not supported on this platform.
+  Got monitor session on interface 'Ethernet6.101' under tenants[name=TENANT_A].vrfs[name=VRF_A].l3_interfaces[0].

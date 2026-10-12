@@ -25,6 +25,7 @@ keys:
               - "group tacacs+ local"
               - "group MYGROUP none"
               - "group radius group MYGROUP local"
+              - "group ldap"
       config_commands:
         type: bool
       serial_console:

@@ -1,0 +1,115 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: monitor-combined-settings
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+logging:
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
+    hosts:
+    - name: syslog.example.com
+      protocol: udp
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.160/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.160/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 1.1.10.52
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+monitor_connectivity:
+  interval: 10
+  interface_sets:
+  - name: SET_LOOPBACK0
+    interfaces: Loopback0
+  - name: SET_LOOPBACK1
+    interfaces: Loopback1
+  - name: SET_LOOPBACK2
+    interfaces: Loopback2
+  address_only: false
+  hosts:
+  - name: INTERNET_CHECK
+    ip: 8.8.4.4
+    local_interfaces: SET_LOOPBACK0
+    address_only: true
+  - name: INTERNET_CHECK_1
+    ip: 8.8.4.5
+    address_only: false
+  - name: INTERNET_CHECK_2
+    ip: 8.8.4.6
+    local_interfaces: SET_LOOPBACK1
+    address_only: false
+  - name: INTERNET_CHECK_3
+    ip: 8.8.4.7
+    local_interfaces: SET_LOOPBACK2
+    address_only: false
+monitor_layer1:
+  enabled: true
+  logging_transceiver:
+    enabled: true
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '152'
+  router_id: 192.168.255.160
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: monitor-combined-settings_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789

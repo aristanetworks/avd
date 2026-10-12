@@ -1,0 +1,31 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: missing-mac-acl-name-from-mac-acls-entries
+
+mac_acls:
+  - name: ACL2
+    entries:
+      - sequence: 10
+        action: deny
+        source: any
+        destination: 01:80:c2:00:00:00
+        destination_wildcard: 00:00:00:00:00:00
+      - sequence: 5
+        action: deny
+        source: any
+        destination: 01:80:c2:00:00:00
+        destination_wildcard: 00:00:00:00:00:01
+
+servers:
+  - name: Server1
+    adapters:
+      - switches: [missing-mac-acl-name-from-mac-acls-entries]
+        switch_ports: [Ethernet1]
+        endpoint_ports: [ENDPOINT_PORT]
+        mac_acl_in: ACL1
+
+expected_error_message: >-
+  'mac_acls[name=ACL1]' is required but was not found for host 'missing-mac-acl-name-from-mac-acls-entries'.

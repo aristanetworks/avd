@@ -12,8 +12,10 @@ from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get_ip_from_pool
+from pyavd._utils.default import default
+from pyavd._utils.get_ip_from_pool import get_ip_from_pool
 from pyavd._utils.password_utils.password import isis_encrypt, ospf_message_digest_encrypt
+from pyavd._utils.undefined import UndefinedType
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -135,8 +137,12 @@ class UtilsMixin(Protocol):
             p2p_link_index: int | None
         }
         """
-        if p2p_link.include_in_underlay_protocol and p2p_link.ipv6:
-            msg = f"{self.data_model}.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses."
+        if p2p_link.include_in_underlay_protocol and p2p_link.ipv6 and not (self.shared_utils.underlay_sr and self.shared_utils.underlay_ipv6):
+            msg = f"{self.data_model}.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses except for ISIS-SR."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if p2p_link.port_channel and p2p_link.macsec_profile:
+            msg = f"'macsec_profile' is not supported for {self.data_model}.p2p_links[{p2p_link_index}] when 'port_channel' is configured."
             raise AristaAvdInvalidInputsError(msg)
 
         index = p2p_link.nodes.index(self.shared_utils.hostname)
@@ -280,6 +286,21 @@ class UtilsMixin(Protocol):
             eos_cli=p2p_link.raw_eos_cli,
         )
         interface.metadata._update(peer_interface=p2p_link_data["peer_interface"], peer=p2p_link_data["peer"], peer_type=p2p_link_data["peer_type"])
+
+        if not isinstance(
+            (
+                validate_status_result := self.structured_config_utils.get_interface_validate_state(
+                    peer_in_fabric=p2p_link_data["peer"] in self.shared_utils.all_fabric_devices
+                )
+            ),
+            UndefinedType,
+        ):
+            interface.metadata.validate_state = validate_status_result
+            # Propagate validate_state to all port-channel member interfaces
+            if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
+                for port_channel_member in p2p_link_data.get("port_channel_members", []):
+                    self.structured_config.ethernet_interfaces.obtain(port_channel_member["interface"]).metadata.validate_state = validate_status_result
+
         interface.switchport.enabled = False
 
         if p2p_link_data["ip"]:
@@ -347,18 +368,16 @@ class UtilsMixin(Protocol):
                 elif (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                     interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
-        if p2p_link.macsec_profile:
-            interface.mac_security.profile = p2p_link.macsec_profile
-
-        interface.sflow.enable = self.shared_utils.get_interface_sflow(
+        interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             interface.name,
             default(p2p_link.sflow, self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge),
         )
 
-        # Adding type check to avoid confusing the type checker.
         if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR(S3923)
             interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
         else:
+            if p2p_link.macsec_profile:
+                interface.mac_security.profile = p2p_link.macsec_profile
             interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
 
         if self.shared_utils.mpls_lsr and default(p2p_link.mpls_ip, True):  # noqa: FBT003

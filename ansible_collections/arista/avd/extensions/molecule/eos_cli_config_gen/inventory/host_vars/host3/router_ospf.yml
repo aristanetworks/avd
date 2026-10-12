@@ -1,0 +1,7 @@
+router_ospf:
+  process_ids:
+    - id: 702
+      router_id: 10.255.0.3
+      segment_routing_mpls:
+        enabled: true
+        adjacency_segment_allocation: none

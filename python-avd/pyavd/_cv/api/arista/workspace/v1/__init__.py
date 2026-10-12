@@ -23,6 +23,7 @@ __all__ = (
     "EntityType",
     "DiffType",
     "DiffOp",
+    "DiffScope",
     "RequestParams",
     "Response",
     "Responses",
@@ -61,6 +62,7 @@ __all__ = (
     "DiffEntries",
     "WorkspaceDiffSet",
     "WorkspaceDiffSets",
+    "WorkspaceDiffsFilter",
     "WorkspaceDiffs",
     "MetaResponse",
     "StudioGeneratedConfigurationRequest",
@@ -291,6 +293,12 @@ class ResponseStatus(aristaproto.Enum):
     """
     RESPONSE_STATUS_FAIL indicates that the original Request was unsuccessful
     in its execution.
+    """
+
+    IN_PROGRESS = 3
+    """
+    RESPONSE_STATUS_IN_PROGRESS indicates that the original Request is
+    currently being processed.
     """
 
 
@@ -675,6 +683,9 @@ class EntityType(aristaproto.Enum):
     NODE = 13
     """ENTITY_TYPE_NODE indicates the Node entity type."""
 
+    DEPENDENCIES = 14
+    """ENTITY_TYPE_DEPENDENCIES indicates the dependencies entity type."""
+
 
 class DiffType(aristaproto.Enum):
     """DiffType enumerates types of diff."""
@@ -688,6 +699,12 @@ class DiffType(aristaproto.Enum):
     it means that we return two sets of diffs - one for what happened in the workspace
     relative to its original mainline, and another for what happened between original
     mainline and latest mainline.
+    """
+
+    MODIFICATION = 2
+    """
+    DIFF_TYPE_MODIFICATION represents live workspace modification diffs while the
+    workspace is pending.
     """
 
 
@@ -710,6 +727,25 @@ class DiffOp(aristaproto.Enum):
 
     MOVE = 4
     """DIFF_OP_MOVE indicates change in position of an item in a list."""
+
+
+class DiffScope(aristaproto.Enum):
+    """DiffScope controls which category of diffs the server returns."""
+
+    UNSPECIFIED = 0
+    """DIFF_SCOPE_UNSPECIFIED indicates an unspecified diff scope."""
+
+    MODIFIED = 1
+    """
+    DIFF_SCOPE_MODIFIED returns workspace and mainline diffs for entities
+    modified in this workspace.
+    """
+
+    UNMODIFIED = 2
+    """
+    DIFF_SCOPE_UNMODIFIED returns mainline only diffs for entities not
+    modified in this workspace.
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -735,6 +771,15 @@ class Response(aristaproto.Message):
 
     code: "ResponseCode" = aristaproto.enum_field(3)
     """code is the code of the response."""
+
+    start_time: datetime = aristaproto.message_field(4)
+    """start_time is the time when the request execution started."""
+
+    end_time: datetime = aristaproto.message_field(5)
+    """end_time is the time when the request execution completed."""
+
+    request_type: "Request" = aristaproto.enum_field(6)
+    """request_type is the type of request that this response is for."""
 
 
 @dataclass(eq=False, repr=False)
@@ -853,6 +898,20 @@ class Workspace(aristaproto.Message):
     """
     exclude_network_provisioning indicates whether the workspace is
     configured to exclude Network Provisioning.
+    """
+
+    decommission_request_ids: "___fmp__.MapStringString" = aristaproto.message_field(16)
+    """
+    decommission_request_ids provides, for each device staged for
+    decommission in this workspace, the corresponding request UUID passed
+    to inventory.v1.DeviceDecommissioningConfig. These request UUIDs can
+    be used to track the status using the inventory.v1.DeviceDecommissioning
+    resource.
+    """
+
+    last_rebase_id: Optional[str] = aristaproto.message_field(17, wraps=aristaproto.TYPE_STRING)
+    """
+    last_rebase_id is the last rebase ID that was set for this workspace.
     """
 
 
@@ -1083,6 +1142,9 @@ class ImageValidationResult(aristaproto.Message):
 
     infos: "__imagestatus_v1__.ImageInfos" = aristaproto.message_field(5)
     """infos are any info messages about the generated image."""
+
+    image_source: "__imagestatus_v1__.ImageSource" = aristaproto.enum_field(6)
+    """image_source identifies the source of the image."""
 
 
 @dataclass(eq=False, repr=False)
@@ -1391,9 +1453,11 @@ class DiffEntry(aristaproto.Message):
     - value: the element’s identifier
 
     Example:
-      users = [\{\"id\":\"u1\",\"name\":\"Alice\"\}]
-      key_path = [\"users\", \"[id=u1]\", \"name\"]
-      path     = [\"users\", \"0\", \"name\"]
+    ```
+    users = [{\"id\":\"u1\",\"name\":\"Alice\"}]
+    key_path = [\"users\", \"[id=u1]\", \"name\"]
+    path     = [\"users\", \"0\", \"name\"]
+    ```
     """
 
 
@@ -1418,28 +1482,28 @@ class DiffKey(aristaproto.Message):
     by [key1, value1, key2, value2, ...]
     studio_id are well known e.g studio-date-time
     e.g entity_ids for entity types
-    studio, inputs, assigned tags: [“studio_id”, <id>]
-    buildhook: [“studio_id”, <id>, “hook_id”, <id>]
-    autofill: [“studio_id”, <id>, “input_field_id”, <id>]
-    configlet: [“configlet_id”, <id>]
-    configletassignment : [“configlet_assignment_id”, <id>]
-    tags:
-    element_type is one of \"1\" (device), \"2\" (interface)
-    [\"creator_type\", \"2\", \"element_type\", <element_type>,
-    \"element_sub_type\", \"1\", \"label\", <label>, \"value\", <value>]
-    tag assignments:
-    For element_type = \"1\" (device)
-    [\"creator_type\", \"2\", \"element_type\", \"1\", \"element_sub_type\", \"1\",
-    \"label\", <label>, \"value\", <value>, \"device_id\", <id>]
-    For element_type = \"2\" (interface)
-    [\"creator_type\", \"2\", \"element_type\", \"2\", \"element_sub_type\", \"1\",
-    \"label\", <label>, \"value\", <value>, \"device_id\", <id>,
-    \"interface_id\", <id>]
-    hierarchy related entities:
-    node: [\"node_id\", <id>]
-    fixture_class: [\"fixture_class_id\", <id>]
-    fixture_instance: [\"fixture_instance_id\", <id>]
-    processor: [\"processor_id\", <id>]
+      studio, inputs, assigned tags, dependencies: [“studio_id”, <id>]
+      buildhook: [“studio_id”, <id>, “hook_id”, <id>]
+      autofill: [“studio_id”, <id>, “input_field_id”, <id>]
+      configlet: [“configlet_id”, <id>]
+      configletassignment: [“configlet_assignment_id”, <id>]
+      tags:
+        element_type is one of “1” (device), “2” (interface)
+        [“creator_type”, “2”, “element_type”, <element_type>,
+         “element_sub_type”, “1”, “label”, <label>, “value”, <value>]
+      tag assignments:
+        For element_type = “1” (device)
+          [“creator_type”, “2”, “element_type”, “1”, “element_sub_type”, “1”,
+           “label”, <label>, “value”, <value>, “device_id”, <id>]
+        For element_type = “2” (interface)
+          [“creator_type”, “2”, “element_type”, “2”, “element_sub_type”, “1”,
+           “label”, <label>, “value”, <value>, “device_id”, <id>,
+           “interface_id”, <id>]
+      hierarchy related entities:
+        node: [“node_id”, <id>]
+        fixture_class: [“fixture_class_id”, <id>]
+        fixture_instance: [“fixture_instance_id”, <id>]
+        processor: [“processor_id”, <id>]
     """
 
 
@@ -1483,6 +1547,14 @@ class WorkspaceDiffSets(aristaproto.Message):
     values contains a list of WorkspaceDiffSet messages, each detailing the differences
     between a pair of workspaces.
     """
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceDiffsFilter(aristaproto.Message):
+    """WorkspaceDiffsFilter controls what diffs the server returns."""
+
+    scope: "DiffScope" = aristaproto.enum_field(1)
+    """scope selects which category of diffs to return."""
 
 
 @dataclass(eq=False, repr=False)
@@ -2545,6 +2617,13 @@ class WorkspaceDiffsStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
+    filter: "WorkspaceDiffsFilter" = aristaproto.message_field(2)
+    """
+    For each WorkspaceDiffs in the list, all populated fields are considered ANDed together
+    as a filtering operation. Similarly, the list itself is ORed such that any individual
+    filter that matches a given WorkspaceDiffs is streamed to the user.
+    """
+
     time: "__time__.TimeBounds" = aristaproto.message_field(3)
     """
     TimeRange allows limiting response data to within a specified time window.
@@ -2593,6 +2672,13 @@ class WorkspaceDiffsBatchedStreamRequest(aristaproto.Message):
 
     While transparent to users, this field also allows services to optimize internal
     subscriptions if filter(s) are sufficiently specific.
+    """
+
+    filter: "WorkspaceDiffsFilter" = aristaproto.message_field(2)
+    """
+    For each WorkspaceDiffs in the list, all populated fields are considered ANDed together
+    as a filtering operation. Similarly, the list itself is ORed such that any individual
+    filter that matches a given WorkspaceDiffs is streamed to the user.
     """
 
     time: "__time__.TimeBounds" = aristaproto.message_field(3)

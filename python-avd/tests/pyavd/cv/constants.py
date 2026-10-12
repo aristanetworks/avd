@@ -114,3 +114,23 @@ MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS = {
     "message": "Submitted successfully. No change control was created because no config or software changes were created.",
     "code": ResponseCode.UNSPECIFIED,
 }
+
+"""Workspace 'B' used to test rebasing of the Workspace."""
+MOCKED_WORKSPACE_B_ID = "ws-833a9e6b-9cc0-484b-a5bb-a57f7fa1438f"
+MOCKED_WORKSPACE_B_NAME = "MOCKED_REBASE_WS_NAME"
+MOCKED_WORKSPACE_B_DESCRIPTION = "MOCKED_REBASE_WS_DESCRIPTION"
+MOCKED_WORKSPACE_B_REQUESTED_STATE_SUBMITTED = "submitted"
+
+"""
+Successful synchronization/rebase request made when both Workspace.needs_build and Workspace.needs_rebase are False.
+
+recorded mocked api arista.workspace.v1.WorkspaceConfigService/Set response:
+  tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/\\
+  6343b1d9dd797d90a6b6544c468eeb02d3c5daf7.json
+"""
+MOCKED_WORKSPACE_B_REQUEST_ID_REBASE_1_SUCCESS = {
+    "id": "req-73d17f5a-3db7-4527-ae9a-e43ca99d983c",
+    "status": ResponseStatus.SUCCESS,
+    "message": "Workspace is already up to date",
+    "code": ResponseCode.UNSPECIFIED,
+}

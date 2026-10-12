@@ -1,0 +1,23 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: monitor-connectivity-vrf-local-interfaces-not-in-interface-sets
+      id: 202
+      bgp_as: 202
+      loopback_ipv4_pool: 192.168.255.0/24
+      mgmt_ip: 1.1.10.202
+
+monitor_connectivity:
+  interval: 5
+  vrfs:
+    - name: MGMT
+      interface_sets:
+        - name: SET_MGMT
+          interfaces: [Management1]
+      local_interfaces: Loopback0
+
+expected_error_message: >-
+  monitor_connectivity.vrfs[name=MGMT].local_interfaces 'Loopback0' has to be defined in monitor_connectivity.vrfs[name=MGMT].interface_sets.

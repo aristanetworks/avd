@@ -1,0 +1,29 @@
+---
+# Tests that using interface_ip substitution in an ipv6_acl on an L3 interface that has no ipv6_addresses
+# raises AristaAvdError indicating the substitution value is missing.
+type: spine
+
+spine:
+  nodes:
+    - name: ipv6-acl-on-l3-interface-missing-interface-ip
+      bgp_as: 65101
+      id: 101
+      loopback_ipv4_pool: 192.168.101.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.0.2/30
+          # No ipv6_addresses set - interface_ip substitution in the ACL below will fail.
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+
+ipv6_acls:
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - sequence: 10
+        action: deny
+        protocol: ipv6
+        source: any
+        destination: interface_ip
+
+expected_error_message: >-
+  Unable to perform substitution of the value 'interface_ip' defined under 'ipv6_acls[name=TEST-IPV6-ACL-WITH-IP-FIELDS-IN].entries[0].destination',
+  since no substitution value was found for interface 'Ethernet1'. Make sure to set the appropriate fields on the interface.

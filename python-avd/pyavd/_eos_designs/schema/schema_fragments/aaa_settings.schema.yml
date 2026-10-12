@@ -50,6 +50,10 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: "(?!radius$|tacacs\\+$|ldap$).+"
+                  description: |-
+                    List of Tacacs group names.
+                    The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
                 vrf:
                   type: str
                   description: |-
@@ -124,6 +128,10 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: "(?!radius$|tacacs\\+$|ldap$).+"
+                  description: |-
+                    List of Radius group names.
+                    The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
                 vrf:
                   type: str
                   description: |-
@@ -137,6 +145,12 @@ keys:
                     - Any other string will be used directly as the VRF name.
                   convert_types:
                     - int
+                timeout:
+                  type: int
+                  $ref: "eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/timeout"
+                retransmit:
+                  type: int
+                  $ref: "eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/retransmit"
                 key:
                   type: str
                   description: |-
@@ -152,7 +166,10 @@ keys:
                     - int
                 tls:
                   type: dict
-                  description: When TLS is configured, `key` and `cleartext_key` are ignored.
+                  description: |-
+                    When TLS is configured, `key` and `cleartext_key` are ignored.
+                    For proper functionality to render TLS settings on the
+                    server group member entry, set `avd_design_future.fix_radius_server_group_tls: true`.
                   $ref: "eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls"
           vrfs:
             type: list
@@ -183,6 +200,21 @@ keys:
           policies:
             type: dict
             $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/policies"
+          dot1x:
+            type: dict
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 6.0.0
+              new_key: dot1x_settings.authentication
+            keys:
+              default:
+                type: str
+                deprecation:
+                  warning: true
+                  removed: true
+                  remove_in_version: 6.0.0
+                  new_key: dot1x_settings.authentication.radius_groups
       authorization:
         type: dict
         keys:
@@ -201,6 +233,24 @@ keys:
           commands:
             type: dict
             $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/commands"
+          dynamic:
+            type: dict
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 6.0.0
+              new_key: dot1x_settings.dynamic_authorization
+            keys:
+              dot1x_additional_groups:
+                type: list
+                min_length: 1
+                items:
+                  type: str
+                deprecation:
+                  warning: true
+                  removed: true
+                  remove_in_version: 6.0.0
+                  new_key: dot1x_settings.dynamic_authorization.additional_groups
       accounting:
         type: dict
         keys:
@@ -213,6 +263,61 @@ keys:
           commands:
             type: dict
             $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/commands"
+          dot1x:
+            type: dict
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 6.0.0
+              new_key: dot1x_settings.accounting
+            keys:
+              default:
+                type: dict
+                keys:
+                  type:
+                    type: str
+                    valid_values: ["start-stop", "stop-only"]
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: dot1x_settings.accounting.mode
+                  methods:
+                    type: list
+                    min_length: 1
+                    items:
+                      type: dict
+                      keys:
+                        method:
+                          type: str
+                          required: true
+                          valid_values: ["logging", "group"]
+                          deprecation:
+                            warning: true
+                            removed: true
+                            remove_in_version: 6.0.0
+                            new_key: dot1x_settings.accounting.syslog or dot1x_settings.accounting.radius_groups
+                        group:
+                          type: str
+                          deprecation:
+                            warning: true
+                            removed: true
+                            remove_in_version: 6.0.0
+                            new_key: dot1x_settings.accounting.radius_groups
+                        multicast:
+                          type: bool
+                          deprecation:
+                            warning: true
+                            removed: true
+                            remove_in_version: 6.0.0
+                            new_key: dot1x_settings.accounting.multicast
+                  group:
+                    type: str
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: dot1x_settings.accounting.radius_groups
       root_login:
         type: dict
         keys:

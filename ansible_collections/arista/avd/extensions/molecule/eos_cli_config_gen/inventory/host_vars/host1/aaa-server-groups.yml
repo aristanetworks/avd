@@ -1,6 +1,14 @@
 ---
 ## AAA Server Groups
 aaa_server_groups:
+  - name: LDAP_NO_SERVERS
+    type: ldap
+  - name: LDAP_NO_VRF_FIRST
+    type: ldap
+    servers:
+      - server: 10.10.10.250
+      - server: 10.10.10.251
+        vrf: mgt
   - name: TACACS
     type: tacacs+
     servers:

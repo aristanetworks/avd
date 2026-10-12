@@ -39,7 +39,7 @@ keys:
                   priority:
                     type: int
                     convert_types:
-                    - str
+                      - str
         destinations:
           type: list
           items:
@@ -51,7 +51,7 @@ keys:
           type: int
           description: Number of bytes to remove from header.
           convert_types:
-          - str
+            - str
         access_group:
           type: dict
           keys:
@@ -80,7 +80,7 @@ keys:
         sample:
           type: int
           convert_types:
-          - str
+            - str
         truncate:
           type: dict
           keys:
@@ -90,4 +90,4 @@ keys:
               type: int
               description: Size in bytes.
               convert_types:
-              - str
+                - str

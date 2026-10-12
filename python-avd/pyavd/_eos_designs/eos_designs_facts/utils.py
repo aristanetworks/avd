@@ -10,7 +10,7 @@ from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
 from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
-    from . import EosDesignsFactsGenerator, EosDesignsFactsGeneratorProtocol
+    from .generator import EosDesignsFactsGenerator, EosDesignsFactsGeneratorProtocol
 
 
 class UtilsMixin(EosDesignsFactsProtocol, Protocol):

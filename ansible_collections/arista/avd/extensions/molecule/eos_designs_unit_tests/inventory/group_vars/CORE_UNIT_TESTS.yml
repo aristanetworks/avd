@@ -43,7 +43,8 @@ core_router:
   defaults:
     loopback_ipv4_pool: 10.0.0.0/24
     loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
-    node_sid_base: 200
+    isis_sr:
+      ipv4_node_sid_index_base: 200
     isis_system_id_prefix: "0000.0001"
   nodes:
     - name: core-1-isis-sr-ldp

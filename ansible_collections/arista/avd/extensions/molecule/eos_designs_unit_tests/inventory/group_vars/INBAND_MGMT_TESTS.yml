@@ -78,6 +78,9 @@ l3leaf:
       uplink_switches: [inband-mgmt-spine1-ztp]
       uplink_ipv4_pool: 172.16.255.0/24
       mgmt_ip: 192.168.100.12/24
+    - name: inband-mgmt-parent-ipv6-3
+      id: 7
+      mgmt_ip: 192.168.100.17/24
   node_groups:
     - group: inband-mgmt-parents-dualstack
       mlag_peer_ipv4_pool: 100.64.0.0/24
@@ -151,11 +154,16 @@ l2leaf:
       inband_mgmt_ipv6_subnet: 2a00:106::/64
       id: 6
     - name: inband-mgmt-ipv6-only-vrf
-      uplink_switches: [inband-mgmt-parent-ipv6-1, inband-mgmt-parent-ipv6-2]
+      uplink_switches: [inband-mgmt-parent-ipv6-1, inband-mgmt-parent-ipv6-2, inband-mgmt-parent-ipv6-3]
       inband_mgmt_vlan: 107
       inband_mgmt_ipv6_subnet: 2a00:107::/64
       inband_mgmt_vrf: INBANDMGMT
       id: 7
+    - name: inband-mgmt-ipv6-with-address
+      uplink_switches: [inband-mgmt-parent-ipv6-1, inband-mgmt-parent-ipv6-2]
+      inband_mgmt_vrf: VRF6
+      inband_mgmt_ipv6_address: 2a00:105::124/64
+      id: 8
   node_groups:
     - group: inband-mgmt-mlag-test
       mlag: true

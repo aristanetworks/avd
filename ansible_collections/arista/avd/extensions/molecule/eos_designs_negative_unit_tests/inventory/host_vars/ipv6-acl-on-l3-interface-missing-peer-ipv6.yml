@@ -1,0 +1,31 @@
+---
+# Tests that using peer_ipv6 substitution in an ipv6_acl on an L3 interface that has no peer_ipv6
+# raises AristaAvdError indicating the substitution value is missing.
+type: spine
+
+spine:
+  nodes:
+    - name: ipv6-acl-on-l3-interface-missing-peer-ipv6
+      bgp_as: 65103
+      id: 103
+      loopback_ipv4_pool: 192.168.103.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.0.2/30
+          ipv6_addresses:
+            - 2001:db8:1::2/64
+          # No peer_ipv6 set - peer_ipv6 substitution in the ACL below will fail.
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-PEER-IPV6-FIELD
+
+ipv6_acls:
+  - name: TEST-IPV6-ACL-WITH-PEER-IPV6-FIELD
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: peer_ipv6
+        destination: any
+
+expected_error_message: >-
+  Unable to perform substitution of the value 'peer_ipv6' defined under 'ipv6_acls[name=TEST-IPV6-ACL-WITH-PEER-IPV6-FIELD].entries[0].source',
+  since no substitution value was found for interface 'Ethernet1'. Make sure to set the appropriate fields on the interface.

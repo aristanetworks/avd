@@ -59,6 +59,14 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
+  - name: EVPN-OVERLAY-CORE
+    metadata:
+      type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 15
+    send_community: all
+    maximum_routes: 0
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -69,6 +77,18 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65233'
+    metadata:
+      peer: evpn-overlay-mpls-route-reflectors3-ibgp
+    description: evpn-overlay-mpls-route-reflectors3-ibgp_Loopback0
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65233'
+    metadata:
+      peer: evpn-overlay-mpls-route-reflectors-ibgp
+    description: evpn-overlay-mpls-route-reflectors-ibgp_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     metadata:
@@ -80,16 +100,25 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
+    - name: EVPN-OVERLAY-CORE
+      activate: true
+      domain_remote: true
     - name: EVPN-OVERLAY-PEERS
       activate: true
   address_family_rtc:
     peer_groups:
+    - name: EVPN-OVERLAY-CORE
+      activate: true
+      default_route_target:
+        only: true
     - name: EVPN-OVERLAY-PEERS
       activate: true
       default_route_target:
         only: true
   address_family_ipv4:
     peer_groups:
+    - name: EVPN-OVERLAY-CORE
+      activate: false
     - name: EVPN-OVERLAY-PEERS
       activate: false
 service_routing_protocols_model: multi-agent

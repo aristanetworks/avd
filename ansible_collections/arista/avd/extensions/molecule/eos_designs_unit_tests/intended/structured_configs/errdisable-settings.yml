@@ -1,0 +1,50 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+errdisable:
+  detect_cause:
+    acl: true
+    arp_inspection: true
+    dot1x: true
+    link_change: true
+    storm_control: true
+  recovery_cause:
+    acl:
+      enabled: true
+      interval: 60
+    arp_inspection:
+      enabled: true
+      interval: 90
+    bpduguard:
+      enabled: true
+      interval: 300
+    dot1x:
+      enabled: true
+      interval: 60
+    lacp_rate_limit:
+      enabled: false
+    link_flap:
+      enabled: true
+      interval: 60
+    storm_control:
+      enabled: true
+      interval: 120
+  recovery_interval: 200
+hostname: errdisable-settings
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

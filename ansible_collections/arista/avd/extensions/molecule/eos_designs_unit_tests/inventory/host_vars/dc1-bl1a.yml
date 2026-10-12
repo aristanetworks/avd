@@ -5,6 +5,16 @@ my_special_dci_ethernet_interfaces:
 
 custom_structured_configuration_list_merge: append
 
+# Match the password used by the regular EVPN neighbors returning from the Route Servers.
+override_router_bgp:
+  neighbors:
+    # dc1-spine1
+    - ip_address: 192.168.255.1
+      password: 5B0XC3gLnsY/sTjyPTZ8og==
+    # dc1-spine3
+    - ip_address: 192.168.255.3
+      password: FD1BuYF9U5DLXObFCDeVjw==
+
 use_router_general_for_router_id: true
 
 # Test appending to list of ip name-servers.

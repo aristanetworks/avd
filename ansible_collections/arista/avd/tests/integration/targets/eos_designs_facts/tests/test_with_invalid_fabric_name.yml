@@ -1,0 +1,30 @@
+---
+- name: Validate eos_designs inputs for invalid fabric_name test
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs_facts_invalid_fabric"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Test with invalid fabric_name
+  vars:
+    fabric_name: invalid_fabric_group
+  ignore_errors: true
+  register: result
+  arista.avd.eos_designs_facts:
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs_facts_invalid_fabric"
+  check_mode: false
+  run_once: true
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == expected_error
+  vars:
+    expected_error: >-
+      Error during plugin 'arista.avd.eos_designs_facts' execution: Invalid/missing 'fabric_name' variable.
+      All hosts in the play must have the same 'fabric_name' value which must point to an Ansible Group
+      containing the hosts.play_hosts: ['testhost']

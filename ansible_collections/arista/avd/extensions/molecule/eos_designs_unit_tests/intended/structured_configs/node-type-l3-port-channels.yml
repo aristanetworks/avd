@@ -105,6 +105,16 @@ ethernet_interfaces:
     peer: peerDevice4
     peer_interface: Ethernet1/20
     peer_type: l3_port_channel_member
+- name: Ethernet4
+  description: peer5_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 46
+    mode: active
+  metadata:
+    peer: peer5
+    peer_interface: Ethernet1
+    peer_type: l3_port_channel_member
 flow_tracking:
   hardware:
     trackers:
@@ -161,6 +171,7 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+ipv6_unicast_routing: true
 kernel:
   software_forwarding_ecmp: true
 loopback_interfaces:
@@ -236,6 +247,14 @@ metadata:
         value: wan
       - name: Carrier
         value: BlizzardFast
+    - interface: Port-Channel46
+      tags:
+      - name: Type
+        value: lan
+    - interface: Port-Channel46.10
+      tags:
+      - name: Type
+        value: lan
   cv_pathfinder:
     role: edge
     region: AVD_Land_East
@@ -356,6 +375,30 @@ port_channel_interfaces:
     peer_type: l3_port_channel
   switchport:
     enabled: false
+- name: Port-Channel46
+  description: peer5_Port-Channel46
+  shutdown: false
+  ip_address: 192.168.46.1/31
+  ipv6_addresses:
+  - 2001:db8::1/64
+  - 2001:db8:1::1/64
+  metadata:
+    peer: peer5
+    peer_interface: Port-Channel46
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
+- name: Port-Channel46.10
+  description: peer5_Port-Channel46
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 10
+  ipv6_addresses:
+  - 2001:db8:2::1/64
+  metadata:
+    peer: peer5
+    peer_interface: Port-Channel46
+    peer_type: l3_port_channel
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

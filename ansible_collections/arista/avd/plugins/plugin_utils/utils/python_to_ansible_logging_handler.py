@@ -9,7 +9,8 @@ from typing import TYPE_CHECKING
 
 from ansible.utils.display import Display
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
     from logging import LogRecord
 
 

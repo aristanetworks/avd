@@ -12,17 +12,17 @@ keys:
       mode:
         type: str
         valid_values:
-        - boundary
-        - disabled
-        - e2etransparent
-        - gptp
-        - ordinarymaster
-        - p2ptransparent
+          - boundary
+          - disabled
+          - e2etransparent
+          - gptp
+          - ordinarymaster
+          - p2ptransparent
       profile:
         type: str
         valid_values:
-        - g8275.1
-        - g8275.2
+          - g8275.1
+          - g8275.2
       mode_one_step:
         type: bool
       forward_unicast:
@@ -41,25 +41,25 @@ keys:
         min: 0
         max: 255
         convert_types:
-        - str
+          - str
       priority2:
         type: int
         min: 0
         max: 255
         convert_types:
-        - str
+          - str
       ttl:
         type: int
         min: 1
         max: 255
         convert_types:
-        - str
+          - str
       domain:
         type: int
         min: 0
         max: 255
         convert_types:
-        - str
+          - str
       hold_ptp_time:
         type: int
         min: 0
@@ -69,7 +69,7 @@ keys:
           If a new GM is not elected before the expiry of the hold-down time, the clock will revert to free-running.
           Some platforms support larger maximum values, however 172000 seconds was the max for 7150 series, and was widely used.
         convert_types:
-        - str
+          - str
       message_type:
         type: dict
         keys:
@@ -79,14 +79,14 @@ keys:
               dscp:
                 type: int
                 convert_types:
-                - str
+                  - str
           event:
             type: dict
             keys:
               dscp:
                 type: int
                 convert_types:
-                - str
+                  - str
       monitor:
         type: dict
         keys:
@@ -101,13 +101,13 @@ keys:
                 min: 0
                 max: 1000000000
                 convert_types:
-                - str
+                  - str
               mean_path_delay:
                 type: int
                 min: 0
                 max: 1000000000
                 convert_types:
-                - str
+                  - str
               drop:
                 type: dict
                 keys:
@@ -116,13 +116,13 @@ keys:
                     min: 0
                     max: 1000000000
                     convert_types:
-                    - str
+                      - str
                   mean_path_delay:
                     type: int
                     min: 0
                     max: 1000000000
                     convert_types:
-                    - str
+                      - str
           missing_message:
             type: dict
             keys:
@@ -134,19 +134,19 @@ keys:
                     min: 2
                     max: 255
                     convert_types:
-                    - str
+                      - str
                   follow_up:
                     type: int
                     min: 2
                     max: 255
                     convert_types:
-                    - str
+                      - str
                   sync:
                     type: int
                     min: 2
                     max: 255
                     convert_types:
-                    - str
+                      - str
               sequence_ids:
                 type: dict
                 keys:
@@ -157,25 +157,25 @@ keys:
                     min: 2
                     max: 255
                     convert_types:
-                    - str
+                      - str
                   delay_resp:
                     type: int
                     min: 2
                     max: 255
                     convert_types:
-                    - str
+                      - str
                   follow_up:
                     type: int
                     min: 2
                     max: 255
                     convert_types:
-                    - str
+                      - str
                   sync:
                     type: int
                     min: 2
                     max: 255
                     convert_types:
-                    - str
+                      - str
       free_running:
         type: dict
         keys:

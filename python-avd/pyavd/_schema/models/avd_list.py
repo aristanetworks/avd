@@ -8,7 +8,7 @@ from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Generic, Literal, cast, overload
 
 from pyavd._schema.coerce_type import coerce_type
-from pyavd._utils import Undefined, UndefinedType
+from pyavd._utils.undefined import Undefined, UndefinedType
 
 from .avd_base import AvdBase
 from .avd_model import AvdModel

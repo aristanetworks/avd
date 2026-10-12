@@ -13,6 +13,3 @@ source_interfaces:
   http_client:
     mgmt_interface: true
     inband_mgmt_interface: true
-  ssh_client:
-    mgmt_interface: true
-    inband_mgmt_interface: true

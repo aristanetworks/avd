@@ -4,5 +4,5 @@ custom_structured_configuration_vxlan_interface:
     vxlan:
       source_interface: Loopback10
       vlans:
-      - id: 11
-        vni: 10011
+        - id: 11
+          vni: 10011

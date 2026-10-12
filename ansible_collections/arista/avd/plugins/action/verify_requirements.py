@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 import warnings
 from importlib import import_module
@@ -21,7 +22,8 @@ from ansible.utils.display import Display
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
     # Relying on packaging installed by ansible
     from packaging.requirements import Requirement
     from packaging.specifiers import SpecifierSet
@@ -40,6 +42,7 @@ DISPLAY = Display()
 
 MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
 DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
+COLLECTION_VERSION_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+_-]*$")
 
 
 # TODO: Consider moving the following helpers inside the plugin class as methods to use `self.logger`.
@@ -147,6 +150,7 @@ def _check_requirement(req: Requirement, requirements_dict: dict[str, Any]) -> b
             "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
         }
         LOGGER.error("Python library '%s' version running %s - requirement is %s", req.name, installed_version, str(req))
+        return False
     else:
         LOGGER.error("Python library '%s' version running %s - requirement is %s", req.name, installed_version, str(req))
         requirements_dict["mismatched"][req.name] = {
@@ -192,7 +196,8 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
             }
             continue
 
-        valid = valid and _check_requirement(req, requirements_dict)
+        if not _check_requirement(req, requirements_dict):
+            valid = False
 
     info["python_requirements"] = requirements_dict
     return valid
@@ -212,7 +217,6 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
     """
     collection_meta = _get_collection_metadata(collection_name)
     specifiers_set = SpecifierSet(collection_meta.get("requires_ansible", ""))
-    deprecation_specifiers_set = SpecifierSet()
     info["ansible_version"] = running_version
 
     if len(specifiers_set) > 0:
@@ -220,14 +224,6 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
     if not specifiers_set.contains(running_version):
         LOGGER.error("Ansible Version running %s - Requirement is %s", running_version, str(specifiers_set))
         return False
-    # Keeping this for next deprecation - set the value of deprecation_specifiers_set when needed and adjust message
-    if not deprecation_specifiers_set.contains(running_version):
-        msg = (
-            f"You are currently running ansible-core {running_version}. The next minor release of AVD after November 6th 2023 will drop support for"
-            " ansible-core<2.14. Python 3.8 support will be dropped at the same time as ansible-core>=2.14 does not support it. See the following link"
-            " for more details: https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix"
-        )
-        warnings.warn(msg, DeprecationWarning, stacklevel=2)
 
     return True
 
@@ -320,7 +316,27 @@ def _get_collection_version(collection_path: str) -> str:
         with manifest_file.open("rb") as fd:
             metadata = json.load(fd)["collection_info"]
 
-    return metadata["version"]
+    version = metadata["version"]
+    if not isinstance(version, str) or not COLLECTION_VERSION_PATTERN.fullmatch(version):
+        msg = f"Invalid collection version found in collection metadata: {version}"
+        raise ValueError(msg)
+
+    return version
+
+
+def _get_git_command_output(command: list[str], collection_path: str) -> str | None:
+    """Return the output of a git command or None if git is unavailable or the command failed."""
+    try:
+        with Popen(command, stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:  # noqa: S603
+            output, err = process.communicate()
+    except FileNotFoundError:
+        LOGGER.debug("Could not find 'git' executable, returning collection version")
+        return None
+
+    if process.returncode or err:
+        return None
+
+    return output.decode("UTF-8").strip()
 
 
 def _get_running_collection_version(running_collection_name: str, result: dict[str, Any]) -> None:
@@ -328,21 +344,13 @@ def _get_running_collection_version(running_collection_name: str, result: dict[s
     collection_path = _get_collection_path(running_collection_name)
     version = _get_collection_version(collection_path)
 
-    try:
-        # Try to detect a git tag
-        # Using subprocess for now
-        with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:  # noqa: S607
-            output, err = process.communicate()
-            if err:
-                # Not that when molecule runs, it runs in a copy of the directory that is not a git repo
-                # so only the latest tag is being returned
-                LOGGER.debug("Not a git repository")
-            else:
-                LOGGER.debug("This is a git repository, overwriting version with 'git describe --tags output'")
-                version = output.decode("UTF-8").strip()
-    except FileNotFoundError:
-        # Handle the case where `git` is not installed or not in the PATH
-        LOGGER.debug("Could not find 'git' executable, returning collection version")
+    if Path(collection_path, "MANIFEST.json").exists():
+        LOGGER.debug("Published collection detected, returning collection version")
+    elif not RUNNING_FROM_SOURCE:
+        LOGGER.debug("AVD is not running from source, returning collection version")
+    elif git_version := _get_git_command_output(["git", "describe", "--tags"], collection_path):
+        LOGGER.debug("Overwriting version with 'git describe --tags output'")
+        version = git_version
 
     result["collection"] = {
         "name": running_collection_name,

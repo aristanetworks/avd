@@ -15,6 +15,10 @@ $defs:
       enabled:
         type: bool
         description: Enable or disable interface.
+      autostate:
+        type: bool
+        default: true
+        description: Set to false to disable automatic management of the interface link state.
       description:
         type: str
         description: |
@@ -66,6 +70,51 @@ $defs:
             description: In seconds <0-4294967295> or infinite.
             convert_types:
               - int
+          ra_dns_servers:
+            type: dict
+            description: List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+            keys:
+              servers:
+                type: list
+                $ref: "eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers"
+              dns_servers_lifetime:
+                type: int
+                $ref: "eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers_lifetime"
+      ipv6_dhcp_relay:
+        type: dict
+        description: IPv6 DHCP relay settings.
+        keys:
+          destinations:
+            type: list
+            description: List of IPv6 DHCP relay destinations.
+            primary_key: address
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  description: DHCP server's IPv6 address.
+                vrf:
+                  type: str
+                  description: |-
+                    VRF used to reach the DHCP server.
+                    If not set, the VRF of the destination matches the VRF of this interface.
+                    Use the `default` to reach the DHCP server through the default VRF.
+                  convert_types:
+                    - int
+                local_interface:
+                  type: str
+                  description: |-
+                    Local interface to communicate with DHCP server.
+                    Mutually exclusive with `source_address` and takes precedence over it.
+                source_address:
+                  type: str
+                  description: |-
+                    Source IPv6 address to communicate with DHCP server.
+                    Mutually exclusive with `local_interface`, which takes precedence if both are set.
+                link_address:
+                  type: str
+                  description: Override the default link address specified in the relayed DHCP packet.
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.
@@ -108,6 +157,24 @@ $defs:
         type: str
         convert_types:
           - int
+      ipv6_acl_in:
+        description: |-
+          Name of the IPv6 access-list to be assigned in the ingress direction.
+          The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+          resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+          Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+        type: str
+        convert_types:
+          - int
+      ipv6_acl_out:
+        description: |-
+          Name of the IPv6 access-list to be assigned in the egress direction.
+          The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+          resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+          Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+        type: str
+        convert_types:
+          - int
       ip_helpers:
         type: list
         primary_key: ip_helper
@@ -120,10 +187,25 @@ $defs:
               description: IPv4 DHCP server IP.
             source_interface:
               type: str
-              description: Interface name to originate DHCP relay packets to DHCP server.
+              description: |-
+                Interface name to originate DHCP relay packets to DHCP server.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+                - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the source interface.
             source_vrf:
               type: str
-              description: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+              description: |-
+                VRF to originate DHCP relay packets to DHCP server.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                  An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the source VRF name.
+                - If not set, EOS uses the VRF on the SVI.
               convert_types:
                 - int
       static_routes:

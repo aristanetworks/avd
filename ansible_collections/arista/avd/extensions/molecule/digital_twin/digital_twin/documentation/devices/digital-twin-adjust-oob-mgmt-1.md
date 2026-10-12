@@ -14,6 +14,7 @@
   - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+  - [Static Routes](#static-routes)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [VRF Instances](#vrf-instances)
@@ -30,13 +31,13 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.1.1/32 | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.10.1/32 | 192.168.10.254 |
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -46,7 +47,7 @@ interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
-   ip address 192.168.1.1/32
+   ip address 192.168.10.1/32
 ```
 
 ### Management API HTTP
@@ -129,7 +130,22 @@ no ip routing vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
+| MGMT | False |
+
+### Static Routes
+
+#### Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
+| MGMT | 0.0.0.0/0 | 192.168.10.254 | - | 1 | - | - | - |
+
+#### Static Routes Device Configuration
+
+```eos
+!
+ip route vrf MGMT 0.0.0.0/0 192.168.10.254
+```
 
 ## Multicast
 

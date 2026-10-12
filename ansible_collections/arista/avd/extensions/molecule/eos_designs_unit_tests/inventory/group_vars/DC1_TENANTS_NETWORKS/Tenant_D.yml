@@ -1,4 +1,4 @@
-tenant_d:
+network_services:
   - name: Tenant_D
     mac_vrf_vni_base: 40000
     vrfs:
@@ -20,6 +20,19 @@ tenant_d:
               advertise_ipv6_address_virtuals: true
               preferred_lifetime: 100
               valid_lifetime: 200
+              ra_dns_servers:
+                servers:
+                  - address: cafe::cafe:64
+                  - address: ca::ca:64
+                    lifetime: 100
+                dns_servers_lifetime: 200
+            ipv6_dhcp_relay:
+              destinations:
+                - address: cafe::cafe:64
+                  vrf: default
+                - address: ca::ca:64
+                  local_interface: Loopback44
+                  link_address: cafe::cafe:64
           - id: 411
             name: Tenant_D_v6_OP_Zone_2
             tags: ['v6opzone']
@@ -114,6 +127,10 @@ tenant_d:
             tags: ['v6wan']
             enabled: true
             profile: GENERIC_DUAL_STACK
+        ip_helpers:
+          - ip_helper: 1.1.1.3
+            source_interface: use_default_mgmt_method_interface
+            source_vrf: use_default_mgmt_method_vrf
       - name: default
         vrf_id: 123
         ospf:
@@ -134,6 +151,13 @@ tenant_d:
             static_routes:
               - prefix: 10.10.10.0/24
                 next_hop: 10.10.10.1
+            ipv6_dhcp_relay:
+              destinations:
+                - address: cafe::cafe:64
+                  vrf: TEST
+                - address: ca::ca:64
+                  source_address: cafe::cafe:64
+                  link_address: cafe::cafe:64
       - name: TENANT_D_WAN_ZONE
         vrf_vni: 42
         redistribute_connected: false

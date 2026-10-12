@@ -1,0 +1,65 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  mac_acls:
+    type: list
+    primary_key: name
+    description: |-
+      MAC access-lists.
+      These can be referenced under `network_ports/connected_endpoints`.
+      A MAC ACL is only configured when it is referenced.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Access-list name.
+          convert_types:
+            - int
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          unique_keys: [sequence]
+          description: For each entry action or remark must be set.
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                  - str
+              action:
+                type: str
+                valid_values: [permit, deny]
+              remark:
+                type: str
+                description: |-
+                  Remark.
+                  Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+                  are ignored when `remark` is set.
+              source:
+                type: str
+                description: |-
+                  Source mac-address.
+                  This can be `any` or a MAC address.
+              source_wildcard:
+                type: str
+                description: |-
+                  Wildcard bits for source MAC address.
+                  Required when `source` is not `any`.
+              destination:
+                type: str
+                description: |-
+                  Destination MAC address.
+                  This can be `any` or a MAC address.
+              destination_wildcard:
+                type: str
+                description: |-
+                  Wildcard bits for destination MAC address.
+                  Required when `destination` is not `any`.

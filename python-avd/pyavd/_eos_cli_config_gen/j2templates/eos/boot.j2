@@ -4,8 +4,10 @@
  that can be found in the LICENSE file.
 #}
 {# eos - boot #}
-{% if boot is arista.avd.defined %}
+{% if boot.secret is arista.avd.defined %}
+{%     if boot.secret.key is arista.avd.defined or eos_config_future.only_render_separator_with_boot_secret_key is not arista.avd.defined(true) %}
 !
+{%     endif %}
 {%     if boot.secret.key is arista.avd.defined %}
 {%         if boot.secret.hash_algorithm is arista.avd.defined('md5') %}
 {%             set hash_algorithm = 5 %}

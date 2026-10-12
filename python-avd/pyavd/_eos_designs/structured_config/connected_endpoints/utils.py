@@ -7,13 +7,15 @@ import re
 from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, UndefinedType, get_v2, short_esi_to_route_target
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils.get import get_v2
+from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
+from pyavd._utils.undefined import Undefined, UndefinedType
 
 if TYPE_CHECKING:
     from typing import TypeVar
 
-    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
     from pyavd._eos_designs.schema import EosDesigns
 
     from . import AvdStructuredConfigConnectedEndpointsProtocol
@@ -32,6 +34,9 @@ if TYPE_CHECKING:
         "T_EvpnEthernetSegment", EosCliConfigGen.EthernetInterfacesItem.EvpnEthernetSegment, EosCliConfigGen.PortChannelInterfacesItem.EvpnEthernetSegment
     )
     T_Phone = TypeVar("T_Phone", EosCliConfigGen.EthernetInterfacesItem.Switchport.Phone, EosCliConfigGen.PortChannelInterfacesItem.Switchport.Phone)
+    T_AddressLocking = TypeVar(
+        "T_AddressLocking", EosCliConfigGen.EthernetInterfacesItem.AddressLocking, EosCliConfigGen.PortChannelInterfacesItem.AddressLocking
+    )
 
 
 class UtilsMixin(Protocol):
@@ -45,18 +50,14 @@ class UtilsMixin(Protocol):
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         channel_group_id: int,
-        port_channel_subif_short_esi: str | None = None,
+        subif_short_esi: str | None = None,
         hash_extra_value: str = "",
     ) -> str | None:
-        """
-        Return short_esi for one adapter.
-
-        short_esi is only set when called from sub-interface port-channels.
-        """
+        """Return short_esi for one adapter or subinterface."""
         if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
             return None
 
-        if (short_esi := (port_channel_subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
+        if (short_esi := (subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
             return None
 
         if len(set(adapter.switches)) < 2:
@@ -234,6 +235,28 @@ class UtilsMixin(Protocol):
 
         return None
 
+    def _get_adapter_address_locking(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+        output_type: type[T_AddressLocking],
+    ) -> T_AddressLocking | UndefinedType:
+        """Return address_locking for one adapter, mapping ipv4/ipv6 flags to address_family format."""
+        feature_support = self.shared_utils.platform_settings.feature_support
+        if not (adapter.address_locking and feature_support.address_locking.supported):
+            return Undefined
+
+        address_locking = output_type()
+        if isinstance(address_locking, EosCliConfigGen.PortChannelInterfacesItem.AddressLocking):
+            if adapter.address_locking.ipv4 is False:
+                address_locking.address_family.ipv4 = adapter.address_locking.ipv4
+            if adapter.address_locking.ipv6 is False:
+                address_locking.address_family.ipv6 = adapter.address_locking.ipv6
+        else:  # EosCliConfigGen.EthernetInterfacesItem.AddressLocking
+            address_locking.address_family.ipv4 = adapter.address_locking.ipv4
+            if feature_support.address_locking.ipv6_ethernet_interface:
+                address_locking.address_family.ipv6 = adapter.address_locking.ipv6
+        return address_locking
+
     def _get_adapter_dot1x(
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
@@ -250,7 +273,20 @@ class UtilsMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg)
 
-        return adapter.dot1x
+        dot1x = adapter.dot1x._cast_as(EosCliConfigGen.EthernetInterfacesItem.Dot1x, ignore_extra_keys=True)
+        if acl_name := adapter.dot1x.authentication_failure.allow_access_list:
+            acl_found = False
+            if acl_name in self.inputs.ipv4_acls:
+                self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[acl_name])
+                acl_found = True
+            if acl_name in self.inputs.ipv6_acls:
+                self.structured_config_utils._set_ipv6_acl(self.inputs.ipv6_acls[acl_name])
+                acl_found = True
+            if not acl_found:
+                msg = f"ipv4_acls[name={acl_name}] or ipv6_acls[name={acl_name}]"
+                raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+
+        return dot1x
 
     def _get_adapter_l2_mru(
         self: AvdStructuredConfigConnectedEndpointsProtocol,

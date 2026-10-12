@@ -81,6 +81,9 @@ daemon TerminAttr
 {%     if daemon_terminattr.smashexcludes is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -smashexcludes=" ~ daemon_terminattr.smashexcludes %}
 {%     endif %}
+{%     if daemon_terminattr.sysdbexcludes is arista.avd.defined %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -sysdbexcludes=" ~ daemon_terminattr.sysdbexcludes %}
+{%     endif %}
 {%     if daemon_terminattr.ingestexclude is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ingestexclude=" ~ daemon_terminattr.ingestexclude %}
 {%     endif %}
@@ -117,6 +120,26 @@ daemon TerminAttr
 {%     if daemon_terminattr.cv_loss_timeout is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cv_loss_timeout=" ~ daemon_terminattr.cv_loss_timeout ~ "m" %}
 {%     endif %}
+{%     if daemon_terminattr.cvtargetconfigs is arista.avd.defined %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -cvtargetconfigs=" ~ daemon_terminattr.cvtargetconfigs | join(',') %}
+{%     endif %}
+{%     if daemon_terminattr.flowdns is arista.avd.defined(true) %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -flowdns" %}
+{%     elif daemon_terminattr.flowdns is arista.avd.defined(false) %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -flowdns=false" %}
+{%     endif %}
+{%     for option in daemon_terminattr.custom_cv_options | arista.avd.default([]) %}
+{%         if option.value is arista.avd.defined %}
+{%             if option.value in ["True", "False"] %}
+{%                 set _value = option.value | lower %}
+{%             else %}
+{%                 set _value = option.value %}
+{%             endif %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -" ~ option.flag ~ "=" ~ _value %}
+{%         else %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -" ~ option.flag %}
+{%         endif %}
+{%     endfor %}
    {{ cvp_config.cli }}
    no shutdown
 {% endif %}

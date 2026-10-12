@@ -38,12 +38,9 @@ def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, A
         msg = "Jinja Templating is not implemented in pyavd"
         raise NotImplementedError(msg)
 
-    # We only get here when running from Ansible, so it is safe to import from ansible and jinja2.
-    from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19  # noqa: PLC0415
-
     template_file_path = templar.loader.path_dwim_relative_stack(templar.searchpath, "", template_file)
 
-    if ANSIBLE_ABOVE_2_19:
+    if templar.ansible_above_2_19:
         # New templar from ansible-core 2.19 and above
         from ansible.template import trust_as_template  # noqa: PLC0415 # pyright: ignore reportAttributeAccessIssue
 

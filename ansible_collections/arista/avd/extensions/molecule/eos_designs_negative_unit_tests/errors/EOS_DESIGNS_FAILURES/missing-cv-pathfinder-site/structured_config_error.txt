@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'.

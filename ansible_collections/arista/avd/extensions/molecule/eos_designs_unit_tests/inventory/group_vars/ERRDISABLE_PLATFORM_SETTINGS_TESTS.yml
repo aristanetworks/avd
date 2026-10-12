@@ -1,0 +1,156 @@
+---
+custom_platform_settings:
+  - platforms:
+      - custom-errdisable-platform
+    feature_support:
+      # Custom platform with a subset of causes explicitly disabled.
+      errdisable_causes:
+        acl:
+          detection: false
+          recovery: false
+        bpduguard:
+          recovery: false
+        dot1x:
+          detection: false
+          recovery: false
+        storm_control:
+          detection: false
+          recovery: false
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    bgp_as: 65001
+    loopback_ipv4_pool: 10.10.10.0/24
+    vtep_loopback_ipv4_pool: 10.10.20.0/24
+    uplink_ipv4_pool: 10.10.50.0/24
+  node_groups:
+    - group: errdisable-veos-group
+      nodes:
+        - name: errdisable-veos-lab
+          id: 1
+          # Virtual platform: hardware-specific causes should be filtered out.
+          platform: vEOS-lab
+    - group: errdisable-ceos-group
+      nodes:
+        - name: errdisable-ceos-lab
+          id: 2
+          # Virtual platform: hardware-specific causes should be filtered out.
+          platform: cEOSLab
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
+          uplink_switches:
+            - errdisable-veos-lab
+    - group: errdisable-7280r-group
+      nodes:
+        - name: errdisable-7280r
+          id: 3
+          # Physical platform: hardware causes (dot1x, storm-control, error-correction-encoding, etc.) filtered by platform_settings.
+          platform: 7280R
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet3
+          uplink_switches:
+            - errdisable-veos-lab
+    - group: errdisable-7280r3-group
+      nodes:
+        - name: errdisable-7280r3
+          id: 4
+          # 7280R3 platform: tpid and fabric_capacity_low are supported (not filtered out).
+          platform: 7280R3
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet4
+          uplink_switches:
+            - errdisable-veos-lab
+    - group: errdisable-custom-platform-group
+      nodes:
+        - name: errdisable-custom-platform
+          id: 5
+          # Custom platform: acl, dot1x and storm-control causes explicitly disabled.
+          platform: custom-errdisable-platform
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet5
+          uplink_switches:
+            - errdisable-veos-lab
+
+# Test errdisable settings with a mix of hardware-specific and generic causes.
+# Hardware-specific causes (e.g., xcvr-*, port-breakout, hardware-speed-group)
+# are expected to be filtered out on virtual platforms.
+errdisable_settings:
+  causes:
+    acl:
+      detection: true
+      recovery: true
+      recovery_interval: 60
+    arp_inspection:
+      detection: true
+      recovery: true
+      recovery_interval: 90
+    bpduguard:
+      recovery: true
+      recovery_interval: 300
+    dot1x:
+      detection: true
+      recovery: true
+      recovery_interval: 60
+    link_change:
+      detection: true
+    link_flap:
+      recovery: true
+      recovery_interval: 60
+    storm_control:
+      detection: true
+      recovery: true
+      recovery_interval: 120
+    fabric_capacity_low:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    tpid:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    # Expected to be filtered out on virtual platforms (vEOS-lab, cEOSLab)
+    error_correction_encoding:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    hardware_speed_group:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    port_breakout:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    switchcard_unreachable:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    transceiver_adapter:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    xcvr_misconfigured:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    xcvr_overheat:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    xcvr_power_unsupported:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    xcvr_unsupported:
+      recovery: true
+      recovery_interval: 300

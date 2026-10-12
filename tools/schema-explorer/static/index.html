@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVD Schema Explorer</title>
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css" integrity="sha384-jqywZHoaJM3rqT5K49NunuMR2it7x/Et8c3jFm7z9Xg4j4GI5MplcXdoCUnz2B0t" crossorigin="anonymous">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/font/bootstrap-icons.min.css" integrity="sha384-L8JisW7yet65STBdXyiV6LpfJHTE34WQ6uNxndBGg1lcc3tseozYGsBw6W6KzXVv" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="schema-spa-host">
+
+<script>
+  // Header-suppression modes:
+  //   - in-iframe (option 1): hide because the MkDocs wrapper provides chrome
+  //   - style=none (option 2): hide unconditionally, simulate a banner-less
+  //     SPA loaded under whatever banner the user came from
+  //   - default (option 3): keep the AVD docs-style header
+  if (window.self !== window.top) {
+    document.documentElement.classList.add("in-iframe");
+  }
+  if (new URLSearchParams(window.location.search).get("style") === "none") {
+    document.documentElement.classList.add("style-none");
+  }
+</script>
+
+<!-- AVD-docs-style header. Visually mirrors the MkDocs Material banner used
+     by the docs site so navigating between docs and the standalone Schema
+     Explorer feels seamless. Hidden when this page is loaded inside the
+     iframe wrapper (see #schema-navbar CSS rule). -->
+<header id="schema-navbar" class="schema-docs-header">
+  <div class="schema-docs-header-inner">
+    <a class="schema-docs-brand" href="../../" title="Arista AVD docs">
+      <img src="../../docs/_media/arista-avd-logo-white.png" alt="ARISTA AVD" class="schema-docs-logo">
+    </a>
+    <div class="schema-docs-title">
+      <a href="#/">Schema Explorer</a>
+    </div>
+    <div class="schema-docs-actions">
+      <a class="schema-docs-action" href="../../" title="AVD Docs"><i class="bi bi-book"></i></a>
+      <a class="schema-docs-action" href="https://github.com/aristanetworks/avd" target="_blank" rel="noopener" title="GitHub"><i class="bi bi-github"></i></a>
+    </div>
+  </div>
+</header>
+
+<main id="app" class="container-fluid py-3">
+  <div class="text-center py-5 text-muted">
+    <span class="spinner-border spinner-border-sm" role="status"></span>
+    <span class="ms-2 small">Loading schema database…</span>
+  </div>
+</main>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js" integrity="sha384-WfVzX9hAUBOBjMptWY54rUnWRI1Tn/ZCUAT52D/05VTiszOwsM+TM5o0sB4Kv44M" crossorigin="anonymous"></script>
+<script src="vendor/sql.js/dist/sql-wasm.js" integrity="sha384-8D3Rsfo535FqoC1pHCCQMrNf75UgzyoG/HQm9zOzITRrz3QKzecc2E7JXKGCXoWu" crossorigin="anonymous"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

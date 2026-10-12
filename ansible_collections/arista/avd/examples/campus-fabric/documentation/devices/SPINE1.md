@@ -56,9 +56,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -115,10 +115,10 @@ ip domain lookup vrf MGMT source-interface Management1
 
 NTP servers VRF: MGMT
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| pool.ntp.org | - | - | - | - | - | - | - | - |
-| time.google.com | True | - | - | - | - | - | - | - |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| pool.ntp.org | - | - | - | - | - | - | - | - | - |
+| time.google.com | True | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -503,9 +503,9 @@ interface Loopback0
 
 ##### OSPF
 
-| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
-| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
-| Vlan4093 | True | 0.0.0.0 | - | - | - | - | - |
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication |
+| --------- | --------------------------- | --------- | --------- | ------------------- |
+| Vlan4093 | True | 0.0.0.0 | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -636,7 +636,7 @@ no ip routing vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
+| MGMT | False |
 
 ### Static Routes
 

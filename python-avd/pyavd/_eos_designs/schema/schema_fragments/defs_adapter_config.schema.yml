@@ -103,6 +103,12 @@ $defs:
           If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
         convert_types:
           - int
+      mac_acl_in:
+        type: str
+        description: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+      mac_acl_out:
+        type: str
+        description: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
       spanning_tree_portfast:
         type: str
         valid_values:
@@ -184,7 +190,36 @@ $defs:
               Optional if default link_tracking settings are configured on the node.
       dot1x:
         type: dict
-        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
+        $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x"
+        keys:
+          authentication_failure:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/authentication_failure"
+            keys:
+              allow_access_list:
+                type: str
+                convert_types:
+                  - int
+                description: |-
+                  Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                  The access list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                  On EOS, the access list is only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+      address_locking:
+        type: dict
+        description: Address locking settings applied on the port.
+        keys:
+          ipv4:
+            type: bool
+            description: |-
+              Enable address locking for IPv4.
+              For Port-Channels, only `ipv4: false` is supported.
+              For EOS version 4.31 and higher.
+          ipv6:
+            type: bool
+            description: |-
+              Enable address locking for IPv6.
+              For Port-Channels, only `ipv6: false` is supported.
+              For EOS version 4.31 and higher.
       poe:
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
         type: dict
@@ -373,58 +408,6 @@ $defs:
                 convert_types:
                   - str
                 description: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
-          subinterfaces:
-            type: list
-            description: |
-              Port-Channel L2 Subinterfaces
-              Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
-              The parent Port-Channel interface is automatically created if not defined elsewhere.
-              Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
-              Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
-            items:
-              type: dict
-              keys:
-                number:
-                  type: int
-                  convert_types:
-                    - str
-                  description: Subinterface number.
-                short_esi:
-                  type: str
-                  description: |
-                    In format xxxx:xxxx:xxxx or "auto".
-                    Required for multihomed port-channels with subinterfaces.
-                vlan_id:
-                  type: int
-                  convert_types:
-                    - str
-                  min: 1
-                  max: 4094
-                  description: |
-                    VLAN ID to bridge.
-                    Default is subinterface number.
-                encapsulation_vlan:
-                  type: dict
-                  description: |
-                    Client VLAN ID encapsulation.
-                    Default is subinterface number.
-                  keys:
-                    client_dot1q:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 4094
-                raw_eos_cli:
-                  type: str
-                  description: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                structured_config:
-                  type: dict
-                  relaxed_validation: true
-                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema.
-                  documentation_options:
-                    hide_keys: true
-                  $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
           raw_eos_cli:
             type: str
             description: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.

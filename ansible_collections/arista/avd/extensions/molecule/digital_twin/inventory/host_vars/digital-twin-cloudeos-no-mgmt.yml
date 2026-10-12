@@ -1,0 +1,15 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-cloudeos-no-mgmt
+      id: 1
+      platform: CloudEOS
+      # No mgmt_ip
+
+# Override group level management_eapi to prevent default_mgmt_method resolution
+management_eapi:
+  enabled: false
+
+default_mgmt_method: none

@@ -45,9 +45,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -274,7 +274,7 @@ no ip routing vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
+| MGMT | False |
 
 ### Static Routes
 

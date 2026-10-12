@@ -14,11 +14,13 @@ from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed
 from pyavd._cv.workflows.constants import EOS_CLI_WARNINGS
 from pyavd._cv.workflows.finalize_workspace_on_cv import _produce_cvworkspace_build_result, finalize_workspace_on_cv
 from pyavd._cv.workflows.models import (
+    AvdDevice,
+    AvdWorkspace,
+    AvdWorkspaceBuildWarningsConfig,
     CVDevice,
     CVWorkspace,
     CVWorkspaceBuildConfigValidationError,
     CVWorkspaceBuildConfigValidationWarning,
-    CVWorkspaceBuildWarningsConfig,
 )
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_ID,
@@ -90,25 +92,25 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
     CV_DEVICES: ClassVar[tuple[CVDevice, ...]] = (
         CVDevice(
-            hostname="avd-ci-leaf1",
+            avd_device=AvdDevice(hostname="avd-ci-leaf1"),
             serial_number="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
             system_mac_address="50:00:00:72:8b:31",
-            _exists_on_cv=True,
-            _streaming=True,
+            exists_on_cv=True,
+            streaming=True,
         ),
         CVDevice(
-            hostname="avd-ci-spine1",
+            avd_device=AvdDevice(hostname="avd-ci-spine1"),
             serial_number="DCC816CEAC4BBD6319385043AD318362",
             system_mac_address="50:00:00:d7:ee:0b",
-            _exists_on_cv=True,
-            _streaming=True,
+            exists_on_cv=True,
+            streaming=True,
         ),
         CVDevice(
-            hostname="avd-ci-spine2",
+            avd_device=AvdDevice(hostname="avd-ci-spine2"),
             serial_number="A7D46613D44DE45D68D5B5C5CBA06B0D",
             system_mac_address="50:00:00:cb:38:c2",
-            _exists_on_cv=True,
-            _streaming=True,
+            exists_on_cv=True,
+            streaming=True,
         ),
     )
     workspace_id: str = MOCKED_WORKSPACE_ID
@@ -142,9 +144,11 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=workspace_id,
-                requested_state=workspace_requested_state,
-                build_warnings=CVWorkspaceBuildWarningsConfig(enabled=build_warnings),
+                avd_workspace=AvdWorkspace(
+                    id=workspace_id,
+                    requested_state=workspace_requested_state,
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(enabled=build_warnings),
+                )
             )
             await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1", "avd-ci-spine1", "avd-ci-spine2"]), warnings)
 
@@ -160,7 +164,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         warnings = []
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
-            workspace = CVWorkspace(id=self.workspace_id, requested_state="built")
+            workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=self.workspace_id, requested_state="built"))
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
@@ -239,9 +243,11 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(suppress_portfast=True),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(suppress_portfast=True),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
@@ -299,9 +305,11 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"]),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(suppress_patterns=(".*! /32 IPv4 address is not [a-z]+ on the.*",)),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
@@ -370,11 +378,13 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(
-                    suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*", EOS_CLI_WARNINGS.get("portfast", "")]
-                ),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(
+                        suppress_patterns=(".*! /32 IPv4 address is not [a-z]+ on the.*", EOS_CLI_WARNINGS.get("portfast", ""))
+                    ),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
@@ -427,12 +437,14 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(
-                    suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"],
-                    suppress_portfast=True,
-                ),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(
+                        suppress_patterns=(".*! /32 IPv4 address is not [a-z]+ on the.*",),
+                        suppress_portfast=True,
+                    ),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
@@ -485,11 +497,13 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(
-                    suppress_patterns=[r"(?P<invalid"],
-                ),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(
+                        suppress_patterns=(r"(?P<invalid",),
+                    ),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
@@ -573,12 +587,14 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(
-                    suppress_patterns=[".*portfast should only be enabled on ports connected to a single host.*"],
-                    suppress_portfast=True,
-                ),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(
+                        suppress_patterns=(".*portfast should only be enabled on ports connected to a single host.*",),
+                        suppress_portfast=True,
+                    ),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
@@ -636,11 +652,13 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(
-                    enabled=False,
-                ),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(
+                        enabled=False,
+                    ),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
@@ -703,18 +721,18 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         # Redefine list of CVDevices making sure avd-ci-leaf1 (13C20F1EDCCED2D85F6DB2FB9E3AC5B6) is missing in it
         cv_devices_short: tuple[CVDevice, ...] = (
             CVDevice(
-                hostname="avd-ci-spine1",
+                avd_device=AvdDevice(hostname="avd-ci-spine1"),
                 serial_number="DCC816CEAC4BBD6319385043AD318362",
                 system_mac_address="50:00:00:d7:ee:0b",
-                _exists_on_cv=True,
-                _streaming=True,
+                exists_on_cv=True,
+                streaming=True,
             ),
             CVDevice(
-                hostname="avd-ci-spine2",
+                avd_device=AvdDevice(hostname="avd-ci-spine2"),
                 serial_number="A7D46613D44DE45D68D5B5C5CBA06B0D",
                 system_mac_address="50:00:00:cb:38:c2",
-                _exists_on_cv=True,
-                _streaming=True,
+                exists_on_cv=True,
+                streaming=True,
             ),
         )
 
@@ -724,7 +742,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         # Attempt to process CloudVision build details
         with caplog.at_level(WARNING):
             response = _produce_cvworkspace_build_result(
-                workspace=CVWorkspace(id=self.workspace_id, requested_state="built"),
+                workspace=CVWorkspace(avd_workspace=AvdWorkspace(id=self.workspace_id, requested_state="built")),
                 workspace_build_details=workspace_build_details,
                 compiled_workspace_build_warnings_suppress_list=[],
                 devices=cv_devices_short,

@@ -17,7 +17,7 @@ keys:
         min: 0
         max: 1000000
         convert_types:
-        - str
+          - str
       notification_host_flap:
         type: dict
         keys:
@@ -31,13 +31,13 @@ keys:
                 min: 2
                 max: 300
                 convert_types:
-                - str
+                  - str
               moves:
                 type: int
                 min: 2
                 max: 10
                 convert_types:
-                - str
+                  - str
       static_entries:
         type: list
         description: Add static MAC address entries.
@@ -55,7 +55,7 @@ keys:
               type: int
               required: true
               convert_types:
-              - str
+                - str
               description: The VLAN ID associated with the MAC address.
             drop:
               type: bool

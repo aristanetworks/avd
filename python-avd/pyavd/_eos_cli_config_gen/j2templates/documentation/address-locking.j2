@@ -32,15 +32,25 @@
 {%         if address_locking.locked_address.ipv6_enforcement_disabled is arista.avd.defined(true) %}
 | Disable enforcement for locked ipv6 addresses | True |
 {%         endif %}
-{%         if address_locking.dhcp_servers_ipv4 is arista.avd.defined %}
+{%         if address_locking.dhcp_servers_ipv4 is arista.avd.defined or address_locking.dhcp_server_interfaces is arista.avd.defined %}
 
 ### DHCP Servers
+{%             if address_locking.dhcp_servers_ipv4 is arista.avd.defined %}
 
 | Server IP |
 | --------- |
-{%             for ip in address_locking.dhcp_servers_ipv4 | arista.avd.natural_sort %}
+{%                 for ip in address_locking.dhcp_servers_ipv4 | arista.avd.natural_sort %}
 | {{ ip }} |
-{%             endfor %}
+{%                 endfor %}
+{%             endif %}
+{%             if address_locking.dhcp_server_interfaces is arista.avd.defined %}
+
+| Server Interface |
+| ---------------- |
+{%                 for interface in address_locking.dhcp_server_interfaces | arista.avd.natural_sort %}
+| {{ interface }} |
+{%                 endfor %}
+{%             endif %}
 {%         endif %}
 {%         if address_locking.leases is arista.avd.defined %}
 

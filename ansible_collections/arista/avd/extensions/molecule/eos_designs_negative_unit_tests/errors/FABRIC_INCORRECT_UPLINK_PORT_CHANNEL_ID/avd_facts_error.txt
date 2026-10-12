@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: 'uplink_switch_port_channel_id' is set to 100 and is not matching 7 set on MLAG peer. The 'uplink_switch_port_channel_id' must be matching on MLAG peers for host 'incorrect-uplink-port-channel-id-l2leaf1b'.

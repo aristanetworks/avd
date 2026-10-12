@@ -29,4 +29,35 @@
 {%     if mpls.tunnel.termination.php_model.ttl is arista.avd.defined and mpls.tunnel.termination.php_model.dscp is arista.avd.defined %}
 | Tunnel Termination PHP Model | TTL: {{ mpls.tunnel.termination.php_model.ttl }}, DSCP: {{ mpls.tunnel.termination.php_model.ttl }} |
 {%     endif %}
+{%     if mpls.label_ranges is arista.avd.defined %}
+
+### MPLS Label Ranges
+
+| Range | Base | Size |
+| ----- | ---- | ---- |
+{%         if mpls.label_ranges.bgp_sr is arista.avd.defined %}
+| BGP-SR | {{ mpls.label_ranges.bgp_sr.base }} | {{ mpls.label_ranges.bgp_sr.size }} |
+{%         endif %}
+{%         if mpls.label_ranges.dynamic is arista.avd.defined %}
+| Dynamic | {{ mpls.label_ranges.dynamic.base }} | {{ mpls.label_ranges.dynamic.size }} |
+{%         endif %}
+{%         if mpls.label_ranges.isis_sr is arista.avd.defined %}
+| IS-IS SR | {{ mpls.label_ranges.isis_sr.base }} | {{ mpls.label_ranges.isis_sr.size }} |
+{%         endif %}
+{%         if mpls.label_ranges.l2evpn is arista.avd.defined %}
+| L2 EVPN | {{ mpls.label_ranges.l2evpn.base }} | {{ mpls.label_ranges.l2evpn.size }} |
+{%         endif %}
+{%         if mpls.label_ranges.l2evpn_ethernet_segment is arista.avd.defined %}
+| L2 EVPN Ethernet Segment | {{ mpls.label_ranges.l2evpn_ethernet_segment.base }} | {{ mpls.label_ranges.l2evpn_ethernet_segment.size }} |
+{%         endif %}
+{%         if mpls.label_ranges.ospf_sr is arista.avd.defined %}
+| OSPF-SR | {{ mpls.label_ranges.ospf_sr.base }} | {{ mpls.label_ranges.ospf_sr.size }} |
+{%         endif %}
+{%         if mpls.label_ranges.srlb is arista.avd.defined %}
+| SRLB | {{ mpls.label_ranges.srlb.base }} | {{ mpls.label_ranges.srlb.size }} |
+{%         endif %}
+{%         if mpls.label_ranges.static is arista.avd.defined %}
+| Static | {{ mpls.label_ranges.static.base }} | {{ mpls.label_ranges.static.size }} |
+{%         endif %}
+{%     endif %}
 {% endif %}

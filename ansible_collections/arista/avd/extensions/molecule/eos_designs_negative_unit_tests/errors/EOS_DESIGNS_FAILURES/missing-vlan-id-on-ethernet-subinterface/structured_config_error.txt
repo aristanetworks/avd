@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'vlan_id' must be set for 'servers[name=OLD_SW-1/2].adapters[0].subinterfaces[number=10000]' since the subinterface number is above 4094.

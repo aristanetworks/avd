@@ -190,6 +190,7 @@ class DeviceTenantAssignmentSortableField(aristaproto.Enum):
     TENANT_ID = 590923987
     SHIPPING_DATE = 190779440
     SALES_ORDER_NUMBER = -988583176
+    END_CUSTOMER_PURCHASE_ORDER_NUMBER = 1422231240
 
 
 class LicenseTenantAssignmentSortableField(aristaproto.Enum):
@@ -199,6 +200,7 @@ class LicenseTenantAssignmentSortableField(aristaproto.Enum):
     START_DATE = -787429676
     END_DATE = 1326735083
     TENANT_ID = 590923987
+    END_CUSTOMER_PURCHASE_ORDER_NUMBER = 1422231240
 
 
 @dataclass(eq=False, repr=False)
@@ -392,6 +394,11 @@ class DeviceTenantAssignment(aristaproto.Message):
     last device assignment.
     """
 
+    end_customer_purchase_order_number: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
+    """
+    end_customer_purchase_order_number is the purchase order number associated with this device.
+    """
+
 
 @dataclass(eq=False, repr=False)
 class DeviceTenantAssignConfig(aristaproto.Message):
@@ -517,6 +524,11 @@ class LicenseTenantAssignment(aristaproto.Message):
     """
     license_bundle_uuid corresponds to the bundle id to which
     the license belongs to
+    """
+
+    end_customer_purchase_order_number: Optional[str] = aristaproto.message_field(16, wraps=aristaproto.TYPE_STRING)
+    """
+    end_customer_purchase_order_number is the purchase order number associated with this license.
     """
 
 

@@ -51,7 +51,7 @@ class StudioMixin(Protocol):
 
     studio_api_version: Literal["v1"] = "v1"
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_studio(
         self: CVClientProtocol,
         studio_id: str,
@@ -123,7 +123,7 @@ class StudioMixin(Protocol):
 
         return response.value
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_studio_inputs(
         self: CVClientProtocol,
         studio_id: str,
@@ -221,7 +221,7 @@ class StudioMixin(Protocol):
 
         return studio_inputs or default_value
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_studio_inputs_with_path(
         self: CVClientProtocol,
         studio_id: str,

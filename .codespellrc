@@ -1,3 +1,3 @@
 [codespell]
 ignore-words = .github/ignore-codespell-words
-skip = *.cfg,*.svg,*.excalidraw,*.rst,*/pyavd/_cv/api/*,*/pyavd/_cv/extra_cv_protos/*,*/changelogs/*,*/docs/tables/*.md,*schema.yml,*/docs/plugins/*
+skip = *.cfg,*.svg,*.excalidraw,*.rst,*/pyavd/_cv/api/*,*/pyavd/_cv/extra_cv_protos/*,*/changelogs/*,*/docs/tables/*.md,*schema.yml,*/docs/plugins/*,*/tools/schema-explorer/static/vendor/*,tools/schema-explorer/static/vendor/*

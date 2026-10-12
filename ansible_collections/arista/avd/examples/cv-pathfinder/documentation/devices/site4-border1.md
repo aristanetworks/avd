@@ -65,9 +65,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -135,9 +135,9 @@ ip domain lookup vrf MGMT source-interface Management1
 
 NTP servers VRF: MGMT
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | True | - | - | - | - | - | - | - |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 0.pool.ntp.org | True | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -221,9 +221,9 @@ aaa authorization exec default local
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | apiserver.arista.io:443 | MGMT | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | - | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | apiserver.arista.io:443 | MGMT | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | - | - | False |
 
 #### TerminAttr Daemon Device Configuration
 
@@ -609,9 +609,9 @@ ip routing vrf RED
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| BLUE | false |
-| MGMT | false |
-| RED | false |
+| BLUE | False |
+| MGMT | False |
+| RED | False |
 
 ### Static Routes
 
@@ -677,13 +677,13 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 10.0.4.57 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 10.255.251.25 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
-| 192.168.255.15 | 65000 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.251.25 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | BLUE | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
-| 10.255.251.25 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | RED | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 10.0.4.57 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
+| 10.255.251.25 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
+| 192.168.255.15 | 65000 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.255.251.25 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | BLUE | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
+| 10.255.251.25 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | RED | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 

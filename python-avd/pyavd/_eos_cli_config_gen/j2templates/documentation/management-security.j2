@@ -36,12 +36,77 @@
 | Signature verification SSL profile | {{ management_security.signature_verification.ssl_profile }} |
 {%         endif %}
 {%     endif %}
+{%     if management_security.auto_certificate.profiles is arista.avd.defined %}
+
+### Management Security Auto-Certificate Profiles
+
+| Profile | Key | EST Protocol Profile | Digest | Renewal (seconds) |
+| ------- | --- | -------------------- | ------ | ----------------- |
+{%         for auto_certificate_profile in management_security.auto_certificate.profiles | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+| {{ auto_certificate_profile.name }} | {{ auto_certificate_profile.key | arista.avd.default("-") }} | {{ auto_certificate_profile.protocol_instance_name | arista.avd.default("-") }} | {{ auto_certificate_profile.digest | arista.avd.default("-") }} | {{ auto_certificate_profile.renewal | arista.avd.default('-') }} |
+{%         endfor %}
+{%         for auto_certificate_profile in management_security.auto_certificate.profiles | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+{%             if auto_certificate_profile.parameters is arista.avd.defined %}
+
+#### Auto-Certificate Profile {{ auto_certificate_profile.name }} Parameters
+{%                 if auto_certificate_profile.parameters.distinguished_name is arista.avd.defined %}
+
+##### Distinguished Name
+
+| Field | Value |
+| ----- | ----- |
+{%                     for dn_key in auto_certificate_profile.parameters.distinguished_name | arista.avd.natural_sort %}
+| {{ dn_key | replace('_', ' ') | title }} | {{ auto_certificate_profile.parameters.distinguished_name[dn_key] }} |
+{%                     endfor %}
+{%                 endif %}
+{%                 if auto_certificate_profile.parameters.subject_alternative_name is arista.avd.defined %}
+
+##### Subject Alternative Name
+
+| Field | Value |
+| ----- | ----- |
+{%                     for san_key in auto_certificate_profile.parameters.subject_alternative_name | arista.avd.natural_sort %}
+| {{ san_key | upper if san_key in ['dns', 'ip', 'uri'] else san_key | replace('_', ' ') | title }} | {{ auto_certificate_profile.parameters.subject_alternative_name[san_key] | arista.avd.natural_sort | join(', ') }} |
+{%                     endfor %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if management_security.auto_certificate.protocols is arista.avd.defined %}
+
+### Management Security Auto-Certificate Protocols
+
+| Profile | Protocol | Disabled | Server URL | SSL Profile Name | VRF | Retry Count | Retry Interval (seconds) | Exponential Backoff |
+| ------- | -------- | -------- | ---------- | ---------------- | --- | ----------- | ------------------------ | ------------------- |
+{%         for auto_certificate_protocol in management_security.auto_certificate.protocols | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+| {{ auto_certificate_protocol.name }} | {{ auto_certificate_protocol.protocol | upper }} | {{ auto_certificate_protocol.disabled | arista.avd.default("-") }} | {{ auto_certificate_protocol.server.url | arista.avd.default("-") }} | {{ auto_certificate_protocol.server.ssl_profile | arista.avd.default("-") }} | {{ auto_certificate_protocol.server.vrf | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection_retry.count | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection_retry.interval | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection_retry.exponential_backoff | arista.avd.default('-') }} |
+{%         endfor %}
+{%         for auto_certificate_protocol in management_security.auto_certificate.protocols | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+{%             if auto_certificate_protocol.credentials is arista.avd.defined %}
+
+#### Auto-Certificate Protocol {{ auto_certificate_protocol.name }} Credentials
+
+| Operation | Method | Username | Encoding |
+| --------- | ------ | -------- | -------- |
+{%                 for operation, cred_key in [('Enroll', 'enroll'), ('Re-Enroll', 're_enroll')] %}
+{%                     set cred = auto_certificate_protocol.credentials[cred_key] %}
+{%                     if cred is arista.avd.defined %}
+{%                         if cred.token is arista.avd.defined %}
+| {{ operation }} | Token | - | {{ cred.token_type | arista.avd.default('7') }} |
+{%                         elif cred.username is arista.avd.defined %}
+| {{ operation }} | Username/Secret | {{ cred.username }} | {{ cred.secret_type | arista.avd.default('7') }} |
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {%     if management_security.ssl_profiles is arista.avd.defined %}
 
 ### Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Ciphers | CRLs | FIPS restrictions enabled |
-| ---------------- | --------------------- | -------------------- | ------------ | ------- | ---- | ------------------------- |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Auto-Certificate Profile | Ciphers | CRLs | FIPS restrictions enabled |
+| ---------------- | --------------------- | -------------------- | ------------ | ------------------------ | ------- | ---- | ------------------------- |
 {%         set ssl_profiles_certs = [] %}
 {%         for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort(sort_key="name") %}
 {%             set crls = "-" %}
@@ -59,7 +124,13 @@
 {%             elif ssl_profile.cipher_list is arista.avd.defined %}
 {%                 set ciphers = [ssl_profile.cipher_list] %}
 {%             endif %}
-| {{ ssl_profile.name | arista.avd.default('-') }} | {{ ssl_profile.tls_versions | arista.avd.default('-') }} | {{ ssl_profile.certificate.file | arista.avd.default('-') }} | {{ ssl_profile.certificate.key | arista.avd.default('-') }} | {{ ciphers | arista.avd.default(['-']) | join('<br>') }} | {{ crls }} | {{ ssl_profile.fips_restrictions | arista.avd.default('-') }} |
+{%             set cert_file = ssl_profile.certificate.file | arista.avd.default('-') %}
+{%             set cert_key = ssl_profile.certificate.key | arista.avd.default('-') %}
+{%             if ssl_profile.certificate.auto_certificate is arista.avd.defined %}
+{%                 set cert_file = '-' %}
+{%                 set cert_key = '-' %}
+{%             endif %}
+| {{ ssl_profile.name | arista.avd.default('-') }} | {{ ssl_profile.tls_versions | arista.avd.default('-') }} | {{ cert_file }} | {{ cert_key }} | {{ ssl_profile.certificate.auto_certificate | arista.avd.default('-') }} | {{ ciphers | arista.avd.default(['-']) | join('<br>') }} | {{ crls }} | {{ ssl_profile.fips_restrictions | arista.avd.default('-') }} |
 {%             set tmp_cert = {} %}
 {%             if ssl_profile.trust_certificate is arista.avd.defined %}
 {%                 set tmp_cert = {'trust_certificate': ssl_profile.trust_certificate} %}

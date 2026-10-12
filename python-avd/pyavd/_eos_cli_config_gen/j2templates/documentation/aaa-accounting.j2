@@ -86,9 +86,7 @@
 {%         endif %}
 | System - Default | - | {{ aaa_accounting.system.default.type }} | {{ ", ".join(methods_list) }} | {{ logging_namespace.method_logging }} |
 {%     endif %}
-{%     if aaa_accounting.dot1x.default.type is arista.avd.defined("none") %}
-| Dot1x - Default | - | none | - | - |
-{%     elif aaa_accounting.dot1x.default.methods is arista.avd.defined %}
+{%     if aaa_accounting.dot1x.default.methods is arista.avd.defined %}
 {%         set methods_list = [] %}
 {%         set logging_namespace = namespace(method_logging = false) %}
 {%         for method in aaa_accounting.dot1x.default.methods %}

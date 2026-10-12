@@ -1,0 +1,32 @@
+---
+# Testing macsec_profile configured on an l3_edge Port-Channel link.
+
+node_type_keys:
+  - key: core_router
+    type: core_router
+
+type: core_router
+core_router:
+  defaults:
+    loopback_ipv4_pool: 10.0.0.0/24
+  nodes:
+    - name: l3-edge-port-channel-with-macsec
+      id: 1
+      bgp_as: 65123
+
+l3_edge:
+  p2p_links:
+    - nodes: [l3-edge-port-channel-with-macsec, peer1]
+      ip: [10.0.1.0/31, 10.0.1.1/31]
+      macsec_profile: test-macsec-profile
+      port_channel:
+        nodes_child_interfaces:
+          - node: l3-edge-port-channel-with-macsec
+            interfaces: [Ethernet1, Ethernet2]
+            channel_id: 1
+          - node: peer1
+            interfaces: [Ethernet1, Ethernet2]
+            channel_id: 1
+
+expected_error_message: >-
+  'macsec_profile' is not supported for l3_edge.p2p_links[0] when 'port_channel' is configured.

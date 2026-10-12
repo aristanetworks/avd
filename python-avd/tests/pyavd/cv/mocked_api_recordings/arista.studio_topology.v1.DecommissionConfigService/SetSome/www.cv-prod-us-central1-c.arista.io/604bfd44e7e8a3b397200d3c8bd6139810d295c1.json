@@ -1,0 +1,11 @@
+{
+    "payload": [
+        {
+            "key": {
+                "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                "deviceId": "87b21e181f36dd527521a21794ee8e231d591541"
+            },
+            "error": "rpc error: code = InvalidArgument desc = notification 0: empty"
+        }
+    ]
+}

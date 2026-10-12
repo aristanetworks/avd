@@ -2,58 +2,91 @@
 ### Errdisable ###
 
 errdisable:
-  detect:
-    causes:
-      - arp-inspection
-      - dot1x
-      - link-change
-      - tapagg
-      - xcvr-misconfigured
-      - xcvr-overheat
-      - xcvr-power-unsupported
-      - acl
-      - dot1x-coa
-      - dot1x-phone-classification
-      - dot1x-session-replace
-      - error-correction-encoding
-      - hardware-speed-group
-      - interface-speed
-      - internal-error
-      - port-breakout
-      - storm-control
-      - switchcard-unreachable
-      - transceiver-adapter
-  recovery:
-    causes:
-      - name: bpduguard
-        interval: 400
-      - name: dot1x
-        interval: 500
-      - name: hitless-reload-down
-      - name: lacp-rate-limit
-      - name: link-flap
-      - name: no-internal-vlan
-      - name: portchannelguard
-      - name: portsec
-      - name: speed-misconfigured
-      - name: tapagg
-      - name: uplink-failure-detection
-      - name: xcvr-misconfigured
-      - name: xcvr-overheat
-      - name: xcvr-power-unsupported
-      - name: xcvr-unsupported
-      - name: arp-inspection
-      - name: acl
-      - name: dot1x-coa
-      - name: dot1x-phone-classification
-      - name: dot1x-session-replace
-      - name: error-correction-encoding
-      - name: hardware-speed-group
-      - name: transceiver-adapter
-      - name: switchcard-unreachable
-      - name: stuck-queue
-      - name: storm-control
-      - name: port-breakout
-      - name: internal-error
-      - name: interface-speed
-    interval: 300
+  detect_cause:
+    arp_inspection: true
+    dot1x: true
+    fabric_capacity_low: true
+    link_change: true
+    tapagg: true
+    xcvr_misconfigured: true
+    xcvr_overheat: true
+    xcvr_power_unsupported: true
+    acl: true
+    dot1x_coa: true
+    dot1x_phone_classification: true
+    dot1x_session_replace: true
+    error_correction_encoding: true
+    hardware_speed_group: true
+    interface_speed: true
+    internal_error: true
+    port_breakout: true
+    storm_control: true
+    switchcard_unreachable: true
+    transceiver_adapter: true
+    tpid: true
+  recovery_cause:
+    bpduguard:
+      enabled: true
+      interval: 400
+    dot1x:
+      enabled: true
+      interval: 500
+    hitless_reload_down:
+      enabled: true
+    lacp_rate_limit:
+      enabled: true
+    link_flap:
+      enabled: true
+    fabric_capacity_low:
+      enabled: true
+    no_internal_vlan:
+      enabled: true
+    portchannelguard:
+      enabled: true
+    portsec:
+      enabled: true
+    speed_misconfigured:
+      enabled: true
+    tapagg:
+      enabled: true
+    uplink_failure_detection:
+      enabled: true
+    xcvr_misconfigured:
+      enabled: true
+    xcvr_overheat:
+      enabled: true
+    xcvr_power_unsupported:
+      enabled: true
+    xcvr_unsupported:
+      enabled: true
+    arp_inspection:
+      enabled: true
+    acl:
+      enabled: true
+    dot1x_coa:
+      enabled: true
+    dot1x_phone_classification:
+      enabled: true
+    dot1x_session_replace:
+      enabled: true
+    error_correction_encoding:
+      enabled: true
+    hardware_speed_group:
+      enabled: true
+    transceiver_adapter:
+      enabled: true
+    switchcard_unreachable:
+      enabled: true
+    stuck_queue:
+      enabled: true
+    storm_control:
+      enabled: true
+    port_breakout:
+      enabled: true
+    internal_error:
+      enabled: true
+    interface_speed:
+      enabled: true
+    tpid:
+      enabled: true
+  recovery_interval: 300

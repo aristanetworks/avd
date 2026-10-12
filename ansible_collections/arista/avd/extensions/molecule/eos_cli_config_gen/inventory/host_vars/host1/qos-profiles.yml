@@ -93,12 +93,17 @@ qos_profiles:
         bandwidth_percent: 80
       - id: 0
         bandwidth_percent: 1
+  - name: test_with_pfc_disabled
+    priority_flow_control:
+      enabled: false
   - name: uc_mc_queues_test
     uc_tx_queues:
       - id: 1
         bandwidth_percent: 50
         priority: 'no priority'
         comment: "Test no priority"
+        shape:
+          rate: 100000
         random_detect:
           ecn:
             threshold:
@@ -131,6 +136,8 @@ qos_profiles:
       - id: 1
         bandwidth_percent: 50
         priority: 'no priority'
+        shape:
+          rate: 100000
       - id: 2
         bandwidth_percent: 10
         priority: 'priority strict'

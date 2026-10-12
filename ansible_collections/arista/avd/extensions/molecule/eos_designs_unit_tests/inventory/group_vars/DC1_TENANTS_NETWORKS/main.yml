@@ -73,4 +73,4 @@ network_services_keys:
   - name: tenant_a
   - name: tenant_b
   - name: tenant_c
-  - name: tenant_d
+  # tenant_d is defined under the static 'network_services' key.

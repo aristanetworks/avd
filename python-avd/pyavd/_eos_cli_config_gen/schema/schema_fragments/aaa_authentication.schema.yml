@@ -20,6 +20,7 @@ keys:
               - "group tacacs+ local"
               - "group MYGROUP none"
               - "group radius group MYGROUP local"
+              - "group ldap"
           command_api:
             type: str
             # TODO: Revisit to see if the feature is now visible in EOS and update description
@@ -78,18 +79,18 @@ keys:
                 min: 1
                 max: 255
                 convert_types:
-                - str
+                  - str
                 required: true
               duration:
                 type: int
                 min: 1
                 max: 4294967295
                 convert_types:
-                - str
+                  - str
                 required: true
               window:
                 type: int
                 min: 1
                 max: 4294967295
                 convert_types:
-                - str
+                  - str

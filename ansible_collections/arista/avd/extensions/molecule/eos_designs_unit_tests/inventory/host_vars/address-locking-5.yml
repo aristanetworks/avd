@@ -1,0 +1,59 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.10
+  nodes:
+    - name: address-locking-5
+      id: 101
+      bgp_as: 101
+      platform: patrial_address_locking_platform
+
+# Testing platform with partial support for the Address Locking feature
+custom_platform_settings:
+  - platforms:
+      - patrial_address_locking_platform
+    feature_support:
+      address_locking:
+        ipv4_enforcement_disabled: false
+        ipv6_enforcement_disabled: false
+        ipv6_ethernet_interface: false
+        ipv6_vlan: false
+
+# Testing feature support on virtual platforms
+address_locking_settings:
+  disabled: true
+  locked_address:
+    expiration_mac_disabled: true
+    # Should not be rendered for platform 'patrial_address_locking_platform'
+    ipv4_enforcement_disabled: true
+    # Should not be rendered for cEOS
+    ipv6_enforcement_disabled: true
+  local_interface: use_mgmt_interface
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 101
+        name: test-address-locking-vlan
+        address_locking:
+          ipv4: true
+          # Should not be rendered for cEOS
+          ipv6: true
+
+servers:
+  - name: ADDRESS_LOCKING_5_SERVER
+    adapters:
+      - switches: [address-locking-5]
+        switch_ports: [Ethernet1]
+        mode: access
+        vlans: 101
+        address_locking:
+          ipv4: true
+          # Should not be rendered for cEOS
+          ipv6: true

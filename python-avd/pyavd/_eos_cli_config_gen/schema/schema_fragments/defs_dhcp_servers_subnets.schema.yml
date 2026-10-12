@@ -14,7 +14,7 @@ $defs:
         name:
           type: str
           convert_types:
-          - int
+            - int
         dns_servers:
           type: list
           items:
@@ -39,21 +39,21 @@ $defs:
               min: 0
               max: 2000
               convert_types:
-              - str
+                - str
             hours:
               type: int
               required: true
               min: 0
               max: 23
               convert_types:
-              - str
+                - str
             minutes:
               type: int
               required: true
               min: 0
               max: 59
               convert_types:
-              - str
+                - str
         reservations:
           description: DHCP client reservations.
           type: list

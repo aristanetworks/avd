@@ -19,7 +19,6 @@ keys:
         default: false
       hosts:
         type: list
-        required: true
         min_length: 1
         items:
           type: dict
@@ -90,3 +89,6 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
+      monitor_layer1:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/monitor_layer1

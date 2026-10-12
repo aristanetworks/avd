@@ -739,6 +739,8 @@ ethernet_interfaces:
 - name: Ethernet11
   description: Phones with attached PCs
   shutdown: false
+  mac_access_group_in: acl-on-port-profile
+  mac_access_group_out: acl-on-port-profile
   metadata:
     peer_type: network_port
     peer_key: network_ports
@@ -754,6 +756,8 @@ ethernet_interfaces:
 - name: Ethernet12
   description: Phones with attached PCs
   shutdown: false
+  mac_access_group_in: acl-on-port-profile
+  mac_access_group_out: acl-on-port-profile
   metadata:
     peer_type: network_port
     peer_key: network_ports
@@ -893,6 +897,19 @@ ethernet_interfaces:
 hostname: network-ports-tests-2
 ip_igmp_snooping:
   globally_enabled: true
+mac_access_lists:
+- name: acl-on-port-profile
+  entries:
+  - sequence: 10
+    action: deny any 01:80:c2:00:00:00 00:00:00:00:00:00
+  - sequence: 5
+    action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00
+- name: acl-on-network-port
+  entries:
+  - sequence: 5
+    action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00
+  - sequence: 10
+    action: deny any 01:80:c2:00:00:00 00:00:00:00:00:00
 metadata:
   is_deployed: true
   platform: 720XPM-24Y6
@@ -953,6 +970,8 @@ port_channel_interfaces:
 - name: Port-Channel44
   shutdown: false
   mlag: 44
+  mac_access_group_in: acl-on-network-port
+  mac_access_group_out: acl-on-network-port
   switchport:
     enabled: true
 - name: Port-Channel43

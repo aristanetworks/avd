@@ -1,0 +1,39 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: stp-settings-2
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.10.10.44/26
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  root_super: true
+  mode: mstp
+  mst:
+    pvst_border: true
+  mst_instances:
+  - id: '0'
+    priority: 4096
+  port_id_allocation_port_channel_range:
+    minimum: 401
+    maximum: 2002
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

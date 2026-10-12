@@ -85,6 +85,7 @@ ntp:
     vrf: MGMT
   servers:
   - name: 192.168.200.5
+    source_address: 192.168.0.203
     preferred: true
   vrf: MGMT
 port_channel_interfaces:

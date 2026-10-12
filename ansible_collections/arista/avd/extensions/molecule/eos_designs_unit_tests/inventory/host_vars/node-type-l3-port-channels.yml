@@ -154,6 +154,25 @@ wan_router:
               peer_port_channel: Port-Channel20
               peer_ip: 192.168.1.18
               wan_carrier: BlizzardFast
+            - # Port-Channel with both ip_address and ipv6_addresses
+              name: Port-Channel46
+              mode: active
+              member_interfaces:
+                - name: Ethernet4
+                  peer: peer5
+                  peer_interface: Ethernet1
+              ip_address: 192.168.46.1/31
+              ipv6_addresses:
+                - 2001:db8::1/64
+                - 2001:db8:1::1/64
+              peer: peer5
+              peer_port_channel: Port-Channel46
+            - # Sub-interface with only ipv6_addresses (no ip_address)
+              name: Port-Channel46.10
+              ipv6_addresses:
+                - 2001:db8:2::1/64
+              peer: peer5
+              peer_port_channel: Port-Channel46
 wan_carriers:
   - name: Cybercast
     path_group: INET

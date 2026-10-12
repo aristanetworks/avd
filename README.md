@@ -34,11 +34,11 @@ AVD Documentation:
 
 ## AVD Ansible Collection
 
-[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
+[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through its **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
 
 ### Examples
 
-- [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
+- [Getting started](https://avd.arista.com/stable/docs/user-manual/intro-to-ansible-and-avd.html)
 - [Examples](https://avd.arista.com/stable/ansible_collections/arista/avd/examples/single-dc-l3ls/index.html)
 
 ## Additional resources

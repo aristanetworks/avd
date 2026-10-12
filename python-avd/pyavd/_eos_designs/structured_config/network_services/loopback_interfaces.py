@@ -7,7 +7,8 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils import AvdStringFormatter, default
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns

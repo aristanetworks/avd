@@ -1,0 +1,3 @@
+hostname: avd-ci-leaf4
+metadata:
+  is_deployed: true

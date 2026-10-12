@@ -145,6 +145,7 @@
                 description: Child container for AVD manifest deployment
                 match_policy: match_all
                 name: AVD-MANIFEST-CHILD
+                preserve_existing_sub_containers: false
                 sub_containers: []
                 tag_query: "device:avd-ci-leaf1"
 
@@ -152,12 +153,14 @@
                 description: Root container for AVD manifest deployment
                 match_policy: match_all
                 name: AVD-MANIFEST-ROOT
+                preserve_existing_sub_containers: false
                 sub_containers:
                   - configlets:
                       - TEST-MANIFEST-ACCESS-LISTS
                     description: Child container for AVD manifest deployment
                     match_policy: match_all
                     name: AVD-MANIFEST-CHILD
+                    preserve_existing_sub_containers: false
                     sub_containers: []
                     tag_query: "device:avd-ci-leaf1"
                 tag_query: "dummy_name:dummy_val"

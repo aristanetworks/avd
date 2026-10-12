@@ -9,6 +9,10 @@
 {%     if qos.rewrite_dscp is arista.avd.defined(true) %}
 qos rewrite dscp
 {%     endif %}
+{%     if qos.random_detect.ecn.global_buffer is arista.avd.defined %}
+{%         set gb = qos.random_detect.ecn.global_buffer %}
+qos random-detect ecn global-buffer minimum-threshold {{ gb.min }} {{ gb.units }} maximum-threshold {{ gb.max }} {{ gb.units }}
+{%     endif %}
 {%     if qos.random_detect.ecn.allow_non_ect.enabled is arista.avd.defined %}
 {%         set ecn_command = "qos random-detect ecn allow non-ect" %}
 {%         if qos.random_detect.ecn.allow_non_ect.chip_based is arista.avd.defined(true) %}

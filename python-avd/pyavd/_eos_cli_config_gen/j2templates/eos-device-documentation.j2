@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# context used to hide password and keys #}
-{% set hide_passwords = eos_cli_config_gen_documentation.hide_passwords | arista.avd.default(true) %}
+{% set hide_passwords = _eos_cli_config_gen_hide_passwords | arista.avd.default(eos_cli_config_gen_documentation.hide_passwords, true) %}
 # {{ hostname | arista.avd.default(inventory_hostname) }}
 {% if metadata.serial_number is arista.avd.defined %}
 
@@ -39,6 +39,8 @@ Serial Number: {{ metadata.serial_number }}
 {% include 'documentation/boot.j2' %}
 {# Kernel Software Configuration #}
 {% include 'documentation/kernel.j2' %}
+{# Environment #}
+{% include 'documentation/environment-fan-speed.j2' %}
 {# Monitoring #}
 {% include 'documentation/monitoring.j2' %}
 {# Monitor Connectivity #}
@@ -77,8 +79,8 @@ Serial Number: {{ metadata.serial_number }}
 {% include 'documentation/ip-security.j2' %}
 {# Interfaces #}
 {% include 'documentation/interfaces.j2' %}
-{## Switchport Port-security #}
-{% include 'documentation/switchport-port-security.j2' %}
+{# Switchport #}
+{% include 'documentation/switchport.j2' %}
 {# Routing #}
 {% include 'documentation/routing.j2' %}
 {# BFD #}
@@ -127,6 +129,8 @@ Serial Number: {{ metadata.serial_number }}
 {% include 'documentation/ip-dhcp-snooping.j2' %}
 {# IP NAT #}
 {% include 'documentation/ip-nat.j2' %}
+{# IP Software Forwarding #}
+{% include 'documentation/ip-software-forwarding.j2' %}
 {# IP Hardware FIB #}
 {% include 'documentation/ip-hardware.j2' %}
 {# Errdisable #}
@@ -145,5 +149,7 @@ Serial Number: {{ metadata.serial_number }}
 {% include 'documentation/stun.j2' %}
 {# Maintenance Mode #}
 {% include 'documentation/maintenance-mode.j2' %}
+{# Schedule #}
+{% include 'documentation/schedule.j2' %}
 {# EOS CLI #}
 {% include 'documentation/eos-cli.j2' %}

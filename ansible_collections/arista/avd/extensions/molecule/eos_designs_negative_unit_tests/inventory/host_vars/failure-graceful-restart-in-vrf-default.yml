@@ -1,0 +1,28 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    bgp_as: 65101
+  nodes:
+    - name: failure-graceful-restart-in-vrf-default
+      id: 1
+
+tenants:
+  - name: TEST
+    vrfs:
+      - name: default
+        bgp:
+          enabled: true
+          graceful_restart:
+            enabled: false
+        svis:
+          - id: 10
+            name: TEST_SVI
+            enabled: true
+
+expected_error_message: >-
+  The per-VRF setting 'tenants[name=TEST].vrfs[name=default].bgp.graceful_restart' is not supported for VRF 'default'.
+  Use the global 'bgp_graceful_restart' setting instead.

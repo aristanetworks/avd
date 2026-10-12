@@ -428,7 +428,7 @@ loopback_interfaces:
   isis_passive: true
   node_segment:
     ipv4_index: 201
-    ipv6_index: 201
+    ipv6_index: 1001
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -618,6 +618,7 @@ router_isis:
   address_family_ipv6:
     enabled: true
     maximum_paths: 4
+    multi_topology: true
     fast_reroute_ti_lfa:
       mode: link-protection
   segment_routing_mpls:

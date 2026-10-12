@@ -84,7 +84,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         table: str | None = None
         """
         Setting 'table' will allow for custom grouping of schema fields in the documentation.
-        By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.
+        By default each root key has its own table. By setting the same table-value on multiple keys, they will be merged to a single table.
         If 'table' is set on a 'child' key, all 'ancestor' keys are automatically included in the table so the full path is visible.
         The 'table' option is inherited to all child keys, unless specifically set on the child.
         """
@@ -358,8 +358,10 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     """Maximum string length"""
     pattern: str | None = None
     """
-    A regular expression which will be matched on the variable value.
-    The regular expression should be valid according to the ECMA 262 dialect.
+    An AVD regular expression which will be matched against the complete variable value.
+    The supported dialect includes Unicode-aware Perl shorthand classes (`\\d`, `\\s`, and `\\w`, including their uppercase complements)
+    and word boundaries, Unicode-safe wildcards and explicit character classes, lookarounds, and variable-length lookbehinds.
+    Broader Unicode properties and scripts such as `\\p{Greek}` are not supported.
     Remember to use double escapes.
     """
     valid_values: list[str] | None = None

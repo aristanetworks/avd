@@ -115,7 +115,9 @@ ip access-list {{ acl.name }}
 {%                     set acl_entry.string = acl_entry.string ~ ' dscp ' ~ acle.dscp | lower %}
 {%                 endif %}
 {#                 * add log #}
-{%                 if acle.log is arista.avd.defined(true) %}
+{%                 if acle.action == "deny" and acle.copy_captive_portal is arista.avd.defined(true) %}
+{%                     set acl_entry.string = acl_entry.string ~ ' copy captive-portal' %}
+{%                 elif acle.log is arista.avd.defined(true) %}
 {%                     set acl_entry.string = acl_entry.string ~ ' log' %}
 {%                 endif %}
 {#                 check if the number of ACL entries is below the limit #}
@@ -123,7 +125,7 @@ ip access-list {{ acl.name }}
 {%                     set counter.acle_number = counter.acle_number + 1 %}
 {%                     if counter.acle_number > ip_access_lists_max_entries %}
 {#                     j2lint: disable=V1 #}
-   {{ a_non_existing_var | mandatory('The number of ACL entries is above defined maximum!') }}
+   {{ a_non_existing_var | arista.avd._mandatory('The number of ACL entries is above defined maximum!') }}
 {%                     endif %}
 {%                 endif %}
 {%             endif %}

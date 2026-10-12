@@ -6,48 +6,48 @@ custom_structured_configuration_vxlan_interface:
       source_interface: Loopback0
       udp_port: 4789
       vlans:
-      - id: 11
-        vni: 10011
+        - id: 11
+          vni: 10011
       vrfs:
-      - name: VRF10
-        vni: 10
+        - name: VRF10
+          vni: 10
 
 custom_structured_configuration_loopback_interfaces:
-- name: Loopback0
-  description: ROUTER_ID
-  shutdown: true
-  ip_address: 10.255.0.3/32
+  - name: Loopback0
+    description: ROUTER_ID
+    shutdown: true
+    ip_address: 10.255.0.3/32
 
 # Custom vlan_interfaces structured_config to validate inband management reachability test
 custom_structured_configuration_vlan_interfaces:
 # SVI ignored because it is shutdown
-- name: Vlan100
-  description: SVI100_INBAND_MGMT
-  shutdown: true
-  vrf: MGMT_BACKUP
-  ip_address: 10.100.100.1/24
-  metadata:
-    type: inband_mgmt
+  - name: Vlan100
+    description: SVI100_INBAND_MGMT
+    shutdown: true
+    vrf: MGMT_BACKUP
+    ip_address: 10.100.100.1/24
+    metadata:
+      type: inband_mgmt
 # SVI ignored because it has no IP address
-- name: Vlan101
-  description: SVI101_INBAND_MGMT
-  shutdown: false
-  vrf: MGMT_BACKUP
-  metadata:
-    type: inband_mgmt
+  - name: Vlan101
+    description: SVI101_INBAND_MGMT
+    shutdown: false
+    vrf: MGMT_BACKUP
+    metadata:
+      type: inband_mgmt
 # SVI ignored because it uses DHCP
-- name: Vlan102
-  description: SVI102_INBAND_MGMT
-  shutdown: false
-  vrf: MGMT_BACKUP
-  ip_address: dhcp
-  metadata:
-    type: inband_mgmt
+  - name: Vlan102
+    description: SVI102_INBAND_MGMT
+    shutdown: false
+    vrf: MGMT_BACKUP
+    ip_address: dhcp
+    metadata:
+      type: inband_mgmt
 # SVI will be used when default vrf (topology limitation)
-- name: Vlan103
-  description: SVI103_INBAND_MGMT_DEFAULT_VRF
-  shutdown: false
-  ip_address: 10.103.103.1/24
-  vrf: default
-  metadata:
-    type: inband_mgmt
+  - name: Vlan103
+    description: SVI103_INBAND_MGMT_DEFAULT_VRF
+    shutdown: false
+    ip_address: 10.103.103.1/24
+    vrf: default
+    metadata:
+      type: inband_mgmt

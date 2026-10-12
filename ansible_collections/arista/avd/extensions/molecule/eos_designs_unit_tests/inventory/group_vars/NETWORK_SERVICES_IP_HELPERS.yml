@@ -1,0 +1,83 @@
+---
+default_node_types:
+  - match_hostnames:
+      - .*l2leaf.*
+    node_type: l2leaf
+  - match_hostnames:
+      - network-services-ip-helpers-leaf.*
+    node_type: l3leaf
+
+l2leaf:
+  defaults:
+    uplink_switches: [network-services-ip-helpers-leaf3, network-services-ip-helpers-leaf3]
+  nodes:
+    - name: network-services-ip-helpers-l2leaf
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      uplink_switch_interfaces: [Ethernet1, Ethernet2]
+      inband_mgmt_vlan: 100
+      inband_mgmt_subnet: 192.168.101.0/24
+      inband_mgmt_vrf: INBANDMGMT
+      id: 3
+
+l3leaf:
+  defaults:
+    bgp_as: 65001
+    spanning_tree_mode: none
+    loopback_ipv4_pool: 192.0.255.0/24
+    uplink_ipv4_pool: 10.255.1.0/24
+    vtep_loopback_ipv4_pool: 10.255.2.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+  nodes:
+    - name: network-services-ip-helpers-leaf1
+      id: 1
+      mgmt_ip: 10.1.1.1/24
+      filter:
+        tenants: ["TEST1"]
+        always_include_vrfs_in_tenants: ["TEST1"]
+    - name: network-services-ip-helpers-leaf3
+      id: 11
+      inband_mgmt_vrf: INBANDMGMT
+      inband_mgmt_interface: vlan100
+      filter:
+        tenants: ["TEST2"]
+        always_include_vrfs_in_tenants: ["TEST2"]
+
+tenants:
+  - name: TEST1
+    mac_vrf_vni_base: 1000
+    vrfs:
+      - name: IP_HELPERS1
+        vrf_id: 100
+        # This input is ignored as svis[].ip_helper is the priority.
+        ip_helpers:
+          - ip_helper: 1.1.1.1
+            source_interface: lo100
+            source_vrf: MGMT
+        svis:
+          - id: 10
+            name: SVI1
+            ip_helpers:
+              - ip_helper: 1.1.1.1
+                source_interface: Management1
+                source_vrf: use_mgmt_interface_vrf
+              - ip_helper: 1.1.1.2
+                source_interface: use_default_mgmt_method_interface
+                source_vrf: use_default_mgmt_method_vrf
+              - ip_helper: 1.1.1.3
+                source_interface: use_mgmt_interface
+                source_vrf: use_mgmt_interface_vrf
+  - name: TEST2
+    mac_vrf_vni_base: 1000
+    vrfs:
+      - name: IP_HELPERS3
+        vrf_id: 102
+        svis:
+          - id: 11
+            name: SVI2
+            ip_helpers:
+              - ip_helper: 1.1.1.4
+                source_interface: use_inband_mgmt_interface
+                source_vrf: use_inband_mgmt_vrf
+              - ip_helper: 1.1.1.5
+                source_interface: vlan100
+                source_vrf: use_inband_mgmt_vrf

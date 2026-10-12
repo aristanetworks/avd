@@ -1,0 +1,9 @@
+---
+management_ldap:
+  # Test to no server host has search key
+  server_hosts:
+    - host: ldap1.example.com
+      ssl_profile: LDAP_HOST_SSL_PROFILE
+  # Test to not define server_defaults.search
+  server_defaults:
+    authorization_group_policy: LDAP_GROUP_POLICY

@@ -4,13 +4,16 @@
 from __future__ import annotations
 
 from functools import cached_property
+from ipaddress import IPv4Network
 from typing import TYPE_CHECKING, Protocol, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import Undefined, default, get_ip_from_ip_prefix
+from pyavd._utils.default import default
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
+from pyavd._utils.undefined import Undefined, UndefinedType
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
@@ -40,7 +43,7 @@ class UtilsMixin(Protocol):
         underlay_links = self.facts.uplinks._deepcopy()
 
         for uplink in underlay_links:
-            uplink.sflow_enabled = self.shared_utils.get_interface_sflow(uplink.interface, self.inputs.fabric_sflow.uplinks)
+            uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
             uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
             if not self.shared_utils.platform_settings.feature_support.ptp:
                 uplink.ptp.enable = False
@@ -82,7 +85,7 @@ class UtilsMixin(Protocol):
                     underlay_multicast_pim_sm=uplink.underlay_multicast_pim_sm,
                     underlay_multicast_static=uplink.underlay_multicast_static,
                     ipv6_enable=uplink.ipv6_enable,
-                    sflow_enabled=self.shared_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
+                    sflow_enabled=self.inputs.fabric_sflow.downlinks,
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     ethernet_structured_config=uplink.peer_ethernet_structured_config,
@@ -161,10 +164,11 @@ class UtilsMixin(Protocol):
         # logic below is common to l3_interface and l3_port_channel interface types
 
         # TODO: catch if ip_address is not valid or not dhcp
-        # IP address is required for subinterfaces, but optional for main Ethernet interfaces or Port-Channels as we may define subinterfaces in other modules.
-        if is_subinterface and not l3_generic_interface.ip_address:
+        # IP address or IPv6 address is required for subinterfaces, but optional for main Ethernet interfaces or Port-Channels
+        # as we may define subinterfaces in other modules.
+        if is_subinterface and not (l3_generic_interface.ip_address or l3_generic_interface.ipv6_addresses):
             msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
-            msg += f"[name={l3_generic_interface.name}].ip_address"
+            msg += f"[name={l3_generic_interface.name}].ip_address or [name={l3_generic_interface.name}].ipv6_addresses"
             raise AristaAvdMissingVariableError(msg)
 
         interface._update(
@@ -175,6 +179,8 @@ class UtilsMixin(Protocol):
             eos_cli=l3_generic_interface.raw_eos_cli,
         )
         interface.metadata.peer = l3_generic_interface.peer
+        if not isinstance((validate_state_result := self.structured_config_utils.get_interface_validate_state()), UndefinedType):
+            interface.metadata.validate_state = validate_state_result
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
         if is_subinterface:
@@ -312,7 +318,86 @@ class UtilsMixin(Protocol):
             peer_ip=interface.peer_ip,
         )
 
+    def _get_ipv6_acl_for_l3_generic_interface(
+        self: AvdStructuredConfigUnderlayProtocol,
+        acl_name: str,
+        interface: (
+            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
+            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
+        ),
+    ) -> EosDesigns.Ipv6AclsItem:
+        interface_ipv6 = next(iter(interface.ipv6_addresses), None)
+        if interface_ipv6 is not None and "/" in interface_ipv6:
+            interface_ipv6 = get_ip_from_ip_prefix(interface_ipv6)
+
+        return self.shared_utils.get_ipv6_acl(
+            name=acl_name,
+            interface_name=interface.name,
+            interface_ipv6=interface_ipv6,
+            peer_ipv6=interface.peer_ipv6,
+        )
+
+    def set_acls(
+        self: AvdStructuredConfigUnderlayProtocol,
+        l3_interface: (
+            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
+            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
+        ),
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
+    ) -> None:
+        """Apply IPv4 and IPv6 ACLs to an L3 interface or L3 port-channel."""
+        if l3_interface.ipv4_acl_in:
+            acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
+            interface.access_group_in = acl.name
+            self.structured_config_utils._set_ipv4_acl(acl)
+
+        if l3_interface.ipv4_acl_out:
+            acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_out, l3_interface)
+            interface.access_group_out = acl.name
+            self.structured_config_utils._set_ipv4_acl(acl)
+
+        if l3_interface.ipv6_acl_in:
+            acl = self._get_ipv6_acl_for_l3_generic_interface(l3_interface.ipv6_acl_in, l3_interface)
+            interface.ipv6_access_group_in = acl.name
+            self.structured_config_utils._set_ipv6_acl(acl)
+
+        if l3_interface.ipv6_acl_out:
+            acl = self._get_ipv6_acl_for_l3_generic_interface(l3_interface.ipv6_acl_out, l3_interface)
+            interface.ipv6_access_group_out = acl.name
+            self.structured_config_utils._set_ipv6_acl(acl)
+
     @cached_property
     def _underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
         """Return a list of P2P underlay links."""
         return [link for link in self._underlay_links if link.type == "underlay_p2p"]
+
+    @cached_property
+    def _underlay_subnets(self: AvdStructuredConfigUnderlayProtocol) -> tuple[list[str], EosCliConfigGen.DhcpServersItem.Ipv4Subnets]:
+        """
+        Returns tuple of list of peer IPv4 subnets and dhcp subnets for downstream p2p interfaces.
+
+        Used for l3 inband ztp/ztr.
+        """
+        subnets = []
+        dhcp_server_ipv4_subnets = EosCliConfigGen.DhcpServersItem.Ipv4Subnets()
+        for peer in self._avd_peers:
+            peer_facts = self.shared_utils.get_peer_facts(peer)
+            for uplink in peer_facts.uplinks:
+                if (
+                    uplink.peer == self.shared_utils.hostname
+                    and uplink.type == "underlay_p2p"
+                    and uplink.ip_address
+                    and "unnumbered" not in uplink.ip_address
+                    and peer_facts.inband_ztp
+                ):
+                    subnet = str(IPv4Network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False))
+                    subnets.append(subnet)
+                    # ipv6 numbered is not supported with inband_ztp hence right now only ipv4_subnet can be added
+                    subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
+                        subnet=subnet,
+                        name=f"inband ztp for {peer}-{uplink.interface}",
+                        default_gateway=f"{uplink.peer_ip_address}",
+                    )
+                    subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
+                    dhcp_server_ipv4_subnets.append(subnet_item)
+        return subnets, dhcp_server_ipv4_subnets

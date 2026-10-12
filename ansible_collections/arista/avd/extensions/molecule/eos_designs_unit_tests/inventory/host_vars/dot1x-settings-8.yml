@@ -1,0 +1,21 @@
+---
+# Test for 802.1X web authentication (captive portal) explicitly disabled.
+# Regression test: ensures we don't render an empty `dot1x` stanza when
+# `web_authentication.enabled: false` and no other dot1x sub-features are set.
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dot1x-settings-8
+      mgmt_ip: 192.168.0.2/24
+
+dot1x_settings:
+  enabled: true
+  web_authentication:
+    enabled: false
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key

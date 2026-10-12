@@ -1,0 +1,14 @@
+---
+management_ldap:
+  # Test to not defined server_defaults and server_hosts
+  group_policies:
+    - policy: LDAP_GROUP_POLICY
+      search_filter:
+        objectclass: group
+        attribute: member
+      groups:
+        - name: Network Admin
+          role: network-admin
+          privilege: 15
+        - name: Read Only
+          role: read-only

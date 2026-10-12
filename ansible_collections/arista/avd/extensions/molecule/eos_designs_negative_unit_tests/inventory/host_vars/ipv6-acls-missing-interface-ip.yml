@@ -1,0 +1,39 @@
+---
+# Tests that using interface_ip substitution in an ipv6_acl on an SVI that has no ipv6_address
+# raises AristaAvdError indicating the substitution value is missing.
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: ipv6-acls-missing-interface-ip
+      bgp_as: 65101
+      id: 101
+
+tenants:
+  - name: Test-Tenant
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TEST
+        vrf_id: 1
+        svis:
+          - id: 10
+            name: TEST_SVI
+            enabled: true
+            # No ipv6_address set - interface_ip substitution in the ACL below will fail.
+            ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+
+ipv6_acls:
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - sequence: 10
+        action: deny
+        protocol: ipv6
+        source: any
+        destination: interface_ip
+
+expected_error_message: >-
+  Unable to perform substitution of the value 'interface_ip' defined under 'ipv6_acls[name=TEST-IPV6-ACL-WITH-IP-FIELDS-IN].entries[0].destination',
+  since no substitution value was found for interface 'Vlan10'. Make sure to set the appropriate fields on the interface.

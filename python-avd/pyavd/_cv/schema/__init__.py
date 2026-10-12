@@ -11,7 +11,7 @@ from pyavd._schema.models.avd_list import AvdList
 from pyavd._schema.models.avd_model import AvdModel
 
 if TYPE_CHECKING:
-    from pyavd._utils import Undefined, UndefinedType
+    from pyavd._utils.undefined import Undefined, UndefinedType
 
 
 class CvDeploy(AvdModel):
@@ -105,6 +105,7 @@ class CvDeploy(AvdModel):
             "system_mac_address": {"type": str},
             "cv_tags": {"type": EosCliConfigGen.Metadata.CvTags},
             "cv_pathfinder": {"type": EosCliConfigGen.Metadata.CvPathfinder},
+            "cv_use_static_config_manifest": {"type": bool},
         }
         _allow_other_keys: ClassVar[bool] = True
         is_deployed: bool | None
@@ -119,17 +120,30 @@ class CvDeploy(AvdModel):
         cv_tags: EosCliConfigGen.Metadata.CvTags
         cv_pathfinder: EosCliConfigGen.Metadata.CvPathfinder
         """Metadata used for CV Pathfinder visualization on CloudVision."""
+        cv_use_static_config_manifest: bool | None
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+
+        The device configuration is expected to be deployed via the
+        `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+        flat "AVD
+        Configurations" layout in the Static Configlet Studio.
+        The device will still be verified and
+        onboarded in the Inventory & Topology Studio.
+        """
 
         if TYPE_CHECKING:
 
             def __init__(
                 self,
                 *,
-                is_deployed: bool | None | UndefinedType = Undefined,
-                serial_number: str | None | UndefinedType = Undefined,
-                system_mac_address: str | None | UndefinedType = Undefined,
+                is_deployed: bool | UndefinedType | None = Undefined,
+                serial_number: str | UndefinedType | None = Undefined,
+                system_mac_address: str | UndefinedType | None = Undefined,
                 cv_tags: EosCliConfigGen.Metadata.CvTags | UndefinedType = Undefined,
                 cv_pathfinder: EosCliConfigGen.Metadata.CvPathfinder | UndefinedType = Undefined,
+                cv_use_static_config_manifest: bool | UndefinedType | None = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -145,6 +159,16 @@ class CvDeploy(AvdModel):
                     system_mac_address: system_mac_address
                     cv_tags: cv_tags
                     cv_pathfinder: Metadata used for CV Pathfinder visualization on CloudVision.
+                    cv_use_static_config_manifest:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+
+                       The device configuration is expected to be deployed via the
+                       `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+                       flat "AVD
+                       Configurations" layout in the Static Configlet Studio.
+                       The device will still be verified and
+                       onboarded in the Inventory & Topology Studio.
 
                 """
 
@@ -155,6 +179,7 @@ class CvDeploy(AvdModel):
         "cv_device_tags": {"type": CvDeviceTags},
         "cv_interface_tags": {"type": CvInterfaceTags},
         "cv_pathfinder_metadata": {"type": EosCliConfigGen.Metadata.CvPathfinder},
+        "cv_use_static_config_manifest": {"type": bool},
         "metadata": {"type": Metadata},
     }
     _allow_other_keys: ClassVar[bool] = True
@@ -208,6 +233,18 @@ class CvDeploy(AvdModel):
     """
     cv_pathfinder_metadata: EosCliConfigGen.Metadata.CvPathfinder
     """Metadata used for CV Pathfinder visualization on CloudVision."""
+    cv_use_static_config_manifest: bool | None
+    """
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
+
+    The device configuration is expected to be deployed via the
+    `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+    flat "AVD
+    Configurations" layout in the Static Configlet Studio.
+    The device will still be verified and
+    onboarded in the Inventory & Topology Studio.
+    """
     metadata: Metadata
     """
     Metadata from the `eos_designs` role, loaded automatically from structured configs.
@@ -225,11 +262,12 @@ class CvDeploy(AvdModel):
             self,
             *,
             is_deployed: bool | UndefinedType = Undefined,
-            serial_number: str | None | UndefinedType = Undefined,
-            system_mac_address: str | None | UndefinedType = Undefined,
+            serial_number: str | UndefinedType | None = Undefined,
+            system_mac_address: str | UndefinedType | None = Undefined,
             cv_device_tags: CvDeviceTags | UndefinedType = Undefined,
             cv_interface_tags: CvInterfaceTags | UndefinedType = Undefined,
             cv_pathfinder_metadata: EosCliConfigGen.Metadata.CvPathfinder | UndefinedType = Undefined,
+            cv_use_static_config_manifest: bool | UndefinedType | None = Undefined,
             metadata: Metadata | UndefinedType = Undefined,
         ) -> None:
             """
@@ -275,6 +313,16 @@ class CvDeploy(AvdModel):
                    Subclass of AvdList
                    with `CvInterfaceTagsItem` items.
                 cv_pathfinder_metadata: Metadata used for CV Pathfinder visualization on CloudVision.
+                cv_use_static_config_manifest:
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
+
+                   The device configuration is expected to be deployed via the
+                   `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+                   flat "AVD
+                   Configurations" layout in the Static Configlet Studio.
+                   The device will still be verified and
+                   onboarded in the Inventory & Topology Studio.
                 metadata:
                    Metadata from the `eos_designs` role, loaded automatically from structured configs.
                    For standalone

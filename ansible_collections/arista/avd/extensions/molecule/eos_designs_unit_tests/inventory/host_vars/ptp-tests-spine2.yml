@@ -8,6 +8,8 @@ ptp_profiles:
     sync_message:
       interval: 2
     transport: ipv4
+    management:
+      drop: false
   - profile: aes67-r16-2016
     announce:
       interval: 0

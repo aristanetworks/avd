@@ -1,0 +1,4 @@
+---
+# Inband_mgmt_vrf instance is created due to fix applied.
+avd_design_future:
+  configure_inband_mgmt_ipv6_vrf: true
