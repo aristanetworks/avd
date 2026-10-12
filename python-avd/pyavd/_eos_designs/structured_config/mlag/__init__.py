@@ -265,18 +265,23 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             return
 
         # MLAG Peer group
-        self.structured_config_utils.set_once_peer_group_mlag_ipv4_underlay_peer()
+        self.structured_config_utils.set_once_peer_group_mlag_underlay_peer()
         if not self.inputs.avd_design_future.only_configure_mlag_vrfs_peer_group_when_used and self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
-            self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
+            self.structured_config_utils.set_once_peer_group_mlag_vrfs_peer()
 
         vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
         interface_name = f"Vlan{vlan}"
+        bgp_peer_group = (
+            self.shared_utils.mlag_bgp_ipv6_underlay_peer_group
+            if self.shared_utils.underlay_ipv6_numbered
+            else self.shared_utils.mlag_bgp_ipv4_underlay_peer_group
+        )
 
         # Underlay MLAG peering
         if self.inputs.underlay_rfc5549:
             self.structured_config.router_bgp.neighbor_interfaces.append_new(
                 name=interface_name,
-                peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
+                peer_group=bgp_peer_group.name,
                 metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=self.shared_utils.mlag_peer),
                 remote_as=self.shared_utils.formatted_bgp_as,
                 description=AvdStringFormatter().format(
@@ -291,7 +296,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             neighbor_ip = default(self.shared_utils.mlag_peer_l3_ip, self.shared_utils.mlag_peer_ip)
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=neighbor_ip,
-                peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
+                peer_group=bgp_peer_group.name,
                 metadata=EosCliConfigGen.RouterBgp.NeighborsItem.Metadata(peer=self.shared_utils.mlag_peer),
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,

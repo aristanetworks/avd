@@ -801,6 +801,52 @@ keys:
 
       they are explicitly referenced in listen ranges.'
     $ref: eos_cli_config_gen#/keys/peer_filters
+  mlag_ipv4_underlay_peer_group:
+    type: str
+    documentation_options:
+      table: bgp-settings
+    description: Select the BGP peer group to use for MLAG underlay IPv4 peerings.
+    valid_values:
+    - mlag_ipv4_underlay_peer
+    - mlag_ipv6_underlay_peer
+    - mlag_underlay_peer
+    default: mlag_ipv4_underlay_peer
+  mlag_ipv6_underlay_peer_group:
+    type: str
+    documentation_options:
+      table: bgp-settings
+    description: 'Select the BGP peer group to use for MLAG underlay IPv6 peerings.
+
+      Default is "mlag_ipv4_underlay_peer" to maintain backward compatibility. Consider
+      changing to "mlag_ipv6_underlay_peer" for IPv6-specific configuration.'
+    valid_values:
+    - mlag_ipv4_underlay_peer
+    - mlag_ipv6_underlay_peer
+    - mlag_underlay_peer
+    default: mlag_ipv4_underlay_peer
+  mlag_ipv4_vrfs_peer_group:
+    type: str
+    documentation_options:
+      table: bgp-settings
+    description: Select the BGP peer group to use for MLAG VRF IPv4 peerings.
+    valid_values:
+    - mlag_ipv4_vrfs_peer
+    - mlag_ipv6_vrfs_peer
+    - mlag_vrfs_peer
+    default: mlag_ipv4_vrfs_peer
+  mlag_ipv6_vrfs_peer_group:
+    type: str
+    documentation_options:
+      table: bgp-settings
+    description: 'Select the BGP peer group to use for MLAG VRF IPv6 peerings.
+
+      Default is "mlag_ipv4_vrfs_peer" to maintain backward compatibility. Consider
+      changing to "mlag_ipv6_vrfs_peer" for IPv6-specific configuration.'
+    valid_values:
+    - mlag_ipv4_vrfs_peer
+    - mlag_ipv6_vrfs_peer
+    - mlag_vrfs_peer
+    default: mlag_ipv4_vrfs_peer
   bgp_peer_groups:
     documentation_options:
       table: bgp-settings
@@ -818,6 +864,53 @@ keys:
           name:
             type: str
             default: IPv4-UNDERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: 'BGP peer group Type 7 encrypted password.
+
+              Takes precedence over `cleartext_password`.'
+          cleartext_password:
+            type: str
+            description: 'BGP peer group cleartext password.
+
+              To protect the password at rest it is strongly recommended to make use
+              of a vault or similar.'
+          bfd:
+            type: bool
+            default: false
+          maximum_routes:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for the EOS Config schema.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
+      mlag_vrfs_peer:
+        type: dict
+        description: 'Set this peer group name to use a different peer-group for MLAG
+          peerings in VRFs.
+
+          By default AVD uses the `mlag_underlay_peer` peer group for the Underlay
+          and for all the VRFs.
+
+
+          If `mlag_vrfs_peer.name` and `mlag_underlay_peer.name` are the same,
+
+          then all the attributes set here are ignored.'
+        keys:
+          name:
+            type: str
+            default: MLAG-VRFS-PEER
             description: Name of peer group.
           password:
             type: str
@@ -897,12 +990,133 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
+      mlag_ipv6_vrfs_peer:
+        type: dict
+        description: 'Peer group for MLAG VRF IPv6 peerings.
+
+          This key is optional and will only be used when explicitly referenced via
+          `mlag_ipv6_vrfs_peer_group`.'
+        keys:
+          name:
+            type: str
+            default: MLAG-IPv6-VRFS-PEER
+            description: Name of peer group.
+          password:
+            type: str
+            description: 'BGP peer group Type 7 encrypted password.
+
+              Takes precedence over `cleartext_password`.'
+          cleartext_password:
+            type: str
+            description: 'BGP peer group cleartext password.
+
+              To protect the password at rest it is strongly recommended to make use
+              of a vault or similar.'
+          bfd:
+            type: bool
+            default: false
+          maximum_routes:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for the EOS Config schema.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
+      mlag_underlay_peer:
+        type: dict
+        description: This key takes precedence over both `mlag_ipv4_underlay_peer`
+          and `mlag_ipv6_underlay_peer` when set.
+        keys:
+          name:
+            type: str
+            default: MLAG-UNDERLAY-PEER
+            description: Name of peer group.
+          password:
+            type: str
+            description: 'BGP peer group Type 7 encrypted password.
+
+              Takes precedence over `cleartext_password`.'
+          cleartext_password:
+            type: str
+            description: 'BGP peer group cleartext password.
+
+              To protect the password at rest it is strongly recommended to make use
+              of a vault or similar.'
+          bfd:
+            type: bool
+            default: false
+          maximum_routes:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for the EOS Config schema.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       mlag_ipv4_underlay_peer:
         type: dict
         keys:
           name:
             type: str
             default: MLAG-IPv4-UNDERLAY-PEER
+            description: Name of peer group.
+          password:
+            type: str
+            description: 'BGP peer group Type 7 encrypted password.
+
+              Takes precedence over `cleartext_password`.'
+          cleartext_password:
+            type: str
+            description: 'BGP peer group cleartext password.
+
+              To protect the password at rest it is strongly recommended to make use
+              of a vault or similar.'
+          bfd:
+            type: bool
+            default: false
+          maximum_routes:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for the EOS Config schema.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
+      mlag_ipv6_underlay_peer:
+        type: dict
+        description: 'Peer group for MLAG underlay IPv6 peerings.
+
+          This key is optional and will only be used when explicitly referenced via
+          `mlag_ipv6_underlay_peer_group`.'
+        keys:
+          name:
+            type: str
+            default: MLAG-IPv6-UNDERLAY-PEER
             description: Name of peer group.
           password:
             type: str
