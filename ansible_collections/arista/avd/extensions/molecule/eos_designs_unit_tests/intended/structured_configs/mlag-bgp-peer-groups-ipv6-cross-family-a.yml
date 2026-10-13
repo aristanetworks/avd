@@ -1,0 +1,278 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet5
+  description: MLAG_mlag-bgp-peer-groups-ipv6-cross-family-b_Ethernet5
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  metadata:
+    peer: mlag-bgp-peer-groups-ipv6-cross-family-b
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
+- name: Ethernet6
+  description: MLAG_mlag-bgp-peer-groups-ipv6-cross-family-b_Ethernet6
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  metadata:
+    peer: mlag-bgp-peer-groups-ipv6-cross-family-b
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
+hostname: mlag-bgp-peer-groups-ipv6-cross-family-a
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+ipv6_prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY-V6
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:db8:100::/48 eq 128
+  - sequence: 20
+    action: permit 2001:db8:101::/48 eq 128
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:db8:103:12::/64
+ipv6_unicast_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ipv6_addresses:
+  - 2001:db8:100::13/128
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ipv6_addresses:
+  - 2001:db8:101:13::1/128
+metadata:
+  is_deployed: true
+  platform: vEOS-LAB
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+mlag_configuration:
+  domain_id: ipv6-cross-family
+  local_interface: Vlan4094
+  peer_address: 10.102.0.37
+  peer_link: Port-Channel5
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+port_channel_interfaces:
+- name: Port-Channel5
+  description: MLAG_mlag-bgp-peer-groups-ipv6-cross-family-b_Port-Channel5
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 30
+    type: permit
+    match:
+    - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65100'
+  router_id: 10.100.0.19
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    metadata:
+      type: ipv4
+    remote_as: '65100'
+    description: Selected mlag_ipv4_underlay_peer
+    bfd: true
+    next_hop_self: true
+    password: 4b21pAdCvWeAqpcKDFMdWw==
+    send_community: all
+    maximum_routes: 12001
+    route_map_in: RM-MLAG-PEER-IN
+  - name: MLAG-IPv4-VRFS-PEER
+    metadata:
+      type: ipv4
+    remote_as: '65100'
+    description: mlag-bgp-peer-groups-ipv6-cross-family-b
+    bfd: true
+    next_hop_self: true
+    password: bhM6md2S5CnLLal9DlIIxw==
+    send_community: all
+    maximum_routes: 12004
+    route_map_in: RM-MLAG-PEER-IN
+  neighbors:
+  - ip_address: 2001:db8:103:12::2
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    metadata:
+      peer: mlag-bgp-peer-groups-ipv6-cross-family-b
+    description: mlag-bgp-peer-groups-ipv6-cross-family-b_Vlan4093
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 10
+    metadata:
+      tenants:
+      - MLAG_TEST
+    rd: 10.100.0.19:10010
+    route_targets:
+      both:
+      - 10010:10010
+    redistribute_routes:
+    - learned
+  address_family_ipv4:
+    peer_groups:
+    - name: MLAG-IPv4-VRFS-PEER
+      activate: true
+  address_family_ipv6:
+    peer_groups:
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+  vrfs:
+  - name: TEST
+    rd: 10.100.0.19:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    router_id: 10.100.0.19
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 2001:db8:103:12::2
+      peer_group: MLAG-IPv4-VRFS-PEER
+      description: mlag-bgp-peer-groups-ipv6-cross-family-b_Vlan3009
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  no_spanning_tree_vlan: 4093-4094
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_L3
+  shutdown: false
+  ipv6_addresses:
+  - 2001:db8:103:12::1/64
+  mtu: 9214
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 10.102.0.36/31
+  mtu: 9214
+  no_autostate: true
+- name: Vlan10
+  description: TEST
+  shutdown: true
+  vrf: TEST
+  ip_address_virtual: 10.10.10.1/24
+  metadata:
+    tenants:
+    - MLAG_TEST
+- name: Vlan3009
+  description: MLAG_L3_VRF_TEST
+  shutdown: false
+  vrf: TEST
+  ipv6_addresses:
+  - 2001:db8:103:12::1/64
+  mtu: 9214
+  metadata:
+    tenants:
+    - MLAG_TEST
+    type: underlay_peering
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4093
+  name: MLAG_L3
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+- id: 10
+  name: TEST
+  metadata:
+    tenants:
+    - MLAG_TEST
+- id: 3009
+  name: MLAG_L3_VRF_TEST
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - MLAG_TEST
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: TEST
+  ip_routing: true
+  metadata:
+    tenants:
+    - MLAG_TEST
+vxlan_interface:
+  vxlan1:
+    description: mlag-bgp-peer-groups-ipv6-cross-family-a_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      encapsulations:
+        ipv6: true
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      vlans:
+      - id: 10
+        vni: 10010
+      vrfs:
+      - name: TEST
+        vni: 10
