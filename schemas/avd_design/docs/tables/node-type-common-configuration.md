@@ -12,7 +12,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.defaults.id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "<node_type_keys.key>.defaults.platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "<node_type_keys.key>.defaults.mac_address") | String |  |  |  | Leverage to document management interface mac address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.defaults.system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.defaults.system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br>Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;custom_system_mac_address</samp>](## "<node_type_keys.key>.defaults.custom_system_mac_address") | String |  |  |  | Set a custom EOS system MAC address using an AVD string formatter template.<br>When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.<br>The node configuration value takes precedence over the global `custom_system_mac_address` value.<br>Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.<br>If unset, the existing `system_mac_address` behavior is unchanged.<br>The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.<br>Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.<br>Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.<br><br>Examples:<br>  - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.<br>  - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "<node_type_keys.key>.defaults.serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.defaults.rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.defaults.mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
@@ -41,7 +42,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br>Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;custom_system_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].custom_system_mac_address") | String |  |  |  | Set a custom EOS system MAC address using an AVD string formatter template.<br>When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.<br>The node configuration value takes precedence over the global `custom_system_mac_address` value.<br>Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.<br>If unset, the existing `system_mac_address` behavior is unchanged.<br>The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.<br>Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.<br>Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.<br><br>Examples:<br>  - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.<br>  - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
@@ -66,7 +68,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.node_groups.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "<node_type_keys.key>.node_groups.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "<node_type_keys.key>.node_groups.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br>Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;custom_system_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].custom_system_mac_address") | String |  |  |  | Set a custom EOS system MAC address using an AVD string formatter template.<br>When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.<br>The node configuration value takes precedence over the global `custom_system_mac_address` value.<br>Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.<br>If unset, the existing `system_mac_address` behavior is unchanged.<br>The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.<br>Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.<br>Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.<br><br>Examples:<br>  - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.<br>  - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "<node_type_keys.key>.node_groups.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.node_groups.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
@@ -93,7 +96,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.nodes.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "<node_type_keys.key>.nodes.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "<node_type_keys.key>.nodes.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.nodes.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.nodes.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br>Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;custom_system_mac_address</samp>](## "<node_type_keys.key>.nodes.[].custom_system_mac_address") | String |  |  |  | Set a custom EOS system MAC address using an AVD string formatter template.<br>When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.<br>The node configuration value takes precedence over the global `custom_system_mac_address` value.<br>Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.<br>If unset, the existing `system_mac_address` behavior is unchanged.<br>The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.<br>Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.<br>Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.<br><br>Examples:<br>  - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.<br>  - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "<node_type_keys.key>.nodes.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.nodes.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.nodes.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
@@ -120,7 +124,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "device_profiles.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "device_profiles.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "device_profiles.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "device_profiles.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "device_profiles.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br>Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;custom_system_mac_address</samp>](## "device_profiles.[].custom_system_mac_address") | String |  |  |  | Set a custom EOS system MAC address using an AVD string formatter template.<br>When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.<br>The node configuration value takes precedence over the global `custom_system_mac_address` value.<br>Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.<br>If unset, the existing `system_mac_address` behavior is unchanged.<br>The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.<br>Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.<br>Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.<br><br>Examples:<br>  - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.<br>  - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "device_profiles.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "device_profiles.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "device_profiles.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
@@ -147,7 +152,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "devices.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "devices.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "devices.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "devices.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "devices.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br>Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;custom_system_mac_address</samp>](## "devices.[].custom_system_mac_address") | String |  |  |  | Set a custom EOS system MAC address using an AVD string formatter template.<br>When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.<br>The node configuration value takes precedence over the global `custom_system_mac_address` value.<br>Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.<br>If unset, the existing `system_mac_address` behavior is unchanged.<br>The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.<br>Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.<br>Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.<br><br>Examples:<br>  - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.<br>  - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "devices.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "devices.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "devices.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
@@ -191,7 +197,22 @@
         # Set to the same MAC address as available in "show version" on the device.
         # "system_mac_address" can also be set directly as a hostvar.
         # If both are set, the setting under node type settings takes precedence.
+        # Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.
         system_mac_address: <str>
+
+        # Set a custom EOS system MAC address using an AVD string formatter template.
+        # When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.
+        # The node configuration value takes precedence over the global `custom_system_mac_address` value.
+        # Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.
+        # If unset, the existing `system_mac_address` behavior is unchanged.
+        # The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+        # Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+        # Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+        #
+        # Examples:
+        #   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+        #   - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address).
+        custom_system_mac_address: <str>
 
         # Set to the Serial Number of the device.
         # Only used for documentation purpose in the fabric documentation and part of the structured_config.
@@ -303,7 +324,22 @@
               # Set to the same MAC address as available in "show version" on the device.
               # "system_mac_address" can also be set directly as a hostvar.
               # If both are set, the setting under node type settings takes precedence.
+              # Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.
               system_mac_address: <str>
+
+              # Set a custom EOS system MAC address using an AVD string formatter template.
+              # When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.
+              # The node configuration value takes precedence over the global `custom_system_mac_address` value.
+              # Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.
+              # If unset, the existing `system_mac_address` behavior is unchanged.
+              # The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+              # Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+              # Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+              #
+              # Examples:
+              #   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+              #   - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address).
+              custom_system_mac_address: <str>
 
               # Set to the Serial Number of the device.
               # Only used for documentation purpose in the fabric documentation and part of the structured_config.
@@ -402,7 +438,22 @@
           # Set to the same MAC address as available in "show version" on the device.
           # "system_mac_address" can also be set directly as a hostvar.
           # If both are set, the setting under node type settings takes precedence.
+          # Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.
           system_mac_address: <str>
+
+          # Set a custom EOS system MAC address using an AVD string formatter template.
+          # When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.
+          # The node configuration value takes precedence over the global `custom_system_mac_address` value.
+          # Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.
+          # If unset, the existing `system_mac_address` behavior is unchanged.
+          # The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+          # Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+          # Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+          #
+          # Examples:
+          #   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+          #   - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address).
+          custom_system_mac_address: <str>
 
           # Set to the Serial Number of the device.
           # Only used for documentation purpose in the fabric documentation and part of the structured_config.
@@ -507,7 +558,22 @@
           # Set to the same MAC address as available in "show version" on the device.
           # "system_mac_address" can also be set directly as a hostvar.
           # If both are set, the setting under node type settings takes precedence.
+          # Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.
           system_mac_address: <str>
+
+          # Set a custom EOS system MAC address using an AVD string formatter template.
+          # When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.
+          # The node configuration value takes precedence over the global `custom_system_mac_address` value.
+          # Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.
+          # If unset, the existing `system_mac_address` behavior is unchanged.
+          # The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+          # Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+          # Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+          #
+          # Examples:
+          #   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+          #   - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address).
+          custom_system_mac_address: <str>
 
           # Set to the Serial Number of the device.
           # Only used for documentation purpose in the fabric documentation and part of the structured_config.
@@ -612,7 +678,22 @@
         # Set to the same MAC address as available in "show version" on the device.
         # "system_mac_address" can also be set directly as a hostvar.
         # If both are set, the setting under node type settings takes precedence.
+        # Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.
         system_mac_address: <str>
+
+        # Set a custom EOS system MAC address using an AVD string formatter template.
+        # When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.
+        # The node configuration value takes precedence over the global `custom_system_mac_address` value.
+        # Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.
+        # If unset, the existing `system_mac_address` behavior is unchanged.
+        # The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+        # Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+        # Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+        #
+        # Examples:
+        #   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+        #   - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address).
+        custom_system_mac_address: <str>
 
         # Set to the Serial Number of the device.
         # Only used for documentation purpose in the fabric documentation and part of the structured_config.
@@ -717,7 +798,22 @@
         # Set to the same MAC address as available in "show version" on the device.
         # "system_mac_address" can also be set directly as a hostvar.
         # If both are set, the setting under node type settings takes precedence.
+        # Mutually exclusive with "custom_system_mac_address", whether defined globally or in node configuration.
         system_mac_address: <str>
+
+        # Set a custom EOS system MAC address using an AVD string formatter template.
+        # When set, the rendered value is configured with `system mac-address` and used as the effective system MAC address for EOS configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the CloudVision-based Zscaler integration.
+        # The node configuration value takes precedence over the global `custom_system_mac_address` value.
+        # Mutually exclusive with `system_mac_address`, whether defined globally or in node configuration.
+        # If unset, the existing `system_mac_address` behavior is unchanged.
+        # The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+        # Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+        # Only the following template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+        #
+        # Examples:
+        #   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+        #   - template `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical identifier of the deployment site which we want to encode into the 3rd and 4th octets of the generated MAC address).
+        custom_system_mac_address: <str>
 
         # Set to the Serial Number of the device.
         # Only used for documentation purpose in the fabric documentation and part of the structured_config.

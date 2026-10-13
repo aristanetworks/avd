@@ -108,7 +108,7 @@ def test_run_emits_expected_debug_logs_and_routes_to_display(
     with_custom_templates: bool,
     expected_messages: list[str],
 ) -> None:
-    """Verify run emits the expected DEBUG logs and routes them to display.vvv prefixed with the hostname."""
+    """Verify run emits the expected DEBUG logs and routes them to display.vv prefixed with the hostname."""
     hostname = "my-spine-1"
     module = action_module(ActionModule)
     validated_args = {
@@ -123,7 +123,7 @@ def test_run_emits_expected_debug_logs_and_routes_to_display(
     if with_custom_templates:
         task_vars["custom_templates"] = ["some/template.j2"]
 
-    # verbosity=3 makes the base class configure the AVD logger at DEBUG, routing to display.vvv
+    # verbosity=3 makes the base class configure the AVD logger at DEBUG, routing to display.vv
     shared_display = MagicMock(verbosity=3)
 
     with (
@@ -140,7 +140,7 @@ def test_run_emits_expected_debug_logs_and_routes_to_display(
     ):
         result = module.run(task_vars=task_vars)
 
-    display_messages = [call.args[0] for call in shared_display.vvv.call_args_list]
+    display_messages = [call.args[0] for call in shared_display.vv.call_args_list]
     assert display_messages == [f"<{hostname}> {msg}" for msg in expected_messages]
     if not generate_device_config and not generate_device_doc:
         assert result["changed"] is False

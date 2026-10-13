@@ -9,6 +9,7 @@
 __all__ = (
     "TransportProtocol",
     "Format",
+    "EndpointType",
     "ExportResult",
     "ExportKey",
     "ExportSuccess",
@@ -112,6 +113,19 @@ class Format(aristaproto.Enum):
     """FORMAT_CUSTOM indicates a native custom format with a UTC timestamp."""
 
 
+class EndpointType(aristaproto.Enum):
+    """EndpointType defines the type of export endpoint."""
+
+    UNSPECIFIED = 0
+    """ENDPOINT_TYPE_UNSPECIFIED indicates unspecified endpoint type."""
+
+    INTERNAL_CLIENT = 1
+    """ENDPOINT_TYPE_INTERNAL_CLIENT indicates an internal client."""
+
+    SPLUNK_CLIENT = 2
+    """ENDPOINT_TYPE_SPLUNK_CLIENT indicates a splunk client."""
+
+
 class ExportResult(aristaproto.Enum):
     """
     ExportResult defines the set of possible results of an export operation.
@@ -179,6 +193,15 @@ class ExportError(aristaproto.Message):
     that was not exported due to error.
     """
 
+    is_transient: Optional[bool] = aristaproto.message_field(5, wraps=aristaproto.TYPE_BOOL)
+    """is_transient indicates whether the export failure is transient."""
+
+    recommended_action: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
+    """
+    recommended_action indicates the user action required to fix a non-transient error.
+    It does not apply to transient errors.
+    """
+
 
 @dataclass(eq=False, repr=False)
 class ExportStats(aristaproto.Message):
@@ -202,6 +225,15 @@ class ExportConfig(aristaproto.Message):
 
     key: "ExportKey" = aristaproto.message_field(1)
     """key uniquely identifies a syslog server."""
+
+    endpoint_type: "EndpointType" = aristaproto.enum_field(2)
+    """
+    endpoint_type defines the type of export client to use.
+    If unset, it defaults to internal client.
+    """
+
+    endpoint_token: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    """endpoint_token is the authentication token for a splunk endpoint."""
 
 
 @dataclass(eq=False, repr=False)

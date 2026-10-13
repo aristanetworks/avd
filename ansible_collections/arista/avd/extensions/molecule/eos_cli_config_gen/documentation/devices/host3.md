@@ -563,6 +563,20 @@ ipv6 dhcp relay option link-layer address
 ipv6 dhcp relay option remote-id format %m:%h:%p
 ```
 
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+| Setting | Value |
+| ------- | ----- |
+| MTU Exceed Action | Drop |
+
+### IP Software Forwarding Configuration
+
+```eos
+ip software forwarding mtu exceed action drop
+```
+
 ## Errdisable
 
 ### Errdisable Summary

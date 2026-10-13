@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>management_settings</samp>](## "management_settings") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;console</samp>](## "management_settings.console") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;idle_timeout</samp>](## "management_settings.console.idle_timeout") | Integer |  |  | Min: 0<br>Max: 86400 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;idle_timeout</samp>](## "management_settings.console.idle_timeout") | Integer |  |  | Min: 0<br>Max: 86400 | Idle timeout in minutes. |
     | [<samp>&nbsp;&nbsp;banners</samp>](## "management_settings.banners") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;login</samp>](## "management_settings.banners.login") | String |  |  |  | Legal notification or security warning displayed to all users before authentication. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;motd</samp>](## "management_settings.banners.motd") | String |  |  |  | Informational or operational message displayed to authorized users after a successful login. |
@@ -19,6 +19,8 @@
     ```yaml
     management_settings:
       console:
+
+        # Idle timeout in minutes.
         idle_timeout: <int; 0-86400>
       banners:
 
