@@ -5,6 +5,7 @@ from pathlib import Path
 
 TEMPLATED_DIR_NAME = "templated"
 VALIDATED_DIR_NAME = "validated"
+CONSOLIDATED_DIR_NAME = "consolidated"
 
 EOS_DESIGNS_FACTS_FILENAME = "eos_designs_facts.json"
 
@@ -88,3 +89,16 @@ def get_tmp_paths(tmp_dir: str, clean: bool = False) -> tuple[Path, Path]:
             path.mkdir(parents=True, exist_ok=True)
 
     return templated_path, validated_path
+
+
+def get_consolidated_path(tmp_dir: str, clean: bool = False) -> Path:
+    """Return the directory used for consolidated AVD Design inputs."""
+    consolidated_path = _get_tmp_path(tmp_dir) / CONSOLIDATED_DIR_NAME
+    if consolidated_path.exists() and clean:
+        for item in consolidated_path.iterdir():
+            if item.is_file():
+                item.unlink()
+    else:
+        consolidated_path.mkdir(parents=True, exist_ok=True)
+
+    return consolidated_path

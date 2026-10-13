@@ -9,6 +9,11 @@ l2leaf:
       filter:
         only_vlans_in_use: true
 
+network_ports:
+  - platforms: [7050SX3]  # Not matching our default platform.
+    switch_ports: [Ethernet2]
+    vlans: 3
+
 servers:
   - name: testserver
     adapters:

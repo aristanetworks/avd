@@ -1,6 +1,8 @@
 ---
 type: l3leaf
 
+fabric_name: FAILURE_CONNECTED_ENDPOINT_PORT_PROFILE_DOES_NOT_EXIST
+
 port_profiles:
   - profile: PROFILE-1
 

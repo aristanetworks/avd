@@ -93,6 +93,7 @@ def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[
 
     with (
         patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(MagicMock(), mock_validated_path)),
+        patch(f"{MODULE_PATH}.get_consolidated_path", return_value=MagicMock()),
         pytest.raises(
             FileNotFoundError,
             match=(
@@ -117,6 +118,6 @@ def test_render_facts_raises_arista_avd_error(action_module: Callable[..., Actio
         patch(f"{MODULE_PATH}.get_facts", side_effect=original_error),
         pytest.raises(AristaAvdError, match=r"pyavd blew up") as exc_info,
     ):
-        module.render_facts(all_inputs={}, pool_manager=MagicMock(), all_hostvars={}, templar=MagicMock())
+        module.render_facts(all_inputs={}, all_consolidated_inputs={}, pool_manager=MagicMock(), all_hostvars={}, templar=MagicMock())
 
     assert exc_info.value is original_error

@@ -1,5 +1,7 @@
 loopback_ipv4_pool: 192.168.0.0/24
 
+fabric_name: CONNECTED_ENDPOINTS_WRONG_PROFILE_LACP_FALLBACK
+
 type: l2leaf
 l2leaf:
   defaults:

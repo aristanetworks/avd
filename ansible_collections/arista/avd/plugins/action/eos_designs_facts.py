@@ -15,6 +15,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AVDFileHandler,
     AVDVaultHandler,
     cprofile,
+    get_consolidated_path,
     get_eos_designs_facts_path,
     get_templar,
     get_tmp_paths,
@@ -23,18 +24,21 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 
 # Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
 if TYPE_CHECKING:  # pragma: no cover
+    from collections.abc import Mapping, MutableMapping
+
     from ansible.playbook.task import Task
     from ansible.template import Templar
 
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
+    from pyavd._utils.avd_templar import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
-    from pyavd.api.schemas import AVDDesign
+    from pyavd.api.schemas import AVDDesign, ConsolidatedAVDDesign
     from pyavd.j2filters import natural_sort
 
 try:
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd.api.pool_manager import PoolManager
-    from pyavd.api.schemas import AVDDesign
+    from pyavd.api.schemas import AVDDesign, ConsolidatedAVDDesign
     from pyavd.j2filters import natural_sort
 
     HAS_PYAVD = True
@@ -96,7 +100,7 @@ class ActionModule(AVDActionPlugin):
             raise ValueError(msg)
 
         self.logger.debug("Loading validated inputs...")
-        all_inputs, all_hostvars = self.load_validated_inputs(fabric_hosts)
+        all_inputs, all_consolidated_inputs, all_hostvars = self.load_validated_inputs(fabric_hosts)
         self.logger.debug("Loading validated inputs [done].")
 
         # Get updated templar instance to be passed along to our simplified "templater"
@@ -105,7 +109,13 @@ class ActionModule(AVDActionPlugin):
         self.logger.debug("Rendering eos_designs facts...")
         pool_manager = PoolManager(Path(output_dir))
 
-        avd_switch_facts = self.render_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, templar=templar)
+        avd_switch_facts = self.render_facts(
+            all_inputs=all_inputs,
+            all_consolidated_inputs=all_consolidated_inputs,
+            all_hostvars=all_hostvars,
+            pool_manager=pool_manager,
+            templar=templar,
+        )
         self.logger.debug("Rendering eos_designs facts [done].")
 
         # Dump facts to file.
@@ -121,16 +131,17 @@ class ActionModule(AVDActionPlugin):
         # Converting to json and back to remove any AnsibleUnsafe types.
         return json.loads(json.dumps(validated_args))
 
-    def load_validated_inputs(self, fabric_hosts: list) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
+    def load_validated_inputs(
+        self, fabric_hosts: list[str]
+    ) -> tuple[dict[str, AVDDesign], dict[str, ConsolidatedAVDDesign], Mapping[str, MutableMapping[str, Any]]]:
         """
-        Load validated hostvars from temporary files for all hosts and load data into AVDDesign classes.
+        Load validated and consolidated inputs for all hosts.
 
         Args:
             fabric_hosts: List of inventory hostnames.
 
         Returns:
-            Tuple of one dict with the loaded AVDDesign instances keyed by hostnames
-            and one dict of the raw hostvars also keyed by hostnames.
+            Tuple containing dictionaries of validated inputs, consolidated inputs, and hostvars keyed by hostname.
 
         TODO: Since hostvars are only used for custom templates, we should just give the raw hostvars object instead.
               This will allow us to only serialize and deserialize what is relevant to the schema, and drop everything else.
@@ -138,36 +149,48 @@ class ActionModule(AVDActionPlugin):
               identified the relevant keys correctly.
         """
         all_inputs: dict[str, AVDDesign] = {}
+        all_consolidated_inputs: dict[str, ConsolidatedAVDDesign] = {}
         all_hostvars: dict[str, dict] = {}
 
         _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
+        consolidated_path = get_consolidated_path(self.tmp_dir)
+        file_handler: AVDFileHandler | None = None
 
         for host in fabric_hosts:
-            file_path = validated_path / f"{host}.json"
-            if not file_path.exists():
+            validated_file_path = validated_path / f"{host}.json"
+            consolidated_file_path = consolidated_path / f"{host}.json"
+            if not validated_file_path.exists() or not consolidated_file_path.exists():
                 msg = (
                     f"Missing validated inputs for host '{host}'. "
                     "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
                 )
                 raise FileNotFoundError(msg)
 
-            # Read, unvault, and parse the JSON file
-            vault_handler = AVDVaultHandler(self._loader)
-            file_handler = AVDFileHandler(vault_handler)
-            host_hostvars = file_handler.load_json(file_path)
+            if file_handler is None:
+                vault_handler = AVDVaultHandler(self._loader)
+                file_handler = AVDFileHandler(vault_handler)
 
-            # Load host hostvars into the AVDDesign data class.
+            host_hostvars = file_handler.load_json(validated_file_path)
             all_inputs[host] = AVDDesign._from_dict(host_hostvars)
+            all_consolidated_inputs[host] = ConsolidatedAVDDesign._from_dict(file_handler.load_json(consolidated_file_path))
             all_hostvars[host] = host_hostvars
 
-        return all_inputs, all_hostvars
+        return all_inputs, all_consolidated_inputs, all_hostvars
 
-    def render_facts(self, all_inputs: dict[str, AVDDesign], pool_manager: PoolManager, all_hostvars: dict[str, dict], templar: Templar) -> dict[str, dict]:
+    def render_facts(
+        self,
+        all_inputs: dict[str, AVDDesign],
+        all_consolidated_inputs: dict[str, ConsolidatedAVDDesign],
+        pool_manager: PoolManager,
+        all_hostvars: Mapping[str, MutableMapping[str, Any]],
+        templar: AVDTemplar,
+    ) -> dict[str, dict]:
         """
         Render facts.
 
         Args:
-            all_inputs: EosDesigns instances for each device.
+            all_inputs: Validated AVD Design inputs for each device.
+            all_consolidated_inputs: Device-local consolidated AVD Design inputs for each device.
             pool_manager: Instance of pool_manager to assign from.
             all_hostvars: Validated hostvars for each device.
             templar: Ansible templar to render custom jinja templates.
@@ -175,7 +198,14 @@ class ActionModule(AVDActionPlugin):
         Returns:
             Facts as dict for each device.
         """
-        all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar, digital_twin=self._digital_twin)
+        all_facts = get_facts(
+            all_inputs=all_inputs,
+            all_consolidated_inputs=all_consolidated_inputs,
+            pool_manager=pool_manager,
+            all_hostvars=all_hostvars,
+            templar=templar,
+            digital_twin=self._digital_twin,
+        )
 
         all_facts_as_dicts: dict[str, dict] = {}
         for host, facts in all_facts.items():

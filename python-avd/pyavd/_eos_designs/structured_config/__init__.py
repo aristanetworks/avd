@@ -26,8 +26,9 @@ from .underlay import AvdStructuredConfigUnderlay
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
+    from pyavd._eos_designs.consolidate.model import ConsolidatedAVDDesign
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-    from pyavd._eos_designs.schema import EosDesigns
+    from pyavd._eos_designs.schema import EosDesigns as AVDDesign
     from pyavd._utils.avd_templar import AVDTemplar
 
     from .structured_config_generator import StructuredConfigGenerator
@@ -64,7 +65,8 @@ The order is important, since later modules can overwrite or read config created
 def get_structured_config(
     *,
     hostname: str,
-    inputs: EosDesigns,
+    inputs: AVDDesign,
+    consolidated_inputs: ConsolidatedAVDDesign,
     all_facts: Mapping[str, EosDesignsFacts],
     hostvars: MutableMapping | None = None,
     templar: AVDTemplar | None = None,
@@ -77,7 +79,9 @@ def get_structured_config(
         hostname:
             The hostname of the device.
         inputs:
-            Validated inputs loaded into an instance of the EosDesigns class.
+            Validated inputs loaded into an instance of the AVDDesign class.
+        consolidated_inputs:
+            Device-local consolidated AVD design inputs.
         all_facts:
             Map of all devices and their facts.
         hostvars:
@@ -96,7 +100,15 @@ def get_structured_config(
         hostvars = {}
 
     # Initialize SharedUtils class to be passed to each python_module below.
-    shared_utils = SharedUtils(hostname=hostname, hostvars=hostvars, inputs=inputs, peer_facts=all_facts, templar=templar, digital_twin=digital_twin)
+    shared_utils = SharedUtils(
+        hostname=hostname,
+        hostvars=hostvars,
+        inputs=inputs,
+        consolidated=consolidated_inputs,
+        peer_facts=all_facts,
+        templar=templar,
+        digital_twin=digital_twin,
+    )
 
     # Single structured config instance which will be in-place updated by each structured config generator.
     structured_config = EosCliConfigGen()
