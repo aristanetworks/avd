@@ -368,7 +368,7 @@ def test_action_module_run_raises_on_invalid_args(
     error_match: str,
 ) -> None:
     """run() raises AnsibleActionFail for invalid argument combinations (empty device list, disabled catalogs, missing dirs)."""
-    module = action_module(ActionModule)
+    module = action_module(ActionModule, ansible_name=PLUGIN_NAME)
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
         patch(f"{MODULE_PATH}.setup_anta_debug_mode"),
