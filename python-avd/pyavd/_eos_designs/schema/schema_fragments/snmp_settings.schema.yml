@@ -144,7 +144,7 @@ keys:
             key_type:
               type: str
               valid_values: ["disabled", "0", "7"]
-              # TODO: AVD 7.0, make "7" the default.
+              # TODO: AVD 7.0, consider make "7" the default if EOS support is broad enough.
               default: "disabled"
               description: |-
                 Key type for the computed localized SNMPv3 auth and priv keys.
