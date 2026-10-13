@@ -42,19 +42,3 @@ def schema_store() -> dict[str, dict]:
         "eos_cli_config_gen": test_eos_cli_config_gen_schema,
         "eos_designs": test_eos_designs_schema,
     }
-
-
-@pytest.fixture(scope="module")
-def schema_paths() -> dict[str, dict]:
-    """
-    Return dict with schema paths.
-
-    {
-        "eos_cli_config_gen": Path
-        "eos_designs": Path
-    }.
-    """
-    return {
-        "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_SCHEMA_PATH,
-        "eos_designs": EOS_DESIGNS_SCHEMA_PATH,
-    }
