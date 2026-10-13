@@ -91,7 +91,7 @@ class MlagMixin(Protocol):
             maximum_routes=bgp_peer_group.maximum_routes,
             send_community="all",
         )
-        peer_group.metadata.type = "ipv4"
+        peer_group.metadata.type = "ipv4" if not self.shared_utils.underlay_ipv6_numbered else "ipv6"
 
         if bgp_peer_group.structured_config:
             self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(peer_group_name)._deepmerge(

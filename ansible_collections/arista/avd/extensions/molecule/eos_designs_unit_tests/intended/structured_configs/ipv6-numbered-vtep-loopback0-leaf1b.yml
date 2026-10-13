@@ -130,7 +130,7 @@ router_bgp:
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      type: ipv4
+      type: ipv6
     remote_as: '65101'
     description: ipv6-numbered-vtep-loopback0-leaf1a
     next_hop_self: true

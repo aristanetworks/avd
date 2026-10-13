@@ -120,7 +120,7 @@ router_bgp:
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      type: ipv4
+      type: ipv6
     remote_as: '65150'
     description: mlag-peer-vlan-l3-ipv6-numbered-l3leaf1b
     next_hop_self: true

@@ -113,7 +113,7 @@ router_bgp:
   peer_groups:
   - name: MLAG-IPv6-UNDERLAY-PEER
     metadata:
-      type: ipv4
+      type: ipv6
     remote_as: '65100'
     description: Selected mlag_ipv6_underlay_peer
     bfd: true
@@ -124,7 +124,7 @@ router_bgp:
     route_map_in: RM-MLAG-PEER-IN
   - name: MLAG-IPv6-VRFS-PEER
     metadata:
-      type: ipv4
+      type: ipv6
     remote_as: '65100'
     description: Selected mlag_ipv6_vrfs_peer
     bfd: true

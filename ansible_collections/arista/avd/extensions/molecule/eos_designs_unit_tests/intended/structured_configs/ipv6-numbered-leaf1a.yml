@@ -180,7 +180,7 @@ router_bgp:
   peer_groups:
   - name: MLAG-IPv6-UNDERLAY-PEER
     metadata:
-      type: ipv4
+      type: ipv6
     remote_as: '65101'
     description: ipv6-numbered-leaf1b
     next_hop_self: true
