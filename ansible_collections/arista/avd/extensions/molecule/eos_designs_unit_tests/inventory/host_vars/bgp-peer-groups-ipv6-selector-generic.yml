@@ -1,0 +1,6 @@
+---
+# Test ipv6 underlay selecting underlay_peers; the other selector must be ignored.
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+underlay_ipv4_peer_group: ipv6_underlay_peers
+underlay_ipv6_peer_group: underlay_peers

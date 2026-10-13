@@ -47,14 +47,13 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 
 ## Optional BGP Peer-Group Naming
 
-You can customize BGP peer-group selections for both IPv4 and IPv6 underlays using the selectors `underlay_ipv4_peer_group` and `underlay_ipv6_peer_group`.
+You can customize the BGP peer group used for IPv6 numbered underlay with the `underlay_ipv6_peer_group` selector.
 
 ### Underlay Peer Group Selectors
 
-Each selector accepts three options:
+For IPv6 numbered underlay, select one of these peer groups:
 
-- `underlay_peers` - Generic peer group (works for both IPv4 and IPv6)
-- `ipv4_underlay_peers` - IPv4-specific peer group
+- `underlay_peers` - Generic peer group
 - `ipv6_underlay_peers` - IPv6-specific peer group
 
 ### Configuration Examples
@@ -62,23 +61,17 @@ Each selector accepts three options:
 For IPv6 numbered underlay with IPv6-specific peer group:
 
 ```yaml title="IPv6 Underlay Peer Group"
-underlay_ipv4_peer_group: ipv4_underlay_peers
 underlay_ipv6_peer_group: ipv6_underlay_peers
 bgp_peer_groups:
-  ipv4_underlay_peers:
-    name: IPV4-UNDERLAY-PEERS
-    password: "{{ vault_bgp_password }}"
-    bfd: true
   ipv6_underlay_peers:
     name: IPV6-UNDERLAY-PEERS
     password: "{{ vault_bgp_password }}"
     bfd: true
 ```
 
-Or use a generic peer group for both IPv4 and IPv6:
+Or use a generic peer group for IPv6 numbered underlay:
 
-```yaml title="Generic Underlay Peer Group for Both IPv4 and IPv6"
-underlay_ipv4_peer_group: underlay_peers
+```yaml title="Generic Underlay Peer Group for IPv6"
 underlay_ipv6_peer_group: underlay_peers
 bgp_peer_groups:
   underlay_peers:

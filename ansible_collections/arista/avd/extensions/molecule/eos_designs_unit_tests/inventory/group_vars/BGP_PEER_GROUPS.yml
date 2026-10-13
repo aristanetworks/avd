@@ -43,6 +43,21 @@ node_type_keys:
     default_evpn_encapsulation: mpls
 
 bgp_peer_groups:
+  # Selector tests use distinct settings to detect the wrong peer-group object.
+  underlay_peers:
+    name: CUSTOM-UNDERLAY-PEERS
+    bfd: true
+    maximum_routes: 12010
+    cleartext_password: arista
+    structured_config:
+      description: Description for underlay_peers via structured_config
+  ipv6_underlay_peers:
+    name: CUSTOM-IPv6-UNDERLAY-PEERS
+    bfd: true
+    maximum_routes: 12011
+    cleartext_password: arista
+    structured_config:
+      description: Description for ipv6_underlay_peers via structured_config
   ipv4_underlay_peers:
     bfd: true
     maximum_routes: 12001
@@ -135,6 +150,78 @@ l3leaf:
           bgp_as: 105
           router_id_pool: 10.255.1.0/24
           uplink_switch_interfaces: [Ethernet61]
+
+    - group: bgp-peer-groups-ipv4-selector-ipv4
+      nodes:
+        - name: bgp-peer-groups-ipv4-selector-ipv4
+          id: 107
+          bgp_as: 107
+          mlag: false
+          router_id_pool: 10.255.1.0/24
+          loopback_ipv6_pool: 2001:db8:dead:beef::/64
+          vtep_loopback_ipv6_pool: 2001:db8:600d:cafe::/64
+          uplink_ipv6_pool: 2001:db8:a11::/48
+          uplink_switch_interfaces: [Ethernet62]
+
+    - group: bgp-peer-groups-ipv4-selector-ipv6
+      nodes:
+        - name: bgp-peer-groups-ipv4-selector-ipv6
+          id: 108
+          bgp_as: 108
+          mlag: false
+          router_id_pool: 10.255.1.0/24
+          loopback_ipv6_pool: 2001:db8:dead:beef::/64
+          vtep_loopback_ipv6_pool: 2001:db8:600d:cafe::/64
+          uplink_ipv6_pool: 2001:db8:a11::/48
+          uplink_switch_interfaces: [Ethernet63]
+
+    - group: bgp-peer-groups-ipv4-selector-generic
+      nodes:
+        - name: bgp-peer-groups-ipv4-selector-generic
+          id: 109
+          bgp_as: 109
+          mlag: false
+          router_id_pool: 10.255.1.0/24
+          loopback_ipv6_pool: 2001:db8:dead:beef::/64
+          vtep_loopback_ipv6_pool: 2001:db8:600d:cafe::/64
+          uplink_ipv6_pool: 2001:db8:a11::/48
+          uplink_switch_interfaces: [Ethernet64]
+
+    - group: bgp-peer-groups-ipv6-selector-ipv4
+      nodes:
+        - name: bgp-peer-groups-ipv6-selector-ipv4
+          id: 110
+          bgp_as: 110
+          mlag: false
+          router_id_pool: 10.255.1.0/24
+          loopback_ipv6_pool: 2001:db8:dead:beef::/64
+          vtep_loopback_ipv6_pool: 2001:db8:600d:cafe::/64
+          uplink_ipv6_pool: 2001:db8:a11::/48
+          uplink_switch_interfaces: [Ethernet65]
+
+    - group: bgp-peer-groups-ipv6-selector-ipv6
+      nodes:
+        - name: bgp-peer-groups-ipv6-selector-ipv6
+          id: 111
+          bgp_as: 111
+          mlag: false
+          router_id_pool: 10.255.1.0/24
+          loopback_ipv6_pool: 2001:db8:dead:beef::/64
+          vtep_loopback_ipv6_pool: 2001:db8:600d:cafe::/64
+          uplink_ipv6_pool: 2001:db8:a11::/48
+          uplink_switch_interfaces: [Ethernet66]
+
+    - group: bgp-peer-groups-ipv6-selector-generic
+      nodes:
+        - name: bgp-peer-groups-ipv6-selector-generic
+          id: 112
+          bgp_as: 112
+          mlag: false
+          router_id_pool: 10.255.1.0/24
+          loopback_ipv6_pool: 2001:db8:dead:beef::/64
+          vtep_loopback_ipv6_pool: 2001:db8:600d:cafe::/64
+          uplink_ipv6_pool: 2001:db8:a11::/48
+          uplink_switch_interfaces: [Ethernet67]
 
 pe:
   defaults:
