@@ -16,9 +16,11 @@ l3leaf:
   defaults:
     loopback_ipv6_pool: 2001:DB8:1::/48
     router_id_pool: 10.255.1.0/24
-    mlag_peer_address_family: ipv6
     vtep_loopback_ipv6_pool: 2001:DB8:5::/48
-    mlag_peer_ipv6_pool: 2001:DB8:3::/48
+    # mlag_peer_address_family and mlag_peer_l3_ipv4_pool do not apply to the MLAG L3 peering VLAN with underlay_ipv6_numbered.
+    mlag_peer_address_family: ipv4
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
   node_groups:
     - group: fabric_missing_mlag_peer_l3_ipv6_pool
       bgp_as: 923

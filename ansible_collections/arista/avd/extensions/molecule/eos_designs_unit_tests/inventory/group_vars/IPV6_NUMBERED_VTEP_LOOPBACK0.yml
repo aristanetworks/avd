@@ -5,6 +5,7 @@ overlay_routing_protocol: ebgp
 # Don't fix known bugs where the fix was introduced after 6.0.
 avd_design_future:
   fix_match_ipv6_prefix_list_on_mlag_route_map: false
+  fix_mlag_ibgp_peering_ipv6_pool: false
 
 default_node_types:
   - node_type: spine
@@ -80,6 +81,8 @@ tenants:
     vrfs:
       - name: VRF10
         vrf_vni: 10
+        # Test legacy BGP neighbor selection with vrf.mlag_ibgp_peering_ipv6_pool
+        mlag_ibgp_peering_ipv6_pool: 2001:DB8:10::/48
         vtep_diagnostic:
           loopback: 10
           loopback_ip_range: 10.255.10.0/27
