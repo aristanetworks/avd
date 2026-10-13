@@ -50030,6 +50030,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
             Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
+            KeyType: TypeAlias = Literal["disabled", "0", "7"]
             Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
@@ -50037,6 +50038,7 @@ class EosDesigns(EosDesignsRootModel):
                 "version": {"type": str},
                 "auth": {"type": str},
                 "auth_passphrase": {"type": str},
+                "key_type": {"type": str, "default": "disabled"},
                 "priv": {"type": str},
                 "priv_passphrase": {"type": str},
             }
@@ -50048,6 +50050,24 @@ class EosDesigns(EosDesignsRootModel):
             auth: Auth | None
             auth_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set."""
+            key_type: KeyType
+            """
+            Key type for the computed localized SNMPv3 auth and priv keys.
+            Used only when
+            `compute_v3_user_localized_key` is `true`.
+            Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+            4.36.2F.
+            When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type>
+            <key>` syntax for both auth and priv.
+            - `disabled`: Use legacy syntax without key type
+            (auth_passphrase rendered directly). Default for backward compatibility.
+            - `0`: Key string is
+            plaintext. AVD renders the raw computed localized key.
+            - `7`: Type-7 encrypted (HIDDEN) key. AVD
+            applies Type-7 obfuscation to the computed localized key before rendering.
+
+            Default value: `"disabled"`
+            """
             priv: Priv | None
             priv_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set."""
@@ -50062,6 +50082,7 @@ class EosDesigns(EosDesignsRootModel):
                     version: Version | UndefinedType | None = Undefined,
                     auth: Auth | UndefinedType | None = Undefined,
                     auth_passphrase: str | UndefinedType | None = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                     priv: Priv | UndefinedType | None = Undefined,
                     priv_passphrase: str | UndefinedType | None = Undefined,
                 ) -> None:
@@ -50077,6 +50098,20 @@ class EosDesigns(EosDesignsRootModel):
                         version: version
                         auth: auth
                         auth_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+                        key_type:
+                           Key type for the computed localized SNMPv3 auth and priv keys.
+                           Used only when
+                           `compute_v3_user_localized_key` is `true`.
+                           Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+                           4.36.2F.
+                           When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type>
+                           <key>` syntax for both auth and priv.
+                           - `disabled`: Use legacy syntax without key type
+                           (auth_passphrase rendered directly). Default for backward compatibility.
+                           - `0`: Key string is
+                           plaintext. AVD renders the raw computed localized key.
+                           - `7`: Type-7 encrypted (HIDDEN) key. AVD
+                           applies Type-7 obfuscation to the computed localized key before rendering.
                         priv: priv
                         priv_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
 
