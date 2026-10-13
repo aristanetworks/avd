@@ -2849,6 +2849,29 @@ mcs client
 | remote | 424242424242DEAD | 42.42.42.42 | - |
 | remote | 424242424242DEAD6666 | 42.42.42.42 | 666 |
 
+#### SNMP ACLs
+
+| IP | ACL | VRF |
+| -- | --- | --- |
+| IPv4 | onur | default |
+| IPv4 | SNMP-MGMT2 | AAA |
+| IPv4 | SNMP-MGMT | MGMT |
+| IPv4 | SNMP-MGMT1 | aaa |
+| IPv6 | onur_v6 | default |
+| IPv6 | SNMP-MGMT2 | AAA |
+| IPv6 | SNMP-MGMT1 | aaa |
+| IPv6 | SNMP-MGMT | MGMT |
+
+#### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+| Loopback0 | default |
+| Ethernet1 | AAA |
+| Ethernet2 | abc |
+| Management1 | MGMT |
+| Loopback12 | Tenant_A_APP_Zone |
+
 #### SNMP VRF Status
 
 | VRF | Status |

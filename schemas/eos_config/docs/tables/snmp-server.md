@@ -28,15 +28,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv6</samp>](## "snmp_server.communities.[].access_list_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_server.communities.[].access_list_ipv6.name") | String |  |  |  | IPv6 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;view</samp>](## "snmp_server.communities.[].view") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;ipv4_acls</samp>](## "snmp_server.ipv4_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>ipv4_acl</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;ipv4_acls</samp>](## "snmp_server.ipv4_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>vrfs[].ipv4_acl or ipv4_acl</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv4_acls.[].name") | String |  |  |  | IPv4 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.ipv4_acls.[].vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;ipv4_acl</samp>](## "snmp_server.ipv4_acl") | String |  |  |  | IPv4 access list for VRF default. |
-    | [<samp>&nbsp;&nbsp;ipv6_acls</samp>](## "snmp_server.ipv6_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>ipv6_acl</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;ipv6_acls</samp>](## "snmp_server.ipv6_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>vrfs[].ipv6_acl or ipv6_acl</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv6_acls.[].name") | String |  |  |  | IPv6 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.ipv6_acls.[].vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;ipv6_acl</samp>](## "snmp_server.ipv6_acl") | String |  |  |  | IPv6 access list for VRF default. |
-    | [<samp>&nbsp;&nbsp;local_interfaces</samp>](## "snmp_server.local_interfaces") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>local_interface</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;local_interfaces</samp>](## "snmp_server.local_interfaces") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>vrfs[].local_interface or local_interface</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.local_interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.local_interfaces.[].vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;local_interface</samp>](## "snmp_server.local_interface") | String |  |  |  | Local interface for VRF default. |
@@ -135,7 +135,7 @@
             name: <str>
           view: <str>
       # This key is deprecated.
-      # Use `ipv4_acl` instead.
+      # Use `vrfs[].ipv4_acl` or `ipv4_acl` instead.
       ipv4_acls:
 
           # IPv4 access list name.
@@ -145,7 +145,7 @@
       # IPv4 access list for VRF default.
       ipv4_acl: <str>
       # This key is deprecated.
-      # Use `ipv6_acl` instead.
+      # Use `vrfs[].ipv6_acl` or `ipv6_acl` instead.
       ipv6_acls:
 
           # IPv6 access list name.
@@ -155,7 +155,7 @@
       # IPv6 access list for VRF default.
       ipv6_acl: <str>
       # This key is deprecated.
-      # Use `local_interface` instead.
+      # Use `vrfs[].local_interface` or `local_interface` instead.
       local_interfaces:
 
           # Interface name.

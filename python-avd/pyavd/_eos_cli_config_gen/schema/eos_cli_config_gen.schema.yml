@@ -25583,10 +25583,10 @@ keys:
       ipv4_acls:
         type: list
         deprecation:
-          warning: true
+          warning: false
           removed: false
           allow_with_new_key: false
-          new_key: ipv4_acl
+          new_key: vrfs[].ipv4_acl or ipv4_acl
         items:
           type: dict
           keys:
@@ -25603,10 +25603,10 @@ keys:
       ipv6_acls:
         type: list
         deprecation:
-          warning: true
+          warning: false
           removed: false
           allow_with_new_key: false
-          new_key: ipv6_acl
+          new_key: vrfs[].ipv6_acl or ipv6_acl
         items:
           type: dict
           keys:
@@ -25623,10 +25623,10 @@ keys:
       local_interfaces:
         type: list
         deprecation:
-          warning: true
+          warning: false
           removed: false
           allow_with_new_key: false
-          new_key: local_interface
+          new_key: vrfs[].local_interface or local_interface
         primary_key: name
         items:
           type: dict
