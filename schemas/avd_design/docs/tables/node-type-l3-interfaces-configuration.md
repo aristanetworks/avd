@@ -36,6 +36,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_list_out</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].bgp.ipv6_prefix_list_out") | String |  |  |  | IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.<br>Only applied when `peer_ipv6` is set; otherwise ignored.<br>The specified prefix list name must exist in `ipv6_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_in</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv4_standard_acl_in") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_out</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv4_standard_acl_out") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
@@ -89,6 +91,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_list_out</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].bgp.ipv6_prefix_list_out") | String |  |  |  | IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.<br>Only applied when `peer_ipv6` is set; otherwise ignored.<br>The specified prefix list name must exist in `ipv6_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_in</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv4_standard_acl_in") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_out</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv4_standard_acl_out") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
@@ -138,6 +142,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_list_out</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].bgp.ipv6_prefix_list_out") | String |  |  |  | IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.<br>Only applied when `peer_ipv6` is set; otherwise ignored.<br>The specified prefix list name must exist in `ipv6_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_in</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv4_standard_acl_in") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_out</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv4_standard_acl_out") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
@@ -189,6 +195,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_list_out</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].bgp.ipv6_prefix_list_out") | String |  |  |  | IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.<br>Only applied when `peer_ipv6` is set; otherwise ignored.<br>The specified prefix list name must exist in `ipv6_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_in</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv4_standard_acl_in") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_out</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv4_standard_acl_out") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
@@ -240,6 +248,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_list_out</samp>](## "device_profiles.[].l3_interfaces.[].bgp.ipv6_prefix_list_out") | String |  |  |  | IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.<br>Only applied when `peer_ipv6` is set; otherwise ignored.<br>The specified prefix list name must exist in `ipv6_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "device_profiles.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "device_profiles.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_in</samp>](## "device_profiles.[].l3_interfaces.[].ipv4_standard_acl_in") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_out</samp>](## "device_profiles.[].l3_interfaces.[].ipv4_standard_acl_out") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "device_profiles.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "device_profiles.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "device_profiles.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
@@ -291,6 +301,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_list_out</samp>](## "devices.[].l3_interfaces.[].bgp.ipv6_prefix_list_out") | String |  |  |  | IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.<br>Only applied when `peer_ipv6` is set; otherwise ignored.<br>The specified prefix list name must exist in `ipv6_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "devices.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "devices.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_in</samp>](## "devices.[].l3_interfaces.[].ipv4_standard_acl_in") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_out</samp>](## "devices.[].l3_interfaces.[].ipv4_standard_acl_out") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "devices.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "devices.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "devices.[].l3_interfaces.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
@@ -340,6 +352,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_list_out</samp>](## "l3_interface_profiles.[].bgp.ipv6_prefix_list_out") | String |  |  |  | IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.<br>Only applied when `peer_ipv6` is set; otherwise ignored.<br>The specified prefix list name must exist in `ipv6_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "l3_interface_profiles.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "l3_interface_profiles.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_in</samp>](## "l3_interface_profiles.[].ipv4_standard_acl_in") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_out</samp>](## "l3_interface_profiles.[].ipv4_standard_acl_out") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_standard_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "l3_interface_profiles.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "l3_interface_profiles.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "l3_interface_profiles.[].static_routes") | List, items: Dictionary |  |  | Min Length: 1 | Configure IPv4 static routes pointing to `peer_ip`. |
@@ -479,6 +493,14 @@
             # Name of the IPv4 Access-list to be assigned in the egress direction.
             # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             ipv4_acl_out: <str>
+
+            # Name of the IPv4 standard access-list to be assigned in the ingress direction.
+            # The access-list must be defined under `ipv4_standard_acls`.
+            ipv4_standard_acl_in: <str>
+
+            # Name of the IPv4 standard access-list to be assigned in the egress direction.
+            # The access-list must be defined under `ipv4_standard_acls`.
+            ipv4_standard_acl_out: <str>
 
             # Name of the IPv6 access-list to be assigned in the ingress direction.
             # The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
@@ -675,6 +697,14 @@
                   # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                   ipv4_acl_out: <str>
 
+                  # Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                  # The access-list must be defined under `ipv4_standard_acls`.
+                  ipv4_standard_acl_in: <str>
+
+                  # Name of the IPv4 standard access-list to be assigned in the egress direction.
+                  # The access-list must be defined under `ipv4_standard_acls`.
+                  ipv4_standard_acl_out: <str>
+
                   # Name of the IPv6 access-list to be assigned in the ingress direction.
                   # The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
                   # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
@@ -856,6 +886,14 @@
               # Name of the IPv4 Access-list to be assigned in the egress direction.
               # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
               ipv4_acl_out: <str>
+
+              # Name of the IPv4 standard access-list to be assigned in the ingress direction.
+              # The access-list must be defined under `ipv4_standard_acls`.
+              ipv4_standard_acl_in: <str>
+
+              # Name of the IPv4 standard access-list to be assigned in the egress direction.
+              # The access-list must be defined under `ipv4_standard_acls`.
+              ipv4_standard_acl_out: <str>
 
               # Name of the IPv6 access-list to be assigned in the ingress direction.
               # The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
@@ -1045,6 +1083,14 @@
               # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
               ipv4_acl_out: <str>
 
+              # Name of the IPv4 standard access-list to be assigned in the ingress direction.
+              # The access-list must be defined under `ipv4_standard_acls`.
+              ipv4_standard_acl_in: <str>
+
+              # Name of the IPv4 standard access-list to be assigned in the egress direction.
+              # The access-list must be defined under `ipv4_standard_acls`.
+              ipv4_standard_acl_out: <str>
+
               # Name of the IPv6 access-list to be assigned in the ingress direction.
               # The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
               # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
@@ -1232,6 +1278,14 @@
             # Name of the IPv4 Access-list to be assigned in the egress direction.
             # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             ipv4_acl_out: <str>
+
+            # Name of the IPv4 standard access-list to be assigned in the ingress direction.
+            # The access-list must be defined under `ipv4_standard_acls`.
+            ipv4_standard_acl_in: <str>
+
+            # Name of the IPv4 standard access-list to be assigned in the egress direction.
+            # The access-list must be defined under `ipv4_standard_acls`.
+            ipv4_standard_acl_out: <str>
 
             # Name of the IPv6 access-list to be assigned in the ingress direction.
             # The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
@@ -1421,6 +1475,14 @@
             # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             ipv4_acl_out: <str>
 
+            # Name of the IPv4 standard access-list to be assigned in the ingress direction.
+            # The access-list must be defined under `ipv4_standard_acls`.
+            ipv4_standard_acl_in: <str>
+
+            # Name of the IPv4 standard access-list to be assigned in the egress direction.
+            # The access-list must be defined under `ipv4_standard_acls`.
+            ipv4_standard_acl_out: <str>
+
             # Name of the IPv6 access-list to be assigned in the ingress direction.
             # The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
             # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
@@ -1603,6 +1665,14 @@
         # Name of the IPv4 Access-list to be assigned in the egress direction.
         # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
         ipv4_acl_out: <str>
+
+        # Name of the IPv4 standard access-list to be assigned in the ingress direction.
+        # The access-list must be defined under `ipv4_standard_acls`.
+        ipv4_standard_acl_in: <str>
+
+        # Name of the IPv4 standard access-list to be assigned in the egress direction.
+        # The access-list must be defined under `ipv4_standard_acls`.
+        ipv4_standard_acl_out: <str>
 
         # Name of the IPv6 access-list to be assigned in the ingress direction.
         # The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).

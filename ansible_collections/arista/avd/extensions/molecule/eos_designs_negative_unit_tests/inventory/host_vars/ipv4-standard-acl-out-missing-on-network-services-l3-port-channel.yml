@@ -1,0 +1,39 @@
+---
+# Tests that referencing a non-existent ipv4_standard_acls entry via ipv4_standard_acl_out
+# on a network_services l3_port_channel raises AristaAvdMissingVariableError.
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: ipv4-standard-acl-out-missing-on-network-services-l3-port-channel
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: L3PO
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TESTING
+        vrf_id: 2
+        l3_port_channels:
+          - name: Port-Channel1
+            mode: active
+            peer: test-peer
+            peer_port_channel: Po1
+            enabled: true
+            ip_address: 10.0.1.1/31
+            ipv4_standard_acl_out: NON-EXISTENT-STD-ACL
+            node: ipv4-standard-acl-out-missing-on-network-services-l3-port-channel
+            member_interfaces:
+              - name: Ethernet1
+                peer_interface: Ethernet1
+                peer: test-peer
+
+# ipv4_standard_acls is intentionally omitted / NON-EXISTENT-STD-ACL is not defined.
+
+expected_error_message: >-
+  'ipv4_standard_acls[name=NON-EXISTENT-STD-ACL]' is required but was not found for host 'ipv4-standard-acl-out-missing-on-network-services-l3-port-channel'.

@@ -1021,6 +1021,10 @@ keys:
                       type: str
                       convert_types:
                         - int
+                    ipv4_standard_acl_in:
+                      type: str
+                    ipv4_standard_acl_out:
+                      type: str
                     ipv6_acl_in:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -1280,6 +1284,10 @@ keys:
                       type: str
                       convert_types:
                         - int
+                    ipv4_standard_acl_in:
+                      type: str
+                    ipv4_standard_acl_out:
+                      type: str
                     ipv6_acl_in:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the ingress direction.

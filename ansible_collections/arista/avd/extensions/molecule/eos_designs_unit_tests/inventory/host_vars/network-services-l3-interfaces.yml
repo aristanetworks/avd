@@ -1,5 +1,17 @@
 ---
 # This yml file is being used to test ipv6_addresses and ipv6_acl_in/out support for l3_interfaces under network_services
+ipv4_standard_acls:
+  - name: STD-L3INTF-ACL-IN
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.0/8
+  - name: STD-L3INTF-ACL-OUT
+    entries:
+      - sequence: 10
+        action: permit
+        source: 192.168.0.0/16
+
 ipv6_acls:
   # Static ACL - no field substitution, name is used as-is.
   - name: TEST-IPV6-ACL-STATIC-IN
@@ -63,3 +75,11 @@ tenants:
             enabled: true
             description: "ipv6-only-non-default-vrf"
             ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+          # Tests ipv4_standard_acl_in/out on network_services l3_interface
+          - interfaces: [Ethernet13]
+            nodes: [network-services-l3-interfaces]
+            ip_addresses: ["10.13.0.1/31"]
+            enabled: true
+            description: "std-acl-test"
+            ipv4_standard_acl_in: STD-L3INTF-ACL-IN
+            ipv4_standard_acl_out: STD-L3INTF-ACL-OUT
