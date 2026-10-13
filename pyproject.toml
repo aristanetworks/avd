@@ -73,7 +73,6 @@ schema-tools = [
 line-length = 160
 extend-exclude = [
   "python-avd/pyavd/_cv/api/**/*",
-  "python-avd/tests/pyavd/schema/data_merging_schema_class.py", # File is generated during pytest
 ]
 target-version = "py310"
 

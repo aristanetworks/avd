@@ -701,7 +701,7 @@ def test_update_ansible_result_maps_all_outcomes(
     with patch.object(module, "main", side_effect=main):
         result = module.run()
 
-    assert result["failed"] is expected_failed
+    assert result.get("failed", False) is expected_failed
     assert result["msg"] == expected_msg
     assert result["anta_tests_summary"] is summary
 
