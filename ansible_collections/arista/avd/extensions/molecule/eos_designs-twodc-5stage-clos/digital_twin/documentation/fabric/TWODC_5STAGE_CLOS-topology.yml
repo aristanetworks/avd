@@ -1,4 +1,3 @@
----
 nodes:
 - DC1-POD1-L2LEAF1A:
     node_type: cloudeos
