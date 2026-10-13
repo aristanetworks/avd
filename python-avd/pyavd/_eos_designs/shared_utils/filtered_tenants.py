@@ -582,7 +582,8 @@ class FilteredTenantsMixin(Protocol):
             if isinstance(config, EosCliConfigGen.VlanInterfacesItem):
                 if not svi.ipv6_address:
                     # OSPFv3 runs over the IPv6 link-local address, even for the IPv4 address family.
-                    svi.ipv6_enable = default(svi.ipv6_enable, True)
+                    if svi.ipv6_enable is None:
+                        svi.ipv6_enable = True
                     if not svi.ipv6_enable:
                         msg = (
                             f"OSPFv3 is enabled on SVI '{svi.name}' but 'ipv6_enable' is set to false and no 'ipv6_address' is set under"
@@ -609,8 +610,12 @@ class FilteredTenantsMixin(Protocol):
                         raise AristaAvdInvalidInputsError(msg)
                     config.ospfv3.ipv6.area = svi.ospfv3.address_family_ipv6.area
 
+                if svi.ospfv3.passive_interface:
+                    config.ospfv3.passive_interface = True
+                else:
+                    config.ospfv3.no_passive_interface = True
+
                 config.ospfv3._update(
-                    passive_interface=svi.ospfv3.passive_interface,
                     network_point_to_point=svi.ospfv3.network_point_to_point,
                 )
 

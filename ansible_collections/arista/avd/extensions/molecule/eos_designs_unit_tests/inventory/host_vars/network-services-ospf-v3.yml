@@ -178,12 +178,11 @@ tenants:
             ipv6_address: ca::ca/64
             ipv6_enable: true
             ospfv3:
+              # fetch default values for passive_interface and network_point_to_point
               enabled: true
               address_family_ipv6:
                 enabled: true
                 area: 1.1.1.1
-              passive_interface: true
-              network_point_to_point: true
   # Test OSPFv3 structured configs
   - name: Tenant_OSPFv3_Structured_Config
     mac_vrf_vni_base: 10000

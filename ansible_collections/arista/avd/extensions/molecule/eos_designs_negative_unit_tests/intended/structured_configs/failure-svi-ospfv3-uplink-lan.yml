@@ -119,7 +119,7 @@ vlan_interfaces:
       area: 0.0.0.0
     ipv6:
       area: 0.0.0.0
-    passive_interface: false
+    no_passive_interface: true
     network_point_to_point: false
   metadata:
     tenants:

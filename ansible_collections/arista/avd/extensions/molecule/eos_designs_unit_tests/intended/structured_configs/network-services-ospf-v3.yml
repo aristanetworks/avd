@@ -333,8 +333,8 @@ vlan_interfaces:
   ospfv3:
     ipv6:
       area: 1.1.1.1
-    passive_interface: true
-    network_point_to_point: true
+    no_passive_interface: true
+    network_point_to_point: false
   metadata:
     tenants:
     - Tenant_OSPFv3_Redistribute_IPv6
