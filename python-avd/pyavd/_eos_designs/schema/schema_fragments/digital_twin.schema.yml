@@ -64,9 +64,9 @@ keys:
                 type: bool
                 default: false
                 description: |-
-                  When set to `true`, provides the resolved device serial number as an input value to the Digital Twin environment.
-                  A per-node `digital_twin.serial_number` value overrides the regular device `serial_number` for the Digital Twin device.
+                  When set to `true`, provides the device's `serial_number` as an input value to the Digital Twin environment.
                   Can be overridden by `digital_twin.hardware_identity.serial_number` at node level.
+                  A per-node `digital_twin.serial_number` value overrides the regular device `serial_number` for the Digital Twin device.
                   Supported Digital Twin environments:
                   - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
               system_mac_address:
@@ -74,8 +74,8 @@ keys:
                 default: false
                 description: |-
                   When set to `true`, provides the resolved device system MAC address as an input value to the Digital Twin environment.
-                  A per-node `digital_twin.system_mac_address` value overrides the regular device `system_mac_address` for the Digital Twin device.
                   Can be overridden by `digital_twin.hardware_identity.system_mac_address` at node level.
+                  A per-node `digital_twin.system_mac_address` value overrides the regular device `system_mac_address` for the Digital Twin device.
                   Supported Digital Twin environments:
                   - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
           ztp:
