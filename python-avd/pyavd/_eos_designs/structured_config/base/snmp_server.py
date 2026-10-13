@@ -236,11 +236,17 @@ class SnmpServerMixin(Protocol):
                 vrfs.add(host_vrf)
 
                 if source_interface:
-                    if host_vrf == "default":
-                        self.structured_config.snmp_server.local_interface = source_interface
+                    if self.inputs.avd_design_future.sort_snmp_acls_and_local_interfaces_by_vrf:
+                        if host_vrf == "default":
+                            self.structured_config.snmp_server.local_interface = source_interface
+                        else:
+                            vrf = self.structured_config.snmp_server.vrfs.obtain(host_vrf)
+                            vrf.local_interface = source_interface
                     else:
-                        vrf = self.structured_config.snmp_server.vrfs.obtain(host_vrf)
-                        vrf.local_interface = source_interface
+                        self.structured_config.snmp_server.local_interfaces.append_new(
+                            name=source_interface,
+                            vrf=host_vrf if host_vrf != "default" else None,
+                        )
 
             if not vrfs:
                 # If no VRFs are defined
@@ -271,26 +277,36 @@ class SnmpServerMixin(Protocol):
         Requires snmp_settings.vrfs to be set
         """
         vrfs = EosCliConfigGen.SnmpServer.Vrfs()
+        sort_snmp_acls_and_local_interfaces_by_vrf = self.inputs.avd_design_future.sort_snmp_acls_and_local_interfaces_by_vrf
 
         for vrf in self.inputs.snmp_settings.vrfs:
             if vrf.enable is None:
                 continue
 
             vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
-            vrf_kwargs: dict = {"name": vrf_name, "enable": vrf.enable}
+            if sort_snmp_acls_and_local_interfaces_by_vrf:
+                vrf_kwargs: dict = {"name": vrf_name, "enable": vrf.enable}
 
-            if vrf.ipv4_acl is not None:
-                if vrf_name == "default":
-                    self.structured_config.snmp_server.ipv4_acl = vrf.ipv4_acl
-                else:
-                    vrf_kwargs["ipv4_acl"] = vrf.ipv4_acl
+                if vrf.ipv4_acl is not None:
+                    if vrf_name == "default":
+                        self.structured_config.snmp_server.ipv4_acl = vrf.ipv4_acl
+                    else:
+                        vrf_kwargs["ipv4_acl"] = vrf.ipv4_acl
 
-            if vrf.ipv6_acl is not None:
-                if vrf_name == "default":
-                    self.structured_config.snmp_server.ipv6_acl = vrf.ipv6_acl
-                else:
-                    vrf_kwargs["ipv6_acl"] = vrf.ipv6_acl
+                if vrf.ipv6_acl is not None:
+                    if vrf_name == "default":
+                        self.structured_config.snmp_server.ipv6_acl = vrf.ipv6_acl
+                    else:
+                        vrf_kwargs["ipv6_acl"] = vrf.ipv6_acl
 
-            vrfs.append_new(**vrf_kwargs)
+                vrfs.append_new(**vrf_kwargs)
+            else:
+                vrfs.append_new(name=vrf_name, enable=vrf.enable)
+
+                if vrf.ipv4_acl is not None:
+                    self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
+
+                if vrf.ipv6_acl is not None:
+                    self.structured_config.snmp_server.ipv6_acls.append_new(name=vrf.ipv6_acl, vrf=vrf_name if vrf_name != "default" else None)
 
         self.structured_config.snmp_server.vrfs = vrfs._natural_sorted()
