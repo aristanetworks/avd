@@ -20,7 +20,6 @@ from pyavd._errors import (
 )
 from pyavd._utils.default import default
 from pyavd._utils.get import get_v2
-from pyavd._utils.undefined import Undefined
 from pyavd.j2filters import natural_sort
 
 from .aaa_settings import AaaSettingsMixin
@@ -360,10 +359,9 @@ class AvdStructuredConfigBaseProtocol(
     def vrfs(self) -> None:
         """Vrfs set based on mgmt_interface_vrf variable."""
         if self.inputs.avd_design_future.only_configure_oob_mgmt_vrf_when_used:
-            mgmt_interface_vrf_is_explicitly_configured = (
-                self.inputs._get_defined_attr("mgmt_interface_vrf") is not Undefined
-                or self.inputs.mgmt_interface_settings._get_defined_attr("vrf") is not Undefined
-            )
+            mgmt_interface_vrf_is_explicitly_configured = self.inputs._get_defined_attr(
+                "mgmt_interface_vrf"
+            ) or self.inputs.mgmt_interface_settings._get_defined_attr("vrf")
             configure_oob_mgmt_vrf = (
                 mgmt_interface_vrf_is_explicitly_configured
                 or self.inputs.default_mgmt_method == "oob"
