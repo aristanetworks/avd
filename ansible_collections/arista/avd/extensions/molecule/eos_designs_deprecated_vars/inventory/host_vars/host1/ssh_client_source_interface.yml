@@ -1,0 +1,5 @@
+# Testing deprecated source_interfaces.ssh_client
+source_interfaces:
+  ssh_client:
+    mgmt_interface: true
+    inband_mgmt_interface: true

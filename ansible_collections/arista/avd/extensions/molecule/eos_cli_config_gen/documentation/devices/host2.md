@@ -129,6 +129,9 @@
   - [NAT Pools](#nat-pools)
   - [NAT Synchronization](#nat-synchronization)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
+- [IP Software Forwarding](#ip-software-forwarding)
+  - [IP Software Forwarding Summary](#ip-software-forwarding-summary)
+  - [IP Software Forwarding Configuration](#ip-software-forwarding-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
 - [MACsec](#macsec)
@@ -576,16 +579,16 @@ dhcp relay
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 10.20.20.3:9910 | - | - | - | - | False |
-| gzip | 10.20.20.1:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt | - | - | False |
-| gzip | 10.30.30.1:9910 | mgt | key,<removed> | - | - | False |
-| gzip | 10.40.40.1:9910 | mgt | token,/tmp/tokenDC3 | - | - | False |
-| gzip | 10.40.40.1:9910 | mgt | token-secure,/tmp/tokenDC4 | - | - | False |
-| gzip | 10.20.20.2:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key | - | - | False |
-| gzip | 10.20.20.3:9910 | - | - | - | - | False |
-| gzip | apiserver.arista.io:443 | - | key,<removed> | - | - | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 10.20.20.3:9910 | - | - | - | - | - | False |
+| gzip | 10.20.20.1:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt | - | - | - | False |
+| gzip | 10.30.30.1:9910 | mgt | key,<removed> | - | - | - | False |
+| gzip | 10.40.40.1:9910 | mgt | token,/tmp/tokenDC3 | - | - | - | False |
+| gzip | 10.40.40.1:9910 | mgt | token-secure,/tmp/tokenDC4 | - | - | - | False |
+| gzip | 10.20.20.2:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key | - | - | - | False |
+| gzip | 10.20.20.3:9910 | - | - | - | - | - | False |
+| gzip | apiserver.arista.io:443 | - | key,<removed> | - | - | - | False |
 
 #### TerminAttr Daemon Device Configuration
 
@@ -641,9 +644,9 @@ logging event link-status global
 
 MCS client is shutdown
 
-| Secondary CVX cluster | Server Hosts | Enabled |
-| --------------------- | ------------ | ------- |
-| default | - | False |
+| Secondary CVX cluster | Server Hosts | VRF | Source Interface | Enabled |
+| --------------------- | ------------ | --- | ---------------- | ------- |
+| default | - | - | Management0 | False |
 
 #### MCS Client Device Configuration
 
@@ -654,6 +657,7 @@ mcs client
    !
    cvx secondary default
       shutdown
+      source-interface Management0
 ```
 
 ### SNMP
@@ -1008,6 +1012,7 @@ interface Dps1
 | Vlan85 | SVI Description | default | - | - |
 | Vlan1000 | Vlan with minimal ospfv3 configurations | default | - | - |
 | Vlan1001 | Test VLAN with both ospfv3 and ipv6_ospf configurations | default | - | - |
+| Vlan1002 | Test OSPFv3 without passive-interface settings | default | - | - |
 
 ##### IPv4
 
@@ -1016,14 +1021,16 @@ interface Dps1
 | Vlan85 | default | 10.10.84.1/24 | - | - | - | - |
 | Vlan1000 | default | - | - | - | - | - |
 | Vlan1001 | default | - | - | - | - | - |
+| Vlan1002 | default | - | - | - | - | - |
 
 ##### OSPFv3
 
 | Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
 | --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
 | Vlan85 | True | True | 0.0.0.0 | 1000 |
-| Vlan1000 | - | - | 1000 | 0.0.0.0 |
+| Vlan1000 | False | - | 1000 | 0.0.0.0 |
 | Vlan1001 | True | True | 1000 | 0.0.0.0 |
+| Vlan1002 | - | - | 0.0.0.0 | 0.0.0.0 |
 
 ##### ISIS
 
@@ -1053,6 +1060,7 @@ interface Vlan85
 !
 interface Vlan1000
    description Vlan with minimal ospfv3 configurations
+   no ospfv3 passive-interface
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0
 !
@@ -1061,6 +1069,11 @@ interface Vlan1001
    ospfv3 passive-interface
    ospfv3 network point-to-point
    ospfv3 ipv4 area 1000
+   ospfv3 ipv6 area 0.0.0.0
+!
+interface Vlan1002
+   description Test OSPFv3 without passive-interface settings
+   ospfv3 ipv4 area 0.0.0.0
    ospfv3 ipv6 area 0.0.0.0
 ```
 
@@ -1665,6 +1678,8 @@ ASN Notation: asplain
 | IP | True | RM-test2 |
 | Tunnel | True | - |
 
+#### Router BGP VPN-IPv6 Address Family
+
 #### Router BGP Path-Selection Address Family
 
 #### Router BGP VRFs
@@ -1754,6 +1769,9 @@ router bgp 65101
    !
    address-family path-selection
       no bgp additional-paths send
+   !
+   address-family vpn-ipv6
+      domain identifier 65000:0
    !
    vrf VRF01
       rd evpn domain all 10.50.64.15:30003
@@ -2223,6 +2241,20 @@ ip dhcp snooping information option circuit-id type 10 format %h:%p
 !
 ip nat pool host2-pool prefix-length 32
 ip nat synchronization
+```
+
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+| Setting | Value |
+| ------- | ----- |
+| MTU Size | 9000 |
+
+### IP Software Forwarding Configuration
+
+```eos
+ip software forwarding mtu 9000
 ```
 
 ## Errdisable

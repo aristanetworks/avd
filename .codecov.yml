@@ -55,6 +55,8 @@ ignore:
   - "python-avd/pyavd/_eos_designs/schema/__init__.py"
   - "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py"
   - "python-avd/pyavd/_cv/api/**/*"
+  # This utils module use an integration with CV and is ignored for now
+  - "python-avd/pyavd/_eos_designs/structured_config/network_services/utils_zscaler.py"
 
   # Coverage report files
   - "python-avd/**/coverage.xml"

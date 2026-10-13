@@ -34,22 +34,28 @@ class DeviceConfigMixin(Protocol):
 
         # Create a copy so we don't touch the original data.
         device_config = self.inputs.devices.get(self.hostname, EosDesigns.DevicesItem())._deepcopy()
+        if not (device_profile_name := default(device_config.profile, self.inputs.device_profile)):
+            return device_config
 
-        if device_profile_name := default(device_config.profile, self.inputs.device_profile):
-            if not (device_profile := self.inputs.device_profiles.get(device_profile_name)):
-                msg = f"The Device Profile '{device_profile_name}' applied for the device '{self.hostname}' does not exist under `device_profiles`."
-                raise AristaAvdInvalidInputsError(msg)
+        if not (device_profile := self.inputs.device_profiles.get(device_profile_name)):
+            msg = f"The Device Profile '{device_profile_name}' applied for the device '{self.hostname}' does not exist under `device_profiles`."
+            raise AristaAvdInvalidInputsError(msg)
 
-            device_config._deepinherit(device_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
+        device_profile = self.inputs.device_profiles[device_profile_name]._deepcopy()
+        resolved_profile = self.inputs.device_profiles[device_profile_name]._deepcopy()
+        if self.inputs.avd_design_future.allow_recursive_profile_inheritance:
+            resolved_profile_item = self.return_resolved_profile_for_multilevel_inheritance("device_profiles", device_profile, self.inputs.device_profiles)
+            device_config._deepinherit(resolved_profile_item._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
+            return device_config
 
-            if device_profile.parent_profile:
-                if not (parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
-                    msg = (
-                        f"Device Profile '{device_profile.parent_profile}' applied as 'parent_profile' on the profile '{device_profile.name}' "
-                        "does not exist under 'device_profiles'."
-                    )
-                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+        if device_profile.parent_profile:
+            if not (parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
+                msg = (
+                    f"Device Profile '{device_profile.parent_profile}' applied as 'parent_profile' on the profile '{device_profile.name}' "
+                    "does not exist under 'device_profiles'."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+            resolved_profile._deepinherit(parent_profile)
 
-                device_config._deepinherit(parent_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
-
+        device_config._deepinherit(resolved_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
         return device_config

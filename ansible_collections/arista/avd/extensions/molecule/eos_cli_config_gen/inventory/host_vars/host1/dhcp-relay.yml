@@ -10,3 +10,4 @@ dhcp_relay:
       - 1000
       - 500-510
       - 2000,3000
+  reply_source_address_validation: true

@@ -37,6 +37,9 @@ router_bgp:
   neighbor_default:
     send_community: all
   bgp:
+    convergence: # Issue 7390
+      slow_peer_time: 500
+      time: 400
     default:
       ipv4_unicast: true
       ipv4_unicast_transport_ipv6: true
@@ -555,6 +558,8 @@ router_bgp:
         rcf: RCF-TEST() # GH Issue 6500: Validate RM takes precedence
       - prefix: 1.1.1.0/24 # GH Issue 6500: Validate RCF config
         rcf: RCF-TEST()
+    next_hop:
+      resolution_disabled: true
     bgp:
       redistribute_internal: false
       additional_paths:
@@ -749,6 +754,8 @@ router_bgp:
         rcf: RCF-IPV6-TEST() # GH Issue 6500: Validate RM takes precedence
       - prefix: 2001:db8:300::/40 # GH Issue 6500: Validate RCF config
         rcf: RCF-IPV6-TEST()
+    next_hop:
+      resolution_disabled: true
     bgp:
       redistribute_internal: true
       additional_paths:
@@ -998,6 +1005,8 @@ router_bgp:
       - rib_type: "system-connected"
     label_local_termination: implicit-null
     lfib_entry_installation_skipped: true
+    next_hop:
+      resolution_disabled: true
     next_hops:
       - ip_address: 192.51.100.1
         lfib_backup_ip_forwarding: true
@@ -1365,6 +1374,8 @@ router_bgp:
         rcf_out: Address_Family_VPN_IPV6_Out()
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
+    next_hop:
+      resolution_disabled: true
   address_family_flow_spec_ipv4:
     bgp:
       missing_policy:

@@ -183,6 +183,11 @@ keys:
         description: |
           Exclude paths from the shared memory table.
           e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+      sysdbexcludes:
+        type: str
+        description: |
+          Exclude paths from Sysdb.
+          e.g. "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
       taillogs:
         type: str
         description: |

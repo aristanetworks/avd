@@ -58,6 +58,8 @@ WORKSPACE_STATE_MAP = {
     "rolled_back": WorkspaceState.ROLLED_BACK,
 }
 
+WORKSPACE_RESPONSE_TERMINAL_STATUSES = frozenset({ResponseStatus.SUCCESS, ResponseStatus.FAIL})
+
 
 class WorkspaceMixin(Protocol):
     """Only to be used as mixin on CVClient class."""
@@ -275,7 +277,7 @@ class WorkspaceMixin(Protocol):
         Monitor a Workspace using arista.workspace.v1.WorkspaceService.Subscribe API for a response to the given request_id.
 
         Blocks until a response in a terminal state (ResponseStatus.SUCCESS or ResponseStatus.FAIL) is returned or timed out.
-        Responses in an intermediate state (ResponseStatus.UNSPECIFIED) are logged only.
+        Responses in any state other than ResponseStatus.SUCCESS or ResponseStatus.FAIL are logged only.
 
         Parameters:
             workspace_id: Unique identifier for the Workspace.
@@ -297,7 +299,7 @@ class WorkspaceMixin(Protocol):
         async for response in responses:
             if request_id in response.value.responses.values:
                 LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
-                if response.value.responses.values[request_id].status != ResponseStatus.UNSPECIFIED:
+                if response.value.responses.values[request_id].status in WORKSPACE_RESPONSE_TERMINAL_STATUSES:
                     return response.value.responses.values[request_id], response.value
             else:
                 LOGGER.debug(

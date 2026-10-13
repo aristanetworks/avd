@@ -995,10 +995,12 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
             "accept_ra_default_route_for_ipv6_mgmt_ip_auto_config": {"type": bool, "default": False},
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
+            "allow_recursive_profile_inheritance": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
+            "fix_mlag_ibgp_peering_ipv6_pool": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
@@ -1029,6 +1031,14 @@ class EosDesigns(EosDesignsRootModel):
         Available from AVD 6.3.0.
         Configure inband management interface to accept DHCP default route when
         the inband management IP is set to 'dhcp'.
+
+        Default value: `False`
+        """
+        allow_recursive_profile_inheritance: bool
+        """
+        Available from AVD 6.5.0.
+        Allow `parent_profile` to inherit from its own `parent_profile` in
+        `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`.
 
         Default value: `False`
         """
@@ -1066,6 +1076,18 @@ class EosDesigns(EosDesignsRootModel):
         ipv6 address prefix-list`
         instead of `match ip address prefix-list` when using
         `underlay_ipv6_numbered`.
+
+        Default value: `False`
+        """
+        fix_mlag_ibgp_peering_ipv6_pool: bool
+        """
+        Available from AVD 6.5.0.
+        Fix the MLAG iBGP peering BGP neighbor in VRFs when using
+        `underlay_ipv6_numbered`.
+        When enabled, the BGP neighbor is derived from the same IPv6 pool as the
+        MLAG iBGP peering SVI,
+        using `mlag_ibgp_peering_ipv6_pool` when set, and
+        `mlag_ibgp_peering_ipv4_pool` is ignored.
 
         Default value: `False`
         """
@@ -1146,10 +1168,12 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: bool | UndefinedType = Undefined,
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
+                allow_recursive_profile_inheritance: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
+                fix_mlag_ibgp_peering_ipv6_pool: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
@@ -1178,6 +1202,10 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.3.0.
                        Configure inband management interface to accept DHCP default route when
                        the inband management IP is set to 'dhcp'.
+                    allow_recursive_profile_inheritance:
+                       Available from AVD 6.5.0.
+                       Allow `parent_profile` to inherit from its own `parent_profile` in
+                       `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`.
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
@@ -1199,6 +1227,14 @@ class EosDesigns(EosDesignsRootModel):
                        ipv6 address prefix-list`
                        instead of `match ip address prefix-list` when using
                        `underlay_ipv6_numbered`.
+                    fix_mlag_ibgp_peering_ipv6_pool:
+                       Available from AVD 6.5.0.
+                       Fix the MLAG iBGP peering BGP neighbor in VRFs when using
+                       `underlay_ipv6_numbered`.
+                       When enabled, the BGP neighbor is derived from the same IPv6 pool as the
+                       MLAG iBGP peering SVI,
+                       using `mlag_ibgp_peering_ipv6_pool` when set, and
+                       `mlag_ibgp_peering_ipv4_pool` is ignored.
                     fix_radius_server_group_tls:
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global
@@ -5542,7 +5578,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -5732,7 +5768,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -6346,7 +6382,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -6536,7 +6572,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -11525,6 +11561,7 @@ class EosDesigns(EosDesignsRootModel):
             "platform": {"type": str},
             "mac_address": {"type": str},
             "system_mac_address": {"type": str},
+            "custom_system_mac_address": {"type": str},
             "serial_number": {"type": str},
             "rack": {"type": str},
             "mgmt_ip": {"type": str},
@@ -11653,8 +11690,12 @@ class EosDesigns(EosDesignsRootModel):
         parent_profile: str | None
         """
         Inherit settings from a parent profile defined under `device_profiles`.
-        Max two levels of profile
-        inheritance: device -> profile -> parent_profile
+        By default, profile
+        inheritance is limited to two levels: device -> profile -> parent_profile.
+        From AVD 6.5.0 onwards,
+        setting `avd_design_future.allow_recursive_profile_inheritance` to true
+        allows profiles to inherit
+        settings across any number of levels.
         """
         type: str | None
         """
@@ -11683,6 +11724,37 @@ class EosDesigns(EosDesignsRootModel):
         "system_mac_address" can also be set directly as a
         hostvar.
         If both are set, the setting under node type settings takes precedence.
+        Mutually exclusive
+        with "custom_system_mac_address", whether defined globally or in node configuration.
+        """
+        custom_system_mac_address: str | None
+        """
+        Set a custom EOS system MAC address using an AVD string formatter template.
+        When set, the rendered
+        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+        CloudVision-based Zscaler integration.
+        The node configuration value takes precedence over the global
+        `custom_system_mac_address` value.
+        Mutually exclusive with `system_mac_address`, whether defined
+        globally or in node configuration.
+        If unset, the existing `system_mac_address` behavior is
+        unchanged.
+        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+        not accepted by EOS.
+        Regardless of the input format, the MAC address is normalized to
+        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+        Only the following
+        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+        Examples:
+        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+        `021c.7300.04d2` for device with ID 1234.
+          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+        characters of the hostname represent a numerical identifier of the deployment site which we want to
+        encode into the 3rd and 4th octets of the generated MAC address).
         """
         serial_number: str | None
         """
@@ -11981,7 +12053,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -12023,9 +12097,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         router_id_pool: str | None
         """
-        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-        will not exist on the device.
+        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+        and takes precedence over `router_id_pool`.
         """
         loopback_ipv6_pool: str | None
         """
@@ -12161,6 +12236,8 @@ class EosDesigns(EosDesignsRootModel):
         Underlay L3 peering SVI interface id.
         If set to 0 or the same vlan as mlag_peer_vlan, the
         mlag_peer_vlan will be used for L3 peering.
+        See `mlag_peer_address_family` for the supported address
+        families in that case.
 
         Default value: `4093`
         """
@@ -12170,8 +12247,9 @@ class EosDesigns(EosDesignsRootModel):
         The IPv4
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+        true`.
         """
         mlag_peer_l3_ipv6_pool: str | None
         """
@@ -12179,8 +12257,8 @@ class EosDesigns(EosDesignsRootModel):
         The IPv6
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+        and a separate L3 peering VLAN.
         """
         mlag_peer_vlan: int
         """
@@ -12194,8 +12272,18 @@ class EosDesigns(EosDesignsRootModel):
         IP address family used to establish MLAG Peer Link (control link).
         `ipv6` requires EOS version
         4.31.1F or higher.
-        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-        (ex. `mlag_peer_l3_vlan` set to 4094).
+        This never changes which address families (NLRI) are activated on the MLAG BGP
+        peerings.
+        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+        The
+        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+        When the MLAG peer VLAN is also used for L3 peering
+        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+        the MLAG L3 peerings
+        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+        so this must be `ipv6`
+        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
         Default value: `"ipv4"`
         """
@@ -12606,6 +12694,7 @@ class EosDesigns(EosDesignsRootModel):
                 platform: str | UndefinedType | None = Undefined,
                 mac_address: str | UndefinedType | None = Undefined,
                 system_mac_address: str | UndefinedType | None = Undefined,
+                custom_system_mac_address: str | UndefinedType | None = Undefined,
                 serial_number: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -12739,8 +12828,12 @@ class EosDesigns(EosDesignsRootModel):
                     name: Profile Name
                     parent_profile:
                        Inherit settings from a parent profile defined under `device_profiles`.
-                       Max two levels of profile
-                       inheritance: device -> profile -> parent_profile
+                       By default, profile
+                       inheritance is limited to two levels: device -> profile -> parent_profile.
+                       From AVD 6.5.0 onwards,
+                       setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                       allows profiles to inherit
+                       settings across any number of levels.
                     type:
                        Set the type of the device as defined under `node_type_keys`.
                        This takes precedence over the global
@@ -12760,6 +12853,35 @@ class EosDesigns(EosDesignsRootModel):
                        "system_mac_address" can also be set directly as a
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
+                       Mutually exclusive
+                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                    custom_system_mac_address:
+                       Set a custom EOS system MAC address using an AVD string formatter template.
+                       When set, the rendered
+                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                       CloudVision-based Zscaler integration.
+                       The node configuration value takes precedence over the global
+                       `custom_system_mac_address` value.
+                       Mutually exclusive with `system_mac_address`, whether defined
+                       globally or in node configuration.
+                       If unset, the existing `system_mac_address` behavior is
+                       unchanged.
+                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                       not accepted by EOS.
+                       Regardless of the input format, the MAC address is normalized to
+                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                       Only the following
+                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                       Examples:  # fmt: skip
+                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                       `021c.7300.04d2` for device with ID 1234.
+                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                       encode into the 3rd and 4th octets of the generated MAC address).
                     serial_number:
                        Set to the Serial Number of the device.
                        Only used for documentation purpose in the fabric
@@ -12973,7 +13095,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -13001,9 +13125,10 @@ class EosDesigns(EosDesignsRootModel):
                        For example, set the minimum
                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                     router_id_pool:
-                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                       will not exist on the device.
+                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                       and takes precedence over `router_id_pool`.
                     loopback_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -13092,28 +13217,41 @@ class EosDesigns(EosDesignsRootModel):
                        Underlay L3 peering SVI interface id.
                        If set to 0 or the same vlan as mlag_peer_vlan, the
                        mlag_peer_vlan will be used for L3 peering.
+                       See `mlag_peer_address_family` for the supported address
+                       families in that case.
                     mlag_peer_l3_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                       true`.
                     mlag_peer_l3_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                        The IPv6
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                       and a separate L3 peering VLAN.
                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                     mlag_peer_address_family:
                        IP address family used to establish MLAG Peer Link (control link).
                        `ipv6` requires EOS version
                        4.31.1F or higher.
-                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                       peerings.
+                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                       The
+                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                       When the MLAG peer VLAN is also used for L3 peering
+                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                       the MLAG L3 peerings
+                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                       so this must be `ipv6`
+                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                     mlag_peer_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
@@ -17042,6 +17180,7 @@ class EosDesigns(EosDesignsRootModel):
             "platform": {"type": str},
             "mac_address": {"type": str},
             "system_mac_address": {"type": str},
+            "custom_system_mac_address": {"type": str},
             "serial_number": {"type": str},
             "rack": {"type": str},
             "mgmt_ip": {"type": str},
@@ -17170,10 +17309,13 @@ class EosDesigns(EosDesignsRootModel):
         profile: str | None
         """
         Inherit settings from a profile defined under `device_profiles`.
-        Max two levels of profile
-        inheritance: device -> profile -> parent_profile
-        This takes precedence over the global
-        `device_profile` key.
+        By default, profile inheritance is
+        limited to two levels: device -> profile -> parent_profile.
+        From AVD 6.5.0 onwards, setting
+        `avd_design_future.allow_recursive_profile_inheritance` to true
+        allows profiles to inherit settings
+        across any number of levels.
+        This takes precedence over the global `device_profile` key.
         """
         type: str | None
         """
@@ -17210,6 +17352,37 @@ class EosDesigns(EosDesignsRootModel):
         "system_mac_address" can also be set directly as a
         hostvar.
         If both are set, the setting under node type settings takes precedence.
+        Mutually exclusive
+        with "custom_system_mac_address", whether defined globally or in node configuration.
+        """
+        custom_system_mac_address: str | None
+        """
+        Set a custom EOS system MAC address using an AVD string formatter template.
+        When set, the rendered
+        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+        CloudVision-based Zscaler integration.
+        The node configuration value takes precedence over the global
+        `custom_system_mac_address` value.
+        Mutually exclusive with `system_mac_address`, whether defined
+        globally or in node configuration.
+        If unset, the existing `system_mac_address` behavior is
+        unchanged.
+        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+        not accepted by EOS.
+        Regardless of the input format, the MAC address is normalized to
+        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+        Only the following
+        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+        Examples:
+        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+        `021c.7300.04d2` for device with ID 1234.
+          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+        characters of the hostname represent a numerical identifier of the deployment site which we want to
+        encode into the 3rd and 4th octets of the generated MAC address).
         """
         serial_number: str | None
         """
@@ -17508,7 +17681,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -17550,9 +17725,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         router_id_pool: str | None
         """
-        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-        will not exist on the device.
+        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+        and takes precedence over `router_id_pool`.
         """
         loopback_ipv6_pool: str | None
         """
@@ -17688,6 +17864,8 @@ class EosDesigns(EosDesignsRootModel):
         Underlay L3 peering SVI interface id.
         If set to 0 or the same vlan as mlag_peer_vlan, the
         mlag_peer_vlan will be used for L3 peering.
+        See `mlag_peer_address_family` for the supported address
+        families in that case.
 
         Default value: `4093`
         """
@@ -17697,8 +17875,9 @@ class EosDesigns(EosDesignsRootModel):
         The IPv4
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+        true`.
         """
         mlag_peer_l3_ipv6_pool: str | None
         """
@@ -17706,8 +17885,8 @@ class EosDesigns(EosDesignsRootModel):
         The IPv6
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+        and a separate L3 peering VLAN.
         """
         mlag_peer_vlan: int
         """
@@ -17721,8 +17900,18 @@ class EosDesigns(EosDesignsRootModel):
         IP address family used to establish MLAG Peer Link (control link).
         `ipv6` requires EOS version
         4.31.1F or higher.
-        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-        (ex. `mlag_peer_l3_vlan` set to 4094).
+        This never changes which address families (NLRI) are activated on the MLAG BGP
+        peerings.
+        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+        The
+        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+        When the MLAG peer VLAN is also used for L3 peering
+        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+        the MLAG L3 peerings
+        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+        so this must be `ipv6`
+        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
         Default value: `"ipv4"`
         """
@@ -18134,6 +18323,7 @@ class EosDesigns(EosDesignsRootModel):
                 platform: str | UndefinedType | None = Undefined,
                 mac_address: str | UndefinedType | None = Undefined,
                 system_mac_address: str | UndefinedType | None = Undefined,
+                custom_system_mac_address: str | UndefinedType | None = Undefined,
                 serial_number: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -18267,10 +18457,13 @@ class EosDesigns(EosDesignsRootModel):
                     name: The Node Name is used as "hostname".
                     profile:
                        Inherit settings from a profile defined under `device_profiles`.
-                       Max two levels of profile
-                       inheritance: device -> profile -> parent_profile
-                       This takes precedence over the global
-                       `device_profile` key.
+                       By default, profile inheritance is
+                       limited to two levels: device -> profile -> parent_profile.
+                       From AVD 6.5.0 onwards, setting
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
+                       allows profiles to inherit settings
+                       across any number of levels.
+                       This takes precedence over the global `device_profile` key.
                     type:
                        Set the type of the device as defined under `node_type_keys`.
                        This takes precedence over the global
@@ -18296,6 +18489,35 @@ class EosDesigns(EosDesignsRootModel):
                        "system_mac_address" can also be set directly as a
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
+                       Mutually exclusive
+                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                    custom_system_mac_address:
+                       Set a custom EOS system MAC address using an AVD string formatter template.
+                       When set, the rendered
+                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                       CloudVision-based Zscaler integration.
+                       The node configuration value takes precedence over the global
+                       `custom_system_mac_address` value.
+                       Mutually exclusive with `system_mac_address`, whether defined
+                       globally or in node configuration.
+                       If unset, the existing `system_mac_address` behavior is
+                       unchanged.
+                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                       not accepted by EOS.
+                       Regardless of the input format, the MAC address is normalized to
+                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                       Only the following
+                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                       Examples:  # fmt: skip
+                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                       `021c.7300.04d2` for device with ID 1234.
+                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                       encode into the 3rd and 4th octets of the generated MAC address).
                     serial_number:
                        Set to the Serial Number of the device.
                        Only used for documentation purpose in the fabric
@@ -18509,7 +18731,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -18537,9 +18761,10 @@ class EosDesigns(EosDesignsRootModel):
                        For example, set the minimum
                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                     router_id_pool:
-                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                       will not exist on the device.
+                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                       and takes precedence over `router_id_pool`.
                     loopback_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -18628,28 +18853,41 @@ class EosDesigns(EosDesignsRootModel):
                        Underlay L3 peering SVI interface id.
                        If set to 0 or the same vlan as mlag_peer_vlan, the
                        mlag_peer_vlan will be used for L3 peering.
+                       See `mlag_peer_address_family` for the supported address
+                       families in that case.
                     mlag_peer_l3_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                       true`.
                     mlag_peer_l3_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                        The IPv6
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                       and a separate L3 peering VLAN.
                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                     mlag_peer_address_family:
                        IP address family used to establish MLAG Peer Link (control link).
                        `ipv6` requires EOS version
                        4.31.1F or higher.
-                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                       peerings.
+                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                       The
+                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                       When the MLAG peer VLAN is also used for L3 peering
+                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                       the MLAG L3 peerings
+                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                       so this must be `ipv6`
+                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                     mlag_peer_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
@@ -18986,13 +19224,11 @@ class EosDesigns(EosDesignsRootModel):
             """
             Ensures eAPI remains accessible for automation and testing via ACT.
             Clients connecting to device
-            eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+            eAPI through ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
             management VRF, this primary eAPI connectivity can be unintentionally broken.
             Set this to `true` to
             enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
             default VRF and preserving this connectivity.
-            This setting is only applicable to ACT `veos` and
-            `cloudeos` node types.
 
             Default value: `False`
             """
@@ -19027,13 +19263,11 @@ class EosDesigns(EosDesignsRootModel):
                         act_ensure_eapi_access:
                            Ensures eAPI remains accessible for automation and testing via ACT.
                            Clients connecting to device
-                           eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+                           eAPI through ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
                            management VRF, this primary eAPI connectivity can be unintentionally broken.
                            Set this to `true` to
                            enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
                            default VRF and preserving this connectivity.
-                           This setting is only applicable to ACT `veos` and
-                           `cloudeos` node types.
 
                     """
 
@@ -19969,6 +20203,8 @@ class EosDesigns(EosDesignsRootModel):
         bypass_bpdu: bool
         """
         Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+        Ignored when
+        `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
 
         Default value: `True`
         """
@@ -20040,7 +20276,10 @@ class EosDesigns(EosDesignsRootModel):
                        any interface.
                     authentication: Subclass of AvdModel.
                     accounting: Subclass of AvdModel.
-                    bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                    bypass_bpdu:
+                       Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                       Ignored when
+                       `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
                     bypass_lldp: Allow LLDP packets to be processed even if the port is not authorized.
                     dynamic_authorization: Subclass of AvdModel.
                     mac_based_authentication: Subclass of AvdModel.
@@ -22947,6 +23186,7 @@ class EosDesigns(EosDesignsRootModel):
                 "information_option": {"type": bool, "default": False},
                 "tunnel_requests_disabled": {"type": bool, "default": False},
                 "mlag_peerlink_requests_disabled": {"type": bool, "default": False},
+                "reply_source_address_validation": {"type": bool},
             }
             information_option: bool
             """
@@ -22970,6 +23210,12 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            reply_source_address_validation: bool | None
+            """
+            Validate reply source address matches configured server.
+            Supported starting with 4.33.10M, 4.34.8M,
+            4.35.6M, and 4.36.2F.
+            """
 
             if TYPE_CHECKING:
 
@@ -22979,6 +23225,7 @@ class EosDesigns(EosDesignsRootModel):
                     information_option: bool | UndefinedType = Undefined,
                     tunnel_requests_disabled: bool | UndefinedType = Undefined,
                     mlag_peerlink_requests_disabled: bool | UndefinedType = Undefined,
+                    reply_source_address_validation: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DhcpRelay.
@@ -22996,6 +23243,10 @@ class EosDesigns(EosDesignsRootModel):
                            Blocks DHCP relay for packets arriving via the MLAG peer-link.
                            This will only be configured on VXLAN
                            VTEPs which are also MLAG devices.
+                        reply_source_address_validation:
+                           Validate reply source address matches configured server.
+                           Supported starting with 4.33.10M, 4.34.8M,
+                           4.35.6M, and 4.36.2F.
 
                     """
 
@@ -23028,12 +23279,36 @@ class EosDesigns(EosDesignsRootModel):
 
         SuspendedVlans._item_type = SuspendedVlansItem
 
+        class IpSoftwareForwardingExceedActionDrop(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "mtu": {"type": int}}
+            enabled: bool
+            mtu: int
+            """IPv4 software-forwarding MTU threshold in bytes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, mtu: int | UndefinedType = Undefined) -> None:
+                    """
+                    IpSoftwareForwardingExceedActionDrop.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        mtu: IPv4 software-forwarding MTU threshold in bytes.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "interface_defaults": {"type": InterfaceDefaults},
             "arp": {"type": Arp},
             "ip_icmp_redirect": {"type": bool},
             "dhcp_relay": {"type": DhcpRelay},
             "suspended_vlans": {"type": SuspendedVlans},
+            "ip_software_forwarding_exceed_action_drop": {"type": IpSoftwareForwardingExceedActionDrop},
         }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
@@ -23052,6 +23327,14 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
         key is `id` (`int`).
         """
+        ip_software_forwarding_exceed_action_drop: IpSoftwareForwardingExceedActionDrop
+        """
+        Drop IPv4 packets larger than configured mtu (in bytes) in software.
+        Supported starting EOS 4.36.1F,
+        4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -23063,6 +23346,7 @@ class EosDesigns(EosDesignsRootModel):
                 ip_icmp_redirect: bool | UndefinedType | None = Undefined,
                 dhcp_relay: DhcpRelay | UndefinedType = Undefined,
                 suspended_vlans: SuspendedVlans | UndefinedType = Undefined,
+                ip_software_forwarding_exceed_action_drop: IpSoftwareForwardingExceedActionDrop | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -23083,6 +23367,12 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
                        key is `id` (`int`).
+                    ip_software_forwarding_exceed_action_drop:
+                       Drop IPv4 packets larger than configured mtu (in bytes) in software.
+                       Supported starting EOS 4.36.1F,
+                       4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -24656,8 +24946,12 @@ class EosDesigns(EosDesignsRootModel):
         parent_profile: str | None
         """
         Name of parent L2VLAN profile to apply.
-        l2vlan_profiles can refer to another l2vlan_profile to
-        inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+        By default, profile inheritance is limited to two levels:
+        (l2vlan -> l2vlan_profile -> parent_profile).
+        From AVD 6.5.0 onwards, setting
+        `avd_design_future.allow_recursive_profile_inheritance` to true
+        allows profiles to inherit settings
+        across any number of levels.
         """
         address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
         vni_override: int | None
@@ -24787,8 +25081,12 @@ class EosDesigns(EosDesignsRootModel):
                     profile: Profile name.
                     parent_profile:
                        Name of parent L2VLAN profile to apply.
-                       l2vlan_profiles can refer to another l2vlan_profile to
-                       inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                       By default, profile inheritance is limited to two levels:
+                       (l2vlan -> l2vlan_profile -> parent_profile).
+                       From AVD 6.5.0 onwards, setting
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
+                       allows profiles to inherit settings
+                       across any number of levels.
                     address_locking: address_locking
                     vni_override:
                        By default the VNI will be derived from mac_vrf_vni_base.
@@ -25509,7 +25807,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -25699,7 +25997,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -26313,7 +26611,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -26503,7 +26801,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -30636,12 +30934,45 @@ class EosDesigns(EosDesignsRootModel):
             class AddressFamilyIpv6(AvdModel):
                 """Subclass of AvdModel."""
 
+                class DefaultOriginate(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                    enabled: bool
+                    always: bool | None
+                    """Always advertise a default route to this peer."""
+                    route_map: str | None
+                    """Route-map name."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            always: bool | UndefinedType | None = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            DefaultOriginate.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                always: Always advertise a default route to this peer.
+                                route_map: Route-map name.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
+                    "default_originate": {"type": DefaultOriginate},
                     "prefix_list_in": {"type": str},
                     "prefix_list_out": {"type": str},
                 }
@@ -30660,6 +30991,8 @@ class EosDesigns(EosDesignsRootModel):
                 Outbound RCF function name with parenthesis.
                 Example: MyFunction(myarg).
                 """
+                default_originate: DefaultOriginate
+                """Subclass of AvdModel."""
                 prefix_list_in: str | None
                 """Inbound prefix-list name."""
                 prefix_list_out: str | None
@@ -30675,6 +31008,7 @@ class EosDesigns(EosDesignsRootModel):
                         route_map_out: str | UndefinedType | None = Undefined,
                         rcf_in: str | UndefinedType | None = Undefined,
                         rcf_out: str | UndefinedType | None = Undefined,
+                        default_originate: DefaultOriginate | UndefinedType = Undefined,
                         prefix_list_in: str | UndefinedType | None = Undefined,
                         prefix_list_out: str | UndefinedType | None = Undefined,
                     ) -> None:
@@ -30694,6 +31028,7 @@ class EosDesigns(EosDesignsRootModel):
                             rcf_out:
                                Outbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
+                            default_originate: Subclass of AvdModel.
                             prefix_list_in: Inbound prefix-list name.
                             prefix_list_out: Outbound prefix-list name.
 
@@ -33603,6 +33938,7 @@ class EosDesigns(EosDesignsRootModel):
                         "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                         "name": {"type": str},
                         "enabled": {"type": bool},
+                        "autostate": {"type": bool, "default": True},
                         "description": {"type": str},
                         "arp_gratuitous_accept": {"type": bool},
                         "ip_address": {"type": str},
@@ -33659,6 +33995,12 @@ class EosDesigns(EosDesignsRootModel):
                     """VLAN name."""
                     enabled: bool | None
                     """Enable or disable interface."""
+                    autostate: bool
+                    """
+                    Set to false to disable automatic management of the interface link state.
+
+                    Default value: `True`
+                    """
                     description: str | None
                     """SVI description. By default set to VLAN name."""
                     arp_gratuitous_accept: bool | None
@@ -33896,6 +34238,7 @@ class EosDesigns(EosDesignsRootModel):
                             tags: Tags | UndefinedType = Undefined,
                             name: str | UndefinedType | None = Undefined,
                             enabled: bool | UndefinedType | None = Undefined,
+                            autostate: bool | UndefinedType = Undefined,
                             description: str | UndefinedType | None = Undefined,
                             arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                             ip_address: str | UndefinedType | None = Undefined,
@@ -33952,6 +34295,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with `str` items.
                                 name: VLAN name.
                                 enabled: Enable or disable interface.
+                                autostate: Set to false to disable automatic management of the interface link state.
                                 description: SVI description. By default set to VLAN name.
                                 arp_gratuitous_accept: Accept gratuitous ARP.
                                 ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -35028,6 +35372,7 @@ class EosDesigns(EosDesignsRootModel):
                     "evpn_vlan_bundle": {"type": str},
                     "nodes": {"type": Nodes},
                     "enabled": {"type": bool},
+                    "autostate": {"type": bool, "default": True},
                     "description": {"type": str},
                     "arp_gratuitous_accept": {"type": bool},
                     "ip_address": {"type": str},
@@ -35083,6 +35428,10 @@ class EosDesigns(EosDesignsRootModel):
                 SVI profile name to apply.
                 SVI can refer to one svi_profile which again can refer to another
                 svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                From
+                AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                allows
+                profiles to inherit settings across any number of levels.
                 """
                 tags: Tags
                 """
@@ -35114,6 +35463,12 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 enabled: bool | None
                 """Enable or disable interface."""
+                autostate: bool
+                """
+                Set to false to disable automatic management of the interface link state.
+
+                Default value: `True`
+                """
                 description: str | None
                 """SVI description. By default set to VLAN name."""
                 arp_gratuitous_accept: bool | None
@@ -35355,6 +35710,7 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_vlan_bundle: str | UndefinedType | None = Undefined,
                         nodes: Nodes | UndefinedType = Undefined,
                         enabled: bool | UndefinedType | None = Undefined,
+                        autostate: bool | UndefinedType = Undefined,
                         description: str | UndefinedType | None = Undefined,
                         arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                         ip_address: str | UndefinedType | None = Undefined,
@@ -35412,6 +35768,10 @@ class EosDesigns(EosDesignsRootModel):
                                SVI profile name to apply.
                                SVI can refer to one svi_profile which again can refer to another
                                svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                               From
+                               AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                               allows
+                               profiles to inherit settings across any number of levels.
                             tags:
                                Tags leveraged for networks services filtering.
                                Tags are matched against "filter.tags" defined under
@@ -35433,6 +35793,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                             enabled: Enable or disable interface.
+                            autostate: Set to false to disable automatic management of the interface link state.
                             description: SVI description. By default set to VLAN name.
                             arp_gratuitous_accept: Accept gratuitous ARP.
                             ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -37999,12 +38360,45 @@ class EosDesigns(EosDesignsRootModel):
                 class AddressFamilyIpv6(AvdModel):
                     """Subclass of AvdModel."""
 
+                    class DefaultOriginate(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        always: bool | None
+                        """Always advertise a default route to this peer."""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                always: bool | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                DefaultOriginate.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    always: Always advertise a default route to this peer.
+                                    route_map: Route-map name.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
                         "rcf_in": {"type": str},
                         "rcf_out": {"type": str},
+                        "default_originate": {"type": DefaultOriginate},
                         "prefix_list_in": {"type": str},
                         "prefix_list_out": {"type": str},
                     }
@@ -38023,6 +38417,8 @@ class EosDesigns(EosDesignsRootModel):
                     Outbound RCF function name with parenthesis.
                     Example: MyFunction(myarg).
                     """
+                    default_originate: DefaultOriginate
+                    """Subclass of AvdModel."""
                     prefix_list_in: str | None
                     """Inbound prefix-list name."""
                     prefix_list_out: str | None
@@ -38038,6 +38434,7 @@ class EosDesigns(EosDesignsRootModel):
                             route_map_out: str | UndefinedType | None = Undefined,
                             rcf_in: str | UndefinedType | None = Undefined,
                             rcf_out: str | UndefinedType | None = Undefined,
+                            default_originate: DefaultOriginate | UndefinedType = Undefined,
                             prefix_list_in: str | UndefinedType | None = Undefined,
                             prefix_list_out: str | UndefinedType | None = Undefined,
                         ) -> None:
@@ -38057,6 +38454,7 @@ class EosDesigns(EosDesignsRootModel):
                                 rcf_out:
                                    Outbound RCF function name with parenthesis.
                                    Example: MyFunction(myarg).
+                                default_originate: Subclass of AvdModel.
                                 prefix_list_in: Inbound prefix-list name.
                                 prefix_list_out: Outbound prefix-list name.
 
@@ -39243,10 +39641,15 @@ class EosDesigns(EosDesignsRootModel):
             mlag_ibgp_peering_ipv6_pool: str | None
             """
             Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-            The
-            subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-            MLAG switch.
-            If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+            Only
+            used when `underlay_ipv6_numbered` is set.
+            The subnet used for the iBGP peering in the VRF is
+            derived from this pool based on the ID of the first MLAG switch.
+            If not set,
+            "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+            Set
+            `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+            pool.
             """
             ip_helpers: IpHelpers
             """
@@ -39579,10 +39982,15 @@ class EosDesigns(EosDesignsRootModel):
                            If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
                         mlag_ibgp_peering_ipv6_pool:
                            Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-                           The
-                           subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-                           MLAG switch.
-                           If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                           Only
+                           used when `underlay_ipv6_numbered` is set.
+                           The subnet used for the iBGP peering in the VRF is
+                           derived from this pool based on the ID of the first MLAG switch.
+                           If not set,
+                           "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                           Set
+                           `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+                           pool.
                         ip_helpers:
                            IP helper for DHCP relay.
 
@@ -40039,6 +40447,10 @@ class EosDesigns(EosDesignsRootModel):
             The profile must be defined under `l2vlan_profiles`. The profile may refer to
             another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
             l2vlan_profile -> l2vlan_parent_profile).
+            From AVD 6.5.0 onwards, setting
+            `avd_design_future.allow_recursive_profile_inheritance` to true
+            allows profiles to inherit settings
+            across any number of levels.
             """
             tags: Tags
             """
@@ -40184,6 +40596,10 @@ class EosDesigns(EosDesignsRootModel):
                            The profile must be defined under `l2vlan_profiles`. The profile may refer to
                            another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                            l2vlan_profile -> l2vlan_parent_profile).
+                           From AVD 6.5.0 onwards, setting
+                           `avd_design_future.allow_recursive_profile_inheritance` to true
+                           allows profiles to inherit settings
+                           across any number of levels.
                         tags:
                            Tags leveraged for networks services filtering.
                            Tags are matched against filter.tags defined under
@@ -42730,6 +43146,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class AdditionalTcamProfiles(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        AdditionalTcamProfiles._item_type = str
+
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
@@ -43970,6 +44391,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "dot1x_bpdu_bypass": {"type": bool, "default": True},
                 "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -43996,6 +44418,13 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            dot1x_bpdu_bypass: bool
+            """
+            Support for 802.1X BPDU bypass.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             address_locking: AddressLocking
             """Subclass of AvdModel."""
             queue_monitor: bool
@@ -44204,6 +44633,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    dot1x_bpdu_bypass: bool | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
@@ -44237,6 +44667,9 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        dot1x_bpdu_bypass:
+                           Support for 802.1X BPDU bypass.
+                           The feature will be ignored on platforms where this is false.
                         address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
@@ -44430,6 +44863,7 @@ class EosDesigns(EosDesignsRootModel):
             "trident_forwarding_table_partition": {"type": str},
             "reload_delay": {"type": ReloadDelay},
             "tcam_profile": {"type": str},
+            "additional_tcam_profiles": {"type": AdditionalTcamProfiles},
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
@@ -44447,6 +44881,24 @@ class EosDesigns(EosDesignsRootModel):
         reload_delay: ReloadDelay
         """Subclass of AvdModel."""
         tcam_profile: str | None
+        """
+        TCAM profile name to activate as the system profile.
+        If the profile is defined under
+        `tcam_profiles`, it will also be configured in the device.
+        Built-in profiles (e.g., system-profile)
+        can be used without being defined in `tcam_profiles`.
+        """
+        additional_tcam_profiles: AdditionalTcamProfiles
+        """
+        List of additional TCAM profile names that must be defined under `tcam_profiles`.
+        These profiles are
+        configured in the device but are not set as the system profile.
+        If a profile is specified in both
+        `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
+
+        Subclass of AvdList
+        with `str` items.
+        """
         lag_hardware_only: bool | None
         default_interface_mtu: int | None
         """
@@ -44492,6 +44944,7 @@ class EosDesigns(EosDesignsRootModel):
                 trident_forwarding_table_partition: str | UndefinedType | None = Undefined,
                 reload_delay: ReloadDelay | UndefinedType = Undefined,
                 tcam_profile: str | UndefinedType | None = Undefined,
+                additional_tcam_profiles: AdditionalTcamProfiles | UndefinedType = Undefined,
                 lag_hardware_only: bool | UndefinedType | None = Undefined,
                 default_interface_mtu: int | UndefinedType | None = Undefined,
                 p2p_uplinks_mtu: int | UndefinedType | None = Undefined,
@@ -44512,7 +44965,21 @@ class EosDesigns(EosDesignsRootModel):
                     platforms: Subclass of AvdList with `str` items.
                     trident_forwarding_table_partition: Only applied when evpn_multicast is true.
                     reload_delay: Subclass of AvdModel.
-                    tcam_profile: tcam_profile
+                    tcam_profile:
+                       TCAM profile name to activate as the system profile.
+                       If the profile is defined under
+                       `tcam_profiles`, it will also be configured in the device.
+                       Built-in profiles (e.g., system-profile)
+                       can be used without being defined in `tcam_profiles`.
+                    additional_tcam_profiles:
+                       List of additional TCAM profile names that must be defined under `tcam_profiles`.
+                       These profiles are
+                       configured in the device but are not set as the system profile.
+                       If a profile is specified in both
+                       `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
+
+                       Subclass of AvdList
+                       with `str` items.
                     lag_hardware_only: lag_hardware_only
                     default_interface_mtu:
                        Default interface MTU configured on EOS under "interface defaults".
@@ -44576,6 +45043,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class AdditionalTcamProfiles(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        AdditionalTcamProfiles._item_type = str
+
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
@@ -45816,6 +46288,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "dot1x_bpdu_bypass": {"type": bool, "default": True},
                 "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -45842,6 +46315,13 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            dot1x_bpdu_bypass: bool
+            """
+            Support for 802.1X BPDU bypass.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             address_locking: AddressLocking
             """Subclass of AvdModel."""
             queue_monitor: bool
@@ -46050,6 +46530,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    dot1x_bpdu_bypass: bool | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
@@ -46083,6 +46564,9 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        dot1x_bpdu_bypass:
+                           Support for 802.1X BPDU bypass.
+                           The feature will be ignored on platforms where this is false.
                         address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
@@ -46276,6 +46760,7 @@ class EosDesigns(EosDesignsRootModel):
             "trident_forwarding_table_partition": {"type": str},
             "reload_delay": {"type": ReloadDelay},
             "tcam_profile": {"type": str},
+            "additional_tcam_profiles": {"type": AdditionalTcamProfiles},
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
@@ -46293,6 +46778,24 @@ class EosDesigns(EosDesignsRootModel):
         reload_delay: ReloadDelay
         """Subclass of AvdModel."""
         tcam_profile: str | None
+        """
+        TCAM profile name to activate as the system profile.
+        If the profile is defined under
+        `tcam_profiles`, it will also be configured in the device.
+        Built-in profiles (e.g., system-profile)
+        can be used without being defined in `tcam_profiles`.
+        """
+        additional_tcam_profiles: AdditionalTcamProfiles
+        """
+        List of additional TCAM profile names that must be defined under `tcam_profiles`.
+        These profiles are
+        configured in the device but are not set as the system profile.
+        If a profile is specified in both
+        `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
+
+        Subclass of AvdList
+        with `str` items.
+        """
         lag_hardware_only: bool | None
         default_interface_mtu: int | None
         """
@@ -46338,6 +46841,7 @@ class EosDesigns(EosDesignsRootModel):
                 trident_forwarding_table_partition: str | UndefinedType | None = Undefined,
                 reload_delay: ReloadDelay | UndefinedType = Undefined,
                 tcam_profile: str | UndefinedType | None = Undefined,
+                additional_tcam_profiles: AdditionalTcamProfiles | UndefinedType = Undefined,
                 lag_hardware_only: bool | UndefinedType | None = Undefined,
                 default_interface_mtu: int | UndefinedType | None = Undefined,
                 p2p_uplinks_mtu: int | UndefinedType | None = Undefined,
@@ -46358,7 +46862,21 @@ class EosDesigns(EosDesignsRootModel):
                     platforms: Subclass of AvdList with `str` items.
                     trident_forwarding_table_partition: Only applied when evpn_multicast is true.
                     reload_delay: Subclass of AvdModel.
-                    tcam_profile: tcam_profile
+                    tcam_profile:
+                       TCAM profile name to activate as the system profile.
+                       If the profile is defined under
+                       `tcam_profiles`, it will also be configured in the device.
+                       Built-in profiles (e.g., system-profile)
+                       can be used without being defined in `tcam_profiles`.
+                    additional_tcam_profiles:
+                       List of additional TCAM profile names that must be defined under `tcam_profiles`.
+                       These profiles are
+                       configured in the device but are not set as the system profile.
+                       If a profile is specified in both
+                       `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
+
+                       Subclass of AvdList
+                       with `str` items.
                     lag_hardware_only: lag_hardware_only
                     default_interface_mtu:
                        Default interface MTU configured on EOS under "interface defaults".
@@ -48251,8 +48769,12 @@ class EosDesigns(EosDesignsRootModel):
         parent_profile: str | None
         """
         Parent profile is optional.
-        Port_profiles can refer to another port_profile to inherit settings in
-        up to two levels (adapter->profile->parent_profile).
+        By default, profile inheritance is limited to two levels: adapter ->
+        profile -> parent_profile.
+        From AVD 6.5.0 onwards, setting
+        `avd_design_future.allow_recursive_profile_inheritance` to true
+        allows profiles to inherit settings
+        across any number of levels.
         """
         port_channel: PortChannel
         """
@@ -48506,8 +49028,12 @@ class EosDesigns(EosDesignsRootModel):
                     profile: Port profile name.
                     parent_profile:
                        Parent profile is optional.
-                       Port_profiles can refer to another port_profile to inherit settings in
-                       up to two levels (adapter->profile->parent_profile).
+                       By default, profile inheritance is limited to two levels: adapter ->
+                       profile -> parent_profile.
+                       From AVD 6.5.0 onwards, setting
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
+                       allows profiles to inherit settings
+                       across any number of levels.
                     port_channel:
                        Used for port-channel adapter.
 
@@ -49533,6 +50059,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
             Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
+            KeyType: TypeAlias = Literal["disabled", "0", "7"]
             Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
@@ -49540,6 +50067,7 @@ class EosDesigns(EosDesignsRootModel):
                 "version": {"type": str},
                 "auth": {"type": str},
                 "auth_passphrase": {"type": str},
+                "key_type": {"type": str, "default": "disabled"},
                 "priv": {"type": str},
                 "priv_passphrase": {"type": str},
             }
@@ -49551,6 +50079,24 @@ class EosDesigns(EosDesignsRootModel):
             auth: Auth | None
             auth_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set."""
+            key_type: KeyType
+            """
+            Key type for the computed localized SNMPv3 auth and priv keys.
+            Used only when
+            `compute_v3_user_localized_key` is `true`.
+            Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+            4.36.2F.
+            When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type>
+            <key>` syntax for both auth and priv.
+            - `disabled`: Use legacy syntax without key type
+            (auth_passphrase rendered directly). Default for backward compatibility.
+            - `0`: Key string is
+            plaintext. AVD renders the raw computed localized key.
+            - `7`: Type-7 encrypted (HIDDEN) key. AVD
+            applies Type-7 obfuscation to the computed localized key before rendering.
+
+            Default value: `"disabled"`
+            """
             priv: Priv | None
             priv_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set."""
@@ -49565,6 +50111,7 @@ class EosDesigns(EosDesignsRootModel):
                     version: Version | UndefinedType | None = Undefined,
                     auth: Auth | UndefinedType | None = Undefined,
                     auth_passphrase: str | UndefinedType | None = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                     priv: Priv | UndefinedType | None = Undefined,
                     priv_passphrase: str | UndefinedType | None = Undefined,
                 ) -> None:
@@ -49580,6 +50127,20 @@ class EosDesigns(EosDesignsRootModel):
                         version: version
                         auth: auth
                         auth_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+                        key_type:
+                           Key type for the computed localized SNMPv3 auth and priv keys.
+                           Used only when
+                           `compute_v3_user_localized_key` is `true`.
+                           Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+                           4.36.2F.
+                           When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type>
+                           <key>` syntax for both auth and priv.
+                           - `disabled`: Use legacy syntax without key type
+                           (auth_passphrase rendered directly). Default for backward compatibility.
+                           - `0`: Key string is
+                           plaintext. AVD renders the raw computed localized key.
+                           - `7`: Type-7 encrypted (HIDDEN) key. AVD
+                           applies Type-7 obfuscation to the computed localized key before rendering.
                         priv: priv
                         priv_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
 
@@ -50418,7 +50979,82 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
+        class ClientVrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            """
+            VRF name.
+            The value will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure SSH for the VRF set with `mgmt_interface_vrf`.
+              An error will be raised if `mgmt_ip` or
+            `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will configure SSH for the
+            VRF set with `inband_mgmt_vrf`.
+              An error will be raised if inband management is not configured for
+            the device.
+            - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above
+            depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as the VRF
+            name.
+            """
+            source_interface: str | None
+            """
+            Source interface to use for IP SSH Client in this VRF.
+            If set, the value is used directly as the
+            source interface name.
+            If not set, the source interface is derived automatically when `name` is set
+            to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+            For any other
+            `name` value, `source_interface` must be set.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType | None = Undefined) -> None:
+                    """
+                    ClientVrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           VRF name.
+                           The value will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure SSH for the VRF set with `mgmt_interface_vrf`.
+                             An error will be raised if `mgmt_ip` or
+                           `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will configure SSH for the
+                           VRF set with `inband_mgmt_vrf`.
+                             An error will be raised if inband management is not configured for
+                           the device.
+                           - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above
+                           depending on the value of `default_mgmt_method`.
+                           - Any other string will be used directly as the VRF
+                           name.
+                        source_interface:
+                           Source interface to use for IP SSH Client in this VRF.
+                           If set, the value is used directly as the
+                           source interface name.
+                           If not set, the source interface is derived automatically when `name` is set
+                           to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                           For any other
+                           `name` value, `source_interface` must be set.
+
+                    """
+
+        class ClientVrfs(AvdIndexedList[str, ClientVrfsItem]):
+            """Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        ClientVrfs._item_type = ClientVrfsItem
+
+        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}, "client_vrfs": {"type": ClientVrfs}}
         enabled: bool | None
         """
         Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
@@ -50428,6 +51064,8 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         idle_timeout: int | None
         """Idle timeout in minutes."""
+        client_vrfs: ClientVrfs
+        """Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`)."""
 
         if TYPE_CHECKING:
 
@@ -50437,6 +51075,7 @@ class EosDesigns(EosDesignsRootModel):
                 enabled: bool | UndefinedType | None = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 idle_timeout: int | UndefinedType | None = Undefined,
+                client_vrfs: ClientVrfs | UndefinedType = Undefined,
             ) -> None:
                 """
                 SshSettings.
@@ -50450,6 +51089,7 @@ class EosDesigns(EosDesignsRootModel):
                        all VRFs.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     idle_timeout: Idle timeout in minutes.
+                    client_vrfs: Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
@@ -51356,6 +51996,7 @@ class EosDesigns(EosDesignsRootModel):
                 "node": {"type": str},
                 "name": {"type": str},
                 "enabled": {"type": bool},
+                "autostate": {"type": bool, "default": True},
                 "description": {"type": str},
                 "arp_gratuitous_accept": {"type": bool},
                 "ip_address": {"type": str},
@@ -51402,6 +52043,12 @@ class EosDesigns(EosDesignsRootModel):
             """VLAN name."""
             enabled: bool | None
             """Enable or disable interface."""
+            autostate: bool
+            """
+            Set to false to disable automatic management of the interface link state.
+
+            Default value: `True`
+            """
             description: str | None
             """SVI description. By default set to VLAN name."""
             arp_gratuitous_accept: bool | None
@@ -51638,6 +52285,7 @@ class EosDesigns(EosDesignsRootModel):
                     node: str | UndefinedType = Undefined,
                     name: str | UndefinedType | None = Undefined,
                     enabled: bool | UndefinedType | None = Undefined,
+                    autostate: bool | UndefinedType = Undefined,
                     description: str | UndefinedType | None = Undefined,
                     arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                     ip_address: str | UndefinedType | None = Undefined,
@@ -51688,6 +52336,7 @@ class EosDesigns(EosDesignsRootModel):
                         node: Node inventory hostname.
                         name: VLAN name.
                         enabled: Enable or disable interface.
+                        autostate: Set to false to disable automatic management of the interface link state.
                         description: SVI description. By default set to VLAN name.
                         arp_gratuitous_accept: Accept gratuitous ARP.
                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -52754,6 +53403,7 @@ class EosDesigns(EosDesignsRootModel):
             "nodes": {"type": Nodes},
             "name": {"type": str},
             "enabled": {"type": bool},
+            "autostate": {"type": bool, "default": True},
             "description": {"type": str},
             "arp_gratuitous_accept": {"type": bool},
             "ip_address": {"type": str},
@@ -52799,8 +53449,12 @@ class EosDesigns(EosDesignsRootModel):
         parent_profile: str | None
         """
         Parent SVI profile name to apply.
-        svi_profiles can refer to another svi_profile to inherit settings
-        in up to two levels (svi -> svi_profile -> svi_parent_profile).
+        By default, profile inheritance is limited to two levels: svi ->
+        svi_profile -> parent_profile.
+        From AVD 6.5.0 onwards, setting
+        `avd_design_future.allow_recursive_profile_inheritance` to true
+        allows profiles to inherit settings
+        across any number of levels.
         """
         nodes: Nodes
         """
@@ -52816,6 +53470,12 @@ class EosDesigns(EosDesignsRootModel):
         """VLAN name."""
         enabled: bool | None
         """Enable or disable interface."""
+        autostate: bool
+        """
+        Set to false to disable automatic management of the interface link state.
+
+        Default value: `True`
+        """
         description: str | None
         """SVI description. By default set to VLAN name."""
         arp_gratuitous_accept: bool | None
@@ -53054,6 +53714,7 @@ class EosDesigns(EosDesignsRootModel):
                 nodes: Nodes | UndefinedType = Undefined,
                 name: str | UndefinedType | None = Undefined,
                 enabled: bool | UndefinedType | None = Undefined,
+                autostate: bool | UndefinedType = Undefined,
                 description: str | UndefinedType | None = Undefined,
                 arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                 ip_address: str | UndefinedType | None = Undefined,
@@ -53104,8 +53765,12 @@ class EosDesigns(EosDesignsRootModel):
                     profile: Profile name.
                     parent_profile:
                        Parent SVI profile name to apply.
-                       svi_profiles can refer to another svi_profile to inherit settings
-                       in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                       By default, profile inheritance is limited to two levels: svi ->
+                       svi_profile -> parent_profile.
+                       From AVD 6.5.0 onwards, setting
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
+                       allows profiles to inherit settings
+                       across any number of levels.
                     nodes:
                        Define node specific configuration, such as unique IP addresses.
                        Any keys set here will be merged
@@ -53116,6 +53781,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                     name: VLAN name.
                     enabled: Enable or disable interface.
+                    autostate: Set to false to disable automatic management of the interface link state.
                     description: SVI description. By default set to VLAN name.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -59237,6 +59903,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -59374,6 +60041,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -59672,7 +60370,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -59714,9 +60414,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -59852,6 +60553,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -59861,8 +60564,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -59870,8 +60574,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -59885,8 +60589,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -60293,6 +61007,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -60434,6 +61149,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -60647,7 +61391,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -60675,9 +61421,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -60766,28 +61513,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -64741,6 +65501,7 @@ class EosDesigns(EosDesignsRootModel):
                             "platform": {"type": str},
                             "mac_address": {"type": str},
                             "system_mac_address": {"type": str},
+                            "custom_system_mac_address": {"type": str},
                             "serial_number": {"type": str},
                             "rack": {"type": str},
                             "mgmt_ip": {"type": str},
@@ -64888,6 +65649,37 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address" can also be set directly as a
                         hostvar.
                         If both are set, the setting under node type settings takes precedence.
+                        Mutually exclusive
+                        with "custom_system_mac_address", whether defined globally or in node configuration.
+                        """
+                        custom_system_mac_address: str | None
+                        """
+                        Set a custom EOS system MAC address using an AVD string formatter template.
+                        When set, the rendered
+                        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                        CloudVision-based Zscaler integration.
+                        The node configuration value takes precedence over the global
+                        `custom_system_mac_address` value.
+                        Mutually exclusive with `system_mac_address`, whether defined
+                        globally or in node configuration.
+                        If unset, the existing `system_mac_address` behavior is
+                        unchanged.
+                        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                        not accepted by EOS.
+                        Regardless of the input format, the MAC address is normalized to
+                        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                        Only the following
+                        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                        Examples:
+                        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                        `021c.7300.04d2` for device with ID 1234.
+                          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                        characters of the hostname represent a numerical identifier of the deployment site which we want to
+                        encode into the 3rd and 4th octets of the generated MAC address).
                         """
                         serial_number: str | None
                         """
@@ -65186,7 +65978,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -65228,9 +66022,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         router_id_pool: str | None
                         """
-                        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                        will not exist on the device.
+                        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                        and takes precedence over `router_id_pool`.
                         """
                         loopback_ipv6_pool: str | None
                         """
@@ -65366,6 +66161,8 @@ class EosDesigns(EosDesignsRootModel):
                         Underlay L3 peering SVI interface id.
                         If set to 0 or the same vlan as mlag_peer_vlan, the
                         mlag_peer_vlan will be used for L3 peering.
+                        See `mlag_peer_address_family` for the supported address
+                        families in that case.
 
                         Default value: `4093`
                         """
@@ -65375,8 +66172,9 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv4
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                        true`.
                         """
                         mlag_peer_l3_ipv6_pool: str | None
                         """
@@ -65384,8 +66182,8 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv6
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                        and a separate L3 peering VLAN.
                         """
                         mlag_peer_vlan: int
                         """
@@ -65399,8 +66197,18 @@ class EosDesigns(EosDesignsRootModel):
                         IP address family used to establish MLAG Peer Link (control link).
                         `ipv6` requires EOS version
                         4.31.1F or higher.
-                        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                        (ex. `mlag_peer_l3_vlan` set to 4094).
+                        This never changes which address families (NLRI) are activated on the MLAG BGP
+                        peerings.
+                        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                        The
+                        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                        When the MLAG peer VLAN is also used for L3 peering
+                        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                        the MLAG L3 peerings
+                        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                        so this must be `ipv6`
+                        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                         Default value: `"ipv4"`
                         """
@@ -65809,6 +66617,7 @@ class EosDesigns(EosDesignsRootModel):
                                 platform: str | UndefinedType | None = Undefined,
                                 mac_address: str | UndefinedType | None = Undefined,
                                 system_mac_address: str | UndefinedType | None = Undefined,
+                                custom_system_mac_address: str | UndefinedType | None = Undefined,
                                 serial_number: str | UndefinedType | None = Undefined,
                                 rack: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -65957,6 +66766,35 @@ class EosDesigns(EosDesignsRootModel):
                                        "system_mac_address" can also be set directly as a
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
+                                       Mutually exclusive
+                                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                                    custom_system_mac_address:
+                                       Set a custom EOS system MAC address using an AVD string formatter template.
+                                       When set, the rendered
+                                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                       CloudVision-based Zscaler integration.
+                                       The node configuration value takes precedence over the global
+                                       `custom_system_mac_address` value.
+                                       Mutually exclusive with `system_mac_address`, whether defined
+                                       globally or in node configuration.
+                                       If unset, the existing `system_mac_address` behavior is
+                                       unchanged.
+                                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                       not accepted by EOS.
+                                       Regardless of the input format, the MAC address is normalized to
+                                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                       Only the following
+                                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                       Examples:  # fmt: skip
+                                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                       `021c.7300.04d2` for device with ID 1234.
+                                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                       encode into the 3rd and 4th octets of the generated MAC address).
                                     serial_number:
                                        Set to the Serial Number of the device.
                                        Only used for documentation purpose in the fabric
@@ -66170,7 +67008,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -66198,9 +67038,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For example, set the minimum
                                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                     router_id_pool:
-                                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                       will not exist on the device.
+                                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                       and takes precedence over `router_id_pool`.
                                     loopback_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -66289,28 +67130,41 @@ class EosDesigns(EosDesignsRootModel):
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
                                        mlag_peer_vlan will be used for L3 peering.
+                                       See `mlag_peer_address_family` for the supported address
+                                       families in that case.
                                     mlag_peer_l3_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                       true`.
                                     mlag_peer_l3_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                        The IPv6
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                       and a separate L3 peering VLAN.
                                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                     mlag_peer_address_family:
                                        IP address family used to establish MLAG Peer Link (control link).
                                        `ipv6` requires EOS version
                                        4.31.1F or higher.
-                                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                                       peerings.
+                                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                       The
+                                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                       When the MLAG peer VLAN is also used for L3 peering
+                                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                       the MLAG L3 peerings
+                                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                       so this must be `ipv6`
+                                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                     mlag_peer_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
@@ -70180,6 +71034,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -70330,6 +71185,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -70628,7 +71514,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -70670,9 +71558,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -70808,6 +71697,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -70817,8 +71708,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -70826,8 +71718,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -70841,8 +71733,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -71251,6 +72153,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -71401,6 +72304,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -71614,7 +72546,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -71642,9 +72576,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -71733,28 +72668,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -75699,6 +76647,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -75846,6 +76795,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -76144,7 +77124,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -76186,9 +77168,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -76324,6 +77307,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -76333,8 +77318,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -76342,8 +77328,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -76357,8 +77343,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -76767,6 +77763,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -76915,6 +77912,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -77128,7 +78154,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -77156,9 +78184,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -77247,28 +78276,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -82874,12 +83916,45 @@ class EosDesigns(EosDesignsRootModel):
                     class AddressFamilyIpv6(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class DefaultOriginate(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            always: bool | None
+                            """Always advertise a default route to this peer."""
+                            route_map: str | None
+                            """Route-map name."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    always: bool | UndefinedType | None = Undefined,
+                                    route_map: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    DefaultOriginate.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        always: Always advertise a default route to this peer.
+                                        route_map: Route-map name.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "activate": {"type": bool},
                             "route_map_in": {"type": str},
                             "route_map_out": {"type": str},
                             "rcf_in": {"type": str},
                             "rcf_out": {"type": str},
+                            "default_originate": {"type": DefaultOriginate},
                             "prefix_list_in": {"type": str},
                             "prefix_list_out": {"type": str},
                         }
@@ -82898,6 +83973,8 @@ class EosDesigns(EosDesignsRootModel):
                         Outbound RCF function name with parenthesis.
                         Example: MyFunction(myarg).
                         """
+                        default_originate: DefaultOriginate
+                        """Subclass of AvdModel."""
                         prefix_list_in: str | None
                         """Inbound prefix-list name."""
                         prefix_list_out: str | None
@@ -82913,6 +83990,7 @@ class EosDesigns(EosDesignsRootModel):
                                 route_map_out: str | UndefinedType | None = Undefined,
                                 rcf_in: str | UndefinedType | None = Undefined,
                                 rcf_out: str | UndefinedType | None = Undefined,
+                                default_originate: DefaultOriginate | UndefinedType = Undefined,
                                 prefix_list_in: str | UndefinedType | None = Undefined,
                                 prefix_list_out: str | UndefinedType | None = Undefined,
                             ) -> None:
@@ -82932,6 +84010,7 @@ class EosDesigns(EosDesignsRootModel):
                                     rcf_out:
                                        Outbound RCF function name with parenthesis.
                                        Example: MyFunction(myarg).
+                                    default_originate: Subclass of AvdModel.
                                     prefix_list_in: Inbound prefix-list name.
                                     prefix_list_out: Outbound prefix-list name.
 
@@ -85875,6 +86954,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                                 "name": {"type": str},
                                 "enabled": {"type": bool},
+                                "autostate": {"type": bool, "default": True},
                                 "description": {"type": str},
                                 "arp_gratuitous_accept": {"type": bool},
                                 "ip_address": {"type": str},
@@ -85931,6 +87011,12 @@ class EosDesigns(EosDesignsRootModel):
                             """VLAN name."""
                             enabled: bool | None
                             """Enable or disable interface."""
+                            autostate: bool
+                            """
+                            Set to false to disable automatic management of the interface link state.
+
+                            Default value: `True`
+                            """
                             description: str | None
                             """SVI description. By default set to VLAN name."""
                             arp_gratuitous_accept: bool | None
@@ -86168,6 +87254,7 @@ class EosDesigns(EosDesignsRootModel):
                                     tags: Tags | UndefinedType = Undefined,
                                     name: str | UndefinedType | None = Undefined,
                                     enabled: bool | UndefinedType | None = Undefined,
+                                    autostate: bool | UndefinedType = Undefined,
                                     description: str | UndefinedType | None = Undefined,
                                     arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                                     ip_address: str | UndefinedType | None = Undefined,
@@ -86224,6 +87311,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         name: VLAN name.
                                         enabled: Enable or disable interface.
+                                        autostate: Set to false to disable automatic management of the interface link state.
                                         description: SVI description. By default set to VLAN name.
                                         arp_gratuitous_accept: Accept gratuitous ARP.
                                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -87302,6 +88390,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_vlan_bundle": {"type": str},
                             "nodes": {"type": Nodes},
                             "enabled": {"type": bool},
+                            "autostate": {"type": bool, "default": True},
                             "description": {"type": str},
                             "arp_gratuitous_accept": {"type": bool},
                             "ip_address": {"type": str},
@@ -87357,6 +88446,10 @@ class EosDesigns(EosDesignsRootModel):
                         SVI profile name to apply.
                         SVI can refer to one svi_profile which again can refer to another
                         svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                        From
+                        AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                        allows
+                        profiles to inherit settings across any number of levels.
                         """
                         tags: Tags
                         """
@@ -87388,6 +88481,12 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         enabled: bool | None
                         """Enable or disable interface."""
+                        autostate: bool
+                        """
+                        Set to false to disable automatic management of the interface link state.
+
+                        Default value: `True`
+                        """
                         description: str | None
                         """SVI description. By default set to VLAN name."""
                         arp_gratuitous_accept: bool | None
@@ -87629,6 +88728,7 @@ class EosDesigns(EosDesignsRootModel):
                                 evpn_vlan_bundle: str | UndefinedType | None = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType | None = Undefined,
+                                autostate: bool | UndefinedType = Undefined,
                                 description: str | UndefinedType | None = Undefined,
                                 arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                                 ip_address: str | UndefinedType | None = Undefined,
@@ -87686,6 +88786,10 @@ class EosDesigns(EosDesignsRootModel):
                                        SVI profile name to apply.
                                        SVI can refer to one svi_profile which again can refer to another
                                        svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                                       From
+                                       AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                                       allows
+                                       profiles to inherit settings across any number of levels.
                                     tags:
                                        Tags leveraged for networks services filtering.
                                        Tags are matched against "filter.tags" defined under
@@ -87707,6 +88811,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                                     enabled: Enable or disable interface.
+                                    autostate: Set to false to disable automatic management of the interface link state.
                                     description: SVI description. By default set to VLAN name.
                                     arp_gratuitous_accept: Accept gratuitous ARP.
                                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -90277,12 +91382,45 @@ class EosDesigns(EosDesignsRootModel):
                         class AddressFamilyIpv6(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class DefaultOriginate(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                                enabled: bool
+                                always: bool | None
+                                """Always advertise a default route to this peer."""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        always: bool | UndefinedType | None = Undefined,
+                                        route_map: str | UndefinedType | None = Undefined,
+                                    ) -> None:
+                                        """
+                                        DefaultOriginate.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            always: Always advertise a default route to this peer.
+                                            route_map: Route-map name.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "activate": {"type": bool},
                                 "route_map_in": {"type": str},
                                 "route_map_out": {"type": str},
                                 "rcf_in": {"type": str},
                                 "rcf_out": {"type": str},
+                                "default_originate": {"type": DefaultOriginate},
                                 "prefix_list_in": {"type": str},
                                 "prefix_list_out": {"type": str},
                             }
@@ -90301,6 +91439,8 @@ class EosDesigns(EosDesignsRootModel):
                             Outbound RCF function name with parenthesis.
                             Example: MyFunction(myarg).
                             """
+                            default_originate: DefaultOriginate
+                            """Subclass of AvdModel."""
                             prefix_list_in: str | None
                             """Inbound prefix-list name."""
                             prefix_list_out: str | None
@@ -90316,6 +91456,7 @@ class EosDesigns(EosDesignsRootModel):
                                     route_map_out: str | UndefinedType | None = Undefined,
                                     rcf_in: str | UndefinedType | None = Undefined,
                                     rcf_out: str | UndefinedType | None = Undefined,
+                                    default_originate: DefaultOriginate | UndefinedType = Undefined,
                                     prefix_list_in: str | UndefinedType | None = Undefined,
                                     prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
@@ -90335,6 +91476,7 @@ class EosDesigns(EosDesignsRootModel):
                                         rcf_out:
                                            Outbound RCF function name with parenthesis.
                                            Example: MyFunction(myarg).
+                                        default_originate: Subclass of AvdModel.
                                         prefix_list_in: Inbound prefix-list name.
                                         prefix_list_out: Outbound prefix-list name.
 
@@ -91534,10 +92676,15 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_ibgp_peering_ipv6_pool: str | None
                     """
                     Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-                    The
-                    subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-                    MLAG switch.
-                    If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                    Only
+                    used when `underlay_ipv6_numbered` is set.
+                    The subnet used for the iBGP peering in the VRF is
+                    derived from this pool based on the ID of the first MLAG switch.
+                    If not set,
+                    "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                    Set
+                    `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+                    pool.
                     """
                     ip_helpers: IpHelpers
                     """
@@ -91870,10 +93017,15 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
                                 mlag_ibgp_peering_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-                                   The
-                                   subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-                                   MLAG switch.
-                                   If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                                   Only
+                                   used when `underlay_ipv6_numbered` is set.
+                                   The subnet used for the iBGP peering in the VRF is
+                                   derived from this pool based on the ID of the first MLAG switch.
+                                   If not set,
+                                   "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                                   Set
+                                   `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+                                   pool.
                                 ip_helpers:
                                    IP helper for DHCP relay.
 
@@ -92335,6 +93487,10 @@ class EosDesigns(EosDesignsRootModel):
                     The profile must be defined under `l2vlan_profiles`. The profile may refer to
                     another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                     l2vlan_profile -> l2vlan_parent_profile).
+                    From AVD 6.5.0 onwards, setting
+                    `avd_design_future.allow_recursive_profile_inheritance` to true
+                    allows profiles to inherit settings
+                    across any number of levels.
                     """
                     tags: Tags
                     """
@@ -92480,6 +93636,10 @@ class EosDesigns(EosDesignsRootModel):
                                    The profile must be defined under `l2vlan_profiles`. The profile may refer to
                                    another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                                    l2vlan_profile -> l2vlan_parent_profile).
+                                   From AVD 6.5.0 onwards, setting
+                                   `avd_design_future.allow_recursive_profile_inheritance` to true
+                                   allows profiles to inherit settings
+                                   across any number of levels.
                                 tags:
                                    Tags leveraged for networks services filtering.
                                    Tags are matched against filter.tags defined under
@@ -96904,6 +98064,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -97041,6 +98202,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -97339,7 +98531,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -97381,9 +98575,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -97519,6 +98714,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -97528,8 +98725,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -97537,8 +98735,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -97552,8 +98750,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -97960,6 +99168,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -98101,6 +99310,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -98314,7 +99552,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -98342,9 +99582,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -98433,28 +99674,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -102408,6 +103662,7 @@ class EosDesigns(EosDesignsRootModel):
                             "platform": {"type": str},
                             "mac_address": {"type": str},
                             "system_mac_address": {"type": str},
+                            "custom_system_mac_address": {"type": str},
                             "serial_number": {"type": str},
                             "rack": {"type": str},
                             "mgmt_ip": {"type": str},
@@ -102555,6 +103810,37 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address" can also be set directly as a
                         hostvar.
                         If both are set, the setting under node type settings takes precedence.
+                        Mutually exclusive
+                        with "custom_system_mac_address", whether defined globally or in node configuration.
+                        """
+                        custom_system_mac_address: str | None
+                        """
+                        Set a custom EOS system MAC address using an AVD string formatter template.
+                        When set, the rendered
+                        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                        CloudVision-based Zscaler integration.
+                        The node configuration value takes precedence over the global
+                        `custom_system_mac_address` value.
+                        Mutually exclusive with `system_mac_address`, whether defined
+                        globally or in node configuration.
+                        If unset, the existing `system_mac_address` behavior is
+                        unchanged.
+                        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                        not accepted by EOS.
+                        Regardless of the input format, the MAC address is normalized to
+                        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                        Only the following
+                        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                        Examples:
+                        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                        `021c.7300.04d2` for device with ID 1234.
+                          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                        characters of the hostname represent a numerical identifier of the deployment site which we want to
+                        encode into the 3rd and 4th octets of the generated MAC address).
                         """
                         serial_number: str | None
                         """
@@ -102853,7 +104139,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -102895,9 +104183,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         router_id_pool: str | None
                         """
-                        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                        will not exist on the device.
+                        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                        and takes precedence over `router_id_pool`.
                         """
                         loopback_ipv6_pool: str | None
                         """
@@ -103033,6 +104322,8 @@ class EosDesigns(EosDesignsRootModel):
                         Underlay L3 peering SVI interface id.
                         If set to 0 or the same vlan as mlag_peer_vlan, the
                         mlag_peer_vlan will be used for L3 peering.
+                        See `mlag_peer_address_family` for the supported address
+                        families in that case.
 
                         Default value: `4093`
                         """
@@ -103042,8 +104333,9 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv4
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                        true`.
                         """
                         mlag_peer_l3_ipv6_pool: str | None
                         """
@@ -103051,8 +104343,8 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv6
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                        and a separate L3 peering VLAN.
                         """
                         mlag_peer_vlan: int
                         """
@@ -103066,8 +104358,18 @@ class EosDesigns(EosDesignsRootModel):
                         IP address family used to establish MLAG Peer Link (control link).
                         `ipv6` requires EOS version
                         4.31.1F or higher.
-                        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                        (ex. `mlag_peer_l3_vlan` set to 4094).
+                        This never changes which address families (NLRI) are activated on the MLAG BGP
+                        peerings.
+                        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                        The
+                        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                        When the MLAG peer VLAN is also used for L3 peering
+                        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                        the MLAG L3 peerings
+                        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                        so this must be `ipv6`
+                        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                         Default value: `"ipv4"`
                         """
@@ -103476,6 +104778,7 @@ class EosDesigns(EosDesignsRootModel):
                                 platform: str | UndefinedType | None = Undefined,
                                 mac_address: str | UndefinedType | None = Undefined,
                                 system_mac_address: str | UndefinedType | None = Undefined,
+                                custom_system_mac_address: str | UndefinedType | None = Undefined,
                                 serial_number: str | UndefinedType | None = Undefined,
                                 rack: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -103624,6 +104927,35 @@ class EosDesigns(EosDesignsRootModel):
                                        "system_mac_address" can also be set directly as a
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
+                                       Mutually exclusive
+                                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                                    custom_system_mac_address:
+                                       Set a custom EOS system MAC address using an AVD string formatter template.
+                                       When set, the rendered
+                                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                       CloudVision-based Zscaler integration.
+                                       The node configuration value takes precedence over the global
+                                       `custom_system_mac_address` value.
+                                       Mutually exclusive with `system_mac_address`, whether defined
+                                       globally or in node configuration.
+                                       If unset, the existing `system_mac_address` behavior is
+                                       unchanged.
+                                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                       not accepted by EOS.
+                                       Regardless of the input format, the MAC address is normalized to
+                                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                       Only the following
+                                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                       Examples:  # fmt: skip
+                                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                       `021c.7300.04d2` for device with ID 1234.
+                                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                       encode into the 3rd and 4th octets of the generated MAC address).
                                     serial_number:
                                        Set to the Serial Number of the device.
                                        Only used for documentation purpose in the fabric
@@ -103837,7 +105169,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -103865,9 +105199,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For example, set the minimum
                                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                     router_id_pool:
-                                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                       will not exist on the device.
+                                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                       and takes precedence over `router_id_pool`.
                                     loopback_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -103956,28 +105291,41 @@ class EosDesigns(EosDesignsRootModel):
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
                                        mlag_peer_vlan will be used for L3 peering.
+                                       See `mlag_peer_address_family` for the supported address
+                                       families in that case.
                                     mlag_peer_l3_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                       true`.
                                     mlag_peer_l3_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                        The IPv6
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                       and a separate L3 peering VLAN.
                                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                     mlag_peer_address_family:
                                        IP address family used to establish MLAG Peer Link (control link).
                                        `ipv6` requires EOS version
                                        4.31.1F or higher.
-                                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                                       peerings.
+                                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                       The
+                                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                       When the MLAG peer VLAN is also used for L3 peering
+                                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                       the MLAG L3 peerings
+                                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                       so this must be `ipv6`
+                                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                     mlag_peer_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
@@ -107847,6 +109195,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -107997,6 +109346,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -108295,7 +109675,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -108337,9 +109719,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -108475,6 +109858,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -108484,8 +109869,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -108493,8 +109879,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -108508,8 +109894,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -108918,6 +110314,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -109068,6 +110465,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -109281,7 +110707,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -109309,9 +110737,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -109400,28 +110829,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -113366,6 +114808,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -113513,6 +114956,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -113811,7 +115285,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -113853,9 +115329,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -113991,6 +115468,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -114000,8 +115479,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -114009,8 +115489,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -114024,8 +115504,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -114434,6 +115924,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -114582,6 +116073,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -114795,7 +116315,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -114823,9 +116345,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -114914,28 +116437,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -115415,6 +116951,7 @@ class EosDesigns(EosDesignsRootModel):
             "type": CustomStructuredConfigurationPrefix,
             "default": lambda cls: coerce_type(["custom_structured_configuration_"], target_type=cls),
         },
+        "custom_system_mac_address": {"type": str},
         "cv_pathfinder_global_sites": {"type": CvPathfinderGlobalSites},
         "cv_pathfinder_internet_exit_policies": {"type": CvPathfinderInternetExitPolicies},
         "cv_pathfinder_regions": {"type": CvPathfinderRegions},
@@ -116596,6 +118133,7 @@ class EosDesigns(EosDesignsRootModel):
         "ssh_settings": {"type": SshSettings},
         "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
+        "tcam_profiles": {"type": EosCliConfigGen.TcamProfile.Profiles},
         "timezone": {"type": str},
         "trunk_groups": {"type": TrunkGroups},
         "type": {"type": str},
@@ -116936,6 +118474,37 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `lambda cls: coerce_type(["custom_structured_configuration_"], target_type=cls)`
     """
+    custom_system_mac_address: str | None
+    """
+    Set a custom EOS system MAC address using an AVD string formatter template.
+    When set, the rendered
+    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+    CloudVision-based Zscaler integration.
+    Can also be defined in node configuration. The node
+    configuration value takes precedence when both values are set.
+    Mutually exclusive with
+    `system_mac_address`, whether defined globally or in node configuration.
+    If unset, the existing
+    `system_mac_address` behavior is unchanged.
+    The rendered value must be a unicast MAC address in
+    `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit).
+    The all-zero address is reserved and not accepted by EOS.
+    Regardless of the input format, the MAC
+    address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD
+    metadata.
+    Only the following template fields are supported: `device_id` (AVD node ID as an integer)
+    and `hostname`.
+
+    Examples:
+      - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001`
+    for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+      - template
+    `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and
+    hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical
+    identifier of the deployment site which we want to encode into the 3rd and 4th octets of the
+    generated MAC address).
+    """
     cv_pathfinder_global_sites: CvPathfinderGlobalSites
     """
     Define sites that are outside of the CV Pathfinder hierarchy.
@@ -117245,8 +118814,12 @@ class EosDesigns(EosDesignsRootModel):
     Inherit settings from a device profile defined under `device_profiles`.
     If the device is defined
     under `devices` it is recommended to set the `profile` there instead.
-    Max two levels of profile
-    inheritance: device -> profile -> parent_profile
+    By default, profile
+    inheritance is limited to two levels: device -> device_profile -> parent_profile.
+    From AVD 6.5.0
+    onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+    allows profiles to
+    inherit settings across any number of levels.
     """
     device_profiles: DeviceProfiles
     """
@@ -118240,9 +119813,11 @@ class EosDesigns(EosDesignsRootModel):
     """
     overlay_routing_protocol_address_family: OverlayRoutingProtocolAddressFamily
     """
-    When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
-    This feature depends on
-    underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.
+    Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
+    Setting this to `ipv6` requires both
+    `underlay_ipv6: true` and `underlay_rfc5549: true`.
+    When `underlay_ipv6_numbered: true`, this
+    setting is not required. IPv6 overlay peering is enabled automatically.
 
     Default value: `"ipv4"`
     """
@@ -118433,14 +120008,19 @@ class EosDesigns(EosDesignsRootModel):
     svi_profile.nodes[inventory_hostname].structured_config
     3.
     svi_parent_profile.nodes[inventory_hostname].structured_config
-    4. svi.structured_config
-    5.
-    svi_profile.structured_config
-    6. svi_parent_profile.structured_config
+    4. Further ancestor profiles'
+    nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance
+    is enabled)
+    5. svi.structured_config
+    6. svi_profile.structured_config
+    7.
+    svi_parent_profile.structured_config
+    8. Further ancestor profiles' structured_config in nearest-to-
+    farthest order (when recursive inheritance is enabled)
 
 
-    Subclass of AvdIndexedList
-    with `SviProfilesItem` items. Primary key is `profile` (`str`).
+    Subclass of AvdIndexedList with
+    `SviProfilesItem` items. Primary key is `profile` (`str`).
     """
     system_mac_address: str | None
     """
@@ -118449,6 +120029,19 @@ class EosDesigns(EosDesignsRootModel):
     also be set under node type settings.
     If both are set, the value under node type settings takes
     precedence.
+    Mutually exclusive with "custom_system_mac_address", whether defined globally or in node
+    configuration.
+    """
+    tcam_profiles: EosCliConfigGen.TcamProfile.Profiles
+    """
+    List of TCAM profile definitions that can be referenced by platform_settings.
+    Profiles are
+    configured in the device based on platform_settings[].tcam_profile and
+    platform_settings[].additional_tcam_profiles.
+    All profiles in
+    platform_settings[].additional_tcam_profiles (if defined in this list) will be configured.
+    If a
+    profile appears in both tcam_profile and additional_tcam_profiles, it will only be configured once.
     """
     timezone: str | None
     """Clock timezone like "CET" or "US/Pacific"."""
@@ -118509,22 +120102,24 @@ class EosDesigns(EosDesignsRootModel):
       -
     "uplink_ipv6_pool" (or `downlink_pools`)
       - "vtep_loopback_ipv6_pool"
-      - "router_id_pool"
-    For
-    MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-      -
-    "mlag_peer_address_family: ipv6"
-      - "mlag_peer_ipv6_pool"
-      - "mlag_peer_l3_ipv6_pool"
-    Some
-    settings are not yet supported with IPv6 underlay:
+      - "router_id_pool" or
+    "loopback_ipv4_address"
+    For MLAG, set on the MLAG nodes:
+      - "mlag_peer_l3_ipv6_pool" when using a
+    separate MLAG L3 peering VLAN (default).
+      - "mlag_peer_address_family: ipv6" and
+    "mlag_peer_ipv6_pool" when `mlag_peer_l3_vlan` is 0 or the same as `mlag_peer_vlan`.
+        With a
+    separate MLAG L3 peering VLAN, these keys are optional and only set the MLAG peer link (control
+    link) to IPv6.
+    Some settings are not yet supported with IPv6 underlay:
       - underlay_multicast_pim_sm
-      -
-    underlay_multicast_rp_interfaces
+    - underlay_multicast_rp_interfaces
       - underlay_rfc5549
       - wan_role
       - vtep_vvtep_ip
-      - inband_ztp
+      -
+    inband_ztp
 
     Default value: `False`
     """
@@ -118878,6 +120473,7 @@ class EosDesigns(EosDesignsRootModel):
             core_interfaces: CoreInterfaces | UndefinedType = Undefined,
             custom_structured_configuration_list_merge: CustomStructuredConfigurationListMerge | UndefinedType = Undefined,
             custom_structured_configuration_prefix: CustomStructuredConfigurationPrefix | UndefinedType = Undefined,
+            custom_system_mac_address: str | UndefinedType | None = Undefined,
             cv_pathfinder_global_sites: CvPathfinderGlobalSites | UndefinedType = Undefined,
             cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies | UndefinedType = Undefined,
             cv_pathfinder_regions: CvPathfinderRegions | UndefinedType = Undefined,
@@ -119026,6 +120622,7 @@ class EosDesigns(EosDesignsRootModel):
             ssh_settings: SshSettings | UndefinedType = Undefined,
             svi_profiles: SviProfiles | UndefinedType = Undefined,
             system_mac_address: str | UndefinedType | None = Undefined,
+            tcam_profiles: EosCliConfigGen.TcamProfile.Profiles | UndefinedType = Undefined,
             timezone: str | UndefinedType | None = Undefined,
             trunk_groups: TrunkGroups | UndefinedType = Undefined,
             type: str | UndefinedType | None = Undefined,
@@ -119291,6 +120888,35 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdList with `str` items.
+                custom_system_mac_address:
+                   Set a custom EOS system MAC address using an AVD string formatter template.
+                   When set, the rendered
+                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                   CloudVision-based Zscaler integration.
+                   Can also be defined in node configuration. The node
+                   configuration value takes precedence when both values are set.
+                   Mutually exclusive with
+                   `system_mac_address`, whether defined globally or in node configuration.
+                   If unset, the existing
+                   `system_mac_address` behavior is unchanged.
+                   The rendered value must be a unicast MAC address in
+                   `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit).
+                   The all-zero address is reserved and not accepted by EOS.
+                   Regardless of the input format, the MAC
+                   address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD
+                   metadata.
+                   Only the following template fields are supported: `device_id` (AVD node ID as an integer)
+                   and `hostname`.
+
+                   Examples:  # fmt: skip
+                     - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001`
+                   for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+                     - template
+                   `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and
+                   hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical
+                   identifier of the deployment site which we want to encode into the 3rd and 4th octets of the
+                   generated MAC address).
                 cv_pathfinder_global_sites:
                    Define sites that are outside of the CV Pathfinder hierarchy.
                    This is used to arrange pathfinders in
@@ -119536,8 +121162,12 @@ class EosDesigns(EosDesignsRootModel):
                    Inherit settings from a device profile defined under `device_profiles`.
                    If the device is defined
                    under `devices` it is recommended to set the `profile` there instead.
-                   Max two levels of profile
-                   inheritance: device -> profile -> parent_profile
+                   By default, profile
+                   inheritance is limited to two levels: device -> device_profile -> parent_profile.
+                   From AVD 6.5.0
+                   onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                   allows profiles to
+                   inherit settings across any number of levels.
                 device_profiles:
                    PREVIEW - This datamodel is still under development and may change or get removed at any time.
                    Subclass of AvdIndexedList with `DeviceProfilesItem` items. Primary key is `name` (`str`).
@@ -120258,9 +121888,11 @@ class EosDesigns(EosDesignsRootModel):
                      If not set, the
                    default_overlay_routing_protocol defined under the node_type_keys will be used (default is "ebgp").
                 overlay_routing_protocol_address_family:
-                   When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
-                   This feature depends on
-                   underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.
+                   Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
+                   Setting this to `ipv6` requires both
+                   `underlay_ipv6: true` and `underlay_rfc5549: true`.
+                   When `underlay_ipv6_numbered: true`, this
+                   setting is not required. IPv6 overlay peering is enabled automatically.
                 overlay_rt_type:
                    Configuration options for the Administrator subfield (first part of RT) and the Assigned Number
                    subfield (second part of RT).
@@ -120394,20 +122026,36 @@ class EosDesigns(EosDesignsRootModel):
                    svi_profile.nodes[inventory_hostname].structured_config
                    3.
                    svi_parent_profile.nodes[inventory_hostname].structured_config
-                   4. svi.structured_config
-                   5.
-                   svi_profile.structured_config
-                   6. svi_parent_profile.structured_config
+                   4. Further ancestor profiles'
+                   nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance
+                   is enabled)
+                   5. svi.structured_config
+                   6. svi_profile.structured_config
+                   7.
+                   svi_parent_profile.structured_config
+                   8. Further ancestor profiles' structured_config in nearest-to-
+                   farthest order (when recursive inheritance is enabled)
 
 
-                   Subclass of AvdIndexedList
-                   with `SviProfilesItem` items. Primary key is `profile` (`str`).
+                   Subclass of AvdIndexedList with
+                   `SviProfilesItem` items. Primary key is `profile` (`str`).
                 system_mac_address:
                    Set to the same MAC address as available in "show version" on the device.
                    "system_mac_address" can
                    also be set under node type settings.
                    If both are set, the value under node type settings takes
                    precedence.
+                   Mutually exclusive with "custom_system_mac_address", whether defined globally or in node
+                   configuration.
+                tcam_profiles:
+                   List of TCAM profile definitions that can be referenced by platform_settings.
+                   Profiles are
+                   configured in the device based on platform_settings[].tcam_profile and
+                   platform_settings[].additional_tcam_profiles.
+                   All profiles in
+                   platform_settings[].additional_tcam_profiles (if defined in this list) will be configured.
+                   If a
+                   profile appears in both tcam_profile and additional_tcam_profiles, it will only be configured once.
                 timezone: Clock timezone like "CET" or "US/Pacific".
                 trunk_groups: Subclass of AvdModel.
                 type:
@@ -120450,22 +122098,24 @@ class EosDesigns(EosDesignsRootModel):
                      -
                    "uplink_ipv6_pool" (or `downlink_pools`)
                      - "vtep_loopback_ipv6_pool"
-                     - "router_id_pool"
-                   For
-                   MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-                     -
-                   "mlag_peer_address_family: ipv6"
-                     - "mlag_peer_ipv6_pool"
-                     - "mlag_peer_l3_ipv6_pool"
-                   Some
-                   settings are not yet supported with IPv6 underlay:
+                     - "router_id_pool" or
+                   "loopback_ipv4_address"
+                   For MLAG, set on the MLAG nodes:
+                     - "mlag_peer_l3_ipv6_pool" when using a
+                   separate MLAG L3 peering VLAN (default).
+                     - "mlag_peer_address_family: ipv6" and
+                   "mlag_peer_ipv6_pool" when `mlag_peer_l3_vlan` is 0 or the same as `mlag_peer_vlan`.
+                       With a
+                   separate MLAG L3 peering VLAN, these keys are optional and only set the MLAG peer link (control
+                   link) to IPv6.
+                   Some settings are not yet supported with IPv6 underlay:
                      - underlay_multicast_pim_sm
-                     -
-                   underlay_multicast_rp_interfaces
+                   - underlay_multicast_rp_interfaces
                      - underlay_rfc5549
                      - wan_role
                      - vtep_vvtep_ip
-                     - inband_ztp
+                     -
+                   inband_ztp
                 underlay_isis_authentication_cleartext_key:
                    Cleartext password.
                    Encrypted to Type 7 by AVD.

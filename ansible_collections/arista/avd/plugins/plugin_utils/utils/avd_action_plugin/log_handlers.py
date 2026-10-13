@@ -33,7 +33,6 @@ class AnsibleDisplayHandler(logging.Handler):
         """Process a log record and delegate it to the appropriate Ansible display method."""
         message = self.format(record)
 
-        # If no color is specified, map log levels to display methods
         if record.levelno >= logging.ERROR:
             self.display.error(message, wrap_text=False)
         elif record.levelno == logging.WARNING:
@@ -41,7 +40,8 @@ class AnsibleDisplayHandler(logging.Handler):
         elif record.levelno == logging.INFO:
             self.display.v(message)
         elif record.levelno == logging.DEBUG:
-            self.display.vvv(message)
+            # Logger levels enforce component-specific thresholds; -vv is the earliest DEBUG level.
+            self.display.vv(message)
 
 
 class SaveToResultHandler(logging.Handler):

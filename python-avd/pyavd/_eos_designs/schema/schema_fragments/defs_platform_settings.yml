@@ -39,6 +39,18 @@ $defs:
               description: In seconds.
         tcam_profile:
           type: str
+          description: |-
+            TCAM profile name to activate as the system profile.
+            If the profile is defined under `tcam_profiles`, it will also be configured in the device.
+            Built-in profiles (e.g., system-profile) can be used without being defined in `tcam_profiles`.
+        additional_tcam_profiles:
+          type: list
+          description: |-
+            List of additional TCAM profile names that must be defined under `tcam_profiles`.
+            These profiles are configured in the device but are not set as the system profile.
+            If a profile is specified in both `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
+          items:
+            type: str
         lag_hardware_only:
           type: bool
         default_interface_mtu:
@@ -63,6 +75,13 @@ $defs:
         feature_support:
           type: dict
           keys:
+            # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
+            dot1x_bpdu_bypass:
+              type: bool
+              default: true
+              description: |-
+                Support for 802.1X BPDU bypass.
+                The feature will be ignored on platforms where this is false.
             address_locking:
               type: dict
               keys:
