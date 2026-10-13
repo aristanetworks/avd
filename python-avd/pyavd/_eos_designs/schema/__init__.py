@@ -20299,6 +20299,8 @@ class EosDesigns(EosDesignsRootModel):
         bypass_bpdu: bool
         """
         Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+        Ignored when
+        `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
 
         Default value: `True`
         """
@@ -20370,7 +20372,10 @@ class EosDesigns(EosDesignsRootModel):
                        any interface.
                     authentication: Subclass of AvdModel.
                     accounting: Subclass of AvdModel.
-                    bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                    bypass_bpdu:
+                       Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                       Ignored when
+                       `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
                     bypass_lldp: Allow LLDP packets to be processed even if the port is not authorized.
                     dynamic_authorization: Subclass of AvdModel.
                     mac_based_authentication: Subclass of AvdModel.
@@ -44522,6 +44527,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "dot1x_bpdu_bypass": {"type": bool, "default": True},
                 "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -44548,6 +44554,13 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            dot1x_bpdu_bypass: bool
+            """
+            Support for 802.1X BPDU bypass.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             address_locking: AddressLocking
             """Subclass of AvdModel."""
             queue_monitor: bool
@@ -44756,6 +44769,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    dot1x_bpdu_bypass: bool | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
@@ -44789,6 +44803,9 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        dot1x_bpdu_bypass:
+                           Support for 802.1X BPDU bypass.
+                           The feature will be ignored on platforms where this is false.
                         address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
@@ -46407,6 +46424,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "dot1x_bpdu_bypass": {"type": bool, "default": True},
                 "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -46433,6 +46451,13 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            dot1x_bpdu_bypass: bool
+            """
+            Support for 802.1X BPDU bypass.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             address_locking: AddressLocking
             """Subclass of AvdModel."""
             queue_monitor: bool
@@ -46641,6 +46666,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    dot1x_bpdu_bypass: bool | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
@@ -46674,6 +46700,9 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        dot1x_bpdu_bypass:
+                           Support for 802.1X BPDU bypass.
+                           The feature will be ignored on platforms where this is false.
                         address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
