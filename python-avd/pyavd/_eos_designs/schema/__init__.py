@@ -19419,15 +19419,15 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {"serial_number": {"type": bool, "default": False}, "system_mac_address": {"type": bool, "default": False}}
                 serial_number: bool
                 """
-                When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                When set to `true`, provides the device's `serial_number` as an input value to the Digital Twin
                 environment.
-                A per-node `digital_twin.serial_number` value overrides the regular device
-                `serial_number` for the Digital Twin device.
-                Can be overridden by
-                `digital_twin.hardware_identity.serial_number` at node level.
+                Can be overridden by `digital_twin.hardware_identity.serial_number` at node level.
+                A
+                per-node `digital_twin.serial_number` value overrides the regular device `serial_number` for the
+                Digital Twin device.
                 Supported Digital Twin environments:
-                -
-                `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                - `act`: Applies only to `veos` and
+                `cloudeos` node types. Ignored for all other node types.
 
                 Default value: `False`
                 """
@@ -19435,14 +19435,13 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 When set to `true`, provides the resolved device system MAC address as an input value to the Digital
                 Twin environment.
+                Can be overridden by `digital_twin.hardware_identity.system_mac_address` at node
+                level.
                 A per-node `digital_twin.system_mac_address` value overrides the regular device
                 `system_mac_address` for the Digital Twin device.
-                Can be overridden by
-                `digital_twin.hardware_identity.system_mac_address` at node level.
-                Supported Digital Twin
-                environments:
-                - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
-                types.
+                Supported Digital Twin environments:
+                - `act`:
+                Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
 
                 Default value: `False`
                 """
@@ -19458,26 +19457,25 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             serial_number:
-                               When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                               When set to `true`, provides the device's `serial_number` as an input value to the Digital Twin
                                environment.
-                               A per-node `digital_twin.serial_number` value overrides the regular device
-                               `serial_number` for the Digital Twin device.
-                               Can be overridden by
-                               `digital_twin.hardware_identity.serial_number` at node level.
+                               Can be overridden by `digital_twin.hardware_identity.serial_number` at node level.
+                               A
+                               per-node `digital_twin.serial_number` value overrides the regular device `serial_number` for the
+                               Digital Twin device.
                                Supported Digital Twin environments:
-                               -
-                               `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                               - `act`: Applies only to `veos` and
+                               `cloudeos` node types. Ignored for all other node types.
                             system_mac_address:
                                When set to `true`, provides the resolved device system MAC address as an input value to the Digital
                                Twin environment.
+                               Can be overridden by `digital_twin.hardware_identity.system_mac_address` at node
+                               level.
                                A per-node `digital_twin.system_mac_address` value overrides the regular device
                                `system_mac_address` for the Digital Twin device.
-                               Can be overridden by
-                               `digital_twin.hardware_identity.system_mac_address` at node level.
-                               Supported Digital Twin
-                               environments:
-                               - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
-                               types.
+                               Supported Digital Twin environments:
+                               - `act`:
+                               Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
 
                         """
 
