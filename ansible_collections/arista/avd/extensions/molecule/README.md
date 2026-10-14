@@ -26,7 +26,6 @@ Current molecule implementation provides the following scenarios:
 - eos_designs_deprecated_vars
 - eos_designs-l2ls
 - eos_designs-mpls-isis-sr-ldp
-- eos_designs_negative_unit_tests
 - eos_designs-twodc-5stage-clos
 - eos_designs_unit_tests
 - evpn_underlay_ebgp_overlay_ebgp
@@ -39,6 +38,8 @@ Current molecule implementation provides the following scenarios:
 - example-l2ls-fabric
 - example-single-dc-l3ls
 - example-single-dc-l3ls-ipv6
+
+The `eos_designs_negative_unit_tests` directory contains E2E-only fixtures. It is not a Molecule scenario. See [EOS designs negative tests](../../../../../docs/contribution/e2e-test/using-the-tool.md#eos-designs-negative-tests) for execution and artifact review instructions.
 
 ## How to use scenario
 

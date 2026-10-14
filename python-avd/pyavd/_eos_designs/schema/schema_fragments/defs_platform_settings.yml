@@ -75,6 +75,13 @@ $defs:
         feature_support:
           type: dict
           keys:
+            # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
+            dot1x_bpdu_bypass:
+              type: bool
+              default: true
+              description: |-
+                Support for 802.1X BPDU bypass.
+                The feature will be ignored on platforms where this is false.
             address_locking:
               type: dict
               keys:

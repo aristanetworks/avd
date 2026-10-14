@@ -23,6 +23,7 @@
     | [<samp>&nbsp;&nbsp;l1</samp>](## "system.l1") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_speed_action</samp>](## "system.l1.unsupported_speed_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_error_correction_action</samp>](## "system.l1.unsupported_error_correction_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
+    | [<samp>&nbsp;&nbsp;mac_address</samp>](## "system.mac_address") | String |  |  | Value is converted to lower case.<br>Pattern: `[0-9a-f][02468ace](:[0-9a-f]{2}){5}` | Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit). |
 
 === "YAML"
 
@@ -51,4 +52,7 @@
       l1:
         unsupported_speed_action: <str; "error" | "warn">
         unsupported_error_correction_action: <str; "error" | "warn">
+
+      # Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit).
+      mac_address: <str>
     ```
