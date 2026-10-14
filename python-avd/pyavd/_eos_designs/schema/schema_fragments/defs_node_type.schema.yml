@@ -1853,6 +1853,7 @@ $defs:
             description: |-
               Name of the DNS settings profile to apply to this device.
               The profile must be defined under `dns_settings_profiles`.
+              The selected profile settings will be merged over the general `dns_settings`.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

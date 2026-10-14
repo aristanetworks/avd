@@ -12648,6 +12648,8 @@ class EosDesigns(EosDesignsRootModel):
         Name of the DNS settings profile to apply to this device.
         The profile must be defined under
         `dns_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `dns_settings`.
         """
 
         if TYPE_CHECKING:
@@ -13493,6 +13495,8 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the DNS settings profile to apply to this device.
                        The profile must be defined under
                        `dns_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `dns_settings`.
 
                 """
 
@@ -18256,6 +18260,8 @@ class EosDesigns(EosDesignsRootModel):
         Name of the DNS settings profile to apply to this device.
         The profile must be defined under
         `dns_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `dns_settings`.
         """
 
         if TYPE_CHECKING:
@@ -19109,6 +19115,8 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the DNS settings profile to apply to this device.
                        The profile must be defined under
                        `dns_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `dns_settings`.
 
                 """
 
@@ -19393,6 +19401,10 @@ class EosDesigns(EosDesignsRootModel):
         servers: Servers
         """
         List of DNS servers to configure.
+        May be omitted when inherited from a parent DNS settings profile
+        or global `dns_settings`.
+        When the resolved DNS settings are non-empty, at least one server must be
+        configured.
 
         Subclass of AvdList with `ServersItem` items.
         """
@@ -19441,6 +19453,10 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdList with `str` items.
                     servers:
                        List of DNS servers to configure.
+                       May be omitted when inherited from a parent DNS settings profile
+                       or global `dns_settings`.
+                       When the resolved DNS settings are non-empty, at least one server must be
+                       configured.
 
                        Subclass of AvdList with `ServersItem` items.
                     vrfs:
@@ -19572,7 +19588,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "profile": {"type": str},
-            "parent_profile": {"type": str, "default": ""},
+            "parent_profile": {"type": str},
             "domain": {"type": str},
             "domain_list": {"type": DomainList},
             "servers": {"type": Servers},
@@ -19582,13 +19598,11 @@ class EosDesigns(EosDesignsRootModel):
         }
         profile: str
         """DNS settings profile name."""
-        parent_profile: str
+        parent_profile: str | None
         """
         Inherit settings from a parent profile defined under `dns_settings_profiles`.
         The settings from this
         profile override settings inherited from the parent profile.
-
-        Default value: `""`
         """
         domain: str | None
         """DNS domain name like 'fabric.local'"""
@@ -19601,6 +19615,10 @@ class EosDesigns(EosDesignsRootModel):
         servers: Servers
         """
         List of DNS servers to configure.
+        May be omitted when inherited from a parent DNS settings profile
+        or global `dns_settings`.
+        When the resolved DNS settings are non-empty, at least one server must be
+        configured.
 
         Subclass of AvdList with `ServersItem` items.
         """
@@ -19629,7 +19647,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 profile: str | UndefinedType = Undefined,
-                parent_profile: str | UndefinedType = Undefined,
+                parent_profile: str | UndefinedType | None = Undefined,
                 domain: str | UndefinedType | None = Undefined,
                 domain_list: DomainList | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
@@ -19656,6 +19674,10 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdList with `str` items.
                     servers:
                        List of DNS servers to configure.
+                       May be omitted when inherited from a parent DNS settings profile
+                       or global `dns_settings`.
+                       When the resolved DNS settings are non-empty, at least one server must be
+                       configured.
 
                        Subclass of AvdList with `ServersItem` items.
                     vrfs:
@@ -61078,6 +61100,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the DNS settings profile to apply to this device.
                     The profile must be defined under
                     `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -61902,6 +61926,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
 
                             """
 
@@ -66666,6 +66692,8 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the DNS settings profile to apply to this device.
                         The profile must be defined under
                         `dns_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `dns_settings`.
                         """
 
                         if TYPE_CHECKING:
@@ -67499,6 +67527,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the DNS settings profile to apply to this device.
                                        The profile must be defined under
                                        `dns_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `dns_settings`.
 
                                 """
 
@@ -72182,6 +72212,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the DNS settings profile to apply to this device.
                     The profile must be defined under
                     `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -73017,6 +73049,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
 
                             """
 
@@ -77772,6 +77806,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the DNS settings profile to apply to this device.
                     The profile must be defined under
                     `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -78605,6 +78641,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
 
                             """
 
@@ -99149,6 +99187,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the DNS settings profile to apply to this device.
                     The profile must be defined under
                     `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -99973,6 +100013,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
 
                             """
 
@@ -104737,6 +104779,8 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the DNS settings profile to apply to this device.
                         The profile must be defined under
                         `dns_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `dns_settings`.
                         """
 
                         if TYPE_CHECKING:
@@ -105570,6 +105614,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the DNS settings profile to apply to this device.
                                        The profile must be defined under
                                        `dns_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `dns_settings`.
 
                                 """
 
@@ -110253,6 +110299,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the DNS settings profile to apply to this device.
                     The profile must be defined under
                     `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -111088,6 +111136,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
 
                             """
 
@@ -115843,6 +115893,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the DNS settings profile to apply to this device.
                     The profile must be defined under
                     `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -116676,6 +116728,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
 
                             """
 

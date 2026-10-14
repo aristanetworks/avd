@@ -23,7 +23,7 @@ keys:
           description: DNS settings profile name.
         parent_profile:
           type: str
-          default: ""
+          min_length: 1
           description: |-
             Inherit settings from a parent profile defined under `dns_settings_profiles`.
             The settings from this profile override settings inherited from the parent profile.

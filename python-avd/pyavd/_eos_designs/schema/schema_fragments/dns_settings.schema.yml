@@ -20,7 +20,10 @@ keys:
       servers:
         type: list
         min_length: 1
-        description: List of DNS servers to configure.
+        description: |-
+          List of DNS servers to configure.
+          May be omitted when inherited from a parent DNS settings profile or global `dns_settings`.
+          When the resolved DNS settings are non-empty, at least one server must be configured.
         items:
           type: dict
           keys:
