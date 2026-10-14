@@ -25,6 +25,7 @@ import shutil
 import sys
 import traceback
 import typing
+import warnings
 import weakref
 from concurrent.futures import Executor, ProcessPoolExecutor, ThreadPoolExecutor
 from functools import cached_property, lru_cache
@@ -868,6 +869,7 @@ def build_validate_and_render_for_one_device(
     if config.avd_design:
         from pyavd import validate_structured_config
         from pyavd._eos_designs.structured_config import get_structured_config
+        from pyavd._errors import AristaAvdWarning
 
         device_avd_validated_inputs = typing.cast("AVDDesign", device_avd_validated_inputs)
 
@@ -875,21 +877,27 @@ def build_validate_and_render_for_one_device(
         avd_facts = _load_avd_facts_from_shm(avd_facts_metadata.name, avd_facts_metadata.size)
 
         # Phase 1: Build structured config
-        try:
-            eos_config = get_structured_config(
-                hostname=device,
-                inputs=device_avd_validated_inputs,
-                hostvars=device_avd_validated_inputs_dict,
-                all_facts=avd_facts,
-                templar=get_avd_templar(config),
-                digital_twin=config.digital_twin,
-            )._as_dict()
-        except Exception as e:
-            dump_exception(e, config, "structured_config", device)
-            return False
-        finally:
-            # Free device_avd_validated_inputs - no longer needed after structured config is built
-            del device_avd_validated_inputs
+        with warnings.catch_warnings(record=True) as captured_warnings:
+            warnings.simplefilter("always", AristaAvdWarning)
+            try:
+                eos_config = get_structured_config(
+                    hostname=device,
+                    inputs=device_avd_validated_inputs,
+                    hostvars=device_avd_validated_inputs_dict,
+                    all_facts=avd_facts,
+                    templar=get_avd_templar(config),
+                    digital_twin=config.digital_twin,
+                )._as_dict()
+            except Exception as e:
+                dump_exception(e, config, "structured_config", device)
+                return False
+            finally:
+                avd_warnings = [warning for warning in captured_warnings if warning.category is AristaAvdWarning]
+                if avd_warnings:
+                    dump_warnings(avd_warnings, config, "structured_config", device)
+
+                # Free device_avd_validated_inputs - no longer needed after structured config is built
+                del device_avd_validated_inputs
 
         # Phase 2: Serialize structured config
         # TODO: Honor the config.structured_config_suffix setting
@@ -998,6 +1006,15 @@ def dump_deprecations(deprecations: list[pyavd_utils.validation.Deprecation], co
     error_dir.mkdir(parents=True, exist_ok=True)
     err_lines = [f"[{deprecation.path}]: '{deprecation.message}'" for deprecation in deprecations]
     error_dir.joinpath(f"{stage}_deprecations.txt").write_text("\n".join(err_lines))
+
+
+def dump_warnings(warning_messages: list[warnings.WarningMessage], config: FabricConfig, stage: str, device: str) -> None:
+    """Dump AVD warning messages emitted during a build stage."""
+    error_dir = config.full_error_dir.joinpath(config.fabric_name)
+    error_dir = error_dir.joinpath(device) if device else error_dir
+    error_dir.mkdir(parents=True, exist_ok=True)
+    warning_lines = [str(warning.message) for warning in warning_messages]
+    error_dir.joinpath(f"{stage}_warnings.txt").write_text("\n".join(warning_lines))
 
 
 def dump_violations(violations: list[pyavd_utils.validation.Violation], config: FabricConfig, stage: str, device: str) -> None:

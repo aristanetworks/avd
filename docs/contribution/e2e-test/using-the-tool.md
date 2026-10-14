@@ -246,6 +246,7 @@ Captured files are organized by fabric and, for device-specific stages, by devic
 
 - `input_validation_deprecations.txt`
 - `input_validation_violations.txt`
+- `structured_config_warnings.txt`
 - `avd_facts_error.txt`
 - `structured_config_error.txt`
 - `structured_config_validation_violations.txt`
