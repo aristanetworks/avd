@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Any
 
 import pytest
 
+from pyavd import validate_inputs
 from pyavd.api.pool_manager import PoolManager
 from pyavd.api.schemas import AVDDesign
 from tools.e2e_test_avd import (
@@ -71,7 +72,10 @@ class BenchmarkProject:
 def benchmark_project() -> Iterator[BenchmarkProject]:
     """Load and validate the eos_designs_unit_tests project through the end-to-end framework."""
     project = load_config(E2E_PROJECT_DIR)
-    scenario = next(scenario for scenario in project.scenarios if scenario.config.scenario_name == "main")
+    scenario = next((scenario for scenario in project.scenarios if scenario.config.scenario_name == "main"), None)
+    if scenario is None:
+        pytest.fail("Required benchmark scenario 'main' is missing", pytrace=False)
+
     context = AvdBuildContext(scenario.config, executor=InlineExecutor())
     try:
         benchmark_fabrics = []
@@ -85,8 +89,14 @@ def benchmark_project() -> Iterator[BenchmarkProject]:
             all_hostvars = {}
             for device in devices:
                 hostvars = context.inventory.get_vars(device)
-                all_inputs[device] = AVDDesign._from_dict(hostvars)
-                all_hostvars[device] = hostvars
+                validated_result = validate_inputs(hostvars)
+                validated_hostvars = validated_result.validated_data
+                if validated_hostvars is None:
+                    violations = "; ".join(f"{violation.path}: {violation.message}" for violation in validated_result.validation_result.violations)
+                    pytest.fail(f"Invalid benchmark inputs for {device}: {violations}", pytrace=False)
+
+                all_inputs[device] = AVDDesign._from_dict(validated_hostvars)
+                all_hostvars[device] = validated_hostvars
 
             benchmark_fabrics.append(
                 BenchmarkFabric(
