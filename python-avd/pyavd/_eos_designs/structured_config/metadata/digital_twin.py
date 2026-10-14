@@ -129,3 +129,5 @@ class DigitalTwinMixin(Protocol):
                 ):
                     self.structured_config.metadata.digital_twin._update(ztp=ztp)
                 return
+            case "containerlab":
+                self.structured_config.metadata.digital_twin._update(environment=environment)

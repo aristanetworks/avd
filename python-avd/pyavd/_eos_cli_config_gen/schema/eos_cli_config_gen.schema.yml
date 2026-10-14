@@ -11346,6 +11346,7 @@ keys:
             description: Targeted Digital Twin environment.
             valid_values:
             - act
+            - containerlab
           node_type:
             type: str
             description: 'Digital Twin''s internal device type used for deploying
@@ -21280,6 +21281,11 @@ keys:
                     min: 1
                     max: 255
                     description: Time-to-live in range of hops.
+                  ttl_maximum_hops:
+                    type: int
+                    min: 0
+                    max: 254
+                    description: Maximum number of hops.
                   next_hop_peer:
                     type: bool
                   next_hop_self:
@@ -27641,7 +27647,11 @@ keys:
                     0 to 4294967295).'
             passive_interface:
               type: bool
-              description: Include interface but without actively running OSPF.
+              description: Include interface but without actively running OSPF. Takes
+                precedence over `no_passive_interface`.
+            no_passive_interface:
+              type: bool
+              description: Disable passive interface mode.
             network_point_to_point:
               type: bool
         ospf_cost:

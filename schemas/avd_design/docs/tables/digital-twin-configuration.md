@@ -8,13 +8,14 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>digital_twin</samp>](## "digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Global settings to configure the Digital Twin of the Fabric. |
-    | [<samp>&nbsp;&nbsp;environment</samp>](## "digital_twin.environment") | String |  | `act` | Valid Values:<br>- <code>act</code> | Targeted Digital Twin environment. |
+    | [<samp>&nbsp;&nbsp;environment</samp>](## "digital_twin.environment") | String |  | `act` | Valid Values:<br>- <code>act</code><br>- <code>containerlab</code> | Targeted Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;fabric</samp>](## "digital_twin.fabric") | Dictionary | Required |  |  | Settings for Digital Twin fabric devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "digital_twin.fabric.act_os_version") | String |  |  |  | OS version for ACT Digital Twin fabric devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_username</samp>](## "digital_twin.fabric.act_username") | String |  | `cvpadmin` |  | Username for ACT Digital Twin fabric devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_password</samp>](## "digital_twin.fabric.act_password") | String |  | `cvp123!` |  | Cleartext password for ACT Digital Twin fabric devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "digital_twin.fabric.act_internet_access") | Boolean |  | `False` |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_ensure_eapi_access</samp>](## "digital_twin.fabric.act_ensure_eapi_access") | Boolean |  | `False` |  | Ensures eAPI remains accessible for automation and testing via ACT.<br>Clients connecting to device eAPI through ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated management VRF, this primary eAPI connectivity can be unintentionally broken.<br>Set this to `true` to enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the default VRF and preserving this connectivity. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_ensure_eapi_access</samp>](## "digital_twin.fabric.act_ensure_eapi_access") | Boolean |  | `False` |  | Ensures eAPI remains accessible for automation and testing via ACT.<br>Clients connecting to device eAPI through ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated management VRF, this primary eAPI connectivity can be unintentionally broken.<br>Set this to `true` to enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the default VRF and preserving this connectivity.<br>Any IPv4 ACL applied to eAPI in the default VRF is removed. IPv6 ACLs and eAPI configuration for non-default VRFs are preserved. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_ensure_ssh_access</samp>](## "digital_twin.fabric.act_ensure_ssh_access") | Boolean |  | `False` |  | Ensures SSH remains accessible for automation and testing via ACT.<br>Clients connecting to device SSH through ACT rely on access in the default VRF. If SSH is disabled globally or in the default VRF (takes precedence over global setting), this primary SSH connectivity can be unintentionally broken.<br>Set this to `true` to enforce the required EOS configuration, guaranteeing SSH is enabled in the default VRF and preserving this connectivity.<br>Any IPv4 ACL applied to SSH in the default VRF is removed. IPv6 ACLs and SSH configuration for non-default VRFs are preserved. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware_identity</samp>](## "digital_twin.fabric.hardware_identity") | Dictionary |  |  |  | Settings controlling use of hardware identity values for Digital Twin devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "digital_twin.fabric.hardware_identity.serial_number") | Boolean |  | `False` |  | When set to `true`, provides the device's `serial_number` as an input value to the Digital Twin environment.<br>Can be overridden by `digital_twin.hardware_identity.serial_number` at node level.<br>A per-node `digital_twin.serial_number` value overrides the regular device `serial_number` for the Digital Twin device.<br>Supported Digital Twin environments:<br>- `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node types. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "digital_twin.fabric.hardware_identity.system_mac_address") | Boolean |  | `False` |  | When set to `true`, provides the resolved device system MAC address as an input value to the Digital Twin environment.<br>Can be overridden by `digital_twin.hardware_identity.system_mac_address` at node level.<br>A per-node `digital_twin.system_mac_address` value overrides the regular device `system_mac_address` for the Digital Twin device.<br>Supported Digital Twin environments:<br>- `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node types. |
@@ -29,7 +30,7 @@
     digital_twin:
 
       # Targeted Digital Twin environment.
-      environment: <str; "act"; default="act">
+      environment: <str; "act" | "containerlab"; default="act">
 
       # Settings for Digital Twin fabric devices.
       fabric: # required
@@ -51,7 +52,14 @@
         # Ensures eAPI remains accessible for automation and testing via ACT.
         # Clients connecting to device eAPI through ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated management VRF, this primary eAPI connectivity can be unintentionally broken.
         # Set this to `true` to enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the default VRF and preserving this connectivity.
+        # Any IPv4 ACL applied to eAPI in the default VRF is removed. IPv6 ACLs and eAPI configuration for non-default VRFs are preserved.
         act_ensure_eapi_access: <bool; default=False>
+
+        # Ensures SSH remains accessible for automation and testing via ACT.
+        # Clients connecting to device SSH through ACT rely on access in the default VRF. If SSH is disabled globally or in the default VRF (takes precedence over global setting), this primary SSH connectivity can be unintentionally broken.
+        # Set this to `true` to enforce the required EOS configuration, guaranteeing SSH is enabled in the default VRF and preserving this connectivity.
+        # Any IPv4 ACL applied to SSH in the default VRF is removed. IPv6 ACLs and SSH configuration for non-default VRFs are preserved.
+        act_ensure_ssh_access: <bool; default=False>
 
         # Settings controlling use of hardware identity values for Digital Twin devices.
         hardware_identity:

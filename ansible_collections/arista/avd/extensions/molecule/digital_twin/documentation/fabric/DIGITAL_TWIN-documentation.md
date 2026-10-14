@@ -28,6 +28,12 @@
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-2 | 192.168.0.2/32 | - | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-3 | 192.168.0.3/32 | - | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-4 | 192.168.0.4/32 | - | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-5 | 192.168.0.5/32 | - | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-1 | 192.168.0.6/32 | - | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-2 | 192.168.0.7/32 | - | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-3 | 192.168.0.8/32 | - | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-4 | 192.168.0.9/32 | - | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-5 | 192.168.0.10/32 | - | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital-twin-ethernet-ports-1 | 192.169.3.1/32 | - | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital-twin-ethernet-ports-3 | 192.169.3.3/32 | custom-platform | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-hardware-identity-disabled-tests-veos | 192.168.10.10/32 | - | Provisioned | PROD-DISABLED-VEOS-SERIAL |
