@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'ipv4_acl_out' and 'ipv4_standard_acl_out' are mutually exclusive on port-channel 'Port-Channel1'. Only one egress IPv4 ACL may be configured.

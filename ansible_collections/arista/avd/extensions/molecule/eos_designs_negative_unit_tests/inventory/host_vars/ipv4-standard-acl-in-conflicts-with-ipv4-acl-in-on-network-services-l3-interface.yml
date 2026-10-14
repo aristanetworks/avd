@@ -1,0 +1,31 @@
+---
+# Tests that setting both ipv4_acl_in and ipv4_standard_acl_in on the same
+# network_services l3_interface raises AristaAvdInvalidInputsError.
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: ipv4-standard-acl-in-conflicts-with-ipv4-acl-in-on-network-services-l3-interface
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: L3INTF
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TESTING
+        vrf_id: 2
+        l3_interfaces:
+          - interfaces: [Ethernet1]
+            nodes: [ipv4-standard-acl-in-conflicts-with-ipv4-acl-in-on-network-services-l3-interface]
+            ip_addresses: ["10.0.1.1/31"]
+            enabled: true
+            ipv4_acl_in: EXTENDED-ACL-IN
+            ipv4_standard_acl_in: STD-ACL-IN
+
+expected_error_message: >-
+  'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on interface 'Ethernet1'. Only one ingress IPv4 ACL may be configured.
