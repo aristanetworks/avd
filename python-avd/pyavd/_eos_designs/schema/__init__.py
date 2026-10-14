@@ -1167,7 +1167,9 @@ class EosDesigns(EosDesignsRootModel):
         When enabled, AVD
         renders the OOB management VRF only if `default_mgmt_method` is set to `oob`,
         or if `mgmt_ip` or
-        `ipv6_mgmt_ip` is configured.
+        `ipv6_mgmt_ip` is configured,
+        or if `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` is
+        explicitly configured.
 
         Default value: `False`
         """
@@ -1290,7 +1292,9 @@ class EosDesigns(EosDesignsRootModel):
                        When enabled, AVD
                        renders the OOB management VRF only if `default_mgmt_method` is set to `oob`,
                        or if `mgmt_ip` or
-                       `ipv6_mgmt_ip` is configured.
+                       `ipv6_mgmt_ip` is configured,
+                       or if `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` is
+                       explicitly configured.
 
                 """
 
