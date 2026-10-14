@@ -1,13 +1,13 @@
 ---
+# Test enabling SSH (in the default VRF) in ACT Digital Twin mode when SSH is not configured.
 type: l2leaf
 
 l2leaf:
   nodes:
     - name: digital-twin-enforce-ssh-2
       id: 1
-      mgmt_ip: 192.168.0.6/32
+      mgmt_ip: 192.168.0.7/32
 
-# Test enabling SSH (in the default VRF) in ACT Digital Twin mode when SSH is not configured.
 digital_twin:
   environment: act
   fabric:

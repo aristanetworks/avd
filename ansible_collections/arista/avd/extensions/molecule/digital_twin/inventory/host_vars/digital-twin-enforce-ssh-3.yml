@@ -1,18 +1,18 @@
 ---
+# Test removal of the default VRF SSH IPv4 ACL while preserving IPv6 and non-default VRF ACLs in ACT Digital Twin mode.
 type: l2leaf
 
 l2leaf:
   nodes:
     - name: digital-twin-enforce-ssh-3
       id: 1
-      mgmt_ip: 192.168.0.7/32
+      mgmt_ip: 192.168.0.8/32
 
 digital_twin:
   environment: act
   fabric:
     act_ensure_ssh_access: true
 
-# Test removal of the default VRF SSH IPv4 ACL while preserving IPv6 and non-default VRF ACLs in ACT Digital Twin mode.
 ssh_settings:
   vrfs:
     - name: default

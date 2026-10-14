@@ -19230,6 +19230,8 @@ class EosDesigns(EosDesignsRootModel):
             Set this to `true` to
             enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
             default VRF and preserving this connectivity.
+            Any IPv4 ACL applied to eAPI in the default VRF is
+            removed. IPv6 ACLs and eAPI configuration for non-default VRFs are preserved.
 
             Default value: `False`
             """
@@ -19241,6 +19243,8 @@ class EosDesigns(EosDesignsRootModel):
             (takes precedence over global setting), this primary SSH connectivity can be unintentionally broken.
             Set this to `true` to enforce the required EOS configuration, guaranteeing SSH is enabled in the
             default VRF and preserving this connectivity.
+            Any IPv4 ACL applied to SSH in the default VRF is
+            removed. IPv6 ACLs and SSH configuration for non-default VRFs are preserved.
 
             Default value: `False`
             """
@@ -19281,6 +19285,8 @@ class EosDesigns(EosDesignsRootModel):
                            Set this to `true` to
                            enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
                            default VRF and preserving this connectivity.
+                           Any IPv4 ACL applied to eAPI in the default VRF is
+                           removed. IPv6 ACLs and eAPI configuration for non-default VRFs are preserved.
                         act_ensure_ssh_access:
                            Ensures SSH remains accessible for automation and testing via ACT.
                            Clients connecting to device SSH
@@ -19288,6 +19294,8 @@ class EosDesigns(EosDesignsRootModel):
                            (takes precedence over global setting), this primary SSH connectivity can be unintentionally broken.
                            Set this to `true` to enforce the required EOS configuration, guaranteeing SSH is enabled in the
                            default VRF and preserving this connectivity.
+                           Any IPv4 ACL applied to SSH in the default VRF is
+                           removed. IPv6 ACLs and SSH configuration for non-default VRFs are preserved.
 
                     """
 

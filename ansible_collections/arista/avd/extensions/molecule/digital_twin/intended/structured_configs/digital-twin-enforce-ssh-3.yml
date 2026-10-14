@@ -15,7 +15,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.0.7/32
+  ip_address: 192.168.0.8/32
   type: oob
 management_ssh:
   ip_access_group_in: ssh_default_ipv4_acl_in

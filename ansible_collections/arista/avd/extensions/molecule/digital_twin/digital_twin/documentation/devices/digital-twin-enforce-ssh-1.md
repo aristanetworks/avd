@@ -31,7 +31,7 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.0.5/32 | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.0.6/32 | - |
 
 ##### IPv6
 
@@ -47,7 +47,7 @@ interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
-   ip address 192.168.0.5/32
+   ip address 192.168.0.6/32
 ```
 
 ### Management SSH
