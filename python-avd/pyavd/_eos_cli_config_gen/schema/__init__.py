@@ -29545,7 +29545,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
-            Environment: TypeAlias = Literal["act"]
+            Environment: TypeAlias = Literal["act", "containerlab"]
             _fields: ClassVar[dict] = {
                 "environment": {"type": str},
                 "node_type": {"type": str},
@@ -57628,6 +57628,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "description": {"type": str},
                     "route_reflector_client": {"type": bool},
                     "ebgp_multihop": {"type": int},
+                    "ttl_maximum_hops": {"type": int},
                     "next_hop_peer": {"type": bool},
                     "next_hop_self": {"type": bool},
                     "shutdown": {"type": bool},
@@ -57691,6 +57692,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 route_reflector_client: bool | None
                 ebgp_multihop: int | None
                 """Time-to-live in range of hops."""
+                ttl_maximum_hops: int | None
+                """Maximum number of hops."""
                 next_hop_peer: bool | None
                 next_hop_self: bool | None
                 shutdown: bool | None
@@ -57757,6 +57760,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         description: str | UndefinedType | None = Undefined,
                         route_reflector_client: bool | UndefinedType | None = Undefined,
                         ebgp_multihop: int | UndefinedType | None = Undefined,
+                        ttl_maximum_hops: int | UndefinedType | None = Undefined,
                         next_hop_peer: bool | UndefinedType | None = Undefined,
                         next_hop_self: bool | UndefinedType | None = Undefined,
                         shutdown: bool | UndefinedType | None = Undefined,
@@ -57815,6 +57819,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             description: description
                             route_reflector_client: route_reflector_client
                             ebgp_multihop: Time-to-live in range of hops.
+                            ttl_maximum_hops: Maximum number of hops.
                             next_hop_peer: next_hop_peer
                             next_hop_self: next_hop_self
                             shutdown: shutdown
@@ -76653,6 +76658,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "ipv4": {"type": Ipv4},
                 "ipv6": {"type": Ipv6},
                 "passive_interface": {"type": bool},
+                "no_passive_interface": {"type": bool},
                 "network_point_to_point": {"type": bool},
             }
             ipv4: Ipv4
@@ -76660,7 +76666,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv6: Ipv6
             """Subclass of AvdModel."""
             passive_interface: bool | None
-            """Include interface but without actively running OSPF."""
+            """Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`."""
+            no_passive_interface: bool | None
+            """Disable passive interface mode."""
             network_point_to_point: bool | None
 
             if TYPE_CHECKING:
@@ -76671,6 +76679,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv4: Ipv4 | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
                     passive_interface: bool | UndefinedType | None = Undefined,
+                    no_passive_interface: bool | UndefinedType | None = Undefined,
                     network_point_to_point: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -76682,7 +76691,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
-                        passive_interface: Include interface but without actively running OSPF.
+                        passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
+                        no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point
 
                     """
