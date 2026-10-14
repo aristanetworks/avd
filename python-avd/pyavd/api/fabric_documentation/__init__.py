@@ -2,12 +2,48 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True)
 class ActLinkSettings:
     connection: tuple[str, str]
+
+
+@dataclass(frozen=True)
+class ContainerlabLinkSettings:
+    endpoints: tuple[str, str]
+
+
+@dataclass(frozen=True)
+class ContainerlabNode:
+    mgmt_ipv4: str = field(metadata={"yaml_key": "mgmt-ipv4"})
+
+
+@dataclass(frozen=True)
+class ContainerlabDefaults:
+    kind: str
+
+
+@dataclass(frozen=True)
+class ContainerlabKind:
+    enforce_startup_config: bool = field(metadata={"yaml_key": "enforce-startup-config"})
+    image: str
+    binds: tuple[str, ...] | None = None
+
+
+@dataclass(frozen=True)
+class ContainerlabMgmt:
+    network: str
+    ipv4_subnet: str = field(metadata={"yaml_key": "ipv4-subnet"})
+
+
+@dataclass(frozen=True)
+class ContainerlabTopology:
+    defaults: ContainerlabDefaults
+    kinds: dict[str, ContainerlabKind]
+    nodes: dict[str, ContainerlabNode]
+    links: tuple[ContainerlabLinkSettings, ...]
 
 
 @dataclass(frozen=True)
@@ -34,10 +70,21 @@ class ACTDigitalTwin:
     cloudeos: ActNodeTypeSettings | None = None
     cvp: ActNodeTypeSettings | None = None
     generic: ActNodeTypeSettings | None = None
-    third_party: ActNodeTypeSettings | None = None
-    tools_server: ActNodeTypeSettings | None = None
+    third_party: ActNodeTypeSettings | None = field(default=None, metadata={"yaml_key": "third-party"})
+    tools_server: ActNodeTypeSettings | None = field(default=None, metadata={"yaml_key": "tools-server"})
     veos: ActNodeTypeSettings | None = None
     links: tuple[ActLinkSettings, ...] | None = None
+
+
+@dataclass(frozen=True)
+class ContainerlabDigitalTwin:
+    """Containerlab Digital Twin fabric documentation dataclass."""
+
+    name: str
+    prefix: str
+    mgmt: ContainerlabMgmt
+    topology: ContainerlabTopology
+    interface_mapping: dict[str, dict[str, str]] | None = None
 
 
 class FabricDocumentation:
@@ -54,4 +101,4 @@ class FabricDocumentation:
     fabric_documentation: str = ""
     topology_csv: str = ""
     p2p_links_csv: str = ""
-    digital_twin: ACTDigitalTwin | None = None
+    digital_twin: ACTDigitalTwin | ContainerlabDigitalTwin | None = None
