@@ -1,0 +1,256 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: svi-ipv4-acls
+ip_access_lists:
+- name: SVI-EXTENDED_Vlan617
+  entries:
+  - action: permit
+    protocol: ip
+    source: any
+    destination: 10.6.17.1
+- name: SVI-EXTENDED_Vlan618
+  entries:
+  - action: permit
+    protocol: ip
+    source: any
+    destination: 10.6.18.1
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.1/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65001'
+  router_id: 192.168.255.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 611
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10611
+    route_targets:
+      both:
+      - 10611:10611
+    redistribute_routes:
+    - learned
+  - id: 612
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10612
+    route_targets:
+      both:
+      - 10612:10612
+    redistribute_routes:
+    - learned
+  - id: 613
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10613
+    route_targets:
+      both:
+      - 10613:10613
+    redistribute_routes:
+    - learned
+  - id: 617
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10617
+    route_targets:
+      both:
+      - 10617:10617
+    redistribute_routes:
+    - learned
+  - id: 618
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10618
+    route_targets:
+      both:
+      - 10618:10618
+    redistribute_routes:
+    - learned
+  vrfs:
+  - name: SVI_ACL_TESTS
+    rd: 192.168.255.1:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+    router_id: 192.168.255.1
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+standard_access_lists:
+- name: SVI-STANDARD-IN
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.0/8
+- name: SVI-STANDARD-OUT
+  entries:
+  - sequence: 10
+    action: permit
+    source: 172.16.0.0/12
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan611
+  description: standard_acl_ingress
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.11.1/24
+  access_group_in: SVI-STANDARD-IN
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- name: Vlan612
+  description: standard_acl_egress
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.12.1/24
+  access_group_out: SVI-STANDARD-OUT
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- name: Vlan613
+  description: standard_acl_both
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.13.1/24
+  access_group_in: SVI-STANDARD-IN
+  access_group_out: SVI-STANDARD-OUT
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- name: Vlan617
+  description: standard_in_extended_out
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.17.1/24
+  access_group_in: SVI-STANDARD-IN
+  access_group_out: SVI-EXTENDED_Vlan617
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- name: Vlan618
+  description: extended_in_standard_out
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.18.1/24
+  access_group_in: SVI-EXTENDED_Vlan618
+  access_group_out: SVI-STANDARD-OUT
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 611
+  name: standard_acl_ingress
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- id: 612
+  name: standard_acl_egress
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- id: 613
+  name: standard_acl_both
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- id: 617
+  name: standard_in_extended_out
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- id: 618
+  name: extended_in_standard_out
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: SVI_ACL_TESTS
+  ip_routing: true
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+vxlan_interface:
+  vxlan1:
+    description: svi-ipv4-acls_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 611
+        vni: 10611
+      - id: 612
+        vni: 10612
+      - id: 613
+        vni: 10613
+      - id: 617
+        vni: 10617
+      - id: 618
+        vni: 10618
+      vrfs:
+      - name: SVI_ACL_TESTS
+        vni: 1

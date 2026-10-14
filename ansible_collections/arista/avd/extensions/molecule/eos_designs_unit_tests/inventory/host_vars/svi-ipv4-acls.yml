@@ -1,0 +1,65 @@
+---
+# Test standard IPv4 SVI ACL directions, reuse, and coexistence with extended ACLs.
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:DC:01
+  nodes:
+    - name: svi-ipv4-acls
+      id: 1
+      bgp_as: 65001
+ipv4_acls:
+  - name: SVI-EXTENDED
+    entries:
+      - action: permit
+        protocol: ip
+        source: any
+        destination: interface_ip
+ipv4_standard_acls:
+  - name: SVI-STANDARD-IN
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.0/8
+  - name: SVI-STANDARD-OUT
+    entries:
+      - sequence: 10
+        action: permit
+        source: 172.16.0.0/12
+tenants:
+  - name: SVI_ACL_TESTS
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: SVI_ACL_TESTS
+        vrf_id: 1
+        svis:
+          - id: 611
+            name: standard_acl_ingress
+            enabled: true
+            ip_address_virtual: 10.6.11.1/24
+            ipv4_standard_acl_in: SVI-STANDARD-IN
+          - id: 612
+            name: standard_acl_egress
+            enabled: true
+            ip_address_virtual: 10.6.12.1/24
+            ipv4_standard_acl_out: SVI-STANDARD-OUT
+          - id: 613
+            name: standard_acl_both
+            enabled: true
+            ip_address_virtual: 10.6.13.1/24
+            ipv4_standard_acl_in: SVI-STANDARD-IN
+            ipv4_standard_acl_out: SVI-STANDARD-OUT
+          - id: 617
+            name: standard_in_extended_out
+            enabled: true
+            ip_address_virtual: 10.6.17.1/24
+            ipv4_standard_acl_in: SVI-STANDARD-IN
+            ipv4_acl_out: SVI-EXTENDED
+          - id: 618
+            name: extended_in_standard_out
+            enabled: true
+            ip_address_virtual: 10.6.18.1/24
+            ipv4_acl_in: SVI-EXTENDED
+            ipv4_standard_acl_out: SVI-STANDARD-OUT
