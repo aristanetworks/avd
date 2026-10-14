@@ -241,4 +241,8 @@ snmp_server:
     - name: abc
       enable: true
       local_interface: Ethernet2
+    - name: foo
+      enable: true
+      ipv4_acl: SNMP-MGMT3
+      ipv6_acl: SNMP-MGMT3
   ifmib_ifspeed_shape_rate: true

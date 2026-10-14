@@ -2857,10 +2857,12 @@ mcs client
 | IPv4 | SNMP-MGMT2 | AAA |
 | IPv4 | SNMP-MGMT | MGMT |
 | IPv4 | SNMP-MGMT1 | aaa |
+| IPv4 | SNMP-MGMT3 | foo |
 | IPv6 | onur_v6 | default |
 | IPv6 | SNMP-MGMT2 | AAA |
 | IPv6 | SNMP-MGMT | MGMT |
 | IPv6 | SNMP-MGMT1 | aaa |
+| IPv6 | SNMP-MGMT3 | foo |
 
 #### SNMP Local Interfaces
 
@@ -2883,6 +2885,7 @@ mcs client
 | AAA | Enabled |
 | aaa | Enabled |
 | abc | Enabled |
+| foo | Enabled |
 
 #### SNMP Hosts Configuration
 
@@ -2955,18 +2958,20 @@ snmp-server ipv4 access-list SNMP-MGMT2 vrf AAA
 snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
 snmp-server ipv4 access-list SNMP-MGMT1 vrf aaa
 snmp-server ipv4 access-list onur
+snmp-server ipv4 access-list SNMP-MGMT3 vrf foo
 snmp-server ipv6 access-list SNMP-MGMT2 vrf AAA
 snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
 snmp-server ipv6 access-list SNMP-MGMT1 vrf aaa
 snmp-server ipv6 access-list onur_v6
+snmp-server ipv6 access-list SNMP-MGMT3 vrf foo
 snmp-server engineID local 424242424242424242
 snmp-server contact DC1_OPS
 snmp-server location DC1
+snmp-server local-interface Loopback0
 snmp-server vrf AAA local-interface Ethernet1
 snmp-server vrf MGMT local-interface Management1
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
 snmp-server vrf abc local-interface Ethernet2
-snmp-server local-interface Loopback0
 snmp-server view VW-EXCLUDED iso excluded
 snmp-server view VW-READ iso included
 snmp-server view VW-WRITE iso included
@@ -3021,6 +3026,7 @@ snmp-server vrf MGMT
 snmp-server vrf Tenant_A_APP_Zone
 snmp-server vrf aaa
 snmp-server vrf abc
+snmp-server vrf foo
 snmp-server vrf lower_case
 snmp-server ifmib ifspeed shape-rate
 ```
