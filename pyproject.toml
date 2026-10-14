@@ -17,7 +17,7 @@ dev = [
     "pre-commit-hooks>=6.0.0",
     "pre-commit>=4.5.1",
     "pylint>=4.0.5",
-    "ruff==0.16.9",
+    "ruff==0.16.10",
     "setuptools>=82.0.1", # for pyright check in CI
     "tox>=4.52.1",
     "yamllint>=1.38.0",
@@ -64,7 +64,6 @@ schema-tools = [
     "pyavd-utils-gen==0.0.12",
     "deepmerge>=1.1.0",
     "jsonschema-rs>=0.46.0",
-    "pydantic>=2.11.10",
     "pyyaml>=6.0.0",
     "referencing>=0.37.0",
 ]
@@ -73,7 +72,6 @@ schema-tools = [
 line-length = 160
 extend-exclude = [
   "python-avd/pyavd/_cv/api/**/*",
-  "python-avd/tests/pyavd/schema/data_merging_schema_class.py", # File is generated during pytest
 ]
 target-version = "py310"
 
@@ -178,18 +176,12 @@ known-first-party = ["pyavd", "schema_tools"]
 [tool.ruff.format]
 docstring-code-format = true
 
-[tool.ruff.lint.flake8-type-checking]
-# These classes require that type annotations be available at runtime
-runtime-evaluated-base-classes = ["pydantic.BaseModel"]
-
 [tool.pyright]
 typeCheckingMode = "standard"
 exclude = [
   "ansible_collections/arista/avd",                                      # TODO
   "python-avd/pyavd/_cv",                                                # TODO
   "python-avd/pyavd/_schema/models",                                     # TODO
-  "python-avd/schema_tools/generate_docs",                               # TODO
-  "python-avd/schema_tools/metaschema",                                  # TODO
   "python-avd/tests",                                                    # TODO
   # Excluded
   "python-avd/pyavd/_cv/api",
