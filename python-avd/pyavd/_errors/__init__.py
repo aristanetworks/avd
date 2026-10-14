@@ -25,12 +25,9 @@ class AristaAvdWarning(UserWarning):
         self.message = message
         super().__init__(self.message)
 
-    def _warn(self, stacklevel: int = 2, host: str | None = None) -> None:
+    def _warn(self, stacklevel: int = 2) -> None:
         """Emit a warning with the given message and stack level."""
-        if self.host:
-            message = f"{self.message} for host '{self.host}'"
-        else:
-            message = self.message
+        message = f"{self.message} for host '{self.host}'" if self.host else self.message
 
         warnings.warn(message, category=self.__class__, stacklevel=stacklevel)
 
