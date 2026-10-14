@@ -122,3 +122,11 @@ keys:
           Available from AVD 6.1.0.
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
         default: false
+      raise_for_missing_management_eapi_acls:
+        type: bool
+        description: |-
+          Raise an error if an ACL referenced by `management_eapi.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.
+          When enabled, configure the referenced extended ACL on devices where the eAPI VRF is enabled.
+          When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog.
+          `management_eapi.vrfs[].ipv4_standard_acl` always requires an entry in `ipv4_standard_acls`, regardless of this setting.
+        default: false

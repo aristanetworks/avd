@@ -1,0 +1,19 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: management-eapi-ipv4-standard-acl-missing
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+management_eapi:
+  enabled: true
+  vrfs:
+    - name: management
+      enabled: true
+      ipv4_standard_acl: FILTER
+
+expected_error_message: >-
+  'management_eapi.vrfs[name=management].ipv4_standard_acl': ACL 'FILTER' must be defined under 'ipv4_standard_acls'. The ACL was not found in
+  'ipv4_acls'.

@@ -16,7 +16,7 @@
     | [<samp>&nbsp;&nbsp;session_timeout</samp>](## "management_api_http.session_timeout") | Integer |  |  | Min: 1<br>Max: 1440 | User session timeout value in minutes.<br>EOS default is 1440 minutes. |
     | [<samp>&nbsp;&nbsp;enable_vrfs</samp>](## "management_api_http.enable_vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_api_http.enable_vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "management_api_http.enable_vrfs.[].access_group") | String |  |  |  | Standard IPv4 ACL name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "management_api_http.enable_vrfs.[].access_group") | String |  |  |  | IPv4 standard or extended ACL name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group</samp>](## "management_api_http.enable_vrfs.[].ipv6_access_group") | String |  |  |  | Standard IPv6 ACL name. |
     | [<samp>&nbsp;&nbsp;protocol_https_certificate</samp>](## "management_api_http.protocol_https_certificate") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;certificate</samp>](## "management_api_http.protocol_https_certificate.certificate") | String | Required |  |  | Name of certificate; private key must also be specified. |
@@ -44,7 +44,7 @@
           # VRF Name.
         - name: <str; required; unique>
 
-          # Standard IPv4 ACL name.
+          # IPv4 standard or extended ACL name.
           access_group: <str>
 
           # Standard IPv6 ACL name.

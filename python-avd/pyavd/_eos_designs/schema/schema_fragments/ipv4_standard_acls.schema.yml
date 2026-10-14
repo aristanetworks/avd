@@ -12,6 +12,7 @@ keys:
     description: |-
       IPv4 standard access-lists catalog.
       These access-lists will only be configured on devices where they are in use.
+      Field substitution is not supported.
     items:
       type: dict
       keys:

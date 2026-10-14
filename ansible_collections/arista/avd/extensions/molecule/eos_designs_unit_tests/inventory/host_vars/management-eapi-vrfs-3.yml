@@ -1,5 +1,5 @@
 ---
-# Testing with oob management
+# Testing with oob management and catalog-backed IPv4 extended and standard eAPI ACLs.
 type: l3leaf
 
 l3leaf:
@@ -20,3 +20,31 @@ management_eapi:
       enabled: true
       ipv4_acl: ACL_EAPI_IPv4_4
       ipv6_acl: ACL_EAPI_IPv6_3
+    - name: default
+      enabled: true
+      ipv4_standard_acl: ACL_EAPI_IPv4_STANDARD
+    - name: VRF_Disable
+      enabled: false
+      ipv4_standard_acl: ACL_NOT_IN_CATALOG
+
+avd_design_future:
+  raise_for_missing_management_eapi_acls: true
+
+ipv4_acls:
+  - name: ACL_EAPI_IPv4_4
+    entries:
+      - action: permit
+        protocol: ip
+        source: any
+        destination: any
+
+ipv4_standard_acls:
+  - name: ACL_EAPI_IPv4_STANDARD
+    entries:
+      - action: permit
+        source: 192.0.2.0/24
+  # Duplicate names in the catalogs are allowed when only one ACL type is rendered.
+  - name: ACL_EAPI_IPv4_4
+    entries:
+      - action: deny
+        source: any
