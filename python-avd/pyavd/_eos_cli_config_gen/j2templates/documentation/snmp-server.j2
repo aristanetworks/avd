@@ -72,7 +72,7 @@
 {%             if snmp_server.ipv6_acl is arista.avd.defined %}
 | IPv6 | {{ snmp_server.ipv6_acl }} | default |
 {%             endif %}
-{%             for vrf in ipv6_acl_vrfs | arista.avd.natural_sort('name') %}
+{%             for vrf in ipv6_acl_vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 | IPv6 | {{ vrf.ipv6_acl }} | {{ vrf.name }} |
 {%             endfor %}
 {%         elif snmp_server.ipv6_acls is arista.avd.defined %}
@@ -93,7 +93,7 @@
 {%             if snmp_server.local_interface is arista.avd.defined %}
 | {{ snmp_server.local_interface }} | default |
 {%             endif %}
-{%             for vrf in local_interface_vrfs | arista.avd.natural_sort('name') %}
+{%             for vrf in local_interface_vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 | {{ vrf.local_interface }} | {{ vrf.name }} |
 {%             endfor %}
 {%         else %}

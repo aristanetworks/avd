@@ -2859,8 +2859,8 @@ mcs client
 | IPv4 | SNMP-MGMT1 | aaa |
 | IPv6 | onur_v6 | default |
 | IPv6 | SNMP-MGMT2 | AAA |
-| IPv6 | SNMP-MGMT1 | aaa |
 | IPv6 | SNMP-MGMT | MGMT |
+| IPv6 | SNMP-MGMT1 | aaa |
 
 #### SNMP Local Interfaces
 
@@ -2868,9 +2868,9 @@ mcs client
 | --------------- | --- |
 | Loopback0 | default |
 | Ethernet1 | AAA |
-| Ethernet2 | abc |
 | Management1 | MGMT |
 | Loopback12 | Tenant_A_APP_Zone |
+| Ethernet2 | abc |
 
 #### SNMP VRF Status
 

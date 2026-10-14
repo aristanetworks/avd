@@ -271,7 +271,7 @@ snmp-server enable traps {{ snmp_trap.name }}
 {%         for vrf in (default_vrfs + no_default_vrfs) %}
 {%             if vrf.enable is arista.avd.defined(true) %}
 snmp-server vrf {{ vrf.name }}
-{%             else %}
+{%             elif vrf.enable is arista.avd.defined(false) %}
 no snmp-server vrf {{ vrf.name }}
 {%             endif %}
 {%         endfor %}
