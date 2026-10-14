@@ -1009,6 +1009,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
+            "raise_for_missing_management_eapi_acls": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1159,6 +1160,19 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        raise_for_missing_management_eapi_acls: bool
+        """
+        Raise an error if an ACL referenced by `management_eapi.vrfs[].ipv4_acl` is not defined under
+        `ipv4_acls`.
+        When enabled, configure the referenced extended ACL on devices where the eAPI VRF is
+        enabled.
+        When disabled, only configure the ACL reference without requiring or configuring an ACL
+        definition from the catalog.
+        `management_eapi.vrfs[].ipv4_standard_acl` always requires an entry in
+        `ipv4_standard_acls`, regardless of this setting.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -1182,6 +1196,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
+                raise_for_missing_management_eapi_acls: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1271,6 +1286,15 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
                        IPv4 is activated by default instead of always deactivating it.
+                    raise_for_missing_management_eapi_acls:
+                       Raise an error if an ACL referenced by `management_eapi.vrfs[].ipv4_acl` is not defined under
+                       `ipv4_acls`.
+                       When enabled, configure the referenced extended ACL on devices where the eAPI VRF is
+                       enabled.
+                       When disabled, only configure the ACL reference without requiring or configuring an ACL
+                       definition from the catalog.
+                       `management_eapi.vrfs[].ipv4_standard_acl` always requires an entry in
+                       `ipv4_standard_acls`, regardless of this setting.
 
                 """
 
@@ -28013,7 +28037,13 @@ class EosDesigns(EosDesignsRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}, "ipv4_acl": {"type": str}, "ipv6_acl": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enabled": {"type": bool},
+                "ipv4_acl": {"type": str},
+                "ipv4_standard_acl": {"type": str},
+                "ipv6_acl": {"type": str},
+            }
             name: str
             """
             VRF name.
@@ -28034,7 +28064,21 @@ class EosDesigns(EosDesignsRootModel):
             enabled: bool
             """Enable/disable Management eAPI for this VRF."""
             ipv4_acl: str | None
-            """IPv4 access-list name."""
+            """
+            IPv4 extended access list name.
+            When `avd_design_future.raise_for_missing_management_eapi_acls` is
+            enabled, the access-list must be defined under `ipv4_acls`.
+            Otherwise, no catalog entry is required.
+            Mutually exclusive with `ipv4_standard_acl`.
+            Field substitution is not supported for eAPI
+            references.
+            """
+            ipv4_standard_acl: str | None
+            """
+            IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
+            Mutually
+            exclusive with `ipv4_acl`.
+            """
             ipv6_acl: str | None
             """IPv6 access-list name."""
 
@@ -28046,6 +28090,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
                     ipv4_acl: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl: str | UndefinedType | None = Undefined,
                     ipv6_acl: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -28071,7 +28116,18 @@ class EosDesigns(EosDesignsRootModel):
                            - Any
                            other string will be used directly as the VRF name.
                         enabled: Enable/disable Management eAPI for this VRF.
-                        ipv4_acl: IPv4 access-list name.
+                        ipv4_acl:
+                           IPv4 extended access list name.
+                           When `avd_design_future.raise_for_missing_management_eapi_acls` is
+                           enabled, the access-list must be defined under `ipv4_acls`.
+                           Otherwise, no catalog entry is required.
+                           Mutually exclusive with `ipv4_standard_acl`.
+                           Field substitution is not supported for eAPI
+                           references.
+                        ipv4_standard_acl:
+                           IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
+                           Mutually
+                           exclusive with `ipv4_acl`.
                         ipv6_acl: IPv6 access-list name.
 
                     """
@@ -119131,37 +119187,42 @@ class EosDesigns(EosDesignsRootModel):
     `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port
     profiles.
     They will only be configured on devices where they are in use.
+    They can also be referenced
+    using `management_eapi.vrfs[].ipv4_acl` when
+    `avd_design_future.raise_for_missing_management_eapi_acls` is enabled.
+    Field substitution is not
+    supported for eAPI references.
 
-    The substitution is useful
-    when assigning the same access-list on multiple interfaces where certain fields require unique
-    values.
-    When using substitution, the interface name will be appended to the ACL name.
+    The substitution is useful when assigning the same access-list on
+    multiple interfaces where certain fields require unique values.
+    When using substitution, the
+    interface name will be appended to the ACL name.
 
-    The
-    "interface_ip" substitution field is resolved per interface type:
-    - For SVIs: resolved from
-    `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
-    - For network services L3
-    interfaces: resolved from the node's entry in `ip_addresses`.
-    - For network services L3 port-
-    channels: resolved from `ip_address`.
-    - For node type L3 interfaces and L3 port-channels: resolved
-    from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
-    If
-    the required field is not set, the substitution will fail with an error.
+    The "interface_ip" substitution field is resolved
+    per interface type:
+    - For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is used
+    as a fallback.
+    - For network services L3 interfaces: resolved from the node's entry in
+    `ip_addresses`.
+    - For network services L3 port-channels: resolved from `ip_address`.
+    - For node type
+    L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp" and `dhcp_ip` is
+    set for the interface, `dhcp_ip` is used.
+    If the required field is not set, the substitution will
+    fail with an error.
 
-    The "peer_ip" substitution
-    field is resolved per interface type:
-    - For SVIs: not supported. Substitution will fail with an
-    error if used.
-    - For network services L3 interfaces and L3 port-channels: not supported.
-    Substitution will fail with an error if used.
-    - For node type L3 interfaces and L3 port-channels:
-    resolved from `peer_ip`.
-    If `peer_ip` is not set on the interface, the substitution will fail with
-    an error.
+    The "peer_ip" substitution field is resolved per interface type:
+    - For SVIs:
+    not supported. Substitution will fail with an error if used.
+    - For network services L3 interfaces
+    and L3 port-channels: not supported. Substitution will fail with an error if used.
+    - For node type
+    L3 interfaces and L3 port-channels: resolved from `peer_ip`.
+    If `peer_ip` is not set on the
+    interface, the substitution will fail with an error.
 
-    Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with `Ipv4AclsItem`
+    items. Primary key is `name` (`str`).
     """
     ipv4_prefix_list_catalog: Ipv4PrefixListCatalog
     """
@@ -119182,9 +119243,10 @@ class EosDesigns(EosDesignsRootModel):
     IPv4 standard access-lists catalog.
     These access-lists will only be configured on devices where they
     are in use.
+    Field substitution is not supported.
 
-    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
-    (`str`).
+    Subclass of AvdIndexedList with
+    `Ipv4StandardAclsItem` items. Primary key is `name` (`str`).
     """
     ipv6_acls: Ipv6Acls
     """
@@ -121370,37 +121432,42 @@ class EosDesigns(EosDesignsRootModel):
                    `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port
                    profiles.
                    They will only be configured on devices where they are in use.
+                   They can also be referenced
+                   using `management_eapi.vrfs[].ipv4_acl` when
+                   `avd_design_future.raise_for_missing_management_eapi_acls` is enabled.
+                   Field substitution is not
+                   supported for eAPI references.
 
-                   The substitution is useful
-                   when assigning the same access-list on multiple interfaces where certain fields require unique
-                   values.
-                   When using substitution, the interface name will be appended to the ACL name.
+                   The substitution is useful when assigning the same access-list on
+                   multiple interfaces where certain fields require unique values.
+                   When using substitution, the
+                   interface name will be appended to the ACL name.
 
-                   The
-                   "interface_ip" substitution field is resolved per interface type:
-                   - For SVIs: resolved from
-                   `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
-                   - For network services L3
-                   interfaces: resolved from the node's entry in `ip_addresses`.
-                   - For network services L3 port-
-                   channels: resolved from `ip_address`.
-                   - For node type L3 interfaces and L3 port-channels: resolved
-                   from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
-                   If
-                   the required field is not set, the substitution will fail with an error.
+                   The "interface_ip" substitution field is resolved
+                   per interface type:
+                   - For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is used
+                   as a fallback.
+                   - For network services L3 interfaces: resolved from the node's entry in
+                   `ip_addresses`.
+                   - For network services L3 port-channels: resolved from `ip_address`.
+                   - For node type
+                   L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp" and `dhcp_ip` is
+                   set for the interface, `dhcp_ip` is used.
+                   If the required field is not set, the substitution will
+                   fail with an error.
 
-                   The "peer_ip" substitution
-                   field is resolved per interface type:
-                   - For SVIs: not supported. Substitution will fail with an
-                   error if used.
-                   - For network services L3 interfaces and L3 port-channels: not supported.
-                   Substitution will fail with an error if used.
-                   - For node type L3 interfaces and L3 port-channels:
-                   resolved from `peer_ip`.
-                   If `peer_ip` is not set on the interface, the substitution will fail with
-                   an error.
+                   The "peer_ip" substitution field is resolved per interface type:
+                   - For SVIs:
+                   not supported. Substitution will fail with an error if used.
+                   - For network services L3 interfaces
+                   and L3 port-channels: not supported. Substitution will fail with an error if used.
+                   - For node type
+                   L3 interfaces and L3 port-channels: resolved from `peer_ip`.
+                   If `peer_ip` is not set on the
+                   interface, the substitution will fail with an error.
 
-                   Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with `Ipv4AclsItem`
+                   items. Primary key is `name` (`str`).
                 ipv4_prefix_list_catalog:
                    IPv4 prefix-list catalog.
                    Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in
@@ -121417,9 +121484,10 @@ class EosDesigns(EosDesignsRootModel):
                    IPv4 standard access-lists catalog.
                    These access-lists will only be configured on devices where they
                    are in use.
+                   Field substitution is not supported.
 
-                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
-                   (`str`).
+                   Subclass of AvdIndexedList with
+                   `Ipv4StandardAclsItem` items. Primary key is `name` (`str`).
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be

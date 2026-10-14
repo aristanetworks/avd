@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.run_once import run_once_method
 from pyavd._utils.undefined import Undefined, UndefinedType
 
@@ -54,8 +54,41 @@ class UtilsMixin(Protocol):
         ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
         self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
 
-    def _set_ipv4_standard_acl(self: StructuredConfigUtilsProtocol, acl_name: str) -> None:
+    def _set_ipv4_standard_acl(self: StructuredConfigUtilsProtocol, acl_name: str, *, context: str | None = None) -> None:
+        """Append an IPv4 standard ACL from the catalog, with optional reference context for errors."""
         if acl_name not in self.inputs.ipv4_standard_acls:
+            if context is not None:
+                msg = (
+                    f"'{context}': ACL '{acl_name}' must be defined under 'ipv4_standard_acls'. "
+                    f"The ACL was {'found' if acl_name in self.inputs.ipv4_acls else 'not found'} in 'ipv4_acls'."
+                )
+                raise AristaAvdInvalidInputsError(msg)
             msg = f"ipv4_standard_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
         self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))
+
+    def _validate_ipv4_acl_names(self: StructuredConfigUtilsProtocol) -> None:
+        """Reject extended and standard IPv4 ACLs sharing a name on the rendered device."""
+        if not (extended_acls := self.structured_config._get("ip_access_lists")):
+            return
+        if not (standard_acls := self.structured_config._get("standard_access_lists")):
+            return
+
+        for acl in standard_acls:
+            if acl.name in extended_acls:
+                msg = (
+                    f"'standard_access_lists[name={acl.name}]': ACL '{acl.name}' expected from 'ipv4_standard_acls' "
+                    "is also rendered under 'ip_access_lists' (extended ACL catalog 'ipv4_acls'). "
+                    "Extended and standard ACL names must be distinct on each device."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+
+    def _set_ipv4_acl_from_catalog(self: StructuredConfigUtilsProtocol, acl_name: str, *, context: str) -> None:
+        """Validate and append an IPv4 extended ACL from the catalog."""
+        if acl_name not in self.inputs.ipv4_acls:
+            msg = (
+                f"'{context}': ACL '{acl_name}' must be defined under 'ipv4_acls'. "
+                f"The ACL was {'found' if acl_name in self.inputs.ipv4_standard_acls else 'not found'} in 'ipv4_standard_acls'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+        self._set_ipv4_acl(self.shared_utils.get_ipv4_acl(acl_name, context))

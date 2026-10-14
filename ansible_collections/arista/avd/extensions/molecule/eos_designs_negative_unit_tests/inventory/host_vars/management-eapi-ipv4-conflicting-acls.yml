@@ -1,0 +1,20 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: management-eapi-ipv4-conflicting-acls
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+management_eapi:
+  enabled: true
+  vrfs:
+    - name: management
+      enabled: true
+      ipv4_acl: EXTENDED
+      ipv4_standard_acl: STANDARD
+
+expected_error_message: >-
+  'management_eapi.vrfs[name=management].ipv4_acl' (ACL 'EXTENDED') and 'management_eapi.vrfs[name=management].ipv4_standard_acl' (ACL 'STANDARD') are
+  mutually exclusive. Expected catalogs are 'ipv4_acls' for extended ACLs and 'ipv4_standard_acls' for standard ACLs.
