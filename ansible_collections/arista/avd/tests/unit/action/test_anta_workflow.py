@@ -368,7 +368,7 @@ def test_action_module_run_raises_on_invalid_args(
     error_match: str,
 ) -> None:
     """run() raises AnsibleActionFail for invalid argument combinations (empty device list, disabled catalogs, missing dirs)."""
-    module = action_module(ActionModule, ansible_name=PLUGIN_NAME)
+    module = action_module(ActionModule)
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
         patch(f"{MODULE_PATH}.setup_anta_debug_mode"),
@@ -376,7 +376,7 @@ def test_action_module_run_raises_on_invalid_args(
         patch(f"{MODULE_PATH}.strip_empties_from_dict", side_effect=lambda d: d),
         patch(f"{MODULE_PATH}.get_ansible_vars", return_value={"leaf1": {}}),
         patch(f"{MODULE_PATH}.ActionPluginVars"),
-        pytest.raises(AnsibleActionFail, match=error_match),
+        pytest.raises(AnsibleActionFail, match=rf"Error during plugin '{re.escape(PLUGIN_NAME)}' execution: {error_match}"),
     ):
         module.run(task_vars={})
 

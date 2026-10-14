@@ -566,9 +566,9 @@ class TestAVDActionPlugin:
         try:
             logger.addHandler(sticky_handler)
             expected_handlers = [*original_handlers, sticky_handler]
-            plugin = action_module(ActionModule, ansible_name="pytest_action_plugin")
+            plugin = action_module(ActionModule)
             if raises:
-                with pytest.raises(AnsibleActionFail, match="Intentional failure"):
+                with pytest.raises(AnsibleActionFail, match="Error during plugin 'pytest_action_plugin' execution: Intentional failure"):
                     plugin.run()
             else:
                 plugin.run()
