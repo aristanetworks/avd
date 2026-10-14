@@ -7,7 +7,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
-from pyavd._cv.client.exceptions import CVChangeControlFailed
+from pyavd._cv.client.exceptions import CVChangeControlFailed, CVResourceInvalidState
 
 from .utils import update_change_control_details_on_cv
 
@@ -20,6 +20,7 @@ LOGGER = getLogger(__name__)
 
 CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP = {
     ChangeControlStatus.COMPLETED: "completed",
+    ChangeControlStatus.NOT_STARTED: None,
     ChangeControlStatus.RUNNING: "running",
     ChangeControlStatus.SCHEDULED: "scheduled",
     ChangeControlStatus.UNSPECIFIED: None,
@@ -29,13 +30,18 @@ CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP = {True: "approved", False: None}
 
 
 def get_change_control_state(cv_change_control: ChangeControl) -> str:
-    """Return the current Change Control state."""
+    """Resolve CloudVision status, approval, and error details to an AVD Change Control state."""
+    if cv_change_control.status not in CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP:
+        msg = (
+            f"Cannot finalize the Change Control '{cv_change_control.key.id}' with unknown CloudVision status value '{cv_change_control.status.value}'. "
+            "AVD cannot safely determine the current state of the Change Control."
+        )
+        raise CVResourceInvalidState(msg)
+
     return (
         CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP[cv_change_control.status]
         or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[cv_change_control.approve.value]
-        or "failed"
-        if cv_change_control.error is not None
-        else "pending approval"
+        or ("failed" if cv_change_control.error is not None else "pending approval")
     )
 
 
