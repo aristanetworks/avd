@@ -31,8 +31,6 @@ keys:
                     description: Hashed password using the password_type.
                   password_type:
                     type: str
-                    convert_types:
-                      - int
                     valid_values: ["0", "7", "8a"]
                     default: "7"
               shutdown:
@@ -63,16 +61,10 @@ keys:
                 description: Set the grace period in seconds for which the OpenStack agent waits for OpenStack region data.
                 min: 0
                 max: 14400
-                convert_types:
-                  - str
               ip_access_group_name:
                 type: str
-                convert_types:
-                  - int
               ipv6_access_group_name:
                 type: str
-                convert_types:
-                  - int
               name_resolution:
                 type: dict
                 keys:
@@ -83,8 +75,6 @@ keys:
                     type: int
                     min: 0
                     max: 86400
-                    convert_types:
-                      - str
                     description: Set the time interval in seconds between name updates, 0 to disable.
               network_type_driver:
                 type: dict
@@ -104,15 +94,11 @@ keys:
                     name:
                       description: The name of the region. This must match what is in use in the ML2 driver configuration.
                       type: str
-                      convert_types:
-                        - int
                     username:
                       type: str
                       description: "'admin' or valid keystone user."
                     password:
                       type: str
-                      convert_types:
-                        - int
                     password_type:
                       type: str
                       default: "7"
@@ -120,8 +106,6 @@ keys:
                         - "0"
                         - "7"
                         - "8a"
-                      convert_types:
-                        - int
                     tenant:
                       type: str
                       description: Tenant name.

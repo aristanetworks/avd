@@ -17,8 +17,6 @@ keys:
           description: Group Name.
         vrf:
           type: str
-          convert_types:
-            - int
         neighbors:
           type: list
           items:

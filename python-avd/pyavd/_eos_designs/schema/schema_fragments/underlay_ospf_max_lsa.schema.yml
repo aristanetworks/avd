@@ -10,6 +10,4 @@ keys:
     documentation_options:
       table: ospf-settings
     type: int
-    convert_types:
-      - str
     default: 12000
