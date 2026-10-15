@@ -50,3 +50,4 @@
       - result.ansible_facts.vrfs | length == 1
       - result.ansible_facts.vrfs[0].name == "MGMT"
       - result.ansible_facts.vrfs[0].ip_routing == true
+      - result.ansible_facts.vrfs[0].description == "Management VRF from custom template 2"
