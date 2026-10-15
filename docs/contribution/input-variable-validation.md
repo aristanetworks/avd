@@ -89,6 +89,9 @@ The supported schema options for AVD Schema are described in a meta-schema using
 can be seen [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_schema/avd_meta_schema.json). In addition, below is a more detailed description of the supported
 schema options per variable type.
 
+The meta-schema is generated from the source-schema models in `pyavd-utils-gen` when running `make -C python-avd compile-schemas`.
+Update those models in [pyavd-utils](https://github.com/aristanetworks/pyavd-utils) when changing the supported schema options, then regenerate the meta-schema in AVD.
+
 All schema options (ex. `type`, `max`, `valid_values`) are validated individually, and to pass the validation, the data must
 conform to all the rules given by the schema options.
 This means that the validator may report multiple errors about the same piece of data if it violates more than on rule.

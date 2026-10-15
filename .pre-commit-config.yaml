@@ -305,7 +305,7 @@ repos:
         name: Build AVD schemas and documentation.
         entry: sh -c 'exec python-avd/scripts/build_schemas.py'
         language: python
-        files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
+        files: (python-avd/pyavd/[a-z_]+/schema|python-avd/pyavd/_schema/avd_meta_schema\.json$|python-avd/schema_tools/|schemas/[a-z_]+)
         pass_filenames: false
         additional_dependencies:
           - deepmerge>=1.1.0

@@ -79,7 +79,7 @@ def combine_schemas() -> None:
 
 
 def validate_schemas(schema_store: dict) -> None:
-    """Validate schemas according to metaschema."""
+    """Validate unresolved source schemas according to the metaschema."""
     if not HAS_JSONSCHEMA_RS:
         LOGGER.warning(
             "'jsonschema_rs' was not found. If you are a developer using AVD make sure to install the dev requirements for the collection. "
@@ -133,14 +133,19 @@ def build_schema_classes() -> None:
 
 
 def build_schemas() -> None:
-    """Combines the schema fragments, and rebuild the pickled schemas."""
+    """Generate the metaschema, combine schema fragments, and rebuild schema artifacts."""
+    from pyavd_utils_gen.metaschema import generate_metaschema  # noqa: PLC0415
+
+    LOGGER.info("Generating AVD metaschema")
+    generate_metaschema(METASCHEMA_FILE)
     combine_schemas()
+    # The metaschema describes authored schemas, before reference resolution moves root-only fields into nested schemas.
+    validate_schemas(create_store(load_from_yaml=True))
     from pyavd_utils_gen.schema_store import compile_schema_archive  # noqa: PLC0415
 
     LOGGER.info("Compiling archived schema store")
     compile_schema_archive(SCHEMA_STORE_GZ_FILE, SCHEMA_STORE_ARCHIVE_FILE)
     LOGGER.info("Rebuilding pickled schemas")
-    schema_store = create_store(force_rebuild=True)
-    validate_schemas(schema_store)
+    create_store(force_rebuild=True)
     build_schema_tables()
     build_schema_classes()
