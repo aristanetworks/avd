@@ -440,9 +440,9 @@ class UtilsMixin(Protocol):
         """Given an IP/mask like '10.0.0.0/31', return the other host in the subnet (e.g., '10.0.0.1')."""
         iface = ip_interface(source_ip_cidr)
         prefixlen = iface.network.prefixlen
-        if prefixlen == 31:  # noqa: PLR2004
+        if prefixlen == 31:
             return str(IPv4Address(int(iface.ip) ^ 1))
-        if prefixlen == 30:  # noqa: PLR2004
+        if prefixlen == 30:
             host_offset = int(iface.ip) - int(iface.network.network_address)
             if host_offset not in (1, 2):
                 msg = f"Source IP '{source_ip_cidr}' is not a usable host address in a /30 subnet."

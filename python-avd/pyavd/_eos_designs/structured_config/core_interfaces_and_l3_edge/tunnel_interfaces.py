@@ -6,16 +6,14 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.password_utils.password import isis_encrypt, ospf_message_digest_encrypt
 
 if TYPE_CHECKING:
-    from .utils import T_P2pLinksItem
-
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
+    from .utils import T_P2pLinksItem
 
 
 class TunnelInterfacesMixin(Protocol):
