@@ -33,7 +33,6 @@ rules:
     ignore:
       - /python-avd/pyavd/**/schema/*.schema.yml
       - /python-avd/tests/pyavd/schema/
-      - /python-avd/tests/schema_tools/artifacts/*.schema.yml
   hyphens:
     level: error
   key-duplicates:
