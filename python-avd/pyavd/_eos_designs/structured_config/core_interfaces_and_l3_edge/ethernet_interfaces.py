@@ -38,6 +38,7 @@ class EthernetInterfacesMixin(Protocol):
                         self.shared_utils.interface_descriptions.underlay_ethernet_interface(
                             InterfaceDescriptionData(
                                 shared_utils=self.shared_utils,
+                                description=p2p_link_data.get("description"),
                                 interface=source_interface,
                                 link_type=self.data_model,
                                 peer=p2p_link_data["peer"],

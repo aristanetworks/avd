@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import re
 from functools import cached_property
-from ipaddress import ip_interface, ip_network
+from ipaddress import IPv4Address, ip_interface, ip_network
 from itertools import islice
 from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 
@@ -439,12 +439,18 @@ class UtilsMixin(Protocol):
     def _get_crypto_peer_ip(source_ip_cidr: str) -> str:
         """Given an IP/mask like '10.0.0.0/31', return the other host in the subnet (e.g., '10.0.0.1')."""
         iface = ip_interface(source_ip_cidr)
-        network = iface.network
-        hosts = list(network.hosts())
-        if len(hosts) < 2:
-            msg = f"Cannot derive crypto peer IP from '{source_ip_cidr}'. Subnet must contain at least 2 hosts (/31 or /30)."
-            raise AristaAvdInvalidInputsError(msg)
-        return str(hosts[1]) if iface.ip == hosts[0] else str(hosts[0])
+        prefixlen = iface.network.prefixlen
+        if prefixlen == 31:  # noqa: PLR2004
+            return str(IPv4Address(int(iface.ip) ^ 1))
+        if prefixlen == 30:  # noqa: PLR2004
+            host_offset = int(iface.ip) - int(iface.network.network_address)
+            if host_offset not in (1, 2):
+                msg = f"Source IP '{source_ip_cidr}' is not a usable host address in a /30 subnet."
+                raise AristaAvdInvalidInputsError(msg)
+            peer_offset = 3 - host_offset
+            return str(iface.network.network_address + peer_offset)
+        msg = f"Cannot derive crypto peer IP from '{source_ip_cidr}'. Only /30 and /31 subnets are supported."
+        raise AristaAvdInvalidInputsError(msg)
 
     def _update_interface_multicast_config(
         self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
