@@ -87,8 +87,8 @@
 
 | POD | Node | Type | MPLS Router ID | LDP Enabled |
 | --- | ---- | ---- | -------------- | ----------- |
-{%     for fabric_switch in fabric_switches | selectattr("mpls_router_id", "arista.avd.defined") %}
-| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.type }} | {{ fabric_switch.mpls_router_id }} | {{ fabric_switch.mpls_ldp_enabled | arista.avd.default("-") }} |
+{%     for fabric_switch in fabric_switches if fabric_switch.mpls_router_id is arista.avd.defined or fabric_switch.mpls_ldp_enabled is arista.avd.defined(true) %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.type }} | {{ fabric_switch.mpls_router_id | arista.avd.default("-") }} | {{ fabric_switch.mpls_ldp_enabled | arista.avd.default("-") }} |
 {%     endfor %}
 {% endif %}
 {% if has_isis_sr %}

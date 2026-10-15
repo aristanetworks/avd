@@ -15,6 +15,33 @@ if TYPE_CHECKING:
     from tests.models import MoleculeScenario
 
 
+@pytest.mark.parametrize(
+    ("mpls_config", "include_table"),
+    [
+        ({}, False),
+        ({"ip": True}, False),
+        ({"ldp": {"router_id": "192.0.2.1", "shutdown": False}}, True),
+        ({"ldp": {"router_id": "192.0.2.1", "shutdown": True}}, True),
+        ({"ldp": {"router_id": "192.0.2.1"}}, True),
+        ({"ldp": {"shutdown": False}}, True),
+    ],
+)
+def test_get_fabric_documentation_with_ldp_configuration(mpls_config: dict, include_table: bool) -> None:
+    """Include configured LDP nodes even when LDP is shut down or shutdown is unspecified."""
+    output = get_fabric_documentation(
+        avd_facts={"p1": EosDesignsFacts(type="p", pod="POD1"), "p2": EosDesignsFacts(type="p", pod="POD1")},
+        structured_configs={"p1": {"mpls": mpls_config}, "p2": {}},
+        fabric_name="MPLS_CORE",
+        toc=False,
+    )
+
+    assert ("### MPLS and LDP Configuration" in output.fabric_documentation) is include_table
+    if include_table:
+        router_id = mpls_config["ldp"].get("router_id", "-")
+        assert output.fabric_documentation.count(f"| POD1 | p1 | p | {router_id} |") == 1
+    assert "| POD1 | p2 | p |" not in output.fabric_documentation
+
+
 @pytest.mark.molecule_scenarios("eos_designs-mpls-isis-sr-ldp")
 @pytest.mark.parametrize(("include_vrf_summary", "include_bgp_peer_groups"), [(True, True), (True, False), (False, True), (False, False)])
 def test_fabric_documentation_with_node_specific_settings(
@@ -33,8 +60,11 @@ def test_fabric_documentation_with_node_specific_settings(
     assert ("### VRF Summary" in documentation) is include_vrf_summary
     assert ("### BGP Peer Groups" in documentation) is include_bgp_peer_groups
     if include_vrf_summary:
-        assert "| TENANT_B_WAN | 20 | 65000:20 | 65000:20 | SITE1-LER2 |" in documentation
-        assert "| TENANT_B_WAN | 20 | 65000:120, 65000:20 | 65000:20, 65000:220 | SITE2-LER1 |" in documentation
+        assert ("| TENANT_B_WAN | 20 | vpn-ipv4 65000:20, vpn-ipv6 65000:20 | vpn-ipv4 65000:20, vpn-ipv6 65000:20 | SITE1-LER2 |") in documentation
+        assert (
+            "| TENANT_B_WAN | 20 | vpn-ipv4 65000:120, vpn-ipv4 65000:20, vpn-ipv6 65000:20 | "
+            "vpn-ipv4 65000:20, vpn-ipv4 65000:220, vpn-ipv6 65000:20 | SITE2-LER1 |"
+        ) in documentation
     if include_bgp_peer_groups:
         assert "| DOCUMENTATION-EBGP-PEERS | 65101 | Loopback0 | Yes | all | SITE1-LER2 |" in documentation
         assert "| DOCUMENTATION-EBGP-PEERS | 65102 | Ethernet1 | No | standard | SITE2-LER1 |" in documentation
