@@ -45,6 +45,7 @@ class LoopbackInterfacesMixin(Protocol):
                     loopback_interface_item = EosCliConfigGen.LoopbackInterfacesItem(
                         name=f"Loopback{loopback.loopback}",
                         ip_address=loopback.ip_address,
+                        ipv6_addresses=loopback.ipv6_addresses._cast_as(EosCliConfigGen.LoopbackInterfacesItem.Ipv6Addresses),
                         shutdown=not loopback.enabled,
                         description=loopback.description,
                         eos_cli=loopback.raw_eos_cli,

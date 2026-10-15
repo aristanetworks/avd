@@ -7100,7 +7100,10 @@ keys:
                       max: 8191
                     ip_address:
                       type: str
-                      required: true
+                    ipv6_addresses:
+                      type: list
+                      items:
+                        type: str
                     description:
                       type: str
                     enabled:

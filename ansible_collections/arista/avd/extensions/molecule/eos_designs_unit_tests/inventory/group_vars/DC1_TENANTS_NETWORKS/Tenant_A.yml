@@ -394,6 +394,9 @@ tenant_a:
         loopbacks:
           - loopback: 123
             ip_address: 10.1.53.0/32
+            ipv6_addresses:
+              - fd5a:fe45:8831:06c5::a/64
+              - 8:8:8:8:8:8:8:8/124
             node: dc1-leaf2a
             description: Test-Loopback
             enabled: true
