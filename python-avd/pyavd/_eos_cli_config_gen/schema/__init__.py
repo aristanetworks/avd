@@ -4598,7 +4598,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Subclass of AvdModel.
         """
         reply_source_address_validation: bool | None
-        """Validate reply source address matches configured server."""
+        """
+        Validate reply source address matches configured server.
+        Supported starting with 4.33.10M, 4.34.8M,
+        4.35.6M, and 4.36.2F.
+        """
 
         if TYPE_CHECKING:
 
@@ -4625,7 +4629,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Configure DHCP client request settings.
 
                        Subclass of AvdModel.
-                    reply_source_address_validation: Validate reply source address matches configured server.
+                    reply_source_address_validation:
+                       Validate reply source address matches configured server.
+                       Supported starting with 4.33.10M, 4.34.8M,
+                       4.35.6M, and 4.36.2F.
 
                 """
 
@@ -29538,7 +29545,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
-            Environment: TypeAlias = Literal["act"]
+            Environment: TypeAlias = Literal["act", "containerlab"]
             _fields: ClassVar[dict] = {
                 "environment": {"type": str},
                 "node_type": {"type": str},
@@ -57621,6 +57628,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "description": {"type": str},
                     "route_reflector_client": {"type": bool},
                     "ebgp_multihop": {"type": int},
+                    "ttl_maximum_hops": {"type": int},
                     "next_hop_peer": {"type": bool},
                     "next_hop_self": {"type": bool},
                     "shutdown": {"type": bool},
@@ -57684,6 +57692,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 route_reflector_client: bool | None
                 ebgp_multihop: int | None
                 """Time-to-live in range of hops."""
+                ttl_maximum_hops: int | None
+                """Maximum number of hops."""
                 next_hop_peer: bool | None
                 next_hop_self: bool | None
                 shutdown: bool | None
@@ -57750,6 +57760,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         description: str | UndefinedType | None = Undefined,
                         route_reflector_client: bool | UndefinedType | None = Undefined,
                         ebgp_multihop: int | UndefinedType | None = Undefined,
+                        ttl_maximum_hops: int | UndefinedType | None = Undefined,
                         next_hop_peer: bool | UndefinedType | None = Undefined,
                         next_hop_self: bool | UndefinedType | None = Undefined,
                         shutdown: bool | UndefinedType | None = Undefined,
@@ -57808,6 +57819,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             description: description
                             route_reflector_client: route_reflector_client
                             ebgp_multihop: Time-to-live in range of hops.
+                            ttl_maximum_hops: Maximum number of hops.
                             next_hop_peer: next_hop_peer
                             next_hop_self: next_hop_self
                             shutdown: shutdown
@@ -76646,6 +76658,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "ipv4": {"type": Ipv4},
                 "ipv6": {"type": Ipv6},
                 "passive_interface": {"type": bool},
+                "no_passive_interface": {"type": bool},
                 "network_point_to_point": {"type": bool},
             }
             ipv4: Ipv4
@@ -76653,7 +76666,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv6: Ipv6
             """Subclass of AvdModel."""
             passive_interface: bool | None
-            """Include interface but without actively running OSPF."""
+            """Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`."""
+            no_passive_interface: bool | None
+            """Disable passive interface mode."""
             network_point_to_point: bool | None
 
             if TYPE_CHECKING:
@@ -76664,6 +76679,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv4: Ipv4 | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
                     passive_interface: bool | UndefinedType | None = Undefined,
+                    no_passive_interface: bool | UndefinedType | None = Undefined,
                     network_point_to_point: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -76675,7 +76691,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
-                        passive_interface: Include interface but without actively running OSPF.
+                        passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
+                        no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point
 
                     """
@@ -78976,6 +78993,62 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Vrfs._item_type = VrfsItem
 
+    class Vrrp(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Ipv4(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"authentication_anti_replay": {"type": bool}}
+            authentication_anti_replay: bool | None
+            """
+            Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
+            Supported in EOS
+            starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, authentication_anti_replay: bool | UndefinedType | None = Undefined) -> None:
+                    """
+                    Ipv4.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        authentication_anti_replay:
+                           Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
+                           Supported in EOS
+                           starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.
+
+                    """
+
+        _fields: ClassVar[dict] = {"ipv4": {"type": Ipv4}}
+        ipv4: Ipv4
+        """
+        VRRP IPv4 configuration.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, ipv4: Ipv4 | UndefinedType = Undefined) -> None:
+                """
+                Vrrp.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    ipv4:
+                       VRRP IPv4 configuration.
+
+                       Subclass of AvdModel.
+
+                """
+
     class VxlanInterface(AvdModel):
         """Subclass of AvdModel."""
 
@@ -79751,6 +79824,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "vlans": {"type": Vlans},
         "vmtracer_sessions": {"type": VmtracerSessions},
         "vrfs": {"type": Vrfs},
+        "vrrp": {"type": Vrrp},
         "vxlan_interface": {"type": VxlanInterface},
     }
     _allow_other_keys: ClassVar[bool] = True
@@ -80413,6 +80487,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     Subclass of AvdIndexedList with
     `VrfsItem` items. Primary key is `name` (`str`).
     """
+    vrrp: Vrrp
+    """
+    Global VRRP configuration.
+
+    Subclass of AvdModel.
+    """
     vxlan_interface: VxlanInterface
     """Subclass of AvdModel."""
 
@@ -80629,6 +80709,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlans: Vlans | UndefinedType = Undefined,
             vmtracer_sessions: VmtracerSessions | UndefinedType = Undefined,
             vrfs: Vrfs | UndefinedType = Undefined,
+            vrrp: Vrrp | UndefinedType = Undefined,
             vxlan_interface: VxlanInterface | UndefinedType = Undefined,
         ) -> None:
             """
@@ -81041,6 +81122,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdIndexedList with
                    `VrfsItem` items. Primary key is `name` (`str`).
+                vrrp:
+                   Global VRRP configuration.
+
+                   Subclass of AvdModel.
                 vxlan_interface: Subclass of AvdModel.
 
             """

@@ -1,0 +1,37 @@
+---
+# Not documented as supported. Guards existing rendering for users already running it:
+# RFC5549 underlay + overlay_mlag_rfc5549 with an IPv6 MLAG peer link on the shared MLAG peer VLAN.
+underlay_rfc5549: true
+overlay_mlag_rfc5549: true
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 10.10.60.0/24
+    vtep_loopback_ipv4_pool: 10.10.61.0/24
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_peer_address_family: ipv6
+    mlag_peer_ipv6_pool: 2001:DB8:62::/48
+    mlag_peer_l3_vlan: 0
+    virtual_router_mac_address: 00:1c:73:00:00:99
+  node_groups:
+    - group: MLAG_PEER_VLAN_L3_IPV6_RFC5549
+      bgp_as: 65160
+      nodes:
+        - name: mlag-peer-vlan-l3-ipv6-rfc5549-l3leaf1a
+          id: 1
+          mgmt_ip: 192.168.201.122/24
+        - name: mlag-peer-vlan-l3-ipv6-rfc5549-l3leaf1b
+          id: 2
+          mgmt_ip: 192.168.201.123/24
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF10
+        vrf_vni: 10
+        svis:
+          - id: 11
+            name: VRF10_VLAN11
+            ip_address_virtual: 10.10.11.1/24

@@ -177,6 +177,7 @@ Serial Number: DEADBEEFC0FFEW
 - [Routing](#routing)
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
+  - [VRRP](#vrrp)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -8726,6 +8727,19 @@ Multi agent routing protocol model enabled
 service routing protocols model multi-agent
 ```
 
+### VRRP
+
+#### VRRP Summary
+
+VRRPv2 IPv4 Authentication Anti-Replay: Enabled
+
+#### VRRP Device Configuration
+
+```eos
+!
+vrrp ipv4 authentication anti-replay
+```
+
 ### Virtual Router MAC Address
 
 #### Virtual Router MAC Address Summary
@@ -10115,13 +10129,15 @@ ASN Notation: asdot
 | 11.11.11.0 | - | NHP-PEER1 | - | - | - | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 0 (no limit) | - | - | - | - | - | - | - |
-| 10.2.3.4 | 1234 | TENANT_A_PROJECT01 | - | all | 0 (no limit) (warning-limit 100, warning-only) | 1000 (warning-limit 80 percent) | - | - | - | - | - | - | - |
+| 10.2.3.4 | 1234 | TENANT_A_PROJECT01 | - | all | 0 (no limit) (warning-limit 100, warning-only) | 1000 (warning-limit 80 percent) | - | - | - | - | - | - | 1 |
 | 11.1.1.1 | - | TENANT_A_PROJECT01 | - | - | - | 0 (no limit) (warning-limit 80 percent) | - | - | - | - | - | - | - |
 | 12.1.1.1 | - | TENANT_A_PROJECT01 | - | - | - | 0 (no limit) (warning-limit 180) | - | - | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | standard | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
 | 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | extended | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
 | 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | large | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
 | 10.255.251.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | True | - | - | - | - |
+| 192.0.2.1 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | Inherited from peer group TEST |
+| 192.0.2.2 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | 0 |
 | 1.1.1.1 | - | VRF02 | - | - | - | - | - | - | - | - | - | - | - |
 | 192.168.0.10 | - | VRF02 | - | - | - | 10 (never warn) | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
@@ -10409,6 +10425,7 @@ ASN Notation: asdot
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | - | IPv4: True<br>Transit: True |
 | TENANT_A_PROJECT04 | 192.168.255.3:14 | - | - | IPv4: True<br>Transit: False |
 | Tenant_B | 10.50.64.15:30002 | - | - | IPv4: False<br>Transit: False |
+| TTL-SECURITY | - | - | - | IPv4: False<br>Transit: False |
 | VRF01 | - | user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
 | VRF02 | - | dynamic<br>user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
 | VRF03 | - | dynamic | - | IPv4: False<br>Transit: False |
@@ -11421,6 +11438,7 @@ router bgp 65101
       neighbor 10.2.3.4 local-as 123 no-prepend replace-as
       neighbor 10.2.3.4 description Tenant A BGP Peer
       neighbor 10.2.3.4 ebgp-multihop 3
+      neighbor 10.2.3.4 ttl maximum-hops 1
       neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
       neighbor 10.2.3.4 default-originate route-map RM-10.2.3.4-SET-NEXT-HOP-OUT always
       neighbor 10.2.3.4 send-community
@@ -11513,6 +11531,11 @@ router bgp 65101
       route-target import evpn 1:30002
       route-target export evpn 1:30002
       route-target export evpn route-map RM-DEFAULT-EXTRA-COMM
+   !
+   vrf TTL-SECURITY
+      neighbor 192.0.2.1 peer group TEST
+      neighbor 192.0.2.2 peer group TEST
+      neighbor 192.0.2.2 ttl maximum-hops 0
    !
    vrf VRF01
       bgp additional-paths install

@@ -38,4 +38,6 @@ keys:
                 - int
       reply_source_address_validation:
         type: bool
-        description: Validate reply source address matches configured server.
+        description: |-
+          Validate reply source address matches configured server.
+          Supported starting with 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
