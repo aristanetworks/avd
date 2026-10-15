@@ -65,7 +65,7 @@ underlay_ipv6_peer_group: ipv6_underlay_peers
 bgp_peer_groups:
   ipv6_underlay_peers:
     name: IPV6-UNDERLAY-PEERS
-    password: "{{ vault_bgp_password }}"
+    cleartext_password: "{{ vault_bgp_password }}"
     bfd: true
 ```
 
@@ -76,7 +76,7 @@ underlay_ipv6_peer_group: underlay_peers
 bgp_peer_groups:
   underlay_peers:
     name: UNDERLAY-PEERS
-    password: "{{ vault_bgp_password }}"
+    cleartext_password: "{{ vault_bgp_password }}"
     bfd: true
 ```
 

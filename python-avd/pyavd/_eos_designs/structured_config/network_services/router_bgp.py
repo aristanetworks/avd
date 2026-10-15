@@ -113,11 +113,13 @@ class RouterBgpMixin(Protocol):
                 self.structured_config.router_bgp.address_family_ipv6.peer_groups.append(af_peer_group)
 
         # router bgp default vrf configuration for evpn
-        # TODO: Need to revisit, as we have default af_type as ipv4 and we are now configuring the peer group on ipv6_numbered
-        target_peer_group = self.structured_config.router_bgp.peer_groups.get(self.shared_utils.underlay_bgp_ipv4_peer_group.name)
+        underlay_peer_group = (
+            self.shared_utils.underlay_bgp_ipv6_peer_group if self.shared_utils.underlay_ipv6_numbered else self.shared_utils.underlay_bgp_ipv4_peer_group
+        )
+        target_peer_group = self.structured_config.router_bgp.peer_groups.get(underlay_peer_group.name)
         if self._vrf_default_evpn and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]) and target_peer_group:
             # Set this only when peer group exists.
-            target_peer_group.metadata.type = "ipv4"
+            target_peer_group.metadata.type = "ipv6" if self.shared_utils.underlay_ipv6_numbered else "ipv4"
             target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
             self.set_once_route_map_bgp_underlay_peers_out()
 
