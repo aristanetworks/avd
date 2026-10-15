@@ -1,12 +1,43 @@
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import pytest
 
 from pyavd import get_fabric_documentation
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd.api.fabric_documentation import ContainerlabDigitalTwin, FabricDocumentation
+
+if TYPE_CHECKING:
+    from tests.models import MoleculeScenario
+
+
+@pytest.mark.molecule_scenarios("eos_designs-mpls-isis-sr-ldp")
+@pytest.mark.parametrize(("include_vrf_summary", "include_bgp_peer_groups"), [(True, True), (True, False), (False, True), (False, False)])
+def test_fabric_documentation_with_node_specific_settings(
+    molecule_scenario: MoleculeScenario, include_vrf_summary: bool, include_bgp_peer_groups: bool
+) -> None:
+    """Render the MPLS fixture without hiding VRF or eBGP peer-group differences."""
+    output = get_fabric_documentation(
+        avd_facts=molecule_scenario.avd_facts,
+        structured_configs={host.name: host.structured_config for host in molecule_scenario.hosts},
+        fabric_name="MPLS_CORE",
+        include_vrf_summary=include_vrf_summary,
+        include_bgp_peer_groups=include_bgp_peer_groups,
+    )
+    documentation = output.fabric_documentation
+    assert documentation is not None
+    assert ("### VRF Summary" in documentation) is include_vrf_summary
+    assert ("### BGP Peer Groups" in documentation) is include_bgp_peer_groups
+    if include_vrf_summary:
+        assert "| TENANT_B_WAN | 20 | 65000:20 | 65000:20 | SITE1-LER2 |" in documentation
+        assert "| TENANT_B_WAN | 20 | 65000:120, 65000:20 | 65000:20, 65000:220 | SITE2-LER1 |" in documentation
+    if include_bgp_peer_groups:
+        assert "| DOCUMENTATION-EBGP-PEERS | 65101 | Loopback0 | Yes | all | SITE1-LER2 |" in documentation
+        assert "| DOCUMENTATION-EBGP-PEERS | 65102 | Ethernet1 | No | standard | SITE2-LER1 |" in documentation
 
 
 def test_get_fabric_documentation_with_no_connected_endpoints(monkeypatch: pytest.MonkeyPatch) -> None:

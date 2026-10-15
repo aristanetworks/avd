@@ -203,31 +203,35 @@ class FabricDocumentationFacts(AvdFacts):
     @cached_property
     def vrf_summary(self) -> list[dict]:
         """List of VRFs with RD/RT allocations across the fabric."""
-        vrf_data: dict[str, dict] = {}
+        vrf_data: dict[tuple, dict] = {}
         for hostname, structured_config in self.structured_configs.items():
-            router_bgp = get(structured_config, "router_bgp", default={})
-            for vrf in get(router_bgp, "vrfs", default=[]):
-                vrf_name = get(vrf, "name")
-                if not vrf_name or vrf_name == "default":
+            for vrf in get(structured_config, "router_bgp.vrfs", default=[]):
+                if (entry := self._get_vrf_summary_entry(vrf)) is None:
                     continue
-                rd = get(vrf, "rd")
-                if not rd:
-                    continue
-                if vrf_name not in vrf_data:
-                    vrf_data[vrf_name] = {
-                        "vrf": vrf_name,
-                        "rd_pattern": rd.split(":")[1] if ":" in rd else rd,  # Extract VRF ID portion
-                        "import_rt": ", ".join(sorted(set(self._collect_route_targets(vrf, "import")))),
-                        "export_rt": ", ".join(sorted(set(self._collect_route_targets(vrf, "export")))),
-                        "nodes": [hostname],
-                    }
-                elif hostname not in vrf_data[vrf_name]["nodes"]:
-                    vrf_data[vrf_name]["nodes"].append(hostname)
+                # Only combine nodes when all displayed VRF settings match.
+                key = (entry["vrf"], entry["rd_pattern"], entry["import_rt"], entry["export_rt"])
+                summary = vrf_data.setdefault(key, {**entry, "nodes": []})
+                summary["nodes"].append(hostname)
 
         for vrf in vrf_data.values():
             vrf["nodes"] = ", ".join(natural_sort(vrf["nodes"]))
 
         return natural_sort(list(vrf_data.values()), sort_key="vrf")
+
+    def _get_vrf_summary_entry(self, vrf: dict) -> dict | None:
+        """Build a summary row for a non-default VRF with an RD."""
+        vrf_name = get(vrf, "name")
+        rd = get(vrf, "rd")
+        if not vrf_name or vrf_name == "default" or not rd:
+            return None
+
+        return {
+            "vrf": vrf_name,
+            # The administrator portion is normally unique per node; compare the VRF ID portion.
+            "rd_pattern": rd.split(":")[-1],
+            "import_rt": ", ".join(sorted(self._collect_route_targets(vrf, "import"))),
+            "export_rt": ", ".join(sorted(self._collect_route_targets(vrf, "export"))),
+        }
 
     @staticmethod
     def _collect_route_targets(vrf: dict, direction: str) -> list[str]:
@@ -247,42 +251,34 @@ class FabricDocumentationFacts(AvdFacts):
     @cached_property
     def bgp_peer_groups(self) -> list[dict]:
         """List of BGP peer groups used across the fabric."""
-        peer_groups_data: dict[str, dict] = {}
+        peer_groups_data: dict[tuple, dict] = {}
         for hostname, structured_config in self.structured_configs.items():
             router_bgp = get(structured_config, "router_bgp", default={})
             for peer_group in get(router_bgp, "peer_groups", default=[]):
                 pg_name = get(peer_group, "name")
                 if not pg_name:
                     continue
-                if pg_name not in peer_groups_data:
-                    peer_groups_data[pg_name] = self._new_peer_group_entry(peer_group, hostname)
-                else:
-                    self._merge_peer_group_entry(peer_groups_data[pg_name], peer_group, hostname)
+                entry = self._new_peer_group_entry(peer_group)
+                # A shared name does not imply identical settings, for example on eBGP edges.
+                key = (pg_name, entry["remote_as"], entry["update_source"], entry["bfd"], entry["send_community"])
+                summary = peer_groups_data.setdefault(key, {**entry, "nodes": []})
+                summary["nodes"].append(hostname)
 
         for pg in peer_groups_data.values():
             pg["nodes"] = ", ".join(natural_sort(pg["nodes"]))
-            pg["remote_as"] = pg["remote_as"] if pg["remote_as"] is not None else "-"
 
         return natural_sort(list(peer_groups_data.values()), sort_key="name")
 
     @staticmethod
-    def _new_peer_group_entry(peer_group: dict, hostname: str) -> dict:
+    def _new_peer_group_entry(peer_group: dict) -> dict:
+        """Build the displayed settings used to group nodes with identical peer groups."""
         return {
             "name": get(peer_group, "name"),
-            "remote_as": get(peer_group, "remote_as"),
+            "remote_as": default(get(peer_group, "remote_as"), "-"),
             "update_source": get(peer_group, "update_source", default="-"),
             "bfd": "Yes" if get(peer_group, "bfd") is True else "No",
             "send_community": get(peer_group, "send_community", default="-"),
-            "nodes": [hostname],
         }
-
-    @staticmethod
-    def _merge_peer_group_entry(entry: dict, peer_group: dict, hostname: str) -> None:
-        if hostname not in entry["nodes"]:
-            entry["nodes"].append(hostname)
-        # If remote_as differs across nodes, mark it as varying so it renders as "-".
-        if entry["remote_as"] != get(peer_group, "remote_as"):
-            entry["remote_as"] = None
 
     @cached_property
     def has_bgp_peer_groups(self) -> bool:

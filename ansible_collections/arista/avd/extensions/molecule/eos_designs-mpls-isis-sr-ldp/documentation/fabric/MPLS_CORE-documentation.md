@@ -170,15 +170,22 @@
 
 ### VRF Summary
 
+VRFs with different RD patterns or route targets are listed separately.
+
 | VRF | RD Pattern | Import RT | Export RT | Nodes |
 | --- | ---------- | --------- | --------- | ----- |
 | TENANT_B_INTRA | 19 | 65000:19 | 65000:19 | SITE1-LER1, SITE1-LER2, SITE2-LER1 |
-| TENANT_B_WAN | 20 | 65000:20 | 65000:20 | SITE1-LER2, SITE2-LER1 |
+| TENANT_B_WAN | 20 | 65000:20 | 65000:20 | SITE1-LER2 |
+| TENANT_B_WAN | 20 | 65000:120, 65000:20 | 65000:20, 65000:220 | SITE2-LER1 |
 
 ### BGP Peer Groups
 
+Peer groups with different settings are listed separately.
+
 | Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
 | ---------- | --------- | ------------- | --- | -------------- | ----- |
+| DOCUMENTATION-EBGP-PEERS | 65101 | Loopback0 | Yes | all | SITE1-LER2 |
+| DOCUMENTATION-EBGP-PEERS | 65102 | Ethernet1 | No | standard | SITE2-LER1 |
 | MPLS-OVERLAY-PEERS | 65000 | Loopback0 | Yes | all | SITE1-LER1, SITE1-LER2, SITE1-RR1, SITE2-LER1, SITE2-RR1 |
 | RR-OVERLAY-PEERS | 65000 | Loopback0 | Yes | all | SITE1-RR1, SITE2-RR1, SITE3-RR1 |
 

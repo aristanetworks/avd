@@ -10,6 +10,7 @@ for bgp_as and router_id fields, and the addition of isis_node_sid_ipv6_index.
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock
 
@@ -290,3 +291,87 @@ class TestFabricDocumentationFactsEdgeCases:
         overlay_nodes = fabric_facts.mpls_overlay_nodes
         if overlay_nodes:
             assert overlay_nodes[0]["router_id"] == "-", "None router_id should be rendered as '-'"
+
+
+@pytest.mark.parametrize("changed_field", [None, "rd", "import", "export"])
+def test_vrf_summary_preserves_node_differences(changed_field: str | None) -> None:
+    """Only combine VRFs whose displayed RD and route targets match across nodes."""
+    vrf = {
+        "name": "BLUE",
+        "rd": "192.0.2.1:10",
+        "route_targets": {
+            "import": [
+                {"address_family": "vpn-ipv4", "route_targets": ["65000:20", "65000:10"]},
+                {"address_family": "vpn-ipv6", "route_targets": ["65000:10"]},
+            ],
+            "export": [{"address_family": "vpn-ipv4", "route_targets": ["65000:10"]}],
+        },
+    }
+    other_vrf = deepcopy(vrf)
+    other_vrf["rd"] = "192.0.2.2:10"
+    if changed_field == "rd":
+        other_vrf["rd"] = "192.0.2.2:11"
+    elif changed_field in ("import", "export"):
+        other_vrf["route_targets"][changed_field][0]["route_targets"].append("65000:30")
+
+    facts = FabricDocumentationFacts(
+        avd_facts={},
+        structured_configs={
+            "node10": {"router_bgp": {"vrfs": [vrf]}},
+            "node2": {"router_bgp": {"vrfs": [other_vrf]}},
+            "node1": {"router_bgp": {"vrfs": [vrf]}},
+        },
+        fabric_name="TEST",
+        include_connected_endpoints=False,
+        toc=False,
+    )
+    entry = {"vrf": "BLUE", "rd_pattern": "10", "import_rt": "65000:10, 65000:20", "export_rt": "65000:10", "nodes": "node1, node2, node10"}
+    if changed_field is None:
+        assert facts.vrf_summary == [entry]
+        return
+
+    entry["nodes"] = "node1, node10"
+    other_entry = dict(entry, nodes="node2")
+    if changed_field == "rd":
+        other_entry["rd_pattern"] = "11"
+    else:
+        other_entry[f"{changed_field}_rt"] += ", 65000:30"
+    assert facts.vrf_summary == [entry, other_entry]
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "display_value"),
+    [
+        (None, None, None),
+        ("remote_as", "65102", "65102"),
+        ("update_source", "Ethernet1", "Ethernet1"),
+        ("bfd", False, "No"),
+        ("send_community", "standard", "standard"),
+    ],
+)
+def test_bgp_peer_groups_preserves_node_differences(field: str | None, value: str | bool | None, display_value: str | None) -> None:
+    """A peer-group name shared by nodes must not hide different settings."""
+    peer_group = {"name": "EXTERNAL-PEERS", "remote_as": "65101", "update_source": "Loopback0", "bfd": True, "send_community": "all"}
+    other_peer_group = deepcopy(peer_group)
+    if field is not None:
+        other_peer_group[field] = value
+    facts = FabricDocumentationFacts(
+        avd_facts={},
+        structured_configs={
+            "node10": {"router_bgp": {"peer_groups": [peer_group]}},
+            "node2": {"router_bgp": {"peer_groups": [other_peer_group]}},
+            "node1": {"router_bgp": {"peer_groups": [peer_group]}},
+        },
+        fabric_name="TEST",
+        include_connected_endpoints=False,
+        toc=False,
+    )
+    entry = dict(peer_group, bfd="Yes", nodes="node1, node2, node10")
+    if field is None:
+        assert facts.bgp_peer_groups == [entry]
+        return
+
+    entry["nodes"] = "node1, node10"
+    other_entry = dict(entry, nodes="node2")
+    other_entry[field] = display_value
+    assert facts.bgp_peer_groups == [entry, other_entry]
