@@ -1,3 +1,7 @@
+---
+# This title is used for search results
+title: AVD Design custom structured configuration
+---
 <!--
   ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
@@ -41,7 +45,7 @@ All relevant `structured_config` sections will be merged.
           structured_config: < dictionary >
 ```
 
-See [Connected Endpoints](../user-manual/endpoint-connectivity.md#connected-endpoints-settings)
+See [Connected Endpoints](endpoint-connectivity.md#connected-endpoints-settings)
 
 ### Fabric Topology
 
@@ -67,7 +71,7 @@ Only the most specific `structured_config` key will be used
           structured_config: < dictionary >
 ```
 
-See [Node type common configuration](../user-manual/node-type.md#node-type-common-configuration)
+See [Node type common configuration](node-type.md#node-type-common-configuration)
 
 ### Network Services (a.k.a. "tenants")
 
@@ -93,7 +97,7 @@ tenants:
               structured_config: < dictionary >
 ```
 
-See [Network Services VRFs configuration](../user-manual/network-services.md#network-services-vrfs-configuration) and [Network Services SVIs configuration](../user-manual/network-services.md#network-services-vrf-svis-configuration)
+See [Network Services VRFs configuration](network-services.md#network-services-vrfs-configuration) and [Network Services SVIs configuration](network-services.md#network-services-vrf-svis-configuration)
 
 All `structured_config` knobs honor the `list_merge` strategy set in `custom_structured_configuration_list_merge` described in the next section.
 

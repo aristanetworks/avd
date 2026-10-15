@@ -360,6 +360,6 @@ ip name-server vrf MGMT 10.20.20.10
 
 Review the following resources to learn more:
 
-- [Custom Structured Configuration How-To](../../ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md) for advanced patterns.
+- [Custom Structured Configuration](../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/custom-structured-configuration.md) for advanced patterns.
 - [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/data-models.md) data model for available design options.
 - [EOS Config](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) data model for available EOS configuration options.

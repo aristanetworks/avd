@@ -447,7 +447,6 @@ roles/eos_designs/defaults/main/main.yml
 roles/eos_designs/defaults/main/output_directories.yml
 roles/eos_designs/docs/how-to/cloudvision-tags.md
 roles/eos_designs/docs/how-to/custom-descriptions-names.md
-roles/eos_designs/docs/how-to/custom-structured-configuration.md
 roles/eos_designs/docs/how-to/custom-templates.md
 roles/eos_designs/docs/how-to/ptp.md
 roles/eos_designs/docs/how-to/wan.md
@@ -456,6 +455,7 @@ roles/eos_designs/docs/role-configuration.md
 roles/eos_designs/docs/user-manual/anta-runner.md
 roles/eos_designs/docs/user-manual/catalog.md
 roles/eos_designs/docs/user-manual/cloudvision.md
+roles/eos_designs/docs/user-manual/custom-structured-configuration.md
 roles/eos_designs/docs/user-manual/data-models.md
 roles/eos_designs/docs/user-manual/digital-twin.md
 roles/eos_designs/docs/user-manual/endpoint-connectivity.md

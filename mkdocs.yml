@@ -230,7 +230,6 @@ nav:
       - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
       - Configuring WAN: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/wan.md
       - Custom Descriptions and Names: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md
-      - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md
       - Generate CloudVision Tags: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags.md
       - Migrate to cv_deploy: docs/howto/migrate-to-cv-deploy.md
       - Migrate to anta_runner: docs/howto/migrate-to-anta-runner.md
@@ -240,6 +239,7 @@ nav:
           - Overview: docs/data-models/README.md
           - AVD Design:
               - Overview: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/data-models.md
+              - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/custom-structured-configuration.md
               - Topology: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/topology.md
               - Node Type: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/node-type.md
               - Network Services: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/network-services.md
