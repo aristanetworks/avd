@@ -13,7 +13,7 @@ jobs:
   build_pyavd_dist:
     name: Build PyAVD wheel
     if: github.repository == 'aristanetworks/avd'
-    uses: ./.github/workflows/build-pyavd-wheel.yml
+    uses: $/.github/workflows/build-pyavd-wheel.yml
     with:
       ref: ${{ github.event.release.tag_name }}
       artifact_name: pyavd-dist

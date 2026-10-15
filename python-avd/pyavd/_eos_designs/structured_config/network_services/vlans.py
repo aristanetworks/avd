@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter
+from pyavd._utils.format_string import AvdStringFormatter
 from pyavd.j2filters import list_compress, natural_sort
 
 if TYPE_CHECKING:

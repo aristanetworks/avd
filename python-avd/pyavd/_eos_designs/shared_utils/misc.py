@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default
+from pyavd._utils.default import default
 from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
@@ -103,17 +103,6 @@ class MiscMixin(Protocol):
     @cached_property
     def only_local_vlan_trunk_groups(self: SharedUtilsProtocol) -> bool:
         return self.inputs.enable_trunk_groups and self.inputs.only_local_vlan_trunk_groups
-
-    @cached_property
-    def system_mac_address(self: SharedUtilsProtocol) -> str | None:
-        """
-        system_mac_address.
-
-        system_mac_address is inherited from
-        Fabric Topology data model system_mac_address ->
-            Host variable var system_mac_address ->.
-        """
-        return default(self.node_config.system_mac_address, self.inputs.system_mac_address)
 
     @cached_property
     def uplink_switches(self: SharedUtilsProtocol) -> list[str]:

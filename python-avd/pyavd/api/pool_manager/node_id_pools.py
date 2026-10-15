@@ -7,7 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pyavd._utils import AvdStringFormatter, default
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
 
 from .base_classes import Pool, PoolAssignment, PoolCollection
 

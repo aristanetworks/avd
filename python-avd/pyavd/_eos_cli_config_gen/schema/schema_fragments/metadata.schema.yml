@@ -434,6 +434,7 @@ keys:
             description: Targeted Digital Twin environment.
             valid_values:
               - act
+              - containerlab
           node_type:
             type: str
             description: |-
@@ -481,3 +482,14 @@ keys:
                 description: |-
                   Only validate interfaces defined in the AVD structured configuration for errdisabled state.
                 default: false
+      bgp:
+        type: dict
+        description: Validation settings for BGP.
+        keys:
+          check_tcp_queues:
+            type: bool
+            description: Flag to check if the TCP session queues are empty for all BGP peers.
+          minimum_established_time:
+            type: int
+            convert_types: [str]
+            description: Minimum established time (seconds) for all BGP sessions.

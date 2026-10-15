@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: TCAM profile 'undefined-additional-profile' referenced under 'additional_tcam_profiles' is not defined under 'tcam_profiles'.

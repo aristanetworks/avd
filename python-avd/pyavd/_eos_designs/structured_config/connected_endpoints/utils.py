@@ -9,7 +9,9 @@ from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import Undefined, UndefinedType, get_v2, short_esi_to_route_target
+from pyavd._utils.get import get_v2
+from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
+from pyavd._utils.undefined import Undefined, UndefinedType
 
 if TYPE_CHECKING:
     from typing import TypeVar

@@ -1,0 +1,1 @@
+pyavd._errors.AvdDeprecationWarning: The input data model 'source_interfaces.ssh_client' is deprecated and cannot be used in conjunction with the new data model 'ssh_settings.client_vrfs'. This usually happens when a data model has been updated and custom structured configuration still uses the old model.

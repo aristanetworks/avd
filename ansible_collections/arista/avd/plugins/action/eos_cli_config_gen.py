@@ -19,7 +19,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 
 try:
     from pyavd import ConfigRenderConfiguration, DocRenderConfiguration, get_device_config, get_device_doc
-    from pyavd._utils import strip_empties_from_dict, template
+    from pyavd._utils.strip_empties import strip_empties_from_dict
+    from pyavd._utils.template import template
     from pyavd.j2filters import add_md_toc
 
     HAS_PYAVD = True

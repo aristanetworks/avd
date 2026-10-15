@@ -9,7 +9,9 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get_ip_from_ip_prefix, short_esi_to_route_target
+from pyavd._utils.default import default
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
+from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns

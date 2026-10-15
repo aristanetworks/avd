@@ -49,7 +49,9 @@ try:
         DeployToCvResult,
     )
     from pyavd._cv.workflows.utils import extract_from_device_deployments, get_result
-    from pyavd._utils import default, get, strip_empties_from_dict
+    from pyavd._utils.default import default
+    from pyavd._utils.get import get
+    from pyavd._utils.strip_empties import strip_empties_from_dict
 
     HAS_PYAVD = True
 except ImportError:
