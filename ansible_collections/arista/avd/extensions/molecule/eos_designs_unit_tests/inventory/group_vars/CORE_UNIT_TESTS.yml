@@ -291,6 +291,16 @@ core_interfaces:
       ipv6_prefix: 2001:db8:200::/64
       include_in_underlay_protocol: false
 
+    # GRE tunnel over crypto device link
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
+      interfaces: [Tunnel100, Tunnel100]
+      ip: [10.0.0.0/31, 10.0.0.1/31]
+      tunnel:
+        mode: gre
+        source_interfaces: [Ethernet50, Ethernet50]
+        source_ips: [192.168.0.0/31, 192.168.1.0/31]
+      include_in_underlay_protocol: true
+
 l3_edge:
   p2p_links_ip_pools:
     - name: pool_default_mask
