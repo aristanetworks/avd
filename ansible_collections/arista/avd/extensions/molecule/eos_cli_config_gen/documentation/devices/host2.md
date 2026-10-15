@@ -1032,6 +1032,7 @@ interface Dps1
 | Vlan85 | SVI Description | default | - | - |
 | Vlan1000 | Vlan with minimal ospfv3 configurations | default | - | - |
 | Vlan1001 | Test VLAN with both ospfv3 and ipv6_ospf configurations | default | - | - |
+| Vlan1002 | Test OSPFv3 without passive-interface settings | default | - | - |
 
 ##### IPv4
 
@@ -1040,14 +1041,16 @@ interface Dps1
 | Vlan85 | default | 10.10.84.1/24 | - | - | - | - |
 | Vlan1000 | default | - | - | - | - | - |
 | Vlan1001 | default | - | - | - | - | - |
+| Vlan1002 | default | - | - | - | - | - |
 
 ##### OSPFv3
 
 | Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
 | --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
 | Vlan85 | True | True | 0.0.0.0 | 1000 |
-| Vlan1000 | - | - | 1000 | 0.0.0.0 |
+| Vlan1000 | False | - | 1000 | 0.0.0.0 |
 | Vlan1001 | True | True | 1000 | 0.0.0.0 |
+| Vlan1002 | - | - | 0.0.0.0 | 0.0.0.0 |
 
 ##### ISIS
 
@@ -1077,6 +1080,7 @@ interface Vlan85
 !
 interface Vlan1000
    description Vlan with minimal ospfv3 configurations
+   no ospfv3 passive-interface
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0
 !
@@ -1085,6 +1089,11 @@ interface Vlan1001
    ospfv3 passive-interface
    ospfv3 network point-to-point
    ospfv3 ipv4 area 1000
+   ospfv3 ipv6 area 0.0.0.0
+!
+interface Vlan1002
+   description Test OSPFv3 without passive-interface settings
+   ospfv3 ipv4 area 0.0.0.0
    ospfv3 ipv6 area 0.0.0.0
 ```
 

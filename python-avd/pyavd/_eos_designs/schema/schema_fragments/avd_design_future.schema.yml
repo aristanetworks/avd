@@ -62,6 +62,14 @@ keys:
           Available from AVD 6.4.0.
           Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`
           instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`.
+      fix_mlag_ibgp_peering_ipv6_pool:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.5.0.
+          Fix the MLAG iBGP peering BGP neighbor in VRFs when using `underlay_ipv6_numbered`.
+          When enabled, the BGP neighbor is derived from the same IPv6 pool as the MLAG iBGP peering SVI,
+          using `mlag_ibgp_peering_ipv6_pool` when set, and `mlag_ibgp_peering_ipv4_pool` is ignored.
       fix_radius_server_group_tls:
         type: bool
         default: false

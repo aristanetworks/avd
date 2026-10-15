@@ -918,6 +918,12 @@ schemas/eos_config/docs/tables/ip-routing-ipv6-interfaces.md
 schemas/eos_config/docs/tables/ip-routing.md
 --8<--
 
+### VRRP
+
+--8<--
+schemas/eos_config/docs/tables/vrrp.md
+--8<--
+
 ### IP virtual router MAC address
 
 --8<--

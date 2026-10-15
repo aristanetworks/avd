@@ -552,8 +552,10 @@ keys:
                 type: str
                 description: |-
                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                  Only used when `underlay_ipv6_numbered` is set.
                   The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.
                   If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                  Set `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this pool.
                 format: ipv6_pool
               ip_helpers:
                 type: list

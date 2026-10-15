@@ -3,43 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from importlib.machinery import ModuleSpec
-from importlib.util import module_from_spec
-from pathlib import Path
-from typing import TYPE_CHECKING
-
 import pytest
-import yaml
+from data_merging_schema_class import DataMergingTestSchema
 
 from pyavd._errors import AristaAvdDuplicateDataError
-from schema_tools.generate_classes.src_generators import FileSrc
-from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
-
-if TYPE_CHECKING:
-    from .data_merging_schema_class import DataMergingTestSchema
-
-
-script_dir = Path(__file__).parent
-
-
-@pytest.fixture(scope="module")
-def data_merging_schema_class() -> DataMergingTestSchema:
-    with Path(script_dir, "data_merging.schema.yml").open(encoding="utf-8") as schema_file:
-        raw_schema = yaml.load(schema_file, Loader=yaml.CSafeLoader)
-
-    schema = AristaAvdSchema(**raw_schema)
-    schemasrc = schema._generate_class_src(class_name="DataMergingTestSchema")
-    src_file_contents = FileSrc(classes=[schemasrc.cls])
-
-    # Writing to file to assist the type-checker for these tests.
-    with Path(script_dir, "data_merging_schema_class.py").open(mode="w", encoding="UTF-8") as file:
-        file.write(str(src_file_contents))
-
-    cls_module = module_from_spec(ModuleSpec(name="cls_module", loader=None))
-    exec(str(src_file_contents), cls_module.__dict__)  # noqa: S102
-
-    return cls_module.DataMergingTestSchema
-
 
 A_LIST = {"some_list": [1, 2]}
 B_LIST = {"some_list": [2, 3, 4]}
@@ -75,10 +42,9 @@ def test_data_combining_valid(
     a_data: dict,
     b_data: dict,
     expected: dict,
-    data_merging_schema_class: DataMergingTestSchema,
 ) -> None:
-    a = data_merging_schema_class._from_dict(a_data)
-    b = data_merging_schema_class._from_dict(b_data)
+    a = DataMergingTestSchema._from_dict(a_data)
+    b = DataMergingTestSchema._from_dict(b_data)
     a._combine(b)
     assert a._as_dict() == expected
 
@@ -94,10 +60,9 @@ def test_data_combining_valid(
 def test_data_combining_conflict(
     a_data: dict,
     c_data: dict,
-    data_merging_schema_class: DataMergingTestSchema,
 ) -> None:
-    a = data_merging_schema_class._from_dict(a_data)
-    c = data_merging_schema_class._from_dict(c_data)
+    a = DataMergingTestSchema._from_dict(a_data)
+    c = DataMergingTestSchema._from_dict(c_data)
     with pytest.raises(AristaAvdDuplicateDataError, match=r"Found duplicate objects with conflicting data while generating configuration for"):
         a._combine(c)
 
@@ -113,17 +78,16 @@ def test_data_combining_conflict(
 def test_data_combining_wrong_type(
     a_data: dict,
     key: str,
-    data_merging_schema_class: DataMergingTestSchema,
 ) -> None:
-    a = data_merging_schema_class._from_dict(a_data)
+    a = DataMergingTestSchema._from_dict(a_data)
     c = 42
     with pytest.raises(TypeError, match=r"Unable to combine type '<class 'int'>' into '"):
         getattr(a, key)._combine(c)
 
 
-def test_data_combining_different_custom_data(data_merging_schema_class: DataMergingTestSchema) -> None:
-    a = data_merging_schema_class._from_dict(A_DICT)
-    b = data_merging_schema_class._from_dict(A_DICT)
+def test_data_combining_different_custom_data() -> None:
+    a = DataMergingTestSchema._from_dict(A_DICT)
+    b = DataMergingTestSchema._from_dict(A_DICT)
     # Injecting conflicting values in _custom_data
     a.some_dict._custom_data["my_awesome_key"] = "context_a"
     b.some_dict._custom_data["my_awesome_key"] = "context_b"
