@@ -60,7 +60,7 @@ def test_fabric_documentation_with_node_specific_settings(
     assert ("### VRF Summary" in documentation) is include_vrf_summary
     assert ("### BGP Peer Groups" in documentation) is include_bgp_peer_groups
     if include_vrf_summary:
-        assert ("| TENANT_B_WAN | 20 | vpn-ipv4 65000:20, vpn-ipv6 65000:20 | vpn-ipv4 65000:20, vpn-ipv6 65000:20 | SITE1-LER2 |") in documentation
+        assert "| TENANT_B_WAN | 20 | vpn-ipv4 65000:20, vpn-ipv6 65000:20 | vpn-ipv4 65000:20, vpn-ipv6 65000:20 | SITE1-LER2 |" in documentation
         assert (
             "| TENANT_B_WAN | 20 | vpn-ipv4 65000:120, vpn-ipv4 65000:20, vpn-ipv6 65000:20 | "
             "vpn-ipv4 65000:20, vpn-ipv4 65000:220, vpn-ipv6 65000:20 | SITE2-LER1 |"
