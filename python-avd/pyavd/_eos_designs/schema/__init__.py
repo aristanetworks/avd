@@ -30421,10 +30421,7 @@ class EosDesigns(EosDesignsRootModel):
         For more
         details and examples of the `range_expand` syntax, see the [`arista.avd.range_expand`
         documentation](https://avd.arista.com/stable/docs/plugins/Filter_plugins/range_expand.html).
-
-
-        Subclass of AvdList
-        with `str` items.
+        Subclass of AvdList with `str` items.
         """
         description: str | None
         """
@@ -30719,10 +30716,7 @@ class EosDesigns(EosDesignsRootModel):
                        For more
                        details and examples of the `range_expand` syntax, see the [`arista.avd.range_expand`
                        documentation](https://avd.arista.com/stable/docs/plugins/Filter_plugins/range_expand.html).
-
-
-                       Subclass of AvdList
-                       with `str` items.
+                       Subclass of AvdList with `str` items.
                     description:
                        Description or description template to be used on all ports.
                        This can be a template using the AVD
