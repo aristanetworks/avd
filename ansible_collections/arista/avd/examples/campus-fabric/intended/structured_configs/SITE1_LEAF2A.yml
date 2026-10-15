@@ -8294,17 +8294,17 @@ vlans:
   name: IDF2-Data
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 220
   name: IDF2-Voice
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 230
   name: IDF2-Guest
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 10
   name: INBAND_MGMT
   metadata:

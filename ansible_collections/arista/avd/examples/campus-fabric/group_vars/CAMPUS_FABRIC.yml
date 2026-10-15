@@ -1,5 +1,5 @@
 ---
-### group_vars/ACME.yml
+### group_vars/CAMPUS_FABRIC.yml
 
 # Ansible connectivity definitions
 # eAPI connectivity via HTTPS is specified (as opposed to network_cli via SSH)

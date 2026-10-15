@@ -1,6 +1,6 @@
 ---
 # inventory.yml
-ACME:
+CAMPUS_FABRIC:
   children:
     SITE1:
       children:

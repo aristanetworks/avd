@@ -36,7 +36,7 @@ network_ports:
 # ---------------- IDF1 ----------------
 
   - switches:
-      - SITE1_LEAF1[AB] # regex match LEAF1A & LEAF1B
+      - SITE1_LEAF1[AB] # regex match SITE1_LEAF1A & SITE1_LEAF1B
     switch_ports:
       - Ethernet1-48
     description: 'IDF1 Standard Port'
@@ -70,7 +70,7 @@ network_ports:
 # ---------------- IDF3 ----------------
 
   - switches:
-      - SITE1_LEAF3[ABCDE] # regex match LEAF3A, LEAF3B, LEAF3C, LEAF3D, LEAF3E
+      - SITE1_LEAF3[ABCDE] # regex match SITE1_LEAF3A, SITE1_LEAF3B, SITE1_LEAF3C, SITE1_LEAF3D, SITE1_LEAF3E
     switch_ports:
       - Ethernet1-96
     description: 'IDF3 Standard Port'

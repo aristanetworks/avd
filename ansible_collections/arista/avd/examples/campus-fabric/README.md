@@ -64,13 +64,13 @@ Basic connectivity between the Ansible controller host and the switches must be 
 
 ???+ info
 
-    The management interfaces used by cEOS and vEOS, are `Management0` and `Management1`, respectively. When using actual hardware switches, `Management1` is used. The included basic switch configurations may need to be adjusted for your environment.
+    This example uses `Management1`, the AVD default management interface for cEOS-lab and vEOS-lab. Ensure your lab topology leverages `Management1`. The included basic switch configurations may need to be adjusted for your environment or hardware platform.
 
-Below is the basic configuration file for SPINE1:
+Below is the basic configuration file for SITE1_SPINE1:
 
 ``` shell
 --8<--
-ansible_collections/arista/avd/examples/campus-fabric/switch-basic-configurations/SPINE1.cfg
+ansible_collections/arista/avd/examples/campus-fabric/switch-basic-configurations/SITE1_SPINE1.cfg
 --8<--
 ```
 
@@ -79,7 +79,7 @@ ansible_collections/arista/avd/examples/campus-fabric/switch-basic-configuration
 Now that we understand the physical L2LS topology, we must create the Ansible inventory that represents this topology. The following is a textual and graphical representation of the Ansible inventory group variables and naming scheme used in this example:
 
 ``` text
-- ACME
+- CAMPUS_FABRIC
   - SITE1
     - SITE1_SPINES
     - SITE1_LEAFS
@@ -91,7 +91,7 @@ Now that we understand the physical L2LS topology, we must create the Ansible in
     - SITE1_LEAFS
 ```
 
-ACME represents the highest level within the hierarchy. Ansible variables defined at this level will be applied to all nodes in the fabric. Ansible groups have parent-and-child relationships. For example, both SITE1_SPINES and SITE1_LEAFS are children of SITE1. Groups of Groups are possible and allow variables to be shared at any level within the hierarchy. For example, NETWORK_SERVICES is a group with two other groups defined as children: SITE1_SPINES and SITE1_LEAFS. The same applies to the group named CONNECTED_ENDPOINTS. You will see these groups listed at the bottom of the inventory file.
+CAMPUS_FABRIC represents the highest level within the hierarchy. Ansible variables defined at this level will be applied to all nodes in the fabric. Ansible groups have parent-and-child relationships. For example, both SITE1_SPINES and SITE1_LEAFS are children of SITE1. Groups of Groups are possible and allow variables to be shared at any level within the hierarchy. For example, NETWORK_SERVICES is a group with two other groups defined as children: SITE1_SPINES and SITE1_LEAFS. The same applies to the group named CONNECTED_ENDPOINTS. You will see these groups listed at the bottom of the inventory file.
 
 This naming convention makes it possible to extend anything quickly and can be changed based on your preferences. The names of all groups and hosts must be unique.
 
@@ -113,14 +113,10 @@ ansible_collections/arista/avd/examples/campus-fabric/inventory.yml
 
 ## Management Network
 
-This example configures a dedicated management network on port Management0 (vrf: MGMT) and an in-band management network using SVI VLAN 10 (vrf: default). In-band management is easily configured with two variables under the leaf defaults key in `SITE1_LEAFS.yml`. First, it auto-generates an SVI and default route on each leaf node. Then, on the Spine nodes, it will build a matching SVI for VLAN 10 and create a Virtual-IP (10.10.10.1) for the defined subnet.
-
-???+ note
-
-    The Management0 interface is only present in cEOS-lab variants of EOS.
+This example configures a dedicated management network on `Management1` (VRF: MGMT) and an in-band management network using SVI VLAN 10 (VRF: default). The spine and leaf defaults set `platform: cEOS`, which uses `Management1` by default in AVD. In-band management is configured with two variables under `l2leaf.defaults` in `SITE1_LEAFS.yml`. AVD generates an SVI and default route on each leaf node, along with a matching VLAN 10 SVI and virtual IP address (10.10.10.1) on the spine nodes.
 
 ``` yaml
-leaf:
+l2leaf:
   defaults:
     inband_mgmt_subnet: 10.10.10.0/24
     inband_mgmt_vlan: 10
@@ -128,18 +124,18 @@ leaf:
 
 Details on this feature can be found [here](../../roles/eos_designs/docs/data-models.md#node-type-inband-management).
 
-| Node | Management0 | Vlan10 |
+| Node | Management1 | Vlan10 |
 | ---- | ----------- | ------ |
-| SPINE1 | 172.16.100.101 | 10.10.10.2 |
-| SPINE2 | 172.16.100.102 | 10.10.10.3 |
-| LEAF1A | 172.16.100.103 | 10.10.10.6 |
-| LEAF1B | 172.16.100.104 | 10.10.10.7 |
-| LEAF2A | 172.16.100.105 | 10.10.10.8 |
-| LEAF3A | 172.16.100.106 | 10.10.10.9 |
-| LEAF3B | 172.16.100.107 | 10.10.10.10 |
-| LEAF3C | 172.16.100.108 | 10.10.10.11 |
-| LEAF3D | 172.16.100.109 | 10.10.10.12 |
-| LEAF3E | 172.16.100.110 | 10.10.10.13 |
+| SITE1_SPINE1 | 172.16.100.101 | 10.10.10.2 |
+| SITE1_SPINE2 | 172.16.100.102 | 10.10.10.3 |
+| SITE1_LEAF1A | 172.16.100.103 | 10.10.10.6 |
+| SITE1_LEAF1B | 172.16.100.104 | 10.10.10.7 |
+| SITE1_LEAF2A | 172.16.100.105 | 10.10.10.8 |
+| SITE1_LEAF3A | 172.16.100.106 | 10.10.10.9 |
+| SITE1_LEAF3B | 172.16.100.107 | 10.10.10.10 |
+| SITE1_LEAF3C | 172.16.100.108 | 10.10.10.11 |
+| SITE1_LEAF3D | 172.16.100.109 | 10.10.10.12 |
+| SITE1_LEAF3E | 172.16.100.110 | 10.10.10.13 |
 
 In Campus Networks, having a dedicated out-of-band management network in each IDF is uncommon. Therefore, you can easily disable configuring the Management interface and the management VRF by adding these variables to the `SITE1_LEAFS.yml` group_vars.
 
@@ -161,7 +157,7 @@ To apply AVD input variables to the nodes in the fabric, we make use of Ansible 
 
 | group_vars/             | Description                           |
 | ----------------------- | ------------------------------------- |
-| ACME.yml                | Global settings for all devices       |
+| CAMPUS_FABRIC.yml       | Global settings for all devices       |
 | SITE1.yml               | Fabric, Topology, and Device settings |
 | SITE1_SPINES.yml        | Device type for Spines                |
 | SITE1_LEAFS.yml         | Device type for Leafs                 |
@@ -170,14 +166,14 @@ To apply AVD input variables to the nodes in the fabric, we make use of Ansible 
 
 The tabs below show the Ansible **group_vars** used in this example.
 
-=== "ACME"
-    At the top level (ACME), the following variables are defined in the **group_vars/ACME.yml** file. These Ansible variables apply to all nodes in the fabric and is a common place to set AAA, users, NTP, and management interface settings. Update local_users and passwords for your environment.
+=== "CAMPUS_FABRIC"
+    At the top level (CAMPUS_FABRIC), the following variables are defined in the **group_vars/CAMPUS_FABRIC.yml** file. These Ansible variables apply to all nodes in the fabric. This file is a common place to set AAA, users, NTP, and management interface settings. Update local_users and passwords for your environment.
 
     You can create a sha512_password by creating a username and password on a switch and copy/paste it within double quotes here.
 
     ``` yaml
     --8<--
-    ansible_collections/arista/avd/examples/campus-fabric/group_vars/ACME.yml
+    ansible_collections/arista/avd/examples/campus-fabric/group_vars/CAMPUS_FABRIC.yml
     --8<--
     ```
 
@@ -200,9 +196,9 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "SITE1_LEAFS"
-    In an L2LS Campus design, we have one type of leaf node: `l2leaf`. Variables applied under the node key type (l3spine/l2leaf) defaults section are inherited by nodes under each type. These variables may be overwritten under the node itself.
+    In an L2LS Campus design, we have one type of leaf node: `l2leaf`. Variables applied under the node key type (l3spine/l2leaf) defaults section are inherited by nodes under each type. These variables may be overridden under the node itself.
 
-    The spine interface used by a particular leaf is defined from the leaf's perspective with a variable called `uplink_switch_interfaces`. For example, LEAF2A has a unique variable `uplink_switch_interfaces: [Ethernet49/1, Ethernet49/1]` defined. This means that LEAF2A is connected to SPINE1's Ethernet49/1 and SPINE2's Ethernet49/1, respectively.
+    The spine interface used by a particular leaf is defined from the leaf's perspective with a variable called `uplink_switch_interfaces`. For example, SITE1_LEAF2A has a unique variable `uplink_switch_interfaces: [Ethernet49/1, Ethernet49/1]` defined. This means that SITE1_LEAF2A is connected to SITE1_SPINE1's Ethernet49/1 and SITE1_SPINE2's Ethernet49/1, respectively.
 
     ``` yaml
     --8<--
@@ -292,7 +288,7 @@ ansible-playbook build.yml
 
 After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`.
 
-To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. In this example, we defined the authentication variables in the `ACME.yml` file.
+To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. In this example, we defined the authentication variables in the `CAMPUS_FABRIC.yml` file.
 
 ``` bash
 ### Build configurations & Push Configs to switches

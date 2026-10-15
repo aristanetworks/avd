@@ -248,7 +248,7 @@ vlan_interfaces:
   - 10.1.10.1
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
     tags:
     - '110'
 - name: Vlan120
@@ -259,7 +259,7 @@ vlan_interfaces:
   - 10.1.20.1
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
     tags:
     - '120'
 - name: Vlan130
@@ -270,7 +270,7 @@ vlan_interfaces:
   - 10.1.30.1
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
     tags:
     - '130'
 - name: Vlan210
@@ -281,7 +281,7 @@ vlan_interfaces:
   - 10.2.10.1
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
     tags:
     - '210'
 - name: Vlan220
@@ -292,7 +292,7 @@ vlan_interfaces:
   - 10.2.20.1
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
     tags:
     - '220'
 - name: Vlan230
@@ -303,7 +303,7 @@ vlan_interfaces:
   - 10.2.30.1
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
     tags:
     - '230'
 - name: Vlan310
@@ -314,7 +314,7 @@ vlan_interfaces:
   - 10.3.10.1
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
     tags:
     - '310'
 - name: Vlan320
@@ -325,7 +325,7 @@ vlan_interfaces:
   - 10.3.20.1
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
     tags:
     - '320'
 - name: Vlan330
@@ -336,7 +336,7 @@ vlan_interfaces:
   - 10.3.30.1
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
     tags:
     - '330'
 - name: Vlan10
@@ -370,47 +370,47 @@ vlans:
   name: IDF1-Data
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 120
   name: IDF1-Voice
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 130
   name: IDF1-Guest
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 210
   name: IDF2-Data
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 220
   name: IDF2-Voice
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 230
   name: IDF2-Guest
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 310
   name: IDF3-Data
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 320
   name: IDF3-Voice
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 330
   name: IDF3-Guest
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 10
   name: INBAND_MGMT
   metadata:

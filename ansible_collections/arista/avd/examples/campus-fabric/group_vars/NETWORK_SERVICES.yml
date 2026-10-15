@@ -2,7 +2,7 @@
 ### group_vars/NETWORK_SERVICES.yml
 
 tenants:
-  - name: ACME_SITE1
+  - name: CAMPUS_FABRIC_SITE1
     vrfs:
       - name: default
         svis:

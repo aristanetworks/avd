@@ -1807,17 +1807,17 @@ vlans:
   name: IDF1-Data
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 120
   name: IDF1-Voice
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 130
   name: IDF1-Guest
   metadata:
     tenants:
-    - ACME_SITE1
+    - CAMPUS_FABRIC_SITE1
 - id: 10
   name: INBAND_MGMT
   metadata:
