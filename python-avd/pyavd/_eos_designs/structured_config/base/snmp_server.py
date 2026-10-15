@@ -285,21 +285,21 @@ class SnmpServerMixin(Protocol):
 
             vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
             if sort_snmp_acls_and_local_interfaces_by_vrf:
-                snmp_vrf: dict = {"name": vrf_name, "enable": vrf.enable}
+                vrf_item = EosCliConfigGen.SnmpServer.VrfsItem(name=vrf_name, enable=vrf.enable)
 
                 if vrf.ipv4_acl is not None:
                     if vrf_name == "default":
                         self.structured_config.snmp_server.ipv4_acl = vrf.ipv4_acl
                     else:
-                        snmp_vrf["ipv4_acl"] = vrf.ipv4_acl
+                        vrf_item.ipv4_acl = vrf.ipv4_acl
 
                 if vrf.ipv6_acl is not None:
                     if vrf_name == "default":
                         self.structured_config.snmp_server.ipv6_acl = vrf.ipv6_acl
                     else:
-                        snmp_vrf["ipv6_acl"] = vrf.ipv6_acl
+                        vrf_item.ipv6_acl = vrf.ipv6_acl
 
-                vrfs.append_new(**snmp_vrf)
+                vrfs.append(vrf_item)
             else:
                 vrfs.append_new(name=vrf_name, enable=vrf.enable)
 
