@@ -457,8 +457,8 @@ tunnel_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  ospf_area: 0.0.0.0
   ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
 vlan_internal_order:
   allocation: ascending
   range:
