@@ -441,7 +441,7 @@ class UtilsMixin(Protocol):
         iface = ip_interface(source_ip_cidr)
         network = iface.network
         hosts = list(network.hosts())
-        if len(hosts) < 2:  # noqa: PLR2004
+        if len(hosts) < 2:
             msg = f"Cannot derive crypto peer IP from '{source_ip_cidr}'. Subnet must contain at least 2 hosts (/31 or /30)."
             raise AristaAvdInvalidInputsError(msg)
         return str(hosts[1]) if iface.ip == hosts[0] else str(hosts[0])

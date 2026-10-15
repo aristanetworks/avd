@@ -34,15 +34,18 @@ class EthernetInterfacesMixin(Protocol):
                     )
                     ethernet_interface.switchport.enabled = False
                     ethernet_interface.ip_address = source_ip
-                    ethernet_interface.description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
-                        InterfaceDescriptionData(
-                            shared_utils=self.shared_utils,
-                            interface=source_interface,
-                            link_type=self.data_model,
-                            peer=p2p_link_data["peer"],
-                            peer_interface=p2p_link_data.get("peer_source_interface", ""),
-                        ),
-                    ) or None
+                    ethernet_interface.description = (
+                        self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                            InterfaceDescriptionData(
+                                shared_utils=self.shared_utils,
+                                interface=source_interface,
+                                link_type=self.data_model,
+                                peer=p2p_link_data["peer"],
+                                peer_interface=p2p_link_data.get("peer_source_interface", ""),
+                            ),
+                        )
+                        or None
+                    )
                     ethernet_interface.metadata._update(
                         peer_interface=p2p_link_data.get("peer_source_interface", ""),
                         peer=p2p_link_data["peer"],

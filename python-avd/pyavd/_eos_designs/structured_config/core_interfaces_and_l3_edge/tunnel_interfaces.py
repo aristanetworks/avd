@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._utils.default import default
-from pyavd._utils.password_utils.password import isis_encrypt, ospf_message_digest_encrypt
+from pyavd._utils.password_utils.password import isis_encrypt
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -59,9 +59,7 @@ class TunnelInterfacesMixin(Protocol):
                     tunnel_interface.isis_network_point_to_point = p2p_link.isis_network_type == "point-to-point"
                     tunnel_interface.isis_hello_padding = p2p_link.isis_hello_padding
 
-                    isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] = default(
-                        p2p_link.isis_circuit_type, self.inputs.isis_default_circuit_type
-                    )
+                    isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] = default(p2p_link.isis_circuit_type, self.inputs.isis_default_circuit_type)
                     tunnel_interface.isis_circuit_type = isis_circuit_type
 
                     mode: Literal["md5", "text"] | None = default(p2p_link.isis_authentication_mode, self.inputs.underlay_isis_authentication_mode)
