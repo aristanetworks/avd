@@ -46,8 +46,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].descriptions.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].mtu") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Mutually exclusive with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is needed, setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Mutually exclusive with `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is needed, setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv4_standard_acl_in") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_standard_acls`.<br>Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required, setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv4_standard_acl_out") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_standard_acls`.<br>Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out` instead when field substitution for "interface_ip" or "peer_ip" is required, setting both raises an error. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the IPv6 address set on the interface for this node.<br>Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the IPv6 address set on the interface for this node.<br>Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf") | Dictionary |  |  |  | OSPF interface configuration. |
@@ -133,8 +135,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].descriptions.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].enabled") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].mtu") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Mutually exclusive with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is needed, setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".<br>Mutually exclusive with `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is needed, setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_in</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv4_standard_acl_in") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_standard_acls`.<br>Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required, setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl_out</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv4_standard_acl_out") | String |  |  |  | Name of the IPv4 standard access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_standard_acls`.<br>Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out` instead when field substitution for "interface_ip" or "peer_ip" is required, setting both raises an error. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the IPv6 address set on the interface for this node.<br>Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the IPv6 address set on the interface for this node.<br>Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ospf") | Dictionary |  |  |  | OSPF interface configuration. |
@@ -271,8 +275,26 @@
                   - <str>
                 enabled: <bool; default=True>
                 mtu: <int>
+
+                # Name of the IPv4 access-list to be assigned in the ingress direction.
+                # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                # Mutually exclusive with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is needed, setting both raises an error.
                 ipv4_acl_in: <str>
+
+                # Name of the IPv4 access-list to be assigned in the egress direction.
+                # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                # Mutually exclusive with `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is needed, setting both raises an error.
                 ipv4_acl_out: <str>
+
+                # Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                # The access-list must be defined under `ipv4_standard_acls`.
+                # Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required, setting both raises an error.
+                ipv4_standard_acl_in: <str>
+
+                # Name of the IPv4 standard access-list to be assigned in the egress direction.
+                # The access-list must be defined under `ipv4_standard_acls`.
+                # Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out` instead when field substitution for "interface_ip" or "peer_ip" is required, setting both raises an error.
+                ipv4_standard_acl_out: <str>
 
                 # Name of the IPv6 access-list to be assigned in the ingress direction.
                 # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
@@ -485,8 +507,26 @@
                   - <str>
                 enabled: <bool; default=True>
                 mtu: <int>
+
+                # Name of the IPv4 access-list to be assigned in the ingress direction.
+                # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                # Mutually exclusive with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is needed, setting both raises an error.
                 ipv4_acl_in: <str>
+
+                # Name of the IPv4 access-list to be assigned in the egress direction.
+                # The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                # Mutually exclusive with `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is needed, setting both raises an error.
                 ipv4_acl_out: <str>
+
+                # Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                # The access-list must be defined under `ipv4_standard_acls`.
+                # Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required, setting both raises an error.
+                ipv4_standard_acl_in: <str>
+
+                # Name of the IPv4 standard access-list to be assigned in the egress direction.
+                # The access-list must be defined under `ipv4_standard_acls`.
+                # Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out` instead when field substitution for "interface_ip" or "peer_ip" is required, setting both raises an error.
+                ipv4_standard_acl_out: <str>
 
                 # Name of the IPv6 access-list to be assigned in the ingress direction.
                 # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",

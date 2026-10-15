@@ -1,0 +1,23 @@
+---
+# Tests that referencing a non-existent ipv4_standard_acls entry via ipv4_standard_acl_in
+# on a node_type l3_port_channel raises AristaAvdMissingVariableError.
+type: spine
+
+spine:
+  nodes:
+    - name: ipv4-standard-acl-in-missing-on-node-type-l3-port-channel
+      bgp_as: 65100
+      id: 100
+      loopback_ipv4_pool: 192.168.100.0/24
+      l3_port_channels:
+        - name: Port-Channel1
+          mode: active
+          member_interfaces:
+            - name: Ethernet1
+          ip_address: 172.16.0.2/30
+          ipv4_standard_acl_in: NON-EXISTENT-STD-ACL
+
+# ipv4_standard_acls is intentionally omitted / NON-EXISTENT-STD-ACL is not defined.
+
+expected_error_message: >-
+  'ipv4_standard_acls[name=NON-EXISTENT-STD-ACL]' is required but was not found for host 'ipv4-standard-acl-in-missing-on-node-type-l3-port-channel'.
