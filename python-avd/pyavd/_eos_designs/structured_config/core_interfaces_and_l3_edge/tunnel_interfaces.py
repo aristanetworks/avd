@@ -10,7 +10,6 @@ from pyavd._eos_designs.structured_config.structured_config_generator import str
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
-    from .utils import T_P2pLinksItem
 
 
 class TunnelInterfacesMixin(Protocol):
