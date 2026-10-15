@@ -37,3 +37,12 @@ class ProfiledDataMixin(Protocol):
             self.node_config.dns_settings_profile,
             target_name="dns_settings",
         )
+
+    @cached_property
+    def dns_settings_servers(self: SharedUtilsProtocol) -> EosDesigns.DnsSettings.Servers | None:
+        """
+        Return resolved DNS servers, or None if no servers are configured.
+
+        Read without inserting a default empty list into the resolved DNS settings.
+        """
+        return self.dns_settings._get("servers") or None

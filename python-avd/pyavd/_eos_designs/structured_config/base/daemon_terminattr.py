@@ -168,7 +168,7 @@ class DaemonTerminattrMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         # If DNS is already configured, no further DNS validation is needed
-        if self.shared_utils.dns_settings and self.shared_utils.dns_settings.servers:
+        if self.shared_utils.dns_settings_servers:
             return
         for cluster in clusters:
             match cluster:
