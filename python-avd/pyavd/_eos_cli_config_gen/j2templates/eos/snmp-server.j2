@@ -58,10 +58,10 @@ snmp-server contact {{ snmp_server.contact }}
 snmp-server location {{ snmp_server.location }}
 {%     endif %}
 {%     set local_interface_vrfs = snmp_server.vrfs | arista.avd.default([]) | selectattr('local_interface', 'arista.avd.defined') | list %}
-{%     if snmp_server.local_interface is arista.avd.defined %}
+{%     if local_interface_vrfs or snmp_server.local_interface is arista.avd.defined %}
+{%         if snmp_server.local_interface is arista.avd.defined %}
 snmp-server local-interface {{ snmp_server.local_interface }}
-{%     endif %}
-{%     if local_interface_vrfs %}
+{%         endif %}
 {%         for vrf in local_interface_vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 snmp-server vrf {{ vrf.name }} local-interface {{ vrf.local_interface }}
 {%         endfor %}
