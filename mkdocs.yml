@@ -238,7 +238,6 @@ nav:
       - Data Models:
           - Overview: docs/data-models/README.md
           - AVD Design:
-              - Overview: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/data-models.md
               - Topology: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/topology.md
               - Node Type: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/node-type.md
               - Network Services: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/network-services.md
