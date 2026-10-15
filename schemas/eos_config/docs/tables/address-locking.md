@@ -21,9 +21,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;expiration_mac_disabled</samp>](## "address_locking.locked_address.expiration_mac_disabled") | Boolean |  |  |  | Configure deauthorizing locked addresses upon MAC aging out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_enforcement_disabled</samp>](## "address_locking.locked_address.ipv4_enforcement_disabled") | Boolean |  |  |  | Configure enforcement for locked IPv4 addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enforcement_disabled</samp>](## "address_locking.locked_address.ipv6_enforcement_disabled") | Boolean |  |  |  | Configure enforcement for locked IPv6 addresses. |
-    | [<samp>&nbsp;&nbsp;logging_event</samp>](## "address_locking.logging_event") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;denied_address_drop</samp>](## "address_locking.logging_event.denied_address_drop") | Boolean |  |  |  | Log events for denied address drops. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_server_drop</samp>](## "address_locking.logging_event.dhcp_server_drop") | Boolean |  |  |  | Log events for DHCP server to client packet drops.<br>Requires EOS version 4.36.2F or later. |
+    | [<samp>&nbsp;&nbsp;logging</samp>](## "address_locking.logging") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;event</samp>](## "address_locking.logging.event") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;denied_address_drop</samp>](## "address_locking.logging.event.denied_address_drop") | Boolean |  |  |  | Log events for denied address drops. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_server_drop</samp>](## "address_locking.logging.event.dhcp_server_drop") | Boolean |  |  |  | Log events for DHCP server to client packet drops.<br>Requires EOS version 4.36.2F or later. |
 
 === "YAML"
 
@@ -61,12 +62,13 @@
 
         # Configure enforcement for locked IPv6 addresses.
         ipv6_enforcement_disabled: <bool>
-      logging_event:
+      logging:
+        event:
 
-        # Log events for denied address drops.
-        denied_address_drop: <bool>
+          # Log events for denied address drops.
+          denied_address_drop: <bool>
 
-        # Log events for DHCP server to client packet drops.
-        # Requires EOS version 4.36.2F or later.
-        dhcp_server_drop: <bool>
+          # Log events for DHCP server to client packet drops.
+          # Requires EOS version 4.36.2F or later.
+          dhcp_server_drop: <bool>
     ```

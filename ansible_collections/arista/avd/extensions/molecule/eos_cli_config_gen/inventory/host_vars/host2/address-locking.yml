@@ -2,6 +2,7 @@
 ### Address Locking ###
 # Testing logging events set to false
 address_locking:
-  logging_event:
-    denied_address_drop: false
-    dhcp_server_drop: false
+  logging:
+    event:
+      denied_address_drop: false
+      dhcp_server_drop: false

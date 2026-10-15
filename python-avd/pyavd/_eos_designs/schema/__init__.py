@@ -895,34 +895,55 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class LoggingEvent(AvdModel):
+        class Logging(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"denied_address_drop": {"type": bool}, "dhcp_server_drop": {"type": bool}}
-            denied_address_drop: bool | None
-            """Log events for denied address drops."""
-            dhcp_server_drop: bool | None
-            """
-            Log events for DHCP server to client packet drops.
-            Requires EOS version 4.36.2F or later.
-            """
+            class Event(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"denied_address_drop": {"type": bool}, "dhcp_server_drop": {"type": bool}}
+                denied_address_drop: bool | None
+                """Log events for denied address drops."""
+                dhcp_server_drop: bool | None
+                """
+                Log events for DHCP server to client packet drops.
+                Requires EOS version 4.36.2F or later.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, denied_address_drop: bool | UndefinedType | None = Undefined, dhcp_server_drop: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        Event.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            denied_address_drop: Log events for denied address drops.
+                            dhcp_server_drop:
+                               Log events for DHCP server to client packet drops.
+                               Requires EOS version 4.36.2F or later.
+
+                        """
+
+            _fields: ClassVar[dict] = {"event": {"type": Event}}
+            event: Event
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, denied_address_drop: bool | UndefinedType | None = Undefined, dhcp_server_drop: bool | UndefinedType | None = Undefined
-                ) -> None:
+                def __init__(self, *, event: Event | UndefinedType = Undefined) -> None:
                     """
-                    LoggingEvent.
+                    Logging.
 
 
                     Subclass of AvdModel.
 
                     Args:
-                        denied_address_drop: Log events for denied address drops.
-                        dhcp_server_drop:
-                           Log events for DHCP server to client packet drops.
-                           Requires EOS version 4.36.2F or later.
+                        event: Subclass of AvdModel.
 
                     """
 
@@ -933,7 +954,7 @@ class EosDesigns(EosDesignsRootModel):
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "locked_address": {"type": LockedAddress},
-            "logging_event": {"type": LoggingEvent},
+            "logging": {"type": Logging},
         }
         local_interface: str | None
         """
@@ -970,7 +991,7 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdList with `LeasesItem` items."""
         locked_address: LockedAddress
         """Subclass of AvdModel."""
-        logging_event: LoggingEvent
+        logging: Logging
         """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
@@ -984,7 +1005,7 @@ class EosDesigns(EosDesignsRootModel):
                 disabled: bool | UndefinedType | None = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
-                logging_event: LoggingEvent | UndefinedType = Undefined,
+                logging: Logging | UndefinedType = Undefined,
             ) -> None:
                 """
                 AddressLockingSettings.
@@ -1020,7 +1041,7 @@ class EosDesigns(EosDesignsRootModel):
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.
-                    logging_event: Subclass of AvdModel.
+                    logging: Subclass of AvdModel.
 
                 """
 
