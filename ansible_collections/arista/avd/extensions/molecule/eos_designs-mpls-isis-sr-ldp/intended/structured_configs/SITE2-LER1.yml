@@ -451,6 +451,11 @@ router_bgp:
     password: SHsTgDgjVUU5a9blyxSt3Q==
     send_community: all
     maximum_routes: 0
+  - name: DOCUMENTATION-EBGP-PEERS
+    remote_as: '65102'
+    update_source: Ethernet1
+    bfd: false
+    send_community: standard
   neighbors:
   - ip_address: 100.70.0.8
     peer_group: MPLS-OVERLAY-PEERS
@@ -599,6 +604,7 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '65000:20'
+        - 65000:120
       - address_family: vpn-ipv6
         route_targets:
         - '65000:20'
@@ -606,6 +612,7 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '65000:20'
+        - 65000:220
       - address_family: vpn-ipv6
         route_targets:
         - '65000:20'

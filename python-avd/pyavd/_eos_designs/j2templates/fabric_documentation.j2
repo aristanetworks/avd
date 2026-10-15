@@ -125,6 +125,8 @@
 
 ### VRF Summary
 
+VRFs with different RD patterns or route targets are listed separately.
+
 | VRF | RD Pattern | Import RT | Export RT | Nodes |
 | --- | ---------- | --------- | --------- | ----- |
 {%     for vrf in vrf_summary %}
@@ -134,6 +136,8 @@
 {% if include_bgp_peer_groups and has_bgp_peer_groups %}
 
 ### BGP Peer Groups
+
+Peer groups with different settings are listed separately.
 
 | Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
 | ---------- | --------- | ------------- | --- | -------------- | ----- |
