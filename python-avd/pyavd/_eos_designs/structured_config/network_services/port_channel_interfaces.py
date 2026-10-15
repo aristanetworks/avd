@@ -140,9 +140,7 @@ class PortChannelInterfacesMixin(Protocol):
         interface_ip = l3_port_channel.ip_address
         if interface_ip and "/" in interface_ip:
             interface_ip = get_ip_from_ip_prefix(interface_ip)
-        self.structured_config_utils._validate_ipv4_acl_exclusion(
-            l3_port_channel.ipv4_acl_in, l3_port_channel.ipv4_standard_acl_in, l3_port_channel.name, "in"
-        )
+        self.structured_config_utils._validate_ipv4_acl_exclusion(l3_port_channel.ipv4_acl_in, l3_port_channel.ipv4_standard_acl_in, l3_port_channel.name, "in")
         self.structured_config_utils._validate_ipv4_acl_exclusion(
             l3_port_channel.ipv4_acl_out, l3_port_channel.ipv4_standard_acl_out, l3_port_channel.name, "out"
         )

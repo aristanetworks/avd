@@ -177,12 +177,8 @@ class EthernetInterfacesMixin(Protocol):
         ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
         interface.ip_address = ip_address
         interface_ip = get_ip_from_ip_prefix(ip_address) if ip_address and "/" in ip_address else ip_address
-        self.structured_config_utils._validate_ipv4_acl_exclusion(
-            l3_interface.ipv4_acl_in, l3_interface.ipv4_standard_acl_in, interface.name, "in"
-        )
-        self.structured_config_utils._validate_ipv4_acl_exclusion(
-            l3_interface.ipv4_acl_out, l3_interface.ipv4_standard_acl_out, interface.name, "out"
-        )
+        self.structured_config_utils._validate_ipv4_acl_exclusion(l3_interface.ipv4_acl_in, l3_interface.ipv4_standard_acl_in, interface.name, "in")
+        self.structured_config_utils._validate_ipv4_acl_exclusion(l3_interface.ipv4_acl_out, l3_interface.ipv4_standard_acl_out, interface.name, "out")
         if l3_interface.ipv4_standard_acl_in:
             self.structured_config_utils._set_ipv4_standard_acl(l3_interface.ipv4_standard_acl_in)
             interface.access_group_in = l3_interface.ipv4_standard_acl_in
