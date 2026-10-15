@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import re
 from functools import cached_property
-from ipaddress import ip_network
+from ipaddress import ip_interface, ip_network
 from itertools import islice
 from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 
@@ -178,6 +178,35 @@ class UtilsMixin(Protocol):
             "description": description,
         }
 
+        if p2p_link.tunnel and p2p_link.tunnel.mode:
+            if not p2p_link.interfaces:
+                msg = f"{self.data_model}.p2p_links must have 'interfaces' set for tunnel links."
+                raise AristaAvdInvalidInputsError(msg)
+            source_ips = p2p_link.tunnel.source_ips or [None, None]
+            source_interfaces = p2p_link.tunnel.source_interfaces or [None, None]
+            source_ip = source_ips[index]
+            peer_source_ip_cidr = source_ips[peer_index]
+            peer_source_ip = str(ip_interface(peer_source_ip_cidr).ip) if peer_source_ip_cidr else None
+            crypto_peer_ip = self._get_crypto_peer_ip(source_ip) if source_ip else None
+            data.update(
+                {
+                    "is_tunnel": True,
+                    "interface": p2p_link.interfaces[index],
+                    "peer_interface": p2p_link.interfaces[peer_index],
+                    "port_channel_id": None,
+                    "peer_port_channel_id": None,
+                    "port_channel_description": None,
+                    "port_channel_members": [],
+                    "tunnel_mode": p2p_link.tunnel.mode,
+                    "source_interface": source_interfaces[index],
+                    "peer_source_interface": source_interfaces[peer_index],
+                    "source_ip": source_ip,
+                    "peer_source_ip": peer_source_ip,
+                    "crypto_peer_ip": crypto_peer_ip,
+                },
+            )
+            return data
+
         if (
             self.shared_utils.hostname in p2p_link.port_channel.nodes_child_interfaces
             and p2p_link.port_channel.nodes_child_interfaces[self.shared_utils.hostname].interfaces
@@ -196,6 +225,7 @@ class UtilsMixin(Protocol):
 
             data.update(
                 {
+                    "is_tunnel": False,
                     "interface": f"Port-Channel{portchannel_id}",
                     "peer_interface": f"Port-Channel{peer_id}",
                     "port_channel_id": portchannel_id,
@@ -216,6 +246,7 @@ class UtilsMixin(Protocol):
             # Ethernet
             data.update(
                 {
+                    "is_tunnel": False,
                     "interface": p2p_link.interfaces[index],
                     "peer_interface": p2p_link.interfaces[peer_index],
                     "port_channel_id": None,
@@ -403,6 +434,17 @@ class UtilsMixin(Protocol):
 
         # channel_id_algorithm "first_port"
         return int("".join(re.findall(r"\d", node_data.interfaces[0])))
+
+    @staticmethod
+    def _get_crypto_peer_ip(source_ip_cidr: str) -> str:
+        """Given an IP/mask like '10.0.0.0/31', return the other host in the subnet (e.g., '10.0.0.1')."""
+        iface = ip_interface(source_ip_cidr)
+        network = iface.network
+        hosts = list(network.hosts())
+        if len(hosts) < 2:  # noqa: PLR2004
+            msg = f"Cannot derive crypto peer IP from '{source_ip_cidr}'. Subnet must contain at least 2 hosts (/31 or /30)."
+            raise AristaAvdInvalidInputsError(msg)
+        return str(hosts[1]) if iface.ip == hosts[0] else str(hosts[0])
 
     def _update_interface_multicast_config(
         self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,

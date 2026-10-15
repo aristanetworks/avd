@@ -143,3 +143,45 @@ tunnel_interfaces:
     tunnel_mode: gre
     source: 1.1.1.1
     destination: 2.2.2.6
+  - name: Tunnel8
+    description: MPLS-over-GRE with ISIS
+    ip_address: 10.10.10.0/31
+    tunnel_mode: gre
+    source_interface: Ethernet45
+    destination: 172.16.0.1
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+        igp_sync: true
+    isis_enable: CORE
+    isis_bfd: true
+    isis_metric: 50
+    isis_network_point_to_point: true
+    isis_circuit_type: level-2
+    isis_hello_padding: false
+    isis_authentication:
+      both:
+        mode: md5
+        key_type: "7"
+        key: "074080737A1C0E15"
+  - name: Tunnel9
+    description: MPLS-over-GRE with OSPF
+    ip_address: 10.10.10.2/31
+    tunnel_mode: gre
+    source_interface: Ethernet46
+    destination: 172.16.0.2
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+        igp_sync: true
+    ospf_area: "0"
+    ospf_network_point_to_point: true
+    ospf_cost: 100
+    ospf_authentication: message-digest
+    ospf_message_digest_keys:
+      - id: 1
+        hash_algorithm: sha512
+        key: "7"
+        key_type: "7"

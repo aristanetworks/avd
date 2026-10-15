@@ -24,6 +24,38 @@ class EthernetInterfacesMixin(Protocol):
     def ethernet_interfaces(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol) -> None:
         """Set the structured config for ethernet_interfaces."""
         for p2p_link, p2p_link_data in self._filtered_p2p_links:
+            if p2p_link_data.get("is_tunnel"):
+                source_interface = p2p_link_data.get("source_interface")
+                source_ip = p2p_link_data.get("source_ip")
+                if source_interface and source_ip:
+                    ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
+                        name=source_interface,
+                        shutdown=False,
+                    )
+                    ethernet_interface.switchport.enabled = False
+                    ethernet_interface.ip_address = source_ip
+                    ethernet_interface.description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                        InterfaceDescriptionData(
+                            shared_utils=self.shared_utils,
+                            interface=source_interface,
+                            link_type=self.data_model,
+                            peer=p2p_link_data["peer"],
+                            peer_interface=p2p_link_data.get("peer_source_interface", ""),
+                        ),
+                    ) or None
+                    ethernet_interface.metadata._update(
+                        peer_interface=p2p_link_data.get("peer_source_interface", ""),
+                        peer=p2p_link_data["peer"],
+                        peer_type=p2p_link_data["peer_type"],
+                    )
+                    if p2p_link.ethernet_structured_config:
+                        self.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                            p2p_link.ethernet_structured_config,
+                            list_merge=self.custom_structured_configs.list_merge_strategy,
+                        )
+                    self.structured_config.ethernet_interfaces.append(ethernet_interface)
+                continue
+
             if p2p_link_data["port_channel_id"] is None:
                 # Ethernet interface
                 ethernet_interface = EosCliConfigGen.EthernetInterfacesItem()
