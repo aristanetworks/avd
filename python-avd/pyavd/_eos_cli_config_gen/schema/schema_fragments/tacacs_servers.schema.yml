@@ -11,8 +11,6 @@ keys:
     keys:
       timeout:
         type: int
-        convert_types:
-          - str
         description: Timeout in seconds.
         min: 1
         max: 1000
@@ -26,23 +24,17 @@ keys:
               description: Host IP address or name.
             vrf:
               type: str
-              convert_types:
-                - int
             key:
               type: str
               description: Encrypted key.
             key_type:
               type: str
-              convert_types:
-                - int
               valid_values: ["0", "7", "8a"]
               default: "7"
             single_connection:
               type: bool
             timeout:
               type: int
-              convert_types:
-                - str
               description: Timeout in seconds.
               min: 1
               max: 1000
