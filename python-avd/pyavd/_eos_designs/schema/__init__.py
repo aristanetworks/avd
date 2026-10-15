@@ -904,7 +904,7 @@ class EosDesigns(EosDesignsRootModel):
             dhcp_server_drop: bool | None
             """
             Log events for DHCP server to client packet drops.
-            Requires EOS version 4.36 or later.
+            Requires EOS version 4.36.2F or later.
             """
 
             if TYPE_CHECKING:
@@ -922,7 +922,7 @@ class EosDesigns(EosDesignsRootModel):
                         denied_address_drop: Log events for denied address drops.
                         dhcp_server_drop:
                            Log events for DHCP server to client packet drops.
-                           Requires EOS version 4.36 or later.
+                           Requires EOS version 4.36.2F or later.
 
                     """
 
