@@ -118,7 +118,7 @@ docs/howto/connected_endpoints/artifacts/ESXI-HOST-03.cfg
 
 3. **Consistent naming conventions**: Establish clear naming patterns for endpoints and profiles to improve readability and maintenance.
 
-4. **Connected endpoints description**: AVD uses a default pattern to create the description `{endpoint_type}_{endpoint}_{endpoint_port(if defined)}`. To customize this pattern please refer to the [Custom Descriptions and Names](../../../ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md) documentation.
+4. **Connected endpoints description**: AVD uses a default pattern to create the description `{endpoint_type}_{endpoint}_{endpoint_port(if defined)}`. To customize this pattern please refer to the [Custom Descriptions and Names](../../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/custom-descriptions-names.md) documentation.
 
 5. **Validate list lengths**: Ensure `endpoint_ports`, `switch_ports`, and `switches` lists have the same length to avoid configuration errors.
 
