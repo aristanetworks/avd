@@ -76,7 +76,7 @@ ansible_collections/arista/avd/examples/campus-fabric/switch-basic-configuration
 
 ## Ansible Inventory
 
-Now that we understand the physical L2LS topology, we must create the Ansible inventory that represents this topology. The following is a textual and graphical representation of the Ansible inventory group variables and naming scheme used in this example:
+Now that we understand the physical campus topology, we must create the Ansible inventory that represents this topology. The following is a textual and graphical representation of the Ansible inventory group variables and naming scheme used in this example:
 
 ``` text
 - CAMPUS_FABRIC
