@@ -637,24 +637,6 @@ router_isis:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
-tunnel_interfaces:
-- name: Tunnel100
-  shutdown: false
-  mtu: 1600
-  ip_address: 10.0.0.0/31
-  tunnel_mode: gre
-  source_interface: Ethernet50
-  destination: 192.168.1.0
-  isis_enable: CORE
-  isis_metric: 50
-  isis_network_point_to_point: true
-  isis_circuit_type: level-2
-  isis_hello_padding: true
-  mpls:
-    ip: true
-    ldp:
-      interface: true
-      igp_sync: true
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
@@ -663,6 +645,24 @@ static_routes:
   next_hop: 192.168.0.1
   name: Tunnel endpoint core-2-ospf-ldp
 transceiver_qsfp_default_mode_4x10: true
+tunnel_interfaces:
+- name: Tunnel100
+  shutdown: false
+  mtu: 1600
+  ip_address: 10.0.0.0/31
+  tunnel_mode: gre
+  source_interface: Ethernet50
+  destination: 192.168.1.0
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
 vlan_internal_order:
   allocation: ascending
   range:

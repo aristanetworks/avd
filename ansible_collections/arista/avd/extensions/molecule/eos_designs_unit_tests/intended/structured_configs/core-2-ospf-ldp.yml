@@ -436,21 +436,6 @@ router_ospf:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
-tunnel_interfaces:
-- name: Tunnel100
-  shutdown: false
-  mtu: 1600
-  ip_address: 10.0.0.1/31
-  tunnel_mode: gre
-  source_interface: Ethernet50
-  destination: 192.168.0.0
-  ospf_area: 0.0.0.0
-  ospf_network_point_to_point: true
-  mpls:
-    ip: true
-    ldp:
-      interface: true
-      igp_sync: true
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
@@ -459,6 +444,21 @@ static_routes:
   next_hop: 192.168.1.1
   name: Tunnel endpoint core-1-isis-sr-ldp
 transceiver_qsfp_default_mode_4x10: true
+tunnel_interfaces:
+- name: Tunnel100
+  shutdown: false
+  mtu: 1600
+  ip_address: 10.0.0.1/31
+  tunnel_mode: gre
+  source_interface: Ethernet50
+  destination: 192.168.0.0
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  ospf_area: 0.0.0.0
+  ospf_network_point_to_point: true
 vlan_internal_order:
   allocation: ascending
   range:
