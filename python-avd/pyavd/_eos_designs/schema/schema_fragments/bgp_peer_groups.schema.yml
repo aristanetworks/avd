@@ -99,6 +99,7 @@ keys:
         type: dict
         description: |-
           Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
+          By default AVD uses the `mlag_ipv4_underlay_peer` peer group for the Underlay and for all the VRFs.
         keys:
           name:
             type: str

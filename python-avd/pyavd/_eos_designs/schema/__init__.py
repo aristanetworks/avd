@@ -2554,6 +2554,8 @@ class EosDesigns(EosDesignsRootModel):
         mlag_vrfs_peer: MlagVrfsPeer
         """
         Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
+        By default AVD
+        uses the `mlag_ipv4_underlay_peer` peer group for the Underlay and for all the VRFs.
 
         Subclass of
         AvdModel.
@@ -2629,6 +2631,8 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_underlay_peers: Subclass of AvdModel.
                     mlag_vrfs_peer:
                        Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
+                       By default AVD
+                       uses the `mlag_ipv4_underlay_peer` peer group for the Underlay and for all the VRFs.
 
                        Subclass of
                        AvdModel.
