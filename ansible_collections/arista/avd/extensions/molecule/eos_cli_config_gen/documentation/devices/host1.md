@@ -7723,7 +7723,7 @@ interface Loopback100
 | Tunnel9 | MPLS-over-GRE with OSPF | default | default | - | - | - | gre | Ethernet46 | 172.16.0.2 | - | - | True | - | 0 |
 | Tunnel10 | GRE with ISIS per-level auth | default | default | - | - | - | gre | Ethernet47 | 172.16.0.3 | - | - | - | CORE | - |
 | Tunnel11 | GRE with ISIS key-ids | default | default | - | - | - | gre | Ethernet48 | 172.16.0.4 | - | - | - | CORE | - |
-| Tunnel12 | GRE with OSPF simple auth | default | default | - | - | - | gre | 3.3.3.3 | 172.16.0.5 | - | - | - | - | 1 |
+| Tunnel12 | GRE with OSPF simple auth | default | default | - | - | - | gre | 3.3.3.3 | 172.16.0.5 | - | - | False | - | 1 |
 
 ##### IPv4
 
