@@ -527,14 +527,12 @@ aaa accounting commands 0 default none
 | Setting | Value |
 | -------- | ----- |
 | Disable IP locking on configured ports | False |
-| Local Interface | Loopback0 |
 
 ### Address Locking Device Configuration
 
 ```eos
 !
 address locking
-   local-interface Loopback0
 ```
 
 ## Management Security

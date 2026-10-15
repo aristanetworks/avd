@@ -23,7 +23,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enforcement_disabled</samp>](## "address_locking_settings.locked_address.ipv6_enforcement_disabled") | Boolean |  |  |  | Configure enforcement for locked IPv6 addresses. |
     | [<samp>&nbsp;&nbsp;logging_event</samp>](## "address_locking_settings.logging_event") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;denied_address_drop</samp>](## "address_locking_settings.logging_event.denied_address_drop") | Boolean |  |  |  | Log events for denied address drops. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_server_drop</samp>](## "address_locking_settings.logging_event.dhcp_server_drop") | Boolean |  |  |  | Log events for DHCP server to client packet drops. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_server_drop</samp>](## "address_locking_settings.logging_event.dhcp_server_drop") | Boolean |  |  |  | Log events for DHCP server to client packet drops.<br>Requires EOS version 4.36 or later. |
 
 === "YAML"
 
@@ -76,5 +76,6 @@
         denied_address_drop: <bool>
 
         # Log events for DHCP server to client packet drops.
+        # Requires EOS version 4.36 or later.
         dhcp_server_drop: <bool>
     ```

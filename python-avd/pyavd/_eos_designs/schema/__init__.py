@@ -902,7 +902,10 @@ class EosDesigns(EosDesignsRootModel):
             denied_address_drop: bool | None
             """Log events for denied address drops."""
             dhcp_server_drop: bool | None
-            """Log events for DHCP server to client packet drops."""
+            """
+            Log events for DHCP server to client packet drops.
+            Requires EOS version 4.36 or later.
+            """
 
             if TYPE_CHECKING:
 
@@ -917,7 +920,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         denied_address_drop: Log events for denied address drops.
-                        dhcp_server_drop: Log events for DHCP server to client packet drops.
+                        dhcp_server_drop:
+                           Log events for DHCP server to client packet drops.
+                           Requires EOS version 4.36 or later.
 
                     """
 

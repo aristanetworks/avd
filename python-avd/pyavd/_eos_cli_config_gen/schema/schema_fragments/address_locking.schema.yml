@@ -60,4 +60,6 @@ keys:
             description: Log events for denied address drops.
           dhcp_server_drop:
             type: bool
-            description: Log events for DHCP server to client packet drops.
+            description: |-
+              Log events for DHCP server to client packet drops.
+              Requires EOS version 4.36 or later.
