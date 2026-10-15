@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on port-channel 'Port-Channel1'. Only one ingress IPv4 ACL may be configured.
+pyavd._errors.AristaAvdInvalidInputsError: 'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on interface 'Port-Channel1'. Only one ingress IPv4 ACL may be configured.

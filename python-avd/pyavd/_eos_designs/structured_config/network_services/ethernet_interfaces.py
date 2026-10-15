@@ -177,17 +177,12 @@ class EthernetInterfacesMixin(Protocol):
         ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
         interface.ip_address = ip_address
         interface_ip = get_ip_from_ip_prefix(ip_address) if ip_address and "/" in ip_address else ip_address
-        if l3_interface.ipv4_acl_in and l3_interface.ipv4_standard_acl_in:
-            msg = (
-                f"'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on interface '{interface.name}'. Only one ingress IPv4 ACL may be configured."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-        if l3_interface.ipv4_acl_out and l3_interface.ipv4_standard_acl_out:
-            msg = (
-                f"'ipv4_acl_out' and 'ipv4_standard_acl_out' are mutually exclusive on interface '{interface.name}'. "
-                "Only one egress IPv4 ACL may be configured."
-            )
-            raise AristaAvdInvalidInputsError(msg)
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_interface.ipv4_acl_in, l3_interface.ipv4_standard_acl_in, interface.name, "interface", "in"
+        )
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_interface.ipv4_acl_out, l3_interface.ipv4_standard_acl_out, interface.name, "interface", "out"
+        )
         if l3_interface.ipv4_standard_acl_in:
             self.structured_config_utils._set_ipv4_standard_acl(l3_interface.ipv4_standard_acl_in)
             interface.access_group_in = l3_interface.ipv4_standard_acl_in

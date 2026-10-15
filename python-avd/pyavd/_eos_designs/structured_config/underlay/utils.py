@@ -346,18 +346,12 @@ class UtilsMixin(Protocol):
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
     ) -> None:
         """Apply IPv4 and IPv6 ACLs to an L3 interface or L3 port-channel."""
-        if l3_interface.ipv4_acl_in and l3_interface.ipv4_standard_acl_in:
-            msg = (
-                f"'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on interface '{l3_interface.name}'. "
-                "Only one ingress IPv4 ACL may be configured."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-        if l3_interface.ipv4_acl_out and l3_interface.ipv4_standard_acl_out:
-            msg = (
-                f"'ipv4_acl_out' and 'ipv4_standard_acl_out' are mutually exclusive on interface '{l3_interface.name}'. "
-                "Only one egress IPv4 ACL may be configured."
-            )
-            raise AristaAvdInvalidInputsError(msg)
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_interface.ipv4_acl_in, l3_interface.ipv4_standard_acl_in, l3_interface.name, "interface", "in"
+        )
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_interface.ipv4_acl_out, l3_interface.ipv4_standard_acl_out, l3_interface.name, "interface", "out"
+        )
         if l3_interface.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
             interface.access_group_in = acl.name

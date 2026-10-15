@@ -140,18 +140,12 @@ class PortChannelInterfacesMixin(Protocol):
         interface_ip = l3_port_channel.ip_address
         if interface_ip and "/" in interface_ip:
             interface_ip = get_ip_from_ip_prefix(interface_ip)
-        if l3_port_channel.ipv4_acl_in and l3_port_channel.ipv4_standard_acl_in:
-            msg = (
-                f"'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on port-channel '{l3_port_channel.name}'. "
-                "Only one ingress IPv4 ACL may be configured."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-        if l3_port_channel.ipv4_acl_out and l3_port_channel.ipv4_standard_acl_out:
-            msg = (
-                f"'ipv4_acl_out' and 'ipv4_standard_acl_out' are mutually exclusive on port-channel '{l3_port_channel.name}'. "
-                "Only one egress IPv4 ACL may be configured."
-            )
-            raise AristaAvdInvalidInputsError(msg)
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_port_channel.ipv4_acl_in, l3_port_channel.ipv4_standard_acl_in, l3_port_channel.name, "port-channel", "in"
+        )
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_port_channel.ipv4_acl_out, l3_port_channel.ipv4_standard_acl_out, l3_port_channel.name, "port-channel", "out"
+        )
         if l3_port_channel.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(name=l3_port_channel.ipv4_acl_in, interface_name=l3_port_channel.name, interface_ip=interface_ip)
             port_channel_interface.access_group_in = acl.name
