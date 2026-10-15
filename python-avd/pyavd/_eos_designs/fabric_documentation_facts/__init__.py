@@ -136,8 +136,8 @@ class FabricDocumentationFacts(AvdFacts):
 
     @cached_property
     def has_mpls(self) -> bool:
-        """At least one device has MPLS/LDP configured, so we should include the section in the docs."""
-        return any(fabric_switch.get("mpls_ldp_enabled") for fabric_switch in self.fabric_switches)
+        """At least one device has an MPLS/LDP router ID configured or LDP enabled."""
+        return any(fabric_switch.get("mpls_router_id") is not None or fabric_switch.get("mpls_ldp_enabled") for fabric_switch in self.fabric_switches)
 
     @cached_property
     def has_isis_sr(self) -> bool:
@@ -208,7 +208,7 @@ class FabricDocumentationFacts(AvdFacts):
             for vrf in get(structured_config, "router_bgp.vrfs", default=[]):
                 if (entry := self._get_vrf_summary_entry(vrf)) is None:
                     continue
-                # Only combine nodes when all displayed VRF settings match.
+                # Only combine nodes when all displayed VRF settings, including route-target address families, match.
                 key = (entry["vrf"], entry["rd_pattern"], entry["import_rt"], entry["export_rt"])
                 summary = vrf_data.setdefault(key, {**entry, "nodes": []})
                 summary["nodes"].append(hostname)
@@ -235,12 +235,14 @@ class FabricDocumentationFacts(AvdFacts):
 
     @staticmethod
     def _collect_route_targets(vrf: dict, direction: str) -> list[str]:
-        """Return unique route targets for the given direction ("import" or "export"), preserving discovery order."""
+        """Return unique address-family-qualified route targets for the given direction, preserving discovery order."""
         rts: list[str] = []
         for rt_group in get(vrf, f"route_targets.{direction}", default=[]):
+            address_family = get(rt_group, "address_family", default="-")
             for rt in get(rt_group, "route_targets", default=[]):
-                if rt not in rts:
-                    rts.append(rt)
+                qualified_rt = f"{address_family} {rt}"
+                if qualified_rt not in rts:
+                    rts.append(qualified_rt)
         return rts
 
     @cached_property

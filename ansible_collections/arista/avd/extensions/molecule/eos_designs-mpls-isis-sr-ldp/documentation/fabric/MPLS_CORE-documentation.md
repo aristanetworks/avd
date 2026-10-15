@@ -174,9 +174,9 @@ VRFs with different RD patterns or route targets are listed separately.
 
 | VRF | RD Pattern | Import RT | Export RT | Nodes |
 | --- | ---------- | --------- | --------- | ----- |
-| TENANT_B_INTRA | 19 | 65000:19 | 65000:19 | SITE1-LER1, SITE1-LER2, SITE2-LER1 |
-| TENANT_B_WAN | 20 | 65000:20 | 65000:20 | SITE1-LER2 |
-| TENANT_B_WAN | 20 | 65000:120, 65000:20 | 65000:20, 65000:220 | SITE2-LER1 |
+| TENANT_B_INTRA | 19 | evpn 65000:19 | evpn 65000:19 | SITE1-LER1, SITE1-LER2, SITE2-LER1 |
+| TENANT_B_WAN | 20 | vpn-ipv4 65000:20, vpn-ipv6 65000:20 | vpn-ipv4 65000:20, vpn-ipv6 65000:20 | SITE1-LER2 |
+| TENANT_B_WAN | 20 | vpn-ipv4 65000:120, vpn-ipv4 65000:20, vpn-ipv6 65000:20 | vpn-ipv4 65000:20, vpn-ipv4 65000:220, vpn-ipv6 65000:20 | SITE2-LER1 |
 
 ### BGP Peer Groups
 

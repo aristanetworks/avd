@@ -293,7 +293,7 @@ class TestFabricDocumentationFactsEdgeCases:
             assert overlay_nodes[0]["router_id"] == "-", "None router_id should be rendered as '-'"
 
 
-@pytest.mark.parametrize("changed_field", [None, "rd", "import", "export"])
+@pytest.mark.parametrize("changed_field", [None, "rd", "import", "export", "import_address_family", "export_address_family"])
 def test_vrf_summary_preserves_node_differences(changed_field: str | None) -> None:
     """Only combine VRFs whose displayed RD and route targets match across nodes."""
     vrf = {
@@ -313,6 +313,10 @@ def test_vrf_summary_preserves_node_differences(changed_field: str | None) -> No
         other_vrf["rd"] = "192.0.2.2:11"
     elif changed_field in ("import", "export"):
         other_vrf["route_targets"][changed_field][0]["route_targets"].append("65000:30")
+    elif changed_field in ("import_address_family", "export_address_family"):
+        other_vrf["route_targets"][changed_field.removesuffix("_address_family")][0]["address_family"] = "vpn-ipv6"
+        if changed_field == "import_address_family":
+            other_vrf["route_targets"]["import"][1]["address_family"] = "vpn-ipv4"
 
     facts = FabricDocumentationFacts(
         avd_facts={},
@@ -325,7 +329,13 @@ def test_vrf_summary_preserves_node_differences(changed_field: str | None) -> No
         include_connected_endpoints=False,
         toc=False,
     )
-    entry = {"vrf": "BLUE", "rd_pattern": "10", "import_rt": "65000:10, 65000:20", "export_rt": "65000:10", "nodes": "node1, node2, node10"}
+    entry = {
+        "vrf": "BLUE",
+        "rd_pattern": "10",
+        "import_rt": "vpn-ipv4 65000:10, vpn-ipv4 65000:20, vpn-ipv6 65000:10",
+        "export_rt": "vpn-ipv4 65000:10",
+        "nodes": "node1, node2, node10",
+    }
     if changed_field is None:
         assert facts.vrf_summary == [entry]
         return
@@ -334,8 +344,14 @@ def test_vrf_summary_preserves_node_differences(changed_field: str | None) -> No
     other_entry = dict(entry, nodes="node2")
     if changed_field == "rd":
         other_entry["rd_pattern"] = "11"
-    else:
-        other_entry[f"{changed_field}_rt"] += ", 65000:30"
+    elif changed_field == "import":
+        other_entry["import_rt"] = "vpn-ipv4 65000:10, vpn-ipv4 65000:20, vpn-ipv4 65000:30, vpn-ipv6 65000:10"
+    elif changed_field == "export":
+        other_entry["export_rt"] = "vpn-ipv4 65000:10, vpn-ipv4 65000:30"
+    elif changed_field == "import_address_family":
+        other_entry["import_rt"] = "vpn-ipv4 65000:10, vpn-ipv6 65000:10, vpn-ipv6 65000:20"
+    elif changed_field == "export_address_family":
+        other_entry["export_rt"] = "vpn-ipv6 65000:10"
     assert facts.vrf_summary == [entry, other_entry]
 
 
