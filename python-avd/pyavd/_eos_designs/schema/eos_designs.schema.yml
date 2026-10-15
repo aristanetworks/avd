@@ -837,7 +837,7 @@ keys:
     keys:
       underlay_peers:
         type: dict
-        description: This key takes precedence over `ipv4_underlay_peers` when set.
+        description: Peer group for IPv4 or IPv6 underlay BGP peerings.
         keys:
           name:
             type: str

@@ -2403,7 +2403,7 @@ class EosDesigns(EosDesignsRootModel):
         }
         underlay_peers: UnderlayPeers
         """
-        This key takes precedence over `ipv4_underlay_peers` when set.
+        Peer group for IPv4 or IPv6 underlay BGP peerings.
 
         Subclass of AvdModel.
         """
@@ -2476,7 +2476,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     underlay_peers:
-                       This key takes precedence over `ipv4_underlay_peers` when set.
+                       Peer group for IPv4 or IPv6 underlay BGP peerings.
 
                        Subclass of AvdModel.
                     ipv4_underlay_peers: Subclass of AvdModel.

@@ -22,7 +22,7 @@
     | [<samp>underlay_ipv4_peer_group</samp>](## "underlay_ipv4_peer_group") | String |  | `ipv4_underlay_peers` | Valid Values:<br>- <code>ipv4_underlay_peers</code><br>- <code>ipv6_underlay_peers</code><br>- <code>underlay_peers</code> | Select the BGP peer group to use for underlay IPv4 peerings. |
     | [<samp>underlay_ipv6_peer_group</samp>](## "underlay_ipv6_peer_group") | String |  | `ipv4_underlay_peers` | Valid Values:<br>- <code>ipv4_underlay_peers</code><br>- <code>ipv6_underlay_peers</code><br>- <code>underlay_peers</code> | Select the BGP peer group to use for underlay IPv6 peerings.<br>Note: Default is "ipv4_underlay_peers" to maintain backward compatibility. Consider changing to "ipv6_underlay_peers" for IPv6-specific configuration. |
     | [<samp>bgp_peer_groups</samp>](## "bgp_peer_groups") | Dictionary |  |  |  | Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.<br>Note that the name of the peer groups use '-' instead of '_' in EOS configuration.<br> |
-    | [<samp>&nbsp;&nbsp;underlay_peers</samp>](## "bgp_peer_groups.underlay_peers") | Dictionary |  |  |  | This key takes precedence over `ipv4_underlay_peers` when set. |
+    | [<samp>&nbsp;&nbsp;underlay_peers</samp>](## "bgp_peer_groups.underlay_peers") | Dictionary |  |  |  | Peer group for IPv4 or IPv6 underlay BGP peerings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.underlay_peers.name") | String |  | `UNDERLAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.underlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.underlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
@@ -164,7 +164,7 @@
     # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
     bgp_peer_groups:
 
-      # This key takes precedence over `ipv4_underlay_peers` when set.
+      # Peer group for IPv4 or IPv6 underlay BGP peerings.
       underlay_peers:
 
         # Name of peer group.
