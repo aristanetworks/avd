@@ -133,11 +133,7 @@ def build_schema_classes() -> None:
 
 
 def build_schemas() -> None:
-    """Generate the metaschema, combine schema fragments, and rebuild schema artifacts."""
-    from pyavd_utils_gen.metaschema import generate_metaschema  # noqa: PLC0415
-
-    LOGGER.info("Generating AVD metaschema")
-    generate_metaschema(METASCHEMA_FILE)
+    """Combines the schema fragments, and rebuild the pickled schemas."""
     combine_schemas()
     # The metaschema describes authored schemas, before reference resolution moves root-only fields into nested schemas.
     validate_schemas(create_store(load_from_yaml=True))

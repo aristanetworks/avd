@@ -89,8 +89,10 @@ The supported schema options for AVD Schema are described in a meta-schema using
 can be seen [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_schema/avd_meta_schema.json). In addition, below is a more detailed description of the supported
 schema options per variable type.
 
-The meta-schema is generated from the source-schema models in `pyavd-utils-gen` when running `make -C python-avd compile-schemas`.
-Update those models in [pyavd-utils](https://github.com/aristanetworks/pyavd-utils) when changing the supported schema options, then regenerate the meta-schema in AVD.
+The meta-schema is generated from the source-schema models in [pyavd-utils](https://github.com/aristanetworks/pyavd-utils) and committed to this repository.
+When bumping `pyavd-utils-gen`, update the pinned version in `.pre-commit-config.yaml` alongside the other dependency declarations.
+The `metaschema` pre-commit hook regenerates the JSON when that configuration changes, catching a forgotten refresh during dependency bumps.
+Stage any generated changes with the dependency update. To regenerate it explicitly, run `pre-commit run metaschema --all-files`.
 
 All schema options (ex. `type`, `max`, `valid_values`) are validated individually, and to pass the validation, the data must
 conform to all the rules given by the schema options.
