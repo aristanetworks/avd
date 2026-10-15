@@ -239,7 +239,6 @@ nav:
           - Overview: docs/data-models/README.md
           - AVD Design:
               - Overview: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/data-models.md
-              - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/custom-structured-configuration.md
               - Topology: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/topology.md
               - Node Type: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/node-type.md
               - Network Services: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/network-services.md
@@ -253,6 +252,7 @@ nav:
               - Platform and System: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/platform-and-system.md
               - Catalogs: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/catalog.md
               - ANTA Runner: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/anta-runner.md
+              - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/custom-structured-configuration.md
               - Future Behaviors: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/future-behaviors.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
           - Schema Explorer: docs/schema-explorer.md
