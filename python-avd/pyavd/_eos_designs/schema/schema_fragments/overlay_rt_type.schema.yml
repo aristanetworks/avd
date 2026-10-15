@@ -26,8 +26,6 @@ keys:
     keys:
       admin_subfield:
         type: str
-        convert_types:
-          - int
         description: |
           The method for deriving RT Administrator subfield (first part of RT):
           - 'vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id` for VLANs, `(vrf_id or vrf_vni)` for VRFs and `id` for bundles defined under 'evpn_vlan_bundles'.
@@ -42,8 +40,6 @@ keys:
         default: vrf_id
       vrf_admin_subfield:
         type: str
-        convert_types:
-          - int
         description: |
           The method for deriving RT Administrator subfield (first part of RT) for VRF services:
           - 'id' means `(vrf_id or vrf_vni)`.

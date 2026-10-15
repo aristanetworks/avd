@@ -22,8 +22,6 @@ keys:
           - none
       priority:
         type: int
-        convert_types:
-          - str
         default: 32768
         description: |-
           Spanning-tree priority configured for the selected mode.
