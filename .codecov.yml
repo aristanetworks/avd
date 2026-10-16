@@ -34,13 +34,6 @@ coverage:
         flags:
           - pyavd_tests
           - e2e_tests
-      schema_tools:
-        target: auto
-        threshold: 0.5%
-        paths:
-          - "python-avd/schema_tools/"
-        flags:
-          - pyavd_tests
       ansible_plugins:
         target: auto
         threshold: 0.5%
@@ -65,10 +58,6 @@ component_management:
       name: pyavd
       paths:
         - "python-avd/pyavd/"
-    - component_id: schema_tools
-      name: schema_tools
-      paths:
-        - "python-avd/schema_tools/"
     - component_id: ansible_plugins
       name: Ansible plugins
       paths:
