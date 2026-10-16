@@ -2,6 +2,5 @@ ansible_only
 anta_runner
 eos_cli_config_gen
 eos_cli_config_gen_deprecated_vars
-eos_designs_unit_tests
 example-cv-pathfinder
 howto
