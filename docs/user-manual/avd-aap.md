@@ -335,6 +335,7 @@ With most jobs, we need a way to authenticate with our CV instance or EOS nodes.
 === "Create a vault file"
 
     ```yaml
+    # group_vars/vault.yml
     ---
     cv_token: < CloudVision Service Account Token >
 
@@ -347,6 +348,7 @@ With most jobs, we need a way to authenticate with our CV instance or EOS nodes.
     The `cv_token` variable will be leveraged when provisioning the fabric with the `cv_deploy` role.
 
     ```yaml
+    # playbooks/deploy.yml
     ---
     - name: Build and Deploy configurations
       hosts: FABRIC
@@ -378,6 +380,7 @@ With most jobs, we need a way to authenticate with our CV instance or EOS nodes.
 Below is an example of the playbook we are leveraging to build and deploy our configurations with CV.
 
 ```yaml
+# playbooks/deploy.yml
 ---
 - name: Build and Deploy configurations
   hosts: FABRIC
