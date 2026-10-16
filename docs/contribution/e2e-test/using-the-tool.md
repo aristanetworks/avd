@@ -77,6 +77,17 @@ Facts generation runs per fabric. Give independent cases that fail during facts 
 
 CI discovers this project's `e2e-test.toml`, runs it in the regular and coverage E2E jobs, and checks for changed artifacts. Ansible action-plugin unit and integration tests separately cover error handling at the collection boundary.
 
+## Ansible role integration coverage
+
+The `eos_designs_unit_tests` inventory runs through the E2E tool. Ansible role compatibility is covered separately by the small `eos_designs_role` integration target:
+
+```bash
+cd ansible_collections/arista/avd
+ansible-test integration eos_designs_role --requirements -vv
+```
+
+This target runs `eos_designs` and `eos_cli_config_gen` on a two-device fabric, checks cross-device topology and generated configuration/documentation, verifies temporary-file cleanup, and repeats both roles to check idempotence. CI runs it across supported Ansible versions and the milestone branch. The minimum-requirements job runs the same target with Python 3.10, Ansible 2.16.0, and PyAVD's lowest direct dependency versions, without `--requirements` so the harness does not upgrade them. Role dependencies must be available in `~/.ansible/collections`; CI restores them from the shared collection cache.
+
 ## Creating `e2e-test.toml`
 
 Place the file in the project directory. All configured paths are resolved relative to this directory, regardless of the shell's current working directory.
