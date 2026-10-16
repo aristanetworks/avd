@@ -526,6 +526,9 @@ loopback_interfaces:
   shutdown: false
   vrf: Tenant_A_OSPF
   ip_address: 10.1.53.0/32
+  ipv6_addresses:
+  - fd5a:fe45:8831:06c5::a/64
+  - 8:8:8:8:8:8:8:8/124
   ospf_area: '1'
   hardware_forwarding_id: true
 management_api_http:

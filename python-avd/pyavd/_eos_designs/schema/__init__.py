@@ -37677,6 +37677,11 @@ class EosDesigns(EosDesignsRootModel):
             class LoopbacksItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Ipv6Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Ipv6Addresses._item_type = str
+
                 class Ospf(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -37709,6 +37714,7 @@ class EosDesigns(EosDesignsRootModel):
                     "node": {"type": str},
                     "loopback": {"type": int},
                     "ip_address": {"type": str},
+                    "ipv6_addresses": {"type": Ipv6Addresses},
                     "description": {"type": str},
                     "enabled": {"type": bool, "default": True},
                     "ospf": {"type": Ospf},
@@ -37717,7 +37723,9 @@ class EosDesigns(EosDesignsRootModel):
                 }
                 node: str
                 loopback: int
-                ip_address: str
+                ip_address: str | None
+                ipv6_addresses: Ipv6Addresses
+                """Subclass of AvdList with `str` items."""
                 description: str | None
                 enabled: bool
                 """Default value: `True`"""
@@ -37742,7 +37750,8 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         node: str | UndefinedType = Undefined,
                         loopback: int | UndefinedType = Undefined,
-                        ip_address: str | UndefinedType = Undefined,
+                        ip_address: str | UndefinedType | None = Undefined,
+                        ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                         description: str | UndefinedType | None = Undefined,
                         enabled: bool | UndefinedType = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
@@ -37759,6 +37768,7 @@ class EosDesigns(EosDesignsRootModel):
                             node: node
                             loopback: loopback
                             ip_address: ip_address
+                            ipv6_addresses: Subclass of AvdList with `str` items.
                             description: description
                             enabled: enabled
                             ospf:
@@ -90699,6 +90709,11 @@ class EosDesigns(EosDesignsRootModel):
                     class LoopbacksItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -90731,6 +90746,7 @@ class EosDesigns(EosDesignsRootModel):
                             "node": {"type": str},
                             "loopback": {"type": int},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "description": {"type": str},
                             "enabled": {"type": bool, "default": True},
                             "ospf": {"type": Ospf},
@@ -90739,7 +90755,9 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         node: str
                         loopback: int
-                        ip_address: str
+                        ip_address: str | None
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         description: str | None
                         enabled: bool
                         """Default value: `True`"""
@@ -90764,7 +90782,8 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 node: str | UndefinedType = Undefined,
                                 loopback: int | UndefinedType = Undefined,
-                                ip_address: str | UndefinedType = Undefined,
+                                ip_address: str | UndefinedType | None = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 description: str | UndefinedType | None = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
@@ -90781,6 +90800,7 @@ class EosDesigns(EosDesignsRootModel):
                                     node: node
                                     loopback: loopback
                                     ip_address: ip_address
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     description: description
                                     enabled: enabled
                                     ospf:
