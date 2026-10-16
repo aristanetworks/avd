@@ -1,0 +1,25 @@
+---
+type: l3leaf
+l3leaf:
+  nodes:
+    - name: svi-ipv4-standard-acl-conflict-out
+      id: 1
+      bgp_as: 65001
+      loopback_ipv4_pool: 10.0.0.0/24
+      vtep_loopback_ipv4_pool: 10.1.0.0/24
+      virtual_router_mac_address: 00:1c:73:00:00:01
+tenants:
+  - name: ACL_TEST
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: ACL_TEST
+        vrf_id: 10
+        svis:
+          - id: 10
+            name: ACL_TEST
+            enabled: true
+            ip_address_virtual: 10.10.10.1/24
+            ipv4_standard_acl_out: SVI-STANDARD
+            ipv4_acl_out: SVI-EXTENDED
+expected_error_message: >-
+  'ipv4_acl_out' and 'ipv4_standard_acl_out' are mutually exclusive on 'Vlan10'. Only one egress IPv4 ACL can be configured.
