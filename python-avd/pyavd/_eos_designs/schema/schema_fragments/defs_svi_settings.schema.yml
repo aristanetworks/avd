@@ -63,13 +63,9 @@ $defs:
           valid_lifetime:
             type: str
             description: In seconds <0-4294967295> or infinite.
-            convert_types:
-              - int
           preferred_lifetime:
             type: str
             description: In seconds <0-4294967295> or infinite.
-            convert_types:
-              - int
           ra_dns_servers:
             type: dict
             description: List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
@@ -100,8 +96,6 @@ $defs:
                     VRF used to reach the DHCP server.
                     If not set, the VRF of the destination matches the VRF of this interface.
                     Use the `default` to reach the DHCP server through the default VRF.
-                  convert_types:
-                    - int
                 local_interface:
                   type: str
                   description: |-
@@ -148,15 +142,11 @@ $defs:
           Name of the IPv4 access-list to be assigned in the ingress direction.
           The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
         type: str
-        convert_types:
-          - int
       ipv4_acl_out:
         description: |-
           Name of the IPv4 Access-list to be assigned in the egress direction.
           The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
         type: str
-        convert_types:
-          - int
       ipv6_acl_in:
         description: |-
           Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -164,8 +154,6 @@ $defs:
           resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
         type: str
-        convert_types:
-          - int
       ipv6_acl_out:
         description: |-
           Name of the IPv6 access-list to be assigned in the egress direction.
@@ -173,8 +161,6 @@ $defs:
           resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
         type: str
-        convert_types:
-          - int
       ip_helpers:
         type: list
         primary_key: ip_helper
@@ -206,8 +192,6 @@ $defs:
                 - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the source VRF name.
                 - If not set, EOS uses the VRF on the SVI.
-              convert_types:
-                - int
       static_routes:
         type: list
         $ref: "eos_designs#/$defs/static_routes"
@@ -219,8 +203,6 @@ $defs:
         description: IPv6 static routes to be configured on every device where the SVI is configured.
       vni_override:
         type: int
-        convert_types:
-          - str
         min: 1
         max: 16777215
         description: |
@@ -228,8 +210,6 @@ $defs:
           The vni_override allows us to override this value and statically define it (optional).
       rt_override:
         type: str
-        convert_types:
-          - int
         description: |
           By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
           The rt_override allows us to override this value and statically define it.
@@ -240,8 +220,6 @@ $defs:
             - A full RT string with colon separator which will override the full RT.
       rd_override:
         type: str
-        convert_types:
-          - int
         description: |
           By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
           The rt_override allows us to override this value and statically define it.
@@ -329,8 +307,6 @@ $defs:
               version:
                 type: int
                 description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
-                convert_types:
-                  - str
                 valid_values:
                   - 1
                   - 2
@@ -373,8 +349,6 @@ $defs:
           version:
             type: int
             description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
-            convert_types:
-              - str
             valid_values:
               - 1
               - 2
@@ -388,15 +362,11 @@ $defs:
         description: Extend this SVI over VXLAN.
       spanning_tree_priority:
         type: int
-        convert_types:
-          - str
         description: |-
           Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.
           The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).
       mtu:
         type: int
-        convert_types:
-          - str
         description: Interface MTU.
       ospf:
         documentation_options:
@@ -411,14 +381,10 @@ $defs:
             default: false
           area:
             type: str
-            convert_types:
-              - int
             description: OSPF area ID.
             default: "0.0.0.0"
           cost:
             type: int
-            convert_types:
-              - str
             description: OSPF link cost.
           authentication:
             type: str
@@ -445,8 +411,6 @@ $defs:
               keys:
                 id:
                   type: int
-                  convert_types:
-                    - str
                 hash_algorithm:
                   type: str
                   valid_values:
