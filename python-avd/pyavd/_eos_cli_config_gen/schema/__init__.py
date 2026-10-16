@@ -6737,6 +6737,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
             "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
             "only_render_separator_with_boot_secret_key": {"type": bool, "default": False},
+            "new_bgp_peer_group_cli_order": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6826,6 +6827,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        new_bgp_peer_group_cli_order: bool
+        """
+        Available from AVD 6.5.0.
+        When `true`, renders BGP peer groups globally and under address families
+        in case-sensitive natural order, with uppercase names before lowercase names, matching EOS CLI
+        ordering.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6840,6 +6850,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
                 render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
                 only_render_separator_with_boot_secret_key: bool | UndefinedType = Undefined,
+                new_bgp_peer_group_cli_order: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6904,6 +6915,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `boot.secret.key` is provided.
                        When `false` (default), the '!' separator is always rendered when
                        `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+                    new_bgp_peer_group_cli_order:
+                       Available from AVD 6.5.0.
+                       When `true`, renders BGP peer groups globally and under address families
+                       in case-sensitive natural order, with uppercase names before lowercase names, matching EOS CLI
+                       ordering.
 
                 """
 
