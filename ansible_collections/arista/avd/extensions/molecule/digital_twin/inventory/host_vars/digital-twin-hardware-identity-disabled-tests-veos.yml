@@ -1,0 +1,22 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-hardware-identity-disabled-tests-veos
+      id: 1
+      mgmt_ip: 192.168.10.10/32
+      serial_number: PROD-DISABLED-VEOS-SERIAL
+      system_mac_address: 02:1c:73:00:00:10
+      digital_twin:
+        hardware_identity:
+          serial_number: false
+          system_mac_address: false
+        ztp: false
+
+digital_twin:
+  fabric:
+    hardware_identity:
+      serial_number: true
+      system_mac_address: true
+    ztp: true

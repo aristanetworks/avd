@@ -11530,11 +11530,71 @@ class EosDesigns(EosDesignsRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
+            class HardwareIdentity(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"serial_number": {"type": bool}, "system_mac_address": {"type": bool}}
+                serial_number: bool | None
+                """
+                When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                environment.
+                A per-node `digital_twin.serial_number` value overrides the regular device
+                `serial_number` for the Digital Twin device.
+                Supported Digital Twin environments:
+                - `act`: Applies
+                only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                """
+                system_mac_address: bool | None
+                """
+                When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                Twin environment.
+                A per-node `digital_twin.system_mac_address` value overrides the regular device
+                `system_mac_address` for the Digital Twin device.
+                Supported Digital Twin environments:
+                - `act`:
+                Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, serial_number: bool | UndefinedType | None = Undefined, system_mac_address: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        HardwareIdentity.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            serial_number:
+                               When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                               environment.
+                               A per-node `digital_twin.serial_number` value overrides the regular device
+                               `serial_number` for the Digital Twin device.
+                               Supported Digital Twin environments:
+                               - `act`: Applies
+                               only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            system_mac_address:
+                               When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                               Twin environment.
+                               A per-node `digital_twin.system_mac_address` value overrides the regular device
+                               `system_mac_address` for the Digital Twin device.
+                               Supported Digital Twin environments:
+                               - `act`:
+                               Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "act_os_version": {"type": str},
                 "mgmt_ip": {"type": str},
                 "mgmt_gateway": {"type": str},
                 "act_internet_access": {"type": bool},
+                "hardware_identity": {"type": HardwareIdentity},
+                "serial_number": {"type": str},
+                "system_mac_address": {"type": str},
+                "ztp": {"type": bool},
             }
             act_os_version: str | None
             """
@@ -11566,6 +11626,34 @@ class EosDesigns(EosDesignsRootModel):
             Overrides
             global `digital_twin.fabric.act_internet_access` flag.
             """
+            hardware_identity: HardwareIdentity
+            """
+            Settings controlling use of hardware identity values for the Digital Twin device.
+            Each setting
+            overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+            Subclass of AvdModel.
+            """
+            serial_number: str | None
+            """
+            Serial number override for this Digital Twin device.
+            Used when
+            `digital_twin.hardware_identity.serial_number` is set to `true`.
+            """
+            system_mac_address: str | None
+            """
+            System MAC address override for this Digital Twin device.
+            Used when
+            `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+            """
+            ztp: bool | None
+            """
+            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+            Supported Digital Twin
+            environments:
+            - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+            types.
+            Overrides global `digital_twin.fabric.ztp` when defined.
+            """
 
             if TYPE_CHECKING:
 
@@ -11576,6 +11664,10 @@ class EosDesigns(EosDesignsRootModel):
                     mgmt_ip: str | UndefinedType | None = Undefined,
                     mgmt_gateway: str | UndefinedType | None = Undefined,
                     act_internet_access: bool | UndefinedType | None = Undefined,
+                    hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                    serial_number: str | UndefinedType | None = Undefined,
+                    system_mac_address: str | UndefinedType | None = Undefined,
+                    ztp: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -11606,6 +11698,26 @@ class EosDesigns(EosDesignsRootModel):
                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
                            Overrides
                            global `digital_twin.fabric.act_internet_access` flag.
+                        hardware_identity:
+                           Settings controlling use of hardware identity values for the Digital Twin device.
+                           Each setting
+                           overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                           Subclass of AvdModel.
+                        serial_number:
+                           Serial number override for this Digital Twin device.
+                           Used when
+                           `digital_twin.hardware_identity.serial_number` is set to `true`.
+                        system_mac_address:
+                           System MAC address override for this Digital Twin device.
+                           Used when
+                           `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                        ztp:
+                           Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                           Supported Digital Twin
+                           environments:
+                           - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                           types.
+                           Overrides global `digital_twin.fabric.ztp` when defined.
 
                     """
 
@@ -17148,11 +17260,71 @@ class EosDesigns(EosDesignsRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
+            class HardwareIdentity(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"serial_number": {"type": bool}, "system_mac_address": {"type": bool}}
+                serial_number: bool | None
+                """
+                When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                environment.
+                A per-node `digital_twin.serial_number` value overrides the regular device
+                `serial_number` for the Digital Twin device.
+                Supported Digital Twin environments:
+                - `act`: Applies
+                only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                """
+                system_mac_address: bool | None
+                """
+                When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                Twin environment.
+                A per-node `digital_twin.system_mac_address` value overrides the regular device
+                `system_mac_address` for the Digital Twin device.
+                Supported Digital Twin environments:
+                - `act`:
+                Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, serial_number: bool | UndefinedType | None = Undefined, system_mac_address: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        HardwareIdentity.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            serial_number:
+                               When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                               environment.
+                               A per-node `digital_twin.serial_number` value overrides the regular device
+                               `serial_number` for the Digital Twin device.
+                               Supported Digital Twin environments:
+                               - `act`: Applies
+                               only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            system_mac_address:
+                               When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                               Twin environment.
+                               A per-node `digital_twin.system_mac_address` value overrides the regular device
+                               `system_mac_address` for the Digital Twin device.
+                               Supported Digital Twin environments:
+                               - `act`:
+                               Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "act_os_version": {"type": str},
                 "mgmt_ip": {"type": str},
                 "mgmt_gateway": {"type": str},
                 "act_internet_access": {"type": bool},
+                "hardware_identity": {"type": HardwareIdentity},
+                "serial_number": {"type": str},
+                "system_mac_address": {"type": str},
+                "ztp": {"type": bool},
             }
             act_os_version: str | None
             """
@@ -17184,6 +17356,34 @@ class EosDesigns(EosDesignsRootModel):
             Overrides
             global `digital_twin.fabric.act_internet_access` flag.
             """
+            hardware_identity: HardwareIdentity
+            """
+            Settings controlling use of hardware identity values for the Digital Twin device.
+            Each setting
+            overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+            Subclass of AvdModel.
+            """
+            serial_number: str | None
+            """
+            Serial number override for this Digital Twin device.
+            Used when
+            `digital_twin.hardware_identity.serial_number` is set to `true`.
+            """
+            system_mac_address: str | None
+            """
+            System MAC address override for this Digital Twin device.
+            Used when
+            `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+            """
+            ztp: bool | None
+            """
+            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+            Supported Digital Twin
+            environments:
+            - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+            types.
+            Overrides global `digital_twin.fabric.ztp` when defined.
+            """
 
             if TYPE_CHECKING:
 
@@ -17194,6 +17394,10 @@ class EosDesigns(EosDesignsRootModel):
                     mgmt_ip: str | UndefinedType | None = Undefined,
                     mgmt_gateway: str | UndefinedType | None = Undefined,
                     act_internet_access: bool | UndefinedType | None = Undefined,
+                    hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                    serial_number: str | UndefinedType | None = Undefined,
+                    system_mac_address: str | UndefinedType | None = Undefined,
+                    ztp: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -17224,6 +17428,26 @@ class EosDesigns(EosDesignsRootModel):
                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
                            Overrides
                            global `digital_twin.fabric.act_internet_access` flag.
+                        hardware_identity:
+                           Settings controlling use of hardware identity values for the Digital Twin device.
+                           Each setting
+                           overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                           Subclass of AvdModel.
+                        serial_number:
+                           Serial number override for this Digital Twin device.
+                           Used when
+                           `digital_twin.hardware_identity.serial_number` is set to `true`.
+                        system_mac_address:
+                           System MAC address override for this Digital Twin device.
+                           Used when
+                           `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                        ztp:
+                           Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                           Supported Digital Twin
+                           environments:
+                           - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                           types.
+                           Overrides global `digital_twin.fabric.ztp` when defined.
 
                     """
 
@@ -19246,6 +19470,72 @@ class EosDesigns(EosDesignsRootModel):
         class Fabric(AvdModel):
             """Subclass of AvdModel."""
 
+            class HardwareIdentity(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"serial_number": {"type": bool, "default": False}, "system_mac_address": {"type": bool, "default": False}}
+                serial_number: bool
+                """
+                When set to `true`, provides the device's `serial_number` as an input value to the Digital Twin
+                environment.
+                Can be overridden by `digital_twin.hardware_identity.serial_number` at node level.
+                A
+                per-node `digital_twin.serial_number` value overrides the regular device `serial_number` for the
+                Digital Twin device.
+                Supported Digital Twin environments:
+                - `act`: Applies only to `veos` and
+                `cloudeos` node types. Ignored for all other node types.
+
+                Default value: `False`
+                """
+                system_mac_address: bool
+                """
+                When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                Twin environment.
+                Can be overridden by `digital_twin.hardware_identity.system_mac_address` at node
+                level.
+                A per-node `digital_twin.system_mac_address` value overrides the regular device
+                `system_mac_address` for the Digital Twin device.
+                Supported Digital Twin environments:
+                - `act`:
+                Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                Default value: `False`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, serial_number: bool | UndefinedType = Undefined, system_mac_address: bool | UndefinedType = Undefined) -> None:
+                        """
+                        HardwareIdentity.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            serial_number:
+                               When set to `true`, provides the device's `serial_number` as an input value to the Digital Twin
+                               environment.
+                               Can be overridden by `digital_twin.hardware_identity.serial_number` at node level.
+                               A
+                               per-node `digital_twin.serial_number` value overrides the regular device `serial_number` for the
+                               Digital Twin device.
+                               Supported Digital Twin environments:
+                               - `act`: Applies only to `veos` and
+                               `cloudeos` node types. Ignored for all other node types.
+                            system_mac_address:
+                               When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                               Twin environment.
+                               Can be overridden by `digital_twin.hardware_identity.system_mac_address` at node
+                               level.
+                               A per-node `digital_twin.system_mac_address` value overrides the regular device
+                               `system_mac_address` for the Digital Twin device.
+                               Supported Digital Twin environments:
+                               - `act`:
+                               Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "act_os_version": {"type": str},
                 "act_username": {"type": str, "default": "cvpadmin"},
@@ -19253,6 +19543,8 @@ class EosDesigns(EosDesignsRootModel):
                 "act_internet_access": {"type": bool, "default": False},
                 "act_ensure_eapi_access": {"type": bool, "default": False},
                 "act_ensure_ssh_access": {"type": bool, "default": False},
+                "hardware_identity": {"type": HardwareIdentity},
+                "ztp": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -19305,6 +19597,24 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            hardware_identity: HardwareIdentity
+            """
+            Settings controlling use of hardware identity values for Digital Twin devices.
+
+            Subclass of
+            AvdModel.
+            """
+            ztp: bool
+            """
+            Enable ZTP (Zero Touch Provisioning) mode for all Digital Twin devices.
+            Can be overridden by
+            `digital_twin.ztp` at node level.
+            Supported Digital Twin environments:
+            - `act`: Applies only to
+            `veos` and `cloudeos` node types. Ignored for all other node types.
+
+            Default value: `False`
+            """
 
             if TYPE_CHECKING:
 
@@ -19317,6 +19627,8 @@ class EosDesigns(EosDesignsRootModel):
                     act_internet_access: bool | UndefinedType = Undefined,
                     act_ensure_eapi_access: bool | UndefinedType = Undefined,
                     act_ensure_ssh_access: bool | UndefinedType = Undefined,
+                    hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                    ztp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -19353,6 +19665,18 @@ class EosDesigns(EosDesignsRootModel):
                            default VRF and preserving this connectivity.
                            Any IPv4 ACL applied to SSH in the default VRF is
                            removed. IPv6 ACLs and SSH configuration for non-default VRFs are preserved.
+                        hardware_identity:
+                           Settings controlling use of hardware identity values for Digital Twin devices.
+
+                           Subclass of
+                           AvdModel.
+                        ztp:
+                           Enable ZTP (Zero Touch Provisioning) mode for all Digital Twin devices.
+                           Can be overridden by
+                           `digital_twin.ztp` at node level.
+                           Supported Digital Twin environments:
+                           - `act`: Applies only to
+                           `veos` and `cloudeos` node types. Ignored for all other node types.
 
                     """
 
@@ -59904,11 +60228,71 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class HardwareIdentity(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"serial_number": {"type": bool}, "system_mac_address": {"type": bool}}
+                            serial_number: bool | None
+                            """
+                            When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                            environment.
+                            A per-node `digital_twin.serial_number` value overrides the regular device
+                            `serial_number` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`: Applies
+                            only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+                            system_mac_address: bool | None
+                            """
+                            When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                            Twin environment.
+                            A per-node `digital_twin.system_mac_address` value overrides the regular device
+                            `system_mac_address` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`:
+                            Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, serial_number: bool | UndefinedType | None = Undefined, system_mac_address: bool | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    HardwareIdentity.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        serial_number:
+                                           When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                                           environment.
+                                           A per-node `digital_twin.serial_number` value overrides the regular device
+                                           `serial_number` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`: Applies
+                                           only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                        system_mac_address:
+                                           When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                                           Twin environment.
+                                           A per-node `digital_twin.system_mac_address` value overrides the regular device
+                                           `system_mac_address` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`:
+                                           Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "act_os_version": {"type": str},
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
+                            "hardware_identity": {"type": HardwareIdentity},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
+                            "ztp": {"type": bool},
                         }
                         act_os_version: str | None
                         """
@@ -59940,6 +60324,34 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
+                        hardware_identity: HardwareIdentity
+                        """
+                        Settings controlling use of hardware identity values for the Digital Twin device.
+                        Each setting
+                        overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                        Subclass of AvdModel.
+                        """
+                        serial_number: str | None
+                        """
+                        Serial number override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.serial_number` is set to `true`.
+                        """
+                        system_mac_address: str | None
+                        """
+                        System MAC address override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                        """
+                        ztp: bool | None
+                        """
+                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                        Supported Digital Twin
+                        environments:
+                        - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                        types.
+                        Overrides global `digital_twin.fabric.ztp` when defined.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -59950,6 +60362,10 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
+                                hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
+                                ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -59980,6 +60396,26 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
+                                    hardware_identity:
+                                       Settings controlling use of hardware identity values for the Digital Twin device.
+                                       Each setting
+                                       overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                                       Subclass of AvdModel.
+                                    serial_number:
+                                       Serial number override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.serial_number` is set to `true`.
+                                    system_mac_address:
+                                       System MAC address override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                                    ztp:
+                                       Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                                       Supported Digital Twin
+                                       environments:
+                                       - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                                       types.
+                                       Overrides global `digital_twin.fabric.ztp` when defined.
 
                                 """
 
@@ -65500,11 +65936,74 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class HardwareIdentity(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"serial_number": {"type": bool}, "system_mac_address": {"type": bool}}
+                                serial_number: bool | None
+                                """
+                                When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                                environment.
+                                A per-node `digital_twin.serial_number` value overrides the regular device
+                                `serial_number` for the Digital Twin device.
+                                Supported Digital Twin environments:
+                                - `act`: Applies
+                                only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                """
+                                system_mac_address: bool | None
+                                """
+                                When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                                Twin environment.
+                                A per-node `digital_twin.system_mac_address` value overrides the regular device
+                                `system_mac_address` for the Digital Twin device.
+                                Supported Digital Twin environments:
+                                - `act`:
+                                Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        serial_number: bool | UndefinedType | None = Undefined,
+                                        system_mac_address: bool | UndefinedType | None = Undefined,
+                                    ) -> None:
+                                        """
+                                        HardwareIdentity.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            serial_number:
+                                               When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                                               environment.
+                                               A per-node `digital_twin.serial_number` value overrides the regular device
+                                               `serial_number` for the Digital Twin device.
+                                               Supported Digital Twin environments:
+                                               - `act`: Applies
+                                               only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                            system_mac_address:
+                                               When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                                               Twin environment.
+                                               A per-node `digital_twin.system_mac_address` value overrides the regular device
+                                               `system_mac_address` for the Digital Twin device.
+                                               Supported Digital Twin environments:
+                                               - `act`:
+                                               Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "act_os_version": {"type": str},
                                 "mgmt_ip": {"type": str},
                                 "mgmt_gateway": {"type": str},
                                 "act_internet_access": {"type": bool},
+                                "hardware_identity": {"type": HardwareIdentity},
+                                "serial_number": {"type": str},
+                                "system_mac_address": {"type": str},
+                                "ztp": {"type": bool},
                             }
                             act_os_version: str | None
                             """
@@ -65536,6 +66035,34 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides
                             global `digital_twin.fabric.act_internet_access` flag.
                             """
+                            hardware_identity: HardwareIdentity
+                            """
+                            Settings controlling use of hardware identity values for the Digital Twin device.
+                            Each setting
+                            overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                            Subclass of AvdModel.
+                            """
+                            serial_number: str | None
+                            """
+                            Serial number override for this Digital Twin device.
+                            Used when
+                            `digital_twin.hardware_identity.serial_number` is set to `true`.
+                            """
+                            system_mac_address: str | None
+                            """
+                            System MAC address override for this Digital Twin device.
+                            Used when
+                            `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                            """
+                            ztp: bool | None
+                            """
+                            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                            Supported Digital Twin
+                            environments:
+                            - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                            types.
+                            Overrides global `digital_twin.fabric.ztp` when defined.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -65546,6 +66073,10 @@ class EosDesigns(EosDesignsRootModel):
                                     mgmt_ip: str | UndefinedType | None = Undefined,
                                     mgmt_gateway: str | UndefinedType | None = Undefined,
                                     act_internet_access: bool | UndefinedType | None = Undefined,
+                                    hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                                    serial_number: str | UndefinedType | None = Undefined,
+                                    system_mac_address: str | UndefinedType | None = Undefined,
+                                    ztp: bool | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -65576,6 +66107,26 @@ class EosDesigns(EosDesignsRootModel):
                                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                            Overrides
                                            global `digital_twin.fabric.act_internet_access` flag.
+                                        hardware_identity:
+                                           Settings controlling use of hardware identity values for the Digital Twin device.
+                                           Each setting
+                                           overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                                           Subclass of AvdModel.
+                                        serial_number:
+                                           Serial number override for this Digital Twin device.
+                                           Used when
+                                           `digital_twin.hardware_identity.serial_number` is set to `true`.
+                                        system_mac_address:
+                                           System MAC address override for this Digital Twin device.
+                                           Used when
+                                           `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                                        ztp:
+                                           Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                                           Supported Digital Twin
+                                           environments:
+                                           - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                                           types.
+                                           Overrides global `digital_twin.fabric.ztp` when defined.
 
                                     """
 
@@ -71033,11 +71584,71 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class HardwareIdentity(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"serial_number": {"type": bool}, "system_mac_address": {"type": bool}}
+                            serial_number: bool | None
+                            """
+                            When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                            environment.
+                            A per-node `digital_twin.serial_number` value overrides the regular device
+                            `serial_number` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`: Applies
+                            only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+                            system_mac_address: bool | None
+                            """
+                            When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                            Twin environment.
+                            A per-node `digital_twin.system_mac_address` value overrides the regular device
+                            `system_mac_address` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`:
+                            Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, serial_number: bool | UndefinedType | None = Undefined, system_mac_address: bool | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    HardwareIdentity.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        serial_number:
+                                           When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                                           environment.
+                                           A per-node `digital_twin.serial_number` value overrides the regular device
+                                           `serial_number` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`: Applies
+                                           only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                        system_mac_address:
+                                           When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                                           Twin environment.
+                                           A per-node `digital_twin.system_mac_address` value overrides the regular device
+                                           `system_mac_address` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`:
+                                           Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "act_os_version": {"type": str},
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
+                            "hardware_identity": {"type": HardwareIdentity},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
+                            "ztp": {"type": bool},
                         }
                         act_os_version: str | None
                         """
@@ -71069,6 +71680,34 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
+                        hardware_identity: HardwareIdentity
+                        """
+                        Settings controlling use of hardware identity values for the Digital Twin device.
+                        Each setting
+                        overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                        Subclass of AvdModel.
+                        """
+                        serial_number: str | None
+                        """
+                        Serial number override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.serial_number` is set to `true`.
+                        """
+                        system_mac_address: str | None
+                        """
+                        System MAC address override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                        """
+                        ztp: bool | None
+                        """
+                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                        Supported Digital Twin
+                        environments:
+                        - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                        types.
+                        Overrides global `digital_twin.fabric.ztp` when defined.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -71079,6 +71718,10 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
+                                hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
+                                ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -71109,6 +71752,26 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
+                                    hardware_identity:
+                                       Settings controlling use of hardware identity values for the Digital Twin device.
+                                       Each setting
+                                       overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                                       Subclass of AvdModel.
+                                    serial_number:
+                                       Serial number override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.serial_number` is set to `true`.
+                                    system_mac_address:
+                                       System MAC address override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                                    ztp:
+                                       Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                                       Supported Digital Twin
+                                       environments:
+                                       - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                                       types.
+                                       Overrides global `digital_twin.fabric.ztp` when defined.
 
                                 """
 
@@ -76646,11 +77309,71 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class HardwareIdentity(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"serial_number": {"type": bool}, "system_mac_address": {"type": bool}}
+                            serial_number: bool | None
+                            """
+                            When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                            environment.
+                            A per-node `digital_twin.serial_number` value overrides the regular device
+                            `serial_number` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`: Applies
+                            only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+                            system_mac_address: bool | None
+                            """
+                            When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                            Twin environment.
+                            A per-node `digital_twin.system_mac_address` value overrides the regular device
+                            `system_mac_address` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`:
+                            Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, serial_number: bool | UndefinedType | None = Undefined, system_mac_address: bool | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    HardwareIdentity.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        serial_number:
+                                           When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                                           environment.
+                                           A per-node `digital_twin.serial_number` value overrides the regular device
+                                           `serial_number` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`: Applies
+                                           only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                        system_mac_address:
+                                           When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                                           Twin environment.
+                                           A per-node `digital_twin.system_mac_address` value overrides the regular device
+                                           `system_mac_address` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`:
+                                           Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "act_os_version": {"type": str},
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
+                            "hardware_identity": {"type": HardwareIdentity},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
+                            "ztp": {"type": bool},
                         }
                         act_os_version: str | None
                         """
@@ -76682,6 +77405,34 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
+                        hardware_identity: HardwareIdentity
+                        """
+                        Settings controlling use of hardware identity values for the Digital Twin device.
+                        Each setting
+                        overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                        Subclass of AvdModel.
+                        """
+                        serial_number: str | None
+                        """
+                        Serial number override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.serial_number` is set to `true`.
+                        """
+                        system_mac_address: str | None
+                        """
+                        System MAC address override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                        """
+                        ztp: bool | None
+                        """
+                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                        Supported Digital Twin
+                        environments:
+                        - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                        types.
+                        Overrides global `digital_twin.fabric.ztp` when defined.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -76692,6 +77443,10 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
+                                hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
+                                ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -76722,6 +77477,26 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
+                                    hardware_identity:
+                                       Settings controlling use of hardware identity values for the Digital Twin device.
+                                       Each setting
+                                       overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                                       Subclass of AvdModel.
+                                    serial_number:
+                                       Serial number override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.serial_number` is set to `true`.
+                                    system_mac_address:
+                                       System MAC address override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                                    ztp:
+                                       Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                                       Supported Digital Twin
+                                       environments:
+                                       - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                                       types.
+                                       Overrides global `digital_twin.fabric.ztp` when defined.
 
                                 """
 
@@ -98065,11 +98840,71 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class HardwareIdentity(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"serial_number": {"type": bool}, "system_mac_address": {"type": bool}}
+                            serial_number: bool | None
+                            """
+                            When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                            environment.
+                            A per-node `digital_twin.serial_number` value overrides the regular device
+                            `serial_number` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`: Applies
+                            only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+                            system_mac_address: bool | None
+                            """
+                            When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                            Twin environment.
+                            A per-node `digital_twin.system_mac_address` value overrides the regular device
+                            `system_mac_address` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`:
+                            Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, serial_number: bool | UndefinedType | None = Undefined, system_mac_address: bool | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    HardwareIdentity.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        serial_number:
+                                           When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                                           environment.
+                                           A per-node `digital_twin.serial_number` value overrides the regular device
+                                           `serial_number` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`: Applies
+                                           only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                        system_mac_address:
+                                           When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                                           Twin environment.
+                                           A per-node `digital_twin.system_mac_address` value overrides the regular device
+                                           `system_mac_address` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`:
+                                           Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "act_os_version": {"type": str},
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
+                            "hardware_identity": {"type": HardwareIdentity},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
+                            "ztp": {"type": bool},
                         }
                         act_os_version: str | None
                         """
@@ -98101,6 +98936,34 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
+                        hardware_identity: HardwareIdentity
+                        """
+                        Settings controlling use of hardware identity values for the Digital Twin device.
+                        Each setting
+                        overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                        Subclass of AvdModel.
+                        """
+                        serial_number: str | None
+                        """
+                        Serial number override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.serial_number` is set to `true`.
+                        """
+                        system_mac_address: str | None
+                        """
+                        System MAC address override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                        """
+                        ztp: bool | None
+                        """
+                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                        Supported Digital Twin
+                        environments:
+                        - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                        types.
+                        Overrides global `digital_twin.fabric.ztp` when defined.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -98111,6 +98974,10 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
+                                hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
+                                ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -98141,6 +99008,26 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
+                                    hardware_identity:
+                                       Settings controlling use of hardware identity values for the Digital Twin device.
+                                       Each setting
+                                       overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                                       Subclass of AvdModel.
+                                    serial_number:
+                                       Serial number override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.serial_number` is set to `true`.
+                                    system_mac_address:
+                                       System MAC address override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                                    ztp:
+                                       Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                                       Supported Digital Twin
+                                       environments:
+                                       - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                                       types.
+                                       Overrides global `digital_twin.fabric.ztp` when defined.
 
                                 """
 
@@ -103661,11 +104548,74 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class HardwareIdentity(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"serial_number": {"type": bool}, "system_mac_address": {"type": bool}}
+                                serial_number: bool | None
+                                """
+                                When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                                environment.
+                                A per-node `digital_twin.serial_number` value overrides the regular device
+                                `serial_number` for the Digital Twin device.
+                                Supported Digital Twin environments:
+                                - `act`: Applies
+                                only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                """
+                                system_mac_address: bool | None
+                                """
+                                When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                                Twin environment.
+                                A per-node `digital_twin.system_mac_address` value overrides the regular device
+                                `system_mac_address` for the Digital Twin device.
+                                Supported Digital Twin environments:
+                                - `act`:
+                                Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        serial_number: bool | UndefinedType | None = Undefined,
+                                        system_mac_address: bool | UndefinedType | None = Undefined,
+                                    ) -> None:
+                                        """
+                                        HardwareIdentity.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            serial_number:
+                                               When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                                               environment.
+                                               A per-node `digital_twin.serial_number` value overrides the regular device
+                                               `serial_number` for the Digital Twin device.
+                                               Supported Digital Twin environments:
+                                               - `act`: Applies
+                                               only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                            system_mac_address:
+                                               When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                                               Twin environment.
+                                               A per-node `digital_twin.system_mac_address` value overrides the regular device
+                                               `system_mac_address` for the Digital Twin device.
+                                               Supported Digital Twin environments:
+                                               - `act`:
+                                               Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "act_os_version": {"type": str},
                                 "mgmt_ip": {"type": str},
                                 "mgmt_gateway": {"type": str},
                                 "act_internet_access": {"type": bool},
+                                "hardware_identity": {"type": HardwareIdentity},
+                                "serial_number": {"type": str},
+                                "system_mac_address": {"type": str},
+                                "ztp": {"type": bool},
                             }
                             act_os_version: str | None
                             """
@@ -103697,6 +104647,34 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides
                             global `digital_twin.fabric.act_internet_access` flag.
                             """
+                            hardware_identity: HardwareIdentity
+                            """
+                            Settings controlling use of hardware identity values for the Digital Twin device.
+                            Each setting
+                            overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                            Subclass of AvdModel.
+                            """
+                            serial_number: str | None
+                            """
+                            Serial number override for this Digital Twin device.
+                            Used when
+                            `digital_twin.hardware_identity.serial_number` is set to `true`.
+                            """
+                            system_mac_address: str | None
+                            """
+                            System MAC address override for this Digital Twin device.
+                            Used when
+                            `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                            """
+                            ztp: bool | None
+                            """
+                            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                            Supported Digital Twin
+                            environments:
+                            - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                            types.
+                            Overrides global `digital_twin.fabric.ztp` when defined.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -103707,6 +104685,10 @@ class EosDesigns(EosDesignsRootModel):
                                     mgmt_ip: str | UndefinedType | None = Undefined,
                                     mgmt_gateway: str | UndefinedType | None = Undefined,
                                     act_internet_access: bool | UndefinedType | None = Undefined,
+                                    hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                                    serial_number: str | UndefinedType | None = Undefined,
+                                    system_mac_address: str | UndefinedType | None = Undefined,
+                                    ztp: bool | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -103737,6 +104719,26 @@ class EosDesigns(EosDesignsRootModel):
                                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                            Overrides
                                            global `digital_twin.fabric.act_internet_access` flag.
+                                        hardware_identity:
+                                           Settings controlling use of hardware identity values for the Digital Twin device.
+                                           Each setting
+                                           overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                                           Subclass of AvdModel.
+                                        serial_number:
+                                           Serial number override for this Digital Twin device.
+                                           Used when
+                                           `digital_twin.hardware_identity.serial_number` is set to `true`.
+                                        system_mac_address:
+                                           System MAC address override for this Digital Twin device.
+                                           Used when
+                                           `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                                        ztp:
+                                           Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                                           Supported Digital Twin
+                                           environments:
+                                           - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                                           types.
+                                           Overrides global `digital_twin.fabric.ztp` when defined.
 
                                     """
 
@@ -109194,11 +110196,71 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class HardwareIdentity(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"serial_number": {"type": bool}, "system_mac_address": {"type": bool}}
+                            serial_number: bool | None
+                            """
+                            When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                            environment.
+                            A per-node `digital_twin.serial_number` value overrides the regular device
+                            `serial_number` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`: Applies
+                            only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+                            system_mac_address: bool | None
+                            """
+                            When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                            Twin environment.
+                            A per-node `digital_twin.system_mac_address` value overrides the regular device
+                            `system_mac_address` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`:
+                            Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, serial_number: bool | UndefinedType | None = Undefined, system_mac_address: bool | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    HardwareIdentity.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        serial_number:
+                                           When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                                           environment.
+                                           A per-node `digital_twin.serial_number` value overrides the regular device
+                                           `serial_number` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`: Applies
+                                           only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                        system_mac_address:
+                                           When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                                           Twin environment.
+                                           A per-node `digital_twin.system_mac_address` value overrides the regular device
+                                           `system_mac_address` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`:
+                                           Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "act_os_version": {"type": str},
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
+                            "hardware_identity": {"type": HardwareIdentity},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
+                            "ztp": {"type": bool},
                         }
                         act_os_version: str | None
                         """
@@ -109230,6 +110292,34 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
+                        hardware_identity: HardwareIdentity
+                        """
+                        Settings controlling use of hardware identity values for the Digital Twin device.
+                        Each setting
+                        overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                        Subclass of AvdModel.
+                        """
+                        serial_number: str | None
+                        """
+                        Serial number override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.serial_number` is set to `true`.
+                        """
+                        system_mac_address: str | None
+                        """
+                        System MAC address override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                        """
+                        ztp: bool | None
+                        """
+                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                        Supported Digital Twin
+                        environments:
+                        - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                        types.
+                        Overrides global `digital_twin.fabric.ztp` when defined.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -109240,6 +110330,10 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
+                                hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
+                                ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -109270,6 +110364,26 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
+                                    hardware_identity:
+                                       Settings controlling use of hardware identity values for the Digital Twin device.
+                                       Each setting
+                                       overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                                       Subclass of AvdModel.
+                                    serial_number:
+                                       Serial number override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.serial_number` is set to `true`.
+                                    system_mac_address:
+                                       System MAC address override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                                    ztp:
+                                       Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                                       Supported Digital Twin
+                                       environments:
+                                       - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                                       types.
+                                       Overrides global `digital_twin.fabric.ztp` when defined.
 
                                 """
 
@@ -114807,11 +115921,71 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class HardwareIdentity(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"serial_number": {"type": bool}, "system_mac_address": {"type": bool}}
+                            serial_number: bool | None
+                            """
+                            When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                            environment.
+                            A per-node `digital_twin.serial_number` value overrides the regular device
+                            `serial_number` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`: Applies
+                            only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+                            system_mac_address: bool | None
+                            """
+                            When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                            Twin environment.
+                            A per-node `digital_twin.system_mac_address` value overrides the regular device
+                            `system_mac_address` for the Digital Twin device.
+                            Supported Digital Twin environments:
+                            - `act`:
+                            Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, serial_number: bool | UndefinedType | None = Undefined, system_mac_address: bool | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    HardwareIdentity.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        serial_number:
+                                           When set to `true`, provides the resolved device serial number as an input value to the Digital Twin
+                                           environment.
+                                           A per-node `digital_twin.serial_number` value overrides the regular device
+                                           `serial_number` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`: Applies
+                                           only to `veos` and `cloudeos` node types. Ignored for all other node types.
+                                        system_mac_address:
+                                           When set to `true`, provides the resolved device system MAC address as an input value to the Digital
+                                           Twin environment.
+                                           A per-node `digital_twin.system_mac_address` value overrides the regular device
+                                           `system_mac_address` for the Digital Twin device.
+                                           Supported Digital Twin environments:
+                                           - `act`:
+                                           Applies only to `veos` and `cloudeos` node types. Ignored for all other node types.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "act_os_version": {"type": str},
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
+                            "hardware_identity": {"type": HardwareIdentity},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
+                            "ztp": {"type": bool},
                         }
                         act_os_version: str | None
                         """
@@ -114843,6 +116017,34 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
+                        hardware_identity: HardwareIdentity
+                        """
+                        Settings controlling use of hardware identity values for the Digital Twin device.
+                        Each setting
+                        overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                        Subclass of AvdModel.
+                        """
+                        serial_number: str | None
+                        """
+                        Serial number override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.serial_number` is set to `true`.
+                        """
+                        system_mac_address: str | None
+                        """
+                        System MAC address override for this Digital Twin device.
+                        Used when
+                        `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                        """
+                        ztp: bool | None
+                        """
+                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                        Supported Digital Twin
+                        environments:
+                        - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                        types.
+                        Overrides global `digital_twin.fabric.ztp` when defined.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -114853,6 +116055,10 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
+                                hardware_identity: HardwareIdentity | UndefinedType = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
+                                ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -114883,6 +116089,26 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
+                                    hardware_identity:
+                                       Settings controlling use of hardware identity values for the Digital Twin device.
+                                       Each setting
+                                       overrides the corresponding global `digital_twin.fabric.hardware_identity` setting when defined.
+                                       Subclass of AvdModel.
+                                    serial_number:
+                                       Serial number override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.serial_number` is set to `true`.
+                                    system_mac_address:
+                                       System MAC address override for this Digital Twin device.
+                                       Used when
+                                       `digital_twin.hardware_identity.system_mac_address` is set to `true`.
+                                    ztp:
+                                       Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
+                                       Supported Digital Twin
+                                       environments:
+                                       - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for all other node
+                                       types.
+                                       Overrides global `digital_twin.fabric.ztp` when defined.
 
                                 """
 

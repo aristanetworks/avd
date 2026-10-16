@@ -347,6 +347,53 @@ spine:
 When `digital_twin.mgmt_gateway` is set, AVD uses it as the next hop for either the default route or the routes listed under `mgmt_destination_networks`.
 If it is not set, AVD falls back to the regular management gateway configuration.
 
+#### ACT Hardware Identity and ZTP Configuration
+
+ACT supports the `serial_number`, `system_mac_address`, and `ztp` topology keys only for `veos` and `cloudeos` node types.
+AVD omits these keys for all other ACT node types, even when they are enabled in the Digital Twin settings.
+
+Enable hardware identity passthrough and Zero Touch Provisioning for all Digital Twin devices with the fabric-level settings:
+
+```yaml
+digital_twin:
+  fabric:
+    hardware_identity:
+      serial_number: true
+      system_mac_address: true
+    ztp: true
+```
+
+When enabled, AVD provides the device's resolved `serial_number` and `system_mac_address` as input values to the Digital Twin environment.
+The feature settings can be overridden in node-type defaults, node groups, or individual nodes.
+For example, the node below overrides fabric-level settings, disables `system_mac_address` passthrough and Zero Touch Provisioning, and retains serial number passthrough:
+
+```yaml
+l3leaf:
+  nodes:
+    - name: leaf1
+      digital_twin:
+        hardware_identity:
+          system_mac_address: false
+        ztp: false
+```
+
+Individual nodes can use identity values that differ from the production device:
+
+```yaml
+l3leaf:
+  nodes:
+    - name: leaf1
+      serial_number: PRODLEAF1
+      system_mac_address: 02:1c:73:00:00:01
+      digital_twin:
+        serial_number: DTLEAF1
+        system_mac_address: 02:1c:73:11:11:10
+```
+
+The Digital Twin identity overrides are used only when the corresponding `hardware_identity` setting resolves to `true`.
+If no override is set, AVD falls back to the resolved production identity.
+If the selected value is unset, AVD omits that key from the ACT topology.
+
 #### ACT OS Version Configuration
 
 Each ACT node type has a default OS version that will be used if not explicitly configured (please see [ACT Default Values](#act-default-values) for details).
