@@ -156,7 +156,7 @@ The Molecule scenarios are located under the `molecule` directory at the root of
 
 Some projects retain their location under this directory during the transition to PyAVD E2E testing but are no longer Molecule scenarios. See the [E2E-only project list](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/extensions/molecule/README.md#e2e-only-projects) and use the [PyAVD E2E instructions](e2e-test/using-the-tool.md#run-selected-projects) to run them and review their generated artifacts.
 
-The directory name of each Molecule scenario folder is used as the `--scenario-name` when executing Molecule, i.e: `eos_cli_config_gen`, `eos_designs_unit_tests`.
+The directory name of each Molecule scenario folder is used as the `--scenario-name` when executing Molecule, i.e: `eos_cli_config_gen`, `ansible_only`.
 
 ### Executing Molecule with makefile method
 
@@ -185,11 +185,11 @@ In the majority of new features or bug fixes, the process is the following:
     # Change to molecule directory
     cd ansible_collections/arista/avd/extensions/molecule
 
-    # Run eos_designs_unit_tests scenario to generate artifacts
-    make converge MOLECULE=eos_designs_unit_tests
+    # Run ansible_only scenario to generate artifacts
+    make converge MOLECULE=ansible_only
 
-    # Run eos_designs_unit_tests scenario with verbosity `-vvv` and max forks of 10 `--forks 10`.
-    make converge MOLECULE=eos_designs_unit_tests ANSIBLE_OPTIONS="-vvv --forks 10"
+    # Run ansible_only scenario with verbosity `-vvv` and max forks of 10 `--forks 10`.
+    make converge MOLECULE=ansible_only ANSIBLE_OPTIONS="-vvv --forks 10"
 
     # Run eos_cli_config_gen scenario with limit.
     make converge ANSIBLE_OPTIONS="--limit logging"
@@ -217,13 +217,15 @@ molecule converge -s eos_cli_config_gen
 # Run eos_cli_config_gen scenario limiting to "logging" host only
 molecule converge -s eos_cli_config_gen -- --limit logging
 
-# Run eos_designs unit_test scenario with verbosity
-molecule converge -s eos_designs_unit_tests -- -vvv
+# Run ansible_only scenario with verbosity
+molecule converge -s ansible_only -- -vvv
 ```
 
 ## Ansible-test
 
 The AVD project leverages [ansible-test](https://www.ansible.com/blog/introduction-to-ansible-test/) to run sanity, unit and integration tests for the `arista.avd` Ansible Collection.
+
+The [`eos_designs_role` integration target](e2e-test/using-the-tool.md#ansible-role-integration-coverage) exercises both configuration-generation roles, including output files, documentation, cleanup, and idempotence. It also runs with the lowest direct Python dependencies in CI.
 
 The `eos_designs_facts` and `eos_designs_structured_config` integration targets exercise the Ansible action plugins, including failed results. CI runs these targets against stable Ansible releases and the Ansible `milestone` branch. Exhaustive negative design cases run directly through PyAVD in E2E tests, while action-plugin unit tests cover exception propagation and conversion to Ansible failures.
 
