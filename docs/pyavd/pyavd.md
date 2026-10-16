@@ -50,6 +50,12 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 
 ## Installation
 
+!!! warning "Python 3.10 end of life"
+
+    Python 3.10 has reached [end of life](https://devguide.python.org/versions/) and no longer receives security updates.
+    AVD support for Python 3.10 is deprecated and will be removed in a future major release. Please upgrade to a supported Python version.
+    Importing `pyavd` on Python 3.10 emits a `DeprecationWarning`.
+
 Install the `pyavd` Python package:
 
 ```sh
