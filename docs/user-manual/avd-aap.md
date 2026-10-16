@@ -43,11 +43,11 @@ The image below provides an excellent overview of the AAP dashboard. From one pa
 
 ## Execution environments with Ansible Builder
 
-Execution environments (EEs) are Red Hat's solution for managing project dependencies. In the past, we used Python virtual environments. The Python virtual environments had pros and cons, but EEs leverage containers to wrap all dependencies within a container. EEs make environments more portable and quicker to replicate between AAP nodes and standalone projects. We will go through an EE build together, but it is highly recommended to build your own for your specific requirements.
+Execution environments (EEs) are Red Hat's solution for managing project dependencies. EEs leverage containers to wrap all dependencies within a container. EEs make environments more portable and quicker to replicate between AAP nodes and standalone projects. We will go through an EE build together, but it is highly recommended to build your own for your specific requirements.
 
 ### Ansible Builder
 
-Ansible Builder is a tool developed by the Ansible team to aid in creating EEs. Like any tool, there are a few requirements on our development machine to get started with Ansible Builder.
+Ansible Builder is a tool developed by the Ansible team to aid in creating EEs. To get started with Ansible Builder, we need the following on our development machine:
 
 - Supported Python version
 - [Ansible Builder](https://docs.ansible.com/projects/builder/en/latest/)
@@ -114,7 +114,7 @@ You can place the Ansible Builder dependencies with your current project or leve
 
 #### Build and push the image
 
-Login to your respective container registry.
+Log in to your respective container registry.
 
 ```shell
 podman login < registry url >
@@ -176,7 +176,7 @@ We can create the required credential by clicking on `Credentials` right below `
     - Give the credential an appropriate name.
     - The `Credential type` will be `Container Registry`.
     - The `Authentication URL` will differ depending on your registry. In our case, we are using `ghcr.io`.
-    - The `Username` will be your Service account or username.
+    - The `Username` will be your service account or username.
     - For GitHub Container Registry, we leverage a token.
     - Once complete, click on `Save credential`.
 
@@ -193,7 +193,7 @@ Projects in AAP are vital in setting up additional options. For example, we can 
 
     Scroll up on the left pane, and under `Automation Execution`, click on `Projects`.
 
-    ![Select execution environment](../_media/getting-started/aap-avd/select-project-light.png#only-light)
+    ![Select project](../_media/getting-started/aap-avd/select-project-light.png#only-light)
     ![Select execution environment](../_media/getting-started/aap-avd/select-project-dark.png#only-dark)
 
 === "Projects - Add"
@@ -207,7 +207,7 @@ Projects in AAP are vital in setting up additional options. For example, we can 
 
     Give the project an appropriate `Name`. Again, you may use any examples hosted within the [AVD repository](https://github.com/aristanetworks/avd/tree/devel/ansible_collections/arista/avd/examples) or any current project you have. This example will leverage a Git repository as the `Source Control Type`. We will also set the URL for our Git project and, optionally, an alternate branch. Finally, we also check `Update Revision on Launch` and set the `Cache Timeout` to zero. Setting it to zero will also ensure the project updates when running a job that references this project, which is helpful for any projects with active development.
 
-    ![Create EE](../_media/getting-started/aap-avd/save-project-light.png#only-light)
+    ![Save project](../_media/getting-started/aap-avd/save-project-light.png#only-light)
     ![Create EE](../_media/getting-started/aap-avd/save-project-dark.png#only-dark)
 
 ## Inventories
@@ -218,7 +218,7 @@ AAP provides many ways to add an inventory. For example, we can use an inventory
 
     On the left pane, under `Automation Execution > Infrastructure`, click on `Inventories`.
 
-    ![Select execution environment](../_media/getting-started/aap-avd/select-inv-light.png#only-light)
+    ![Select inventory](../_media/getting-started/aap-avd/select-inv-light.png#only-light)
     ![Select execution environment](../_media/getting-started/aap-avd/select-inv-dark.png#only-dark)
 
 === "Inventories - Add"
@@ -237,7 +237,7 @@ AAP provides many ways to add an inventory. For example, we can use an inventory
 
 ### Inventory Sources
 
-At this point, we have an inventory with no hosts. This is where inventory sources come into play. Like most things, we have a series of options. We can leverage an inventory source from cloud providers, virtualization platforms, or, in our case, directly from our project.
+At this point, we have an inventory with no hosts. This is where inventory sources come into play. We have several options. We can leverage an inventory source from cloud providers, virtualization platforms, or, in our case, directly from our project.
 
 === "Click on Sources"
 
