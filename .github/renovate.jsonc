@@ -1,0 +1,160 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:best-practices"],
+  "dependencyDashboard": true,
+  "semanticCommits": "disabled",
+  "enabledManagers": [
+    "pep621",
+    "github-actions",
+    "pre-commit",
+    "ansible-galaxy",
+    "docker-compose"
+  ],
+  "pre-commit": {
+    "enabled": true
+  },
+  "minimumReleaseAge": "7 days",
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "gitIgnoredAuthors": [
+    "114827586+autofix-ci[bot]@users.noreply.github.com"
+  ],
+  "packageRules": [
+    {
+      "description": "Maintain Python runtime, optional, and build dependencies",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": [
+        "project.dependencies",
+        "project.optional-dependencies",
+        "build-system.requires"
+      ],
+      "labels": ["type: dependencies"],
+      "commitMessagePrefix": "Bump(requirements): ",
+      "rangeStrategy": "auto"
+    },
+    {
+      "description": "Group non-major Python runtime and build updates",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": [
+        "project.dependencies",
+        "project.optional-dependencies",
+        "build-system.requires"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "Python runtime dependencies",
+      "groupSlug": "python-runtime"
+    },
+    {
+      "description": "Maintain Python development dependencies",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["dependency-groups"],
+      "labels": ["type: dependencies"],
+      "commitMessagePrefix": "CI(requirements): ",
+      "rangeStrategy": "bump"
+    },
+    {
+      "description": "Group non-major Python tooling updates",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["dependency-groups"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "Python tooling dependencies",
+      "groupSlug": "python-tooling"
+    },
+    {
+      "description": "Keep supported Python versions under manual control",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["requires-python"],
+      "enabled": false
+    },
+    {
+      "description": "Keep GitHub Actions pinned to immutable commits",
+      "matchManagers": ["github-actions"],
+      "labels": ["type: dependencies"],
+      "commitMessagePrefix": "CI: ",
+      "pinDigests": true
+    },
+    {
+      "description": "Keep the supported Python CI matrix under manual control",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["python"],
+      "enabled": false
+    },
+    {
+      "description": "Maintain pre-commit hook revisions",
+      "matchManagers": ["pre-commit"],
+      "matchDepTypes": ["repository"],
+      "labels": ["type: dependencies"],
+      "commitMessagePrefix": "CI: "
+    },
+    {
+      "description": "Maintain pre-commit Python environments",
+      "matchManagers": ["pre-commit"],
+      "matchDepTypes": ["pre-commit-python"],
+      "labels": ["type: dependencies"],
+      "commitMessagePrefix": "CI: ",
+      "rangeStrategy": "bump"
+    },
+    {
+      "description": "Maintain Ansible Galaxy collection requirements",
+      "matchManagers": ["ansible-galaxy"],
+      "labels": ["type: dependencies"],
+      "commitMessagePrefix": "CI(requirements): "
+    },
+    {
+      "description": "Keep Docker Compose images current",
+      "matchManagers": ["docker-compose"],
+      "labels": ["type: dependencies"],
+      "commitMessagePrefix": "CI(containers): ",
+      "pinDigests": true
+    },
+    // Group only tools that have the same package represented in pyproject.toml
+    // and in a pre-commit repository. Pyright is intentionally excluded: AVD
+    // has no project Pyright dependency, and pyright-python and pyright-action
+    // are independent packages.
+    {
+      "description": "Group Ruff updates across Python and pre-commit",
+      "matchManagers": ["pep621", "pre-commit"],
+      "matchPackageNames": ["ruff", "astral-sh/ruff-pre-commit"],
+      "groupName": "Ruff",
+      "groupSlug": "ruff",
+      "commitMessagePrefix": "CI: "
+    },
+    {
+      "description": "Group Pylint updates across Python and pre-commit",
+      "matchManagers": ["pep621", "pre-commit"],
+      "matchPackageNames": ["pylint", "pycqa/pylint"],
+      "groupName": "Pylint",
+      "groupSlug": "pylint",
+      "commitMessagePrefix": "CI: "
+    },
+    {
+      "description": "Group codespell updates across Python and pre-commit",
+      "matchManagers": ["pep621", "pre-commit"],
+      "matchPackageNames": ["codespell", "codespell-project/codespell"],
+      "groupName": "codespell",
+      "groupSlug": "codespell",
+      "commitMessagePrefix": "CI: "
+    },
+    {
+      "description": "Group yamllint updates across Python and pre-commit",
+      "matchManagers": ["pep621", "pre-commit"],
+      "matchPackageNames": ["yamllint", "adrienverge/yamllint"],
+      "groupName": "yamllint",
+      "groupSlug": "yamllint",
+      "commitMessagePrefix": "CI: "
+    },
+    {
+      "description": "Group pre-commit-hooks updates across Python and pre-commit",
+      "matchManagers": ["pep621", "pre-commit"],
+      "matchPackageNames": ["pre-commit-hooks", "pre-commit/pre-commit-hooks"],
+      "groupName": "pre-commit-hooks",
+      "groupSlug": "pre-commit-hooks",
+      "commitMessagePrefix": "CI: "
+    },
+    {
+      "description": "Require dashboard approval for major updates",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    }
+  ]
+}
