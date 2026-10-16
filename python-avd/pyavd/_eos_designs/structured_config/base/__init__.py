@@ -91,8 +91,14 @@ class AvdStructuredConfigBaseProtocol(
         if self.shared_utils.oob_mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
             return
 
+        # Future behavior: skip OOB IPv4 static route rendering when no OOB IPv4 management address is configured.
+        if self.inputs.avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used and self.shared_utils.oob_mgmt_ip is None:
+            return
+
         if self.shared_utils.oob_mgmt_gateway is None:
             return
+
+        self.structured_config_utils.set_once_oob_mgmt_vrf()
 
         if self.inputs.mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.mgmt_destination_networks:
@@ -358,24 +364,12 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def vrfs(self) -> None:
         """Vrfs set based on mgmt_interface_vrf variable."""
-        if self.inputs.avd_design_future.only_configure_oob_mgmt_vrf_when_used:
-            mgmt_interface_vrf_is_explicitly_configured = self.inputs._get_defined_attr(
-                "mgmt_interface_vrf"
-            ) or self.inputs.mgmt_interface_settings._get_defined_attr("vrf")
-            configure_oob_mgmt_vrf = (
-                mgmt_interface_vrf_is_explicitly_configured
-                or self.inputs.default_mgmt_method == "oob"
-                or self.shared_utils.node_config.mgmt_ip is not None
-                or self.shared_utils.node_config.ipv6_mgmt_ip is not None
-            )
-            if not configure_oob_mgmt_vrf:
-                return
+        if not self.inputs.avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
+            self.structured_config_utils.set_once_oob_mgmt_vrf()
+            return
 
-        vrf_settings = EosCliConfigGen.VrfsItem(name=self.shared_utils.mgmt_interface_vrf, ip_routing=self.shared_utils.mgmt_vrf_routing)
-
-        if self.shared_utils.node_config.ipv6_mgmt_ip is not None:
-            vrf_settings.ipv6_routing = self.shared_utils.mgmt_vrf_routing
-        self.structured_config.vrfs.append(vrf_settings)
+        if self.inputs.default_mgmt_method == "oob":
+            self.structured_config_utils.set_once_oob_mgmt_vrf()
 
     @structured_config_contributor
     def management_security(self) -> None:

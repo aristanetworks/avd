@@ -25,7 +25,7 @@
     | [<samp>&nbsp;&nbsp;raise_for_port_channels_without_members</samp>](## "avd_design_future.raise_for_port_channels_without_members") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if an L3 Port-Channel is configured without any member interfaces. |
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
-    | [<samp>&nbsp;&nbsp;only_configure_oob_mgmt_vrf_when_used</samp>](## "avd_design_future.only_configure_oob_mgmt_vrf_when_used") | Boolean |  | `False` |  | Available from AVD 6.6.0.<br>Configure OOB management VRF instance only when needed.<br>When enabled, AVD renders the OOB management VRF only if `default_mgmt_method` is set to `oob`,<br>or if `mgmt_ip` or `ipv6_mgmt_ip` is configured,<br>or if `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` is explicitly configured. |
+    | [<samp>&nbsp;&nbsp;only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used</samp>](## "avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Configure OOB management VRF and OOB IPv4 static routes only when needed.<br>When enabled, AVD renders the OOB management VRF only when required by OOB management configuration.<br>AVD also renders OOB IPv4 static routes only when `oob_mgmt_ip` is configured. |
 
 === "YAML"
 
@@ -110,10 +110,9 @@
       # Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
       remove_redundant_ipv4_unicast_for_peer_groups: <bool; default=False>
 
-      # Available from AVD 6.6.0.
-      # Configure OOB management VRF instance only when needed.
-      # When enabled, AVD renders the OOB management VRF only if `default_mgmt_method` is set to `oob`,
-      # or if `mgmt_ip` or `ipv6_mgmt_ip` is configured,
-      # or if `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` is explicitly configured.
-      only_configure_oob_mgmt_vrf_when_used: <bool; default=False>
+      # Available from AVD 6.5.0.
+      # Configure OOB management VRF and OOB IPv4 static routes only when needed.
+      # When enabled, AVD renders the OOB management VRF only when required by OOB management configuration.
+      # AVD also renders OOB IPv4 static routes only when `oob_mgmt_ip` is configured.
+      only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: <bool; default=False>
     ```
