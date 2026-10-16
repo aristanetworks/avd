@@ -55,8 +55,6 @@ keys:
               keys:
                 key_server_priority:
                   type: int
-                  convert_types:
-                    - str
                   min: 0
                   max: 255
                 session:
@@ -64,8 +62,6 @@ keys:
                   keys:
                     rekey_period:
                       type: int
-                      convert_types:
-                        - str
                       min: 30
                       max: 100000
                       description: Rekey period in seconds.
@@ -113,8 +109,6 @@ keys:
                   description: Disable replay protection.
                 window:
                   type: int
-                  convert_types:
-                    - str
                   min: 0
                   max: 4294967295
                   description: Set replay protection window size.

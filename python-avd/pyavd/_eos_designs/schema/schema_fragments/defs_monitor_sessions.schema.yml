@@ -51,8 +51,6 @@ $defs:
                   type: str
                 priority:
                   type: int
-                  convert_types:
-                    - str
         session_settings:
           type: dict
           description: |
@@ -64,8 +62,6 @@ $defs:
             header_remove_size:
               type: int
               description: Number of bytes to remove from header.
-              convert_types:
-                - str
             access_group:
               type: dict
               keys:
@@ -102,8 +98,6 @@ $defs:
                   "10 mbps"
             sample:
               type: int
-              convert_types:
-                - str
             truncate:
               type: dict
               keys:
@@ -112,5 +106,3 @@ $defs:
                 size:
                   type: int
                   description: Size in bytes.
-                  convert_types:
-                    - str
