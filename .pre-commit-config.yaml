@@ -26,6 +26,7 @@ ci:
     - docs-plugin-test
     - docs-plugin-vars
     - collection-files
+    - metaschema
     - schemas
     - check-schema-tables-in-docs
     - sort-hosts-yml
@@ -164,7 +165,6 @@ repos:
           - 'deepmerge>=1.1.0'
           - 'gitpython>=3.1.57'
           - 'jinja2>=3.0'
-          - 'jsonschema-rs>=0.24'
           - 'pyavd-utils==0.0.13'
           - 'pyavd-utils-gen==0.0.13'
           - 'pytest>=9.1.0'
@@ -301,6 +301,18 @@ repos:
         additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/vars/
 
+      - id: metaschema
+        name: Generate AVD metaschema from the pinned pyavd-utils-gen version.
+        entry: >-
+          python -c 'from pathlib import Path;
+          from pyavd_utils_gen.metaschema import generate_metaschema;
+          generate_metaschema(Path("python-avd/pyavd/_schema/avd_meta_schema.json"))'
+        language: python
+        files: ^\.pre-commit-config\.yaml$
+        pass_filenames: false
+        additional_dependencies:
+          - pyavd-utils-gen==0.0.13
+
       - id: schemas
         name: Build AVD schemas and documentation.
         entry: sh -c 'exec python-avd/scripts/build_schemas.py'
@@ -311,7 +323,6 @@ repos:
           - deepmerge>=1.1.0
           - PyYAML>=6.0.0
           - pyavd-utils-gen==0.0.13
-          - jsonschema-rs>=0.24
           - referencing>=0.35.0
           - ruff==0.16.8
 
