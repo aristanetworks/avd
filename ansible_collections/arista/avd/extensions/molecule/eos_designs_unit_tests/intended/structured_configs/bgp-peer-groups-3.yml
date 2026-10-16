@@ -55,6 +55,108 @@ ethernet_interfaces:
     peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet62
+  description: P2P_bgp-peer-groups-ipv4-selector-ipv4_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.252.212/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  metadata:
+    peer: bgp-peer-groups-ipv4-selector-ipv4
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet63
+  description: P2P_bgp-peer-groups-ipv4-selector-ipv6_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.252.214/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  metadata:
+    peer: bgp-peer-groups-ipv4-selector-ipv6
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet64
+  description: P2P_bgp-peer-groups-ipv4-selector-generic_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.252.216/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  metadata:
+    peer: bgp-peer-groups-ipv4-selector-generic
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet65
+  description: P2P_bgp-peer-groups-ipv6-selector-ipv4_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 2001:db8:a11:6d::1/64
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  metadata:
+    peer: bgp-peer-groups-ipv6-selector-ipv4
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet66
+  description: P2P_bgp-peer-groups-ipv6-selector-ipv6_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 2001:db8:a11:6e::1/64
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  metadata:
+    peer: bgp-peer-groups-ipv6-selector-ipv6
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet67
+  description: P2P_bgp-peer-groups-ipv6-selector-generic_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 2001:db8:a11:6f::1/64
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  metadata:
+    peer: bgp-peer-groups-ipv6-selector-generic
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: bgp-peer-groups-3
 ip_igmp_snooping:
   globally_enabled: true
