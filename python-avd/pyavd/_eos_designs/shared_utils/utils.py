@@ -393,5 +393,4 @@ class UtilsMixin(Protocol):
             f"The 'parent_profile' set under '{context}[profile={parent_profile}]' is ignored because the profile is itself used as a parent profile."
             " Set 'avd_design_future.allow_recursive_profile_inheritance' to inherit through multiple levels, or remove the 'parent_profile'."
         )
-        alert = AristaAvdWarning(msg, host=self.hostname)
-        alert._warn()
+        AristaAvdWarning.emit(msg, host=self.hostname)

@@ -17,20 +17,25 @@ if TYPE_CHECKING:
 
 class AristaAvdWarning(UserWarning):
     """Inherit Python Warning class for AVD."""
-
-    host: str | None
-
     def __init__(self, message: str, host: str | None = None) -> None:
-        self.host = host
         self.message = message
+        self.host = host
+        # Initialize the parent UserWarning class
         super().__init__(self.message)
 
-    def _warn(self, stacklevel: int = 2) -> None:
-        """Emit a warning with the given message and stack level."""
-        message = f"{self.message} for host '{self.host}'" if self.host else self.message
+    def __str__(self) -> str:
+        """Return the formatted string representation for the warning."""
+        if self.host:
+            return f"{self.message} for host '{self.host}'"
+        return self.message
 
-        warnings.warn(message, category=self.__class__, stacklevel=stacklevel)
-
+    @classmethod
+    def emit(cls, message: str, host: str | None = None, stacklevel: int = 2) -> None:
+        """Helper class method to raise/emit the warning directly."""
+        # Creating an instance triggers __init__
+        warning_instance = cls(message, host)
+        # Raising it via warnings.warn triggers __str__ under the hood
+        warnings.warn(warning_instance, category=cls, stacklevel=stacklevel)
 
 class AristaAvdError(Exception):
     host: str | None
