@@ -575,6 +575,24 @@ keys:
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
           IPv4 is activated by default instead of always deactivating it.'
         default: false
+      only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
+        type: bool
+        description: 'Available from AVD 6.5.0.
+
+          Configure OOB management VRF and OOB IPv4 static routes only when OOB management
+          is actually used.
+
+          When enabled:
+
+          - AVD renders the OOB management VRF only if `default_mgmt_method` is `oob`,
+          or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+
+          - Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does
+          not by itself render the OOB management VRF.
+
+          - AVD renders OOB IPv4 static routes only when `oob_mgmt_ip` is configured
+          (and other existing route prerequisites are met).'
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
