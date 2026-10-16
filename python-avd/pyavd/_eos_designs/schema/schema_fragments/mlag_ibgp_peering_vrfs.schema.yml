@@ -18,8 +18,6 @@ keys:
     keys:
       base_vlan:
         type: int
-        convert_types:
-          - str
         min: 1
         max: 4093
         default: 3000

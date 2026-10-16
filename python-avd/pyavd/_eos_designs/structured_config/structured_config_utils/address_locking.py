@@ -49,6 +49,7 @@ class AddressLockingMixin(Protocol):
             locked_address=locked_address,
             disabled=address_locking_settings.disabled,
             leases=address_locking_settings.leases._cast_as(EosCliConfigGen.AddressLocking.Leases),
+            logging=address_locking_settings.logging._cast_as(EosCliConfigGen.AddressLocking.Logging),
         )
 
     @run_once_method

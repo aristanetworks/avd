@@ -22,8 +22,6 @@ keys:
             Networks services can be filtered by tenant name.
         mac_vrf_vni_base:
           type: int
-          convert_types:
-            - str
           min: 0
           max: 16770000
           description: |
@@ -32,8 +30,6 @@ keys:
             i.e. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
         mac_vrf_id_base:
           type: int
-          convert_types:
-            - str
           min: 0
           max: 16770000
           description: |
@@ -43,8 +39,6 @@ keys:
             i.e. mac_vrf_id_base = 10000, svi 100 = RD/RT 10100, svi 300 = RD/RT 10300.
         vlan_aware_bundle_number_base:
           type: int
-          convert_types:
-            - str
           default: 0
           description: |
             Base number for VLAN aware bundle RD/RT.
@@ -56,8 +50,6 @@ keys:
           description: |
             Pseudowire RT base, used to generate route targets for VPWS services.
             Avoid overlapping route target spaces between different services.
-          convert_types:
-            - str
         enable_mlag_ibgp_peering_vrfs:
           documentation_options:
             table: network-services-vrfs-settings
@@ -201,8 +193,6 @@ keys:
                         BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                         For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                         note: `peer_filter` or `remote_as` is required.
-                      convert_types:
-                        - int
                     peer_id_include_router_id:
                       type: bool
                       description: Include router ID as part of peer filter.
@@ -234,8 +224,6 @@ keys:
                 version:
                   type: int
                   description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
-                  convert_types:
-                    - str
                   valid_values:
                     - 1
                     - 2
@@ -270,8 +258,6 @@ keys:
             underlay_l2_multicast_group_ipv4_pool_offset:
               type: int
               default: 0
-              convert_types:
-                - str
             fast_leave:
               type: bool
               deprecation:
@@ -309,8 +295,6 @@ keys:
             underlay_l2_multicast_group_ipv4_pool_offset:
               type: int
               default: 0
-              convert_types:
-                - str
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -340,8 +324,6 @@ keys:
             evpn_underlay_l3_multicast_group_ipv4_pool_offset:
               type: int
               default: 0
-              convert_types:
-                - str
             evpn_peg:
               type: list
               description: |
@@ -388,7 +370,6 @@ keys:
                   description: Group_prefix/mask.
               access_list_name:
                 type: str
-                convert_types: [int]
                 description: |
                   List of groups to associate with the RP address set in 'rp'.
                   If access_list_name is set, a standard access-list will be configured matching these groups.
@@ -421,8 +402,6 @@ keys:
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
-              convert_types:
-                - str
               valid_values:
                 - 1
                 - 2
@@ -450,8 +429,6 @@ keys:
             keys:
               name:
                 type: str
-                convert_types:
-                  - int
               address_families:
                 type: list
                 default: ["evpn"]
@@ -466,8 +443,6 @@ keys:
                 description: VRF description.
               vrf_vni:
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 16777215
                 description: |
@@ -478,8 +453,6 @@ keys:
                   If vrf_vni > 10000 make sure to adjust "mac_vrf_vni_base" accordingly to avoid overlap.
               vrf_id:
                 type: int
-                convert_types:
-                  - str
                 description: |
                   Required if "vrf_vni" is not set.
                   "vrf_id" is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.
@@ -487,8 +460,6 @@ keys:
                   "vrf_id" is preferred over "vrf_vni" for MLAG iBGP peering vlan, see "mlag_ibgp_peering_vrfs.base_vlan" for details.
               rd_override:
                 type: str
-                convert_types:
-                  - int
                 description: |
                   By default, the VRF RD will be derived from the pattern defined in `overlay_rd_type`.
                   The rd_override allows us to override this value and statically define it.
@@ -498,8 +469,6 @@ keys:
                     - A full RD string with colon separator which will override the full RD.
               rt_override:
                 type: str
-                convert_types:
-                  - int
                 description: |
                   By default, the VRF RT will be derived from the pattern defined in `overlay_rt_type`.
                   The rt_override allows us to override this value and statically define it.
@@ -588,8 +557,6 @@ keys:
                         - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
                         - Any other string will be used directly as the source VRF name.
                         - If not set, EOS uses the VRF on the SVI.
-                      convert_types:
-                        - int
               enable_mlag_ibgp_peering_vrfs:
                 type: bool
                 description: |
@@ -604,8 +571,6 @@ keys:
                   Setting `redistribute_mlag_ibgp_peering_vrfs` under a VRF overrides the tenant-wide setting.
               mlag_ibgp_peering_vlan:
                 type: int
-                convert_types:
-                  - str
                 description: |
                   Manually define the VLAN used on the MLAG pair for the iBGP session.
                   By default this parameter is calculated using the following formula: `<mlag_ibgp_peering_vrfs.base_vlan>` + `<vrf_id>` - 1.
@@ -619,8 +584,6 @@ keys:
                 keys:
                   loopback:
                     type: int
-                    convert_types:
-                      - str
                     description: |
                       Loopback interface number, required when vtep_diagnotics defined.
                     min: 2
@@ -690,8 +653,6 @@ keys:
                     type: bool
                   process_id:
                     type: int
-                    convert_types:
-                      - str
                     description: If not set, "vrf_id" will be used.
                   router_id:
                     type: str
@@ -704,8 +665,6 @@ keys:
                     default: main_router_id
                   max_lsa:
                     type: int
-                    convert_types:
-                      - str
                   bfd:
                     type: bool
                     default: false
@@ -753,8 +712,6 @@ keys:
                       keys:
                         id:
                           type: int
-                          convert_types:
-                            - str
                         hash_algorithm:
                           type: str
                           valid_values:
@@ -767,8 +724,6 @@ keys:
                         cleartext_key:
                           type: str
                           required: true
-                          convert_types:
-                            - int
                           description: |-
                             Cleartext key for OSPF message-digest authentication
                             To protect the password at rest it is strongly recommended to make use of a vault or similar.
@@ -855,7 +810,6 @@ keys:
                         description: Group_prefix/mask.
                     access_list_name:
                       type: str
-                      convert_types: [int]
                       description: |
                         List of groups to associate with the RP addresses set in 'rps'.
                         If access_list_name is set, a standard access-list will be configured matching these groups.
@@ -880,8 +834,6 @@ keys:
                   keys:
                     id:
                       type: int
-                      convert_types:
-                        - str
                       description: SVI interface id and VLAN id.
                       min: 1
                       max: 4096
@@ -912,8 +864,6 @@ keys:
                       default: ["all"]
                       items:
                         type: str
-                        convert_types:
-                          - int
                         description: Tag value.
                     evpn_vlan_bundle:
                       type: str
@@ -939,8 +889,6 @@ keys:
                             default: ["all"]
                             items:
                               type: str
-                              convert_types:
-                                - int
                               description: Tag value.
               l3_interfaces:
                 documentation_options:
@@ -964,8 +912,6 @@ keys:
                       description: For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                       items:
                         type: int
-                        convert_types:
-                          - str
                         min: 1
                         max: 4094
                     ip_addresses:
@@ -1013,16 +959,10 @@ keys:
                       default: true
                     mtu:
                       type: int
-                      convert_types:
-                        - str
                     ipv4_acl_in:
                       type: str
-                      convert_types:
-                        - int
                     ipv4_acl_out:
                       type: str
-                      convert_types:
-                        - int
                     ipv6_acl_in:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -1030,8 +970,6 @@ keys:
                         resolved from the IPv6 address set on the interface for this node.
                         Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                       type: str
-                      convert_types:
-                        - int
                     ipv6_acl_out:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the egress direction.
@@ -1039,8 +977,6 @@ keys:
                         resolved from the IPv6 address set on the interface for this node.
                         Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                       type: str
-                      convert_types:
-                        - int
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -1052,14 +988,10 @@ keys:
                           default: false
                         area:
                           type: str
-                          convert_types:
-                            - int
                           description: OSPF area ID.
                           default: "0.0.0.0"
                         cost:
                           type: int
-                          convert_types:
-                            - str
                           description: OSPF link cost.
                         authentication:
                           type: str
@@ -1088,8 +1020,6 @@ keys:
                             keys:
                               id:
                                 type: int
-                                convert_types:
-                                  - str
                               hash_algorithm:
                                 type: str
                                 valid_values:
@@ -1249,8 +1179,6 @@ keys:
                     encapsulation_dot1q_vlan:
                       description: For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 4094
                     enabled:
@@ -1267,21 +1195,15 @@ keys:
                         The peer device port-channel interface. Used for description and documentation.
                     mtu:
                       type: int
-                      convert_types:
-                        - str
                       description: MTU can only be set on the parent Port-Channel.
                     ipv4_acl_in:
                       description: |-
                         Name of the IPv4 access-list to be assigned in the ingress direction.
                       type: str
-                      convert_types:
-                        - int
                     ipv4_acl_out:
                       description: |-
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                       type: str
-                      convert_types:
-                        - int
                     ipv6_acl_in:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -1289,8 +1211,6 @@ keys:
                         resolved from the first IPv6 address set on the interface.
                         Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                       type: str
-                      convert_types:
-                        - int
                     ipv6_acl_out:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the egress direction.
@@ -1298,8 +1218,6 @@ keys:
                         resolved from the first IPv6 address set on the interface.
                         Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                       type: str
-                      convert_types:
-                        - int
                     static_routes:
                       type: list
                       description: Static routes to be configured on the device where this Port-channel interface is configured.
@@ -1320,14 +1238,10 @@ keys:
                           default: false
                         area:
                           type: str
-                          convert_types:
-                            - int
                           description: OSPF area ID.
                           default: "0.0.0.0"
                         cost:
                           type: int
-                          convert_types:
-                            - str
                           description: OSPF link cost.
                         authentication:
                           type: str
@@ -1356,8 +1270,6 @@ keys:
                             keys:
                               id:
                                 type: int
-                                convert_types:
-                                  - str
                               hash_algorithm:
                                 type: str
                                 valid_values:
@@ -1432,8 +1344,6 @@ keys:
                           default: false
                         area:
                           type: str
-                          convert_types:
-                            - int
                           description: OSPF area ID.
                           default: "0.0.0.0"
                     hardware_forwarding:
@@ -1554,8 +1464,6 @@ keys:
                       description: Peer group name.
                     remote_as:
                       type: str
-                      convert_types:
-                        - int
                       description: |-
                         BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                         For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
@@ -1582,8 +1490,6 @@ keys:
                       description: BGP Keepalive and Hold Timer values in seconds as string <0-3600> <0-3600>.
                     maximum_routes:
                       type: int
-                      convert_types:
-                        - str
                       min: 0
                       max: 4294967294
                       description: Maximum number of routes (0 means unlimited).
@@ -1598,8 +1504,6 @@ keys:
                       type: str
                     ebgp_multihop:
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 255
                       description: Time-to-live in range of hops.
@@ -1641,15 +1545,11 @@ keys:
                         The prefix-list will be associated under the IPv4 or IPv6 address family based on the IP address.
                     local_as:
                       type: str
-                      convert_types:
-                        - int
                       description: |-
                         Local BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                         For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     weight:
                       type: int
-                      convert_types:
-                        - str
                       min: 0
                       max: 65535
                     bfd:
@@ -1695,8 +1595,6 @@ keys:
                           Enable or disable BGP graceful-restart for this VRF.
                       restart_time:
                         type: int
-                        convert_types:
-                          - str
                         min: 1
                         max: 3600
                         default: 300
@@ -1889,8 +1787,6 @@ keys:
             keys:
               id:
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 4094
                 description: VLAN ID.
@@ -1930,8 +1826,6 @@ keys:
                 Enable or disable MPLS control word for VPWS pseudowires.
             mtu:
               type: int
-              convert_types:
-                - str
               description: MTU for VPWS pseudowires.
             label_flow:
               type: bool
@@ -1967,8 +1861,6 @@ keys:
                     number:
                       type: int
                       description: Subinterface number.
-                      convert_types:
-                        - str
                     port_channel:
                       type: dict
                       description: Settings to be applied to the Port-Channel subinterface.
@@ -2008,8 +1900,6 @@ keys:
                     id:
                       type: int
                       required: true
-                      convert_types:
-                        - "str"
                       description: Pseudowire ID on this endpoint.
                     nodes:
                       type: list

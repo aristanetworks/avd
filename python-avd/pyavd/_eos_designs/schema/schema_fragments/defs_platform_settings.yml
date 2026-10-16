@@ -15,8 +15,6 @@ $defs:
           type: list
           items:
             type: str
-            convert_types:
-              - int
         trident_forwarding_table_partition:
           type: str
           description: Only applied when evpn_multicast is true.
@@ -25,15 +23,11 @@ $defs:
           keys:
             mlag:
               type: int
-              convert_types:
-                - str
               min: 0
               max: 86400
               description: In seconds.
             non_mlag:
               type: int
-              convert_types:
-                - str
               min: 0
               max: 86400
               description: In seconds.
@@ -55,8 +49,6 @@ $defs:
           type: bool
         default_interface_mtu:
           type: int
-          convert_types:
-            - str
           description: |
             Default interface MTU configured on EOS under "interface defaults".
             Takes precedence over the root key "default_interface_mtu".
@@ -64,8 +56,6 @@ $defs:
           max: 65535
         p2p_uplinks_mtu:
           type: int
-          convert_types:
-            - str
           description: |
             Set MTU on point to point uplink interfaces.
             Takes precedence over the root key "p2p_uplinks_mtu".
@@ -200,8 +190,6 @@ $defs:
                 max_rx_queues:
                   type: int
                   default: 6
-                  convert_types:
-                    - str
                   description: Maximum rx_queue count supported on any interface.
             evpn_gateway_all_active_multihoming:
               type: bool

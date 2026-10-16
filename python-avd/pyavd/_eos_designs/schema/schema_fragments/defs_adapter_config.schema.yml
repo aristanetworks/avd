@@ -45,8 +45,6 @@ $defs:
         description: Interface mode.
       mtu:
         type: int
-        convert_types:
-          - str
         min: 68
         max: 65535
       l2_mtu:
@@ -57,8 +55,6 @@ $defs:
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/l2_mru
       native_vlan:
         type: int
-        convert_types:
-          - str
         description: |
           Native VLAN for a trunk port.
           If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence.
@@ -69,8 +65,6 @@ $defs:
         description: If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence.
       phone_vlan:
         type: int
-        convert_types:
-          - str
         description: |-
           Phone VLAN for a mode `trunk phone` port.
           Requires `mode: trunk phone` to be set.
@@ -101,8 +95,6 @@ $defs:
           - `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.
           - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
           If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
-        convert_types:
-          - int
       mac_acl_in:
         type: str
         description: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
@@ -116,13 +108,9 @@ $defs:
           - "network"
       spanning_tree_bpdufilter:
         type: str
-        convert_types:
-          - bool
         valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
       spanning_tree_bpduguard:
         type: str
-        convert_types:
-          - bool
         valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
       spanning_tree_link_type:
         type: str
@@ -198,8 +186,6 @@ $defs:
             keys:
               allow_access_list:
                 type: str
-                convert_types:
-                  - int
                 description: |-
                   Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
                   The access list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
@@ -237,9 +223,6 @@ $defs:
             keys:
               level:
                 type: str
-                convert_types:
-                  - int
-                  - float
                 description: Configure maximum storm-control level.
               unit:
                 type: str
@@ -298,8 +281,6 @@ $defs:
             description: Manual preference as described above, required only for preference algorithm.
             items:
               type: int
-              convert_types:
-                - str
           dont_preempt:
             type: bool
             description: Disable preemption for single-active forwarding when auto/manual DF preference is configured.
@@ -316,8 +297,6 @@ $defs:
               - "on"
           channel_id:
             type: int
-            convert_types:
-              - str
             description: |
               Port-Channel ID.
               If no channel_id is specified, an id is generated from the first switch port in the port channel.
@@ -376,12 +355,8 @@ $defs:
                   vlans:
                     type: str
                     description: Allowed VLANs on the port-channel member interfaces when in fallback individual.
-                    convert_types:
-                      - int
                   native_vlan:
                     type: int
-                    convert_types:
-                      - str
                     description: Native VLAN on the port-channel member interfaces when in fallback individual.
                   mode:
                     type: str
@@ -393,8 +368,6 @@ $defs:
                     description: Interface mode on the port-channel member interfaces when in fallback individual.
               timeout:
                 type: int
-                convert_types:
-                  - str
                 description: Timeout in seconds.
                 default: 90
           lacp_timer:
@@ -409,8 +382,6 @@ $defs:
                 description: LACP mode for interface members.
               multiplier:
                 type: int
-                convert_types:
-                  - str
                 description: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
           raw_eos_cli:
             type: str

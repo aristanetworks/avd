@@ -22,6 +22,4 @@ keys:
       local_convergence_delay:
         description: Local convergence delay in milliseconds.
         type: int
-        convert_types:
-          - str
         default: 10000

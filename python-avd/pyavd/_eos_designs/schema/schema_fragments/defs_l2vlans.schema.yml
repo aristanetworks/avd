@@ -20,8 +20,6 @@ $defs:
             With the future key set to `false`, enabling IPv4 or IPv6 Address Locking requires `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
         vni_override:
           type: int
-          convert_types:
-            - str
           min: 1
           max: 16777215
           description: |
@@ -29,8 +27,6 @@ $defs:
             The vni_override, allows to override this value and statically define it.
         rt_override:
           type: str
-          convert_types:
-            - int
           description: |
             By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
             The rt_override allows us to override this value and statically define it.
@@ -40,8 +36,6 @@ $defs:
               - A full RT string with colon separator which will override the full RT.
         rd_override:
           type: str
-          convert_types:
-            - int
           description: |
             By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
             The rt_override allows us to override this value and statically define it.
@@ -55,8 +49,6 @@ $defs:
           description: Extend this L2VLAN over VXLAN.
         spanning_tree_priority:
           type: int
-          convert_types:
-            - str
           description: |-
             Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.
             The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).
@@ -127,8 +119,6 @@ $defs:
                 version:
                   type: int
                   description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
-                  convert_types:
-                    - str
                   valid_values:
                     - 1
                     - 2
@@ -167,8 +157,6 @@ $defs:
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
-              convert_types:
-                - str
               valid_values:
                 - 1
                 - 2
