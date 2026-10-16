@@ -1,9 +1,21 @@
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import sys
+import warnings
 from typing import TYPE_CHECKING
 
 from ._lazy_import import LazyImports, install_lazy_imports
+
+if sys.version_info[:2] == (3, 10):
+    warnings.warn(
+        "Python 3.10 has reached end of life and no longer receives security updates. "
+        "AVD will drop support for Python version 3.10 in a future major release. "
+        "Please upgrade to a supported Python version. "
+        "See https://devguide.python.org/versions/ for the Python version support status.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
 
 if TYPE_CHECKING:
     from .api.eos_cli_config_gen import ConfigRenderConfiguration as ConfigRenderConfiguration
