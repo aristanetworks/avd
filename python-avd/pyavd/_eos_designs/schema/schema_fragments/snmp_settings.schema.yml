@@ -50,8 +50,6 @@ keys:
                   An error will be raised if inband management is not configured for the device.
                 - `use_default_mgmt_method_vrf` will configure the SNMP ACL under the VRF for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
-              convert_types:
-                - int
             enable:
               type: bool
               description: |-
@@ -65,13 +63,9 @@ keys:
             ipv4_acl:
               type: str
               description: IPv4 access-list name.
-              convert_types:
-                - int
             ipv6_acl:
               type: str
               description: IPv6 access-list name.
-              convert_types:
-                - int
       compute_local_engineid:
         type: bool
         default: false
@@ -179,8 +173,6 @@ keys:
                   An error will be raised if inband management is not configured for the device.
                 - `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-interface for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
-              convert_types:
-                - int
             use_mgmt_interface_vrf:
               type: bool
               deprecation:
