@@ -217,7 +217,6 @@ jobs:
         avd_scenario:
           - "eos_cli_config_gen"
           - "eos_cli_config_gen_deprecated_vars"
-          - "eos_cli_config_gen_negative_unit_tests"
         ansible_version:
           - "ansible-core<2.22.0"
         python_version:

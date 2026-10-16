@@ -77,6 +77,17 @@ Facts generation runs per fabric. Give independent cases that fail during facts 
 
 CI discovers this project's `e2e-test.toml`, runs it in the regular and coverage E2E jobs, and checks for changed artifacts. Ansible action-plugin unit and integration tests separately cover error handling at the collection boundary.
 
+### EOS CLI configuration negative tests
+
+The `ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen_negative_unit_tests` directory also runs only through the PyAVD E2E tool:
+
+```shell
+uv run --no-project tools/e2e-test-avd.py \
+  ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen_negative_unit_tests/e2e-test.toml
+```
+
+Its `avd_design = false` setting validates inventory variables as EOS structured configuration and renders EOS CLI directly. Expected diagnostics cover conflicts between still-supported deprecated keys and their replacements, the maximum number of ACL entries, and unsafe BFD session snapshot intervals. Key conflicts are captured as validation violations; rendering failures are captured in `eos_cli_error.txt`. As with the design cases, regenerate and review these diagnostics when changing a fixture.
+
 ## Creating `e2e-test.toml`
 
 Place the file in the project directory. All configured paths are resolved relative to this directory, regardless of the shell's current working directory.
