@@ -26,7 +26,7 @@ CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP = {
     ChangeControlStatus.UNSPECIFIED: None,
 }
 
-CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP = {True: "approved", False: None}
+CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP = {True: "approved", False: None, None: None}
 
 
 def get_change_control_state(cv_change_control: ChangeControl) -> str:
