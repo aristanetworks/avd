@@ -95,10 +95,10 @@ class VlanInterfacesMixin(Protocol):
         vlan_interface_config.metadata.tags = EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
 
         if svi.ipv4_acl_in and svi.ipv4_standard_acl_in:
-            msg = f"'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on '{interface_name}'. Only one ingress IPv4 ACL may be configured."
+            msg = f"'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on '{interface_name}'. Only one ingress IPv4 ACL can be configured."
             raise AristaAvdInvalidInputsError(msg)
         if svi.ipv4_acl_out and svi.ipv4_standard_acl_out:
-            msg = f"'ipv4_acl_out' and 'ipv4_standard_acl_out' are mutually exclusive on '{interface_name}'. Only one egress IPv4 ACL may be configured."
+            msg = f"'ipv4_acl_out' and 'ipv4_standard_acl_out' are mutually exclusive on '{interface_name}'. Only one egress IPv4 ACL can be configured."
             raise AristaAvdInvalidInputsError(msg)
 
         if svi.ipv4_acl_in:
@@ -110,7 +110,7 @@ class VlanInterfacesMixin(Protocol):
             vlan_interface_config.access_group_in = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
 
-        if svi.ipv4_standard_acl_in:
+        elif svi.ipv4_standard_acl_in:
             self.structured_config_utils._set_ipv4_standard_acl(svi.ipv4_standard_acl_in)
             vlan_interface_config.access_group_in = svi.ipv4_standard_acl_in
 
@@ -123,7 +123,7 @@ class VlanInterfacesMixin(Protocol):
             vlan_interface_config.access_group_out = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
 
-        if svi.ipv4_standard_acl_out:
+        elif svi.ipv4_standard_acl_out:
             self.structured_config_utils._set_ipv4_standard_acl(svi.ipv4_standard_acl_out)
             vlan_interface_config.access_group_out = svi.ipv4_standard_acl_out
 

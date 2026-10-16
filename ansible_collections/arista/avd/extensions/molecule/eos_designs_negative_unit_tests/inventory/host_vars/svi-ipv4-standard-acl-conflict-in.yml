@@ -22,4 +22,4 @@ tenants:
             ipv4_standard_acl_in: SVI-STANDARD
             ipv4_acl_in: SVI-EXTENDED
 expected_error_message: >-
-  'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on 'Vlan10'. Only one ingress IPv4 ACL may be configured.
+  'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on 'Vlan10'. Only one ingress IPv4 ACL can be configured.
