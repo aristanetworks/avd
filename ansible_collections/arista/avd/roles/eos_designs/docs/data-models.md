@@ -1633,6 +1633,12 @@ schemas/avd_design/docs/tables/network-services-vrfs-bgp-settings.md
 schemas/avd_design/docs/tables/network-services-vrfs-ospf-settings.md
 --8<--
 
+#### Network services VRF OSPFv3 configuration
+
+--8<--
+schemas/avd_design/docs/tables/network-services-vrfs-ospfv3-settings.md
+--8<--
+
 #### Network services L2 VLANs configuration
 
 --8<--
