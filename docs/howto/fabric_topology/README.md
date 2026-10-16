@@ -253,5 +253,5 @@ Leaf interface:  uplink_ipv4_pool + (node_id * 2 * uplink_count) + (uplink_index
 
 For complete details on all available topology properties, see:
 
-- [Node Type Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-settings)
-- [Default Interface Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#default-interface-settings)
+- [Node Type Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/node-type.md#node-type-settings)
+- [Default Interface Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/topology.md#default-interface-settings)

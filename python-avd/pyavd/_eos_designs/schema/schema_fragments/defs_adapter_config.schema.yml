@@ -19,7 +19,7 @@ $defs:
         type: str
         description: |-
           Description or description template to be used on all ports.
-          This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+          This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/custom-descriptions-names.html#avd-string-formatter-syntax.
           The available template fields are:
             - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
             - `endpoint` - The name of the connected endpoint
@@ -300,7 +300,7 @@ $defs:
             type: str
             description: |-
               Description or description template to be used on the port-channel interface.
-              This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+              This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/custom-descriptions-names.html#avd-string-formatter-syntax.
               The available template fields are:
                 - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
                 - `endpoint` - The name of the connected endpoint
