@@ -120,6 +120,90 @@ keys:
         nat_profile:
           type: str
           description: NAT interface profile.
+        mpls:
+          type: dict
+          keys:
+            ip:
+              type: bool
+            ldp:
+              type: dict
+              keys:
+                interface:
+                  type: bool
+                igp_sync:
+                  type: bool
+        ospf_network_point_to_point:
+          type: bool
+        ospf_area:
+          type: str
+          convert_types:
+            - int
+        ospf_cost:
+          type: int
+          convert_types:
+            - str
+        ospf_authentication:
+          type: str
+          valid_values: ["none", "simple", "message-digest"]
+        ospf_authentication_key:
+          type: str
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+            - int
+          description: Authentication key type.
+          default: "7"
+          valid_values:
+            - "7"
+            - "8a"
+        ospf_message_digest_keys:
+          type: list
+          primary_key: id
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+              hash_algorithm:
+                type: str
+                valid_values: ["md5", "sha1", "sha256", "sha384", "sha512"]
+              key:
+                type: str
+                description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                  - int
+                description: Authentication key type.
+                default: "7"
+                valid_values:
+                  - "7"
+                  - "8a"
+        isis_enable:
+          type: str
+          description: ISIS instance.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
+        isis_passive:
+          type: bool
+        isis_metric:
+          type: int
+          convert_types:
+            - str
+        isis_network_point_to_point:
+          type: bool
+        isis_circuit_type:
+          type: str
+          valid_values: ["level-1-2", "level-1", "level-2"]
+        isis_hello_padding:
+          type: bool
+        isis_authentication:
+          type: dict
+          $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication"
         eos_cli:
           type: str
           description: |

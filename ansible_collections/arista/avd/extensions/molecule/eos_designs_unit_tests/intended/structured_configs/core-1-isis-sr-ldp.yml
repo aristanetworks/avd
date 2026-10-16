@@ -343,6 +343,26 @@ ethernet_interfaces:
     peer_type: core_router
   switchport:
     enabled: false
+- name: Ethernet50
+  description: P2P_LINK_TO_CORE-2-OSPF-LDP_Ethernet50
+  shutdown: false
+  ip_address: 192.168.0.0/31
+  metadata:
+    peer: core-2-ospf-ldp
+    peer_interface: Ethernet50
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet51
+  description: P2P_LINK_TO_CORE-2-OSPF-LDP_Ethernet51
+  shutdown: false
+  ip_address: 172.24.0.0/31
+  metadata:
+    peer: core-2-ospf-ldp
+    peer_interface: Ethernet51
+    peer_type: core_router
+  switchport:
+    enabled: false
 - name: ethernet21
   description: P2P_LINK_TO_PEER2_ethernet21
   shutdown: false
@@ -631,7 +651,48 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 192.168.0.1
+- prefix: 192.168.1.0/32
+  next_hop: 192.168.0.1
+  name: Tunnel endpoint core-2-ospf-ldp
+- prefix: 172.24.0.1/32
+  next_hop: 172.24.0.1
+  name: Tunnel endpoint core-2-ospf-ldp
 transceiver_qsfp_default_mode_4x10: true
+tunnel_interfaces:
+- name: Tunnel100
+  shutdown: false
+  mtu: 1600
+  ip_address: 10.0.0.0/31
+  tunnel_mode: gre
+  source_interface: Ethernet50
+  destination: 192.168.1.0
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
+- name: Tunnel101
+  shutdown: false
+  mtu: 1600
+  ip_address: 10.0.0.2/31
+  tunnel_mode: gre
+  source_interface: Ethernet51
+  destination: 172.24.0.1
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
 vlan_internal_order:
   allocation: ascending
   range:
