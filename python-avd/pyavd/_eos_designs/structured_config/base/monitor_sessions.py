@@ -60,7 +60,7 @@ class MonitorSessionsMixin(Protocol):
                     direction=session.source_settings.direction,
                 )
                 acl = session.source_settings.access_group
-                if acl.name:
+                if acl:
                     self._set_monitor_session_access_group(acl.type, acl.name)
                     source.access_group = EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup(
                         type=self._get_monitor_session_access_group_type(acl.type),
@@ -71,7 +71,7 @@ class MonitorSessionsMixin(Protocol):
 
             if session_settings := merged_settings.session_settings:
                 acl = session_settings.access_group
-                if acl.name:
+                if acl:
                     self._set_monitor_session_access_group(acl.type, acl.name)
                 monitor_session._update(
                     encapsulation_gre_metadata_tx=session_settings.encapsulation_gre_metadata_tx,
@@ -88,11 +88,8 @@ class MonitorSessionsMixin(Protocol):
 
             self.structured_config.monitor_sessions.append(monitor_session)
 
-    def _set_monitor_session_access_group(self: AvdStructuredConfigBaseProtocol, acl_type: str | None, acl_name: str) -> None:
+    def _set_monitor_session_access_group(self: AvdStructuredConfigBaseProtocol, acl_type: str, acl_name: str) -> None:
         """Validate and configure ACLs referenced by monitor sessions."""
-        if acl_type is None:
-            return
-
         self._validate_monitor_session_access_group(acl_type, acl_name)
         match acl_type:
             case "ip" | "ipv4":

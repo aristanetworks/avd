@@ -1,9 +1,9 @@
 ---
-# Test IPv4 extended and standard ACLs at monitor-session source and session scope.
+# Test IPv4 extended, IPv4 standard and IPv6 ACLs at monitor-session source and session scope.
 type: l2leaf
 l2leaf:
   nodes:
-    - name: monitor-session-ipv4-acls
+    - name: monitor-session-acls
       mgmt_ip: 192.168.0.2/24
 
 ipv4_acls:
@@ -32,8 +32,23 @@ ipv4_standard_acls:
       - action: deny
         source: any
 
+ipv6_acls:
+  - name: MONITOR-IPV6
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: 2001:db8::/64
+        destination: any
+  - name: UNUSED-IPV6
+    entries:
+      - action: deny
+        protocol: ipv6
+        source: any
+        destination: any
+
 network_ports:
-  - switches: [monitor-session-ipv4-acls]
+  - switches: [monitor-session-acls]
     switch_ports: [Ethernet1-2]
     # Reuse the source ACL on two interfaces to verify deduplication and priority.
     monitor_sessions:
@@ -45,7 +60,7 @@ network_ports:
             type: ipv4
             name: MONITOR-IPV4
             priority: 5
-  - switches: [monitor-session-ipv4-acls]
+  - switches: [monitor-session-acls]
     switch_ports: [Ethernet3]
     monitor_sessions:
       - name: IPV4-STANDARD-SOURCE
@@ -56,7 +71,7 @@ network_ports:
             type: ipv4_standard
             name: MONITOR-IPV4-STANDARD
             priority: 10
-  - switches: [monitor-session-ipv4-acls]
+  - switches: [monitor-session-acls]
     switch_ports: [Ethernet4]
     monitor_sessions:
       - name: IPV4-SESSION
@@ -65,7 +80,7 @@ network_ports:
           access_group:
             type: ipv4
             name: MONITOR-IPV4
-  - switches: [monitor-session-ipv4-acls]
+  - switches: [monitor-session-acls]
     switch_ports: [Ethernet5]
     monitor_sessions:
       - name: IPV4-STANDARD-SESSION
@@ -74,7 +89,7 @@ network_ports:
           access_group:
             type: ipv4_standard
             name: MONITOR-IPV4-STANDARD
-  - switches: [monitor-session-ipv4-acls]
+  - switches: [monitor-session-acls]
     switch_ports: [Ethernet6]
     monitor_sessions:
       - name: IPV4-SOURCE
@@ -85,3 +100,27 @@ network_ports:
         role: destination
       - name: IPV4-STANDARD-SESSION
         role: destination
+      - name: IPV6-SOURCE
+        role: destination
+      - name: IPV6-SESSION
+        role: destination
+  - switches: [monitor-session-acls]
+    switch_ports: [Ethernet7]
+    monitor_sessions:
+      - name: IPV6-SOURCE
+        role: source
+        source_settings:
+          direction: rx
+          access_group:
+            type: ipv6
+            name: MONITOR-IPV6
+            priority: 15
+  - switches: [monitor-session-acls]
+    switch_ports: [Ethernet8]
+    monitor_sessions:
+      - name: IPV6-SESSION
+        role: source
+        session_settings:
+          access_group:
+            type: ipv6
+            name: MONITOR-IPV6

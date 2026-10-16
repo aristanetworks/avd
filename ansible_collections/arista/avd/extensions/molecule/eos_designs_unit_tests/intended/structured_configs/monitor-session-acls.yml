@@ -46,7 +46,21 @@ ethernet_interfaces:
     peer_key: network_ports
   switchport:
     enabled: true
-hostname: monitor-session-ipv4-acls
+- name: Ethernet7
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet8
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+hostname: monitor-session-acls
 ip_access_lists:
 - name: MONITOR-IPV4
   entries:
@@ -57,6 +71,14 @@ ip_access_lists:
     destination: any
 ip_igmp_snooping:
   globally_enabled: true
+ipv6_access_lists:
+- name: MONITOR-IPV6
+  entries:
+  - protocol: ipv6
+    source: 2001:db8::/64
+    destination: any
+    sequence: 10
+    action: permit
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -108,6 +130,24 @@ monitor_sessions:
       type: ip
       name: MONITOR-IPV4-STANDARD
       priority: 10
+  destinations:
+  - Ethernet6
+- name: IPV6-SESSION
+  sources:
+  - name: Ethernet8
+  destinations:
+  - Ethernet6
+  access_group:
+    type: ipv6
+    name: MONITOR-IPV6
+- name: IPV6-SOURCE
+  sources:
+  - name: Ethernet7
+    direction: rx
+    access_group:
+      type: ipv6
+      name: MONITOR-IPV6
+      priority: 15
   destinations:
   - Ethernet6
 service_routing_protocols_model: multi-agent

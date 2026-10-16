@@ -12880,9 +12880,11 @@ $defs:
                   - ipv4_standard
                   - ipv6
                   - mac
+                  required: true
                 name:
                   description: ACL name.
                   type: str
+                  required: true
                 priority:
                   type: int
         session_settings:
@@ -12916,9 +12918,11 @@ $defs:
                   - ipv4_standard
                   - ipv6
                   - mac
+                  required: true
                 name:
                   description: ACL name.
                   type: str
+                  required: true
             rate_limit_per_ingress_chip:
               type: str
               description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
