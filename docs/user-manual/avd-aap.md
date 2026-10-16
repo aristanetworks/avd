@@ -14,7 +14,7 @@ This guide will walk you through the steps required to get up and running with A
 ## Requirements to get started
 
 - An accessible lab topology running Arista EOS, CloudVision, and Ansible core.
-- An AVD project or Git repository with playbooks and an inventory. To get started, you may also use any of our [example topologies](../../ansible_collections/arista/avd/examples/single-dc-l3ls/README.md).
+- An AVD project or Git repository with playbooks and an inventory. To get started, you may also use any of our [example topologies](../../ansible_collections/arista/avd/examples/README.md).
 - A RHEL instance running AAP.
   - If you need access to a RHEL instance, you can join the [developer program](https://developers.redhat.com) to get a copy.
   - To get started with AAP, you may sign up for a 60-day [trial license](https://www.redhat.com/en/technologies/management/ansible/trial).
