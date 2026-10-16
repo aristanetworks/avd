@@ -2,22 +2,53 @@
 # CodeCov Configuration for AVD
 # Reference: https://docs.codecov.com/docs/codecov-yaml
 
+flags:
+  pyavd_tests:
+    paths:
+      - "python-avd/"
+    carryforward: true
+  e2e_tests:
+    paths:
+      - "python-avd/pyavd/"
+    carryforward: true
+  ansible_unit_tests:
+    paths:
+      - "ansible_collections/arista/avd/plugins/"
+    carryforward: false
+  ansible_integration_tests:
+    paths:
+      - "ansible_collections/arista/avd/plugins/"
+    carryforward: false
+
 coverage:
   status:
+    default_rules:
+      flag_coverage_not_uploaded_behavior: exclude
     project:
-      default:
+      default: false
+      pyavd:
         target: auto
         threshold: 0.5%
         paths:
-          - "python-avd"
+          - "python-avd/pyavd/"
+        flags:
+          - pyavd_tests
+          - e2e_tests
+      ansible_plugins:
+        target: auto
+        threshold: 0.5%
+        paths:
           - "ansible_collections/arista/avd/plugins/"
+        flags:
+          - ansible_unit_tests
+          - ansible_integration_tests
     patch:
       default:
         target: 80%
         threshold: 0%
 
 comment:
-  layout: "reach,diff,components,files"
+  layout: "reach,diff,components,flags,files"
   behavior: default
   require_changes: true
 
@@ -27,10 +58,6 @@ component_management:
       name: pyavd
       paths:
         - "python-avd/pyavd/"
-    - component_id: schema_tools
-      name: schema_tools
-      paths:
-        - "python-avd/schema_tools/"
     - component_id: ansible_plugins
       name: Ansible plugins
       paths:
