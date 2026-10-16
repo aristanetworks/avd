@@ -1037,7 +1037,7 @@ def dump_warnings(warning_messages: list[warnings.WarningMessage], config: Fabri
     error_dir = error_dir.joinpath(device) if device else error_dir
     error_dir.mkdir(parents=True, exist_ok=True)
     warning_lines = [str(warning.message) for warning in warning_messages]
-    error_dir.joinpath(f"{stage}_warnings.txt").write_text("\n".join(warning_lines))
+    error_dir.joinpath(f"{stage}_warnings.txt").write_text("\n".join(warning_lines), encoding="utf-8")
 
 
 def dump_violations(violations: list[pyavd_utils.validation.Violation], config: FabricConfig, stage: str, device: str) -> None:
