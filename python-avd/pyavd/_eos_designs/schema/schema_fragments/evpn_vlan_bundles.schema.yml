@@ -16,23 +16,17 @@ keys:
       keys:
         name:
           type: str
-          convert_types:
-            - int
           description: |
             Specify an EVPN vlan-aware-bundle name.
             EVPN vlan-aware-bundles group VLANs and define common settings.
         id:
           type: int
           required: true
-          convert_types:
-            - str
           description: |
             "id" may be used for vlan-aware-bundle RD/RT ID so it should not overlap with l2vlan IDs which are not part of this bundle.
             See "overlay_rd_type" and "overlay_rt_type" for details.
         rt_override:
           type: str
-          convert_types:
-            - int
           description: |
             By default the MAC VRF bundle RT will be derived from mac_vrf_id_base + bundle_id.
             The rt_override allows us to override this value and statically define it.
@@ -43,8 +37,6 @@ keys:
               - A full RT string with colon separator which will override the full RT.
         rd_override:
           type: str
-          convert_types:
-            - int
           description: |
             By default the MAC VRF bundle RD will be derived from mac_vrf_id_base + bundle_id.
             The rt_override allows us to override this value and statically define it.

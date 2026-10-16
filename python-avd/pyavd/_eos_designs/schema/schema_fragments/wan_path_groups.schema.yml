@@ -20,8 +20,6 @@ keys:
           description: Path-group name.
         id:
           type: int
-          convert_types:
-            - str
           description: |-
             Path-group id.
             Required until an auto ID algorithm is implemented.
@@ -56,8 +54,6 @@ keys:
                 description: Optional, if not set, the path-group `name` is used as local.
         default_preference:
           type: str
-          convert_types:
-            - int
           description: |-
             Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when
             the path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.
@@ -79,8 +75,6 @@ keys:
           keys:
             interval:
               type: str
-              convert_types:
-                - int
               description: |-
                 Interval in milliseconds. Valid values are 50-60000 | "auto".
 
@@ -92,5 +86,3 @@ keys:
               max: 100
               default: 5
               description: Failure threshold in number of lost keep-alive messages.
-              convert_types:
-                - str
