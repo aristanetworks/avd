@@ -40,8 +40,6 @@ keys:
                           min: 0
                           max: 65535
                           description: Use the UDP destination port as a hash input.
-                          convert_types:
-                            - str
                         payload_bytes:
                           type: str
                           description: |-
@@ -49,8 +47,6 @@ keys:
                             Accepts single bytes (e.g., "10"), comma-separated bytes (e.g., "0,1,5"),
                             ranges (e.g., "0-15"), or combinations (e.g., "0-10,12,15,20-25").
                             Valid values are between 0 and 62.
-                          convert_types:
-                            - int
                         match:
                           type: dict
                           description: Configuration to match specific bits and define custom payload-based hashing.
@@ -64,8 +60,6 @@ keys:
                                 a range (e.g., "0-15"), or combinations (e.g., "0-7,9,12-15").
                                 Valid values must be in the range 0 to 503.
                                 Matching is limited to a maximum of 16 bits total.
-                              convert_types:
-                                - int
                             pattern:
                               type: str
                               required: true
@@ -81,8 +75,6 @@ keys:
                                 Accepts a single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),
                                 a range (e.g., "0-15"), or a combination (e.g., "0-5,8,12-14").
                                 All byte positions must be within the range 0 to 62.
-                              convert_types:
-                                - int
       cluster:
         type: dict
         keys:
@@ -95,8 +87,6 @@ keys:
             description: Perform destination grouping using given setting.
           prefix_length:
             type: int
-            convert_types:
-              - str
             min: 0
             max: 129
             description: |-
@@ -119,8 +109,6 @@ keys:
               source_learning_aging_timeout:
                 description: Flow aging timeout in seconds for flow discovery by learning.
                 type: int
-                convert_types:
-                  - str
                 min: 30
                 max: 2147483647
           port_groups:
@@ -135,8 +123,6 @@ keys:
                   description: Port group name.
                 balance_factor:
                   type: int
-                  convert_types:
-                    - str
                   min: 0
                   max: 4294967295
                 interface:
@@ -152,15 +138,11 @@ keys:
                   keys:
                     limit:
                       type: int
-                      convert_types:
-                        - str
                       description: Maximum number of flows per port.
                       min: 0
                       max: 4294967295
                     warning:
                       type: int
-                      convert_types:
-                        - str
                       min: 0
                       max: 4294967295
                       description: Warning threshold of flows per port group.
@@ -170,15 +152,11 @@ keys:
                       keys:
                         dscp:
                           type: int
-                          convert_types:
-                            - str
                           min: 0
                           max: 63
                           description: Packet DSCP value.
                         traffic_class:
                           type: int
-                          convert_types:
-                            - str
                           min: 0
                           max: 11
                           description: Packet traffic-class value.

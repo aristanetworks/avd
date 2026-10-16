@@ -305,16 +305,6 @@ class FilteredTenantsMixin(Protocol):
 
             vrf.additional_route_targets = vrf.additional_route_targets._filtered(lambda rt: bool(not rt.nodes or self.hostname in rt.nodes))
 
-            if self.is_ospfv3_enabled_on_node(vrf):
-                ipv4_enabled = vrf.ospfv3.address_family_ipv4.enabled
-                ipv6_enabled = vrf.ospfv3.address_family_ipv6.enabled
-                if not ipv4_enabled and not ipv6_enabled:
-                    msg = (
-                        f"OSPFv3 is enabled on vrf '{vrf.name}' but neither 'address_family_ipv4' nor 'address_family_ipv6' "
-                        f"is enabled under 'tenants[name={tenant.name}].vrfs[name={vrf.name}].ospfv3'."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
-
             if vrf.svis or vrf.l3_interfaces or vrf.loopbacks or vrf.l3_port_channels or self.is_forced_vrf(vrf, tenant.name):
                 filtered_vrfs.append(vrf)
 
@@ -567,57 +557,71 @@ class FilteredTenantsMixin(Protocol):
             )
             self.update_ospf_authentication(config, svi, vrf, tenant)
 
-        if svi.ospfv3.enabled and self.is_ospfv3_enabled_on_node(vrf):
-            if vrf.name == "default":
-                msg = f"The default VRF is not supported inside 'network_services.tenants[name={tenant.name}].vrfs[name={vrf.name}.svis[id={svi.id}]'."
-                raise AristaAvdInvalidInputsError(msg)
+        if svi.ospfv3.enabled:
+            self._set_svi_ospfv3_config(config, svi, vrf, tenant)
 
-            if self.uplink_type in ["lan", "port-channel"]:
-                msg = (
-                    f"OSPFv3 is enabled on SVI '{svi.name}' but this node has uplink_type '{self.uplink_type}', "
-                    f"which renders SVIs as Ethernet subinterfaces. OSPFv3 on Ethernet subinterfaces is not yet supported."
-                )
-                raise AristaAvdInvalidInputsError(msg)
+    def ospfv3_enabled_for_vrf(self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem) -> bool:
+        """True if the given filtered VRF has at least one OSPFv3-enabled SVI on this device, so an OSPFv3 instance is created for it."""
+        return any(svi.ospfv3.enabled for svi in vrf.svis)
 
-            if isinstance(config, EosCliConfigGen.VlanInterfacesItem):
-                if not svi.ipv6_address:
-                    # OSPFv3 runs over the IPv6 link-local address, even for the IPv4 address family.
-                    if svi.ipv6_enable is None:
-                        svi.ipv6_enable = True
-                    if not svi.ipv6_enable:
-                        msg = (
-                            f"OSPFv3 is enabled on SVI '{svi.name}' but 'ipv6_enable' is set to false and no 'ipv6_address' is set under"
-                            f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
-                        )
-                        raise AristaAvdInvalidInputsError(msg)
+    def _set_svi_ospfv3_config(
+        self: SharedUtilsProtocol,
+        config: EosCliConfigGen.VlanInterfacesItem | EosCliConfigGen.EthernetInterfacesItem,
+        svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None:
+        """
+        Validate the SVI and set the OSPFv3 interface configuration.
 
-                if svi.ospfv3.address_family_ipv4.enabled:
-                    if not vrf.ospfv3.address_family_ipv4.enabled:
-                        msg = f"OSPFv3 IPv4 address family is enabled on SVI '{svi.name}' but not enabled on VRF '{vrf.name}'."
-                        raise AristaAvdInvalidInputsError(msg)
-                    # TODO: Check if ip_address_secondaries is needed
-                    if not svi.ip_address and not svi.ip_address_secondaries:
-                        msg = (
-                            f"OSPFv3 IPv4 address family is enabled on SVI '{svi.name}' but no IPv4 address is set under"
-                            f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
-                        )
-                        raise AristaAvdInvalidInputsError(msg)
-                    config.ospfv3.ipv4.area = svi.ospfv3.address_family_ipv4.area
+        The addressing is taken from what is already rendered on the given config.
+        Only the IPv6 address family is supported.
+        """
+        svi_path = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]"
 
-                if svi.ospfv3.address_family_ipv6.enabled:
-                    if not vrf.ospfv3.address_family_ipv6.enabled:
-                        msg = f"OSPFv3 IPv6 address family is enabled on SVI '{svi.name}' but not enabled on VRF '{vrf.name}'."
-                        raise AristaAvdInvalidInputsError(msg)
-                    config.ospfv3.ipv6.area = svi.ospfv3.address_family_ipv6.area
+        if isinstance(config, EosCliConfigGen.EthernetInterfacesItem):
+            msg = f"'{svi_path}.ospfv3.enabled: true' is not supported on SVIs deployed as subinterfaces with 'uplink_type: lan'."
+            raise AristaAvdInvalidInputsError(msg)
 
-                if svi.ospfv3.passive_interface:
-                    config.ospfv3.passive_interface = True
-                else:
-                    config.ospfv3.no_passive_interface = True
+        if vrf.name == "default":
+            msg = f"'{svi_path}.ospfv3.enabled: true' is not supported in VRF 'default'."
+            raise AristaAvdInvalidInputsError(msg)
 
-                config.ospfv3._update(
-                    network_point_to_point=svi.ospfv3.network_point_to_point,
-                )
+        # Same condition as the one used to add the SVI VLAN to the Vxlan1 interface.
+        if (self.overlay_vtep or self.is_wan_router) and self.network_services_l2 and svi.vxlan:
+            msg = f"'{svi_path}.ospfv3.enabled: true' is not supported on SVIs extended over VXLAN. Set 'vxlan: false' to use OSPFv3 on this SVI."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if svi.ospfv3.ipv4.enabled:
+            msg = f"'{svi_path}.ospfv3.ipv4.enabled: true' is not supported yet. OSPFv3 currently only supports the IPv6 address family."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if config.ipv6_address_virtuals:
+            msg = (
+                f"'{svi_path}.ospfv3.enabled: true' is not supported on SVIs with anycast IPv6 addresses ('ipv6_address_virtuals'). "
+                "Use a unique 'ipv6_address' per node instead, optionally with 'ipv6_virtual_router_addresses'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        # Secondary IPv4 addresses are not checked, since EOS requires a primary address first.
+        if svi.ospfv3.ipv4.enabled is None and (config.ip_address or config.ip_address_virtual):
+            msg = (
+                f"'{svi_path}.ospfv3.enabled: true' on an SVI with IPv4 addressing requires 'ospfv3.ipv4.enabled: false', "
+                "since OSPFv3 currently only supports the IPv6 address family."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        if not config.ipv6_addresses and not config.ipv6_enable:
+            msg = f"'{svi_path}.ospfv3.enabled: true' requires IPv6 on the SVI. Remove 'ipv6_enable: false' or set 'ipv6_address'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        config.ospfv3.ipv6.area = svi.ospfv3.area
+        if svi.ospfv3.passive:
+            config.ospfv3.passive_interface = True
+        else:
+            config.ospfv3.no_passive_interface = True
+        if svi.ospfv3.point_to_point:
+            config.ospfv3.network_point_to_point = True
 
     @overload
     def update_ospf_authentication(
@@ -814,25 +818,3 @@ class FilteredTenantsMixin(Protocol):
                 self.is_wan_vrf(vrf),
             ]
         )
-
-    def is_ospfv3_enabled_on_node(
-        self: SharedUtilsProtocol,
-        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
-    ) -> bool | None:
-        """
-        Check if OSPFv3 should be configured for the given VRF on the current node.
-
-        Per-node settings override VRF-level settings.
-
-        Returns True if:
-        - Current node is in vrf.ospfv3.nodes with enabled=True (overrides VRF-level), OR
-        - Current node NOT in vrf.ospfv3.nodes AND vrf.ospfv3.enabled=True (use VRF-level default)
-        """
-        ospfv3_node_config = next((node for node in vrf.ospfv3.nodes if node.node == self.hostname), None)
-
-        # Per-node config overrides VRF-level config
-        if ospfv3_node_config is not None:
-            return ospfv3_node_config.enabled
-
-        # Fall back to VRF-level setting if no per-node config
-        return vrf.ospfv3.enabled

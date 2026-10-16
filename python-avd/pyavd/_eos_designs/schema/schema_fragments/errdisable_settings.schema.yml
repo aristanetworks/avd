@@ -22,8 +22,6 @@ keys:
           Interval for all recovery causes in seconds.
         min: 30
         max: 86400
-        convert_types:
-          - str
       causes:
         type: dict
         keys:
