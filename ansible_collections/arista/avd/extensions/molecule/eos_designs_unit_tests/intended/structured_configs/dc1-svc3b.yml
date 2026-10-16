@@ -485,6 +485,18 @@ ethernet_interfaces:
     port_profile: TENANT_A
 hostname: dc1-svc3b
 ip_access_lists:
+- name: myIpAVL
+  entries:
+  - action: permit
+    protocol: ip
+    source: any
+    destination: any
+- name: ip_acl
+  entries:
+  - action: permit
+    protocol: ip
+    source: any
+    destination: any
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   entries:
   - sequence: 15

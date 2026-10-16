@@ -12867,13 +12867,24 @@ $defs:
               keys:
                 type:
                   type: str
+                  description: 'ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`,
+                    `ipv4_standard` references `ipv4_standard_acls`,
+
+                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+
+                    The named ACL must exist in the corresponding catalog and its
+                    definition is configured.'
                   valid_values:
                   - ip
+                  - ipv4
+                  - ipv4_standard
                   - ipv6
                   - mac
+                  required: true
                 name:
                   description: ACL name.
                   type: str
+                  required: true
                 priority:
                   type: int
         session_settings:
@@ -12894,13 +12905,24 @@ $defs:
               keys:
                 type:
                   type: str
+                  description: 'ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`,
+                    `ipv4_standard` references `ipv4_standard_acls`,
+
+                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+
+                    The named ACL must exist in the corresponding catalog and its
+                    definition is configured.'
                   valid_values:
                   - ip
+                  - ipv4
+                  - ipv4_standard
                   - ipv6
                   - mac
+                  required: true
                 name:
                   description: ACL name.
                   type: str
+                  required: true
             rate_limit_per_ingress_chip:
               type: str
               description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n

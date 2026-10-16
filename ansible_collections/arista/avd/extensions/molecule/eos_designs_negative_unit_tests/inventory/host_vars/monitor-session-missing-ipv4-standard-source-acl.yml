@@ -1,0 +1,27 @@
+---
+# The ACL exists only in the other IPv4 catalog; the selected catalog must be used.
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: monitor-session-missing-ipv4-standard-source-acl
+ipv4_acls:
+  - name: MONITOR-ACL
+    entries:
+      - action: permit
+        source: any
+        protocol: ip
+        destination: any
+network_ports:
+  - switches:
+      - monitor-session-missing-ipv4-standard-source-acl
+    switch_ports:
+      - Ethernet1
+    monitor_sessions:
+      - name: CAPTURE
+        role: source
+        source_settings:
+          access_group:
+            type: ipv4_standard
+            name: MONITOR-ACL
+expected_error_message: >-
+  'ipv4_standard_acls[name=MONITOR-ACL]' is required but was not found for host 'monitor-session-missing-ipv4-standard-source-acl'.

@@ -3897,10 +3897,17 @@ class EosDesigns(EosDesignsRootModel):
                     class AccessGroup(AvdModel):
                         """Subclass of AvdModel."""
 
-                        Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                        Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                         _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                        type: Type | None
-                        name: str | None
+                        type: Type
+                        """
+                        ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                        `ipv4_standard_acls`,
+                        `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                        The named ACL
+                        must exist in the corresponding catalog and its definition is configured.
+                        """
+                        name: str
                         """ACL name."""
                         priority: int | None
 
@@ -3909,8 +3916,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                type: Type | UndefinedType | None = Undefined,
-                                name: str | UndefinedType | None = Undefined,
+                                type: Type | UndefinedType = Undefined,
+                                name: str | UndefinedType = Undefined,
                                 priority: int | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -3920,7 +3927,12 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    type: type
+                                    type:
+                                       ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                       `ipv4_standard_acls`,
+                                       `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                       The named ACL
+                                       must exist in the corresponding catalog and its definition is configured.
                                     name: ACL name.
                                     priority: priority
 
@@ -3961,15 +3973,22 @@ class EosDesigns(EosDesignsRootModel):
                     class AccessGroup(AvdModel):
                         """Subclass of AvdModel."""
 
-                        Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                        Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                         _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                        type: Type | None
-                        name: str | None
+                        type: Type
+                        """
+                        ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                        `ipv4_standard_acls`,
+                        `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                        The named ACL
+                        must exist in the corresponding catalog and its definition is configured.
+                        """
+                        name: str
                         """ACL name."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                                 """
                                 AccessGroup.
 
@@ -3977,7 +3996,12 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    type: type
+                                    type:
+                                       ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                       `ipv4_standard_acls`,
+                                       `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                       The named ACL
+                                       must exist in the corresponding catalog and its definition is configured.
                                     name: ACL name.
 
                                 """
@@ -29688,10 +29712,17 @@ class EosDesigns(EosDesignsRootModel):
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
-                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                    Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                    type: Type | None
-                    name: str | None
+                    type: Type
+                    """
+                    ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                    `ipv4_standard_acls`,
+                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                    The named ACL
+                    must exist in the corresponding catalog and its definition is configured.
+                    """
+                    name: str
                     """ACL name."""
                     priority: int | None
 
@@ -29700,8 +29731,8 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            type: Type | UndefinedType | None = Undefined,
-                            name: str | UndefinedType | None = Undefined,
+                            type: Type | UndefinedType = Undefined,
+                            name: str | UndefinedType = Undefined,
                             priority: int | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -29711,7 +29742,12 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                type: type
+                                type:
+                                   ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                   `ipv4_standard_acls`,
+                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                   The named ACL
+                                   must exist in the corresponding catalog and its definition is configured.
                                 name: ACL name.
                                 priority: priority
 
@@ -29752,15 +29788,22 @@ class EosDesigns(EosDesignsRootModel):
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
-                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                    Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                    type: Type | None
-                    name: str | None
+                    type: Type
+                    """
+                    ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                    `ipv4_standard_acls`,
+                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                    The named ACL
+                    must exist in the corresponding catalog and its definition is configured.
+                    """
+                    name: str
                     """ACL name."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                             """
                             AccessGroup.
 
@@ -29768,7 +29811,12 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                type: type
+                                type:
+                                   ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                   `ipv4_standard_acls`,
+                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                   The named ACL
+                                   must exist in the corresponding catalog and its definition is configured.
                                 name: ACL name.
 
                             """
@@ -36355,10 +36403,17 @@ class EosDesigns(EosDesignsRootModel):
                         class AccessGroup(AvdModel):
                             """Subclass of AvdModel."""
 
-                            Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                            Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                             _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                            type: Type | None
-                            name: str | None
+                            type: Type
+                            """
+                            ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                            `ipv4_standard_acls`,
+                            `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                            The named ACL
+                            must exist in the corresponding catalog and its definition is configured.
+                            """
+                            name: str
                             """ACL name."""
                             priority: int | None
 
@@ -36367,8 +36422,8 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    type: Type | UndefinedType | None = Undefined,
-                                    name: str | UndefinedType | None = Undefined,
+                                    type: Type | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     priority: int | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
@@ -36378,7 +36433,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        type: type
+                                        type:
+                                           ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                           `ipv4_standard_acls`,
+                                           `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                           The named ACL
+                                           must exist in the corresponding catalog and its definition is configured.
                                         name: ACL name.
                                         priority: priority
 
@@ -36419,15 +36479,22 @@ class EosDesigns(EosDesignsRootModel):
                         class AccessGroup(AvdModel):
                             """Subclass of AvdModel."""
 
-                            Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                            Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                             _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                            type: Type | None
-                            name: str | None
+                            type: Type
+                            """
+                            ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                            `ipv4_standard_acls`,
+                            `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                            The named ACL
+                            must exist in the corresponding catalog and its definition is configured.
+                            """
+                            name: str
                             """ACL name."""
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                                     """
                                     AccessGroup.
 
@@ -36435,7 +36502,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        type: type
+                                        type:
+                                           ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                           `ipv4_standard_acls`,
+                                           `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                           The named ACL
+                                           must exist in the corresponding catalog and its definition is configured.
                                         name: ACL name.
 
                                     """
@@ -48401,10 +48473,17 @@ class EosDesigns(EosDesignsRootModel):
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
-                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                    Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                    type: Type | None
-                    name: str | None
+                    type: Type
+                    """
+                    ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                    `ipv4_standard_acls`,
+                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                    The named ACL
+                    must exist in the corresponding catalog and its definition is configured.
+                    """
+                    name: str
                     """ACL name."""
                     priority: int | None
 
@@ -48413,8 +48492,8 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            type: Type | UndefinedType | None = Undefined,
-                            name: str | UndefinedType | None = Undefined,
+                            type: Type | UndefinedType = Undefined,
+                            name: str | UndefinedType = Undefined,
                             priority: int | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -48424,7 +48503,12 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                type: type
+                                type:
+                                   ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                   `ipv4_standard_acls`,
+                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                   The named ACL
+                                   must exist in the corresponding catalog and its definition is configured.
                                 name: ACL name.
                                 priority: priority
 
@@ -48465,15 +48549,22 @@ class EosDesigns(EosDesignsRootModel):
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
-                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                    Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                    type: Type | None
-                    name: str | None
+                    type: Type
+                    """
+                    ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                    `ipv4_standard_acls`,
+                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                    The named ACL
+                    must exist in the corresponding catalog and its definition is configured.
+                    """
+                    name: str
                     """ACL name."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                             """
                             AccessGroup.
 
@@ -48481,7 +48572,12 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                type: type
+                                type:
+                                   ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                   `ipv4_standard_acls`,
+                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                   The named ACL
+                                   must exist in the corresponding catalog and its definition is configured.
                                 name: ACL name.
 
                             """
@@ -80288,10 +80384,17 @@ class EosDesigns(EosDesignsRootModel):
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                type: Type | None
-                                name: str | None
+                                type: Type
+                                """
+                                ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                `ipv4_standard_acls`,
+                                `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                The named ACL
+                                must exist in the corresponding catalog and its definition is configured.
+                                """
+                                name: str
                                 """ACL name."""
                                 priority: int | None
 
@@ -80300,8 +80403,8 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        type: Type | UndefinedType | None = Undefined,
-                                        name: str | UndefinedType | None = Undefined,
+                                        type: Type | UndefinedType = Undefined,
+                                        name: str | UndefinedType = Undefined,
                                         priority: int | UndefinedType | None = Undefined,
                                     ) -> None:
                                         """
@@ -80311,7 +80414,12 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            type: type
+                                            type:
+                                               ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                               `ipv4_standard_acls`,
+                                               `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                               The named ACL
+                                               must exist in the corresponding catalog and its definition is configured.
                                             name: ACL name.
                                             priority: priority
 
@@ -80352,15 +80460,22 @@ class EosDesigns(EosDesignsRootModel):
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                type: Type | None
-                                name: str | None
+                                type: Type
+                                """
+                                ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                `ipv4_standard_acls`,
+                                `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                The named ACL
+                                must exist in the corresponding catalog and its definition is configured.
+                                """
+                                name: str
                                 """ACL name."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                                    def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                                         """
                                         AccessGroup.
 
@@ -80368,7 +80483,12 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            type: type
+                                            type:
+                                               ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                               `ipv4_standard_acls`,
+                                               `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                               The named ACL
+                                               must exist in the corresponding catalog and its definition is configured.
                                             name: ACL name.
 
                                         """
@@ -82859,10 +82979,17 @@ class EosDesigns(EosDesignsRootModel):
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                type: Type | None
-                                name: str | None
+                                type: Type
+                                """
+                                ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                `ipv4_standard_acls`,
+                                `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                The named ACL
+                                must exist in the corresponding catalog and its definition is configured.
+                                """
+                                name: str
                                 """ACL name."""
                                 priority: int | None
 
@@ -82871,8 +82998,8 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        type: Type | UndefinedType | None = Undefined,
-                                        name: str | UndefinedType | None = Undefined,
+                                        type: Type | UndefinedType = Undefined,
+                                        name: str | UndefinedType = Undefined,
                                         priority: int | UndefinedType | None = Undefined,
                                     ) -> None:
                                         """
@@ -82882,7 +83009,12 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            type: type
+                                            type:
+                                               ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                               `ipv4_standard_acls`,
+                                               `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                               The named ACL
+                                               must exist in the corresponding catalog and its definition is configured.
                                             name: ACL name.
                                             priority: priority
 
@@ -82923,15 +83055,22 @@ class EosDesigns(EosDesignsRootModel):
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                type: Type | None
-                                name: str | None
+                                type: Type
+                                """
+                                ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                `ipv4_standard_acls`,
+                                `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                The named ACL
+                                must exist in the corresponding catalog and its definition is configured.
+                                """
+                                name: str
                                 """ACL name."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                                    def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                                         """
                                         AccessGroup.
 
@@ -82939,7 +83078,12 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            type: type
+                                            type:
+                                               ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                               `ipv4_standard_acls`,
+                                               `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                               The named ACL
+                                               must exist in the corresponding catalog and its definition is configured.
                                             name: ACL name.
 
                                         """
@@ -89373,10 +89517,17 @@ class EosDesigns(EosDesignsRootModel):
                                 class AccessGroup(AvdModel):
                                     """Subclass of AvdModel."""
 
-                                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                    Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                    type: Type | None
-                                    name: str | None
+                                    type: Type
+                                    """
+                                    ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                    `ipv4_standard_acls`,
+                                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                    The named ACL
+                                    must exist in the corresponding catalog and its definition is configured.
+                                    """
+                                    name: str
                                     """ACL name."""
                                     priority: int | None
 
@@ -89385,8 +89536,8 @@ class EosDesigns(EosDesignsRootModel):
                                         def __init__(
                                             self,
                                             *,
-                                            type: Type | UndefinedType | None = Undefined,
-                                            name: str | UndefinedType | None = Undefined,
+                                            type: Type | UndefinedType = Undefined,
+                                            name: str | UndefinedType = Undefined,
                                             priority: int | UndefinedType | None = Undefined,
                                         ) -> None:
                                             """
@@ -89396,7 +89547,12 @@ class EosDesigns(EosDesignsRootModel):
                                             Subclass of AvdModel.
 
                                             Args:
-                                                type: type
+                                                type:
+                                                   ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                                   `ipv4_standard_acls`,
+                                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                                   The named ACL
+                                                   must exist in the corresponding catalog and its definition is configured.
                                                 name: ACL name.
                                                 priority: priority
 
@@ -89437,17 +89593,22 @@ class EosDesigns(EosDesignsRootModel):
                                 class AccessGroup(AvdModel):
                                     """Subclass of AvdModel."""
 
-                                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                    Type: TypeAlias = Literal["ip", "ipv4", "ipv4_standard", "ipv6", "mac"]
                                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                    type: Type | None
-                                    name: str | None
+                                    type: Type
+                                    """
+                                    ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                    `ipv4_standard_acls`,
+                                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                    The named ACL
+                                    must exist in the corresponding catalog and its definition is configured.
+                                    """
+                                    name: str
                                     """ACL name."""
 
                                     if TYPE_CHECKING:
 
-                                        def __init__(
-                                            self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined
-                                        ) -> None:
+                                        def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                                             """
                                             AccessGroup.
 
@@ -89455,7 +89616,12 @@ class EosDesigns(EosDesignsRootModel):
                                             Subclass of AvdModel.
 
                                             Args:
-                                                type: type
+                                                type:
+                                                   ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references
+                                                   `ipv4_standard_acls`,
+                                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                                   The named ACL
+                                                   must exist in the corresponding catalog and its definition is configured.
                                                 name: ACL name.
 
                                             """
