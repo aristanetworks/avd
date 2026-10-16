@@ -23,8 +23,6 @@ keys:
             keys:
               sequence:
                 type: int
-                convert_types:
-                  - str
                 description: Sequence number.
               action:
                 type: str

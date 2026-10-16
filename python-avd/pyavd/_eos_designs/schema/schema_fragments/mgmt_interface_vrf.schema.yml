@@ -12,8 +12,6 @@ keys:
     type: str
     default: MGMT
     description: OOB Management VRF.
-    convert_types:
-      - int
     deprecation:
       warning: true
       removed: false

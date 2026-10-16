@@ -895,6 +895,58 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Logging(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Event(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"denied_address_drop": {"type": bool}, "dhcp_server_drop": {"type": bool}}
+                denied_address_drop: bool | None
+                """Log events for denied address drops."""
+                dhcp_server_drop: bool | None
+                """
+                Log events for DHCP server to client packet drops.
+                Requires EOS version 4.36.2F or later.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, denied_address_drop: bool | UndefinedType | None = Undefined, dhcp_server_drop: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        Event.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            denied_address_drop: Log events for denied address drops.
+                            dhcp_server_drop:
+                               Log events for DHCP server to client packet drops.
+                               Requires EOS version 4.36.2F or later.
+
+                        """
+
+            _fields: ClassVar[dict] = {"event": {"type": Event}}
+            event: Event
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, event: Event | UndefinedType = Undefined) -> None:
+                    """
+                    Logging.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        event: Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "local_interface": {"type": str},
             "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
@@ -902,6 +954,7 @@ class EosDesigns(EosDesignsRootModel):
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "locked_address": {"type": LockedAddress},
+            "logging": {"type": Logging},
         }
         local_interface: str | None
         """
@@ -938,6 +991,8 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdList with `LeasesItem` items."""
         locked_address: LockedAddress
         """Subclass of AvdModel."""
+        logging: Logging
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -950,6 +1005,7 @@ class EosDesigns(EosDesignsRootModel):
                 disabled: bool | UndefinedType | None = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
+                logging: Logging | UndefinedType = Undefined,
             ) -> None:
                 """
                 AddressLockingSettings.
@@ -985,6 +1041,7 @@ class EosDesigns(EosDesignsRootModel):
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.
+                    logging: Subclass of AvdModel.
 
                 """
 
@@ -19184,7 +19241,7 @@ class EosDesigns(EosDesignsRootModel):
     class DigitalTwin(AvdModel):
         """Subclass of AvdModel."""
 
-        Environment: TypeAlias = Literal["act"]
+        Environment: TypeAlias = Literal["act", "containerlab"]
 
         class Fabric(AvdModel):
             """Subclass of AvdModel."""
@@ -19195,6 +19252,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_password": {"type": str, "default": "cvp123!"},
                 "act_internet_access": {"type": bool, "default": False},
                 "act_ensure_eapi_access": {"type": bool, "default": False},
+                "act_ensure_ssh_access": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -19229,6 +19287,21 @@ class EosDesigns(EosDesignsRootModel):
             Set this to `true` to
             enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
             default VRF and preserving this connectivity.
+            Any IPv4 ACL applied to eAPI in the default VRF is
+            removed. IPv6 ACLs and eAPI configuration for non-default VRFs are preserved.
+
+            Default value: `False`
+            """
+            act_ensure_ssh_access: bool
+            """
+            Ensures SSH remains accessible for automation and testing via ACT.
+            Clients connecting to device SSH
+            through ACT rely on access in the default VRF. If SSH is disabled globally or in the default VRF
+            (takes precedence over global setting), this primary SSH connectivity can be unintentionally broken.
+            Set this to `true` to enforce the required EOS configuration, guaranteeing SSH is enabled in the
+            default VRF and preserving this connectivity.
+            Any IPv4 ACL applied to SSH in the default VRF is
+            removed. IPv6 ACLs and SSH configuration for non-default VRFs are preserved.
 
             Default value: `False`
             """
@@ -19243,6 +19316,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_password: str | UndefinedType = Undefined,
                     act_internet_access: bool | UndefinedType = Undefined,
                     act_ensure_eapi_access: bool | UndefinedType = Undefined,
+                    act_ensure_ssh_access: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -19268,6 +19342,17 @@ class EosDesigns(EosDesignsRootModel):
                            Set this to `true` to
                            enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
                            default VRF and preserving this connectivity.
+                           Any IPv4 ACL applied to eAPI in the default VRF is
+                           removed. IPv6 ACLs and eAPI configuration for non-default VRFs are preserved.
+                        act_ensure_ssh_access:
+                           Ensures SSH remains accessible for automation and testing via ACT.
+                           Clients connecting to device SSH
+                           through ACT rely on access in the default VRF. If SSH is disabled globally or in the default VRF
+                           (takes precedence over global setting), this primary SSH connectivity can be unintentionally broken.
+                           Set this to `true` to enforce the required EOS configuration, guaranteeing SSH is enabled in the
+                           default VRF and preserving this connectivity.
+                           Any IPv4 ACL applied to SSH in the default VRF is
+                           removed. IPv6 ACLs and SSH configuration for non-default VRFs are preserved.
 
                     """
 
@@ -20203,6 +20288,8 @@ class EosDesigns(EosDesignsRootModel):
         bypass_bpdu: bool
         """
         Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+        Ignored when
+        `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
 
         Default value: `True`
         """
@@ -20274,7 +20361,10 @@ class EosDesigns(EosDesignsRootModel):
                        any interface.
                     authentication: Subclass of AvdModel.
                     accounting: Subclass of AvdModel.
-                    bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                    bypass_bpdu:
+                       Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                       Ignored when
+                       `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
                     bypass_lldp: Allow LLDP packets to be processed even if the port is not authorized.
                     dynamic_authorization: Subclass of AvdModel.
                     mac_based_authentication: Subclass of AvdModel.
@@ -44386,6 +44476,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "dot1x_bpdu_bypass": {"type": bool, "default": True},
                 "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -44412,6 +44503,13 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            dot1x_bpdu_bypass: bool
+            """
+            Support for 802.1X BPDU bypass.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             address_locking: AddressLocking
             """Subclass of AvdModel."""
             queue_monitor: bool
@@ -44620,6 +44718,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    dot1x_bpdu_bypass: bool | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
@@ -44653,6 +44752,9 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        dot1x_bpdu_bypass:
+                           Support for 802.1X BPDU bypass.
+                           The feature will be ignored on platforms where this is false.
                         address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
@@ -46271,6 +46373,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "dot1x_bpdu_bypass": {"type": bool, "default": True},
                 "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -46297,6 +46400,13 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            dot1x_bpdu_bypass: bool
+            """
+            Support for 802.1X BPDU bypass.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             address_locking: AddressLocking
             """Subclass of AvdModel."""
             queue_monitor: bool
@@ -46505,6 +46615,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    dot1x_bpdu_bypass: bool | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
@@ -46538,6 +46649,9 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        dot1x_bpdu_bypass:
+                           Support for 802.1X BPDU bypass.
+                           The feature will be ignored on platforms where this is false.
                         address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
@@ -50030,6 +50144,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
             Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
+            KeyType: TypeAlias = Literal["disabled", "0", "7"]
             Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
@@ -50037,6 +50152,7 @@ class EosDesigns(EosDesignsRootModel):
                 "version": {"type": str},
                 "auth": {"type": str},
                 "auth_passphrase": {"type": str},
+                "key_type": {"type": str, "default": "disabled"},
                 "priv": {"type": str},
                 "priv_passphrase": {"type": str},
             }
@@ -50048,6 +50164,24 @@ class EosDesigns(EosDesignsRootModel):
             auth: Auth | None
             auth_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set."""
+            key_type: KeyType
+            """
+            Key type for the computed localized SNMPv3 auth and priv keys.
+            Used only when
+            `compute_v3_user_localized_key` is `true`.
+            Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+            4.36.2F.
+            When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type>
+            <key>` syntax for both auth and priv.
+            - `disabled`: Use legacy syntax without key type
+            (auth_passphrase rendered directly). Default for backward compatibility.
+            - `0`: Key string is
+            plaintext. AVD renders the raw computed localized key.
+            - `7`: Type-7 encrypted (HIDDEN) key. AVD
+            applies Type-7 obfuscation to the computed localized key before rendering.
+
+            Default value: `"disabled"`
+            """
             priv: Priv | None
             priv_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set."""
@@ -50062,6 +50196,7 @@ class EosDesigns(EosDesignsRootModel):
                     version: Version | UndefinedType | None = Undefined,
                     auth: Auth | UndefinedType | None = Undefined,
                     auth_passphrase: str | UndefinedType | None = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                     priv: Priv | UndefinedType | None = Undefined,
                     priv_passphrase: str | UndefinedType | None = Undefined,
                 ) -> None:
@@ -50077,6 +50212,20 @@ class EosDesigns(EosDesignsRootModel):
                         version: version
                         auth: auth
                         auth_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+                        key_type:
+                           Key type for the computed localized SNMPv3 auth and priv keys.
+                           Used only when
+                           `compute_v3_user_localized_key` is `true`.
+                           Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+                           4.36.2F.
+                           When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type>
+                           <key>` syntax for both auth and priv.
+                           - `disabled`: Use legacy syntax without key type
+                           (auth_passphrase rendered directly). Default for backward compatibility.
+                           - `0`: Key string is
+                           plaintext. AVD renders the raw computed localized key.
+                           - `7`: Type-7 encrypted (HIDDEN) key. AVD
+                           applies Type-7 obfuscation to the computed localized key before rendering.
                         priv: priv
                         priv_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
 
