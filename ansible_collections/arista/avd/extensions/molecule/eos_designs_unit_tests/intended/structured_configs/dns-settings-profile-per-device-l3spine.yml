@@ -1,12 +1,14 @@
 aaa_root:
   disabled: true
 config_end: true
-dns_domain: l3spine.example.com
 domain_list:
 - l3spine.example.com
 enable_password:
   disabled: true
 hostname: dns-settings-profile-per-device-l3spine
+ip_domain_lookup:
+  source_interfaces:
+  - name: Loopback0
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:
