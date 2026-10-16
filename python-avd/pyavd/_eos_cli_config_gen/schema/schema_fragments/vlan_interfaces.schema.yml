@@ -31,19 +31,13 @@ keys:
         vrf:
           type: str
           description: VRF name.
-          convert_types:
-            - int
         arp_aging_timeout:
           type: int
-          convert_types:
-            - str
           description: In seconds.
           min: 1
           max: 65535
         arp_cache_dynamic_capacity:
           type: int
-          convert_types:
-            - str
           min: 0
           max: 4294967295
         arp_gratuitous_accept:
@@ -88,8 +82,6 @@ keys:
           type: bool
         ip_igmp_version:
           type: int
-          convert_types:
-            - str
           min: 1
           max: 3
         ip_igmp_querier_address_virtual:
@@ -128,8 +120,6 @@ keys:
                           type: str
             report_interval:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 31744
               description: Time interval between unsolicited reports.
@@ -144,8 +134,6 @@ keys:
                     type: str
             version:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
@@ -165,8 +153,6 @@ keys:
               vrf:
                 type: str
                 description: VRF where DHCP server can be reached.
-                convert_types:
-                  - int
         ip_dhcp_relay_all_subnets:
           type: bool
           description: Allow forwarding requests with secondary IP addresses in the gateway address "giaddr" field.
@@ -254,15 +240,11 @@ keys:
             dynamic_capacity:
               type: int
               description: Capacity of dynamic cache entries.
-              convert_types:
-                - str
               min: 0
               max: 4294967295
             expire:
               type: int
               description: Cache entries expirery in seconds.
-              convert_types:
-                - str
               min: 1
               max: 65535
             refresh_always:
@@ -285,13 +267,9 @@ keys:
               valid_lifetime:
                 type: str
                 description: In seconds <0-4294967295> or infinite.
-                convert_types:
-                  - int
               preferred_lifetime:
                 type: str
                 description: In seconds <0-4294967295> or infinite.
-                convert_types:
-                  - int
               no_autoconfig_flag:
                 type: bool
         ipv6_dhcp_relay_destinations:
@@ -311,8 +289,6 @@ keys:
                   VRF used to reach the DHCP server.
                   If not set, the VRF of the destination matches the VRF of this interface.
                   Use the `default` to reach the DHCP server through the default VRF.
-                convert_types:
-                  - int
               local_interface:
                 type: str
                 description: Local interface to communicate with DHCP server - mutually exclusive to source_address.
@@ -331,19 +307,15 @@ keys:
         access_group_in:
           type: str
           description: IPv4 access-list name.
-          convert_types: [int]
         access_group_out:
           type: str
           description: IPv4 access-list name.
-          convert_types: [int]
         ipv6_access_group_in:
           type: str
           description: IPv6 access-list name.
-          convert_types: [int]
         ipv6_access_group_out:
           type: str
           description: IPv6 access-list name.
-          convert_types: [int]
         multicast:
           type: dict
           keys:
@@ -360,7 +332,6 @@ keys:
                       boundary:
                         type: str
                         description: Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
-                        convert_types: [int]
                       out:
                         type: bool
                 source_route_export:
@@ -371,8 +342,6 @@ keys:
                       required: true
                     administrative_distance:
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 255
                 static:
@@ -390,7 +359,6 @@ keys:
                       boundary:
                         type: str
                         description: Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
-                        convert_types: [int]
                 source_route_export:
                   type: dict
                   keys:
@@ -399,8 +367,6 @@ keys:
                       required: true
                     administrative_distance:
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 255
                 static:
@@ -409,8 +375,6 @@ keys:
           type: bool
         ospf_area:
           type: str
-          convert_types:
-            - int
         ipv6_ospf:
           type: dict
           description: |-
@@ -426,13 +390,9 @@ keys:
                   min: 1
                   max: 65535
                   required: true
-                  convert_types:
-                    - str
                 area:
                   type: str
                   description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-                  convert_types:
-                    - int
                   required: true
             network_point_to_point:
               type: bool
@@ -447,8 +407,6 @@ keys:
               keys:
                 area:
                   type: str
-                  convert_types:
-                    - int
                   required: true
                   description: |-
                     OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
@@ -457,20 +415,19 @@ keys:
               keys:
                 area:
                   type: str
-                  convert_types:
-                    - int
                   required: true
                   description: |-
                     OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
             passive_interface:
               type: bool
-              description: Include interface but without actively running OSPF.
+              description: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
+            no_passive_interface:
+              type: bool
+              description: Disable passive interface mode.
             network_point_to_point:
               type: bool
         ospf_cost:
           type: int
-          convert_types:
-            - str
         ospf_authentication:
           type: str
           valid_values:
@@ -482,8 +439,6 @@ keys:
           description: Encrypted password.
         ospf_authentication_key_type:
           type: str
-          convert_types:
-            - int
           description: Authentication key type.
           default: "7"
           valid_values:
@@ -498,8 +453,6 @@ keys:
             keys:
               id:
                 type: int
-                convert_types:
-                  - str
               hash_algorithm:
                 type: str
                 valid_values:
@@ -513,8 +466,6 @@ keys:
                 description: Encrypted password.
               key_type:
                 type: str
-                convert_types:
-                  - int
                 description: Authentication key type.
                 default: "7"
                 valid_values:
@@ -531,8 +482,6 @@ keys:
                   description: Configure PIM border router. EOS default is false.
                 dr_priority:
                   type: int
-                  convert_types:
-                    - str
                   min: 0
                   max: 429467295
                 sparse_mode:
@@ -552,14 +501,9 @@ keys:
                   keys:
                     count:
                       type: str
-                      convert_types:
-                        - int
-                        - float
                       description: Number of missed hellos after which the neighbor expires. Range <1.5-65535>.
                     interval:
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 65535
                       description: PIM hello interval in seconds.
@@ -573,8 +517,6 @@ keys:
           type: bool
         isis_metric:
           type: int
-          convert_types:
-            - str
         isis_network_point_to_point:
           type: bool
         isis_circuit_type:
@@ -587,8 +529,6 @@ keys:
           $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication"
         mtu:
           type: int
-          convert_types:
-            - str
         no_autostate:
           type: bool
         vrrp_ids:
@@ -600,13 +540,9 @@ keys:
             keys:
               id:
                 type: int
-                convert_types:
-                  - str
                 description: VRID.
               priority_level:
                 type: int
-                convert_types:
-                  - str
                 description: Instance priority.
                 min: 1
                 max: 254
@@ -615,8 +551,6 @@ keys:
                 keys:
                   interval:
                     type: int
-                    convert_types:
-                      - str
                     description: Interval in seconds.
                     min: 1
                     max: 255
@@ -631,15 +565,11 @@ keys:
                     keys:
                       minimum:
                         type: int
-                        convert_types:
-                          - str
                         description: Minimum preempt delay in seconds.
                         min: 0
                         max: 3600
                       reload:
                         type: int
-                        convert_types:
-                          - str
                         description: Reload preempt delay in seconds.
                         min: 0
                         max: 3600
@@ -652,8 +582,6 @@ keys:
                       reload:
                         type: int
                         description: Delay after reload in seconds.
-                        convert_types:
-                          - str
                         min: 0
                         max: 3600
               tracked_object:
@@ -667,8 +595,6 @@ keys:
                       description: Tracked object name.
                     decrement:
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 254
                       description: Decrement VRRP priority by 1-254.
@@ -688,8 +614,6 @@ keys:
                     description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
-                    convert_types:
-                      - str
                     valid_values:
                       - 2
                       - 3
@@ -721,8 +645,6 @@ keys:
               required: true
             distance:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 255
         ipv6_attached_host_route_export:
@@ -733,15 +655,11 @@ keys:
               required: true
             distance:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 255
               description: Administrative distance for generated routes.
             prefix_length:
               type: int
-              convert_types:
-                - str
               min: 0
               max: 128
               description: Prefix length for generated routes.
@@ -752,18 +670,12 @@ keys:
               type: bool
             interval:
               type: int
-              convert_types:
-                - str
               description: Rate in milliseconds.
             min_rx:
               type: int
-              convert_types:
-                - str
               description: Minimum RX hold time in milliseconds.
             multiplier:
               type: int
-              convert_types:
-                - str
               min: 3
               max: 50
         service_policy:
@@ -783,15 +695,11 @@ keys:
               description: Segment Size for IPv4.
               min: 64
               max: 65495
-              convert_types:
-                - str
             ipv6:
               type: int
               description: Segment Size for IPv6.
               min: 64
               max: 65475
-              convert_types:
-                - str
             direction:
               type: str
               valid_values: ["ingress", "egress"]

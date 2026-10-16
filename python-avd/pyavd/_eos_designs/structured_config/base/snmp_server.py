@@ -6,6 +6,8 @@ from __future__ import annotations
 from hashlib import sha1
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd_utils.passwords import simple_7_encrypt
+
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
@@ -196,19 +198,34 @@ class SnmpServerMixin(Protocol):
 
                 if user.auth is not None and user.auth_passphrase is not None:
                     user_dict.auth = user.auth
-                    hash_filter = {}
                     if compute_v3_user_localized_key:
-                        hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": engine_ids.local}
-                        user_dict.auth_passphrase = snmp_hash(hash_filter)
+                        local_engine_id: str = engine_ids.local  # type: ignore[assignment]  # non-None guaranteed by compute_v3_user_localized_key check above
+                        key_type = user.key_type
+                        auth_hash = snmp_hash({"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": local_engine_id})
+                        if key_type == "0":
+                            user_dict.auth_key_type = "0"
+                            user_dict.auth_key = auth_hash
+                        elif key_type == "7":
+                            user_dict.auth_key_type = "7"
+                            user_dict.auth_key = simple_7_encrypt(auth_hash, 7)
+                        else:
+                            user_dict.auth_passphrase = auth_hash
+
+                        if user.priv is not None and user.priv_passphrase is not None:
+                            user_dict.priv = user.priv
+                            priv_hash = snmp_hash({"passphrase": user.priv_passphrase, "auth": user.auth, "priv": user.priv, "engine_id": local_engine_id})
+                            if key_type == "0":
+                                user_dict.priv_key_type = "0"
+                                user_dict.priv_key = priv_hash
+                            elif key_type == "7":
+                                user_dict.priv_key_type = "7"
+                                user_dict.priv_key = simple_7_encrypt(priv_hash, 7)
+                            else:
+                                user_dict.priv_passphrase = priv_hash
                     else:
                         user_dict.auth_passphrase = user.auth_passphrase
-
-                    if user.priv is not None and user.priv_passphrase is not None:
-                        user_dict.priv = user.priv
-                        if compute_v3_user_localized_key:
-                            hash_filter.update({"passphrase": user.priv_passphrase, "priv": user.priv})
-                            user_dict.priv_passphrase = snmp_hash(hash_filter)
-                        else:
+                        if user.priv is not None and user.priv_passphrase is not None:
+                            user_dict.priv = user.priv
                             user_dict.priv_passphrase = user.priv_passphrase
 
             self.structured_config.snmp_server.users.append(user_dict)
