@@ -10,6 +10,8 @@ export AVD_NEVER_RUN_FROM_SOURCE=1
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-}:$HOME/.ansible/collections"
 output_dir=$(mktemp -d)
 trap 'rm -rf "$output_dir"' EXIT
+export ANSIBLE_LOCAL_TEMP="$output_dir/.ansible/local"
+export ANSIBLE_REMOTE_TMP="$output_dir/.ansible/remote"
 ansible-playbook -i hosts.yml playbook.yml -e "root_dir=$output_dir" "$@"
 # Every task in both roles must be idempotent on the second invocation.
 ansible-playbook -i hosts.yml playbook.yml -e "root_dir=$output_dir" -e '{"expect_changed": false}' "$@" | tee "$output_dir/second-run.log"
