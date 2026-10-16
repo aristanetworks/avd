@@ -1,3 +1,3 @@
 galaxy_info:
-  description: Generates Output folders for arista.avd collection.
+  description: DEPRECATED - Will be removed in AVD 7.0.0. AVD roles create their required output directories.
   standalone: false
