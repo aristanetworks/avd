@@ -1,0 +1,6 @@
+---
+# Test MLAG peer-group selection: ipv6-explicit.
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+mlag_ipv6_underlay_peer_group: mlag_ipv6_underlay_peer
+mlag_ipv6_vrfs_peer_group: mlag_ipv6_vrfs_peer

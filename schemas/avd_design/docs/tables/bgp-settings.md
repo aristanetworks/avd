@@ -19,6 +19,10 @@
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "bgp_graceful_restart.enabled") | Boolean | Required | `False` |  | Enable or disable graceful-restart for all BGP peers. |
     | [<samp>&nbsp;&nbsp;restart_time</samp>](## "bgp_graceful_restart.restart_time") | Integer |  | `300` | Min: 1<br>Max: 3600 | Restart time in seconds. |
     | [<samp>bgp_maximum_paths</samp>](## "bgp_maximum_paths") | Integer |  |  | Min: 1<br>Max: 600 | Maximum Paths for BGP multi-path.<br>The default value is 4 except for WAN Routers where the default value is 16. |
+    | [<samp>mlag_ipv4_underlay_peer_group</samp>](## "mlag_ipv4_underlay_peer_group") | String |  | `mlag_ipv4_underlay_peer` | Valid Values:<br>- <code>mlag_ipv4_underlay_peer</code><br>- <code>mlag_ipv6_underlay_peer</code><br>- <code>mlag_underlay_peer</code> | Select the BGP peer group to use for MLAG underlay IPv4 peerings. |
+    | [<samp>mlag_ipv6_underlay_peer_group</samp>](## "mlag_ipv6_underlay_peer_group") | String |  | `mlag_ipv4_underlay_peer` | Valid Values:<br>- <code>mlag_ipv4_underlay_peer</code><br>- <code>mlag_ipv6_underlay_peer</code><br>- <code>mlag_underlay_peer</code> | Select the BGP peer group to use for MLAG underlay IPv6 peerings.<br>Default is "mlag_ipv4_underlay_peer" to maintain backward compatibility. Consider changing to "mlag_ipv6_underlay_peer" for IPv6-specific configuration. |
+    | [<samp>mlag_ipv4_vrfs_peer_group</samp>](## "mlag_ipv4_vrfs_peer_group") | String |  | `mlag_ipv4_vrfs_peer` | Valid Values:<br>- <code>mlag_ipv4_vrfs_peer</code><br>- <code>mlag_ipv6_vrfs_peer</code><br>- <code>mlag_vrfs_peer</code> | Select the BGP peer group to use for MLAG VRF IPv4 peerings. |
+    | [<samp>mlag_ipv6_vrfs_peer_group</samp>](## "mlag_ipv6_vrfs_peer_group") | String |  | `mlag_ipv4_vrfs_peer` | Valid Values:<br>- <code>mlag_ipv4_vrfs_peer</code><br>- <code>mlag_ipv6_vrfs_peer</code><br>- <code>mlag_vrfs_peer</code> | Select the BGP peer group to use for MLAG VRF IPv6 peerings.<br>Default is "mlag_ipv4_vrfs_peer" to maintain backward compatibility. Consider changing to "mlag_ipv6_vrfs_peer" for IPv6-specific configuration. |
     | [<samp>bgp_peer_groups</samp>](## "bgp_peer_groups") | Dictionary |  |  |  | Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.<br>Note that the name of the peer groups use '-' instead of '_' in EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;ipv4_underlay_peers</samp>](## "bgp_peer_groups.ipv4_underlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipv4_underlay_peers.name") | String |  | `IPv4-UNDERLAY-PEERS` |  | Name of peer group. |
@@ -27,13 +31,34 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.ipv4_underlay_peers.bfd") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.ipv4_underlay_peers.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipv4_underlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
-    | [<samp>&nbsp;&nbsp;mlag_ipv4_vrfs_peer</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer") | Dictionary |  |  |  | Set this peer group name to use a different peer-group for MLAG peerings in VRFs.<br>By default AVD uses the `mlag_ipv4_underlay_peer` peer group for the Underlay and for all the VRFs.<br><br>If `mlag_ipv4_vrfs_peer.name` and `mlag_ipv4_underlay_peer.name` are the same,<br>then all the attributes set here are ignored. |
+    | [<samp>&nbsp;&nbsp;mlag_vrfs_peer</samp>](## "bgp_peer_groups.mlag_vrfs_peer") | Dictionary |  |  |  | Set this peer group name to use a different peer-group for MLAG peerings in VRFs.<br>By default AVD uses the `mlag_ipv4_underlay_peer` peer group for the Underlay and for all the VRFs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_vrfs_peer.name") | String |  | `MLAG-VRFS-PEER` |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_vrfs_peer.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mlag_vrfs_peer.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mlag_vrfs_peer.bfd") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.mlag_vrfs_peer.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_vrfs_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;mlag_ipv4_vrfs_peer</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer") | Dictionary |  |  |  | Set this peer group name to use a different peer-group for MLAG peerings in VRFs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.name") | String | Required |  |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.bfd") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;mlag_ipv6_vrfs_peer</samp>](## "bgp_peer_groups.mlag_ipv6_vrfs_peer") | Dictionary |  |  |  | Peer group for MLAG VRF IPv6 peerings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv6_vrfs_peer.name") | String |  | `MLAG-IPv6-VRFS-PEER` |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv6_vrfs_peer.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mlag_ipv6_vrfs_peer.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mlag_ipv6_vrfs_peer.bfd") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.mlag_ipv6_vrfs_peer.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv6_vrfs_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;mlag_underlay_peer</samp>](## "bgp_peer_groups.mlag_underlay_peer") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_underlay_peer.name") | String |  | `MLAG-UNDERLAY-PEER` |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_underlay_peer.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mlag_underlay_peer.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mlag_underlay_peer.bfd") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.mlag_underlay_peer.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_underlay_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;mlag_ipv4_underlay_peer</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.name") | String |  | `MLAG-IPv4-UNDERLAY-PEER` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
@@ -41,6 +66,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.bfd") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;mlag_ipv6_underlay_peer</samp>](## "bgp_peer_groups.mlag_ipv6_underlay_peer") | Dictionary |  |  |  | Peer group for MLAG underlay IPv6 peerings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv6_underlay_peer.name") | String |  | `MLAG-IPv6-UNDERLAY-PEER` |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv6_underlay_peer.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mlag_ipv6_underlay_peer.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mlag_ipv6_underlay_peer.bfd") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.mlag_ipv6_underlay_peer.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv6_underlay_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;evpn_overlay_peers</samp>](## "bgp_peer_groups.evpn_overlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_peers.name") | String |  | `EVPN-OVERLAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
@@ -137,6 +169,20 @@
     # The default value is 4 except for WAN Routers where the default value is 16.
     bgp_maximum_paths: <int; 1-600>
 
+    # Select the BGP peer group to use for MLAG underlay IPv4 peerings.
+    mlag_ipv4_underlay_peer_group: <str; "mlag_ipv4_underlay_peer" | "mlag_ipv6_underlay_peer" | "mlag_underlay_peer"; default="mlag_ipv4_underlay_peer">
+
+    # Select the BGP peer group to use for MLAG underlay IPv6 peerings.
+    # Default is "mlag_ipv4_underlay_peer" to maintain backward compatibility. Consider changing to "mlag_ipv6_underlay_peer" for IPv6-specific configuration.
+    mlag_ipv6_underlay_peer_group: <str; "mlag_ipv4_underlay_peer" | "mlag_ipv6_underlay_peer" | "mlag_underlay_peer"; default="mlag_ipv4_underlay_peer">
+
+    # Select the BGP peer group to use for MLAG VRF IPv4 peerings.
+    mlag_ipv4_vrfs_peer_group: <str; "mlag_ipv4_vrfs_peer" | "mlag_ipv6_vrfs_peer" | "mlag_vrfs_peer"; default="mlag_ipv4_vrfs_peer">
+
+    # Select the BGP peer group to use for MLAG VRF IPv6 peerings.
+    # Default is "mlag_ipv4_vrfs_peer" to maintain backward compatibility. Consider changing to "mlag_ipv6_vrfs_peer" for IPv6-specific configuration.
+    mlag_ipv6_vrfs_peer_group: <str; "mlag_ipv4_vrfs_peer" | "mlag_ipv6_vrfs_peer" | "mlag_vrfs_peer"; default="mlag_ipv4_vrfs_peer">
+
     # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
     # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
     bgp_peer_groups:
@@ -162,9 +208,27 @@
 
       # Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
       # By default AVD uses the `mlag_ipv4_underlay_peer` peer group for the Underlay and for all the VRFs.
-      #
-      # If `mlag_ipv4_vrfs_peer.name` and `mlag_ipv4_underlay_peer.name` are the same,
-      # then all the attributes set here are ignored.
+      mlag_vrfs_peer:
+
+        # Name of peer group.
+        name: <str; default="MLAG-VRFS-PEER">
+
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
+        password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
+        bfd: <bool; default=False>
+
+        # Maximum number of routes (0 means unlimited).
+        maximum_routes: <int; 0-4294967294; default=256000>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
+        structured_config: <dict>
+
+      # Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
       mlag_ipv4_vrfs_peer:
 
         # Name of peer group.
@@ -184,10 +248,71 @@
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
+
+      # Peer group for MLAG VRF IPv6 peerings.
+      mlag_ipv6_vrfs_peer:
+
+        # Name of peer group.
+        name: <str; default="MLAG-IPv6-VRFS-PEER">
+
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
+        password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
+        bfd: <bool; default=False>
+
+        # Maximum number of routes (0 means unlimited).
+        maximum_routes: <int; 0-4294967294; default=256000>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
+        structured_config: <dict>
+      mlag_underlay_peer:
+
+        # Name of peer group.
+        name: <str; default="MLAG-UNDERLAY-PEER">
+
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
+        password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
+        bfd: <bool; default=False>
+
+        # Maximum number of routes (0 means unlimited).
+        maximum_routes: <int; 0-4294967294; default=256000>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
+        structured_config: <dict>
       mlag_ipv4_underlay_peer:
 
         # Name of peer group.
         name: <str; default="MLAG-IPv4-UNDERLAY-PEER">
+
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
+        password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
+        bfd: <bool; default=False>
+
+        # Maximum number of routes (0 means unlimited).
+        maximum_routes: <int; 0-4294967294; default=256000>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
+        structured_config: <dict>
+
+      # Peer group for MLAG underlay IPv6 peerings.
+      mlag_ipv6_underlay_peer:
+
+        # Name of peer group.
+        name: <str; default="MLAG-IPv6-UNDERLAY-PEER">
 
         # BGP peer group Type 7 encrypted password.
         # Takes precedence over `cleartext_password`.

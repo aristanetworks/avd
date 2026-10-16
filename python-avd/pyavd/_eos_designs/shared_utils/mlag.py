@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from typing import Literal
 
     from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
+    from pyavd._eos_designs.schema import EosDesigns
 
     from . import SharedUtilsProtocol
 
@@ -220,17 +221,54 @@ class MlagMixin(Protocol):
         return self.mlag_peer_ip
 
     @cached_property
-    def use_separate_peer_group_for_mlag_vrfs(self: SharedUtilsProtocol) -> bool:
-        return bool(
-            self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
-            and self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name != self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
-        )
+    def mlag_bgp_ipv4_underlay_peer_group(
+        self: SharedUtilsProtocol,
+    ) -> EosDesigns.BgpPeerGroups.MlagUnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv6UnderlayPeer:
+        return getattr(self.inputs.bgp_peer_groups, self.inputs.mlag_ipv4_underlay_peer_group)
+
+    @cached_property
+    def mlag_bgp_ipv6_underlay_peer_group(
+        self: SharedUtilsProtocol,
+    ) -> EosDesigns.BgpPeerGroups.MlagUnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv6UnderlayPeer:
+        return getattr(self.inputs.bgp_peer_groups, self.inputs.mlag_ipv6_underlay_peer_group)
+
+    @cached_property
+    def mlag_bgp_ipv4_vrfs_peer_group(
+        self: SharedUtilsProtocol,
+    ) -> EosDesigns.BgpPeerGroups.MlagVrfsPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer | EosDesigns.BgpPeerGroups.MlagIpv6VrfsPeer:
+        return getattr(self.inputs.bgp_peer_groups, self.inputs.mlag_ipv4_vrfs_peer_group)
+
+    @cached_property
+    def mlag_bgp_ipv6_vrfs_peer_group(
+        self: SharedUtilsProtocol,
+    ) -> EosDesigns.BgpPeerGroups.MlagVrfsPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer | EosDesigns.BgpPeerGroups.MlagIpv6VrfsPeer:
+        return getattr(self.inputs.bgp_peer_groups, self.inputs.mlag_ipv6_vrfs_peer_group)
+
+    @cached_property
+    def use_separate_peer_group_for_mlag_vrfs(
+        self: SharedUtilsProtocol,
+    ) -> bool:
+        if self.underlay_ipv6_numbered:
+            underlay_peer_group = self.mlag_bgp_ipv6_underlay_peer_group
+            vrfs_peer_group = self.mlag_bgp_ipv6_vrfs_peer_group
+        else:
+            underlay_peer_group = self.mlag_bgp_ipv4_underlay_peer_group
+            vrfs_peer_group = self.mlag_bgp_ipv4_vrfs_peer_group
+
+        return bool(vrfs_peer_group and vrfs_peer_group.name != underlay_peer_group.name)
 
     @cached_property
     def mlag_vrfs_peer_group_name(self: SharedUtilsProtocol) -> str:
+        if self.underlay_ipv6_numbered:
+            underlay_peer_group = self.mlag_bgp_ipv6_underlay_peer_group
+            vrfs_peer_group = self.mlag_bgp_ipv6_vrfs_peer_group
+        else:
+            underlay_peer_group = self.mlag_bgp_ipv4_underlay_peer_group
+            vrfs_peer_group = self.mlag_bgp_ipv4_vrfs_peer_group
+
         if self.use_separate_peer_group_for_mlag_vrfs:
-            return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name
-        return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
+            return vrfs_peer_group.name
+        return underlay_peer_group.name
 
     @cached_property
     def underlay_multicast_pim_mlag_enabled(self: SharedUtilsProtocol) -> bool:

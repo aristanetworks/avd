@@ -1,0 +1,3 @@
+---
+# Test MLAG peer-group selection: rfc5549-shared.
+underlay_rfc5549: true

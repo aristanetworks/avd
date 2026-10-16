@@ -800,7 +800,7 @@ ASN Notation: asplain
 
 | Settings | Value |
 | -------- | ----- |
-| Address Family | ipv4 |
+| Address Family | ipv6 |
 | Remote AS | 65102 |
 | Next-hop self | True |
 | Send community | all |

@@ -1,0 +1,147 @@
+---
+# Isolated MLAG peer-group tests. Distinct settings expose incorrect group selection.
+# IPv4 defaults remain available for backward compatibility in IPv6 numbered mode.
+type: l3leaf
+overlay_routing_protocol: ibgp
+bgp_as: 65100
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 10.100.0.0/24
+    router_id_pool: 10.100.0.0/24
+    loopback_ipv6_pool: 2001:db8:100::/48
+    vtep_loopback_ipv4_pool: 10.101.0.0/24
+    vtep_loopback_ipv6_pool: 2001:db8:101::/48
+    mlag_interfaces:
+      - Ethernet5
+      - Ethernet6
+    mlag_peer_ipv4_pool: 10.102.0.0/24
+    mlag_peer_l3_ipv4_pool: 10.103.0.0/24
+    mlag_peer_l3_ipv6_pool: 2001:db8:103::/48
+    virtual_router_mac_address: 00:1c:73:00:00:99
+  node_groups:
+    - group: ipv4-defaults
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv4-defaults-a
+          id: 1
+        - name: mlag-bgp-peer-groups-ipv4-defaults-b
+          id: 2
+    - group: ipv4-explicit
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv4-explicit-a
+          id: 3
+        - name: mlag-bgp-peer-groups-ipv4-explicit-b
+          id: 4
+    - group: ipv4-generic
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv4-generic-a
+          id: 5
+        - name: mlag-bgp-peer-groups-ipv4-generic-b
+          id: 6
+    - group: ipv4-same-name
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv4-same-name-a
+          id: 7
+        - name: mlag-bgp-peer-groups-ipv4-same-name-b
+          id: 8
+    - group: ipv4-cross-family
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv4-cross-family-a
+          id: 9
+        - name: mlag-bgp-peer-groups-ipv4-cross-family-b
+          id: 10
+    - group: ipv6-defaults
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv6-defaults-a
+          id: 11
+        - name: mlag-bgp-peer-groups-ipv6-defaults-b
+          id: 12
+    - group: ipv6-explicit
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv6-explicit-a
+          id: 13
+        - name: mlag-bgp-peer-groups-ipv6-explicit-b
+          id: 14
+    - group: ipv6-generic
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv6-generic-a
+          id: 15
+        - name: mlag-bgp-peer-groups-ipv6-generic-b
+          id: 16
+    - group: ipv6-same-name
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv6-same-name-a
+          id: 17
+        - name: mlag-bgp-peer-groups-ipv6-same-name-b
+          id: 18
+    - group: ipv6-cross-family
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv6-cross-family-a
+          id: 19
+        - name: mlag-bgp-peer-groups-ipv6-cross-family-b
+          id: 20
+    - group: rfc5549-shared
+      nodes:
+        - name: mlag-bgp-peer-groups-rfc5549-shared-a
+          id: 21
+        - name: mlag-bgp-peer-groups-rfc5549-shared-b
+          id: 22
+    - group: rfc5549-separate
+      nodes:
+        - name: mlag-bgp-peer-groups-rfc5549-separate-a
+          id: 23
+        - name: mlag-bgp-peer-groups-rfc5549-separate-b
+          id: 24
+    - group: network-services-only
+      nodes:
+        - name: mlag-bgp-peer-groups-network-services-only-a
+          id: 25
+        - name: mlag-bgp-peer-groups-network-services-only-b
+          id: 26
+    - group: ipv6-legacy-separate
+      nodes:
+        - name: mlag-bgp-peer-groups-ipv6-legacy-separate-a
+          id: 27
+        - name: mlag-bgp-peer-groups-ipv6-legacy-separate-b
+          id: 28
+bgp_peer_groups:
+  mlag_ipv4_underlay_peer:
+    maximum_routes: 12001
+    bfd: true
+    cleartext_password: arista
+    structured_config:
+      description: Selected mlag_ipv4_underlay_peer
+  mlag_ipv6_underlay_peer:
+    maximum_routes: 12002
+    bfd: true
+    cleartext_password: arista
+    structured_config:
+      description: Selected mlag_ipv6_underlay_peer
+  mlag_underlay_peer:
+    maximum_routes: 12003
+    bfd: true
+    cleartext_password: arista
+    structured_config:
+      description: Selected mlag_underlay_peer
+  mlag_ipv6_vrfs_peer:
+    maximum_routes: 12004
+    bfd: true
+    cleartext_password: arista
+    structured_config:
+      description: Selected mlag_ipv6_vrfs_peer
+  mlag_vrfs_peer:
+    maximum_routes: 12005
+    bfd: true
+    cleartext_password: arista
+    structured_config:
+      description: Selected mlag_vrfs_peer
+tenants:
+  - name: MLAG_TEST
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TEST
+        vrf_vni: 10
+        svis:
+          - id: 10
+            name: TEST
+            ip_address_virtual: 10.10.10.1/24
