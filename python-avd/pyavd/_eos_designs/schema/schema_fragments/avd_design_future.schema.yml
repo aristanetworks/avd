@@ -122,3 +122,9 @@ keys:
           Available from AVD 6.1.0.
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
         default: false
+      sort_snmp_acls_and_local_interfaces_by_vrf:
+        type: bool
+        description: |-
+          Available from AVD 6.5.0.
+          Sort SNMP ACLs and local interfaces by VRF name in the generated configuration.
+        default: false

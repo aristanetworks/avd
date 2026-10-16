@@ -71931,14 +71931,34 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enable": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enable": {"type": bool},
+                "ipv4_acl": {"type": str},
+                "ipv6_acl": {"type": str},
+                "local_interface": {"type": str},
+            }
             name: str
             """VRF name."""
             enable: bool | None
+            ipv4_acl: str | None
+            """IPv4 access list name for non-default VRF."""
+            ipv6_acl: str | None
+            """IPv6 access list name for non-default VRF."""
+            local_interface: str | None
+            """Local interface name for non-default VRF."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, enable: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    enable: bool | UndefinedType | None = Undefined,
+                    ipv4_acl: str | UndefinedType | None = Undefined,
+                    ipv6_acl: str | UndefinedType | None = Undefined,
+                    local_interface: str | UndefinedType | None = Undefined,
+                ) -> None:
                     """
                     VrfsItem.
 
@@ -71948,6 +71968,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF name.
                         enable: enable
+                        ipv4_acl: IPv4 access list name for non-default VRF.
+                        ipv6_acl: IPv6 access list name for non-default VRF.
+                        local_interface: Local interface name for non-default VRF.
 
                     """
 
@@ -71965,8 +71988,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "location": {"type": str},
             "communities": {"type": Communities},
             "ipv4_acls": {"type": Ipv4Acls},
+            "ipv4_acl": {"type": str},
             "ipv6_acls": {"type": Ipv6Acls},
+            "ipv6_acl": {"type": str},
             "local_interfaces": {"type": LocalInterfaces},
+            "local_interface": {"type": str},
             "views": {"type": Views},
             "groups": {"type": Groups},
             "users": {"type": Users},
@@ -71987,10 +72013,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`)."""
         ipv4_acls: Ipv4Acls
         """Subclass of AvdList with `Ipv4AclsItem` items."""
+        ipv4_acl: str | None
+        """IPv4 access list for VRF default."""
         ipv6_acls: Ipv6Acls
         """Subclass of AvdList with `Ipv6AclsItem` items."""
+        ipv6_acl: str | None
+        """IPv6 access list for VRF default."""
         local_interfaces: LocalInterfaces
         """Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`)."""
+        local_interface: str | None
+        """Local interface for VRF default."""
         views: Views
         """Subclass of AvdList with `ViewsItem` items."""
         groups: Groups
@@ -72017,8 +72049,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 location: str | UndefinedType | None = Undefined,
                 communities: Communities | UndefinedType = Undefined,
                 ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
+                ipv4_acl: str | UndefinedType | None = Undefined,
                 ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
+                ipv6_acl: str | UndefinedType | None = Undefined,
                 local_interfaces: LocalInterfaces | UndefinedType = Undefined,
+                local_interface: str | UndefinedType | None = Undefined,
                 views: Views | UndefinedType = Undefined,
                 groups: Groups | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
@@ -72040,8 +72075,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     location: SNMP location.
                     communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).
                     ipv4_acls: Subclass of AvdList with `Ipv4AclsItem` items.
+                    ipv4_acl: IPv4 access list for VRF default.
                     ipv6_acls: Subclass of AvdList with `Ipv6AclsItem` items.
+                    ipv6_acl: IPv6 access list for VRF default.
                     local_interfaces: Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`).
+                    local_interface: Local interface for VRF default.
                     views: Subclass of AvdList with `ViewsItem` items.
                     groups: Subclass of AvdList with `GroupsItem` items.
                     users: Subclass of AvdList with `UsersItem` items.
