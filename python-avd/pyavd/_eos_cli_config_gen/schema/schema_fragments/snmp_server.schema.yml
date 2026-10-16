@@ -339,13 +339,13 @@ keys:
               type: bool
             ipv4_acl:
               type: str
-              description: IPv4 access list name.
+              description: IPv4 access list name for non-default VRF.
             ipv6_acl:
               type: str
-              description: IPv6 access list name.
+              description: IPv6 access list name for non-default VRF.
             local_interface:
               type: str
-              description: Local interface name.
+              description: Local interface name for non-default VRF.
       ifmib_ifspeed_shape_rate:
         type: bool
         description: SNMP ifspeed reflecting shaping rate.

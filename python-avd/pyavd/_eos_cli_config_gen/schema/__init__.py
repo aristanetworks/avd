@@ -71942,11 +71942,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """VRF name."""
             enable: bool | None
             ipv4_acl: str | None
-            """IPv4 access list name."""
+            """IPv4 access list name for non-default VRF."""
             ipv6_acl: str | None
-            """IPv6 access list name."""
+            """IPv6 access list name for non-default VRF."""
             local_interface: str | None
-            """Local interface name."""
+            """Local interface name for non-default VRF."""
 
             if TYPE_CHECKING:
 
@@ -71968,9 +71968,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF name.
                         enable: enable
-                        ipv4_acl: IPv4 access list name.
-                        ipv6_acl: IPv6 access list name.
-                        local_interface: Local interface name.
+                        ipv4_acl: IPv4 access list name for non-default VRF.
+                        ipv6_acl: IPv6 access list name for non-default VRF.
+                        local_interface: Local interface name for non-default VRF.
 
                     """
 

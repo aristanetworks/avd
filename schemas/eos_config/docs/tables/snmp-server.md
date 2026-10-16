@@ -82,9 +82,9 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "snmp_server.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "snmp_server.vrfs.[].enable") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "snmp_server.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 access list name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "snmp_server.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access list name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "snmp_server.vrfs.[].local_interface") | String |  |  |  | Local interface name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "snmp_server.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 access list name for non-default VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "snmp_server.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access list name for non-default VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "snmp_server.vrfs.[].local_interface") | String |  |  |  | Local interface name for non-default VRF. |
     | [<samp>&nbsp;&nbsp;ifmib_ifspeed_shape_rate</samp>](## "snmp_server.ifmib_ifspeed_shape_rate") | Boolean |  |  |  | SNMP ifspeed reflecting shaping rate. |
 
 === "YAML"
@@ -289,13 +289,13 @@
         - name: <str; required; unique>
           enable: <bool>
 
-          # IPv4 access list name.
+          # IPv4 access list name for non-default VRF.
           ipv4_acl: <str>
 
-          # IPv6 access list name.
+          # IPv6 access list name for non-default VRF.
           ipv6_acl: <str>
 
-          # Local interface name.
+          # Local interface name for non-default VRF.
           local_interface: <str>
 
       # SNMP ifspeed reflecting shaping rate.
