@@ -52,7 +52,7 @@
           - not (avd_requirements.skipped | default(false))
           - structured_config.changed == expect_changed
           - device_config.hostname == inventory_hostname
-          - device_config.ethernet_interfaces[0].peer == peer
+          - device_config.ethernet_interfaces[0].metadata.peer == peer
           - device_config.router_bgp.as | string == expected_as | string
       vars:
         device_config: "{{ lookup('file', root_dir ~ '/intended/structured_configs/' ~ inventory_hostname ~ '.yml') | from_yaml }}"
