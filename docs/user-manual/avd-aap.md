@@ -117,7 +117,7 @@ You can place the Ansible Builder dependencies with your current project or leve
 Log in to your respective container registry.
 
 ```shell
-podman login < registry url >
+podman login ghcr.io
 ```
 
 The command below will use Ansible Builder to start building our custom EE. In this case, we leverage Podman as a container runtime and tag the image appropriately.
