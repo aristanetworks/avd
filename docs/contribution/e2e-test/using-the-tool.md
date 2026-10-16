@@ -86,7 +86,7 @@ uv run --no-project tools/e2e-test-avd.py \
   ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen_negative_unit_tests/e2e-test.toml
 ```
 
-Its `avd_design = false` setting validates inventory variables as EOS structured configuration and renders EOS CLI directly. Expected diagnostics cover removed schema keys alongside their replacements, the maximum number of ACL entries, and unsafe BFD session snapshot intervals. Removed schema keys are captured as validation violations; rendering failures are captured in `eos_cli_error.txt`. As with the design cases, regenerate and review these diagnostics when changing a fixture.
+Its `avd_design = false` setting validates inventory variables as EOS structured configuration and renders EOS CLI directly. Expected diagnostics cover conflicts between still-supported deprecated keys and their replacements, the maximum number of ACL entries, and unsafe BFD session snapshot intervals. Key conflicts are captured as validation violations; rendering failures are captured in `eos_cli_error.txt`. As with the design cases, regenerate and review these diagnostics when changing a fixture.
 
 ## Creating `e2e-test.toml`
 
