@@ -93,6 +93,9 @@ The meta-schema is generated from the source-schema models in [pyavd-utils](http
 When bumping `pyavd-utils-gen`, update the pinned version in `.pre-commit-config.yaml` alongside the other dependency declarations.
 The `metaschema` pre-commit hook regenerates the JSON when that configuration changes, catching a forgotten refresh during dependency bumps.
 Stage any generated changes with the dependency update. To regenerate it explicitly, run `pre-commit run metaschema --all-files`.
+The meta-schema provides editor assistance. Schema builds rely on source-model loading and compilation in `pyavd-utils-gen`,
+without a separate JSON Schema validation pass. This relaxes some authoring conventions: for example, the compiler accepts
+explicit `null` in optional fields and empty descriptions, while the meta-schema rejects them.
 
 All schema options (ex. `type`, `max`, `valid_values`) are validated individually, and to pass the validation, the data must
 conform to all the rules given by the schema options.
