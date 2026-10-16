@@ -1,0 +1,128 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet2
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet3
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet4
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet5
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet6
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+hostname: monitor-session-ipv4-acls
+ip_access_lists:
+- name: MONITOR-IPV4
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: 192.0.2.0/24
+    destination: any
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+monitor_sessions:
+- name: IPV4-SESSION
+  sources:
+  - name: Ethernet4
+  destinations:
+  - Ethernet6
+  access_group:
+    type: ip
+    name: MONITOR-IPV4
+- name: IPV4-SOURCE
+  sources:
+  - name: Ethernet1
+    direction: rx
+    access_group:
+      type: ip
+      name: MONITOR-IPV4
+      priority: 5
+  - name: Ethernet2
+    direction: rx
+    access_group:
+      type: ip
+      name: MONITOR-IPV4
+      priority: 5
+  destinations:
+  - Ethernet6
+- name: IPV4-STANDARD-SESSION
+  sources:
+  - name: Ethernet5
+  destinations:
+  - Ethernet6
+  access_group:
+    type: ip
+    name: MONITOR-IPV4-STANDARD
+- name: IPV4-STANDARD-SOURCE
+  sources:
+  - name: Ethernet3
+    direction: tx
+    access_group:
+      type: ip
+      name: MONITOR-IPV4-STANDARD
+      priority: 10
+  destinations:
+  - Ethernet6
+service_routing_protocols_model: multi-agent
+standard_access_lists:
+- name: MONITOR-IPV4-STANDARD
+  entries:
+  - sequence: 10
+    action: permit
+    source: 198.51.100.0/24
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

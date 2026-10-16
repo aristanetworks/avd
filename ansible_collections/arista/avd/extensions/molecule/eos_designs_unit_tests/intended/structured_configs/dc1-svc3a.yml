@@ -571,6 +571,12 @@ ethernet_interfaces:
       native_vlan_tag: false
 hostname: dc1-svc3a
 ip_access_lists:
+- name: myIpAVL
+  entries:
+  - action: permit
+    protocol: ip
+    source: any
+    destination: any
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   entries:
   - sequence: 15
@@ -637,6 +643,10 @@ loopback_interfaces:
   shutdown: false
   vrf: MULTI_TENANT_VRF_TEST
   ip_address: 172.26.128.12/32
+mac_access_lists:
+- name: mac_acl
+  entries:
+  - action: permit any any
 management_api_http:
   enable_https: true
   default_services: false

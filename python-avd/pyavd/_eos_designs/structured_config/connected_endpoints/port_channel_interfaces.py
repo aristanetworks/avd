@@ -185,11 +185,11 @@ class PortChannelInterfacesMixin(Protocol):
 
         if adapter.mac_acl_in is not None:
             port_channel_interface.mac_access_group_in = adapter.mac_acl_in
-            self._set_mac_acl(adapter.mac_acl_in)
+            self.structured_config_utils._set_mac_acl(adapter.mac_acl_in)
 
         if adapter.mac_acl_out is not None:
             port_channel_interface.mac_access_group_out = adapter.mac_acl_out
-            self._set_mac_acl(adapter.mac_acl_out)
+            self.structured_config_utils._set_mac_acl(adapter.mac_acl_out)
 
         port_channel_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)

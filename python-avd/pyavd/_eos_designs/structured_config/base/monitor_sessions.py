@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.groupby import groupby_obj
 from pyavd.j2filters import range_expand
 
@@ -59,15 +59,27 @@ class MonitorSessionsMixin(Protocol):
                     name=session._internal_data.interface,
                     direction=session.source_settings.direction,
                 )
-                if session.source_settings.access_group.name:
-                    source.access_group = session.source_settings.access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup)
+                acl = session.source_settings.access_group
+                if acl.name:
+                    self._set_monitor_session_access_group(acl.type, acl.name)
+                    source.access_group = EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup(
+                        type=self._get_monitor_session_access_group_type(acl.type),
+                        name=acl.name,
+                        priority=acl.priority,
+                    )
                 monitor_session.sources.append(source)
 
             if session_settings := merged_settings.session_settings:
+                acl = session_settings.access_group
+                if acl.name:
+                    self._set_monitor_session_access_group(acl.type, acl.name)
                 monitor_session._update(
                     encapsulation_gre_metadata_tx=session_settings.encapsulation_gre_metadata_tx,
                     header_remove_size=session_settings.header_remove_size,
-                    access_group=session_settings.access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.AccessGroup),
+                    access_group=EosCliConfigGen.MonitorSessionsItem.AccessGroup(
+                        type=self._get_monitor_session_access_group_type(acl.type),
+                        name=acl.name,
+                    ),
                     rate_limit_per_ingress_chip=session_settings.rate_limit_per_ingress_chip,
                     rate_limit_per_egress_chip=session_settings.rate_limit_per_egress_chip,
                     sample=session_settings.sample,
@@ -75,6 +87,43 @@ class MonitorSessionsMixin(Protocol):
                 )
 
             self.structured_config.monitor_sessions.append(monitor_session)
+
+    def _set_monitor_session_access_group(self: AvdStructuredConfigBaseProtocol, acl_type: str | None, acl_name: str) -> None:
+        """Validate and configure ACLs referenced by monitor sessions."""
+        if acl_type is None:
+            return
+
+        self._validate_monitor_session_access_group(acl_type, acl_name)
+        match acl_type:
+            case "ip" | "ipv4":
+                self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[acl_name])
+            case "ipv4_standard":
+                self.structured_config_utils._set_ipv4_standard_acl(acl_name)
+            case "ipv6":
+                self.structured_config_utils._set_ipv6_acl(self.inputs.ipv6_acls[acl_name])
+            case "mac":
+                self.structured_config_utils._set_mac_acl(acl_name)
+
+    def _validate_monitor_session_access_group(self: AvdStructuredConfigBaseProtocol, acl_type: str, acl_name: str) -> None:
+        """Validate that the referenced ACL exists in the corresponding catalog without generating its definition."""
+        catalog_name = {
+            "ip": "ipv4_acls",
+            "ipv4": "ipv4_acls",
+            "ipv4_standard": "ipv4_standard_acls",
+            "ipv6": "ipv6_acls",
+            "mac": "mac_acls",
+        }.get(acl_type)
+        if catalog_name is not None and acl_name not in getattr(self.inputs, catalog_name):
+            msg = f"{catalog_name}[name={acl_name}]"
+            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+
+    @staticmethod
+    def _get_monitor_session_access_group_type(
+        acl_type: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem.SourceSettings.AccessGroup.Type
+        | None,
+    ) -> EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup.Type | None:
+        """Return the EOS ACL type for a monitor-session access group."""
+        return "ip" if acl_type in ("ipv4", "ipv4_standard") else acl_type
 
     @staticmethod
     def _validate_monitor_session_on_subinterface(
