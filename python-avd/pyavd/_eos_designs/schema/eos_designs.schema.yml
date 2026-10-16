@@ -16899,14 +16899,12 @@ $defs:
           keys:
             mode:
               type: str
-              required: true
               valid_values:
               - gre
               - ipsec
               description: Tunnel encapsulation mode.
             source_interfaces:
               type: list
-              required: true
               min_length: 2
               max_length: 2
               items:

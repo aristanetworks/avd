@@ -5403,7 +5403,7 @@ class EosDesigns(EosDesignsRootModel):
                     "ipsec_profile": {"type": str},
                     "path_mtu_discovery": {"type": bool},
                 }
-                mode: Mode
+                mode: Mode | None
                 """Tunnel encapsulation mode."""
                 source_interfaces: SourceInterfaces
                 """
@@ -5446,7 +5446,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Mode | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType | None = Undefined,
                         source_interfaces: SourceInterfaces | UndefinedType = Undefined,
                         source_ips: SourceIps | UndefinedType = Undefined,
                         source_ip_pool: str | UndefinedType | None = Undefined,
@@ -6350,7 +6350,7 @@ class EosDesigns(EosDesignsRootModel):
                     "ipsec_profile": {"type": str},
                     "path_mtu_discovery": {"type": bool},
                 }
-                mode: Mode
+                mode: Mode | None
                 """Tunnel encapsulation mode."""
                 source_interfaces: SourceInterfaces
                 """
@@ -6393,7 +6393,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Mode | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType | None = Undefined,
                         source_interfaces: SourceInterfaces | UndefinedType = Undefined,
                         source_ips: SourceIps | UndefinedType = Undefined,
                         source_ip_pool: str | UndefinedType | None = Undefined,
@@ -25946,7 +25946,7 @@ class EosDesigns(EosDesignsRootModel):
                     "ipsec_profile": {"type": str},
                     "path_mtu_discovery": {"type": bool},
                 }
-                mode: Mode
+                mode: Mode | None
                 """Tunnel encapsulation mode."""
                 source_interfaces: SourceInterfaces
                 """
@@ -25989,7 +25989,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Mode | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType | None = Undefined,
                         source_interfaces: SourceInterfaces | UndefinedType = Undefined,
                         source_ips: SourceIps | UndefinedType = Undefined,
                         source_ip_pool: str | UndefinedType | None = Undefined,
@@ -26893,7 +26893,7 @@ class EosDesigns(EosDesignsRootModel):
                     "ipsec_profile": {"type": str},
                     "path_mtu_discovery": {"type": bool},
                 }
-                mode: Mode
+                mode: Mode | None
                 """Tunnel encapsulation mode."""
                 source_interfaces: SourceInterfaces
                 """
@@ -26936,7 +26936,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Mode | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType | None = Undefined,
                         source_interfaces: SourceInterfaces | UndefinedType = Undefined,
                         source_ips: SourceIps | UndefinedType = Undefined,
                         source_ip_pool: str | UndefinedType | None = Undefined,

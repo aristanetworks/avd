@@ -75,8 +75,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.p2p_links_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routing_protocol</samp>](## "core_interfaces.p2p_links_profiles.[].routing_protocol") | String |  |  | Valid Values:<br>- <code>ebgp</code> | Enables deviation of the routing protocol used on this link from the fabric underlay default.<br>- ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel") | Dictionary |  |  |  | Tunnel configuration for this P2P link.<br>When set, the `interfaces` field defines tunnel interface names (e.g., Tunnel1).<br>Physical source interfaces connect to crypto/WAN devices.<br>A static route is auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.mode") | String | Required |  | Valid Values:<br>- <code>gre</code><br>- <code>ipsec</code> | Tunnel encapsulation mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interfaces</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_interfaces") | List, items: String | Required |  | Min Length: 2<br>Max Length: 2 | Physical interface names for each node.<br>Positional - first entry for the first node, second for the second.<br>These interfaces are also used as the tunnel source interface.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.mode") | String |  |  | Valid Values:<br>- <code>gre</code><br>- <code>ipsec</code> | Tunnel encapsulation mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interfaces</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_interfaces") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Physical interface names for each node.<br>Positional - first entry for the first node, second for the second.<br>These interfaces are also used as the tunnel source interface.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ips</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_ips") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | IPv4 addresses on the source interfaces, one per node.<br>The tunnel destination is automatically derived from the peer's source IP (without mask).<br>The static route next-hop is derived from the local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).<br>Not required when `source_ip_pool` is set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_ips.[]") | String |  |  |  | IPv4 address with mask (e.g., 10.0.0.0/31). |
@@ -149,8 +149,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.p2p_links.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routing_protocol</samp>](## "core_interfaces.p2p_links.[].routing_protocol") | String |  |  | Valid Values:<br>- <code>ebgp</code> | Enables deviation of the routing protocol used on this link from the fabric underlay default.<br>- ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel</samp>](## "core_interfaces.p2p_links.[].tunnel") | Dictionary |  |  |  | Tunnel configuration for this P2P link.<br>When set, the `interfaces` field defines tunnel interface names (e.g., Tunnel1).<br>Physical source interfaces connect to crypto/WAN devices.<br>A static route is auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links.[].tunnel.mode") | String | Required |  | Valid Values:<br>- <code>gre</code><br>- <code>ipsec</code> | Tunnel encapsulation mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interfaces</samp>](## "core_interfaces.p2p_links.[].tunnel.source_interfaces") | List, items: String | Required |  | Min Length: 2<br>Max Length: 2 | Physical interface names for each node.<br>Positional - first entry for the first node, second for the second.<br>These interfaces are also used as the tunnel source interface.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links.[].tunnel.mode") | String |  |  | Valid Values:<br>- <code>gre</code><br>- <code>ipsec</code> | Tunnel encapsulation mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interfaces</samp>](## "core_interfaces.p2p_links.[].tunnel.source_interfaces") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Physical interface names for each node.<br>Positional - first entry for the first node, second for the second.<br>These interfaces are also used as the tunnel source interface.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].tunnel.source_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ips</samp>](## "core_interfaces.p2p_links.[].tunnel.source_ips") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | IPv4 addresses on the source interfaces, one per node.<br>The tunnel destination is automatically derived from the peer's source IP (without mask).<br>The static route next-hop is derived from the local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).<br>Not required when `source_ip_pool` is set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].tunnel.source_ips.[]") | String |  |  |  | IPv4 address with mask (e.g., 10.0.0.0/31). |
@@ -392,12 +392,12 @@
           tunnel:
 
             # Tunnel encapsulation mode.
-            mode: <str; "gre" | "ipsec"; required>
+            mode: <str; "gre" | "ipsec">
 
             # Physical interface names for each node.
             # Positional - first entry for the first node, second for the second.
             # These interfaces are also used as the tunnel source interface.
-            source_interfaces: # 2-2 items; required
+            source_interfaces: # 2-2 items
               - <str>
 
             # IPv4 addresses on the source interfaces, one per node.
@@ -637,12 +637,12 @@
           tunnel:
 
             # Tunnel encapsulation mode.
-            mode: <str; "gre" | "ipsec"; required>
+            mode: <str; "gre" | "ipsec">
 
             # Physical interface names for each node.
             # Positional - first entry for the first node, second for the second.
             # These interfaces are also used as the tunnel source interface.
-            source_interfaces: # 2-2 items; required
+            source_interfaces: # 2-2 items
               - <str>
 
             # IPv4 addresses on the source interfaces, one per node.
