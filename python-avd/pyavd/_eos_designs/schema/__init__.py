@@ -1163,9 +1163,16 @@ class EosDesigns(EosDesignsRootModel):
         only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool
         """
         Available from AVD 6.5.0.
-        Configure OOB management VRF and OOB IPv4 static routes only when needed.
-        When enabled, AVD renders the OOB management VRF only when required by OOB management configuration.
-        AVD also renders OOB IPv4 static routes only when `oob_mgmt_ip` is configured.
+        Configure OOB management VRF and OOB IPv4 static routes only when OOB
+        management is actually used.
+        When enabled:
+        - AVD renders the OOB management VRF only if
+        `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+        - Setting only
+        `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
+        VRF.
+        - AVD renders OOB IPv4 static routes only when `oob_mgmt_ip` is configured (and other existing
+        route prerequisites are met).
 
         Default value: `False`
         """
@@ -1284,9 +1291,16 @@ class EosDesigns(EosDesignsRootModel):
                        IPv4 is activated by default instead of always deactivating it.
                     only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
                        Available from AVD 6.5.0.
-                       Configure OOB management VRF and OOB IPv4 static routes only when needed.
-                       When enabled, AVD renders the OOB management VRF only when required by OOB management configuration.
-                       AVD also renders OOB IPv4 static routes only when `oob_mgmt_ip` is configured.
+                       Configure OOB management VRF and OOB IPv4 static routes only when OOB
+                       management is actually used.
+                       When enabled:
+                       - AVD renders the OOB management VRF only if
+                       `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+                       - Setting only
+                       `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
+                       VRF.
+                       - AVD renders OOB IPv4 static routes only when `oob_mgmt_ip` is configured (and other existing
+                       route prerequisites are met).
 
                 """
 
