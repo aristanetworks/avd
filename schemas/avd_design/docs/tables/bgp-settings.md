@@ -36,7 +36,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.ipv4_underlay_peers.bfd") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.ipv4_underlay_peers.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipv4_underlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
-    | [<samp>&nbsp;&nbsp;ipv6_underlay_peers</samp>](## "bgp_peer_groups.ipv6_underlay_peers") | Dictionary |  |  |  | Peer group for IPv6 underlay BGP peers.<br>This key is optional and will only be used when explicitly referenced via `underlay_ipv6_peer_group`. |
+    | [<samp>&nbsp;&nbsp;ipv6_underlay_peers</samp>](## "bgp_peer_groups.ipv6_underlay_peers") | Dictionary |  |  |  | Peer group for IPv6 underlay BGP peers.<br>This key is optional and will be used when explicitly referenced via `underlay_ipv4_peer_group` or `underlay_ipv6_peer_group`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipv6_underlay_peers.name") | String |  | `IPV6-UNDERLAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipv6_underlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.ipv6_underlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
@@ -205,7 +205,7 @@
         structured_config: <dict>
 
       # Peer group for IPv6 underlay BGP peers.
-      # This key is optional and will only be used when explicitly referenced via `underlay_ipv6_peer_group`.
+      # This key is optional and will be used when explicitly referenced via `underlay_ipv4_peer_group` or `underlay_ipv6_peer_group`.
       ipv6_underlay_peers:
 
         # Name of peer group.

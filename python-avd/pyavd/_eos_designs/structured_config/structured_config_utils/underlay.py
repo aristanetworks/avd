@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 class UnderlayMixin(Protocol):
     @run_once_method
-    def set_once_peer_group_underlay_peers(self: StructuredConfigUtilsProtocol) -> None:
+    def set_once_bgp_peer_group_underlay_peers(self: StructuredConfigUtilsProtocol) -> None:
         """
         Add underlay peer group to structured_config.
 

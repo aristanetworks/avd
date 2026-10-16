@@ -2412,8 +2412,8 @@ class EosDesigns(EosDesignsRootModel):
         ipv6_underlay_peers: Ipv6UnderlayPeers
         """
         Peer group for IPv6 underlay BGP peers.
-        This key is optional and will only be used when explicitly
-        referenced via `underlay_ipv6_peer_group`.
+        This key is optional and will be used when explicitly
+        referenced via `underlay_ipv4_peer_group` or `underlay_ipv6_peer_group`.
 
         Subclass of AvdModel.
         """
@@ -2482,8 +2482,8 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_underlay_peers: Subclass of AvdModel.
                     ipv6_underlay_peers:
                        Peer group for IPv6 underlay BGP peers.
-                       This key is optional and will only be used when explicitly
-                       referenced via `underlay_ipv6_peer_group`.
+                       This key is optional and will be used when explicitly
+                       referenced via `underlay_ipv4_peer_group` or `underlay_ipv6_peer_group`.
 
                        Subclass of AvdModel.
                     mlag_ipv4_vrfs_peer:

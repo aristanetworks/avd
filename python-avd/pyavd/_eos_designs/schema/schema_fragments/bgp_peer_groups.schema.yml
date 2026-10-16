@@ -113,7 +113,7 @@ keys:
         type: dict
         description: |-
           Peer group for IPv6 underlay BGP peers.
-          This key is optional and will only be used when explicitly referenced via `underlay_ipv6_peer_group`.
+          This key is optional and will be used when explicitly referenced via `underlay_ipv4_peer_group` or `underlay_ipv6_peer_group`.
         keys:
           name:
             type: str
