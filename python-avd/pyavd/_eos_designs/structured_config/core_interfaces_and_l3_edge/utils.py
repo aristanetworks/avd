@@ -70,7 +70,23 @@ class UtilsMixin(Protocol):
         """Resolve both IPv4 and IPv6 addresses for a p2p_link."""
         self._resolve_p2p_ipv4(p2p_link)
         self._resolve_p2p_ipv6(p2p_link)
+        self._resolve_tunnel_source_ips(p2p_link)
         return p2p_link
+
+    def _resolve_tunnel_source_ips(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> None:
+        """Resolve tunnel source IPs from IP pool if not already set."""
+        if not p2p_link.tunnel or not p2p_link.tunnel.mode or p2p_link.tunnel.source_ips:
+            return
+
+        if p2p_link.tunnel.source_ip_pool and p2p_link.id and p2p_link.tunnel.source_ip_pool in self.inputs_data.p2p_links_ip_pools:
+            ip_pool = self.inputs_data.p2p_links_ip_pools[p2p_link.tunnel.source_ip_pool]
+            if ip_pool.ipv4_pool:
+                p2p_link.tunnel.source_ips.extend(
+                    [
+                        f"{get_ip_from_pool(ip_pool.ipv4_pool, ip_pool.prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.prefix_size}"
+                        for host_offset in [0, 1]
+                    ]
+                )
 
     def _resolve_p2p_ipv4(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> None:
         """Resolve IPv4 addresses from subnet or IP pool if not already set."""

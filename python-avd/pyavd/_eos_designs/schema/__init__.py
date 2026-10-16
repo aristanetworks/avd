@@ -5399,6 +5399,7 @@ class EosDesigns(EosDesignsRootModel):
                     "mode": {"type": str},
                     "source_interfaces": {"type": SourceInterfaces},
                     "source_ips": {"type": SourceIps},
+                    "source_ip_pool": {"type": str},
                     "ipsec_profile": {"type": str},
                     "path_mtu_discovery": {"type": bool},
                 }
@@ -5422,10 +5423,18 @@ class EosDesigns(EosDesignsRootModel):
                 derived from the peer's source IP (without mask).
                 The static route next-hop is derived from the
                 local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                Not required when `source_ip_pool` is
+                set.
 
 
-                Subclass of AvdList with `str`
-                items.
+                Subclass of AvdList with `str` items.
+                """
+                source_ip_pool: str | None
+                """
+                Name of an IP pool defined under `p2p_links_ip_pools`.
+                A /31 subnet will be taken from the pool per
+                P2P link to assign source IPs.
+                Requires `id` to be set on the P2P link.
                 """
                 ipsec_profile: str | None
                 """IPsec profile name. Only used when mode is 'ipsec'."""
@@ -5440,6 +5449,7 @@ class EosDesigns(EosDesignsRootModel):
                         mode: Mode | UndefinedType = Undefined,
                         source_interfaces: SourceInterfaces | UndefinedType = Undefined,
                         source_ips: SourceIps | UndefinedType = Undefined,
+                        source_ip_pool: str | UndefinedType | None = Undefined,
                         ipsec_profile: str | UndefinedType | None = Undefined,
                         path_mtu_discovery: bool | UndefinedType | None = Undefined,
                     ) -> None:
@@ -5466,10 +5476,16 @@ class EosDesigns(EosDesignsRootModel):
                                derived from the peer's source IP (without mask).
                                The static route next-hop is derived from the
                                local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                               Not required when `source_ip_pool` is
+                               set.
 
 
-                               Subclass of AvdList with `str`
-                               items.
+                               Subclass of AvdList with `str` items.
+                            source_ip_pool:
+                               Name of an IP pool defined under `p2p_links_ip_pools`.
+                               A /31 subnet will be taken from the pool per
+                               P2P link to assign source IPs.
+                               Requires `id` to be set on the P2P link.
                             ipsec_profile: IPsec profile name. Only used when mode is 'ipsec'.
                             path_mtu_discovery: Enable Path MTU Discovery on the tunnel.
 
@@ -6330,6 +6346,7 @@ class EosDesigns(EosDesignsRootModel):
                     "mode": {"type": str},
                     "source_interfaces": {"type": SourceInterfaces},
                     "source_ips": {"type": SourceIps},
+                    "source_ip_pool": {"type": str},
                     "ipsec_profile": {"type": str},
                     "path_mtu_discovery": {"type": bool},
                 }
@@ -6353,10 +6370,18 @@ class EosDesigns(EosDesignsRootModel):
                 derived from the peer's source IP (without mask).
                 The static route next-hop is derived from the
                 local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                Not required when `source_ip_pool` is
+                set.
 
 
-                Subclass of AvdList with `str`
-                items.
+                Subclass of AvdList with `str` items.
+                """
+                source_ip_pool: str | None
+                """
+                Name of an IP pool defined under `p2p_links_ip_pools`.
+                A /31 subnet will be taken from the pool per
+                P2P link to assign source IPs.
+                Requires `id` to be set on the P2P link.
                 """
                 ipsec_profile: str | None
                 """IPsec profile name. Only used when mode is 'ipsec'."""
@@ -6371,6 +6396,7 @@ class EosDesigns(EosDesignsRootModel):
                         mode: Mode | UndefinedType = Undefined,
                         source_interfaces: SourceInterfaces | UndefinedType = Undefined,
                         source_ips: SourceIps | UndefinedType = Undefined,
+                        source_ip_pool: str | UndefinedType | None = Undefined,
                         ipsec_profile: str | UndefinedType | None = Undefined,
                         path_mtu_discovery: bool | UndefinedType | None = Undefined,
                     ) -> None:
@@ -6397,10 +6423,16 @@ class EosDesigns(EosDesignsRootModel):
                                derived from the peer's source IP (without mask).
                                The static route next-hop is derived from the
                                local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                               Not required when `source_ip_pool` is
+                               set.
 
 
-                               Subclass of AvdList with `str`
-                               items.
+                               Subclass of AvdList with `str` items.
+                            source_ip_pool:
+                               Name of an IP pool defined under `p2p_links_ip_pools`.
+                               A /31 subnet will be taken from the pool per
+                               P2P link to assign source IPs.
+                               Requires `id` to be set on the P2P link.
                             ipsec_profile: IPsec profile name. Only used when mode is 'ipsec'.
                             path_mtu_discovery: Enable Path MTU Discovery on the tunnel.
 
@@ -25910,6 +25942,7 @@ class EosDesigns(EosDesignsRootModel):
                     "mode": {"type": str},
                     "source_interfaces": {"type": SourceInterfaces},
                     "source_ips": {"type": SourceIps},
+                    "source_ip_pool": {"type": str},
                     "ipsec_profile": {"type": str},
                     "path_mtu_discovery": {"type": bool},
                 }
@@ -25933,10 +25966,18 @@ class EosDesigns(EosDesignsRootModel):
                 derived from the peer's source IP (without mask).
                 The static route next-hop is derived from the
                 local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                Not required when `source_ip_pool` is
+                set.
 
 
-                Subclass of AvdList with `str`
-                items.
+                Subclass of AvdList with `str` items.
+                """
+                source_ip_pool: str | None
+                """
+                Name of an IP pool defined under `p2p_links_ip_pools`.
+                A /31 subnet will be taken from the pool per
+                P2P link to assign source IPs.
+                Requires `id` to be set on the P2P link.
                 """
                 ipsec_profile: str | None
                 """IPsec profile name. Only used when mode is 'ipsec'."""
@@ -25951,6 +25992,7 @@ class EosDesigns(EosDesignsRootModel):
                         mode: Mode | UndefinedType = Undefined,
                         source_interfaces: SourceInterfaces | UndefinedType = Undefined,
                         source_ips: SourceIps | UndefinedType = Undefined,
+                        source_ip_pool: str | UndefinedType | None = Undefined,
                         ipsec_profile: str | UndefinedType | None = Undefined,
                         path_mtu_discovery: bool | UndefinedType | None = Undefined,
                     ) -> None:
@@ -25977,10 +26019,16 @@ class EosDesigns(EosDesignsRootModel):
                                derived from the peer's source IP (without mask).
                                The static route next-hop is derived from the
                                local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                               Not required when `source_ip_pool` is
+                               set.
 
 
-                               Subclass of AvdList with `str`
-                               items.
+                               Subclass of AvdList with `str` items.
+                            source_ip_pool:
+                               Name of an IP pool defined under `p2p_links_ip_pools`.
+                               A /31 subnet will be taken from the pool per
+                               P2P link to assign source IPs.
+                               Requires `id` to be set on the P2P link.
                             ipsec_profile: IPsec profile name. Only used when mode is 'ipsec'.
                             path_mtu_discovery: Enable Path MTU Discovery on the tunnel.
 
@@ -26841,6 +26889,7 @@ class EosDesigns(EosDesignsRootModel):
                     "mode": {"type": str},
                     "source_interfaces": {"type": SourceInterfaces},
                     "source_ips": {"type": SourceIps},
+                    "source_ip_pool": {"type": str},
                     "ipsec_profile": {"type": str},
                     "path_mtu_discovery": {"type": bool},
                 }
@@ -26864,10 +26913,18 @@ class EosDesigns(EosDesignsRootModel):
                 derived from the peer's source IP (without mask).
                 The static route next-hop is derived from the
                 local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                Not required when `source_ip_pool` is
+                set.
 
 
-                Subclass of AvdList with `str`
-                items.
+                Subclass of AvdList with `str` items.
+                """
+                source_ip_pool: str | None
+                """
+                Name of an IP pool defined under `p2p_links_ip_pools`.
+                A /31 subnet will be taken from the pool per
+                P2P link to assign source IPs.
+                Requires `id` to be set on the P2P link.
                 """
                 ipsec_profile: str | None
                 """IPsec profile name. Only used when mode is 'ipsec'."""
@@ -26882,6 +26939,7 @@ class EosDesigns(EosDesignsRootModel):
                         mode: Mode | UndefinedType = Undefined,
                         source_interfaces: SourceInterfaces | UndefinedType = Undefined,
                         source_ips: SourceIps | UndefinedType = Undefined,
+                        source_ip_pool: str | UndefinedType | None = Undefined,
                         ipsec_profile: str | UndefinedType | None = Undefined,
                         path_mtu_discovery: bool | UndefinedType | None = Undefined,
                     ) -> None:
@@ -26908,10 +26966,16 @@ class EosDesigns(EosDesignsRootModel):
                                derived from the peer's source IP (without mask).
                                The static route next-hop is derived from the
                                local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                               Not required when `source_ip_pool` is
+                               set.
 
 
-                               Subclass of AvdList with `str`
-                               items.
+                               Subclass of AvdList with `str` items.
+                            source_ip_pool:
+                               Name of an IP pool defined under `p2p_links_ip_pools`.
+                               A /31 subnet will be taken from the pool per
+                               P2P link to assign source IPs.
+                               Requires `id` to be set on the P2P link.
                             ipsec_profile: IPsec profile name. Only used when mode is 'ipsec'.
                             path_mtu_discovery: Enable Path MTU Discovery on the tunnel.
 

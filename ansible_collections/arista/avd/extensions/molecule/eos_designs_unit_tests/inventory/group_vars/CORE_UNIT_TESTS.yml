@@ -73,6 +73,8 @@ core_interfaces:
       ipv4_pool: 100.123.123.0/24
     - name: ipv6_only_pool
       ipv6_pool: 2001:db8:64:ff::/64
+    - name: tunnel_source_pool
+      ipv4_pool: 172.24.0.0/24
   p2p_links_profiles:
     - name: isis_bb_profile
       speed: "forced 1000full"
@@ -299,6 +301,17 @@ core_interfaces:
         mode: gre
         source_interfaces: [Ethernet50, Ethernet50]
         source_ips: [192.168.0.0/31, 192.168.1.0/31]
+      include_in_underlay_protocol: true
+
+    # GRE tunnel with source_ip_pool
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
+      id: 1
+      interfaces: [Tunnel101, Tunnel101]
+      ip: [10.0.0.2/31, 10.0.0.3/31]
+      tunnel:
+        mode: gre
+        source_interfaces: [Ethernet51, Ethernet51]
+        source_ip_pool: tunnel_source_pool
       include_in_underlay_protocol: true
 
 l3_edge:

@@ -78,8 +78,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.mode") | String | Required |  | Valid Values:<br>- <code>gre</code><br>- <code>ipsec</code> | Tunnel encapsulation mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interfaces</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_interfaces") | List, items: String | Required |  | Min Length: 2<br>Max Length: 2 | Physical interface names for each node.<br>Positional - first entry for the first node, second for the second.<br>These interfaces are also used as the tunnel source interface.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_interfaces.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ips</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_ips") | List, items: String | Required |  | Min Length: 2<br>Max Length: 2 | IPv4 addresses on the source interfaces, one per node.<br>The tunnel destination is automatically derived from the peer's source IP (without mask).<br>The static route next-hop is derived from the local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ips</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_ips") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | IPv4 addresses on the source interfaces, one per node.<br>The tunnel destination is automatically derived from the peer's source IP (without mask).<br>The static route next-hop is derived from the local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).<br>Not required when `source_ip_pool` is set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_ips.[]") | String |  |  |  | IPv4 address with mask (e.g., 10.0.0.0/31). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip_pool</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.source_ip_pool") | String |  |  |  | Name of an IP pool defined under `p2p_links_ip_pools`.<br>A /31 subnet will be taken from the pool per P2P link to assign source IPs.<br>Requires `id` to be set on the P2P link.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec_profile</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.ipsec_profile") | String |  |  |  | IPsec profile name. Only used when mode is 'ipsec'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_mtu_discovery</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel.path_mtu_discovery") | Boolean |  |  |  | Enable Path MTU Discovery on the tunnel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_structured_config</samp>](## "core_interfaces.p2p_links_profiles.[].tunnel_structured_config") | Dictionary |  |  |  | Custom structured config for the tunnel interface. |
@@ -151,8 +152,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links.[].tunnel.mode") | String | Required |  | Valid Values:<br>- <code>gre</code><br>- <code>ipsec</code> | Tunnel encapsulation mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interfaces</samp>](## "core_interfaces.p2p_links.[].tunnel.source_interfaces") | List, items: String | Required |  | Min Length: 2<br>Max Length: 2 | Physical interface names for each node.<br>Positional - first entry for the first node, second for the second.<br>These interfaces are also used as the tunnel source interface.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].tunnel.source_interfaces.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ips</samp>](## "core_interfaces.p2p_links.[].tunnel.source_ips") | List, items: String | Required |  | Min Length: 2<br>Max Length: 2 | IPv4 addresses on the source interfaces, one per node.<br>The tunnel destination is automatically derived from the peer's source IP (without mask).<br>The static route next-hop is derived from the local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ips</samp>](## "core_interfaces.p2p_links.[].tunnel.source_ips") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | IPv4 addresses on the source interfaces, one per node.<br>The tunnel destination is automatically derived from the peer's source IP (without mask).<br>The static route next-hop is derived from the local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).<br>Not required when `source_ip_pool` is set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].tunnel.source_ips.[]") | String |  |  |  | IPv4 address with mask (e.g., 10.0.0.0/31). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip_pool</samp>](## "core_interfaces.p2p_links.[].tunnel.source_ip_pool") | String |  |  |  | Name of an IP pool defined under `p2p_links_ip_pools`.<br>A /31 subnet will be taken from the pool per P2P link to assign source IPs.<br>Requires `id` to be set on the P2P link.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec_profile</samp>](## "core_interfaces.p2p_links.[].tunnel.ipsec_profile") | String |  |  |  | IPsec profile name. Only used when mode is 'ipsec'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_mtu_discovery</samp>](## "core_interfaces.p2p_links.[].tunnel.path_mtu_discovery") | Boolean |  |  |  | Enable Path MTU Discovery on the tunnel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_structured_config</samp>](## "core_interfaces.p2p_links.[].tunnel_structured_config") | Dictionary |  |  |  | Custom structured config for the tunnel interface. |
@@ -401,10 +403,16 @@
             # IPv4 addresses on the source interfaces, one per node.
             # The tunnel destination is automatically derived from the peer's source IP (without mask).
             # The static route next-hop is derived from the local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
-            source_ips: # 2-2 items; required
+            # Not required when `source_ip_pool` is set.
+            source_ips: # 2-2 items
 
                 # IPv4 address with mask (e.g., 10.0.0.0/31).
               - <str>
+
+            # Name of an IP pool defined under `p2p_links_ip_pools`.
+            # A /31 subnet will be taken from the pool per P2P link to assign source IPs.
+            # Requires `id` to be set on the P2P link.
+            source_ip_pool: <str>
 
             # IPsec profile name. Only used when mode is 'ipsec'.
             ipsec_profile: <str>
@@ -640,10 +648,16 @@
             # IPv4 addresses on the source interfaces, one per node.
             # The tunnel destination is automatically derived from the peer's source IP (without mask).
             # The static route next-hop is derived from the local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
-            source_ips: # 2-2 items; required
+            # Not required when `source_ip_pool` is set.
+            source_ips: # 2-2 items
 
                 # IPv4 address with mask (e.g., 10.0.0.0/31).
               - <str>
+
+            # Name of an IP pool defined under `p2p_links_ip_pools`.
+            # A /31 subnet will be taken from the pool per P2P link to assign source IPs.
+            # Requires `id` to be set on the P2P link.
+            source_ip_pool: <str>
 
             # IPsec profile name. Only used when mode is 'ipsec'.
             ipsec_profile: <str>

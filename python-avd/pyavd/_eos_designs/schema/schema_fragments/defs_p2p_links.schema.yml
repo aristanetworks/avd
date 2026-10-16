@@ -310,7 +310,6 @@ $defs:
                 These interfaces are also used as the tunnel source interface.
             source_ips:
               type: list
-              required: true
               min_length: 2
               max_length: 2
               items:
@@ -320,6 +319,13 @@ $defs:
                 IPv4 addresses on the source interfaces, one per node.
                 The tunnel destination is automatically derived from the peer's source IP (without mask).
                 The static route next-hop is derived from the local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                Not required when `source_ip_pool` is set.
+            source_ip_pool:
+              type: str
+              description: |
+                Name of an IP pool defined under `p2p_links_ip_pools`.
+                A /31 subnet will be taken from the pool per P2P link to assign source IPs.
+                Requires `id` to be set on the P2P link.
             ipsec_profile:
               type: str
               description: IPsec profile name. Only used when mode is 'ipsec'.
