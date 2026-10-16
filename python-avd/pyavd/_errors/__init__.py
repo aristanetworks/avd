@@ -17,6 +17,7 @@ if TYPE_CHECKING:
 
 class AristaAvdWarning(UserWarning):
     """Inherit Python Warning class for AVD."""
+
     def __init__(self, message: str, host: str | None = None) -> None:
         self.message = message
         self.host = host
@@ -36,6 +37,7 @@ class AristaAvdWarning(UserWarning):
         warning_instance = cls(message, host)
         # Raising it via warnings.warn triggers __str__ under the hood
         warnings.warn(warning_instance, category=cls, stacklevel=stacklevel)
+
 
 class AristaAvdError(Exception):
     host: str | None
