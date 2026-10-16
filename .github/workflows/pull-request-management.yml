@@ -619,10 +619,10 @@ jobs:
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           use_oidc: true
-          fail_ci_if_error: false
+          fail_ci_if_error: true
           disable_search: true
           files: reports/ansible-units/units-coverage.xml
-          flags: ansible_tests
+          flags: ansible_unit_tests
 
   upload_ansible_integration_coverage:
     name: Upload Ansible integration coverage to Codecov
@@ -649,22 +649,27 @@ jobs:
         id: coverage_reports
         run: |
           set -euo pipefail
-          shopt -s nullglob
-          reports=(reports/ansible-integration/integration-coverage-*.xml)
-          if (( ${#reports[@]} == 0 )); then
-            echo "::error::No Ansible integration coverage reports found"
-            exit 1
-          fi
+          # Keep these reports aligned with the ansible_test_integration matrix.
+          reports=(
+            reports/ansible-integration/integration-coverage-latest_stable.xml
+            reports/ansible-integration/integration-coverage-ansible_core_2_18.xml
+          )
+          for report in "${reports[@]}"; do
+            if [[ ! -s "$report" ]]; then
+              echo "::error::Missing or empty Ansible integration coverage report: $report"
+              exit 1
+            fi
+          done
           printf -v files '%s,' "${reports[@]}"
           echo "files=${files%,}" >> "$GITHUB_OUTPUT"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           use_oidc: true
-          fail_ci_if_error: false
+          fail_ci_if_error: true
           disable_search: true
           files: ${{ steps.coverage_reports.outputs.files }}
-          flags: ansible_tests
+          flags: ansible_integration_tests
 
   # ----------------------------------- #
   # Build Collection
@@ -1083,7 +1088,7 @@ jobs:
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           use_oidc: true
-          fail_ci_if_error: false
+          fail_ci_if_error: true
           disable_search: true
           files: reports/pyavd/pyavd-tests.xml
           flags: pyavd_tests
@@ -1092,7 +1097,7 @@ jobs:
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           use_oidc: true
-          fail_ci_if_error: false
+          fail_ci_if_error: true
           disable_search: true
           files: reports/pyavd/e2e-tests.xml
           flags: e2e_tests

@@ -11,7 +11,11 @@ flags:
     paths:
       - "python-avd/pyavd/"
     carryforward: true
-  ansible_tests:
+  ansible_unit_tests:
+    paths:
+      - "ansible_collections/arista/avd/plugins/"
+    carryforward: false
+  ansible_integration_tests:
     paths:
       - "ansible_collections/arista/avd/plugins/"
     carryforward: false
@@ -43,7 +47,8 @@ coverage:
         paths:
           - "ansible_collections/arista/avd/plugins/"
         flags:
-          - ansible_tests
+          - ansible_unit_tests
+          - ansible_integration_tests
     patch:
       default:
         target: 80%
