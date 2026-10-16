@@ -10,8 +10,6 @@ keys:
     documentation_options:
       table: system-settings
     type: int
-    convert_types:
-      - str
     description: |
       Default interface MTU configured on EOS under "interface defaults".
       Can be overridden per platform under platform settings.

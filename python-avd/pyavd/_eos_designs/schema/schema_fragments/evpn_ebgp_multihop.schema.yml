@@ -13,6 +13,4 @@ keys:
       Default of 3, the recommended value for a 3 stage spine and leaf topology.
       Set to a higher value to allow for very large and complex topologies.
     type: int
-    convert_types:
-      - str
     default: 3
