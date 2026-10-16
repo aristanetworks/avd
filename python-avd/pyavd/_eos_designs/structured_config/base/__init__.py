@@ -137,7 +137,16 @@ class AvdStructuredConfigBaseProtocol(
 
         if self.inputs.underlay_rfc5549 or self.shared_utils.underlay_ipv6:
             self.structured_config.ipv6_unicast_routing = True
-        if self.inputs.underlay_rfc5549:
+        # With the shared peer group, IPv4 is also activated on the MLAG underlay neighbor in the default VRF,
+        # so IPv4 routes received with IPv6 next hops require 'ip routing ipv6 interfaces' globally.
+        mlag_ipv4_over_ipv6_numbered = (
+            self.inputs.avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families
+            and self.inputs.overlay_mlag_rfc5549
+            and self.shared_utils.mlag_l3
+            and self.shared_utils.underlay_ipv6_numbered
+            and not self.shared_utils.use_separate_peer_group_for_mlag_vrfs
+        )
+        if self.inputs.underlay_rfc5549 or mlag_ipv4_over_ipv6_numbered:
             self.structured_config.ip_routing_ipv6_interfaces = True
         else:
             self.structured_config.ip_routing = True
