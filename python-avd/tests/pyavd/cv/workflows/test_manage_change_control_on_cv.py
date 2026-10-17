@@ -17,6 +17,7 @@ from .helpers import DEFAULT_TIMESTAMP, create_grpc_change_control
     ("status", "approved", "error", "expected_state"),
     [
         pytest.param(ChangeControlStatus.NOT_STARTED, False, None, "pending approval", id="not_started_unapproved"),
+        pytest.param(ChangeControlStatus.NOT_STARTED, None, None, "pending approval", id="not_started_approval_unset"),
         pytest.param(ChangeControlStatus.NOT_STARTED, True, None, "approved", id="not_started_approved"),
         pytest.param(ChangeControlStatus.NOT_STARTED, True, "CloudVision error", "approved", id="not_started_with_error"),
         pytest.param(ChangeControlStatus.SCHEDULED, True, None, "scheduled", id="scheduled"),
@@ -33,7 +34,7 @@ from .helpers import DEFAULT_TIMESTAMP, create_grpc_change_control
 )
 def test_get_managed_change_control_state(
     status: ChangeControlStatus,
-    approved: bool,
+    approved: bool | None,
     error: str | None,
     expected_state: str,
 ) -> None:
