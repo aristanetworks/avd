@@ -14,9 +14,10 @@ if TYPE_CHECKING:
     from .models import CVChangeControl, CVDeviceDeployment, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
 
 
-async def update_change_control_details_on_cv(change_control: CVChangeControl, cv_client: CVClient) -> tuple[ChangeControl, bool]:
+async def update_change_control_details_on_cv(
+    change_control: CVChangeControl, cv_change_control: ChangeControl, cv_client: CVClient
+) -> tuple[ChangeControl, bool]:
     """Update Change Control details when needed and return the current CloudVision object and change status."""
-    cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
     changed = False
 
     if change_control.name is None:

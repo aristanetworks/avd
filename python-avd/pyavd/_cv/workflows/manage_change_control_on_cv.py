@@ -52,6 +52,26 @@ def get_managed_change_control_state(cv_change_control: ChangeControl, *, approv
     return CHANGE_CONTROL_STATUS_TO_STATE_MAP[cv_change_control.status] or approval_state or "pending approval"
 
 
+def is_change_control_execution_complete(change_control: CVChangeControl, cv_change_control: ChangeControl) -> bool:
+    """Return whether the Change Control execution is complete for a requested running or completed state."""
+    return change_control.requested_state in {"completed", "running"} and cv_change_control.status == ChangeControlStatus.COMPLETED
+
+
+def validate_change_control_transition(change_control: CVChangeControl, cv_change_control: ChangeControl) -> None:
+    """Update the Change Control state and validate its requested transition."""
+    change_control.state = get_managed_change_control_state(cv_change_control)
+
+    # TODO: Add support for stopping, unscheduling, rolling back, and deleting a Change Control
+    # Change Control that has already entered execution state can't be moved back
+    if change_control.requested_state in {"pending approval", "approved"} and cv_change_control.status in CHANGE_CONTROL_EXECUTION_STATUSES:
+        msg = f"Change Control '{change_control.id}' is in '{change_control.state}' state and cannot be moved to '{change_control.requested_state}'."
+        raise CVChangeControlFailed(msg)
+
+    if is_change_control_execution_complete(change_control, cv_change_control) and cv_change_control.error is not None:
+        msg = f"Change Control '{change_control.id}' was already completed with errors before this workflow ran: {cv_change_control.error}"
+        raise CVChangeControlFailed(msg)
+
+
 async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client: CVClient) -> None:
     """Manage an existing Change Control on CloudVision and update the CVChangeControl object in place."""
     LOGGER.info("manage_change_control_on_cv: %s", change_control)
@@ -64,24 +84,19 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
 
     # Fetch the current state of the CloudVision Change Control without performing any mutations
     cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
-    change_control.state = get_managed_change_control_state(cv_change_control)
+    validate_change_control_transition(change_control, cv_change_control)
     LOGGER.info("manage_change_control_on_cv: %s", change_control)
-
-    # TODO: Add support for stopping, unscheduling, rolling back, and deleting a Change Control
-    # Change Control that has already entered execution state can't be moved back
-    if change_control.requested_state in {"pending approval", "approved"} and cv_change_control.status in CHANGE_CONTROL_EXECUTION_STATUSES:
-        msg = f"Change Control '{change_control.id}' is in '{change_control.state}' state and cannot be moved to '{change_control.requested_state}'."
-        raise CVChangeControlFailed(msg)
-
-    if change_control.requested_state in {"completed", "running"} and cv_change_control.status == ChangeControlStatus.COMPLETED:
-        if cv_change_control.error is not None:
-            msg = f"Change Control '{change_control.id}' was already completed with errors before this workflow ran: {cv_change_control.error}"
-            raise CVChangeControlFailed(msg)
+    if is_change_control_execution_complete(change_control, cv_change_control):
         return
 
-    # Update name/description on CloudVision if needed. Then re-fetch to get the latest timestamp for approval
-    cv_change_control, change_control.changed = await update_change_control_details_on_cv(change_control, cv_client)
-    change_control.state = get_managed_change_control_state(cv_change_control)
+    # Update name/description on CloudVision if needed. Re-check the transition after a details update refreshes the Change Control
+    cv_change_control, details_changed = await update_change_control_details_on_cv(change_control, cv_change_control, cv_client)
+    change_control.changed = details_changed
+    if details_changed:
+        validate_change_control_transition(change_control, cv_change_control)
+        LOGGER.info("manage_change_control_on_cv: %s", change_control)
+        if is_change_control_execution_complete(change_control, cv_change_control):
+            return
 
     if change_control.requested_state == "pending approval":
         if cv_change_control.approve.value:

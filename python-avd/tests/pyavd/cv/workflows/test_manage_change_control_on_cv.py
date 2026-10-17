@@ -67,7 +67,7 @@ def test_get_managed_change_control_state_rejects_unknown_status(approved: bool,
 @pytest.mark.asyncio
 async def test_manage_rejects_unknown_status_after_refreshing_change_control(mock_cv_client: MagicMock) -> None:
     """Test that an unknown status received during the details refresh prevents lifecycle mutations."""
-    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="running"))
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", name="Updated CC", requested_state="running"))
     cv_cc_unknown = create_grpc_change_control(status=ChangeControlStatus.try_value(99))
     cv_cc_unknown.key.id = "cc_id_1"
     mock_cv_client.get_change_control.side_effect = [create_grpc_change_control(), cv_cc_unknown]
@@ -78,10 +78,63 @@ async def test_manage_rejects_unknown_status_after_refreshing_change_control(moc
     ):
         await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
 
-    mock_cv_client.set_change_control.assert_not_called()
+    mock_cv_client.set_change_control.assert_called_once_with(change_control_id="cc_id_1", name="Updated CC", description="Test Notes")
     mock_cv_client.approve_change_control.assert_not_called()
     mock_cv_client.start_change_control.assert_not_called()
-    assert local_cc.changed is False
+    assert local_cc.changed is True
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "requested_state",
+    [pytest.param("pending approval", id="pending_approval"), pytest.param("approved", id="approved")],
+)
+async def test_manage_rejects_transition_when_change_control_completes_after_details_update(mock_cv_client: MagicMock, requested_state: str) -> None:
+    """Test that a completed Change Control refreshed after a details update cannot move back to a pre-execution state."""
+    local_cc = CVChangeControl(
+        avd_change_control=AvdChangeControl(id="cc_id_1", name="Updated CC", requested_state=requested_state),
+    )
+    mock_cv_client.get_change_control.side_effect = [
+        create_grpc_change_control(status=ChangeControlStatus.NOT_STARTED, approved=True),
+        create_grpc_change_control(status=ChangeControlStatus.COMPLETED, approved=True, name="Updated CC"),
+    ]
+
+    with pytest.raises(
+        CVChangeControlFailed,
+        match=rf"Change Control 'cc_id_1' is in 'completed' state and cannot be moved to '{requested_state}'\.",
+    ):
+        await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.set_change_control.assert_called_once_with(change_control_id="cc_id_1", name="Updated CC", description="Test Notes")
+    mock_cv_client.unapprove_change_control.assert_not_called()
+    mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.start_change_control.assert_not_called()
+    assert local_cc.changed is True
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "requested_state",
+    [pytest.param("running", id="running"), pytest.param("completed", id="completed")],
+)
+async def test_manage_does_not_run_change_control_when_it_completes_after_details_update(mock_cv_client: MagicMock, requested_state: str) -> None:
+    """Test that a completed Change Control refreshed after a details update is not run again."""
+    local_cc = CVChangeControl(
+        avd_change_control=AvdChangeControl(id="cc_id_1", name="Updated CC", requested_state=requested_state),
+    )
+    mock_cv_client.get_change_control.side_effect = [
+        create_grpc_change_control(status=ChangeControlStatus.NOT_STARTED, approved=True),
+        create_grpc_change_control(status=ChangeControlStatus.COMPLETED, approved=True, name="Updated CC"),
+    ]
+
+    await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.set_change_control.assert_called_once_with(change_control_id="cc_id_1", name="Updated CC", description="Test Notes")
+    mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.start_change_control.assert_not_called()
+    mock_cv_client.wait_for_change_control_state.assert_not_called()
+    assert local_cc.state == "completed"
+    assert local_cc.changed is True
 
 
 @pytest.mark.asyncio
@@ -94,6 +147,7 @@ async def test_manage_running_with_custom_notes(mock_cv_client: MagicMock) -> No
 
     await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
 
+    mock_cv_client.get_change_control.assert_called_once_with(change_control_id="cc_id_1")
     mock_cv_client.approve_change_control.assert_called_once_with(change_control_id="cc_id_1", timestamp=DEFAULT_TIMESTAMP, description="Approved by operator")
     mock_cv_client.start_change_control.assert_called_once_with(change_control_id="cc_id_1", description="Started by operator")
 
