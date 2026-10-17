@@ -136,6 +136,8 @@ def test_deploy_converts_successful_deployment_to_ansible_result(
     pathfinder_metadata = MagicMock(name="pathfinder_metadata")
     static_manifest = MagicMock(name="static_manifest")
     cloudvision = MagicMock(proxy_password="proxy-secret")  # noqa: S106 - deliberate redaction test value
+    change_control = MagicMock()
+    change_control.id = None
     result_object = _make_deploy_result_mock(
         errors=[ValueError("cv-error")],
         warnings=[RuntimeError("cv-warning")],
@@ -151,7 +153,7 @@ def test_deploy_converts_successful_deployment_to_ansible_result(
         patch(f"{MODULE_PATH}.CVGRPCKeepalives", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.AvdManifest.from_dict", return_value=static_manifest),
         patch(f"{MODULE_PATH}.AvdWorkspaceBuildWarningsConfig.from_dict", return_value=MagicMock()),
-        patch(f"{MODULE_PATH}.CVChangeControl", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.CVChangeControl", return_value=change_control),
         patch(f"{MODULE_PATH}.AvdChangeControl", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.CVTimeOuts", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.CVWorkspace", return_value=MagicMock()),
