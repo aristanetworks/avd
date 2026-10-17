@@ -14,6 +14,12 @@ if TYPE_CHECKING:
     from .models import CVChangeControl, CVDeviceDeployment, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
 
 
+def set_change_control_details_from_cv(change_control: CVChangeControl, cv_change_control: ChangeControl) -> None:
+    """Set local Change Control details from CloudVision Change Control."""
+    change_control.name = cv_change_control.change.name
+    change_control.description = cv_change_control.change.notes
+
+
 async def update_change_control_details_on_cv(
     change_control: CVChangeControl, cv_change_control: ChangeControl, cv_client: CVClient
 ) -> tuple[ChangeControl, bool]:

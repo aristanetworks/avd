@@ -416,6 +416,36 @@ async def test_manage_running_completed_successfully_is_idempotent(mock_cv_clien
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("name", "description"),
+    [
+        pytest.param(None, None, id="no_requested_details"),
+        pytest.param("AVD CC name", "AVD CC description", id="requested_details_differ_from_cloudvision"),
+    ],
+)
+async def test_manage_completed_change_control_returns_remote_details(mock_cv_client: MagicMock, name: str | None, description: str | None) -> None:
+    """Test that a completed Change Control result contains its actual CloudVision details."""
+    local_cc = CVChangeControl(
+        avd_change_control=AvdChangeControl(id="cc_id_1", name=name, description=description, requested_state="completed"),
+    )
+    mock_cv_client.get_change_control.return_value = create_grpc_change_control(
+        status=ChangeControlStatus.COMPLETED,
+        approved=True,
+        name="CV CC name",
+        notes="CV CC description",
+    )
+
+    await manage_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
+
+    mock_cv_client.set_change_control.assert_not_called()
+    mock_cv_client.approve_change_control.assert_not_called()
+    mock_cv_client.start_change_control.assert_not_called()
+    assert local_cc.get_result()["name"] == "CV CC name"
+    assert local_cc.get_result()["description"] == "CV CC description"
+    assert local_cc.changed is False
+
+
+@pytest.mark.asyncio
 async def test_manage_running_completed_with_errors_raises(mock_cv_client: MagicMock) -> None:
     """Test that requesting 'running' for a Change Control that completed with errors raises without retrying."""
     local_cc = CVChangeControl(avd_change_control=AvdChangeControl(id="cc_id_1", requested_state="running"))

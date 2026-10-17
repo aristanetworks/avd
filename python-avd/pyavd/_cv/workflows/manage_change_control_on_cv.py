@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
 from pyavd._cv.client.exceptions import CVChangeControlFailed, CVInvalidInputsError, CVResourceInvalidState
 
-from .utils import update_change_control_details_on_cv
+from .utils import set_change_control_details_from_cv, update_change_control_details_on_cv
 
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
@@ -85,18 +85,22 @@ async def manage_change_control_on_cv(change_control: CVChangeControl, cv_client
     # Fetch the current state of the CloudVision Change Control without performing any mutations
     cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
     validate_change_control_transition(change_control, cv_change_control)
-    LOGGER.info("manage_change_control_on_cv: %s", change_control)
     if is_change_control_execution_complete(change_control, cv_change_control):
+        set_change_control_details_from_cv(change_control, cv_change_control)
+        LOGGER.info("manage_change_control_on_cv: %s", change_control)
         return
+    LOGGER.info("manage_change_control_on_cv: %s", change_control)
 
     # Update name/description on CloudVision if needed. Re-check the transition after a details update refreshes the Change Control
     cv_change_control, details_changed = await update_change_control_details_on_cv(change_control, cv_change_control, cv_client)
     change_control.changed = details_changed
     if details_changed:
         validate_change_control_transition(change_control, cv_change_control)
-        LOGGER.info("manage_change_control_on_cv: %s", change_control)
         if is_change_control_execution_complete(change_control, cv_change_control):
+            set_change_control_details_from_cv(change_control, cv_change_control)
+            LOGGER.info("manage_change_control_on_cv: %s", change_control)
             return
+        LOGGER.info("manage_change_control_on_cv: %s", change_control)
 
     if change_control.requested_state == "pending approval":
         if cv_change_control.approve.value:
