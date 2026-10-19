@@ -32,8 +32,6 @@ keys:
           Serial Number of the device.
           Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
         type: str
-        convert_types:
-          - int
       validate_hardware:
         type: dict
         description: |-
@@ -246,8 +244,6 @@ keys:
                             type: int
                           lossrate:
                             type: str
-                            convert_types:
-                              - float
                           hop_count:
                             type: str
                       description:
@@ -347,15 +343,9 @@ keys:
                             required: true
                           latitude:
                             type: str
-                            convert_types:
-                              - float
-                              - int
                             required: true
                           longitude:
                             type: str
-                            convert_types:
-                              - float
-                              - int
                             required: true
           applications:
             type: dict
@@ -472,8 +462,6 @@ keys:
               - `act`: Applies only to `veos` and `cloudeos` node types.
       validate_no_errors_period:
         type: int
-        convert_types:
-          - str
         description: Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role.
       exclude_as_extra_fabric_validation_target:
         type: bool
@@ -503,5 +491,4 @@ keys:
             description: Flag to check if the TCP session queues are empty for all BGP peers.
           minimum_established_time:
             type: int
-            convert_types: [str]
             description: Minimum established time (seconds) for all BGP sessions.

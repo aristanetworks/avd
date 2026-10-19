@@ -395,6 +395,6 @@
 
         ```yaml
         transceiver_manufacturers:
-        - Arista Networks
-        - Arastra, Inc.
+          - Arista Networks
+          - "Arastra, Inc."
         ```
