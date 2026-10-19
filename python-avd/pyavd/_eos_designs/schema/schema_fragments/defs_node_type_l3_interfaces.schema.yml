@@ -54,8 +54,6 @@ $defs:
         encapsulation_dot1q_vlan:
           description: For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
           type: int
-          convert_types:
-            - str
           min: 1
           max: 4094
         dhcp_accept_default_route:
@@ -76,8 +74,6 @@ $defs:
             This is currently used on CVaaS to provide more information in the visualization.
           min: 1
           max: 4294967295
-          convert_types:
-            - str
         transmit_bandwidth:
           type: int
           description: |-
@@ -85,8 +81,6 @@ $defs:
             This is currently used on CVaaS to provide more information in the visualization.
           min: 1
           max: 4294967295
-          convert_types:
-            - str
         peer:
           type: str
           description: |-
@@ -113,8 +107,6 @@ $defs:
             peer_as:
               type: str
               required: true
-              convert_types:
-                - int
               description: 'BGP AS <1-4294967295> or AS number in asdot notation
                 "<1-65535>.<0-65535>".
 
@@ -151,16 +143,12 @@ $defs:
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.
             Mutually exclusive with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is needed, setting both raises an error.
           type: str
-          convert_types:
-            - int
         ipv4_acl_out:
           description: |-
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             Mutually exclusive with `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is needed, setting both raises an error.
           type: str
-          convert_types:
-            - int
         ipv4_standard_acl_in:
           description: |-
             Name of the IPv4 standard access-list to be assigned in the ingress direction.
@@ -179,16 +167,12 @@ $defs:
             The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
             Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
           type: str
-          convert_types:
-            - int
         ipv6_acl_out:
           description: |-
             Name of the IPv6 Access-list to be assigned in the egress direction.
             The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
             Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
           type: str
-          convert_types:
-            - int
         static_routes:
           description: Configure IPv4 static routes pointing to `peer_ip`.
           type: list
@@ -211,8 +195,6 @@ $defs:
             Unless the carrier is marked as 'trusted' under `wan_carriers`, `ipv4_acl_in` is also required on all WAN interfaces.
         wan_circuit_id:
           type: str
-          convert_types:
-            - int
           description: |-
             The WAN circuit ID for this interface.
             This is not rendered in the configuration but used for WAN designs.

@@ -22,8 +22,6 @@ keys:
           keys:
             name:
               type: str
-              convert_types:
-                - int
               description: VRF name.
             policy:
               type: str
@@ -44,8 +42,6 @@ keys:
               # 2. This is used in the WAN metadata for pathfinder nodes to pick
               #    up WAN VRFs and their VNI.
               type: int
-              convert_types:
-                - str
               min: 1
               max: 255
               required: true

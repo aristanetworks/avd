@@ -191,7 +191,7 @@ def _flatten(
             doc_table = key_name.replace("<", "").replace(">", "").replace("_", "-")
 
         constraints: dict = {}
-        for k in ("valid_values", "min", "max", "min_length", "max_length", "pattern", "format", "convert_types"):
+        for k in ("valid_values", "min", "max", "min_length", "max_length", "pattern", "format"):
             if k in props:
                 constraints[k] = props[k]
         items = props.get("items")
@@ -199,7 +199,7 @@ def _flatten(
             item_constraints = {}
             if items.get("type"):
                 item_constraints["type"] = items["type"]
-            for k in ("valid_values", "min", "max", "min_length", "max_length", "pattern", "format", "convert_types"):
+            for k in ("valid_values", "min", "max", "min_length", "max_length", "pattern", "format"):
                 if k in items:
                     item_constraints[k] = items[k]
             if item_constraints:

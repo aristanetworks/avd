@@ -21,5 +21,3 @@ keys:
                 Source Interface.
             vrf:
               type: str
-              convert_types:
-                - int
