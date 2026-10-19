@@ -585,6 +585,11 @@ class AvdStructuredConfigBaseProtocol(
         """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
         return self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
+    @cached_property
+    def _act_ensure_ssh_access(self) -> bool:
+        """Flag indicating if we are in ACT Digital Twin mode and if SSH access in default VRF is enforced."""
+        return self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.act_ensure_ssh_access
+
     @structured_config_contributor
     def management_settings(self) -> None:
         """Configures management settings based on the input data model."""

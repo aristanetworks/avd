@@ -16,6 +16,7 @@ from ansible_collections.arista.avd.plugins.action.eos_designs_structured_config
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+    from pathlib import Path
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.eos_designs_structured_config"
 MOCK_TMP_DIR = "/avd/mocked/tmp"
@@ -234,6 +235,35 @@ def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[
         ),
     ):
         module.load_validated_inputs(MOCK_HOSTNAME)
+
+
+def test_load_validated_inputs_retains_lazy_hostvars(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Raw hostvars are not reloaded after constructing AVDDesign until a consumer accesses them."""
+    module = action_module(ActionModule)
+    module.tmp_dir = MOCK_TMP_DIR
+    validated_path = tmp_path / "validated"
+    validated_path.mkdir()
+    file_path = validated_path / f"{MOCK_HOSTNAME}.json"
+    file_path.touch()
+    raw_hostvars = {"custom_key": "custom_value"}
+    avd_design = MagicMock()
+    file_handler = MagicMock()
+    file_handler.load_json.return_value = raw_hostvars
+
+    with (
+        patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(MagicMock(), validated_path)),
+        patch(f"{MODULE_PATH}.AVDVaultHandler"),
+        patch(f"{MODULE_PATH}.AVDFileHandler", return_value=file_handler),
+        patch(f"{MODULE_PATH}.AVDDesign._from_dict", return_value=avd_design) as from_dict,
+    ):
+        loaded_avd_design, host_hostvars = module.load_validated_inputs(MOCK_HOSTNAME)
+
+    assert loaded_avd_design is avd_design
+    from_dict.assert_called_once_with(raw_hostvars)
+    file_handler.load_json.assert_called_once_with(file_path)
+
+    assert host_hostvars["custom_key"] == "custom_value"
+    assert file_handler.load_json.call_count == 2
 
 
 def test_load_facts_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:

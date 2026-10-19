@@ -13,8 +13,6 @@ keys:
         type: bool
       interval:
         type: int
-        convert_types:
-          - str
       interface_sets:
         type: list
         primary_key: name
@@ -67,8 +65,6 @@ keys:
             icmp_echo_size:
               type: int
               description: Size of ICMP probe in bytes.
-              convert_types:
-                - str
               min: 36
               max: 18024
             local_interfaces:
@@ -96,8 +92,6 @@ keys:
             name:
               description: VRF Name.
               type: str
-              convert_types:
-                - int
             description:
               type: str
               description: |-
@@ -160,8 +154,6 @@ keys:
                   icmp_echo_size:
                     type: int
                     description: Size of ICMP probe in bytes.
-                    convert_types:
-                      - str
                     min: 36
                     max: 18024
                   local_interfaces:

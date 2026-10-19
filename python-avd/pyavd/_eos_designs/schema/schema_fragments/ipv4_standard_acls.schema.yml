@@ -19,7 +19,6 @@ keys:
         name:
           type: str
           description: Access-list Name.
-          convert_types: [int]
         counters_per_entry:
           type: bool
         entries:
@@ -30,8 +29,6 @@ keys:
               sequence:
                 type: int
                 description: Sequence ID.
-                convert_types:
-                  - str
               action:
                 type: str
                 description: |
@@ -52,8 +49,6 @@ keys:
               vlan:
                 type: int
                 description: Match packets by VLAN value.
-                convert_types:
-                  - str
               vlan_mask:
                 type: str
                 description: |-
@@ -63,8 +58,6 @@ keys:
               inner_vlan:
                 type: int
                 description: Match packets by inner VLAN value.
-                convert_types:
-                  - str
               inner_vlan_mask:
                 type: str
                 description: |-

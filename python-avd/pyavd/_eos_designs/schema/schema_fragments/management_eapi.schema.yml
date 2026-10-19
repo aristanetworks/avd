@@ -41,8 +41,6 @@ keys:
                   An error will be raised if inband management is not configured for the device.
                 - `use_default_mgmt_method_vrf` will configure the eAPI under VRF for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
-              convert_types:
-                - int
             enabled:
               type: bool
               required: true
@@ -56,8 +54,6 @@ keys:
                 Otherwise, no catalog entry is required.
                 Mutually exclusive with `ipv4_standard_acl`.
                 Field substitution is not supported for eAPI references.
-              convert_types:
-                - int
             ipv4_standard_acl:
               type: str
               description: |-
@@ -66,5 +62,3 @@ keys:
             ipv6_acl:
               type: str
               description: IPv6 access-list name.
-              convert_types:
-                - int

@@ -26,8 +26,6 @@ keys:
         description: |-
           User session timeout value in minutes.
           EOS default is 1440 minutes.
-        convert_types:
-          - str
         min: 1
         max: 1440
       enable_vrfs:
@@ -39,8 +37,6 @@ keys:
             name:
               description: VRF Name.
               type: str
-              convert_types:
-                - int
             access_group:
               description: IPv4 standard or extended ACL name.
               type: str
