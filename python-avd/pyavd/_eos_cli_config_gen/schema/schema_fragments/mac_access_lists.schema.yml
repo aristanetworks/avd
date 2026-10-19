@@ -15,7 +15,6 @@ keys:
         name:
           type: str
           description: MAC Access-list Name.
-          convert_types: [ int ]
         counters_per_entry:
           type: bool
         entries:
@@ -25,8 +24,6 @@ keys:
             keys:
               sequence:
                 type: int
-                convert_types:
-                  - str
               action:
                 type: str
                 required: true

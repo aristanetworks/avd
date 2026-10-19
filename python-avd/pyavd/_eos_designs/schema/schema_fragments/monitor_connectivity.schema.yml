@@ -15,8 +15,6 @@ keys:
         # TODO: AVD7.0 add min/max value(5 - 65535).
         # EOS CLI shows 1-65535 but all values less than 5 are auto-converted to 5 seconds.
         type: int
-        convert_types:
-          - str
       interface_sets:
         type: list
         primary_key: name
@@ -70,8 +68,6 @@ keys:
             icmp_echo_size:
               type: int
               description: Size of ICMP probe in bytes.
-              convert_types:
-                - str
               min: 36
               max: 18024
             local_interfaces:
@@ -97,8 +93,6 @@ keys:
             name:
               description: VRF Name.
               type: str
-              convert_types:
-                - int
             description:
               type: str
               description: |-
@@ -165,8 +159,6 @@ keys:
                   icmp_echo_size:
                     type: int
                     description: Size of ICMP probe in bytes.
-                    convert_types:
-                      - str
                     min: 36
                     max: 18024
                   local_interfaces:
