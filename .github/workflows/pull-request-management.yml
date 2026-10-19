@@ -578,13 +578,13 @@ jobs:
           fi
       - name: Upload coverage from ansible-test units
         if: ${{ !cancelled() && steps.coverage.outcome == 'success' && matrix.python_version == '3.12' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ansible-test-units-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}
           path: ansible_collections/arista/avd/units-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}.xml
       - name: Upload coverage from ansible-test integration
         if: ${{ !cancelled() && steps.coverage.outcome == 'success' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ansible-test-integration-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}
           path: ansible_collections/arista/avd/integration-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}.xml
@@ -634,7 +634,7 @@ jobs:
         run: |
           ansible-galaxy collection build -vvv --force ansible_collections/arista/avd
       - name: Upload collection
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: avd-collection
           path: ./arista-avd-*.tar.gz
@@ -669,7 +669,7 @@ jobs:
           pip install "galaxy-importer==0.4.31"
       - name: Run galaxy-importer checks
         run: python -m galaxy_importer.main *.tar.gz
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: importer-logs
           path: ./importer_result.json
@@ -846,7 +846,7 @@ jobs:
       - name: Prepare end-to-end coverage data
         run: mv .coverage coverage-End-to-End-$JOB_INDEX.dat
       - name: Upload end-to-end coverage data
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-data-End-to-End-${{ strategy.job-index }}
           path: coverage-End-to-End-${{ strategy.job-index }}.dat
@@ -890,7 +890,7 @@ jobs:
           mv .coverage coverage-PyAVD.dat
       - name: Upload pytest coverage data
         if: matrix.python == '3.12'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-data-PyAVD
           path: coverage-PyAVD.dat
@@ -927,7 +927,7 @@ jobs:
           coverage report
           coverage xml
       - name: Upload pytest coverage report
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pytest-coverage
           path: coverage.xml
