@@ -380,6 +380,16 @@ interface {{ port_channel_interface.name }}
 {%         endif %}
    {{ ipv6_nd_prefix_cli }}
 {%     endfor %}
+{%     if port_channel_interface.ipv6_nd.ra.dns_servers_lifetime is arista.avd.defined %}
+   ipv6 nd ra dns-servers lifetime {{ port_channel_interface.ipv6_nd.ra.dns_servers_lifetime }}
+{%     endif %}
+{%     for dns_server in port_channel_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort(sort_key="address") %}
+{%         set ra_dns_server = "ipv6 nd ra dns-server " ~ dns_server.address %}
+{%         if dns_server.lifetime is arista.avd.defined %}
+{%             set ra_dns_server = ra_dns_server ~ " lifetime " ~ dns_server.lifetime %}
+{%         endif %}
+   {{ ra_dns_server }}
+{%     endfor %}
 {%     if port_channel_interface.access_group_in is arista.avd.defined %}
    ip access-group {{ port_channel_interface.access_group_in }} in
 {%     endif %}
@@ -416,10 +426,20 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.lacp_id is arista.avd.defined %}
    lacp system-id {{ port_channel_interface.lacp_id }}
 {%     endif %}
-{%     if port_channel_interface.address_locking.address_family.ipv4 is arista.avd.defined(false) %}
+{%     if port_channel_interface.address_locking.address_family.ipv4 is arista.avd.defined(false) or port_channel_interface.address_locking.address_family.ipv6 is arista.avd.defined(false) %}
    !
    address locking
+{%         if port_channel_interface.address_locking.address_family.ipv4 is arista.avd.defined(false) %}
       address-family ipv4 disabled
+{%         endif %}
+{%         if port_channel_interface.address_locking.address_family.ipv6 is arista.avd.defined(false) %}
+      address-family ipv6 disabled
+{%         endif %}
+{%     endif %}
+{%     if port_channel_interface.loop_protection is arista.avd.defined(false) %}
+   no loop-protection
+{%     elif port_channel_interface.loop_protection is arista.avd.defined(true) %}
+   loop-protection
 {%     endif %}
 {%     if port_channel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
    mpls ldp igp sync
@@ -500,6 +520,25 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.pim.ipv4.bfd is arista.avd.defined(true) %}
    pim ipv4 bfd
 {%     endif %}
+{# TODO: AVD 7.0.0 Revisit multicast model to support combined ACL and prefix-range boundaries per address-family #}
+{%     if port_channel_interface.multicast.ipv4 is arista.avd.defined or port_channel_interface.multicast.ipv6 is arista.avd.defined %}
+{%         for boundary in port_channel_interface.multicast.ipv4.boundaries | arista.avd.default([]) %}
+{%             set boundary_cli = "multicast ipv4 boundary " ~ boundary.boundary %}
+{%             if boundary.out is arista.avd.defined(true) %}
+{%                 set boundary_cli = boundary_cli ~ " out" %}
+{%             endif %}
+   {{ boundary_cli }}
+{%         endfor %}
+{%         for boundary in port_channel_interface.multicast.ipv6.boundaries | arista.avd.default([]) %}
+   multicast ipv6 boundary {{ boundary.boundary }} out
+{%         endfor %}
+{%         if port_channel_interface.multicast.ipv4.static is arista.avd.defined(true) %}
+   multicast ipv4 static
+{%         endif %}
+{%         if port_channel_interface.multicast.ipv6.static is arista.avd.defined(true) %}
+   multicast ipv6 static
+{%         endif %}
+{%     endif %}
 {%     if port_channel_interface.switchport.port_security is arista.avd.defined %}
 {%         if port_channel_interface.switchport.port_security.enabled is arista.avd.defined(true) or port_channel_interface.switchport.port_security.violation.mode is arista.avd.defined('shutdown') %}
    switchport port-security
@@ -538,6 +577,11 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ptp.enable is arista.avd.defined(true) %}
    ptp enable
 {%     endif %}
+{%     if port_channel_interface.ptp.management.drop is arista.avd.defined(true) %}
+   ptp management drop
+{%     elif port_channel_interface.ptp.management.drop is arista.avd.defined(false) %}
+   no ptp management drop
+{%     endif %}
 {%     if port_channel_interface.ptp.mpass is arista.avd.defined(true) %}
    ptp mpass
 {%     endif %}
@@ -567,6 +611,9 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.ptp.vlan is arista.avd.defined %}
    ptp vlan {{ port_channel_interface.ptp.vlan }}
+{%     endif %}
+{%     if port_channel_interface.ptp.region.domain_number is arista.avd.defined %}
+   ptp region domain-number {{ port_channel_interface.ptp.region.domain_number }}
 {%     endif %}
 {%     if port_channel_interface.service_policy.qos.input is arista.avd.defined %}
    service-policy type qos input {{ port_channel_interface.service_policy.qos.input }}
@@ -741,7 +788,11 @@ interface {{ port_channel_interface.name }}
    no logging event storm-control discards
 {%     endif %}
 {%     if port_channel_interface.spanning_tree_portfast is arista.avd.defined("edge") %}
+{%         if eos_config_future.render_spanning_tree_portfast_edge is arista.avd.defined(true) %}
+   spanning-tree portfast edge
+{%         else %}
    spanning-tree portfast
+{%         endif %}
 {%     elif port_channel_interface.spanning_tree_portfast is arista.avd.defined("network") %}
    spanning-tree portfast network
 {%     endif %}
@@ -916,6 +967,9 @@ interface {{ port_channel_interface.name }}
    traffic-engineering min-delay static {{ port_channel_interface.traffic_engineering.min_delay_static.number }} {{ port_channel_interface.traffic_engineering.min_delay_static.unit }}
 {%     elif port_channel_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback is arista.avd.defined %}
    traffic-engineering min-delay dynamic twamp-light fallback {{ port_channel_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.number }} {{ port_channel_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.unit }}
+{%     endif %}
+{%     if port_channel_interface.cpu_traffic_policy_fallback_vrf is arista.avd.defined %}
+   cpu traffic-policy {{ port_channel_interface.cpu_traffic_policy_fallback_vrf }} fallback traffic-policy vrf
 {%     endif %}
 {%     for link_tracking_group in port_channel_interface.link_tracking_groups | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}

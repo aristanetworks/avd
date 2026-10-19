@@ -16,7 +16,7 @@ from .constants import JINJA2_EXTENSIONS, RUNNING_FROM_SRC
 
 if TYPE_CHECKING:
     import os
-    from collections.abc import MutableMapping, Sequence
+    from collections.abc import Mapping, MutableMapping, Sequence
 
     from jinja2 import Template
 
@@ -126,6 +126,7 @@ class Templar:
             default,
             encrypt,
             hide_passwords,
+            ip_address_sort,
             is_in_filter,
             list_compress,
             natural_sort,
@@ -134,6 +135,7 @@ class Templar:
             snmp_hash,
             status_render,
         )
+        from .j2filters._mandatory import _mandatory  # noqa: PLC0415
         from .j2tests.contains import contains  # noqa: PLC0415
         from .j2tests.defined import defined  # noqa: PLC0415
 
@@ -144,8 +146,13 @@ class Templar:
                 "arista.avd.default": default,
                 "arista.avd.encrypt": encrypt,
                 "arista.avd.hide_passwords": hide_passwords,
+                "arista.avd.ip_address_sort": ip_address_sort,
                 "arista.avd.is_in_filter": is_in_filter,
                 "arista.avd.list_compress": list_compress,
+                # Hidden compatibility shim for legacy templates that relied on
+                # Ansible's mandatory filter before PyAVD owned rendering.
+                # Do not document or use for new validation.
+                "arista.avd._mandatory": _mandatory,
                 "arista.avd.natural_sort": natural_sort,
                 "arista.avd.range_expand": range_expand,
                 "arista.avd.snmp_hash": snmp_hash,
@@ -160,7 +167,7 @@ class Templar:
             },
         )
 
-    def render_template_from_file(self, template_file: str, template_vars: dict[str, Any]) -> str:
+    def render_template_from_file(self, template_file: str, template_vars: Mapping[str, Any]) -> str:
         return self.environment.get_template(template_file).render(template_vars)
 
     def compile_templates_in_paths(self, precompiled_templates_path: str | Path, searchpaths: list[str | Path]) -> None:

@@ -3,8 +3,8 @@ type: l2leaf
 
 l2leaf:
   defaults:
-    uplink_switches: [ BGP-SPINE1, BGP-SPINE2 ]
-    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    uplink_switches: [BGP-SPINE1, BGP-SPINE2]
+    uplink_interfaces: [Ethernet1, Ethernet2]
     filter:
       only_vlans_in_use: true
     inband_mgmt_subnet: 172.23.254.0/24
@@ -20,11 +20,11 @@ l2leaf:
       nodes:
         - name: BGP-LEAF1
           id: 1
-          uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
           mgmt_ip: 172.16.99.1/24
         - name: BGP-LEAF2
           id: 2
-          uplink_switch_interfaces: [ Ethernet2, Ethernet2 ]
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
           mgmt_ip: 172.16.99.2/24
 
     - group: BGP-MEMBER-LEAFS
@@ -33,8 +33,8 @@ l2leaf:
       nodes:
         - name: BGP-LEAF3
           id: 3
-          uplink_switches: [BGP-LEAF1, BGP-LEAF2 ]
-          uplink_interfaces: [ Ethernet1, Ethernet2 ]
-          uplink_switch_interfaces: [ Ethernet3, Ethernet3 ]
+          uplink_switches: [BGP-LEAF1, BGP-LEAF2]
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
           campus_access_pod: Floor_3
           mgmt_ip: 172.16.99.3/24

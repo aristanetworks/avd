@@ -14,7 +14,7 @@ import pytest
 
 from pyavd._cv.client.exceptions import CVResourceInvalidState, CVWorkspaceFailed
 from pyavd._cv.workflows.create_workspace_on_cv import create_workspace_on_cv
-from pyavd._cv.workflows.models import CVWorkspace, DeployToCvResult
+from pyavd._cv.workflows.models import AvdWorkspace, CVWorkspace, DeployToCvResult
 from tests.pyavd.cv.constants import MOCKED_WORKSPACE_ID
 
 if TYPE_CHECKING:
@@ -54,11 +54,7 @@ async def test_create_existing_workspace_on_cv(
             targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/e3c8d23b2dffba4c050956c45d0bda0124500f00.json'
     """
     with expected_exception:
-        result = DeployToCvResult(
-            workspace=CVWorkspace(
-                id=workspace_id,
-            )
-        )
+        result = DeployToCvResult(workspace=CVWorkspace(AvdWorkspace(id=workspace_id)))
         await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
     assert result.workspace.id == workspace_id
@@ -105,10 +101,12 @@ async def test_create_new_workspace_on_cv_success(
     with caplog.at_level(DEBUG):
         await create_workspace_on_cv(
             workspace=CVWorkspace(
-                name="MOCKED_WS_NAME",
-                description="MOCKED_WS_DESCRIPTION",
-                id=workspace_id,
-                requested_state=workspace_requested_state,
+                avd_workspace=AvdWorkspace(
+                    name="MOCKED_WS_NAME",
+                    description="MOCKED_WS_DESCRIPTION",
+                    id=workspace_id,
+                    requested_state=workspace_requested_state,
+                )
             ),
             cv_client=cv_client,
         )
@@ -197,10 +195,12 @@ async def test_create_new_workspace_on_cv_failure(
     ):
         await create_workspace_on_cv(
             workspace=CVWorkspace(
-                name="MOCKED_WS_NAME",
-                description="MOCKED_WS_DESCRIPTION",
-                id=workspace_id,
-                requested_state=workspace_requested_state,
+                avd_workspace=AvdWorkspace(
+                    name="MOCKED_WS_NAME",
+                    description="MOCKED_WS_DESCRIPTION",
+                    id=workspace_id,
+                    requested_state=workspace_requested_state,
+                )
             ),
             cv_client=cv_client,
         )

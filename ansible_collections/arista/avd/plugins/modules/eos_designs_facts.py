@@ -25,6 +25,12 @@ options:
       - Must be the same across all plugins.
     required: true
     type: str
+  output_dir:
+    description:
+      - Directory where the plugin stores updated pool assignment files.
+      - Required for initializing the pool manager used while building eos_designs facts.
+    required: true
+    type: str
   template_output:
     description:
       - If true, the output data will be run through another jinja2 rendering before returning.
@@ -51,6 +57,7 @@ EXAMPLES = r"""
 - name: Set eos_designs facts
   arista.avd.eos_designs_facts:
     tmp_dir: "intended/tmp_eos_designs"
+    output_dir: "intended"
   check_mode: false
   run_once: true
 """

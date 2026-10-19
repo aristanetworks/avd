@@ -14,6 +14,14 @@ keys:
         items:
           type: str
           description: DHCP server IPv4 address.
+      dhcp_server_interfaces:
+        type: list
+        description: |-
+          The list of interfaces connected to the DHCP server.
+          Requires EOS version 4.36 or later.
+        items:
+          type: str
+          description: Interface name.
       disabled:
         type: bool
         description: Disable IP locking on configured ports.
@@ -44,3 +52,17 @@ keys:
           ipv6_enforcement_disabled:
             type: bool
             description: Configure enforcement for locked IPv6 addresses.
+      logging:
+        type: dict
+        keys:
+          event:
+            type: dict
+            keys:
+              denied_address_drop:
+                type: bool
+                description: Log events for denied address drops.
+              dhcp_server_drop:
+                type: bool
+                description: |-
+                  Log events for DHCP server to client packet drops.
+                  Requires EOS version 4.36.2F or later.

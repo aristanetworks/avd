@@ -29,7 +29,13 @@ radius_server:
         enabled: true
         port: 345
     - host: 10.10.10.249
-      key: 071B245F5A
+      key: secret
+      key_type: 0
+      timeout: 1
+      retransmit: 1
+    - host: 10.10.10.249
+      key: $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
+      key_type: 8a
       timeout: 1
       retransmit: 1
   vrfs:
@@ -44,9 +50,11 @@ radius_server:
           key: 071B245F5A
         - host: 10.10.11.160
           timeout: 1
-          key: 071B245F5A
+          key: $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
+          key_type: 8a
         - host: 10.10.11.248
-          key: 071B245F5A
+          key: Secret
+          key_type: 0
         - host: 10.10.11.155
           timeout: 1
           retransmit: 1

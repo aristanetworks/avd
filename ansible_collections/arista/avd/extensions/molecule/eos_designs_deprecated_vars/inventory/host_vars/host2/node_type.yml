@@ -1,0 +1,14 @@
+# Deprecated node_sid_base under node config
+underlay_routing_protocol: isis-sr
+overlay_routing_protocol: ibgp
+type: "pe"
+pe:
+  defaults:
+    bgp_as: 65000
+    node_sid_base: 100 # Deprecated
+    isis_system_id_prefix: '0000.0001'
+    loopback_ipv4_pool: 172.28.4.0/22
+    overlay_address_families: ["evpn"]
+  nodes:
+    - name: host2
+      id: 2

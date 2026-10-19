@@ -108,9 +108,9 @@ l3leaf:
 servers:
   - name: single-interface-true
     adapters:
-      - endpoint_ports: [ eth1, eth2 ]
-        switch_ports: [ Ethernet10, Ethernet10 ]
-        switches: [ flow-tracking-tests-leaf1, flow-tracking-tests-leaf2 ]
+      - endpoint_ports: [eth1, eth2]
+        switch_ports: [Ethernet10, Ethernet10]
+        switches: [flow-tracking-tests-leaf1, flow-tracking-tests-leaf2]
         vlans: 11
         mode: access
         flow_tracking:
@@ -118,9 +118,9 @@ servers:
 
   - name: single-interface-false
     adapters:
-      - endpoint_ports: [ eth11, eth12 ]
-        switch_ports: [ Ethernet11, Ethernet11 ]
-        switches: [ flow-tracking-tests-leaf1, flow-tracking-tests-leaf2 ]
+      - endpoint_ports: [eth11, eth12]
+        switch_ports: [Ethernet11, Ethernet11]
+        switches: [flow-tracking-tests-leaf1, flow-tracking-tests-leaf2]
         vlans: 11
         mode: access
         flow_tracking:
@@ -128,9 +128,9 @@ servers:
 
   - name: single-interface-no-definition
     adapters:
-      - endpoint_ports: [ eth12, eth13 ]
-        switch_ports: [ Ethernet12, Ethernet12 ]
-        switches: [ flow-tracking-tests-leaf1, flow-tracking-tests-leaf2 ]
+      - endpoint_ports: [eth12, eth13]
+        switch_ports: [Ethernet12, Ethernet12]
+        switches: [flow-tracking-tests-leaf1, flow-tracking-tests-leaf2]
         vlans: 11
         mode: access
         flow_tracking:
@@ -138,17 +138,17 @@ servers:
 
   - name: single-interface-true4
     adapters:
-      - endpoint_ports: [ eth1, eth1 ]
-        switch_ports: [ Ethernet13, Ethernet13 ]
-        switches: [ flow-tracking-tests-leaf1, flow-tracking-tests-leaf2 ]
+      - endpoint_ports: [eth1, eth1]
+        switch_ports: [Ethernet13, Ethernet13]
+        switches: [flow-tracking-tests-leaf1, flow-tracking-tests-leaf2]
         vlans: 11
         mode: access
 
   - name: port-channel-interface-true
     adapters:
-      - endpoint_ports: [ PCI1, PCI2 ]
-        switch_ports: [ Ethernet14, Ethernet14 ]
-        switches: [ flow-tracking-tests-leaf3, flow-tracking-tests-leaf4 ]
+      - endpoint_ports: [PCI1, PCI2]
+        switch_ports: [Ethernet14, Ethernet14]
+        switches: [flow-tracking-tests-leaf3, flow-tracking-tests-leaf4]
         vlans: 11
         mode: access
         spanning_tree_portfast: edge
@@ -159,9 +159,9 @@ servers:
 
   - name: port-channel-interface-false
     adapters:
-      - endpoint_ports: [ PCI11, PCI12 ]
-        switch_ports: [ Ethernet15, Ethernet15 ]
-        switches: [ flow-tracking-tests-leaf3, flow-tracking-tests-leaf4 ]
+      - endpoint_ports: [PCI11, PCI12]
+        switch_ports: [Ethernet15, Ethernet15]
+        switches: [flow-tracking-tests-leaf3, flow-tracking-tests-leaf4]
         vlans: 11
         mode: access
         spanning_tree_portfast: edge
@@ -172,9 +172,9 @@ servers:
 
   - name: port-channel-interface-no-definition
     adapters:
-      - endpoint_ports: [ PCI13, PCI14 ]
-        switch_ports: [ Ethernet16, Ethernet16 ]
-        switches: [ flow-tracking-tests-leaf3, flow-tracking-tests-leaf4 ]
+      - endpoint_ports: [PCI13, PCI14]
+        switch_ports: [Ethernet16, Ethernet16]
+        switches: [flow-tracking-tests-leaf3, flow-tracking-tests-leaf4]
         vlans: 11
         mode: access
         spanning_tree_portfast: edge

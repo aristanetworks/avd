@@ -1,0 +1,14 @@
+# Test for vlan_inner deprecation in ipv4_acls
+type: l3leaf
+
+ipv4_acls:
+# ip_access_lists:
+  - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - action: permit
+        protocol: ip
+        source: peer_ip
+        destination: interface_ip
+        vlan_number: 123
+        vlan_mask: "0x000"
+        vlan_inner: true

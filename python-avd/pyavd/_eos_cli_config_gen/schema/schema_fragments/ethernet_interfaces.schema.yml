@@ -25,8 +25,6 @@ keys:
           type: int
           min: 0
           max: 600
-          convert_types:
-            - str
           description: Interval in seconds for updating interface counters.
         speed:
           type: str
@@ -44,22 +42,16 @@ keys:
           type: int
           min: 68
           max: 65535
-          convert_types:
-            - str
         l2_mtu:
           type: int
           min: 68
           max: 65535
-          convert_types:
-            - str
           description: |
             "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
         l2_mru:
           type: int
           min: 68
           max: 65535
-          convert_types:
-            - str
           description: |
             "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
         loop_protection:
@@ -73,8 +65,6 @@ keys:
           keys:
             encapsulation_dot1q_vlan:
               type: int
-              convert_types:
-                - str
               description: Vlan tag to configure on sub-interface.
             forwarding_profile:
               type: str
@@ -126,8 +116,6 @@ keys:
         vrf:
           type: str
           description: VRF name.
-          convert_types:
-            - int
         flow_tracker:
           type: dict
           keys:
@@ -194,20 +182,14 @@ keys:
                   type: int
                   min: 0
                   max: 65535
-                  convert_types:
-                    - str
                   description: Preference_value is only used when "algorithm" is "preference".
                 dont_preempt:
                   type: bool
                   description: Dont_preempt is only used when "algorithm" is "preference".
                 hold_time:
                   type: int
-                  convert_types:
-                    - str
                 subsequent_hold_time:
                   type: int
-                  convert_types:
-                    - str
                 candidate_reachability_required:
                   type: bool
             mpls:
@@ -217,12 +199,8 @@ keys:
                   type: int
                   min: 1
                   max: 1024
-                  convert_types:
-                    - str
                 tunnel_flood_filter_time:
                   type: int
-                  convert_types:
-                    - str
             route_target:
               type: str
               description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
@@ -231,16 +209,12 @@ keys:
           keys:
             vlan:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 4094
               required: true
               description: VLAD ID.
             inner_vlan:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 4094
               description: Inner VLAN ID. This setting can only be applied to sub-interfaces on EOS.
@@ -262,24 +236,18 @@ keys:
                     - untagged
                 vlan:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 4094
                   description: |-
                     Client VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`.
                 outer_vlan:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 4094
                   description: |-
                     Client Outer VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`.
                 inner_vlan:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 4094
                   description: |-
@@ -321,24 +289,18 @@ keys:
                     - untagged
                 vlan:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 4094
                   description: |-
                     Network VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: client`.
                 outer_vlan:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 4094
                   description: |-
                     Network outer VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: client`.
                 inner_vlan:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 4094
                   description: |-
@@ -368,8 +330,6 @@ keys:
           type: int
           min: 1
           max: 4094
-          convert_types:
-            - str
         # TODO Format to validate ipv4 CIDR or "dhcp"
         ip_address:
           type: str
@@ -406,8 +366,6 @@ keys:
               vrf:
                 type: str
                 description: VRF name.
-                convert_types:
-                  - int
         ip_nat:
           type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
@@ -470,13 +428,9 @@ keys:
                 type: str
               valid_lifetime:
                 type: str
-                convert_types:
-                  - int
                 description: Infinite or lifetime in seconds.
               preferred_lifetime:
                 type: str
-                convert_types:
-                  - int
                 description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
@@ -494,8 +448,10 @@ keys:
                 required: true
               vrf:
                 type: str
-                convert_types:
-                  - int
+                description: |-
+                  VRF used to reach the DHCP server.
+                  If not set, the VRF of the destination matches the VRF of this interface.
+                  Use the `default` to reach the DHCP server through the default VRF.
               local_interface:
                 type: str
                 description: Local interface to communicate with DHCP server - mutually exclusive to source_address.
@@ -525,7 +481,7 @@ keys:
           description: MAC access list name.
         multicast:
           type: dict
-          description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both.
+          description: Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of both.
           keys:
             ipv4:
               type: dict
@@ -537,7 +493,7 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet.
+                        description: Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
                       out:
                         type: bool
                 static:
@@ -552,19 +508,15 @@ keys:
                     keys:
                       boundary:
                         type: str
-                        description: ACL name or multicast IP subnet.
+                        description: Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
                 static:
                   type: bool
         ospf_network_point_to_point:
           type: bool
         ospf_area:
           type: str
-          convert_types:
-            - int
         ospf_cost:
           type: int
-          convert_types:
-            - str
         ospf_authentication:
           type: str
           valid_values: ["none", "simple", "message-digest"]
@@ -573,8 +525,6 @@ keys:
           description: Encrypted password.
         ospf_authentication_key_type:
           type: str
-          convert_types:
-            - int
           description: Authentication key type.
           default: "7"
           valid_values:
@@ -588,8 +538,6 @@ keys:
             keys:
               id:
                 type: int
-                convert_types:
-                  - str
               hash_algorithm:
                 type: str
                 valid_values: ["md5", "sha1", "sha256", "sha384", "sha512"]
@@ -598,8 +546,6 @@ keys:
                 description: Encrypted password.
               key_type:
                 type: str
-                convert_types:
-                  - int
                 description: Authentication key type.
                 default: "7"
                 valid_values:
@@ -616,8 +562,6 @@ keys:
                   description: Configure PIM border router. EOS default is false.
                 dr_priority:
                   type: int
-                  convert_types:
-                    - str
                   min: 0
                   max: 429467295
                 sparse_mode:
@@ -629,22 +573,15 @@ keys:
                   type: bool
                 neighbor_filter:
                   type: str
-                  convert_types:
-                    - int
                   description: Standard access list name.
                 hello:
                   type: dict
                   keys:
                     count:
                       type: str
-                      convert_types:
-                        - int
-                        - float
                       description: Number of missed hellos after which the neighbor expires. Range <1.5-65535>.
                     interval:
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 65535
                       description: PIM hello interval in seconds.
@@ -664,14 +601,10 @@ keys:
           keys:
             ipv4:
               type: int
-              convert_types:
-                - str
               min: 64
               max: 65475
             ipv6:
               type: int
-              convert_types:
-                - str
               min: 64
               max: 65475
             direction:
@@ -681,8 +614,6 @@ keys:
                 - ingress
             ipv4_segment_size:
               type: int
-              convert_types:
-                - str
               min: 64
               max: 65475
               deprecation:
@@ -692,8 +623,6 @@ keys:
                 new_key: ipv4
             ipv6_segment_size:
               type: int
-              convert_types:
-                - str
               min: 64
               max: 65475
               deprecation:
@@ -706,8 +635,6 @@ keys:
           keys:
             id:
               type: int
-              convert_types:
-                - str
             mode:
               type: str
               valid_values: ["on", "active", "passive"]
@@ -721,8 +648,6 @@ keys:
           type: bool
         isis_metric:
           type: int
-          convert_types:
-            - str
         isis_network_point_to_point:
           type: bool
         isis_circuit_type:
@@ -764,8 +689,6 @@ keys:
                   type: int
                   min: 1
                   max: 86400
-                  convert_types:
-                    - str
                   description: Number of seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.
             shutdown:
               description: Set the PoE power behavior for a PoE port when the port is admin down.
@@ -783,13 +706,8 @@ keys:
                   type: int
                   min: 0
                   max: 8
-                  convert_types:
-                    - str
                 watts:
                   type: str
-                  convert_types:
-                    - int
-                    - float
                 fixed:
                   type: bool
                   description: Set to ignore hardware classification.
@@ -809,16 +727,10 @@ keys:
               keys:
                 interval:
                   type: int
-                  convert_types:
-                    - str
                 timeout:
                   type: int
-                  convert_types:
-                    - str
             delay_req:
               type: int
-              convert_types:
-                - str
             delay_mechanism:
               type: str
               valid_values: ["e2e", "p2p"]
@@ -833,24 +745,34 @@ keys:
                       valid_values:
                         - forwardable
                         - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
             sync_message:
               type: dict
               keys:
                 interval:
                   type: int
-                  convert_types:
-                    - str
             role:
               type: str
               valid_values: ["master", "dynamic"]
             vlan:
               type: str
-              convert_types:
-                - int
               description: VLAN can be 'all' or list of vlans as string.
             transport:
               type: str
               valid_values: ["ipv4", "ipv6", "layer2"]
+            management:
+              # In the future, this will grow to include both `drop` and `drop_multicast_boundary` boolean settings.
+              type: dict
+              keys:
+                drop:
+                  type: bool
+                  description: Drop PTP management messages.
         profile:
           type: str
           description: Interface profile.
@@ -862,9 +784,6 @@ keys:
               keys:
                 level:
                   type: str
-                  convert_types:
-                    - int
-                    - float
                   description: Configure maximum storm-control level.
                 unit:
                   type: str
@@ -876,9 +795,6 @@ keys:
               keys:
                 level:
                   type: str
-                  convert_types:
-                    - int
-                    - float
                   description: Configure maximum storm-control level.
                 unit:
                   type: str
@@ -890,9 +806,6 @@ keys:
               keys:
                 level:
                   type: str
-                  convert_types:
-                    - int
-                    - float
                   description: Configure maximum storm-control level.
                 unit:
                   type: str
@@ -904,9 +817,6 @@ keys:
               keys:
                 level:
                   type: str
-                  convert_types:
-                    - int
-                    - float
                   description: Configure maximum storm-control level.
                 unit:
                   type: str
@@ -938,8 +848,6 @@ keys:
               type: bool
             ztp_vlan:
               type: int
-              convert_types:
-                - str
               description: ZTP vlan number.
         dot1x:
           type: dict
@@ -971,8 +879,9 @@ keys:
                   type: int
                   min: 1
                   max: 4094
-                  convert_types:
-                    - str
+                allow_access_list:
+                  type: str
+                  description: Name of the IPv4/IPv6 standard/extended access list to be applied to unauthenticated traffic.
             host_mode:
               type: dict
               keys:
@@ -1000,18 +909,12 @@ keys:
                   type: int
                   min: 10
                   max: 65535
-                  convert_types:
-                    - str
                 quiet_period:
                   type: int
                   min: 1
                   max: 65535
-                  convert_types:
-                    - str
                 reauth_period:
                   type: str
-                  convert_types:
-                    - int
                   description: Value can be 60-4294967295 or 'server'.
                 reauth_timeout_ignore:
                   type: bool
@@ -1019,14 +922,10 @@ keys:
                   type: int
                   min: 1
                   max: 65535
-                  convert_types:
-                    - str
             reauthorization_request_limit:
               type: int
               min: 1
               max: 10
-              convert_types:
-                - str
             unauthorized:
               type: dict
               keys:
@@ -1048,8 +947,6 @@ keys:
                       type: int
                       min: 0
                       max: 65535
-                      convert_types:
-                        - str
             aaa:
               type: dict
               keys:
@@ -1096,24 +993,16 @@ keys:
               valid_values: ["dscp", "cos", "disabled"]
             dscp:
               type: int
-              convert_types:
-                - str
               description: DSCP value.
             cos:
               type: int
-              convert_types:
-                - str
               description: COS value.
         spanning_tree_bpdufilter:
           type: str
-          convert_types:
-            - bool
           valid_values:
             ["enabled", "disabled", "True", "False", "true", "false"]
         spanning_tree_bpduguard:
           type: str
-          convert_types:
-            - bool
           valid_values:
             ["enabled", "disabled", "True", "False", "true", "false"]
         spanning_tree_bpduguard_rate_limit:
@@ -1124,15 +1013,11 @@ keys:
               description: Enable/Disable rate limiter on this port.
             count:
               type: int
-              convert_types:
-                - str
               description: Max number of BPDUs per timer interval.
               min: 1
               max: 20000
             interval:
               type: int
-              convert_types:
-                - str
               description: Number of seconds in the BPDU input rate limiter timer.
               min: 1
               max: 15
@@ -1162,8 +1047,6 @@ keys:
                     type: int
                     min: 0
                     max: 7
-                    convert_types:
-                      - str
                   no_drop:
                     type: bool
         bfd:
@@ -1173,20 +1056,14 @@ keys:
               type: bool
             interval:
               type: int
-              convert_types:
-                - str
               description: Interval in milliseconds.
             min_rx:
               type: int
-              convert_types:
-                - str
               description: Rate in milliseconds.
             multiplier:
               type: int
               min: 3
               max: 50
-              convert_types:
-                - str
         service_policy:
           type: dict
           keys:
@@ -1203,7 +1080,11 @@ keys:
                   type: str
                   required: true
                   description: Quality of Service Policy-map name.
-
+        cpu_traffic_policy_fallback_vrf:
+          type: str
+          description: |-
+            CPU traffic policy name.
+            Fallback to the CPU traffic policy applied to the VRF in which this interface is configured.
         mpls:
           type: dict
           keys:
@@ -1226,22 +1107,15 @@ keys:
               type: int
               min: 3
               max: 3000
-              convert_types:
-                - str
         lacp_port_priority:
           type: int
           min: 0
           max: 65535
-          convert_types:
-            - str
         transceiver:
           type: dict
           keys:
             frequency:
               type: str
-              convert_types:
-                - int
-                - float
               description: Transceiver Laser Frequency in GHz (min 190000, max 200000).
             frequency_unit:
               type: str
@@ -1279,8 +1153,6 @@ keys:
                   "15",
                   "100gbase-srbd",
                 ]
-              convert_types:
-                - int
             application_override_lanes:
               type: list
               description: Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
@@ -1292,8 +1164,6 @@ keys:
                     max: 15
                     type: int
                     required: true
-                    convert_types:
-                      - str
                   first_lane:
                     type: int
                     description: |-
@@ -1301,16 +1171,12 @@ keys:
                     required: true
                     min: 1
                     max: 8
-                    convert_types:
-                      - str
                   last_lane:
                     type: int
                     description: |-
                       Set the last value of host lanes for which overrides should be applied.
                     min: 1
                     max: 8
-                    convert_types:
-                      - str
             power:
               type: dict
               keys:
@@ -1323,9 +1189,6 @@ keys:
                 signal_power:
                   type: str
                   description: Optical signal power between < -30 and 10 > (dBm).
-                  convert_types:
-                    - int
-                    - float
                 disabled:
                   type: bool
                   description: Disable the optical transmitter.
@@ -1381,8 +1244,6 @@ keys:
                           type: str
             report_interval:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 31744
               description: Time interval between unsolicited reports.
@@ -1397,8 +1258,6 @@ keys:
                     type: str
             version:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
@@ -1451,8 +1310,6 @@ keys:
             priority:
               type: str
               description: The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.
-              convert_types:
-                - int
         uc_tx_queues:
           type: list
           primary_key: id
@@ -1461,8 +1318,6 @@ keys:
             keys:
               id:
                 type: int
-                convert_types:
-                  - str
                 required: true
                 description: TX-Queue ID.
               random_detect:
@@ -1495,14 +1350,10 @@ keys:
                             required: true
                             min: 1
                             max: 256000000
-                            convert_types:
-                              - str
                             description: Set the random-detect ECN minimum-threshold.
                           max:
                             type: int
                             required: true
-                            convert_types:
-                              - str
                             min: 1
                             max: 256000000
                             description: Set the random-detect ECN maximum-threshold.
@@ -1510,15 +1361,11 @@ keys:
                             type: int
                             min: 1
                             max: 100
-                            convert_types:
-                              - str
                             description: Set the random-detect ECN max-mark-probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
-                            convert_types:
-                              - str
                             description: Set the random-detect ECN weight.
         tx_queues:
           type: list
@@ -1528,8 +1375,6 @@ keys:
             keys:
               id:
                 type: int
-                convert_types:
-                  - str
                 required: true
                 description: TX-Queue ID.
               scheduler_profile_responsive:
@@ -1565,14 +1410,10 @@ keys:
                             required: true
                             min: 1
                             max: 256000000
-                            convert_types:
-                              - str
                             description: Set the random-detect ECN minimum-threshold.
                           max:
                             type: int
                             required: true
-                            convert_types:
-                              - str
                             min: 1
                             max: 256000000
                             description: Set the random-detect ECN maximum-threshold.
@@ -1581,15 +1422,11 @@ keys:
                             required: true
                             min: 1
                             max: 100
-                            convert_types:
-                              - str
                             description: Set the random-detect ECN max-mark-probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
-                            convert_types:
-                              - str
                             description: Set the random-detect ECN weight.
         vrrp_ids:
           type: list
@@ -1600,13 +1437,9 @@ keys:
             keys:
               id:
                 type: int
-                convert_types:
-                  - str
                 description: VRID.
               priority_level:
                 type: int
-                convert_types:
-                  - str
                 description: Instance priority.
                 min: 1
                 max: 254
@@ -1615,8 +1448,6 @@ keys:
                 keys:
                   interval:
                     type: int
-                    convert_types:
-                      - str
                     description: Interval in seconds.
                     min: 1
                     max: 255
@@ -1631,15 +1462,11 @@ keys:
                     keys:
                       minimum:
                         type: int
-                        convert_types:
-                          - str
                         description: Minimum preempt delay in seconds.
                         min: 0
                         max: 3600
                       reload:
                         type: int
-                        convert_types:
-                          - str
                         description: Reload preempt delay in seconds.
                         min: 0
                         max: 3600
@@ -1652,8 +1479,6 @@ keys:
                       reload:
                         type: int
                         description: Delay after reload in seconds.
-                        convert_types:
-                          - str
                         min: 0
                         max: 3600
               tracked_object:
@@ -1667,8 +1492,6 @@ keys:
                       description: Tracked object name.
                     decrement:
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 254
                       description: Decrement VRRP priority by 1-254.
@@ -1688,8 +1511,6 @@ keys:
                     description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
-                    convert_types:
-                      - str
                     valid_values:
                       - 2
                       - 3
@@ -1724,12 +1545,8 @@ keys:
                     type: str
                     required: true
                     description: Authentication key.
-                    convert_types:
-                      - int
                   key_type:
                     type: str
-                    convert_types:
-                      - int
                     description: Authentication key type.
                     valid_values:
                       - "0"
@@ -1755,8 +1572,6 @@ keys:
                 ]
             access_vlan:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 4094
               description: |-
@@ -1766,14 +1581,10 @@ keys:
               keys:
                 allowed_vlan:
                   type: str
-                  convert_types:
-                    - int
                   description: |-
                     VLAN ID or range(s) of VLAN IDs.
                 native_vlan:
                   type: int
-                  convert_types:
-                    - str
                   description: |-
                     Set native VLAN when interface is in trunking mode.
                   min: 1
@@ -1790,8 +1601,6 @@ keys:
                   type: list
                   items:
                     type: str
-                    convert_types:
-                      - int
                     description: Trunk group name.
             phone:
               type: dict
@@ -1800,16 +1609,12 @@ keys:
                   type: int
                   min: 1
                   max: 4094
-                  convert_types:
-                    - str
                 trunk:
                   type: str
                   valid_values:
                     ["tagged", "tagged phone", "untagged", "untagged phone"]
             pvlan_mapping:
               type: str
-              convert_types:
-                - int
               description: |-
                 Secondary VLAN IDs of the private VLAN mapping.
             dot1q:
@@ -1817,8 +1622,6 @@ keys:
               keys:
                 ethertype:
                   type: int
-                  convert_types:
-                    - str
                   min: 1536
                   max: 65535
                   description: Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames.
@@ -1855,14 +1658,10 @@ keys:
                     keys:
                       from:
                         type: str
-                        convert_types:
-                          - int
                         description: VLAN ID or range of VLAN IDs to map from. Range 1-4094.
                         required: true
                       to:
                         type: int
-                        convert_types:
-                          - str
                         min: 1
                         max: 4094
                         description: VLAN ID to map to.
@@ -1873,8 +1672,6 @@ keys:
                         type: int
                         min: 1
                         max: 4094
-                        convert_types:
-                          - str
                         description: Inner VLAN ID to map from.
                 direction_out:
                   type: list
@@ -1884,21 +1681,15 @@ keys:
                     keys:
                       from:
                         type: str
-                        convert_types:
-                          - int
                         description: VLAN ID or range of VLAN IDs to map from. Range 1-4094.
                         required: true
                       to:
                         type: int
-                        convert_types:
-                          - str
                         min: 1
                         max: 4094
                         description: VLAN ID to map to.
                       dot1q_tunnel_to:
                         type: str
-                        convert_types:
-                          - int
                         description: |-
                           VLAN ID or range of VLAN IDs or "all". Range 1-4094.
                           This takes precedence over `to` and `inner_vlan_to`.
@@ -1906,8 +1697,6 @@ keys:
                         type: int
                         min: 1
                         max: 4094
-                        convert_types:
-                          - str
                         description: Inner VLAN ID to map to.
                 direction_both:
                   type: list
@@ -1917,14 +1706,10 @@ keys:
                     keys:
                       from:
                         type: str
-                        convert_types:
-                          - int
                         description: VLAN ID or range of VLAN IDs to map from. Range 1-4094.
                         required: true
                       to:
                         type: int
-                        convert_types:
-                          - str
                         min: 1
                         max: 4094
                         description: VLAN ID to map to.
@@ -1933,8 +1718,6 @@ keys:
                         type: bool
                       inner_vlan_from:
                         type: int
-                        convert_types:
-                          - str
                         min: 1
                         max: 4094
                         description: Inner VLAN ID to map from.
@@ -1953,8 +1736,6 @@ keys:
                   description: Backup interface. Example - Ethernet4, Vlan10 etc.
                 prefer_vlan:
                   type: str
-                  convert_types:
-                    - int
                   description: VLANs to carry on the backup interface (1-4094).
             backup:
               type: dict
@@ -1969,29 +1750,21 @@ keys:
                     Example: 01:00:00:00:00:00
                 initial_mac_move_delay:
                   type: int
-                  convert_types:
-                    - str
                   description: Initial MAC move delay in milliseconds.
                   min: 0
                   max: 65535
                 mac_move_burst:
                   type: int
-                  convert_types:
-                    - str
                   description: Size of MAC move bursts.
                   min: 0
                   max: 65535
                 mac_move_burst_interval:
                   type: int
-                  convert_types:
-                    - str
                   description: MAC move burst interval in milliseconds.
                   min: 0
                   max: 65535
                 preemption_delay:
                   type: int
-                  convert_types:
-                    - str
                   description: Preemption delay in milliseconds.
                   min: 0
                   max: 65535
@@ -2009,8 +1782,6 @@ keys:
                       description: Disable port level check for port security (only in violation 'shutdown' mode).
                     limit:
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 1000
                       description: MAC address limit.
@@ -2029,8 +1800,6 @@ keys:
                       description: Log new addresses seen after limit is reached in protect mode.
                 vlan_default_mac_address_maximum:
                   type: int
-                  convert_types:
-                    - str
                   min: 0
                   max: 1000
                   description: Default maximum MAC addresses for all VLANs on this interface.
@@ -2042,8 +1811,6 @@ keys:
                     keys:
                       range:
                         type: str
-                        convert_types:
-                          - int
                         description: |
                           VLAN ID or range(s) of VLAN IDs, <1-4094>.
                           Example:
@@ -2053,8 +1820,6 @@ keys:
                       mac_address_maximum:
                         type: int
                         required: true
-                        convert_types:
-                          - str
             tap:
               description: |-
                 In tap mode, the interface operates as a tap port.
@@ -2064,8 +1829,6 @@ keys:
               keys:
                 allowed_vlan:
                   type: str
-                  convert_types:
-                    - int
                   description: VLAN ID or range(s) of VLAN IDs within range 1-4094.
                 default:
                   description: Default tap destination config.
@@ -2091,16 +1854,12 @@ keys:
                   keys:
                     id:
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 65535
                       description: Tap port VLAN ID (1-4094) or DzGRE extended ID (1-65535).
                     inner_vlan:
                       description: Tap port inner VLAN ID. Only applicable if `id` is a VLAN ID (1-4094).
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 4094
                 mpls_pop_all:
@@ -2108,8 +1867,6 @@ keys:
                   description: Pop all MPLS labels.
                 native_vlan:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 4094
                   description: Native VLAN ID when interface is in tap mode.
@@ -2121,8 +1878,6 @@ keys:
                     size:
                       description: Ingress packet truncation size in bytes.
                       type: int
-                      convert_types:
-                        - str
                       min: 100
                       max: 9236
                 mac_address:
@@ -2172,8 +1927,6 @@ keys:
                                   Feature header length in bytes.
                                   Note: This setting does not appear in the EOS running-config for protocol 0x0.
                                 type: int
-                                convert_types:
-                                  - str
                                 min: 1
                                 max: 16
                               re_encapsulation_ethernet_header:
@@ -2217,8 +1970,6 @@ keys:
                                         Feature header length in bytes.
                                         Note: This setting does not appear in the EOS running-config for protocol 0x0.
                                       type: int
-                                      convert_types:
-                                        - str
                                       min: 1
                                       max: 16
                                     re_encapsulation_ethernet_header:
@@ -2247,8 +1998,6 @@ keys:
                       description: Remove a VN-tag in packet header. 'mpls_pop_all' takes precedence over 'vn_tag_strip' in EOS.
                 allowed_vlan:
                   type: str
-                  convert_types:
-                    - int
                   description: VLAN ID or range of VLAN IDs within range 1-4094.
                 identity:
                   type: dict
@@ -2275,8 +2024,6 @@ keys:
                   description: Tool groups for the interface.
                 dot1q_remove_outer_vlan_tag:
                   type: str
-                  convert_types:
-                    - int
                   description: |-
                     Indices of vlan tags to be removed.
                     Range: 1-2
@@ -2291,20 +2038,14 @@ keys:
               description: List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single integers 0-127.
               items:
                 type: str
-                convert_types:
-                  - int
             srlgs:
               description: List of SRLGs.
               type: list
               items:
                 type: str
                 description: SRLG name or number.
-                convert_types:
-                  - int
             metric:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 16777215
             bandwidth:
@@ -2314,8 +2055,6 @@ keys:
                 number:
                   type: int
                   required: true
-                  convert_types:
-                    - str
                   min: 0
                   max: 10000
                 unit:
@@ -2333,8 +2072,6 @@ keys:
                   type: int
                   description: Valid values are 1-16777215 microseconds. This is regardless of whether the specified unit is milliseconds or microseconds.
                   required: true
-                  convert_types:
-                    - str
                 unit:
                   type: str
                   required: true
@@ -2354,8 +2091,6 @@ keys:
                         Valid values are 1-16777215 microseconds.
                         This is regardless of whether the specified unit is milliseconds or microseconds.
                       required: true
-                      convert_types:
-                        - str
                     unit:
                       type: str
                       required: true
@@ -2370,12 +2105,8 @@ keys:
                 removed: true
                 remove_in_version: 6.0.0
                 new_key: srlgs
-              convert_types:
-                - int
         vlans:
           type: str
-          convert_types:
-            - int
           description: |
             List of switchport vlans as string.
             For a trunk port this would be a range like "1-200,300".
@@ -2387,8 +2118,6 @@ keys:
             new_key: switchport.access_vlan or switchport.trunk.allowed_vlan
         native_vlan:
           type: int
-          convert_types:
-            - str
           deprecation:
             warning: true
             removed: true
@@ -2440,8 +2169,6 @@ keys:
             The `type = switched/routed` should not be combined with `switchport`.
         encapsulation_dot1q_vlan:
           type: int
-          convert_types:
-            - str
           description: VLAN tag to configure on sub-interface.
           deprecation:
             warning: true
@@ -2473,8 +2200,6 @@ keys:
             new_key: switchport.trunk.private_vlan_secondary
         pvlan_mapping:
           type: str
-          convert_types:
-            - int
           description: List of vlans as string.
           deprecation:
             warning: true

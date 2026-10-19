@@ -17,15 +17,11 @@ $defs:
           dynamic_capacity:
             type: int
             description: Capacity of dynamic cache entries.
-            convert_types:
-              - str
             min: 0
             max: 4294967295
           expire:
             type: int
             description: Cache entries expiry in seconds.
-            convert_types:
-              - str
             min: 1
             max: 65535
           refresh_always:
@@ -47,6 +43,28 @@ $defs:
               route_preference:
                 type: bool
                 description: Accept route preference from received Router Advertisements.
+          dns_servers:
+            type: list
+            primary_key: address
+            min_length: 1
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  description: IPv6 address of DNS server.
+                lifetime:
+                  type: int
+                  description: |-
+                    Specifies the lifetime period for this server in seconds.
+                    This value overrides lifetime value set by `dns_servers_lifetime` for this server.
+                  min: 0
+                  max: 4294967295
+          dns_servers_lifetime:
+            type: int
+            description: Router Advertisement DNS server lifetime value in seconds.
+            min: 0
+            max: 4294967295
       managed_config_flag:
         type: bool
         description: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
@@ -61,13 +79,9 @@ $defs:
               type: str
             valid_lifetime:
               type: str
-              convert_types:
-                - int
               description: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
             preferred_lifetime:
               type: str
-              convert_types:
-                - int
               description: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
             no_autoconfig_flag:
               type: bool

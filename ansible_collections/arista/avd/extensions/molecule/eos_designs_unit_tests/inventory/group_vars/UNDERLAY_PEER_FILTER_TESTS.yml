@@ -9,9 +9,9 @@ l3leaf:
     - name: underlay-filter-peer-as-evpn-1
       bgp_as: 64512
       id: 1
-      uplink_switches: [ underlay-filter-peer-as-evpn-2, underlay-filter-peer-as-evpn-3 ]
-      uplink_interfaces: [ Ethernet1, Ethernet2 ]
-      uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
+      uplink_switches: [underlay-filter-peer-as-evpn-2, underlay-filter-peer-as-evpn-3]
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      uplink_switch_interfaces: [Ethernet1, Ethernet1]
       evpn_role: client
     - name: underlay-filter-peer-as-evpn-2
       bgp_as: 64513

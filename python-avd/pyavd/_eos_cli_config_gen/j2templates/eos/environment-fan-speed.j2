@@ -1,0 +1,10 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - environment #}
+{% if environment_fan_speed.minimum is arista.avd.defined %}
+!
+environment fan-speed minimum {{ environment_fan_speed.minimum }}
+{% endif %}

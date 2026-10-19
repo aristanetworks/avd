@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: L3 Port-Channel 'Port-Channel10' must have at least one member interface defined.

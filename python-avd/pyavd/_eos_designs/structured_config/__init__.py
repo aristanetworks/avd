@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._utils import AVDTemplar
+    from pyavd._utils.avd_templar import AVDTemplar
 
     from .structured_config_generator import StructuredConfigGenerator
 
@@ -110,7 +110,9 @@ def get_structured_config(
     custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(inputs.custom_structured_configuration_list_merge)
 
     # Create a single shared structured config utils instance for all structured config classes.
-    structured_config_utils = StructuredConfigUtils(structured_config=structured_config, inputs=inputs, shared_utils=shared_utils)
+    structured_config_utils = StructuredConfigUtils(
+        structured_config=structured_config, inputs=inputs, shared_utils=shared_utils, custom_structured_configs=custom_structured_configs
+    )
 
     for cls in AVD_STRUCTURED_CONFIG_CLASSES:
         eos_designs_module = cls(

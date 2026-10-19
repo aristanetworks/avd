@@ -1,0 +1,37 @@
+---
+# Tests that an IPv6 ACL entry without a source field raises AristaAvdMissingVariableError.
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: ipv6-acls-missing-entry-source
+      bgp_as: 65102
+      id: 102
+
+tenants:
+  - name: Test-Tenant
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TEST
+        vrf_id: 1
+        svis:
+          - id: 10
+            name: TEST_SVI
+            enabled: true
+            ipv6_address: 2001:db8:10::1/64
+            ipv6_acl_in: TEST-IPV6-ACL-MISSING-SOURCE
+
+ipv6_acls:
+  - name: TEST-IPV6-ACL-MISSING-SOURCE
+    entries:
+      - sequence: 10
+        action: deny
+        protocol: ipv6
+        # source is intentionally omitted
+        destination: any
+
+expected_error_message: >-
+  'ipv6_acls[name=TEST-IPV6-ACL-MISSING-SOURCE].entries[0].source' is required but was not found.

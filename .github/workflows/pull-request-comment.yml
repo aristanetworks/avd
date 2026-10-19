@@ -1,7 +1,7 @@
 ---
 name: "Pull Request Comment"
 
-"on":
+"on": # zizmor: ignore[dangerous-triggers] Uses pull_request_target only to create a static reviewer help comment from PR metadata, not to check out or execute PR code.
   pull_request_target:
     types:
       - opened
@@ -18,14 +18,14 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           BODY: |
             Review docs on [Read the Docs](https://ansible-avd--${{ github.event.pull_request.number }}.org.readthedocs.build/en/${{ github.event.pull_request.number }}/)
 
             To test this pull request:
 
-            \`\`\`sh
+            ```sh
             # Create virtual environment for this testing below the current directory
             python -m venv test-avd-pr-${{ github.event.pull_request.number }}
             # Activate the virtual environment
@@ -37,8 +37,8 @@ jobs:
             # Install Ansible collection
             python -m ansible.cli.galaxy collection install git+${{ github.event.pull_request.head.repo.clone_url }}#/ansible_collections/arista/avd/,${{ github.event.pull_request.head.ref }} --force
             cd test-avd-pr-${{ github.event.pull_request.number }}
-            # Run your playbook using \`python -m ansible.cli.playbook path/to/playbook.yml ...\`
-            \`\`\`
+            # Run your playbook using `python -m ansible.cli.playbook path/to/playbook.yml ...`
+            ```
 
             You can also test this PR using AVD playground:
             - Rebase your branch to makes sure it is up-to-date and has latest lab topologies for example inventories
@@ -47,14 +47,14 @@ jobs:
             - In the lab selector UI pick "I want to use a specific AVD fork"
             - Enter following parameters:
 
-            \`\`\`text
+            ```text
             GitHub org: ${{ github.event.pull_request.head.repo.owner.login }}
             Repository name: ${{ github.event.pull_request.head.repo.name }}
             Branch: ${{ github.event.pull_request.head.ref }}
-            \`\`\`
+            ```
 
             - Select an example inventory to test the PR
-            - Once the AVD Playground setup will be finished, type \`make start\` and test anything once the lab is up
+            - Once the AVD Playground setup will be finished, type `make start` and test anything once the lab is up
 
         with:
           script: |-
@@ -62,5 +62,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `${{ env.BODY }}`
+              body: process.env.BODY
             })

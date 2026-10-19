@@ -9,6 +9,8 @@ lldp:
   receive_packet_tagged_drop: true
   vrf: Management
   tlvs:
+    - name: power-via-mdi
+      transmit: true
     - name: system-capabilities
       transmit: false
     - name: system-description

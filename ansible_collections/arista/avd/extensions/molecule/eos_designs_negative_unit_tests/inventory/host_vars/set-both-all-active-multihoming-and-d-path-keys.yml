@@ -16,7 +16,7 @@ l3leaf:
     - name: set-both-all-active-multihoming-and-d-path-keys
       id: 1
       filter:
-        tenants: [ EVPN_GATEWAY_TESTS ]
+        tenants: [EVPN_GATEWAY_TESTS]
       mgmt_ip: 192.168.0.204/24
       evpn_gateway:
         d_path:

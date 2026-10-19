@@ -15,6 +15,10 @@ $defs:
       enabled:
         type: bool
         description: Enable or disable interface.
+      autostate:
+        type: bool
+        default: true
+        description: Set to false to disable automatic management of the interface link state.
       description:
         type: str
         description: |
@@ -59,13 +63,52 @@ $defs:
           valid_lifetime:
             type: str
             description: In seconds <0-4294967295> or infinite.
-            convert_types:
-              - int
           preferred_lifetime:
             type: str
             description: In seconds <0-4294967295> or infinite.
-            convert_types:
-              - int
+          ra_dns_servers:
+            type: dict
+            description: List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+            keys:
+              servers:
+                type: list
+                $ref: "eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers"
+              dns_servers_lifetime:
+                type: int
+                $ref: "eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers_lifetime"
+      ipv6_dhcp_relay:
+        type: dict
+        description: IPv6 DHCP relay settings.
+        keys:
+          destinations:
+            type: list
+            description: List of IPv6 DHCP relay destinations.
+            primary_key: address
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  description: DHCP server's IPv6 address.
+                vrf:
+                  type: str
+                  description: |-
+                    VRF used to reach the DHCP server.
+                    If not set, the VRF of the destination matches the VRF of this interface.
+                    Use the `default` to reach the DHCP server through the default VRF.
+                local_interface:
+                  type: str
+                  description: |-
+                    Local interface to communicate with DHCP server.
+                    Mutually exclusive with `source_address` and takes precedence over it.
+                source_address:
+                  type: str
+                  description: |-
+                    Source IPv6 address to communicate with DHCP server.
+                    Mutually exclusive with `local_interface`, which takes precedence if both are set.
+                link_address:
+                  type: str
+                  description: Override the default link address specified in the relayed DHCP packet.
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.
@@ -99,15 +142,25 @@ $defs:
           Name of the IPv4 access-list to be assigned in the ingress direction.
           The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
         type: str
-        convert_types:
-          - int
       ipv4_acl_out:
         description: |-
           Name of the IPv4 Access-list to be assigned in the egress direction.
           The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
         type: str
-        convert_types:
-          - int
+      ipv6_acl_in:
+        description: |-
+          Name of the IPv6 access-list to be assigned in the ingress direction.
+          The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+          resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+          Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+        type: str
+      ipv6_acl_out:
+        description: |-
+          Name of the IPv6 access-list to be assigned in the egress direction.
+          The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+          resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+          Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
+        type: str
       ip_helpers:
         type: list
         primary_key: ip_helper
@@ -120,12 +173,25 @@ $defs:
               description: IPv4 DHCP server IP.
             source_interface:
               type: str
-              description: Interface name to originate DHCP relay packets to DHCP server.
+              description: |-
+                Interface name to originate DHCP relay packets to DHCP server.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+                - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the source interface.
             source_vrf:
               type: str
-              description: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
-              convert_types:
-                - int
+              description: |-
+                VRF to originate DHCP relay packets to DHCP server.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                  An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the source VRF name.
+                - If not set, EOS uses the VRF on the SVI.
       static_routes:
         type: list
         $ref: "eos_designs#/$defs/static_routes"
@@ -137,8 +203,6 @@ $defs:
         description: IPv6 static routes to be configured on every device where the SVI is configured.
       vni_override:
         type: int
-        convert_types:
-          - str
         min: 1
         max: 16777215
         description: |
@@ -146,8 +210,6 @@ $defs:
           The vni_override allows us to override this value and statically define it (optional).
       rt_override:
         type: str
-        convert_types:
-          - int
         description: |
           By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
           The rt_override allows us to override this value and statically define it.
@@ -158,8 +220,6 @@ $defs:
             - A full RT string with colon separator which will override the full RT.
       rd_override:
         type: str
-        convert_types:
-          - int
         description: |
           By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
           The rt_override allows us to override this value and statically define it.
@@ -193,6 +253,11 @@ $defs:
               By default `redistribute igmp` is only configured when `evpn_l2_multicast` is True and `evpn_l3_multicast` for the VRF is False.
               Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
               but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
+      evpn_redistribute_router_mac_system:
+        type: bool
+        default: false
+        description: |-
+          Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
       vxlan_flood_multicast:
         documentation_options:
           table: network-services-multicast-settings
@@ -242,8 +307,6 @@ $defs:
               version:
                 type: int
                 description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
-                convert_types:
-                  - str
                 valid_values:
                   - 1
                   - 2
@@ -286,8 +349,6 @@ $defs:
           version:
             type: int
             description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
-            convert_types:
-              - str
             valid_values:
               - 1
               - 2
@@ -301,15 +362,11 @@ $defs:
         description: Extend this SVI over VXLAN.
       spanning_tree_priority:
         type: int
-        convert_types:
-          - str
         description: |-
           Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.
           The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).
       mtu:
         type: int
-        convert_types:
-          - str
         description: Interface MTU.
       ospf:
         documentation_options:
@@ -324,14 +381,10 @@ $defs:
             default: false
           area:
             type: str
-            convert_types:
-              - int
             description: OSPF area ID.
             default: "0.0.0.0"
           cost:
             type: int
-            convert_types:
-              - str
             description: OSPF link cost.
           authentication:
             type: str
@@ -358,8 +411,6 @@ $defs:
               keys:
                 id:
                   type: int
-                  convert_types:
-                    - str
                 hash_algorithm:
                   type: str
                   valid_values:

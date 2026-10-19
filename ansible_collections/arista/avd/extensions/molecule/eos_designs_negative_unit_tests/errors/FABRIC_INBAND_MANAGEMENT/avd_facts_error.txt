@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'id' is required to set inband_mgmt_ip from inband_mgmt_subnet for host 'inband-mgmt-missing-id-with-subnet'.

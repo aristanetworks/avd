@@ -2,16 +2,16 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-import sys
+from collections import ChainMap, UserDict
 from pathlib import Path
-from unittest import mock
+from types import MappingProxyType
+from unittest.mock import patch
 
 import pytest
 from ansible.parsing.dataloader import DataLoader
-from ansible.release import __version__ as ansible_version
 from ansible.template import Templar
 
-from pyavd._utils import AVDTemplar
+from pyavd._utils.avd_templar import AVDTemplar
 from pyavd._utils.template import template
 
 
@@ -29,10 +29,58 @@ def test_template(tmp_path: Path) -> None:
     loader = DataLoader()
     templar = Templar(loader)
     searchpath = [str(tmp_path)]
-    avd_templar = AVDTemplar(templar, loader, searchpath)
+    avd_templar = AVDTemplar(templar, loader, searchpath, ansible_above_2_19=True)
 
-    mocked_module = mock.MagicMock(ANSIBLE_ABOVE_2_19=ansible_version.startswith(("2.19", "2.2")))
-    with mock.patch.dict(sys.modules, {"ansible_collections.arista.avd.plugins.plugin_utils.utils": mocked_module}):
-        result = template(str(file), {"my_var": 42}, avd_templar)
+    result = template(str(file), {"my_var": 42}, avd_templar)
 
     assert result == 42
+
+
+def test_template_materializes_non_dict_chainmap_layers(tmp_path: Path) -> None:
+    """Non-dict mappings are materialized only when passed to Ansible for rendering."""
+    file = tmp_path / "dummy.j2"
+    _ = file.write_text("{{ my_var }}")
+
+    loader = DataLoader()
+    templar = Templar(loader)
+    avd_templar = AVDTemplar(templar, loader, [str(tmp_path)], ansible_above_2_19=True)
+    template_vars = ChainMap({}, UserDict({"my_var": 42}))
+
+    result = template(str(file), template_vars, avd_templar)
+
+    assert result == 42
+
+
+def test_template_reuses_user_dict_data(tmp_path: Path) -> None:
+    """Repeated template renders reuse the underlying dictionary for UserDict layers."""
+    file = tmp_path / "dummy.j2"
+    _ = file.write_text("{{ my_var }}")
+    loader = DataLoader()
+    templar = Templar(loader)
+    avd_templar = AVDTemplar(templar, loader, [str(tmp_path)], ansible_above_2_19=True)
+    mapping = UserDict({"my_var": 42})
+    overrides = {}
+    template_vars = ChainMap(overrides, mapping)
+
+    with patch.object(templar, "copy_with_new_env", wraps=templar.copy_with_new_env) as copy_with_new_env:
+        assert template(str(file), template_vars, avd_templar) == 42
+        mapping["my_var"] = 43
+        assert template(str(file), template_vars, avd_templar) == 43
+
+    assert copy_with_new_env.call_count == 2
+    for call in copy_with_new_env.call_args_list:
+        assert call.kwargs["available_variables"].maps[0] is overrides
+        assert call.kwargs["available_variables"].maps[1] is mapping.data
+    assert template_vars.maps[1] is mapping
+
+
+def test_template_materializes_other_mapping_types(tmp_path: Path) -> None:
+    """Mappings without a concrete data accessor still render through the conversion fallback."""
+    file = tmp_path / "dummy.j2"
+    _ = file.write_text("{{ my_var }}")
+    loader = DataLoader()
+    templar = Templar(loader)
+    avd_templar = AVDTemplar(templar, loader, [str(tmp_path)], ansible_above_2_19=True)
+    template_vars = ChainMap({}, MappingProxyType({"my_var": 42}))
+
+    assert template(str(file), template_vars, avd_templar) == 42

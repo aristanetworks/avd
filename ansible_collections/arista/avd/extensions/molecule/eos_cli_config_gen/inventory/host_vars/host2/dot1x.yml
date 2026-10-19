@@ -10,6 +10,18 @@ dot1x:
   radius_av_pair:
     service_type: true
     framed_mtu: 1500
+    lldp:
+      system_name:
+        enabled: true
+      system_description:
+        enabled: true
+    dhcp:
+      hostname:
+        enabled: true
+      parameter_request_list:
+        enabled: true
+      vendor_class_id:
+        enabled: true
   aaa:
     unresponsive:
       action:

@@ -1,0 +1,17 @@
+---
+type: l3leaf
+l3leaf:
+  nodes:
+    - name: l3-interface-no-ip-address-subif
+      bgp_as: 65000
+      id: 1
+      loopback_ipv4_pool: 192.168.0.0/24
+      vtep_loopback_ipv4_pool: 192.168.1.0/24
+      l3_interfaces:
+        - name: Ethernet1
+        - name: Ethernet1.100
+          encapsulation_dot1q_vlan: 100
+
+expected_error_message: >-
+  'l3leaf.nodes[name=l3-interface-no-ip-address-subif].l3_interfaces[name=Ethernet1.100].ip_address or [name=Ethernet1.100].ipv6_addresses'
+  is required but was not found.

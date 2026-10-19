@@ -352,6 +352,7 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
+    - router-mac system
   - id: 2
     metadata:
       tenants:

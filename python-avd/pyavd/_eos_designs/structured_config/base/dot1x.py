@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -34,6 +34,7 @@ class Dot1xMixin(Protocol):
         self._configure_dot1x_dynamic_authorization(dot1x_settings.dynamic_authorization)
         self._configure_dot1x_aaa_accounting(dot1x_settings.accounting)
         self._configure_dot1x_global_settings(dot1x_settings)
+        self._configure_dot1x_device_profiling(dot1x_settings)
 
     def _configure_dot1x_aaa_authentication(self: AvdStructuredConfigBaseProtocol, authentication_settings: EosDesigns.Dot1xSettings.Authentication) -> None:
         """Configure 802.1X AAA authentication settings."""
@@ -85,19 +86,113 @@ class Dot1xMixin(Protocol):
 
     def _configure_dot1x_global_settings(self: AvdStructuredConfigBaseProtocol, dot1x_settings: EosDesigns.Dot1xSettings) -> None:
         """Configure 802.1X global settings."""
+        feature_support = self.shared_utils.platform_settings.feature_support
         self.structured_config.dot1x = EosCliConfigGen.Dot1x(
             system_auth_control=True,
-            protocol_bpdu_bypass=dot1x_settings.bypass_bpdu,
+            protocol_bpdu_bypass=dot1x_settings.bypass_bpdu if feature_support.dot1x_bpdu_bypass else None,
             protocol_lldp_bypass=dot1x_settings.bypass_lldp,
             dynamic_authorization=dot1x_settings.dynamic_authorization.enabled,
         )
         if dot1x_settings.radius_av_pairs.service_type is True:
             self.structured_config.dot1x.radius_av_pair.service_type = True
+        if dot1x_settings.radius_av_pairs.framed_mtu:
+            self.structured_config.dot1x.radius_av_pair.framed_mtu = dot1x_settings.radius_av_pairs.framed_mtu
         if dot1x_settings.mac_based_authentication.username_format:
             self.structured_config.dot1x.radius_av_pair_username_format = EosCliConfigGen.Dot1x.RadiusAvPairUsernameFormat(
                 delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
                 mac_string_case=dot1x_settings.mac_based_authentication.username_format.letter_case,
             )
+        self.structured_config.dot1x.mac_based_authentication._update(
+            delay=dot1x_settings.mac_based_authentication.delay, hold_period=dot1x_settings.mac_based_authentication.hold_period
+        )
+        self._configure_dot1x_web_authentication(dot1x_settings.web_authentication)
+
+    def _configure_dot1x_web_authentication(self: AvdStructuredConfigBaseProtocol, web_authentication: EosDesigns.Dot1xSettings.WebAuthentication) -> None:
+        """Configure 802.1X captive portal settings."""
+        if not web_authentication.enabled:
+            return
+
+        if not self.inputs.dot1x_settings.dynamic_authorization.enabled:
+            msg = (
+                "'dot1x_settings.web_authentication' requires 'dot1x_settings.dynamic_authorization.enabled: true' "
+                "since captive portal relies on RADIUS CoA to authorize the session after portal login."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        # TODO: AVD 7.0.0 - `start_limit_infinite` and `access_list_ipv4` are currently dropped by the eos_cli_config_gen
+        # template when `enabled` is false, even though EOS allows them to coexist with `no captive-portal`.
+        # Tracked by issue #7042; once the template is fixed in 7.0.0 these values will be rendered regardless of `enabled`.
+
+        self.structured_config.dot1x.captive_portal = EosCliConfigGen.Dot1x.CaptivePortal(
+            enabled=web_authentication.enabled,
+            start_limit_infinite=web_authentication.start_limit_infinite,
+            ssl_profile=web_authentication.ssl_profile,
+            url=web_authentication.url,
+        )
+        if (web_acl := web_authentication.ipv4_acl) is not None:
+            if web_acl not in self.inputs.ipv4_acls:
+                msg = f"ipv4_acls[name={web_acl}]"
+                raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+            self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[web_acl])
+            self.structured_config.dot1x.captive_portal.access_list_ipv4 = web_acl
+
+    def _configure_dot1x_device_profiling(
+        self: AvdStructuredConfigBaseProtocol,
+        dot1x_settings: EosDesigns.Dot1xSettings,
+    ) -> None:
+        """Configure 802.1X device profiling."""
+        device_profiling = dot1x_settings.device_profiling
+        if not device_profiling.enabled:
+            return
+
+        if not dot1x_settings.accounting.enabled or dot1x_settings.accounting.mode != "start-stop":
+            msg = (
+                "'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and "
+                "'dot1x_settings.accounting.mode: start-stop' since the feature relies on Interim-Update accounting messages."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        self._configure_dot1x_device_profiling_dhcp(device_profiling.dhcp)
+        self._configure_dot1x_device_profiling_lldp(device_profiling.lldp)
+
+    def _configure_dot1x_device_profiling_dhcp(self: AvdStructuredConfigBaseProtocol, dhcp_profiling: EosDesigns.Dot1xSettings.DeviceProfiling.Dhcp) -> None:
+        """Configure 802.1X device profiling DHCP options."""
+        if not dhcp_profiling.enabled:
+            return
+
+        if self.shared_utils.vtep:
+            msg = "'dot1x_settings.device_profiling.dhcp' is not supported on VTEP devices."
+            raise AristaAvdInvalidInputsError(msg)
+
+        address_locking_settings = self.inputs.address_locking_settings
+        if self.shared_utils.platform_settings.feature_support.address_locking.supported and address_locking_settings and not address_locking_settings.disabled:
+            msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if dhcp_profiling.hostname.enabled:
+            self.structured_config.dot1x.radius_av_pair.dhcp.hostname.enabled = True
+            self.structured_config.dot1x.radius_av_pair.dhcp.hostname.auth_only = dhcp_profiling.hostname.auth_only
+
+        if dhcp_profiling.parameter_request_list.enabled:
+            self.structured_config.dot1x.radius_av_pair.dhcp.parameter_request_list.enabled = True
+            self.structured_config.dot1x.radius_av_pair.dhcp.parameter_request_list.auth_only = dhcp_profiling.parameter_request_list.auth_only
+
+        if dhcp_profiling.vendor_class_id.enabled:
+            self.structured_config.dot1x.radius_av_pair.dhcp.vendor_class_id.enabled = True
+            self.structured_config.dot1x.radius_av_pair.dhcp.vendor_class_id.auth_only = dhcp_profiling.vendor_class_id.auth_only
+
+    def _configure_dot1x_device_profiling_lldp(self: AvdStructuredConfigBaseProtocol, lldp_profiling: EosDesigns.Dot1xSettings.DeviceProfiling.Lldp) -> None:
+        """Configure 802.1X device profiling LLDP TLVs."""
+        if not lldp_profiling.enabled:
+            return
+
+        if lldp_profiling.system_name.enabled:
+            self.structured_config.dot1x.radius_av_pair.lldp.system_name.enabled = True
+            self.structured_config.dot1x.radius_av_pair.lldp.system_name.auth_only = lldp_profiling.system_name.auth_only
+
+        if lldp_profiling.system_description.enabled:
+            self.structured_config.dot1x.radius_av_pair.lldp.system_description.enabled = True
+            self.structured_config.dot1x.radius_av_pair.lldp.system_description.auth_only = lldp_profiling.system_description.auth_only
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,

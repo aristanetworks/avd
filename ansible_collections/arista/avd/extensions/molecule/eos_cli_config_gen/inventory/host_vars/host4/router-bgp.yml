@@ -2,17 +2,94 @@
 router_bgp:
   as: 65001
   router_id: 192.168.255.3
+  bgp_cluster_id: 192.0.2.44
   graceful_restart_helper:
     enabled: true
     long_lived: true
   bgp:
     additional_paths:
-      send: ecmp
+      send: any
     labeled_unicast:
       rib:
         tunnel:
           enabled: true
           route_map: RM-rib3
+  peer_groups:
+    - name: PG-DOC-COVERAGE
+      remote_as: 65044
+      # TODO: Open issue. documentation/router-bgp.j2 checks peer_group.vrf inheritance,
+      # but router_bgp.peer_groups[].vrf is rejected by schema validation.
+      shutdown: true
+      route_reflector_client: true
+      passive: true
+      next_hop_unchanged: true
+      allowas_in:
+        enabled: true
+        times: 2
+      maximum_routes: 100
+      maximum_routes_warning_limit: 50
+    - name: PG-VRF-DOC-COVERAGE
+      remote_as: 65045
+      route_reflector_client: true
+      allowas_in:
+        enabled: true
+  neighbors:
+    - ip_address: 192.0.2.100
+      peer_group: PG-DOC-COVERAGE
+    - ip_address: 192.0.2.101
+      remote_as: 65046
+      local_as: 65047
+      update_source: Loopback47
+      route_map_in: RM-TOP-IN
+      route_map_out: RM-TOP-OUT
+      maximum_routes: 0
+    - ip_address: 192.0.2.102
+      remote_as: 65048
+      maximum_routes: 200
+      maximum_routes_warning_limit: 100
+  address_family_evpn:
+    bgp:
+      additional_paths:
+        send: any
+    evpn_hostflap_detection:
+      enabled: false
+    layer_2_fec_in_place_update:
+      enabled: true
+  vlans:
+    - id: 444
+      rd: 192.0.2.44:444
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.0.2.44:445
+      route_targets:
+        both:
+          - 444:444
+        import_export_evpn_domains:
+          - domain: remote
+            route_target: 444:445
+      redistribute_routes:
+        - learned
+      eos_cli: |-
+        comment
+        VLAN BGP coverage
+    - id: 445
+      rd: 192.0.2.44:445
+      route_targets:
+        both:
+          - 445:445
+  vlan_aware_bundles:
+    - name: BGP-COVERAGE-BUNDLE
+      rd: 192.0.2.44:500
+      route_targets:
+        both:
+          - 500:500
+        import_export_evpn_domains:
+          - domain: remote
+            route_target: 500:501
+      vlan: 500
+      eos_cli: |-
+        comment
+        VLAN aware bundle BGP coverage
   address_family_ipv4:
     bgp:
       additional_paths:
@@ -22,8 +99,198 @@ router_bgp:
       additional_paths:
         send: limit
         send_limit: 20
+        # TODO: Open issue. eos/router-bgp.j2 checks address_family_ipv6.bgp.additional_paths.prefix_list,
+        # but this key is rejected by schema validation.
+    neighbors:
+      - ip_address: 2001:db8:4::1
+        activate: true
+        additional_paths:
+          send: any
   address_family_ipv4_labeled_unicast:
     bgp:
       additional_paths:
         send: limit
         send_limit: 10
+  address_family_path_selection:
+    bgp:
+      additional_paths:
+        send: any
+  vrfs:
+    - name: BGP_COVERAGE_IPV4
+      bgp:
+        redistribute_internal: true
+      neighbor_interfaces:
+        - name: Ethernet41
+          peer_group: PG-COVERAGE
+          remote_as: 65041
+        - name: Ethernet42
+          peer_group: PG-COVERAGE
+          peer_filter: PF-COVERAGE
+      neighbors:
+        - ip_address: 192.0.2.10
+          update_source: Loopback10
+          route_map_in: RM-VRF-IN
+          rib_in_pre_policy_retain:
+            enabled: true
+            all: true
+        - ip_address: 192.0.2.11
+          additional_paths:
+            send: disabled
+        - ip_address: 192.0.2.12
+          additional_paths:
+            send: limit
+            send_limit: 11
+          peer_tag_out_discard: PEER_TAG_DISCARD_OUT
+        - ip_address: 192.0.2.14
+          additional_paths:
+            send: any
+        - ip_address: 192.0.2.13
+          peer_group: PG-VRF-DOC-COVERAGE
+          maximum_routes: 300
+          maximum_routes_warning_limit: 150
+      address_family_ipv4:
+        bgp:
+          redistribute_internal: false
+          additional_paths:
+            send: limit
+            send_limit: 12
+        neighbors:
+          - ip_address: 192.0.2.20
+            additional_paths:
+              send: ecmp
+              send_limit: 13
+          - ip_address: 192.0.2.21
+            additional_paths:
+              send: limit
+              send_limit: 14
+        redistribute:
+          connected:
+            enabled: true
+            route_map: RM-CONNECTED
+          dynamic:
+            enabled: true
+            rcf: RCF_DYNAMIC()
+          isis:
+            enabled: true
+            route_map: RM-ISIS
+          ospf:
+            match_internal:
+              enabled: true
+              include_leaked: true
+              route_map: RM-OSPF-INTERNAL
+          ospfv3:
+            enabled: true
+            include_leaked: true
+            route_map: RM-OSPFV3
+          static:
+            enabled: true
+            rcf: RCF_STATIC()
+      address_family_ipv4_multicast:
+        neighbors:
+          - ip_address: 192.0.2.30
+            activate: true
+        redistribute:
+          isis:
+            enabled: true
+            rcf: RCF-MCAST-ISIS()
+          ospf:
+            enabled: true
+            route_map: RM-MCAST-OSPF
+          ospfv3:
+            enabled: true
+            route_map: RM-MCAST-OSPFV3
+    - name: BGP_COVERAGE_IPV4_DISABLED
+      address_family_ipv4:
+        bgp:
+          additional_paths:
+            send: disabled
+    - name: BGP_COVERAGE_IPV6
+      address_family_ipv6:
+        bgp:
+          redistribute_internal: false
+          additional_paths:
+            send: disabled
+        neighbors:
+          - ip_address: 2001:db8::20
+            additional_paths:
+              send: ecmp
+              send_limit: 15
+          - ip_address: 2001:db8::21
+            additional_paths:
+              send: limit
+              send_limit: 16
+        redistribute:
+          attached_host:
+            enabled: true
+            route_map: RM-V6-HOST
+          bgp:
+            enabled: true
+            route_map: RM-V6-BGP
+          dhcp:
+            enabled: true
+            route_map: RM-V6-DHCP
+          connected:
+            enabled: true
+            include_leaked: true
+            route_map: RM-V6-CONNECTED
+          dynamic:
+            enabled: true
+            rcf: RCF_V6_DYNAMIC()
+          user:
+            enabled: true
+          isis:
+            enabled: true
+            include_leaked: true
+            rcf: RCF_V6_ISIS()
+          ospfv3:
+            enabled: true
+            include_leaked: true
+            route_map: RM-V6-OSPFV3
+            match_nssa_external:
+              enabled: true
+              nssa_type: 1
+              include_leaked: true
+              route_map: RM-V6-OSPFV3-NSSA
+          static:
+            enabled: true
+            include_leaked: true
+            rcf: RCF_V6_STATIC()
+      address_family_ipv6_multicast:
+        neighbors:
+          - ip_address: 2001:db8::30
+            activate: true
+            route_map_out: RM-V6MCAST-OUT
+            peer_tag_in: PEER_TAG_IN_V6MCAST
+            peer_tag_out_discard: PEER_TAG_OUT_V6MCAST
+        networks:
+          - prefix: ff08:2::/64
+            route_map: RM-V6MCAST-NETWORK
+        redistribute:
+          isis:
+            enabled: true
+            rcf: RCF-V6MCAST-ISIS()
+          ospf:
+            match_internal:
+              enabled: true
+              route_map: RM-V6MCAST-OSPF-INTERNAL
+          ospfv3:
+            enabled: true
+            route_map: RM-V6MCAST-OSPFV3
+    - name: BGP_COVERAGE_IPV6_ROUTE_MAP
+      address_family_ipv6:
+        redistribute:
+          dynamic:
+            enabled: true
+            route_map: RM-V6-DYNAMIC
+          isis:
+            enabled: true
+            route_map: RM-V6-ISIS
+    - name: BGP_COVERAGE_EVPN_MULTICAST
+      evpn_multicast: true
+      evpn_multicast_gateway_dr_election:
+        algorithm: preference
+        preference_value: 100
+    - name: BGP_COVERAGE_EVPN_MULTICAST_DEFAULT
+      evpn_multicast: true
+      evpn_multicast_gateway_dr_election:
+        algorithm: modulus

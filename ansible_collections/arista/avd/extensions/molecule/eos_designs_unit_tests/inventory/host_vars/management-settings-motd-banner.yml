@@ -1,0 +1,15 @@
+---
+# Test for management settings
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: management-settings-motd-banner
+      mgmt_ip: 192.168.0.2/24
+
+management_settings:
+  banners:
+    motd: |
+      .         Switch       : $(hostname)                            .
+      .         Site         : DC1                      .
+      .         Type info for information about the device            .
+      .         Type help for information about the aliases           .

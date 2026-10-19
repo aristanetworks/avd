@@ -1,0 +1,13 @@
+---
+# Test for DHCP Relay option-82 on non VTEP device
+
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: dhcp-relay-option-82-non-vtep
+      id: 101
+      bgp_as: 201
+
+general_settings:
+  dhcp_relay:
+    information_option: true

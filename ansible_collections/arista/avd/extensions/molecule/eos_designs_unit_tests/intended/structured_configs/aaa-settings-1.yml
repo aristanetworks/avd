@@ -202,6 +202,8 @@ metadata:
 radius_server:
   servers:
   - host: 11.10.10.11
+    timeout: 10
+    retransmit: 3
     key: 071B245F5A
   - host: 10.10.10.42
     key: 071B245F5A
@@ -214,6 +216,7 @@ radius_server:
   - name: MGMT
     servers:
     - host: 11.10.10.1
+      timeout: 20
       key: 071B245F5A
     - host: 11.10.10.2
       key: 071B245F5A

@@ -221,9 +221,13 @@ metadata:
     min_line_cards: 0
     transceiver_manufacturers:
     - Third-party vendor
+    ignore_no_transceivers: false
   interfaces:
     errdisable:
       only_avd_interfaces: true
+  bgp:
+    check_tcp_queues: false
+    minimum_established_time: 10000
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094

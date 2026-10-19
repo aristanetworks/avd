@@ -17,7 +17,10 @@
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
   - [Extended Access-lists](#extended-access-lists)
+  - [IP Access-lists](#ip-access-lists)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
+- [Errdisable](#errdisable)
+  - [Errdisable Summary](#errdisable-summary)
 
 ## Management
 
@@ -33,9 +36,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | Test_ipv6_address | oob | default | 2002::CAFE/128 | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | Test_ipv6_address | oob | default | 2002::CAFE/128 | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -136,9 +139,9 @@ ip radius vrf MGMT source-interface Management1
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Ethernet1 | Test_ipv6_address | - | 2002::CAFE/128 | default | - | - | - | - | - | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Ethernet1 | Test_ipv6_address | - | 2002::CAFE/128 | default | - | - | - | - | - | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -169,9 +172,9 @@ interface Ethernet1
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Port-Channel1 | Test_ipv6_address | - | 2002::CAFE/128 | default | - | - | - | - | - | - | - | - | - |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Port-Channel1 | Test_ipv6_address | - | 2002::CAFE/128 | default | - | - | - | - | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -225,9 +228,9 @@ interface Loopback2
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ------- | ----------------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Tunnel1 | default | 2002::CAFE/128 | - | - | - | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ------- | ----------------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Tunnel1 | default | 2002::CAFE/128 | - | - | - | - | - | - | - | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -257,9 +260,9 @@ interface Tunnel1
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| VLAN10 | default | 2002::CAFE/128 | - | - | - | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| VLAN10 | default | 2002::CAFE/128 | - | - | - | - | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -402,6 +405,16 @@ ip access-list acl_qos_tc5_v4
    10 permit ip any any dscp ef
 ```
 
+### IP Access-lists
+
+#### IP Access-lists Device Configuration
+
+```eos
+!
+ip access-list ACL_SEQUENCE_AND_COUNTERS
+   permit vlan inner 235 0x1FF ip any any
+```
+
 ### IPv6 Extended Access-lists
 
 #### IPv6 Extended Access-lists Summary
@@ -463,4 +476,96 @@ ipv6 access-list acl_qos_tc0_v6
 !
 ipv6 access-list acl_qos_tc5_v6
    10 permit ipv6 any 2001:db8::/48
+```
+
+## Errdisable
+
+### Errdisable Summary
+
+Errdisable recovery timer interval: 300 seconds
+
+| Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ----- | ----------------- | ---------------- | --------------------------- |
+| acl | True | True | - |
+| arp-inspection | True | True | - |
+| bpduguard | - | True | 400 |
+| dot1x | True | True | 500 |
+| dot1x-coa | True | True | - |
+| dot1x-phone-classification | True | True | - |
+| dot1x-session-replace | True | True | - |
+| error-correction-encoding | True | True | - |
+| hardware-speed-group | True | True | - |
+| hitless-reload-down | - | True | - |
+| interface-speed | True | True | - |
+| internal-error | True | True | - |
+| lacp-rate-limit | - | True | - |
+| link-change | True | - | - |
+| link-flap | - | True | - |
+| no-internal-vlan | - | True | - |
+| port-breakout | True | True | - |
+| portchannelguard | - | True | - |
+| portsec | - | True | - |
+| speed-misconfigured | - | True | - |
+| storm-control | True | True | - |
+| stuck-queue | - | True | - |
+| switchcard-unreachable | True | True | - |
+| tapagg | True | True | - |
+| transceiver-adapter | True | True | - |
+| uplink-failure-detection | - | True | - |
+| xcvr-misconfigured | True | True | - |
+| xcvr-overheat | True | True | - |
+| xcvr-power-unsupported | True | True | - |
+| xcvr-unsupported | - | True | - |
+
+```eos
+!
+errdisable detect cause acl
+errdisable detect cause arp-inspection
+errdisable detect cause dot1x
+errdisable detect cause dot1x-coa
+errdisable detect cause dot1x-phone-classification
+errdisable detect cause dot1x-session-replace
+errdisable detect cause error-correction-encoding
+errdisable detect cause hardware-speed-group
+errdisable detect cause interface-speed
+errdisable detect cause internal-error
+errdisable detect cause link-change
+errdisable detect cause port-breakout
+errdisable detect cause storm-control
+errdisable detect cause switchcard-unreachable
+errdisable detect cause tapagg
+errdisable detect cause transceiver-adapter
+errdisable detect cause xcvr-misconfigured
+errdisable detect cause xcvr-overheat
+errdisable detect cause xcvr-power-unsupported
+errdisable recovery cause acl
+errdisable recovery cause arp-inspection
+errdisable recovery cause dot1x-coa
+errdisable recovery cause dot1x-phone-classification
+errdisable recovery cause dot1x-session-replace
+errdisable recovery cause error-correction-encoding
+errdisable recovery cause hardware-speed-group
+errdisable recovery cause hitless-reload-down
+errdisable recovery cause interface-speed
+errdisable recovery cause internal-error
+errdisable recovery cause lacp-rate-limit
+errdisable recovery cause link-flap
+errdisable recovery cause no-internal-vlan
+errdisable recovery cause port-breakout
+errdisable recovery cause portchannelguard
+errdisable recovery cause portsec
+errdisable recovery cause speed-misconfigured
+errdisable recovery cause storm-control
+errdisable recovery cause stuck-queue
+errdisable recovery cause switchcard-unreachable
+errdisable recovery cause tapagg
+errdisable recovery cause transceiver-adapter
+errdisable recovery cause uplink-failure-detection
+errdisable recovery cause xcvr-misconfigured
+errdisable recovery cause xcvr-overheat
+errdisable recovery cause xcvr-power-unsupported
+errdisable recovery cause xcvr-unsupported
+errdisable recovery cause bpduguard interval 400
+errdisable recovery cause dot1x interval 500
+errdisable recovery interval 300
 ```

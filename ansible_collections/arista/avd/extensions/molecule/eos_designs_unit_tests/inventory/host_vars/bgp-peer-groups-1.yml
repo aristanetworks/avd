@@ -1,0 +1,3 @@
+avd_design_future:
+  remove_redundant_ipv4_unicast_for_peer_groups: true
+  only_configure_mlag_vrfs_peer_group_when_used: true

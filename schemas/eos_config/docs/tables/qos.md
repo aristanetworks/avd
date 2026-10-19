@@ -1,0 +1,98 @@
+<!--
+  ~ Copyright (c) 2026 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>qos</samp>](## "qos") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;map</samp>](## "qos.map") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cos</samp>](## "qos.map.cos") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "qos.map.cos.[]") | String |  |  |  | Example: "0 1 to traffic-class 1"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "qos.map.dscp") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "qos.map.dscp.[]") | String |  |  |  | Example: "8 9 10 to traffic-class 1"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exp</samp>](## "qos.map.exp") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "qos.map.exp.[]") | String |  |  |  | Example "0 to traffic-class 0"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "qos.map.traffic_class") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "qos.map.traffic_class.[]") | String |  |  |  | Example: "1 to dscp 32"<br> |
+    | [<samp>&nbsp;&nbsp;rewrite_dscp</samp>](## "qos.rewrite_dscp") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;random_detect</samp>](## "qos.random_detect") | Dictionary |  |  |  | Global random-detect settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "qos.random_detect.ecn") | Dictionary |  |  |  | Global ECN Configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_non_ect</samp>](## "qos.random_detect.ecn.allow_non_ect") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "qos.random_detect.ecn.allow_non_ect.enabled") | Boolean |  |  |  | Allow non-ect and set drop-precedence 1 in a policy map simultaneously.<br>Check which command is required for your platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chip_based</samp>](## "qos.random_detect.ecn.allow_non_ect.chip_based") | Boolean |  |  |  | Allow non-ect chip-based. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global_buffer</samp>](## "qos.random_detect.ecn.global_buffer") | Dictionary |  |  |  | Set global shared memory thresholds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "qos.random_detect.ecn.global_buffer.units") | String | Required |  | Valid Values:<br>- <code>segments</code><br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code> | Units to be used for the threshold values.<br>Threshold values depend on the hardware platform.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "qos.random_detect.ecn.global_buffer.min") | Integer | Required |  | Min: 1 | Random-detect ECN minimum-threshold. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos.random_detect.ecn.global_buffer.max") | Integer | Required |  | Min: 1 | Random-detect ECN maximum-threshold. |
+    | [<samp>&nbsp;&nbsp;tx_queue</samp>](## "qos.tx_queue") | Dictionary |  |  |  | Global transmit queue settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shape_rate_percent_adaptive</samp>](## "qos.tx_queue.shape_rate_percent_adaptive") | Boolean |  |  |  | Use the parent available bandwidth for transmit queue percentage-based allocation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;queues</samp>](## "qos.tx_queue.queues") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "qos.tx_queue.queues.[].id") | Integer | Required, Unique |  | Min: 0<br>Max: 7 | Queue ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scheduler_profile_responsive</samp>](## "qos.tx_queue.queues.[].scheduler_profile_responsive") | Boolean |  |  |  | Set scheduler profile to optimize latency at the expense of burstiness. |
+
+=== "YAML"
+
+    ```yaml
+    qos:
+      map:
+        cos:
+
+            # Example: "0 1 to traffic-class 1"
+          - <str>
+        dscp:
+
+            # Example: "8 9 10 to traffic-class 1"
+          - <str>
+        exp:
+
+            # Example "0 to traffic-class 0"
+          - <str>
+        traffic_class:
+
+            # Example: "1 to dscp 32"
+          - <str>
+      rewrite_dscp: <bool>
+
+      # Global random-detect settings.
+      random_detect:
+
+        # Global ECN Configuration.
+        ecn:
+          allow_non_ect:
+
+            # Allow non-ect and set drop-precedence 1 in a policy map simultaneously.
+            # Check which command is required for your platform.
+            enabled: <bool>
+
+            # Allow non-ect chip-based.
+            chip_based: <bool>
+
+          # Set global shared memory thresholds.
+          global_buffer:
+
+            # Units to be used for the threshold values.
+            # Threshold values depend on the hardware platform.
+            units: <str; "segments" | "bytes" | "kbytes" | "mbytes"; required>
+
+            # Random-detect ECN minimum-threshold.
+            min: <int; >=1; required>
+
+            # Random-detect ECN maximum-threshold.
+            max: <int; >=1; required>
+
+      # Global transmit queue settings.
+      tx_queue:
+
+        # Use the parent available bandwidth for transmit queue percentage-based allocation.
+        shape_rate_percent_adaptive: <bool>
+        queues:
+
+            # Queue ID.
+          - id: <int; 0-7; required; unique>
+
+            # Set scheduler profile to optimize latency at the expense of burstiness.
+            scheduler_profile_responsive: <bool>
+    ```

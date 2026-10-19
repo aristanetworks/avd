@@ -50,7 +50,7 @@ l3leaf:
     platform: 7280R
     bgp_as: 65101
     # Commented out for automatic mlag allocation
-    # mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    # mlag_interfaces: [Ethernet5, Ethernet6]
     mlag_interfaces_speed: 100g
     mlag_peer_l3_vlan: 4090
     mlag_peer_vlan: 4092

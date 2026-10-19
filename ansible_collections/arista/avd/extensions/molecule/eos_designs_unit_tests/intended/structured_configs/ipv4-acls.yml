@@ -77,6 +77,8 @@ ip_access_lists:
     protocol: ip
     source: 172.16.0.1/30
     destination: 172.16.0.2
+    inner_vlan_number: 123
+    inner_vlan_mask: '0x000'
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet1
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -95,6 +97,8 @@ ip_access_lists:
     protocol: ip
     source: 172.17.17.1
     destination: 172.17.17.17
+    inner_vlan_number: 123
+    inner_vlan_mask: '0x000'
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet2
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -125,6 +129,8 @@ ip_access_lists:
     protocol: ip
     source: 172.20.20.1/30
     destination: 172.20.20.0
+    inner_vlan_number: 123
+    inner_vlan_mask: '0x000'
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet6_6.6
   entries:
   - remark: Some remark will not require source and destination fields.

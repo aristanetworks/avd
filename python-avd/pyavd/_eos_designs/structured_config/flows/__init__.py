@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from functools import cached_property
 from itertools import chain
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -22,63 +21,6 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
 
     The only exception is of course custom_structured_configuration which always comes last.
     """
-
-    @structured_config_contributor
-    def sflow(self) -> None:
-        """
-        Structured config for sFlow.
-
-        Only configure if any interface is enabled for sFlow.
-
-        Covers:
-        - sflow_settings
-        - source-interfaces based on source_interfaces.sflow
-        """
-        if not self._enable_sflow:
-            return
-
-        sflow_settings = self.inputs.sflow_settings
-        destinations = sflow_settings.destinations._natural_sorted(sort_key="destination")
-        if sflow_settings.export_to_cloudvision.enabled:
-            destinations.append(EosDesigns.SflowSettings.DestinationsItem(destination="127.0.0.1", port=6343, vrf=sflow_settings.export_to_cloudvision.vrf))
-
-        if not destinations:
-            msg = "Either `sflow_settings.destinations` or `sflow_settings.export_to_cloudvision.enabled: true` is required to configure `sflow`."
-            raise AristaAvdInvalidInputsError(msg)
-
-        # At this point we have at least one interface with sFlow enabled
-        # and at least one destination.
-        self.structured_config.sflow._update(run=True, polling_interval=sflow_settings.polling_interval, sample=sflow_settings.sample.rate)
-
-        for destination in destinations:
-            destination: EosDesigns.SflowSettings.DestinationsItem
-            sflow_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
-                vrf_input=destination.vrf,
-                vrfs=sflow_settings.vrfs,
-                set_source_interfaces=True,
-                context=f"sflow_settings.destinations[destination={destination.destination}].vrf",
-            )
-            if sflow_vrf == "default":
-                # Add destination without VRF field
-                self.structured_config.sflow.destinations.append_new(destination=destination.destination, port=destination.port)
-                self.structured_config.sflow.source_interface = source_interface
-            else:
-                # Add destination with VRF field.
-                vrf_item = self.structured_config.sflow.vrfs.obtain(sflow_vrf)
-                vrf_item.destinations.append_new(destination=destination.destination, port=destination.port)
-                vrf_item.source_interface = source_interface
-                self.structured_config.sflow.vrfs.append(vrf_item)
-
-    @cached_property
-    def _enable_sflow(self) -> bool:
-        """
-        Enable sFlow if any interface is enabled for sFlow.
-
-        This relies on sFlow being rendered after all other eos_designs modules (except structured config).
-        """
-        if not self.shared_utils.platform_settings.feature_support.sflow:
-            return False
-        return any(interface.sflow.enable for interface in chain(self.structured_config.ethernet_interfaces, self.structured_config.port_channel_interfaces))
 
     @structured_config_contributor
     def flow_tracking(self) -> None:

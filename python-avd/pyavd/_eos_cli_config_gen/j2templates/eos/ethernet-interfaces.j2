@@ -362,6 +362,7 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ ip_helper_cli }}
 {%     endfor %}
+{#     TODO: AVD 7.0.0 Check for CLI order and Inherited Interface VRF #}
 {%     if ethernet_interface.ipv6_dhcp_relay_destinations is arista.avd.defined %}
 {%         set non_default_vrf = ethernet_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | list %}
 {%         set default_vrf = ethernet_interface.ipv6_dhcp_relay_destinations | rejectattr('vrf', 'arista.avd.defined') | list + ethernet_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | list %}
@@ -459,6 +460,16 @@ interface {{ ethernet_interface.name }}
 {%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " no-autoconfig" %}
 {%         endif %}
    {{ ipv6_nd_prefix_cli }}
+{%     endfor %}
+{%     if ethernet_interface.ipv6_nd.ra.dns_servers_lifetime is arista.avd.defined %}
+   ipv6 nd ra dns-servers lifetime {{ ethernet_interface.ipv6_nd.ra.dns_servers_lifetime }}
+{%     endif %}
+{%     for dns_server in ethernet_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort(sort_key="address") %}
+{%         set ra_dns_server = "ipv6 nd ra dns-server " ~ dns_server.address %}
+{%         if dns_server.lifetime is arista.avd.defined %}
+{%             set ra_dns_server = ra_dns_server ~ " lifetime " ~ dns_server.lifetime %}
+{%         endif %}
+   {{ ra_dns_server }}
 {%     endfor %}
 {%     if ethernet_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
@@ -688,6 +699,11 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ptp.enable is arista.avd.defined(true) %}
    ptp enable
 {%     endif %}
+{%     if ethernet_interface.ptp.management.drop is arista.avd.defined(true) %}
+   ptp management drop
+{%     elif ethernet_interface.ptp.management.drop is arista.avd.defined(false) %}
+   no ptp management drop
+{%     endif %}
 {%     if ethernet_interface.ptp.announce.interval is arista.avd.defined %}
    ptp announce interval {{ ethernet_interface.ptp.announce.interval }}
 {%     endif %}
@@ -714,6 +730,9 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.ptp.vlan is arista.avd.defined %}
    ptp vlan {{ ethernet_interface.ptp.vlan }}
+{%     endif %}
+{%     if ethernet_interface.ptp.region.domain_number is arista.avd.defined %}
+   ptp region domain-number {{ ethernet_interface.ptp.region.domain_number }}
 {%     endif %}
 {%     if ethernet_interface.service_policy.qos.input is arista.avd.defined %}
    service-policy type qos input {{ ethernet_interface.service_policy.qos.input }}
@@ -904,7 +923,11 @@ interface {{ ethernet_interface.name }}
    no logging event storm-control discards
 {%     endif %}
 {%     if ethernet_interface.spanning_tree_portfast is arista.avd.defined('edge') %}
+{%         if eos_config_future.render_spanning_tree_portfast_edge is arista.avd.defined(true) %}
+   spanning-tree portfast edge
+{%         else %}
    spanning-tree portfast
+{%         endif %}
 {%     elif ethernet_interface.spanning_tree_portfast is arista.avd.defined('network') %}
    spanning-tree portfast network
 {%     endif %}
@@ -1104,6 +1127,9 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback is arista.avd.defined %}
    traffic-engineering min-delay dynamic twamp-light fallback {{ ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.number }} {{ ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.unit }}
 {%     endif %}
+{%     if ethernet_interface.cpu_traffic_policy_fallback_vrf is arista.avd.defined %}
+   cpu traffic-policy {{ ethernet_interface.cpu_traffic_policy_fallback_vrf }} fallback traffic-policy vrf
+{%     endif %}
 {%     for link_tracking_group in ethernet_interface.link_tracking_groups | arista.avd.default([]) %}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
 {%     endfor %}
@@ -1213,8 +1239,16 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
 {%         if ethernet_interface.dot1x.authentication_failure is arista.avd.defined %}
 {%             if ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('allow') and
-                  ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
-   dot1x authentication failure action traffic allow vlan {{ ethernet_interface.dot1x.authentication_failure.allow_vlan }}
+                (ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined or
+                ethernet_interface.dot1x.authentication_failure.allow_access_list is arista.avd.defined) %}
+{%                 set dot1x_auth_failure_allow_cli = "dot1x authentication failure action traffic allow" %}
+{%                 if ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
+{%                     set dot1x_auth_failure_allow_cli = dot1x_auth_failure_allow_cli ~ " vlan " ~ ethernet_interface.dot1x.authentication_failure.allow_vlan %}
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.authentication_failure.allow_access_list is arista.avd.defined %}
+{%                     set dot1x_auth_failure_allow_cli = dot1x_auth_failure_allow_cli ~ " access-list " ~ ethernet_interface.dot1x.authentication_failure.allow_access_list %}
+{%                 endif %}
+   {{ dot1x_auth_failure_allow_cli }}
 {%             elif ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('drop') %}
    dot1x authentication failure action traffic drop
 {%             endif %}

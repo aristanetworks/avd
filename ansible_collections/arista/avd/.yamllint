@@ -22,6 +22,9 @@ rules:
     min-spaces-inside: 0 # yamllint defaults to 0
     max-spaces-inside: 1 # yamllint defaults to 0
     level: error
+  brackets:
+    max-spaces-inside: 0
+    level: error
   octal-values:
     forbid-implicit-octal: true # yamllint defaults to false
     forbid-explicit-octal: true # yamllint defaults to false
@@ -35,14 +38,6 @@ rules:
     level: error
   commas:
     max-spaces-after: -1
-    level: error
-  # TODO: the following rule is also not applied in default config
-  #       for ansible-lint and so expect list without spaces likes [blah]
-  #       not [ blah ]
-  #       because the .yamllint is not included in the collection manifest
-  #       this could lead to errors in CI that would be unobservable locally
-  brackets:
-    max-spaces-inside: 1
     level: error
   empty-lines:
     max: 1

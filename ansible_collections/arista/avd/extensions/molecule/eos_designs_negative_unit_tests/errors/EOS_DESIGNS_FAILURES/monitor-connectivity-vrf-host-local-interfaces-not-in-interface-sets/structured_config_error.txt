@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: monitor_connectivity.vrfs[name=MGMT].hosts[name=MGMT_SERVER].local_interfaces 'Loopback0' has to be defined in monitor_connectivity.vrfs[name=MGMT].interface_sets.

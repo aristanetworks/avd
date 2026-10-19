@@ -19,7 +19,6 @@ keys:
         default: false
       hosts:
         type: list
-        required: true
         min_length: 1
         items:
           type: dict
@@ -39,8 +38,6 @@ keys:
                   An error will be raised if inband management is not configured for the device.
                 - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed.
-              convert_types:
-                - int
       vrfs:
         type: list
         primary_key: name
@@ -49,8 +46,6 @@ keys:
           keys:
             name:
               type: str
-              convert_types:
-                - int
               description: VRF name.
             source_interface:
               type: str
@@ -90,3 +85,6 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
+      monitor_layer1:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/monitor_layer1

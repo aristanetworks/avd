@@ -35,8 +35,6 @@ keys:
                   An error will be raised if inband management is not configured for the device.
                 - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
-              convert_types:
-                - int
             ip_address:
               type: str
               required: true
@@ -44,8 +42,6 @@ keys:
             priority:
               description: Priority value (lower is first).
               type: int
-              convert_types:
-                - str
               min: 0
               max: 4
       vrfs:
@@ -56,8 +52,6 @@ keys:
           keys:
             name:
               type: str
-              convert_types:
-                - int
               description: VRF name.
             source_interface:
               type: str
@@ -70,3 +64,6 @@ keys:
         description: |-
           Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
           Can be set to `false` to avoid changes when migrating from the old `name_servers` model.
+      ip_hosts:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/ip_hosts"

@@ -29,7 +29,7 @@ wan_router: # dynamic_key: node_type
           ip_address: 10.9.9.9/31
 
 custom_platform_settings:
-  - platforms: [ custom_platform ]
+  - platforms: [custom_platform]
     feature_support:
       per_interface_mtu: false
 

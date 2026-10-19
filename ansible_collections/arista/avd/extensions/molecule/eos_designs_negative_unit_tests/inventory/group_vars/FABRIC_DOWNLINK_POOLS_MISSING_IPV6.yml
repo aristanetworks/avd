@@ -32,7 +32,7 @@ l3leaf:
       loopback_ipv6_pool: 2001:db8:1:0::1/56
       vtep_loopback_ipv6_pool: 2001:db8:2:0::1/56
       router_id_pool: 192.168.43.0/24
-      uplink_switch_interfaces: [ Ethernet2 ]
+      uplink_switch_interfaces: [Ethernet2]
 
 expected_error_message: >-
   Unable to assign IPs for uplinks. Either 'uplink_ipv6_pool' on this switch or 'downlink_pools' on

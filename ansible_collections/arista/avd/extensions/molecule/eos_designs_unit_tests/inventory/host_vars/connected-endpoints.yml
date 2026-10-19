@@ -1,5 +1,44 @@
 loopback_ipv4_pool: 192.168.0.0/24
 
+avd_design_future:
+  allow_recursive_profile_inheritance: true
+
+mac_acls:
+  - name: acl-on-port-profile
+    counters_per_entry: true
+    entries:
+      - sequence: 10
+        action: deny
+        source: any
+        destination: 01:80:c2:00:00:00
+        destination_wildcard: 00:00:00:00:00:00
+      - sequence: 5
+        action: permit
+        source: any
+        destination: 01:00:0c:cc:cc:cd
+        destination_wildcard: 00:00:00:00:00:00
+  - name: acl-on-endpoints
+    entries:
+      - sequence: 5
+        action: permit
+        source: any
+        destination: 01:00:0c:cc:cc:cd
+        destination_wildcard: 00:00:00:00:00:00
+      - sequence: 10
+        action: deny
+        source: 01:80:c2:00:00:00
+        source_wildcard: 00:00:00:00:00:00
+        destination: any
+  - name: no-entries
+  - name: acl_remark
+    entries:
+      - sequence: 10
+        remark: acl with remark
+        # source and destination are ignored when remark is set.
+        action: permit
+        source: any
+        destination: any
+
 type: l2leaf
 l2leaf:
   defaults:
@@ -50,10 +89,10 @@ servers:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet1, Ethernet2]
         endpoint_ports: [Endpoint_port1, ENDPOINT_PORT2]
-        description: "Interface description {endpoint_type}_{endpoint}{endpoint_port?<_!u}"
+        description: "Interface description {interface} {endpoint_type}_{endpoint}{endpoint_port?<_!u}"
         port_channel:
           mode: "active"
-          description: "Port channel description {endpoint_type}_{endpoint}_Po{port_channel_id}_{endpoint_port_channel}_{adapter_description!u}"
+          description: "Port channel description {interface} {endpoint_type}_{endpoint}_Po{port_channel_id}_{endpoint_port_channel}_{adapter_description!u}"
           endpoint_port_channel: ENDPOINT_PORT_CHANNEL
   # port-channel and physical port with default descriptions - all fields
   - name: OLD_SW-1/3
@@ -71,6 +110,8 @@ servers:
       - switches: [connected-endpoints]
         switch_ports: [Ethernet4]
         description: "PHYSICAL_PORT_DESCRIPTION"
+        mac_acl_in: acl-on-endpoints
+        mac_acl_out: acl-on-endpoints
   # port-channel provide port-channel description
   - name: OLD_SW-1/5
     adapters:
@@ -113,23 +154,26 @@ servers:
           mode: active
           subinterfaces:
             - number: 100
-            - short_esi: auto
             - number: 200
               vlan_id: 200
-  - name: OLD_SW-1/12
+              description: "{subinterface}-{subinterface_number}-{vlan_id}-{dot1q_client_vlan}-{endpoint_type}-{endpoint}"
+  - name: OLD_SW-1/10
     adapters:
-      - switches: [connected-endpoints]
-        switch_ports: [Ethernet25]
-        endpoint_ports: [Endpoint_port6]
+      - switches: [connected-endpoints, connected-endpoints]
+        switch_ports: [Ethernet49, Ethernet50]
+        endpoint_ports: [Endpoint_port1, ENDPOINT_PORT2]
+        description: "Interface description {interface!c} {endpoint_type!t}_{endpoint!l}{endpoint_port?<_!u}"
         port_channel:
-          mode: active
-          subinterfaces:
-            - short_esi: auto
+          mode: "active"
+          description: "Port channel description {interface!c} {endpoint_type}_{endpoint}_Po{port_channel_id}_{endpoint_port_channel}_{adapter_description!l}"
+          endpoint_port_channel: ENDPOINT_PORT_CHANNEL
   # port-channel with lacp fallback individual and profile for member interfaces
   - name: INDIVIDUAL_1
     adapters:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet12, Ethernet13]
+        mac_acl_in: acl-on-endpoints
+        mac_acl_out: no-entries
         port_channel:
           mode: "active"
           endpoint_port_channel: "INDIVIDUAL_1"
@@ -143,6 +187,7 @@ servers:
       - switches: [connected-endpoints]
         switch_ports: [Ethernet14]
         profile: INDIVIDUAL_TRUNK # Notice that poe and dot1x _are_ inherited from the main profile.
+        mac_acl_in: acl_remark
   - name: INDIVIDUAL_2_TRUNK_PHONE
     adapters:
       - switches: [connected-endpoints, connected-endpoints]
@@ -262,6 +307,62 @@ servers:
         switch_ports: [Ethernet41]
         mode: trunk
         vlans: none
+  - name: ADDRESS_LOCKING_SERVER
+    adapters:
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet42]
+        profile: ADDRESS_LOCKING_PROFILE
+        mode: access
+        vlans: 111
+  - name: ADDRESS_LOCKING_PC_SERVER
+    adapters:
+      - switches: [connected-endpoints, connected-endpoints]
+        switch_ports: [Ethernet43, Ethernet44]
+        profile: ADDRESS_LOCKING_PROFILE
+        mode: access
+        vlans: 112
+        port_channel:
+          mode: active
+          channel_id: 43
+  - name: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    adapters:
+      - switches: [connected-endpoints, connected-endpoints]
+        switch_ports: [Ethernet45, Ethernet46]
+        mode: access
+        vlans: 112
+        # setting ipv4/ipv6: true to verify they are NOT rendered in port-channel configuration
+        address_locking:
+          ipv4: true
+          ipv6: true
+        port_channel:
+          mode: active
+          channel_id: 45
+  - name: ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+    adapters:
+      - switches: [connected-endpoints, connected-endpoints]
+        switch_ports: [Ethernet47, Ethernet48]
+        mode: access
+        vlans: 112
+        # setting ipv4: false and ipv6: false to verify both are rendered as disabled in port-channel configuration
+        address_locking:
+          ipv4: false
+          ipv6: false
+        port_channel:
+          mode: active
+          channel_id: 47
+
+  - name: PORT_PROFILE_CHAIN1
+    adapters:
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet51]
+        profile: profile1
+
+  - name: PORT_PROFILE_CHAIN2
+    adapters:
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet52]
+        profile: profile2
+
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
@@ -293,6 +394,53 @@ port_profiles:
       pae:
         mode: supplicant
         supplicant_profile: test_profile_port_profile
+    mac_acl_in: acl-on-port-profile
+    mac_acl_out: acl-on-port-profile
+
+  - profile: ADDRESS_LOCKING_PROFILE
+    address_locking:
+      # setting ipv4: false to show up in port-channel configuration
+      ipv4: false
+      ipv6: true
+
+  - profile: profile1
+    mode: trunk
+    vlans: "1,2,3,4,5,6,7,123,234"
+    native_vlan_tag: false
+    native_vlan: 123
+    parent_profile: profile2
+
+  - profile: profile2
+    mode: trunk
+    spanning_tree_portfast: "edge"
+    spanning_tree_bpdufilter: true
+    spanning_tree_link_type: point-to-point
+    parent_profile: profile3
+
+  - profile: profile3
+    mode: trunk
+    qos_profile: MYQOS
+    poe:
+      disabled: true
+    ptp:
+      enabled: true
+    sflow: false
+    parent_profile: profile4
+
+  - profile: profile4
+    # Regression test: An empty parent_profile is treated as unset with recursive inheritance enabled.
+    parent_profile: ""
+    mode: trunk
+    native_vlan: 42
+    link_tracking:
+      enabled: true
+    # Testing for dot1x mode supplicant.
+    dot1x:
+      pae:
+        mode: supplicant
+        supplicant_profile: test_profile_port_profile
+    mac_acl_in: acl-on-port-profile
+    mac_acl_out: acl-on-port-profile
 
 monitor:
   - name: custom_connected_endpoint

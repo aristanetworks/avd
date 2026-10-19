@@ -12,6 +12,8 @@ ethernet_interfaces:
   mtu: 9178
   ip_address: 100.64.48.1/31
   ipv6_enable: true
+  ipv6_addresses:
+  - 2001:db8:0:fffe::1/127
   isis_enable: CORE
   isis_metric: 60
   isis_network_point_to_point: true
@@ -43,6 +45,8 @@ ethernet_interfaces:
   mtu: 9178
   ip_address: 100.64.48.6/31
   ipv6_enable: true
+  ipv6_addresses:
+  - 2001:db8:0:fffe::6/127
   isis_enable: CORE
   isis_metric: 60
   isis_network_point_to_point: true
@@ -74,6 +78,8 @@ ethernet_interfaces:
   mtu: 9178
   ip_address: 100.64.48.8/31
   ipv6_enable: true
+  ipv6_addresses:
+  - 2001:db8:0:fffe::8/127
   isis_enable: CORE
   isis_metric: 60
   isis_network_point_to_point: true
@@ -107,7 +113,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 100.70.0.1/32
   ipv6_addresses:
-  - 2000:1234:ffff:ffff::1/128
+  - 2001:db8:300:ffff::1/128
   mpls:
     ldp:
       interface: true
@@ -115,7 +121,7 @@ loopback_interfaces:
   isis_passive: true
   node_segment:
     ipv4_index: 301
-    ipv6_index: 301
+    ipv6_index: 1301
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -160,6 +166,7 @@ router_isis:
   address_family_ipv6:
     enabled: true
     maximum_paths: 4
+    multi_topology: true
     fast_reroute_ti_lfa:
       mode: link-protection
   segment_routing_mpls:

@@ -13,8 +13,6 @@ keys:
         type: bool
       interval:
         type: int
-        convert_types:
-          - str
       interface_sets:
         type: list
         primary_key: name
@@ -31,6 +29,8 @@ keys:
                 Multiple interface ranges can be specified separated by ",".
       local_interfaces:
         type: str
+      # TODO: AVD 7.0 Set default false for address_only
+      # Use ref in eos_designs schemas once this is fixed.
       address_only:
         type: bool
         description: |-
@@ -65,12 +65,12 @@ keys:
             icmp_echo_size:
               type: int
               description: Size of ICMP probe in bytes.
-              convert_types:
-                - str
               min: 36
               max: 18024
             local_interfaces:
               type: str
+            # TODO: AVD 7.0 Set default false for address_only
+            # Use ref in eos_designs schemas once this is fixed.
             address_only:
               type: bool
               description: |-
@@ -92,8 +92,6 @@ keys:
             name:
               description: VRF Name.
               type: str
-              convert_types:
-                - int
             description:
               type: str
               description: |-
@@ -120,6 +118,8 @@ keys:
                     type: str
             local_interfaces:
               type: str
+            # TODO: AVD 7.0 Set default false for address_only
+            # Use ref in eos_designs schemas once this is fixed.
             address_only:
               type: bool
               description: |-
@@ -154,12 +154,12 @@ keys:
                   icmp_echo_size:
                     type: int
                     description: Size of ICMP probe in bytes.
-                    convert_types:
-                      - str
                     min: 36
                     max: 18024
                   local_interfaces:
                     type: str
+                  # TODO: AVD 7.0 Set default false for address_only
+                  # Use ref in eos_designs schemas once this is fixed.
                   address_only:
                     type: bool
                     description: |-

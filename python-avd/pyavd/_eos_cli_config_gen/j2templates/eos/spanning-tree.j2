@@ -60,6 +60,9 @@ spanning-tree vlan-id {{ vlan_id.id }} priority {{ vlan_id.priority }}
 spanning-tree priority {{ spanning_tree.rstp_priority }}
 {%         endif %}
 {%     endif %}
+{%     if spanning_tree.loop_guard_default is arista.avd.defined(true) %}
+spanning-tree guard loop default
+{%     endif %}
 {%     if spanning_tree.mst.configuration is arista.avd.defined %}
 !
 spanning-tree mst configuration

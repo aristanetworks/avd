@@ -8,3 +8,5 @@ cvx:
       shutdown: true
     vxlan:
       shutdown: true
+    openstack:
+      shutdown: true

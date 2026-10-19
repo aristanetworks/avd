@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
 from string import Formatter
 from typing import TYPE_CHECKING
 
@@ -23,7 +24,9 @@ class AvdStringFormatter(Formatter):
                    Most useful in combination with ?. Prefix should not contain "<", ">", "!" or ":".
         suffix ::= string including spaces which will be inserted after the field value.
                    Most useful in combination with ?. Suffix should not contain "<", ">", "!" or ":".
-        conversion ::= "!u" for "upper()" (The regular Python conversions "!r", "!s", "!a" have been removed).
+        conversion ::= "!u" for "upper()", "!l" for "lower()", "!t" for "title()" and
+                       "!c" for compact name of the network interfaces. e.g Port-channel2.2 > Po2.2, Ethernet1 > Et1.
+                       Using "!c" on any other string leaves it unchanged. The regular Python conversions "!r", "!s", "!a" have been removed.
 
     Note the order of syntax field matters!
     """
@@ -139,14 +142,25 @@ class AvdStringFormatter(Formatter):
         """
         Convert the value according to the given conversion instruction.
 
-        Mostly a copy from the base class, but only supporting !u for upper().
+        Supports !u for upper(), !t for title(), !l for lower() and
+        !c for compact names of portchannel, ethernet, loopback, vlan and tunnel interfaces.
         """
-        # TODO: !l for lowercase, !t for TitleCase and shorten interface names i.e Ethernet -> Et
         # do any conversion on the resulting object
         if conversion is None:
             return value
+        if conversion == "l":
+            return str(value).lower()
+        if conversion == "t":
+            return str(value).title()
         if conversion == "u":
             return str(value).upper()
+        if conversion == "c":
+            # Port-channel20.200 --> Po20.200, Ethernet2 --> Et2, Ethernet1/1/1 > Et1/1/1
+            interface = re.match(r"^(port-channel|ethernet|vlan|loopback|tunnel)\s?(\d+((/\d+){1,2})?(\.\d+)?)$", str(value).lower())
+            interface_type = str(value).lower().title()[:2]
+            if interface:
+                return interface_type + interface.group(2)
+            return str(value)
         msg = f"Unknown conversion specifier {conversion!s}"
         raise ValueError(msg)
 

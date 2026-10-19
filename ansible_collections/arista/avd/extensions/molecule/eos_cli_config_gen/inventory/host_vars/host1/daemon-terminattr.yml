@@ -10,6 +10,7 @@ daemon_terminattr:
   cvvrf: mgt
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  sysdbexcludes: /Sysdb/mcs/
   cvgnmi: true
   taillogs: /var/log/messages,/var/log/agents/
   cvproxy: http://arista:arista@10.10.10.1:3128
@@ -26,3 +27,15 @@ daemon_terminattr:
   sflowaddr: 10.10.10.11
   ipfixaddr: 10.10.10.12
   cv_loss_timeout: 5
+  cvtargetconfigs:
+    - mss
+    - arista/traffic-policy
+  flowdns: false
+  custom_cv_options:
+    - flag: somecustomflag
+    - flag: grpcport
+      value: 9910
+    - flag: enablefeaturex
+      value: true
+    - flag: disablefeaturey
+      value: "False"

@@ -12,6 +12,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.WARNING,
         "schema_tools": logging.WARNING,
         "anta": logging.WARNING,
+        "asynceapi": logging.WARNING,
         "external_libs": logging.WARNING,
     },
     1: {  # Verbosity: -v
@@ -19,6 +20,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.INFO,
         "schema_tools": logging.INFO,
         "anta": logging.WARNING,
+        "asynceapi": logging.WARNING,
         "external_libs": logging.WARNING,
     },
     2: {  # Verbosity: -vv
@@ -26,6 +28,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.DEBUG,
         "schema_tools": logging.DEBUG,
         "anta": logging.WARNING,
+        "asynceapi": logging.WARNING,
         "external_libs": logging.WARNING,
     },
     3: {  # Verbosity: -vvv
@@ -33,6 +36,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.DEBUG,
         "schema_tools": logging.DEBUG,
         "anta": logging.INFO,
+        "asynceapi": logging.INFO,
         "external_libs": logging.WARNING,
     },
     4: {  # Verbosity: -vvvv
@@ -40,6 +44,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.DEBUG,
         "schema_tools": logging.DEBUG,
         "anta": logging.DEBUG,
+        "asynceapi": logging.DEBUG,
         "external_libs": logging.WARNING,
     },
     5: {  # Verbosity: -vvvvv
@@ -47,6 +52,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.DEBUG,
         "schema_tools": logging.DEBUG,
         "anta": logging.DEBUG,
+        "asynceapi": logging.DEBUG,
         "external_libs": logging.INFO,
     },
     6: {  # Verbosity: -vvvvvv
@@ -54,6 +60,7 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
         "pyavd": logging.DEBUG,
         "schema_tools": logging.DEBUG,
         "anta": logging.DEBUG,
+        "asynceapi": logging.DEBUG,
         "external_libs": logging.DEBUG,
     },
 }
@@ -77,7 +84,6 @@ def get_avd_log_level(logger_name: str) -> int:
 
     Args:
         logger_name: The name of the logger for which to find the level.
-        verbosity: The verbosity level from Ansible Display object (0 for none, 1 for -v, etc.).
 
     Returns:
         The calculated logging level.
@@ -85,7 +91,7 @@ def get_avd_log_level(logger_name: str) -> int:
     # Get the verbosity level from Ansible Display singleton object (0 for none, 1 for -v, etc.)
     verbosity = Display().verbosity
 
-    # Any verbosity level set above 6 will be treated as 6
+    # Any verbosity level above the largest defined value uses the most verbose mapping.
     max_defined_verbosity = max(ANSIBLE_VERBOSITY_MAPPING.keys())
     effective_verbosity = min(verbosity, max_defined_verbosity)
 
@@ -96,12 +102,15 @@ def get_avd_log_level(logger_name: str) -> int:
 
 
 @dataclass(frozen=True)
-class AvdLoggingConfig:
+class AVDLoggingConfig:
     """Configuration for the logging environment in AVD Ansible action plugins."""
 
     add_role_context: bool = False
     add_hostname_context: bool = False
+    log_context: str | None = None
     target_loggers: tuple[str, ...] = ("ansible_collections.arista.avd", "pyavd", "schema_tools")
+    track_log_errors: bool = False
+    use_multiprocessing_queue: bool = False
 
 
 @dataclass(frozen=True)

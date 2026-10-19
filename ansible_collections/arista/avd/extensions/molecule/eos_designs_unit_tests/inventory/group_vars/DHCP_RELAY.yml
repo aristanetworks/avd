@@ -1,0 +1,45 @@
+---
+# To test the dhcp relay agent option 82 and Head-End-Replicated DHCP Packets Suppression in VXLAN Network.
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 172.31.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+    uplink_switches: ["mlag-isis-spine"]
+    uplink_interfaces: ["Ethernet1"]
+  node_groups:
+    - group: DHCP_RELAY_VTEP_MLAG
+      nodes:
+        - name: dhcp-relay-vtep-mlag-1
+          id: 4
+          bgp_as: 65161
+          mgmt_ip: 192.168.201.116/24
+          uplink_switch_interfaces: [Ethernet34]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+        - name: dhcp-relay-vtep-mlag-2
+          id: 5
+          bgp_as: 65161
+          mgmt_ip: 192.168.201.117/24
+          uplink_switch_interfaces: [Ethernet35]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 101
+        name: dhcp-relay-1
+
+general_settings:
+  dhcp_relay:
+    information_option: true
+    tunnel_requests_disabled: true
+    mlag_peerlink_requests_disabled: true

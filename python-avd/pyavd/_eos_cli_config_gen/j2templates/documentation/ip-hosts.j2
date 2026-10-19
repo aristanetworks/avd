@@ -1,0 +1,24 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ip hosts #}
+{% if ip_hosts is arista.avd.defined %}
+
+### IP Hosts
+
+#### IP Host Summary
+
+| Host | IPv4 Address |
+| ---- | ------------ |
+{%     for ip_host in ip_hosts | arista.avd.natural_sort(sort_key='hostname', ignore_case=false) %}
+| {{ ip_host.hostname }} | {{ ip_host.ipv4_addresses | arista.avd.natural_sort | join('<br>') }} |
+{%     endfor %}
+
+#### IP Host Device Configuration
+
+```eos
+{%     include 'eos/ip-hosts.j2' %}
+```
+{% endif %}

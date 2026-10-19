@@ -1,0 +1,31 @@
+---
+# Testing core_interfaces.p2p_links.[].use_underlay_ospf_authentication: true
+# without any underlay_ospf_authentication global config set.
+
+# Fabric node type keys
+node_type_keys:
+  - key: core_router
+    type: core_router
+
+underlay_routing_protocol: ospf
+
+# Nodes
+type: core_router
+core_router:
+  defaults:
+    loopback_ipv4_pool: 10.0.0.0/24
+  nodes:
+    - name: core-interfaces-p2p-ospf-auth-global-config-missing
+      id: 1
+
+core_interfaces:
+  p2p_links:
+    - nodes: [core-interfaces-p2p-ospf-auth-global-config-missing, peer1]
+      id: 1
+      interfaces: [Ethernet1, Ethernet1]
+      include_in_underlay_protocol: true
+      use_underlay_ospf_authentication: true
+
+expected_error_message: >-
+  'use_underlay_ospf_authentication' is set to true for core_interfaces.p2p_links[0] but 'underlay_ospf_authentication.enabled' is false.
+  Enable 'underlay_ospf_authentication.enabled'.

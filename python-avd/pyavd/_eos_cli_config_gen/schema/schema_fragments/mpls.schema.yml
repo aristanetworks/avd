@@ -42,8 +42,6 @@ keys:
               interval:
                 description: Time between refreshes.
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 65535
               method:
@@ -68,15 +66,11 @@ keys:
                     index:
                       description: Password index.
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 4294967295
                     password_type:
                       description: Authentication password type.
                       type: str
-                      convert_types:
-                        - int
                       default: '7'
                       valid_values:
                         - '0'
@@ -88,13 +82,9 @@ keys:
               active_index:
                 description: Use index as active password.
                 type: int
-                convert_types:
-                  - str
               sequence_number_window:
                 description: Size of reorder window for index in the sequence.
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 255
               type:
@@ -163,8 +153,6 @@ keys:
                   Fast-reroute bypass configuration.
                   Interval between each re-optimization attempt in seconds.
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 65535
           srlg:
@@ -193,8 +181,6 @@ keys:
               timer:
                 description: Timer value in units of seconds.
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 65535
           mtu_signaling:
@@ -211,15 +197,11 @@ keys:
                     type: bool
                   timer_recovery:
                     type: int
-                    convert_types:
-                      - str
                     min: 1
                     max: 320
                     description: Maximum recovery timer value in seconds.
                   timer_restart:
                     type: int
-                    convert_types:
-                      - str
                     min: 1
                     max: 320
                     description: Maximum restart timer value in seconds.
@@ -230,15 +212,11 @@ keys:
                     type: bool
                   timer_recovery:
                     type: int
-                    convert_types:
-                      - str
                     min: 1
                     max: 320
                     description: Maximum recovery timer value in seconds.
                   timer_restart:
                     type: int
-                    convert_types:
-                      - str
                     min: 1
                     max: 320
                     description: Maximum restart timer value in seconds.
@@ -248,15 +226,11 @@ keys:
               interval:
                 description: Time between hello messages in seconds.
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 60
               multiplier:
                 description: Number of missed hellos after which the neighbor is expired.
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 255
           hitless_restart:
@@ -270,8 +244,6 @@ keys:
                   Time stale states will be preserved after restart.
                   Value in seconds.
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 320
           p2mp:
@@ -282,6 +254,79 @@ keys:
           shutdown:
             type: bool
             description: Make `shutdown` key false for `no shutdown` cli.
+      label_ranges:
+        description: |-
+          MPLS label ranges configuration.
+          Ranges cannot overlap except for `bgp_sr`, `ospf_sr` and `isis_sr`.
+          Requires EOS 4.31.1F or later.
+        type: dict
+        keys:
+          bgp_sr:
+            description: |-
+              Label range for BGP SR global segment identifiers.
+            type: dict
+            keys:
+              base:
+                type: int
+                required: true
+                description: First label of range.
+                min: 16
+                max: 1048575
+              size:
+                type: int
+                required: true
+                description: Size of range.
+                min: 0
+                max: 1048560
+          dynamic:
+            description: |-
+              Label range for dynamic assignment.
+            type: dict
+            keys:
+              base:
+                type: int
+                required: true
+                description: First label of range.
+                min: 16
+                max: 1048575
+              size:
+                type: int
+                required: true
+                description: |-
+                  Size of range.
+                # There is a restriction for size.
+                min: 131072
+                max: 1048560
+          isis_sr:
+            description: |-
+              Label range for IS-IS SR global segment identifiers.
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr"
+          l2evpn:
+            description: |-
+              Label range for L2 EVPN routes.
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr"
+          l2evpn_ethernet_segment:
+            description: |-
+              Labels reserved for L2 EVPN A-D per ES routes for split-horizon filtering.
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr"
+          ospf_sr:
+            description: |-
+              Label range for OSPF Segment Routing Global Block (SRGB).
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr"
+          srlb:
+            description: |-
+              Label range for SR local segment identifiers.
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr"
+          static:
+            description: |-
+              Label range for static MPLS routes.
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr"
       tunnel:
         description: Configure MPLS tunnel.
         type: dict

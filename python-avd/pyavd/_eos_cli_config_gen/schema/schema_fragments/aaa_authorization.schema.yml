@@ -25,6 +25,7 @@ keys:
               - "group tacacs+ local"
               - "group MYGROUP none"
               - "group radius group MYGROUP local"
+              - "group ldap"
       config_commands:
         type: bool
       serial_console:
@@ -56,8 +57,6 @@ keys:
                 level:
                   type: str
                   description: Privilege level(s) 0-15.
-                  convert_types:
-                    - int
                   required: true
                 default:
                   type: str

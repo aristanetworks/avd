@@ -1,6 +1,7 @@
 # Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import ssl
 from dataclasses import dataclass
 from typing import Literal
 
@@ -19,6 +20,16 @@ ELEMENT_TYPE_TO_STRING_MAP = {
     ElementType.INTERFACE: "interface",
     ElementType.UNSPECIFIED: "unspecified",
 }
+
+
+@dataclass(frozen=True)
+class CVTLSSettings:
+    """Resolved TLS settings for a CVClient, used for the gRPC channel and REST calls."""
+
+    grpc_ssl: ssl.SSLContext | ssl.DefaultVerifyPaths | bool
+    """Value passed to grpclib's `Channel(ssl=...)`."""
+    requests_verify: bool | str
+    """Value passed to `requests` as `verify=...`."""
 
 
 @dataclass(frozen=True)

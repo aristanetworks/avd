@@ -28,23 +28,23 @@ core_interfaces:
   p2p_links:
 
     # Unnumbered link
-    - nodes: [ duplicate-interfaces-core-interfaces-with-port-channel, peer1]
+    - nodes: [duplicate-interfaces-core-interfaces-with-port-channel, peer1]
       id: 1
-      interfaces: [ Ethernet1, Ethernet2 ]
+      interfaces: [Ethernet1, Ethernet2]
       profile: isis_bb_profile
       ip: ["unnumbered loopback0", "unnumbered loopback0"]
 
     # core Port-Channel
-    - nodes: [ duplicate-interfaces-core-interfaces-with-port-channel, core-2-ospf-ldp ]
+    - nodes: [duplicate-interfaces-core-interfaces-with-port-channel, core-2-ospf-ldp]
       id: 9
       port_channel:
         mode: active
         nodes_child_interfaces:
           # duplicate interface name
           - node: duplicate-interfaces-core-interfaces-with-port-channel
-            interfaces: [ Ethernet1 ]
+            interfaces: [Ethernet1]
           - node: core-2-ospf-ldp
-            interfaces: [ Ethernet12]
+            interfaces: [Ethernet12]
       profile: isis_bb_profile
 
 expected_error_message: >-

@@ -19,9 +19,6 @@ flow tracking hardware
 {%         if tracker.record_export.on_interval is arista.avd.defined %}
       record export on interval {{ tracker.record_export.on_interval }}
 {%         endif %}
-{%         if tracker.record_export.mpls is arista.avd.defined(true) %}
-      record export mpls
-{%         endif %}
 {%         for exporter in tracker.exporters | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%             if not loop.first %}
       !

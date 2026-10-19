@@ -41,8 +41,6 @@ keys:
               sequence:
                 type: int
                 display_name: sequence_id
-                convert_types:
-                - str
               action:
                 type: str
                 required: true
@@ -68,8 +66,6 @@ keys:
             keys:
               sequence:
                 type: int
-                convert_types:
-                - str
                 display_name: sequence_id
               action:
                 type: str

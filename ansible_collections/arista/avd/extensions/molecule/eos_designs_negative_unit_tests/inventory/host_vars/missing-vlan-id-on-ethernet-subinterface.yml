@@ -1,0 +1,26 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+  nodes:
+    - name: missing-vlan-id-on-ethernet-subinterface
+      mgmt_ip: 192.168.1.2
+      id: 1
+      bgp_as: 65001
+      loopback_ipv4_pool: 10.0.0.0/24
+      vtep_loopback_ipv4_pool: 10.0.1.0/24
+
+servers:
+  - name: OLD_SW-1/2
+    adapters:
+      - switches: [missing-vlan-id-on-ethernet-subinterface]
+        switch_ports: [Ethernet1]
+        endpoint_ports: [Endpoint_port1]
+        description: "Interface description {interface} {endpoint_type}_{endpoint}{endpoint_port?<_!u}"
+        subinterfaces:
+          - number: 10000
+            description: subinterface number greater than 4094
+
+expected_error_message: >-
+  'vlan_id' must be set for 'servers[name=OLD_SW-1/2].adapters[0].subinterfaces[number=10000]'
+  since the subinterface number is above 4094.

@@ -1,37 +1,29 @@
 ---
+# Please note, comments below are intended for site documentation only
 # Ansible connectivity definitions
-# eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)
-ansible_connection: ansible.netcommon.httpapi
-# Specifies that we are indeed using Arista EOS
-ansible_network_os: arista.eos.eos
-# This user/password must exist on the switches to enable Ansible access
-ansible_user: arista
+ansible_connection: ansible.netcommon.httpapi # (1)!
+ansible_network_os: arista.eos.eos # (2)!
+ansible_user: arista # (3)!
 ansible_password: arista
-# User escalation (to enter enable mode)
 ansible_become: true
-ansible_become_method: enable
-# Use SSL (HTTPS)
-ansible_httpapi_use_ssl: true
-# Do not try to validate certs
-ansible_httpapi_validate_certs: false
+ansible_become_method: enable # (4)!
+ansible_httpapi_use_ssl: true # (5)!
+ansible_httpapi_validate_certs: false # (6)!
 
 management_eapi:
   enabled: true
 
 # Common AVD group variables
-fabric_name: FABRIC
+fabric_name: FABRIC # (7)!
 
-# Generate CSVs with fabric link info.
-eos_designs_documentation:
+eos_designs_documentation: # (8)!
   topology_csv: true
   p2p_links_csv: true
 
-# Define underlay and overlay routing protocol to be used
-underlay_routing_protocol: isis-ldp
+underlay_routing_protocol: isis-ldp # (9)!
 overlay_routing_protocol: ibgp
 
-# Local users
-aaa_settings:
+aaa_settings: # (10)!
   local_users:
     # Username with no password configured
     - name: admin
@@ -45,14 +37,13 @@ aaa_settings:
       role: network-admin
       sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
 
-# BGP peer groups passwords
-bgp_peer_groups:
+bgp_peer_groups: # (11)!
   # all passwords set to "arista"
   mpls_overlay_peers:
     password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
   rr_overlay_peers:
     password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
 
-custom_structured_configuration_management_security:
+custom_structured_configuration_management_security: # (12)!
   password:
     encryption_key_common: true

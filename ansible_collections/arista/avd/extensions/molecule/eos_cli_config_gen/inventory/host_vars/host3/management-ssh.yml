@@ -2,3 +2,5 @@
 management_ssh:
   vrfs:
     - name: mgt
+    - name: PROD
+      enable: true

@@ -23,20 +23,14 @@ keys:
           keys:
             interval:
               type: int
-              convert_types:
-                - str
               min: -7
               max: 4
             timeout:
               type: int
-              convert_types:
-                - str
               min: 2
               max: 255
         delay_req:
           type: int
-          convert_types:
-            - str
           min: -7
           max: 8
         sync_message:
@@ -45,13 +39,18 @@ keys:
           keys:
             interval:
               type: int
-              convert_types:
-                - str
               min: -7
               max: 3
         transport:
           type: str
           valid_values: ["ipv4"]
+        management:
+          # In the future, this will grow to include both `drop` and `drop_multicast_boundary` boolean settings.
+          type: dict
+          keys:
+            drop:
+              type: bool
+              description: Drop PTP management messages.
     default:
       - profile: aes67-r16-2016
         announce:

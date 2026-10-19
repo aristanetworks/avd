@@ -26,6 +26,7 @@ l2leaf:
         - Ethernet12
       ptp:
         enabled: true
+        profile: port-channel-management-drop
 
     - name: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
       id: 3

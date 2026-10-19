@@ -18,6 +18,9 @@ keys:
           make_before_break:
             type: bool
             description: Enable/Disable Make-Before-Break.
+          message_hello_address_secondary_ipv6:
+            type: bool
+            description: Include the IPv6 address in PIM hellos for PIM IPv4 over IPv6 next-hops.
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.
@@ -78,8 +81,6 @@ keys:
                         description: |-
                           Number of registers to forward before pausing in range of 0 to 4294967295.
                           Use 'infinity' to forward all registers.
-                        convert_types:
-                          - int
       vrfs:
         type: list
         primary_key: name
@@ -89,8 +90,6 @@ keys:
             name:
               type: str
               description: VRF Name.
-              convert_types:
-                - int
             ipv4:
               type: dict
               keys:

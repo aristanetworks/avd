@@ -6,6 +6,9 @@ vxlan_interface:
   vxlan1:
     vxlan:
       shutdown: true
+      flood_vtep_learned_data_plane: false
+      multicast:
+        headend_replication: false
       qos:
         dscp_propagation_encapsulation: false
         map_dscp_to_traffic_class_decapsulation: false

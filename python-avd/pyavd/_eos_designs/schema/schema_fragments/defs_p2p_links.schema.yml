@@ -13,8 +13,6 @@ $defs:
       keys:
         id:
           type: int
-          convert_types:
-            - str
           description: |
             Unique id per subnet_summary. Used to calculate ip addresses.
             Required with ip_pool. ID starting from 1.
@@ -77,8 +75,6 @@ $defs:
             Required with bgp peering.
           items:
             type: str
-            convert_types:
-              - int
             description: The values can be like ["node_a_as", "node_b_as"].
         descriptions:
           type: list
@@ -103,13 +99,19 @@ $defs:
           description: |-
             Add this interface to the underlay routing protocols.
             This is currently not supported when IPv6 addresses are used.
+        use_underlay_ospf_authentication:
+          type: bool
+          # TODO: AVD7.0 change the key name use_underlay_authentication with default true.
+          default: false
+          description: |-
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled: true`.
+            When enabled, the message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
         isis_hello_padding:
           type: bool
           default: true
         isis_metric:
           type: int
-          convert_types:
-            - str
         isis_circuit_type:
           type: str
           valid_values:
@@ -148,8 +150,6 @@ $defs:
           description: MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
         mtu:
           type: int
-          convert_types:
-            - str
           description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
         bfd:
           type: bool
@@ -207,7 +207,7 @@ $defs:
           description: QOS service profile.
         macsec_profile:
           type: str
-          description: MAC security profile.
+          description: MAC security profile. Not supported when `port_channel` is configured.
         port_channel:
           description: Port-channel parameters.
           type: dict
@@ -243,8 +243,6 @@ $defs:
             channel_id_offset:
               description: Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and `channel_id` is not set.
               type: int
-              convert_types:
-                - str
             nodes_child_interfaces:
               type: list
               primary_key: node
@@ -260,8 +258,6 @@ $defs:
                       type: str
                   channel_id:
                     type: int
-                    convert_types:
-                      - str
                     description: Port-Channel ID. If no `channel_id` is specified, an id is generated using the `channel_id_algorithm`.
         campus_link_type:
           type: list

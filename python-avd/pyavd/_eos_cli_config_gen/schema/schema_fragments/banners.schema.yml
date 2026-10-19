@@ -11,7 +11,7 @@ keys:
     keys:
       login:
         type: str
-        description: Multiline string ending with EOF on the last line.
+        description: Legal notification or security warning displayed to all users before authentication.
       motd:
         type: str
-        description: Multiline string ending with EOF on the last line.
+        description: Informational or operational message displayed to authorized users after a successful login.

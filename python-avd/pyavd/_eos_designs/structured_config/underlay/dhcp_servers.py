@@ -4,14 +4,14 @@
 from __future__ import annotations
 
 import re
-from ipaddress import AddressValueError, IPv4Address, IPv4Network
+from ipaddress import AddressValueError, IPv4Address
 from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
 
+from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP, CVAAS_API_PREFIX
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._eos_designs.structured_config.constants import CV_REGION_TO_SERVER_MAP
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 
@@ -28,7 +28,7 @@ class DhcpServersMixin(Protocol):
         """Set structured config for dhcp_server."""
         dhcp_server = EosCliConfigGen.DhcpServersItem()
         # Set subnets for DHCP server
-        self._update_subnets(dhcp_server)
+        dhcp_server.ipv4_subnets = self._underlay_subnets[1]
         if len(dhcp_server.ipv4_subnets) == 0:
             return
         dhcp_server.vrf = "default"
@@ -44,36 +44,11 @@ class DhcpServersMixin(Protocol):
 
         self.structured_config.dhcp_servers.append(dhcp_server)
 
-    def _update_subnets(self: AvdStructuredConfigUnderlayProtocol, dhcp_server: EosCliConfigGen.DhcpServersItem) -> None:
-        """
-        Update dhcp_server with a list of dhcp subnets for downstream p2p interfaces.
-
-        Used for l3 inband ztp/ztr.
-        """
-        for peer in self._avd_peers:
-            peer_facts = self.shared_utils.get_peer_facts(peer)
-            for uplink in peer_facts.uplinks:
-                if (
-                    uplink.peer == self.shared_utils.hostname
-                    and uplink.type == "underlay_p2p"
-                    and uplink.ip_address
-                    and "unnumbered" not in uplink.ip_address
-                    and peer_facts.inband_ztp
-                ):
-                    # ipv6 numbered is not supported with inband_ztp hence right now only ipv4_subnet can be added
-                    subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
-                        subnet=str(IPv4Network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)),
-                        name=f"inband ztp for {peer}-{uplink.interface}",
-                        default_gateway=f"{uplink.peer_ip_address}",
-                    )
-                    subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
-                    dhcp_server.ipv4_subnets.append(subnet_item)
-
     def _get_cvp_server_for_dhcp(self: AvdStructuredConfigUnderlayProtocol) -> str | None:
         """Return the first CVP server using either new or old data models."""
         if self.inputs.cv_settings.cvaas.enabled:
             region = next(iter(self.inputs.cv_settings.cvaas.clusters)).region
-            return CV_REGION_TO_SERVER_MAP[region]
+            return f"{CVAAS_API_PREFIX}.{CV_REGION_TO_SERVER_MAP[region]}"
 
         if self.inputs.cv_settings.onprem_clusters:
             return next(iter(next(iter(self.inputs.cv_settings.onprem_clusters)).servers)).name

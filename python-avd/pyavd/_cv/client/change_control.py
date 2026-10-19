@@ -177,7 +177,7 @@ class ChangeControlMixin(Protocol):
 
         return response.value
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def wait_for_change_control_state(
         self: CVClientProtocol,
         cc_id: str,

@@ -15,6 +15,10 @@ STP mode: **{{ spanning_tree.mode | arista.avd.default("mstp") }}**
 
 STP Root Super: **{{ spanning_tree.root_super }}**
 {%     endif %}
+{%     if spanning_tree.loop_guard_default is arista.avd.defined %}
+
+STP Loop Guard: **{{ spanning_tree.loop_guard_default }}**
+{%     endif %}
 {%     if spanning_tree.mst_instances is arista.avd.defined %}
 
 #### MSTP Instance and Priority

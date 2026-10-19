@@ -1,0 +1,12 @@
+---
+# Test for deprecated mgmt global keys
+default_mgmt_method: oob
+mgmt_interface: Management2
+mgmt_interface_description: deprecated_mgmt_interface_description
+mgmt_interface_vrf: deprecated_mgmt_interface_vrf
+mgmt_vrf_routing: true
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: host2
+      mgmt_ip: 192.168.0.2/24

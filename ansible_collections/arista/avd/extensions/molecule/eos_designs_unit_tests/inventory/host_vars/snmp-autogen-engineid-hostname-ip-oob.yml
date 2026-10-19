@@ -8,7 +8,8 @@ l2leaf:
     - name: snmp-autogen-engineid-hostname-ip-oob
       id: 43
       mgmt_ip: 192.168.0.10/24
-mgmt_interface_vrf: MGMT
+mgmt_interface_settings:
+  vrf: MGMT
 mgmt_gateway: 1.1.1.1
 
 snmp_settings:

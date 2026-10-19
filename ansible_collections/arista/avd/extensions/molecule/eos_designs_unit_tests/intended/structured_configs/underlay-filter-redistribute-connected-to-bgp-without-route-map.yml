@@ -24,6 +24,10 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 10.10.10.0/24
+  - sequence: 20
+    action: permit 10.10.30.0/24
+  - sequence: 30
+    action: permit 10.10.20.0/24
 route_maps:
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
@@ -60,6 +64,26 @@ router_bgp:
       - 10111:10111
     redistribute_routes:
     - learned
+  - id: 112
+    metadata:
+      tenants:
+      - TEST
+    rd: 10.10.0.3:10112
+    route_targets:
+      both:
+      - 10112:10112
+    redistribute_routes:
+    - learned
+  - id: 113
+    metadata:
+      tenants:
+      - TEST
+    rd: 10.10.0.3:10113
+    route_targets:
+      both:
+      - 10113:10113
+    redistribute_routes:
+    - learned
   vrfs:
   - name: default
     rd: 10.10.0.3:111
@@ -85,6 +109,24 @@ vlan_interfaces:
     - TEST
     tags:
     - fabric
+- name: Vlan112
+  description: svi_with_default_vrf_2
+  shutdown: true
+  ip_address: 10.10.30.111/24
+  metadata:
+    tenants:
+    - TEST
+    tags:
+    - fabric
+- name: Vlan113
+  description: svi_with_default_vrf_3
+  shutdown: true
+  ip_address: 10.10.20.111/24
+  metadata:
+    tenants:
+    - TEST
+    tags:
+    - fabric
 vlan_internal_order:
   allocation: ascending
   range:
@@ -93,6 +135,16 @@ vlan_internal_order:
 vlans:
 - id: 111
   name: svi_with_default_vrf
+  metadata:
+    tenants:
+    - TEST
+- id: 112
+  name: svi_with_default_vrf_2
+  metadata:
+    tenants:
+    - TEST
+- id: 113
+  name: svi_with_default_vrf_3
   metadata:
     tenants:
     - TEST
@@ -108,6 +160,10 @@ vxlan_interface:
       vlans:
       - id: 111
         vni: 10111
+      - id: 112
+        vni: 10112
+      - id: 113
+        vni: 10113
       vrfs:
       - name: default
         vni: 111

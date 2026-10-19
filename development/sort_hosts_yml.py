@@ -9,11 +9,18 @@ import argparse
 import re
 import sys
 from pathlib import Path
+from typing import TypedDict
 
 # Override global path to load pyavd from pwd instead of any installed version.
 sys.path.insert(0, str(Path(__file__).parent.parent / "python-avd"))
 
 from pyavd.j2filters.natural_sort import natural_sort
+
+
+class EntryBlock(TypedDict):
+    name: str
+    lines: list[str]
+
 
 # Pre-compile regex patterns for better performance
 HOSTS_PATTERN = re.compile(r"^(\s*)hosts:\s*(?:#.*)?$")
@@ -37,14 +44,14 @@ class EntriesParser:
         self.entry_indent = indent + "  "
         self.property_indent = self.entry_indent + "  "
 
-    def parse(self) -> tuple[list[dict[str, str | list[str]]], int]:
+    def parse(self) -> tuple[list[EntryBlock], int]:
         """
         Parse entries and return sorted entry blocks with final index.
 
         Returns:
             Tuple of (list of entry dictionaries, final index position)
         """
-        entries_block: list[dict[str, str | list[str]]] = []
+        entries_block: list[EntryBlock] = []
         pending_lines: list[str] = []
 
         while self.index < len(self.lines):

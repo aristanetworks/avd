@@ -55,6 +55,11 @@ keys:
     documentation_options:
       table: cv_deploy
     $ref: eos_cli_config_gen#/keys/metadata/keys/cv_pathfinder
+  cv_use_static_config_manifest:
+    type: bool
+    documentation_options:
+      table: cv_deploy
+    $ref: eos_cli_config_gen#/keys/metadata/keys/cv_use_static_config_manifest
   metadata:
     type: dict
     allow_other_keys: true
@@ -83,3 +88,6 @@ keys:
       cv_pathfinder:
         type: dict
         $ref: eos_cli_config_gen#/keys/metadata/keys/cv_pathfinder
+      cv_use_static_config_manifest:
+        type: bool
+        $ref: eos_cli_config_gen#/keys/metadata/keys/cv_use_static_config_manifest

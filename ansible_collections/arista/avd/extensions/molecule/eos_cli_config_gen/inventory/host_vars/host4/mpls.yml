@@ -1,0 +1,4 @@
+---
+# Test: rsvp with empty sub-keys renders "mpls rsvp" command when only_render_mpls_rsvp_with_settings is false (default)
+mpls:
+  rsvp: {}

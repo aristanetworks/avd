@@ -10,7 +10,7 @@ l3leaf:
       bgp_as: 101
 
 platform_settings:
-  - platforms: [ default ]
+  - platforms: [default]
     # Test for security_entropy_sources
     security_entropy_sources:
       hardware: true

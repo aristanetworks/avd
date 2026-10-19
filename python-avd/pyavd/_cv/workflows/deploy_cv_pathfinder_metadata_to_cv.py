@@ -8,7 +8,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._cv.client.exceptions import CVResourceNotFound
-from pyavd._utils import get, get_v2
+from pyavd._utils.get import get, get_v2
 from pyavd._utils.password_utils.password import simple_7_decrypt
 
 if TYPE_CHECKING:
@@ -364,7 +364,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     edges: list[CVPathfinderMetadata] = []
     pathfinders: list[CVPathfinderMetadata] = []
     for device_metadata in cv_pathfinder_metadata:
-        if not device_metadata.device._exists_on_cv:
+        if not device_metadata.device.exists_on_cv:
             LOGGER.info(
                 "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since the device is not found on CV.",
                 device_metadata.device.serial_number,

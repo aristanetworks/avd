@@ -30,7 +30,7 @@ from pyavd._cv.api.arista.configlet.v1 import (
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVGRPCError, CVGRPCStatusUnavailable, CVMessageSizeExceeded, CVResourceNotFound, CVTimeoutError
-from pyavd._utils import batch
+from pyavd._utils.batch import batch
 
 from .async_decorators import GRPCRequestHandler, LimitCvVersion
 from .constants import DEFAULT_API_TIMEOUT
@@ -56,7 +56,7 @@ class ConfigletMixin(Protocol):
 
     configlet_api_version: Literal["v1"] = "v1"
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_configlet_containers(
         self: CVClientProtocol,
         workspace_id: str,
@@ -249,7 +249,7 @@ class ConfigletMixin(Protocol):
 
         return response.value
 
-    @GRPCRequestHandler(list_field="configlet_ids")
+    @GRPCRequestHandler(list_field="configlet_ids", retry_on_stream_reset=True)
     async def get_configlets(
         self: CVClientProtocol,
         workspace_id: str,

@@ -1,0 +1,28 @@
+---
+mac_acls:
+  - name: acl1
+    entries:
+      - sequence: 10
+        action: deny
+        source: any
+        source_wildcard: 00:01:00:00:00:00
+        destination: 01:80:c2:00:00:00
+        destination_wildcard: 00:01:00:00:00:00
+
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: invalid-mac-acl-source-wildcard
+
+servers:
+  - name: server1
+    rack: RackB
+    adapters:
+      - endpoint_ports: [E0]
+        switch_ports: [Ethernet2]
+        switches: [invalid-mac-acl-source-wildcard]
+        mac_acl_in: acl1
+
+expected_error_message: >-
+  Can not set 'mac_acls[name=acl1].entries[0].source_wildcard' when source is 'any' for host invalid-mac-acl-source-wildcard.

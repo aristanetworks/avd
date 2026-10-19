@@ -477,27 +477,6 @@ dc2-leaf2b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilizatio
 dc2-leaf2b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf2b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf2b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf2c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
-dc2-leaf2c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
-dc2-leaf2c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
-dc2-leaf2c,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
-dc2-leaf2c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
-dc2-leaf2c,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
-dc2-leaf2c,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
-dc2-leaf2c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
-dc2-leaf2c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc2-leaf2c,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc2-leaf2c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
-dc2-leaf2c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
-dc2-leaf2c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
-dc2-leaf2c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
-dc2-leaf2c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
-dc2-leaf2c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
-dc2-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
-dc2-leaf2c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
-dc2-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
-dc2-leaf2c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
-dc2-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf3a.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf3a.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf3a.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration

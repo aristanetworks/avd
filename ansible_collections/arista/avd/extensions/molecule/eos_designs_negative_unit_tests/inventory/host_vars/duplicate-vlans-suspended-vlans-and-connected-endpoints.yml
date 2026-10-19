@@ -1,0 +1,25 @@
+---
+# Minimum config to only test duplicate VLAN ID between suspended_vlans and network services VLANs.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: duplicate-vlans-suspended-vlans-and-connected-endpoints
+      id: 1
+
+general_settings:
+  suspended_vlans:
+    - id: 100
+
+tenants:
+  - name: Tenant-A
+    vrfs:
+      - name: default
+        vrf_id: 2
+        svis:
+          - id: 100
+            name: test-1
+            vni_override: 50111
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Vlans.
+  {'id': 100, 'name': 'test-1', 'metadata': {'tenants': ['Tenant-A']}} conflicts with {'id': 100, 'state': 'suspend'}.

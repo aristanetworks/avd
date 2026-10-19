@@ -22,6 +22,7 @@ def mock_cv_client() -> MagicMock:
     client.wait_for_change_control_state = AsyncMock()
 
     client.get_configlet_containers = AsyncMock()
+    client.set_configlet_container = AsyncMock()
     client.set_configlet_containers = AsyncMock()
     client.get_configlets = AsyncMock()
     client.set_configlets_from_files = AsyncMock()

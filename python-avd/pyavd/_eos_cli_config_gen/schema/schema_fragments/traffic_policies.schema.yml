@@ -9,6 +9,53 @@ keys:
   traffic_policies:
     type: dict
     keys:
+      cpu_traffic_policy:
+        type: dict
+        keys:
+          vrf_all:
+            type: dict
+            keys:
+              name:
+                type: str
+                required: true
+                description: Traffic policy name for all VRFs.
+              enforcement_management:
+                type: bool
+                description: Enforce CPU traffic-policy on management ports.
+          enforcement_ip_ttl_expired:
+            type: bool
+            description: Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets.
+          fragment_implicit_permit_disabled:
+            type: bool
+            description: Disable the addition of implicit rules that allow fragmented packets for Layer 4 rules.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+            cpu:
+              type: dict
+              keys:
+                traffic_policy:
+                  type: dict
+                  required: true
+                  keys:
+                    name:
+                      type: str
+                      required: true
+                      description: |-
+                        Traffic-policy name.
+                        Currently this is always configured with "fallback traffic-policy none".
+                    enforcement_management:
+                      type: bool
+                      description: Enforce CPU traffic-policy on management ports.
+            traffic_policy_input_physical:
+              type: str
+              description: Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF.
       options:
         type: dict
         keys:
@@ -16,8 +63,6 @@ keys:
             type: bool
           counter_interface_poll_interval:
             type: int
-            convert_types:
-              - str
             min: 2
             max: 60
             description: Interval between consecutive polls in seconds.
@@ -87,8 +132,6 @@ keys:
               type: list
               items:
                 type: str
-                convert_types:
-                  - int
               description: List of named counters.
             matches:
               type: list
@@ -193,17 +236,11 @@ keys:
                     keys:
                       dscp:
                         type: int
-                        convert_types:
-                          - str
                       traffic_class:
                         type: int
-                        convert_types:
-                          - str
                         description: Traffic class ID.
                       count:
                         type: str
-                        convert_types:
-                          - int
                         description: |-
                           Named counter.
                           Must also be defined under `policies[].counters` to be active.
@@ -251,8 +288,6 @@ keys:
                                   description: Next hop IPv6 address.
                               vrf:
                                 type: str
-                                convert_types:
-                                  - int
                                 description: |-
                                   Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses` or `recursive_ipv6_addresses`.
                               groups:
@@ -270,8 +305,6 @@ keys:
                                 type: int
                                 min: 1
                                 max: 255
-                                convert_types:
-                                  - str
                                 description: |-
                                   Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses`, `recursive_ipv6_addresses` or `groups`.
             default_actions:
@@ -282,17 +315,11 @@ keys:
                   keys:
                     dscp:
                       type: int
-                      convert_types:
-                        - str
                     traffic_class:
                       type: int
-                      convert_types:
-                        - str
                       description: Traffic class ID.
                     count:
                       type: str
-                      convert_types:
-                        - int
                       description: |-
                         Named counter.
                         Must also be defined under `policies[].counters` to be active.
@@ -307,17 +334,11 @@ keys:
                   keys:
                     dscp:
                       type: int
-                      convert_types:
-                        - str
                     traffic_class:
                       type: int
-                      convert_types:
-                        - str
                       description: Traffic class ID.
                     count:
                       type: str
-                      convert_types:
-                        - int
                       description: |-
                         Named counter.
                         Must also be defined under `policies[].counters` to be active.

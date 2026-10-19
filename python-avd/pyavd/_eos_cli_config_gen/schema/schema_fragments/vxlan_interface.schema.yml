@@ -37,8 +37,6 @@ keys:
                 type: str
               udp_port:
                 type: int
-                convert_types:
-                  - str
               encapsulations:
                 type: dict
                 keys:
@@ -60,16 +58,10 @@ keys:
                 keys:
                   interval:
                     type: int
-                    convert_types:
-                      - str
                   min_rx:
                     type: int
-                    convert_types:
-                      - str
                   multiplier:
                     type: int
-                    convert_types:
-                      - str
                     min: 3
                     max: 50
                   prefix_list:
@@ -121,13 +113,9 @@ keys:
                   keys:
                     id:
                       type: int
-                      convert_types:
-                        - str
                       description: VLAN ID.
                     vni:
                       type: int
-                      convert_types:
-                        - str
                     multicast_group:
                       type: str
                       description: IP Multicast Group Address.
@@ -148,12 +136,8 @@ keys:
                     name:
                       type: str
                       description: VRF Name.
-                      convert_types:
-                        - int
                     vni:
                       type: int
-                      convert_types:
-                        - str
                     multicast_group:
                       type: str
                       description: Default IP Multicast Group Address for the VRF.

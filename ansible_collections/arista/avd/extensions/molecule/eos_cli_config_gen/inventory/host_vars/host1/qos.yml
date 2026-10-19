@@ -21,6 +21,10 @@ qos:
       allow_non_ect:
         enabled: true
         chip_based: true
+      global_buffer:
+        units: segments
+        min: 9984
+        max: 14976
   tx_queue:
     shape_rate_percent_adaptive: true
     queues:

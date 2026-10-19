@@ -43,7 +43,7 @@ def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
             molecule_scenarios.append(MOLECULE_SCENARIOS[molecule_scenario_extended_name])
 
     if "molecule_host" in metafunc.fixturenames:
-        metafunc.parametrize("molecule_host", chain.from_iterable(scenario.hosts for scenario in molecule_scenarios), ids=get_test_id)
+        metafunc.parametrize("molecule_host", list(chain.from_iterable(scenario.hosts for scenario in molecule_scenarios)), ids=get_test_id)
 
     if "molecule_scenario" in metafunc.fixturenames:
         metafunc.parametrize("molecule_scenario", molecule_scenarios, ids=get_test_id)

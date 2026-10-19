@@ -1,0 +1,22 @@
+---
+# Tests that referencing a non-existent ipv6_acls entry via ipv6_acl_in on an L3 interface raises
+# AristaAvdMissingVariableError with the ACL name in the message.
+type: spine
+
+spine:
+  nodes:
+    - name: ipv6-acl-on-l3-interface-missing-acl
+      bgp_as: 65100
+      id: 100
+      loopback_ipv4_pool: 192.168.100.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.0.2/30
+          ipv6_addresses:
+            - 2001:db8:1::2/64
+          ipv6_acl_in: NON-EXISTENT-IPV6-ACL
+
+# ipv6_acls is intentionally omitted / NON-EXISTENT-IPV6-ACL is not defined.
+
+expected_error_message: >-
+  'ipv6_acls[name=NON-EXISTENT-IPV6-ACL]' is required but was not found.

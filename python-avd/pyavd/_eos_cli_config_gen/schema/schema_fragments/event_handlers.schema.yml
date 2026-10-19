@@ -35,8 +35,6 @@ keys:
               description: Name of device-health metric.
         delay:
           type: int
-          convert_types:
-          - str
           description: |
             Event-handler delay in seconds.
         trigger:
@@ -44,13 +42,13 @@ keys:
           description: |
             Configure event trigger condition.
           valid_values:
-          - "on-boot"
-          - "on-counters"
-          - "on-intf"
-          - "on-logging"
-          - "on-maintenance"
-          - "on-startup-config"
-          - "vm-tracer vm"
+            - "on-boot"
+            - "on-counters"
+            - "on-intf"
+            - "on-logging"
+            - "on-maintenance"
+            - "on-startup-config"
+            - "vm-tracer vm"
         trigger_on_counters:
           type: dict
           keys:
@@ -66,8 +64,6 @@ keys:
                   [* wildcard is used here]
             poll_interval:
               type: int
-              convert_types:
-              - str
               min: 1
               max: 1000000
               description: Set the polling interval in seconds.
@@ -76,8 +72,6 @@ keys:
           keys:
             poll_interval:
               type: int
-              convert_types:
-              - str
               min: 1
               max: 1000000
               description: Set the polling interval in seconds.
@@ -115,8 +109,8 @@ keys:
               type: str
               required: true
               valid_values:
-              - "enter"
-              - "exit"
+                - "enter"
+                - "exit"
             bgp_peer:
               description: |-
                 Ipv4/Ipv6 address or peer group name.
@@ -127,19 +121,19 @@ keys:
               required: true
               description: Action for maintenance operation.
               valid_values:
-              - after
-              - before
-              - all
-              - begin
-              - end
+                - after
+                - before
+                - all
+                - begin
+                - end
             stage:
               type: str
               description: Action is triggered after/before specified stage.
               valid_values:
-              - "bgp"
-              - "linkdown"
-              - "mlag"
-              - "ratemon"
+                - "bgp"
+                - "linkdown"
+                - "mlag"
+                - "ratemon"
             vrf:
               type: str
               description: VRF name. VRF can be defined for "bgp_peer" only.

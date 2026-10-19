@@ -127,7 +127,7 @@ ntp:
   vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_mlag-ospf-l3leaf1a_Po5
+  description: Port-Channel5_MLAG_PEER_mlag-ospf-l3leaf1a_Po5
   shutdown: false
   switchport:
     enabled: true

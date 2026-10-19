@@ -7,9 +7,9 @@ l3leaf:
   nodes:
     - name: underlay-filter-peer-as-l3leaf1
       bgp_as: 65001
-      uplink_switches: [ underlay-filter-peer-as-spine1, underlay-filter-peer-as-spine2 ]
-      uplink_interfaces: [ Ethernet1, Ethernet2 ]
-      uplink_switch_interfaces: [ Ethernet1, Ethernet1]
+      uplink_switches: [underlay-filter-peer-as-spine1, underlay-filter-peer-as-spine2]
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      uplink_switch_interfaces: [Ethernet1, Ethernet1]
       loopback_ipv4_pool: 192.168.255.0/24
       loopback_ipv4_offset: 2
       vtep_loopback_ipv4_pool: 192.168.254.0/24

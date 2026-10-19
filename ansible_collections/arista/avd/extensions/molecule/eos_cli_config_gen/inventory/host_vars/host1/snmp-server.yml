@@ -51,6 +51,9 @@ snmp_server:
       vrf: MGMT
     - name: onur_v6
   views:
+    - name: VW-EXCLUDED
+      mib_family_name: iso
+      included: false
     - name: VW-WRITE
       mib_family_name: iso
       included: true
@@ -124,6 +127,58 @@ snmp_server:
       localized: DEADBEEFCAFE123456
       auth: sha
       auth_passphrase: DEADBEEFCAFE123456ABC1234321AB1233456778
+      priv: aes
+      priv_passphrase: DEADBEEFCAFE123456ABC1234321AB12334567
+    - name: USER-AUTH-TYPE7
+      group: GRP-READ
+      version: v3
+      localized: f5717f500000bb417100
+      auth: md5
+      auth_key_type: 7
+      auth_key: 00564605530A0F005D71484C59185615175A08542C297778363175460240025252
+    - name: USER-AUTH-PRIV-TYPE0
+      group: GRP-WRITE
+      version: v3
+      localized: f5717f500000bb417100
+      auth: sha
+      auth_key_type: 0
+      auth_key: DEADBEEFCAFE123456ABC1234321AB1233456778
+      priv: aes
+      priv_key_type: 0
+      priv_key: DEADBEEFCAFE123456ABC1234321AB1233456778
+    - name: USER-AUTH-PRIV-WITHOUT-LOCALIZED
+      group: GRP-WRITE
+      version: v3
+      auth: sha
+      # auth_key_type/auth_key and priv_key_type/priv_key are ignored when localized is not set
+      auth_key_type: 7
+      auth_key: 00564605530A0F005D71484C5918561517
+      auth_passphrase: 00564605530A0F005D71484C5918561517
+      priv: aes256
+      priv_key_type: 7
+      priv_key: 00564605530A0F005D71484C59185615175
+      priv_passphrase: 00564605530A0F005D71484C59185615175
+    - name: USER-LOCALIZED-TYPE7
+      group: GRP-WRITE
+      version: v3
+      localized: f5717f500000bb417100
+      auth: sha
+      auth_key_type: 7
+      auth_key: 00534602530E5A075622181F5B4A5C11435C5A532F7A227B6A33201004410753015B5D04040F054C4E
+      priv: aes
+      priv_key_type: 7
+      priv_key: 00054156070F5C070E771C1A5A1C561410090F522F2D27786330211106465A5901
+    - name: USER-REMOTE-TYPE7
+      group: GRP-REMOTE
+      version: v3
+      remote_address: 10.1.1.1
+      auth: md5
+      localized: f5717f500000bb417100
+      auth_key_type: 7
+      auth_key: 00564605530A0F005D71484C59185615175A08542C297778363175460240025252
+      priv: des
+      priv_key_type: 7
+      priv_key: 00054156070F5C070E771C1A5A1C561410090F522F2D27786330211106465A5901
   hosts:
     - host: 10.6.75.121
       vrf: MGMT
@@ -166,6 +221,16 @@ snmp_server:
       - name: msdp established
       - name: snmp link-down
       - name: snmpConfigManEvent
+  extensions:
+    - oid: ".111.3.6.1.4.1.99999.2.1.0"
+      path: "flash:/test1.py"
+      one_shot: true
+    - oid: ".2.3.6.1.4.1.99999.2.1.0"
+      path: "flash:/test2.py"
+    - oid: ".1.3.6.1.4.1.30065.4.101.100.1.1"
+      path: "flash:/monitorConnectivity.py"
+    - oid: ".1.3.6.1.4.1.30065.4.101.100.2.33"
+      path: "flash:/test.py"
   vrfs:
     - name: default
       enable: false

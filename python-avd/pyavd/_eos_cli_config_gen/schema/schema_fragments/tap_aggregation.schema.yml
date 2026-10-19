@@ -54,8 +54,6 @@ keys:
                   eth_type:
                     description: EtherType.
                     type: int
-                    convert_types:
-                    - str
           fcs_append:
             type: bool
             description: |

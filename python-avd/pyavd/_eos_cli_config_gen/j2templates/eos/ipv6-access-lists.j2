@@ -110,7 +110,9 @@ ipv6 access-list {{ acl.name }}
 {%                         endif %}
 {%                     endif %}
 {#                     * add log #}
-{%                     if acle.log is arista.avd.defined(true) %}
+{%                     if acle.action == "deny" and acle.copy_captive_portal is arista.avd.defined(true) %}
+{%                         set acl_entry.string = acl_entry.string ~ ' copy captive-portal' %}
+{%                     elif acle.log is arista.avd.defined(true) %}
 {%                         set acl_entry.string = acl_entry.string ~ ' log' %}
 {%                     endif %}
 {%                 endif %}

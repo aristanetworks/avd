@@ -18,8 +18,6 @@ keys:
           vrf:
             type: str
             description: VRF name.
-            convert_types:
-              - int
       servers:
         type: list
         primary_key: name
@@ -37,24 +35,25 @@ keys:
               type: int
               min: 1
               max: 65535
-              convert_types:
-                - str
             local_interface:
               type: str
-              description: Source interface.
+              description: |-
+                Source interface.
+                Mutually exclusive with 'source_address'. Takes precedence if both are set.
+            source_address:
+              type: str
+              description: |-
+                Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+                Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
             maxpoll:
               type: int
               min: 3
               max: 17
-              convert_types:
-                - str
               description: Value of maxpoll between 3 - 17 (Logarithmic).
             minpoll:
               type: int
               min: 3
               max: 17
-              convert_types:
-                - str
               description: Value of minpoll between 3 - 17 (Logarithmic).
             preferred:
               type: bool
@@ -62,21 +61,18 @@ keys:
               type: int
               min: 1
               max: 4
-              convert_types:
-                - str
             vrf:
               type: str
               deprecation:
                 warning: true
                 removed: true
+                remove_in_version: 6.0.0
                 new_key: ntp.vrf
       vrf:
         type: str
         description: |-
           VRF name for all NTP servers.
           All NTP servers must be in the same VRF on EOS.
-        convert_types:
-          - int
       authenticate:
         type: bool
       authenticate_servers_only:
@@ -91,8 +87,6 @@ keys:
               type: int
               min: 1
               max: 65534
-              convert_types:
-                - str
               description: Key identifier.
             hash_algorithm:
               type: str
@@ -104,14 +98,10 @@ keys:
               required: true
             key_type:
               type: str
-              convert_types:
-                - int
               valid_values: ["0", "7", "8a"]
       trusted_keys:
         type: str
         description: List of trusted-keys as string ex. 10-12,15.
-        convert_types:
-          - int
       serve:
         description: Enable Serving NTP to clients.
         type: dict
@@ -132,8 +122,6 @@ keys:
               keys:
                 name:
                   type: str
-                  convert_types:
-                    - int
                 serve_all:
                   type: bool
                 access_group:

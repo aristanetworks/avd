@@ -13,6 +13,12 @@ aaa group server radius {{ aaa_server_group.name }}
 {%             if server.vrf is arista.avd.defined %}
 {%                 set server_cli = server_cli ~ " vrf " ~ server.vrf %}
 {%             endif %}
+{%             if server.tls.enabled is arista.avd.defined(true) %}
+{%                 set server_cli = server_cli ~ " tls" %}
+{%                 if server.tls.port is arista.avd.defined %}
+{%                     set server_cli = server_cli ~ " port " ~ server.tls.port %}
+{%                 endif %}
+{%             endif %}
    {{ server_cli }}
 {%         endfor %}
 {%     endif %}

@@ -26,6 +26,9 @@ dot1x:
       hostname:
         enabled: true
         auth_only: true
+        # TODO: Open an issue. documentation/dot1x.j2 checks
+        # dot1x.radius_av_pair.lldp.hostname.auth_only for DHCP hostname auth-only,
+        # so this valid setting does not cover the intended documentation branch.
       parameter_request_list:
         enabled: true
         auth_only: true

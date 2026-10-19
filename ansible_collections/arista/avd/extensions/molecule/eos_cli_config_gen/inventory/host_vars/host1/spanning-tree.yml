@@ -20,3 +20,4 @@ spanning_tree:
   port_id_allocation_port_channel_range:
     minimum: 201
     maximum: 2001
+  loop_guard_default: true

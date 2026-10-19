@@ -39,7 +39,7 @@
         strict_tags: true
         # skip_strict_devices: false
         # configlet_name_template: "AVD-${hostname}"
-        cv_servers: [ '{{ cv_server }}' ]
+        cv_servers: ['{{ cv_server }}']
         cv_token: '{{ token }}'
         # cv_verify_certs: true
         workspace:

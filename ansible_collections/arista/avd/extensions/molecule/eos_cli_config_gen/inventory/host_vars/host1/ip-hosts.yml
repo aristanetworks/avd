@@ -1,0 +1,16 @@
+---
+ip_hosts:
+  - hostname: TEST1
+    ipv4_addresses:
+      - 10.1.1.1
+  - hostname: small-host
+    ipv4_addresses:
+      - 1.1.1.1
+  - hostname: host-with-same-ip
+    ipv4_addresses:
+      - 10.1.1.1
+  - hostname: host-with-multiple-ips
+    ipv4_addresses:
+      - 4.4.4.4
+      - 2.2.2.2
+      - 1.1.1.1

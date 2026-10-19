@@ -3,6 +3,8 @@ mlag_configuration:
   domain_id: sw1-sw2-mlag-domain
   local_interface: Vlan4094
   peer_address: 172.16.0.1
+  peer_address_heartbeat:
+    peer_ip: 172.16.0.2
   peer_link: Port-Channel12
   heartbeat_interval: 5000
   dual_primary_detection_delay: 5

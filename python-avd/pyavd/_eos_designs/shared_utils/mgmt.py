@@ -8,7 +8,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default
+from pyavd._utils.default import default
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -41,13 +41,14 @@ class MgmtMixin(Protocol):
             # Notice that we actually have a default value for the next two, but the precedence order would break if we use it.
             # TODO: Evaluate if we should remove the default values from either or both.
             self.platform_settings._get("management_interface", None),
+            self.inputs.mgmt_interface_settings._get("interface", None),
             self.inputs._get("mgmt_interface", None),
             self.cv_topology_config.mgmt_interface,
             "Management1",
         )
 
         # Adjust OOB management interface for ACT Digital Twin "veos" and "cloudeos" node types
-        if self.digital_twin and self.inputs.digital_twin.environment == "act" and self.platform_settings.digital_twin.act_node_type in ["veos", "cloudeos"]:
+        if self.is_act_digital_twin and self.platform_settings.digital_twin.act_node_type in ["veos", "cloudeos"]:
             act_mgmt_interface = "Management1"
             if mgmt_interface != act_mgmt_interface:
                 LOGGER.info(
@@ -61,8 +62,48 @@ class MgmtMixin(Protocol):
         return mgmt_interface
 
     @cached_property
-    def mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
-        return default(self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
+    def mgmt_interface_description(self: SharedUtilsProtocol) -> str:
+        if self.inputs.mgmt_interface_settings._get_defined_attr("description"):
+            return self.inputs.mgmt_interface_settings.description
+        return self.inputs.mgmt_interface_description
+
+    @cached_property
+    def mgmt_interface_vrf(self: SharedUtilsProtocol) -> str:
+        if self.inputs.mgmt_interface_settings._get_defined_attr("vrf"):
+            return self.inputs.mgmt_interface_settings.vrf
+        return self.inputs.mgmt_interface_vrf
+
+    @cached_property
+    def oob_mgmt_ip(self: SharedUtilsProtocol) -> str | None:
+        """
+        Management IPv4 address used for the generated OOB management interface.
+
+        In ACT Digital Twin mode, `digital_twin.mgmt_ip` takes precedence over the regular node `mgmt_ip`.
+        """
+        if self.is_act_digital_twin and self.node_config.mgmt_ip is not None:
+            return default(self.node_config.digital_twin.mgmt_ip, self.node_config.mgmt_ip)
+
+        return self.node_config.mgmt_ip
+
+    @cached_property
+    def mgmt_vrf_routing(self: SharedUtilsProtocol) -> bool:
+        if self.inputs.mgmt_interface_settings._get_defined_attr("vrf_routing"):
+            return self.inputs.mgmt_interface_settings.vrf_routing
+        return self.inputs.mgmt_vrf_routing
+
+    @cached_property
+    def oob_mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
+        """
+        Management IPv4 gateway used for the generated OOB management interface.
+
+        In ACT Digital Twin mode, `digital_twin.mgmt_gateway` takes precedence over the regular management gateway.
+        """
+        regular_mgmt_gateway = default(self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
+
+        if self.is_act_digital_twin and self.node_config.mgmt_ip is not None:
+            return default(self.node_config.digital_twin.mgmt_gateway, regular_mgmt_gateway)
+
+        return regular_mgmt_gateway
 
     @cached_property
     def ipv6_mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
@@ -77,7 +118,7 @@ class MgmtMixin(Protocol):
         """
         default_mgmt_method = self.inputs.default_mgmt_method
         if default_mgmt_method == "oob":
-            if self.node_config.mgmt_ip is None and self.node_config.ipv6_mgmt_ip is None:
+            if self.oob_mgmt_ip is None and self.node_config.ipv6_mgmt_ip is None:
                 msg = "'default_mgmt_method: oob' requires either 'mgmt_ip' or 'ipv6_mgmt_ip' to be set."
                 raise AristaAvdInvalidInputsError(msg)
 
@@ -90,16 +131,6 @@ class MgmtMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             return default_mgmt_method
-
-        return None
-
-    @cached_property
-    def default_mgmt_protocol_vrf(self: SharedUtilsProtocol) -> str | None:
-        if self.default_mgmt_method == "oob":
-            return self.inputs.mgmt_interface_vrf
-        if self.default_mgmt_method == "inband":
-            # inband_mgmt_vrf returns None for vrf default.
-            return self.inband_mgmt_vrf or "default"
 
         return None
 

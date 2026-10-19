@@ -6,10 +6,19 @@
 {# eos - ip routing vrfs #}
 {% for vrf in vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%     if vrf.ip_routing_ipv6_interfaces is arista.avd.defined(true) and vrf.name != 'default' %}
+{%         if loop.first and ip_routing is not arista.avd.defined and ip_routing_ipv6_interfaces is not arista.avd.defined and eos_config_future.always_render_ip_routing_separator is arista.avd.defined(true) %}
+!
+{%         endif %}
 ip routing ipv6 interfaces vrf {{ vrf.name }}
 {%     elif vrf.ip_routing is arista.avd.defined(true) and vrf.name != 'default' %}
+{%         if loop.first and ip_routing is not arista.avd.defined and ip_routing_ipv6_interfaces is not arista.avd.defined and eos_config_future.always_render_ip_routing_separator is arista.avd.defined(true) %}
+!
+{%         endif %}
 ip routing vrf {{ vrf.name }}
 {%     elif vrf.ip_routing is arista.avd.defined(false) and vrf.name != 'default' %}
+{%         if loop.first and ip_routing is not arista.avd.defined and ip_routing_ipv6_interfaces is not arista.avd.defined and eos_config_future.always_render_ip_routing_separator is arista.avd.defined(true) %}
+!
+{%         endif %}
 no ip routing vrf {{ vrf.name }}
 {%     endif %}
 {% endfor %}

@@ -1,5 +1,5 @@
 name: "PR Conflicts checker"
-"on":
+"on": # zizmor: ignore[dangerous-triggers] Uses pull_request_target only to label/comment on PR metadata, not to check out or execute PR code.
   pull_request_target:
     types: [synchronize]
 
@@ -7,9 +7,13 @@ jobs:
   Conflict_Check:
     name: "Check PR status: conflicts and resolution"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
       - name: Check if PRs are dirty
-        uses: eps1lon/actions-label-merge-conflict@releases/2.x
+        uses: eps1lon/actions-label-merge-conflict@0273be72a0bbd58fcd71d0d6c02c209b50d1e5e1 # v3.1.0
         with:
           dirtyLabel: "state: conflict"
           removeOnDirtyLabel: "state: conflict resolved"

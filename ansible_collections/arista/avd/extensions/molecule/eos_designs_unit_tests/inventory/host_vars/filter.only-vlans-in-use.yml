@@ -12,9 +12,9 @@ l2leaf:
 servers:
   - name: testserver
     adapters:
-      - switches: [ filter.only-vlans-in-use ]
-        switch_ports: [ Ethernet1 ]
-        endpoint_ports: [ Nic1 ]
+      - switches: [filter.only-vlans-in-use]
+        switch_ports: [Ethernet1]
+        endpoint_ports: [Nic1]
         vlans: 1-2
         mode: trunk
 

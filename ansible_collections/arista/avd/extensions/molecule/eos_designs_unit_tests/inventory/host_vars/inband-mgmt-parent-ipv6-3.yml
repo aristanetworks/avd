@@ -1,0 +1,5 @@
+---
+overlay_routing_protocol: none
+# IPv6-PL-L2LEAF-INBAND-MGMT is not created.
+avd_design_future:
+  only_configure_ipv6_inband_mgmt_prefix_list_when_used: true

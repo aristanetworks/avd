@@ -11,8 +11,6 @@ $defs:
     keys:
       sequence:
         type: int
-        convert_types:
-          - str
         description: ACL entry sequence number.
       remark:
         type: str
@@ -41,8 +39,6 @@ $defs:
         min_length: 1
         items:
           type: str
-          convert_types:
-            - int
           description: TCP/UDP source port name or number.
       destination_ports_match:
         type: str
@@ -58,26 +54,28 @@ $defs:
         min_length: 1
         items:
           type: str
-          convert_types:
-            - int
           description: TCP/UDP destination port name or number.
       tcp_flags:
         type: list
         items:
           type: str
           description: TCP Flag Name.
+      copy_captive_portal:
+        type: bool
+        description: |-
+          Copy packet to CPU queue for dot1x captive-portal.
+          Only supported with deny entries.
+          For deny entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
       log:
         type: bool
-        description: Log matches against this rule.
+        description: |-
+          Log matches against this rule.
+          For deny entries, mutually exclusive with `copy_captive_portal`. `copy_captive_portal` takes precedence.
       icmp_type:
         type: str
-        convert_types:
-          - int
         description: Message type name/number for ICMP packets.
       icmp_code:
         type: str
-        convert_types:
-          - int
         description: Message code for ICMP packets.
       nexthop_group:
         type: str
@@ -87,13 +85,14 @@ $defs:
         description: Match packets in existing ICMP/UDP/TCP connections.
       dscp:
         type: str
-        convert_types:
-          - int
         description: DSCP value or name.
       vlan_number:
         type: int
-        convert_types:
-          - str
       vlan_mask:
         type: str
         description: 0x000-0xFFF VLAN mask.
+      inner_vlan_number:
+        type: int
+      inner_vlan_mask:
+        type: str
+        description: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.

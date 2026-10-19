@@ -16,6 +16,9 @@ address locking
 {%     for ip in address_locking.dhcp_servers_ipv4 | arista.avd.natural_sort %}
    dhcp server ipv4 {{ ip }}
 {%     endfor %}
+{%     for interface in address_locking.dhcp_server_interfaces | arista.avd.natural_sort %}
+   dhcp server interface {{ interface }}
+{%     endfor %}
 {%     for lease in address_locking.leases | arista.avd.natural_sort('ip') %}
    lease {{ lease.ip }} mac {{ lease.mac }}
 {%     endfor %}
@@ -27,5 +30,11 @@ address locking
 {%     endif %}
 {%     if address_locking.locked_address.ipv6_enforcement_disabled is arista.avd.defined(true) %}
    locked-address ipv6 enforcement disabled
+{%     endif %}
+{%     if address_locking.logging.event.denied_address_drop is arista.avd.defined(true) %}
+   logging event denied-address drop
+{%     endif %}
+{%     if address_locking.logging.event.dhcp_server_drop is arista.avd.defined(true) %}
+   logging event dhcp server drop
 {%     endif %}
 {% endif %}

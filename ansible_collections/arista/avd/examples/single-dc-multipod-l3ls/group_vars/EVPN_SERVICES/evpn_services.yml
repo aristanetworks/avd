@@ -1,0 +1,16 @@
+---
+tenants:
+  - name: ACME
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_A
+        vrf_vni: 10
+        svis:
+          - id: 10
+            name: DMZ
+            enabled: true
+            ip_address_virtual: 10.1.10.1/24
+          - id: 20
+            name: Internal
+            enabled: true
+            ip_address_virtual: 10.1.20.1/24

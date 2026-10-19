@@ -24,7 +24,7 @@ spine:
       mgmt_ip: 192.168.1.20/24
       evpn_role: server
       uplink_switch_interfaces: ['Ethernet1', 'Ethernet1']
-      evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+      evpn_route_servers: [DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A]
     - name: DC2-POD1-SPINE2
       # id: 2 Using pool manager for ID
       evpn_role: none
@@ -46,13 +46,13 @@ l3leaf:
     bgp_as: 65555
     platform: vEOS-LAB
     evpn_role: server
-    evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+    evpn_route_servers: [DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A]
     spanning_tree_mode: rstp
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:1c:73:00:dc:01
     mlag: false
     filter:
-      always_include_vrfs_in_tenants: [ 'all' ] # Testing that we configure all VRFs even with no VLANs.
+      always_include_vrfs_in_tenants: ['all'] # Testing that we configure all VRFs even with no VLANs.
       tags: []
     raw_eos_cli: |
       interface Loopback1010
@@ -72,7 +72,7 @@ l3leaf:
     # Single leaf with l2only combined with inband management parent
     - group: RACK2_SINGLE
       evpn_role: client
-      evpn_route_servers: [ DC2-POD1-LEAF1A ]
+      evpn_route_servers: [DC2-POD1-LEAF1A]
       bgp_as: 65212
       evpn_services_l2_only: true
       nodes:
@@ -86,7 +86,7 @@ l2leaf:
   defaults:
     inband_mgmt_subnet: 172.21.210.0/24
     platform: vEOS-LAB
-    uplink_interfaces: [ Ethernet1 ]
+    uplink_interfaces: [Ethernet1]
     spanning_tree_mode: mstp
     spanning_tree_priority: 8192
     mlag: false

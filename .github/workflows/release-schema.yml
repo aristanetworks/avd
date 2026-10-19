@@ -1,0 +1,40 @@
+---
+name: "Upload schemas.json.gz on release"
+
+"on":
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to upload schemas.json.gz to (e.g. v6.1.0)
+        required: true
+
+jobs:
+  upload-schema:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: refs/tags/${{ inputs.tag || github.event.release.tag_name }}
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --group dev --upgrade
+
+      - name: Generate schemas.json.gz
+        run: scripts/build_schemas.py
+        working-directory: python-avd
+
+      - name: Upload schemas.json.gz to release
+        run: gh release upload "$RELEASE_TAG" python-avd/pyavd/_schema/schemas.json.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}

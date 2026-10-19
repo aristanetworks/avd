@@ -1,0 +1,18 @@
+---
+fabric_name: FABRIC_UNDERLAY_ROUTER_WITH_PORT_CHANNEL_UPLINK
+
+avd_design_future:
+  raise_for_underlay_router_with_uplink_type_port_channel: true
+
+type: l3leaf
+l3leaf:
+  nodes:
+    - bgp_as: 65000
+      name: underlay-router-with-port-channel-uplink
+      id: 1
+      loopback_ipv4_pool: 192.168.99.0/24
+      vtep_loopback_ipv4_pool: 192.168.199.0/24
+      uplink_type: port-channel
+
+expected_error_message: >-
+  'underlay_router: true' is not supported with 'uplink_type: port-channel' for host 'underlay-router-with-port-channel-uplink'.

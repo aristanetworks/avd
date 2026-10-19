@@ -66,9 +66,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -123,9 +123,9 @@ ip domain lookup vrf MGMT source-interface Management1
 
 NTP servers VRF: MGMT
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | True | - | - | - | - | - | - | - |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 0.pool.ntp.org | True | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -190,9 +190,9 @@ Enable password has been disabled
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 192.168.1.12:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | - | True |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.1.12:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | - | - | True |
 
 #### TerminAttr Daemon Device Configuration
 
@@ -354,10 +354,10 @@ vlan 4094
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 2001:db8:2:4::2/64 | default | 9214 | False | - | - | - | - | - | - | - |
-| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 2001:db8:2:5::2/64 | default | 9214 | False | - | - | - | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 2001:db8:2:4::2/64 | default | 9214 | False | - | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 2001:db8:2:5::2/64 | default | 9214 | False | - | - | - | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -533,16 +533,16 @@ interface Loopback12
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Vlan21 | VRF11 | - | 2001:DB8:21::1/48 | - | - | - | - | - | - | - | - |
-| Vlan31 | VRF12 | - | 2001:DB8:31::1/48 | - | - | - | - | - | - | - | - |
-| Vlan32 | VRF12 | - | 2001:DB8:32::1/48 | - | - | - | - | - | - | - | - |
-| Vlan3009 | VRF10 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan3010 | VRF11 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan3011 | VRF12 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan4093 | default | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan4094 | default | 2001:db8:3:2::1/64 | - | - | - | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Vlan21 | VRF11 | - | 2001:DB8:21::1/48 | - | - | - | - | - | - | - | - | - |
+| Vlan31 | VRF12 | - | 2001:DB8:31::1/48 | - | - | - | - | - | - | - | - | - |
+| Vlan32 | VRF12 | - | 2001:DB8:32::1/48 | - | - | - | - | - | - | - | - | - |
+| Vlan3009 | VRF10 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan3010 | VRF11 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan3011 | VRF12 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan4093 | default | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan4094 | default | 2001:db8:3:2::1/64 | - | - | - | - | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -731,10 +731,10 @@ ip routing vrf VRF12
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| VRF10 | false |
-| VRF11 | true |
-| VRF12 | true |
+| MGMT | False |
+| VRF10 | False |
+| VRF11 | True |
+| VRF12 | True |
 
 #### IPv6 Routing Device Configuration
 
@@ -808,16 +808,16 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 2001:db8:0:1::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:0:2::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:2:4::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 2001:db8:2:5::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
-| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF10 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
-| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF11 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
-| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF12 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Maximum-accepted-routes | Maximum-advertised-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ----------------------- | ------------------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 2001:db8:0:1::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 2001:db8:0:2::1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 2001:db8:2:4::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
+| 2001:db8:2:5::1 | 65100 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - | - | - |
+| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
+| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF10 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
+| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF11 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
+| 2001:db8:4:2::2 | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | VRF12 | - | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | Inherited from peer group MLAG-IPv6-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -1047,7 +1047,7 @@ ipv6 prefix-list PL-MLAG-PEER-VRFS
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | ip address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
+| 10 | deny | ipv6 address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
@@ -1064,7 +1064,7 @@ route-map RM-CONN-2-BGP permit 30
    match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 !
 route-map RM-CONN-2-BGP-VRFS deny 10
-   match ip address prefix-list PL-MLAG-PEER-VRFS
+   match ipv6 address prefix-list PL-MLAG-PEER-VRFS
 !
 route-map RM-CONN-2-BGP-VRFS permit 20
 !

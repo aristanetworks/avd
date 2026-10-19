@@ -64,7 +64,25 @@ ethernet_interfaces:
     peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet1
+  shutdown: false
+  ip_address: 172.16.0.2/30
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: host1
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1
+  entries:
+  - action: permit
+    protocol: ip
+    source: 172.16.0.1/30
+    destination: 172.16.0.2
+    vlan_inner: true
+    vlan_number: 123
+    vlan_mask: '0x000'
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -88,6 +106,11 @@ ip_radius:
   - name: MGMT
     source_interface: Vlan125
 ip_routing: true
+ip_ssh_client:
+  source_interface: Management1
+  vrfs:
+  - name: INBANDMGMT
+    source_interface: Vlan10
 ip_tacacs:
   source_interface: Vlan123
   vrfs:
@@ -264,6 +287,27 @@ router_multicast:
     routing: true
     software_forwarding: sfe
 service_routing_protocols_model: multi-agent
+snmp_server:
+  contact: example@example.com
+  communities:
+  - name: SNMP-COMMUNITY-1
+    access: ro
+    access_list_ipv4:
+      name: acl1
+  - name: SNMP-COMMUNITY-2
+    access: rw
+    access_list_ipv4:
+      name: SNMP-MGMT
+    access_list_ipv6:
+      name: SNMP-MGMT
+    view: VW-READ
+  - name: SNMP-COMMUNITY-3
+standard_access_lists:
+- name: acl1
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.1
 static_routes:
 - vrf: default
   prefix: 0.0.0.0/0

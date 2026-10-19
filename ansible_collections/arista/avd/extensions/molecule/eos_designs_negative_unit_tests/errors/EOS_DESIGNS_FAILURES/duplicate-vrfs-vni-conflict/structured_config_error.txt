@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdDuplicateDataError: Found duplicate objects with conflicting data while generating configuration for Vrfs. {'name': 'VRF1', 'vni': 1} conflicts with {'name': 'VRF1', 'vni': 2}.

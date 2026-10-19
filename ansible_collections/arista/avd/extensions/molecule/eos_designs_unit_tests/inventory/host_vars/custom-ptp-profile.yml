@@ -14,8 +14,8 @@ ptp_profiles:
 
 l3_edge:
   p2p_links:
-    - nodes: [ custom-ptp-profile, not-in-this-fabric ]
-      interfaces: [ Ethernet8, Ethernet8 ]
+    - nodes: [custom-ptp-profile, not-in-this-fabric]
+      interfaces: [Ethernet8, Ethernet8]
       ptp:
         enabled: true
         profile: my-custom-ptp-profile

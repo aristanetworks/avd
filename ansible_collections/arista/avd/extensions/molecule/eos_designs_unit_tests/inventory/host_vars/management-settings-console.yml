@@ -1,0 +1,11 @@
+---
+# Test for management settings
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: management-settings-console
+      mgmt_ip: 192.168.0.2/24
+
+management_settings:
+  console:
+    idle_timeout: 10

@@ -13,3 +13,8 @@ keys:
     description: |
       Management interface description.
     default: OOB_MANAGEMENT
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.description
+      remove_in_version: 7.0.0

@@ -1,0 +1,32 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: mgmt-interface-settings-1
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management0
+  description: description from mgmt_interface_settings
+  shutdown: false
+  vrf: vrf_from_mgmt_interface_settings
+  ip_address: 192.168.0.2/24
+  type: oob
+  lldp:
+    transmit: false
+    receive: false
+    ztp_vlan: 111
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: vrf_from_mgmt_interface_settings
+  ip_routing: true

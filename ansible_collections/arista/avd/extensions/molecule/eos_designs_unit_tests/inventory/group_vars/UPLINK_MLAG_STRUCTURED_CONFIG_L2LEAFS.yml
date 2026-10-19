@@ -3,8 +3,8 @@ type: l2leaf
 l2leaf:
   defaults:
     platform: vEOS-LAB
-    uplink_switches: [ uplink-mlag-structured-config-l3leaf1a, uplink-mlag-structured-config-l3leaf1b ]
-    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    uplink_switches: [uplink-mlag-structured-config-l3leaf1a, uplink-mlag-structured-config-l3leaf1b]
+    uplink_interfaces: [Ethernet1, Ethernet2]
     uplink_port_channel_structured_config:
       storm_control:
         broadcast:
@@ -18,7 +18,7 @@ l2leaf:
           level: 25
         unknown_unicast:
           level: 25
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_ipv4_pool: 10.255.252.0/24
     mlag_port_channel_structured_config:  # Setting structured config here but it is overridden by 'null' on group level and applied again on node level.
       description: "Port-channel description not being used because it is overridden by 'null' on node-group level."
@@ -42,7 +42,7 @@ l2leaf:
         - name: uplink-mlag-structured-config-l2leaf1a
           id: 1
           mgmt_ip: 192.168.201.201/24
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
+          uplink_switch_interfaces: [Ethernet5, Ethernet5]
           mlag_port_channel_structured_config:
             storm_control:
               broadcast:
@@ -55,7 +55,7 @@ l2leaf:
         - name: uplink-mlag-structured-config-l2leaf1b
           id: 2
           mgmt_ip: 192.168.201.201/24
-          uplink_switch_interfaces: [ Ethernet6, Ethernet6 ]
+          uplink_switch_interfaces: [Ethernet6, Ethernet6]
           mlag_port_channel_structured_config:
             storm_control:
               broadcast:

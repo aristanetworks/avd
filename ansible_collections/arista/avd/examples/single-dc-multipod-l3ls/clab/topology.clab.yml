@@ -1,0 +1,93 @@
+---
+name: Single-DC-Multipod-L3LS
+prefix: ""
+
+mgmt:
+    network: custom_mgmt
+    ipv4-subnet: 172.16.1.0/24
+
+topology:
+    kinds:
+        arista_ceos:
+            enforce-startup-config: true
+            image: arista/ceos:latest
+            binds:
+                - interface_mapping.json:/mnt/flash/EosIntfMapping.json:ro
+    defaults:
+        kind: arista_ceos
+    nodes:
+        # Super-Spines
+        dc1-ss1:
+            mgmt-ipv4: 172.16.1.25
+            startup-config: init-configs/dc1-ss1.cfg
+        dc1-ss2:
+            mgmt-ipv4: 172.16.1.26
+            startup-config: init-configs/dc1-ss2.cfg
+        # POD1 Spines
+        dc1-spine1:
+            mgmt-ipv4: 172.16.1.11
+            startup-config: init-configs/dc1-spine1.cfg
+        dc1-spine2:
+            mgmt-ipv4: 172.16.1.12
+            startup-config: init-configs/dc1-spine2.cfg
+        # POD2 Spines
+        dc1-spine3:
+            mgmt-ipv4: 172.16.1.13
+            startup-config: init-configs/dc1-spine3.cfg
+        dc1-spine4:
+            mgmt-ipv4: 172.16.1.14
+            startup-config: init-configs/dc1-spine4.cfg
+        # POD1 Leafs
+        dc1-leaf1a:
+            mgmt-ipv4: 172.16.1.21
+            startup-config: init-configs/dc1-leaf1a.cfg
+        dc1-leaf1b:
+            mgmt-ipv4: 172.16.1.22
+            startup-config: init-configs/dc1-leaf1b.cfg
+        # POD2 Leafs
+        dc1-leaf2a:
+            mgmt-ipv4: 172.16.1.23
+            startup-config: init-configs/dc1-leaf2a.cfg
+        dc1-leaf2b:
+            mgmt-ipv4: 172.16.1.24
+            startup-config: init-configs/dc1-leaf2b.cfg
+        # Hosts
+        host1:
+            mgmt-ipv4: 172.16.1.101
+            startup-config: init-configs/host1.cfg
+        host2:
+            mgmt-ipv4: 172.16.1.102
+            startup-config: init-configs/host2.cfg
+
+    links:
+        # Super-spines to POD1 spines
+        - endpoints: ["dc1-ss1:eth1", "dc1-spine1:eth1"]
+        - endpoints: ["dc1-ss2:eth1", "dc1-spine1:eth2"]
+        - endpoints: ["dc1-ss1:eth2", "dc1-spine2:eth1"]
+        - endpoints: ["dc1-ss2:eth2", "dc1-spine2:eth2"]
+        # Super-spines to POD2 spines
+        - endpoints: ["dc1-ss1:eth3", "dc1-spine3:eth1"]
+        - endpoints: ["dc1-ss2:eth3", "dc1-spine3:eth2"]
+        - endpoints: ["dc1-ss1:eth4", "dc1-spine4:eth1"]
+        - endpoints: ["dc1-ss2:eth4", "dc1-spine4:eth2"]
+        # POD1 spines to POD1 leafs
+        - endpoints: ["dc1-spine1:eth3", "dc1-leaf1a:eth1"]
+        - endpoints: ["dc1-spine2:eth3", "dc1-leaf1a:eth2"]
+        - endpoints: ["dc1-spine1:eth4", "dc1-leaf1b:eth1"]
+        - endpoints: ["dc1-spine2:eth4", "dc1-leaf1b:eth2"]
+        # POD2 spines to POD2 leafs
+        - endpoints: ["dc1-spine3:eth3", "dc1-leaf2a:eth1"]
+        - endpoints: ["dc1-spine4:eth3", "dc1-leaf2a:eth2"]
+        - endpoints: ["dc1-spine3:eth4", "dc1-leaf2b:eth1"]
+        - endpoints: ["dc1-spine4:eth4", "dc1-leaf2b:eth2"]
+        # POD1 leaf MLAG peer-links
+        - endpoints: ["dc1-leaf1a:eth3", "dc1-leaf1b:eth3"]
+        - endpoints: ["dc1-leaf1a:eth4", "dc1-leaf1b:eth4"]
+        # POD2 leaf MLAG peer-links
+        - endpoints: ["dc1-leaf2a:eth3", "dc1-leaf2b:eth3"]
+        - endpoints: ["dc1-leaf2a:eth4", "dc1-leaf2b:eth4"]
+        # Hosts
+        - endpoints: ["dc1-leaf1a:eth5", "host1:eth1"]
+        - endpoints: ["dc1-leaf1b:eth5", "host1:eth2"]
+        - endpoints: ["dc1-leaf2a:eth5", "host2:eth1"]
+        - endpoints: ["dc1-leaf2b:eth5", "host2:eth2"]

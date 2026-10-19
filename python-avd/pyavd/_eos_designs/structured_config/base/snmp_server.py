@@ -6,10 +6,14 @@ from __future__ import annotations
 from hashlib import sha1
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd_utils.passwords import simple_7_encrypt
+
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, default, strip_null_from_data
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
+from pyavd._utils.strip_empties import strip_null_from_data
 from pyavd.j2filters import natural_sort, snmp_hash
 
 if TYPE_CHECKING:
@@ -50,11 +54,24 @@ class SnmpServerMixin(Protocol):
 
         self.structured_config.snmp_server._update(
             contact=snmp_settings.contact,
-            communities=snmp_settings.communities,
             views=snmp_settings.views._cast_as(EosCliConfigGen.SnmpServer.Views),
             groups=snmp_settings.groups._cast_as(EosCliConfigGen.SnmpServer.Groups),
             traps=snmp_settings.traps,
         )
+        for community in snmp_settings.communities:
+            community_item = EosCliConfigGen.SnmpServer.CommunitiesItem(
+                name=community.name,
+                access=community.access,
+                access_list_ipv6=community.access_list_ipv6._cast_as(EosCliConfigGen.SnmpServer.CommunitiesItem.AccessListIpv6),
+                view=community.view,
+            )
+            if acl_name := community.ipv4_standard_acl:
+                community_item.access_list_ipv4.name = acl_name
+                self.structured_config_utils._set_ipv4_standard_acl(acl_name)
+            # Deprecated key snmp_settings.communities[].access_list_ipv4.name.
+            elif acl_name := community.access_list_ipv4.name:
+                community_item.access_list_ipv4.name = acl_name
+            self.structured_config.snmp_server.communities.append(community_item)
 
     def _get_snmp_engine_id_ip(self: AvdStructuredConfigBaseProtocol) -> str | None:
         """
@@ -75,17 +92,11 @@ class SnmpServerMixin(Protocol):
 
         match local_engineid_ip:
             case "use_mgmt_interface":
-                has_mgmt_ip = (self.shared_utils.node_config.mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
+                has_mgmt_ip = (self.shared_utils.oob_mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
                 if not has_mgmt_ip:
                     msg = "'snmp_settings.local_engineid_ip' is set to 'use_mgmt_interface' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
                     raise AristaAvdInvalidInputsError(msg)
-                if self.shared_utils.node_config.mgmt_ip == "dhcp":
-                    msg = (
-                        "'snmp_settings.local_engineid_ip' is set to 'use_mgmt_interface' but 'mgmt_ip: dhcp' is not supported. "
-                        f"A static management IP address is required for host '{self.shared_utils.hostname}'."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
-                return default(self.shared_utils.node_config.mgmt_ip, self.shared_utils.node_config.ipv6_mgmt_ip)
+                return default(self.shared_utils.oob_mgmt_ip, self.shared_utils.node_config.ipv6_mgmt_ip)
             case "use_inband_mgmt_interface":
                 if self.shared_utils.inband_mgmt_interface is None:
                     msg = (
@@ -122,27 +133,21 @@ class SnmpServerMixin(Protocol):
                 # This is the default value in AVD 5.x.
                 # This does not handle well inband mgmt cases as it uses None for the management IP
                 # This is kept for legacy purposes.
-                if self.shared_utils.node_config.mgmt_ip == "dhcp":
-                    msg = (
-                        f"'mgmt_ip: dhcp' is not supported for 'snmp_settings.compute_local_engineid_source: hostname_and_ip'. "
-                        f"A static management IP address is required for host '{self.shared_utils.hostname}'."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
-                local_engine_id = self._get_sha1_digest(self.shared_utils.node_config.mgmt_ip)
+                local_engine_id = self._get_sha1_digest(self.shared_utils.oob_mgmt_ip)
             case "rfc3411_type3":
                 # prefix with Enterprise Id + 05 to adhere to RCF3411 and RFC5343
                 # Arista Enterprise ID = 30065 (7571 in hex)
                 # 5th octet = 05 , meaning engine id is based on custom octet
-                if self.shared_utils.system_mac_address is None:
+                if self.structured_config_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: rfc3411_type3' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
-                local_engine_id = f"8000757103{str(self.shared_utils.system_mac_address).replace(':', '').lower()}"
+                local_engine_id = f"8000757103{str(self.structured_config_utils.system_mac_address).replace(':', '').lower()}"
             case "system_mac" | _:
                 # This is the default value of the engine ID on EOS. Note that is is not RFC3411 compliant.
-                if self.shared_utils.system_mac_address is None:
+                if self.structured_config_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
-                local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
+                local_engine_id = f"f5717f{str(self.structured_config_utils.system_mac_address).replace(':', '').lower()}00"
 
         self.structured_config.snmp_server.engine_ids.local = local_engine_id
 
@@ -193,19 +198,34 @@ class SnmpServerMixin(Protocol):
 
                 if user.auth is not None and user.auth_passphrase is not None:
                     user_dict.auth = user.auth
-                    hash_filter = {}
                     if compute_v3_user_localized_key:
-                        hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": engine_ids.local}
-                        user_dict.auth_passphrase = snmp_hash(hash_filter)
+                        local_engine_id: str = engine_ids.local  # type: ignore[assignment]  # non-None guaranteed by compute_v3_user_localized_key check above
+                        key_type = user.key_type
+                        auth_hash = snmp_hash({"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": local_engine_id})
+                        if key_type == "0":
+                            user_dict.auth_key_type = "0"
+                            user_dict.auth_key = auth_hash
+                        elif key_type == "7":
+                            user_dict.auth_key_type = "7"
+                            user_dict.auth_key = simple_7_encrypt(auth_hash, 7)
+                        else:
+                            user_dict.auth_passphrase = auth_hash
+
+                        if user.priv is not None and user.priv_passphrase is not None:
+                            user_dict.priv = user.priv
+                            priv_hash = snmp_hash({"passphrase": user.priv_passphrase, "auth": user.auth, "priv": user.priv, "engine_id": local_engine_id})
+                            if key_type == "0":
+                                user_dict.priv_key_type = "0"
+                                user_dict.priv_key = priv_hash
+                            elif key_type == "7":
+                                user_dict.priv_key_type = "7"
+                                user_dict.priv_key = simple_7_encrypt(priv_hash, 7)
+                            else:
+                                user_dict.priv_passphrase = priv_hash
                     else:
                         user_dict.auth_passphrase = user.auth_passphrase
-
-                    if user.priv is not None and user.priv_passphrase is not None:
-                        user_dict.priv = user.priv
-                        if compute_v3_user_localized_key:
-                            hash_filter.update({"passphrase": user.priv_passphrase, "priv": user.priv})
-                            user_dict.priv_passphrase = snmp_hash(hash_filter)
-                        else:
+                        if user.priv is not None and user.priv_passphrase is not None:
+                            user_dict.priv = user.priv
                             user_dict.priv_passphrase = user.priv_passphrase
 
             self.structured_config.snmp_server.users.append(user_dict)

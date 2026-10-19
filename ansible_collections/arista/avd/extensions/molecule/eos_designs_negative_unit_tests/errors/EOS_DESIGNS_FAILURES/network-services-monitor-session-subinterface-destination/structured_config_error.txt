@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Port mirroring destination on sub-interface is not supported. Got 'role: destination' for monitor session 'SESSION-ON-SUBINTERFACE-WITH-DESTINATION-ROLE' on interface 'Ethernet6.101' under tenants[name=TENANT_A].vrfs[name=VRF_A].l3_interfaces[0].

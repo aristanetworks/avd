@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Only 'direction: rx' supported on sub-interfaces for monitor session. Got 'direction: both' for monitor session 'SESSION-ON-SUBINTERFACE-WITH-BOTH-DIRECTION' on interface 'Ethernet6.101' under tenants[name=TENANT_A].vrfs[name=VRF_A].l3_interfaces[0].

@@ -192,7 +192,7 @@ ansible_collections/arista/avd/examples/cv-pathfinder/inventory.yml
 ```
 
 This example demonstrates the use of Ansible Vault to keep variables secure.
-`ansible.cfg` is configured to use a given file (`.vault`) as the vault password
+`ansible.cfg` is configured to use a given file (`example_vault`) as the vault password
 when required to decrypt files or inline variables.
 
 ```yaml title="ansible.cfg"
@@ -202,7 +202,7 @@ ansible_collections/arista/avd/examples/cv-pathfinder/ansible.cfg
 ```
 
 !!! danger
-    The `.vault` file is included in the example in order to be able to run it.
+    The `example_vault` file is included in the example in order to be able to run it.
     It **must** never be pushed to any public repository as it allows anyone
     with read access to decrypt all the secrets.
 

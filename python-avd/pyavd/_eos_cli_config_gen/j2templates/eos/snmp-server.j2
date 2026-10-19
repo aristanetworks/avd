@@ -114,6 +114,17 @@ snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.nam
 {%         endif %}
 {%         if user.auth is arista.avd.defined
               and user.version is arista.avd.defined('v3')
+              and user.auth_key is arista.avd.defined
+              and user.auth_key_type is arista.avd.defined
+              and user.localized is arista.avd.defined %}
+{%             set user_cli = user_cli ~ " localized " ~ user.localized ~ " auth " ~ user.auth ~ " key " ~ user.auth_key_type ~ " " ~ user.auth_key | arista.avd.hide_passwords(hide_passwords) %}
+{%             if user.priv is arista.avd.defined
+                  and user.priv_key is arista.avd.defined
+                  and user.priv_key_type is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " priv " ~ user.priv ~ " key " ~ user.priv_key_type ~ " " ~ user.priv_key | arista.avd.hide_passwords(hide_passwords) %}
+{%             endif %}
+{%         elif user.auth is arista.avd.defined
+              and user.version is arista.avd.defined('v3')
               and user.auth_passphrase is arista.avd.defined %}
 {%             if user.localized is arista.avd.defined %}
 {%                 set user_cli = user_cli ~ " localized " ~ user.localized %}
@@ -154,6 +165,17 @@ snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.nam
 {%             set user_cli = user_cli ~ " " ~ user.version %}
 {%         endif %}
 {%         if user.auth is arista.avd.defined
+              and user.version is arista.avd.defined('v3')
+              and user.auth_key is arista.avd.defined
+              and user.auth_key_type is arista.avd.defined
+              and user.localized is arista.avd.defined %}
+{%             set user_cli = user_cli ~ " localized " ~ user.localized ~ " auth " ~ user.auth ~ " key " ~ user.auth_key_type ~ " " ~ user.auth_key | arista.avd.hide_passwords(hide_passwords) %}
+{%             if user.priv is arista.avd.defined
+                  and user.priv_key is arista.avd.defined
+                  and user.priv_key_type is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " priv " ~ user.priv ~ " key " ~ user.priv_key_type ~ " " ~ user.priv_key | arista.avd.hide_passwords(hide_passwords) %}
+{%             endif %}
+{%         elif user.auth is arista.avd.defined
               and user.version is arista.avd.defined('v3')
               and user.auth_passphrase is arista.avd.defined %}
 {%             if user.localized is arista.avd.defined %}
@@ -199,6 +221,15 @@ no snmp-server enable traps {{ snmp_trap.name }}
 snmp-server enable traps {{ snmp_trap.name }}
 {%         endif %}
 {%     endfor %}
+{%     if snmp_server.extensions is arista.avd.defined %}
+{%         for extension in snmp_server.extensions | sort(attribute='oid') %}
+{%             set snmp_server_extension_cli = "snmp-server extension " ~ extension.oid ~ " " ~ extension.path %}
+{%             if extension.one_shot is arista.avd.defined(true) %}
+{%                 set snmp_server_extension_cli = snmp_server_extension_cli ~ " one-shot" %}
+{%             endif %}
+{{ snmp_server_extension_cli }}
+{%         endfor %}
+{%     endif %}
 {%     if snmp_server.vrfs is arista.avd.defined %}
 {%         set default_vrfs = snmp_server.vrfs | selectattr('name', 'equalto', 'default') | list %}
 {%         set no_default_vrfs = snmp_server.vrfs | rejectattr('name', 'equalto', 'default') | arista.avd.natural_sort('name', ignore_case=false) %}

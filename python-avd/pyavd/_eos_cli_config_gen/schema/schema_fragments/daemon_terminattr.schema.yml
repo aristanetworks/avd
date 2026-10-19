@@ -99,8 +99,6 @@ keys:
               type: str
               description: |
                 The VRF to use to connect to CloudVision.
-              convert_types:
-                - int
       cvauth:
         type: dict
         description: |
@@ -153,8 +151,6 @@ keys:
         type: str
         description: |
           The VRF to use to connect to CloudVision.
-        convert_types:
-          - int
       cvgnmi:
         type: bool
         description: |
@@ -183,6 +179,11 @@ keys:
         description: |
           Exclude paths from the shared memory table.
           e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+      sysdbexcludes:
+        type: str
+        description: |
+          Exclude paths from Sysdb.
+          e.g. "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
       taillogs:
         type: str
         description: |
@@ -218,5 +219,37 @@ keys:
         description: |-
           Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to CloudVision after a configuration change.
           The recommended timeout is five minutes.
-        convert_types:
-          - str
+      cvtargetconfigs:
+        type: list
+        min_length: 1
+        description: |
+          Set the target configuration path(s) for dynamic device configuration from CloudVision.
+          Used for MSS (Multi-Domain Segmentation Service) integrations.
+        items:
+          type: str
+      flowdns:
+        type: bool
+        description: |
+          Enable DNS resolution for flow records (TerminAttr default is true).
+          Set to false to disable DNS lookups on sFlow/IPFIX flow records.
+      custom_cv_options:
+        type: list
+        description: |
+          TerminAttr CLI options not covered by the schema.
+          Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.
+          Options are appended at the end of the TerminAttr exec command line after all other flags.
+        items:
+          type: dict
+          keys:
+            flag:
+              type: str
+              required: true
+              min_length: 1
+              pattern: '^(?!-)(?!.*[\s=]).+$'
+              description: |
+                TerminAttr CLI flag name without the leading dash.
+            value:
+              type: str
+              description: |
+                Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                If set, the flag is rendered as `-flag=value`.

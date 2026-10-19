@@ -31,14 +31,10 @@ keys:
             type: int
             min: 0
             max: 300
-            convert_types:
-              - str
           hold_period:
             type: int
             min: 1
             max: 300
-            convert_types:
-              - str
       radius_av_pair_username_format:
         type: dict
         description: RADIUS AV-pair username settings.
@@ -69,8 +65,6 @@ keys:
             type: int
             min: 68
             max: 9236
-            convert_types:
-              - str
           lldp:
             type: dict
             keys:
@@ -159,8 +153,6 @@ keys:
                       e.g. aaa unresponsive action apply cached-results else traffic allow
                   traffic_allow_vlan:
                     type: int
-                    convert_types:
-                      - str
                     min: 1
                     max: 4094
               phone_action:
@@ -176,8 +168,6 @@ keys:
                       time_duration:
                         type: int
                         required: true
-                        convert_types:
-                          - str
                         min: 1
                         description: |-
                           Enable caching for a specific duration -
@@ -205,8 +195,6 @@ keys:
                 type: bool
           accounting_update_interval:
             type: int
-            convert_types:
-              - str
             min: 5
             max: 65535
             description: Interval period in seconds.
@@ -230,7 +218,7 @@ keys:
             description: Set captive-portal start limit to infinite.
           access_list_ipv4:
             type: str
-            description: Standard access-list name.
+            description: Extended access-list name.
       supplicant:
         type: dict
         keys:
@@ -257,8 +245,6 @@ keys:
                   description: User identity.
                 passphrase_type:
                   type: str
-                  convert_types:
-                    - int
                   valid_values:
                     - "0"
                     - "7"
@@ -274,8 +260,6 @@ keys:
             description: Enable supplicant logging.
           disconnect_cached_results_timeout:
             type: int
-            convert_types:
-              - "str"
             min: 60
             max: 65535
             description: Timeout in seconds for removing a disconnected supplicant.
@@ -290,8 +274,6 @@ keys:
             members:
               type: str
               required: true
-              convert_types:
-                - int
               description: VLAN value(s) or range(s) of VLAN values.
       eapol:
         type: dict
@@ -301,6 +283,4 @@ keys:
             description: Disable host log off when there is a VLAN change.
           unresponsive_action_traffic_allow_vlan:
             type: int
-            convert_types:
-              - str
             description: EAPOL unresponsive hosts VLAN ID.

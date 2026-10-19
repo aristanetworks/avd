@@ -53,6 +53,9 @@ monitor_telemetry_postcard_policy:
           destination_prefix: 10.3.3.0/24
           source_prefix: 3.4.5.0/24
           protocols:
+            - protocol: tcp
+              source_ports:
+                - ssh
             - protocol: udp
               source_ports:
                 - bgp

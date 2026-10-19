@@ -277,7 +277,8 @@
         },
         "manufacturers": [
           "Arista Networks",
-          "Arastra, Inc."
+          "Arastra, Inc.",
+          "Not Present"
         ]
       }
     },

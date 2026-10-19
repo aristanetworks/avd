@@ -1,0 +1,30 @@
+---
+type: wan_router
+wan_mode: legacy-autovpn
+
+wan_router:
+  nodes:
+    - name: ipv6-bgp-not-supported-on-wan-interface
+      id: 1
+      bgp_as: 65000
+      loopback_ipv4_pool: 192.168.0.0/24
+      vtep_loopback_ipv4_pool: 192.168.1.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: CARRIER1
+          ip_address: 172.16.0.2/30
+          peer_ipv6: 2001:db8::1
+          bgp:
+            peer_as: 65001
+
+wan_carriers:
+  - name: CARRIER1
+    path_group: INTERNET
+    trusted: true
+
+wan_path_groups:
+  - id: 100
+    name: INTERNET
+
+expected_error_message: >-
+  IPv6 BGP peering is not supported on WAN interfaces. Got 'peer_ipv6: 2001:db8::1' on 'l3_interfaces[Ethernet1]'

@@ -1,4 +1,5 @@
 ---
+mlag_port_channel_description: "{interface}_MLAG_PEER_{mlag_peer}_Po{mlag_port_channel_id}"
 underlay_routing_protocol: ospf
 underlay_ospf_maximum_paths: 100
 underlay_ospf_graceful_restart: false

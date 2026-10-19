@@ -33,7 +33,7 @@ l3leaf:
     uplink_switches: [auto-node-type-spine01, auto-node-type-spine02]
     uplink_ipv4_pool: 172.31.255.0/24
     bgp_defaults: ['distance bgp 20 200 200']
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
     spanning_tree_mode: mstp

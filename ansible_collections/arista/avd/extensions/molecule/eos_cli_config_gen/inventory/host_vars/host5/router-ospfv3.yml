@@ -1,0 +1,34 @@
+---
+# Tests with minimum configs for ospfv3 redistribution
+router_ospfv3:
+  router_id: 1.1.1.1
+  passive_interface_default: true
+  auto_cost_reference_bandwidth: 1000
+  address_family_ipv4:
+    enabled: true
+    router_id: 2.2.2.2
+    auto_cost_reference_bandwidth: 2000
+    passive_interface_default: true
+    redistribute:
+      ospfv3:
+        leaked:
+          enabled: true
+          match_internal: true
+        leaked_match_external:
+          enabled: true
+        leaked_match_nssa_external:
+          enabled: true
+  address_family_ipv6:
+    enabled: true
+    router_id: 3.3.3.3
+    auto_cost_reference_bandwidth: 2000
+    passive_interface_default: true
+    redistribute:
+      ospfv3:
+        leaked:
+          enabled: true
+          match_internal: true
+        leaked_match_external:
+          enabled: true
+        leaked_match_nssa_external:
+          enabled: true

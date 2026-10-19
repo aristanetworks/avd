@@ -7,6 +7,11 @@ copyright: Copyright &copy; 2019 - 2025 Arista Networks
 strict: true
 exclude_docs: |
   /README.md
+  /tools/
+  /site/
+  /.venv/
+  /venv/
+  /.tox/
 
 # Repository information
 repo_name: AVD on Github
@@ -69,6 +74,18 @@ extra_javascript:
 plugins:
   - exclude:
       glob:
+        # Local development virtualenvs — `docs_dir: .` scans the repo root,
+        # so a `.venv/` here drags every site-packages .md file into the build.
+        - .venv/*
+        - venv/*
+        - .tox/*
+        # Schema Explorer source (generator + SPA assets) and build output
+        # both live under tools/. mkdocs_hook.py copies the built tree into
+        # site/_assets/schema-explorer/ on `mkdocs build`.
+        - tools/*
+        # Local mkdocs build output. With `docs_dir: .`, serving after a build
+        # would otherwise ingest generated `site/` files as source media.
+        - site/*
         - README.md
         - contributing.md
         - pylintrc-ansible
@@ -99,7 +116,9 @@ plugins:
         - docs/pyavd/simple_example_5_to_6.md
         - docs/pyavd/simple_example_5_x.md
         - docs/pyavd/simple_example_6_x.md
-        - ansible_collections/arista/avd/roles/*/docs/tables/*
+        - schemas/avd_design/docs/tables/*
+        - schemas/eos_config/docs/tables/*
+        - schemas/cv_deploy/docs/tables/*
         # Exclude the table used only as a snippet to avoid mkdocs info log
         - ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
 
@@ -122,9 +141,13 @@ plugins:
         - ".*.j2$"
   - include_dir_to_nav
   - git-revision-date-localized:
+      # Docker docs containers often mount a git worktree without the host
+      # absolute gitdir target, so disable this plugin there via env.
+      enabled: !ENV [AVD_ENABLE_GIT_REVISION_DATE, true]
       type: date
   - search:
       lang: en
+  - autorefs
   - mkdocstrings:
       handlers:
         python:
@@ -156,6 +179,7 @@ markdown_extensions:
   - pymdownx.snippets:
       base_path:
         - "./"
+      check_paths: true
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -171,6 +195,15 @@ markdown_extensions:
   - toc:
       separator: "-"
       permalink: true
+hooks:
+  # Schema Explorer integration:
+  #   * Auto-builds a cached Schema Explorer outside the repo tree when the
+  #     SQLite artifact is missing or stale, then copies the SPA + SQLite into
+  #     <site_dir>/_assets/schema-explorer/ on build.
+  #   * Registers only the SPA CSS + JS loader globally; runtime dependencies
+  #     are lazy-loaded by app.js when a page hosts the explorer.
+  - tools/schema-explorer/mkdocs_hook.py
+
 # TOC
 docs_dir: .
 nav:
@@ -182,6 +215,7 @@ nav:
       - How to use AVD examples: ansible_collections/arista/avd/examples/README.md
       - Single DC L3LS: ansible_collections/arista/avd/examples/single-dc-l3ls/README.md
       - Dual DC L3LS: ansible_collections/arista/avd/examples/dual-dc-l3ls/README.md
+      - Single DC Multi-Pod L3LS (5-Stage Clos): ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/README.md
       - L2LS Fabric: ansible_collections/arista/avd/examples/l2ls-fabric/README.md
       - Campus Fabric: ansible_collections/arista/avd/examples/campus-fabric/README.md
       - ISIS-LDP IPVPN: ansible_collections/arista/avd/examples/isis-ldp-ipvpn/README.md
@@ -190,6 +224,7 @@ nav:
       - Fabric Topology: docs/howto/fabric_topology/README.md
       - Connected Endpoints: docs/howto/connected_endpoints/README.md
       - IP Addressing: docs/howto/ip_addressing/README.md
+      - IPv6 Addressing: docs/howto/ipv6_numbered/README.md
       - Node Types: docs/howto/node_types/README.md
       - Network Services: docs/howto/network_services/README.md
       - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
@@ -199,11 +234,13 @@ nav:
       - Generate CloudVision Tags: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags.md
       - Migrate to cv_deploy: docs/howto/migrate-to-cv-deploy.md
       - Migrate to anta_runner: docs/howto/migrate-to-anta-runner.md
+      - Digital Twin: docs/howto/digital_twin/README.md
   - User Manual:
       - Data Models:
           - Overview: docs/data-models/README.md
           - AVD Design: ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
+          - Schema Explorer: docs/schema-explorer.md
       - Ansible and AVD: docs/user-manual/intro-to-ansible-and-avd.md
       - Ansible Usage Patterns: docs/user-manual/ansible-usage-patterns.md
       - Ansible Collection:
@@ -230,6 +267,9 @@ nav:
   - Contribute:
       - Overview: docs/contribution/overview.md
       - Development Tooling: docs/contribution/development-tooling.md
+      - End-to-End Test Tool:
+          - Using the Tool: docs/contribution/e2e-test/using-the-tool.md
+          - Tool Flow: docs/contribution/e2e-test/tool-flow.md
       - Code Style: docs/contribution/style-guide.md
       - Validation of Input Variables: docs/contribution/input-variable-validation.md
       - EOS Designs internal notes: docs/contribution/eos_designs_internal_notes.md

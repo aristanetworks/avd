@@ -20,8 +20,6 @@ keys:
       deadtime:
         description: Time to skip a non-responsive server in minutes.
         type: int
-        convert_types:
-          - str
         min: 1
         max: 1000
       dynamic_authorization:
@@ -31,8 +29,6 @@ keys:
             type: int
             min: 0
             max: 65535
-            convert_types:
-              - str
             description: TCP Port.
           tls_ssl_profile:
             type: str
@@ -63,26 +59,24 @@ keys:
                   type: int
                   min: 0
                   max: 65535
-                  convert_types:
-                    - str
                   description: TCP Port used for TLS. EOS default is 2083.
             timeout:
               type: int
               min: 1
               max: 1000
-              convert_types:
-                - str
             retransmit:
               type: int
               min: 0
               max: 100
-              convert_types:
-                - str
             key:
               type: str
               description: |-
-                Encrypted key - only type 7 supported.
+                Encrypted key.
                 When TLS is configured, `key` is ignored.
+            key_type:
+              type: str
+              valid_values: ["0", "7", "8a"]
+              default: "7"
       vrfs:
         type: list
         primary_key: name
@@ -91,8 +85,6 @@ keys:
           keys:
             name:
               type: str
-              convert_types:
-                - int
               description: Non-defualt VRF name.
             servers:
               type: list

@@ -32,8 +32,6 @@ keys:
           Serial Number of the device.
           Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
         type: str
-        convert_types:
-          - int
       validate_hardware:
         type: dict
         description: |-
@@ -80,6 +78,11 @@ keys:
             default:
               - 'Arista Networks'
               - 'Arastra, Inc.'
+          ignore_no_transceivers:
+            type: bool
+            description: |-
+              Accept ports with no transceiver as valid when checking the approved manufacturers.
+            default: true
       cv_tags:
         type: dict
         keys:
@@ -113,6 +116,15 @@ keys:
                       value:
                         type: str
                         required: true
+      cv_use_static_config_manifest:
+        type: bool
+        description: |-
+          PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+
+          The device configuration is expected to be deployed via the
+          `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+          flat "AVD Configurations" layout in the Static Configlet Studio.
+          The device will still be verified and onboarded in the Inventory & Topology Studio.
       cv_pathfinder:
         type: dict
         description: Metadata used for CV Pathfinder visualization on CloudVision.
@@ -232,8 +244,6 @@ keys:
                             type: int
                           lossrate:
                             type: str
-                            convert_types:
-                              - float
                           hop_count:
                             type: str
                       description:
@@ -333,15 +343,9 @@ keys:
                             required: true
                           latitude:
                             type: str
-                            convert_types:
-                              - float
-                              - int
                             required: true
                           longitude:
                             type: str
-                            convert_types:
-                              - float
-                              - int
                             required: true
           applications:
             type: dict
@@ -420,6 +424,7 @@ keys:
             description: Targeted Digital Twin environment.
             valid_values:
               - act
+              - containerlab
           node_type:
             type: str
             description: |-
@@ -445,8 +450,6 @@ keys:
               ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
       validate_no_errors_period:
         type: int
-        convert_types:
-          - str
         description: Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role.
       exclude_as_extra_fabric_validation_target:
         type: bool
@@ -467,3 +470,13 @@ keys:
                 description: |-
                   Only validate interfaces defined in the AVD structured configuration for errdisabled state.
                 default: false
+      bgp:
+        type: dict
+        description: Validation settings for BGP.
+        keys:
+          check_tcp_queues:
+            type: bool
+            description: Flag to check if the TCP session queues are empty for all BGP peers.
+          minimum_established_time:
+            type: int
+            description: Minimum established time (seconds) for all BGP sessions.

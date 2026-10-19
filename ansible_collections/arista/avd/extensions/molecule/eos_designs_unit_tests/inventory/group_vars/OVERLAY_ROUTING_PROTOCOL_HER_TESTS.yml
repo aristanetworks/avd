@@ -26,9 +26,9 @@ l3leaf:
         tags: ["leaf2"]
     - name: overlay-routing-protocol-her-l3leaf4
       uplink_ipv4_pool: 172.31.255.0/24
-      uplink_switches: [ overlay-routing-protocol-cvx-l3leaf1 ]
-      uplink_switch_interfaces: [ Ethernet5 ]
-      uplink_interfaces: [ Ethernet5 ]
+      uplink_switches: [overlay-routing-protocol-cvx-l3leaf1]
+      uplink_switch_interfaces: [Ethernet5]
+      uplink_interfaces: [Ethernet5]
       bgp_as: 65002
       id: 5
       filter:

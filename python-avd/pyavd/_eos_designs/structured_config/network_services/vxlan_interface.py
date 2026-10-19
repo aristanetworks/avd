@@ -12,7 +12,8 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import default, unique
+from pyavd._utils.default import default
+from pyavd._utils.unique import unique
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:

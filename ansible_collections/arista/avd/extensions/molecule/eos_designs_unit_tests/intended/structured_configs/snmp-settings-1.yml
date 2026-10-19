@@ -24,7 +24,7 @@ snmp_server:
   - name: SNMP-COMMUNITY-1
     access: ro
     access_list_ipv4:
-      name: onur
+      name: acl1
   - name: SNMP-COMMUNITY-2
     access: rw
     access_list_ipv4:
@@ -101,6 +101,17 @@ snmp_server:
     enable: false
   - name: MGMT
     enable: true
+standard_access_lists:
+- name: acl1
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.1
+- name: SNMP-MGMT
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.12
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

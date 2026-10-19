@@ -6,7 +6,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._utils.run_once import RunOnceMethodStateHelper
 
 from .connected_endpoints import ConnectedEndpointsMixin
 from .cv_topology import CvTopology
@@ -37,7 +36,7 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
     from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._utils import AVDTemplar
+    from pyavd._utils.avd_templar import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
 
 
@@ -78,7 +77,7 @@ class SharedUtilsProtocol(
     digital_twin: bool
 
 
-class SharedUtils(RunOnceMethodStateHelper, SharedUtilsProtocol):
+class SharedUtils(SharedUtilsProtocol):
     """
     Class with commonly used methods / cached_properties to be shared between all the python modules loaded in eos_designs.
 
