@@ -126,5 +126,5 @@ def get_structured_config(
         )
         eos_designs_module.render()
 
-    structured_config_utils._validate_ipv4_acl_names()
+    structured_config_utils.validate_ipv4_acl_names()
     return structured_config

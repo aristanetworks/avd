@@ -67,7 +67,7 @@ class SnmpServerMixin(Protocol):
             )
             if acl_name := community.ipv4_standard_acl:
                 community_item.access_list_ipv4.name = acl_name
-                self.structured_config_utils._set_ipv4_standard_acl(acl_name)
+                self.structured_config_utils.set_ipv4_standard_acl(acl_name)
             # Deprecated key snmp_settings.communities[].access_list_ipv4.name.
             elif acl_name := community.access_list_ipv4.name:
                 community_item.access_list_ipv4.name = acl_name

@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'management_eapi.vrfs[name=management].ipv4_standard_acl': ACL 'FILTER' must be defined under 'ipv4_standard_acls'. The ACL was not found in 'ipv4_acls'.
+pyavd._errors.AristaAvdMissingVariableError: 'ipv4_standard_acls[name=FILTER]' is required but was not found for host 'management-eapi-ipv4-standard-acl-missing'.

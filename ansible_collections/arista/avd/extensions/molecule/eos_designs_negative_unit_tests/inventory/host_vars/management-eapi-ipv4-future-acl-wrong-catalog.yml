@@ -25,4 +25,4 @@ ipv4_standard_acls:
         source: 192.0.2.0/24
 
 expected_error_message: >-
-  'management_eapi.vrfs[name=management].ipv4_acl': ACL 'FILTER' must be defined under 'ipv4_acls'. The ACL was found in 'ipv4_standard_acls'.
+  'ipv4_acls[name=FILTER]' is required but was not found.
