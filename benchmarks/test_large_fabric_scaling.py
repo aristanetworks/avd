@@ -20,20 +20,15 @@ logger = logging.getLogger(__name__)
 
 
 @pytest.mark.parametrize(
-    ("device_count", "spine_count", "l3leaf_count", "l2leaf_count", "vrf_count", "per_vrf_svi_count"),
+    "device_count",
     [
-        pytest.param(15, 3, 6, 6, 5, 10, id="15_devices"),
-        pytest.param(150, 30, 75, 45, 10, 10, marks=pytest.mark.benchmark_scale, id="150_devices"),
+        pytest.param(15, id="15_devices"),
+        pytest.param(150, marks=pytest.mark.benchmark_scale, id="150_devices"),
     ],
 )
 def test_large_fabric_full_workflow_benchmark(
     benchmark: BenchmarkFixture,
     device_count: int,
-    spine_count: int,
-    l3leaf_count: int,
-    l2leaf_count: int,
-    vrf_count: int,
-    per_vrf_svi_count: int,
 ) -> None:
     """
     Benchmark COMPLETE AVD workflow with fabrics at different scales.
@@ -44,19 +39,21 @@ def test_large_fabric_full_workflow_benchmark(
     3. Generate structured configs
     4. Render EOS configs
 
-    Tests at 2 scales (15, 150 devices) to understand how performance scales:
-    - 15 devices: Small fabric baseline
-    - 150 devices: 10x scale (should be ~10x slower if linear)
+    Scale device count in multiples of 15 while preserving the 1:2:2 ratio of
+    spines, L3 leaves, and L2 leaves. Each size uses 5 VRFs with 10 SVIs per VRF
+    and two uplinks per leaf, so service density and uplink count stay fixed.
+    Compare the results to assess scaling; linear runtime is not assumed.
 
-    The 150-device test is marked for manual/full benchmark runs only.
+    The 150-device test is marked for local full benchmark runs only.
     """
-    # Generate synthetic inventory (outside benchmark)
+    # Generate synthetic inventory (outside benchmark).
+    fabric_scale = device_count // 15
     hostvars = generate_hostvars(
-        spine_count=spine_count,
-        l3leaf_count=l3leaf_count,
-        l2leaf_count=l2leaf_count,
-        vrf_count=vrf_count,
-        per_vrf_svi_count=per_vrf_svi_count,
+        spine_count=3 * fabric_scale,
+        l3leaf_count=6 * fabric_scale,
+        l2leaf_count=6 * fabric_scale,
+        vrf_count=5,
+        per_vrf_svi_count=10,
     )
 
     def b() -> None:

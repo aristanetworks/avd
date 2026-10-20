@@ -11,7 +11,8 @@ This directory contains performance benchmarks for Arista AVD using
 
 ## Benchmark Suite
 
-The default CodSpeed suite is intentionally small and stable:
+The default CodSpeed suite contains 13 cases: 11 representative host renders,
+one full-scenario facts case, and one 15-device synthetic workflow:
 
 - `test_molecule_scenarios.py` loads the `eos_designs_unit_tests` project through
   the end-to-end framework and benchmarks in-process structured config and EOS
@@ -20,7 +21,21 @@ The default CodSpeed suite is intentionally small and stable:
   the full scenario.
 - `test_large_fabric_scaling.py` benchmarks a deterministic synthetic full
   workflow. The 15-device case runs in the default suite; the 150-device case is
-  marked `benchmark_scale` and is only intended for full/manual runs.
+  marked `benchmark_scale` and runs only in local scale-inclusive runs.
+
+The synthetic workflow varies device count while holding the role proportions,
+service density, and two uplinks per leaf constant:
+
+| Devices | Spines | L3 leaves | L2 leaves | VRFs | SVIs per VRF |
+|---------|--------|-----------|-----------|------|--------------|
+| 15      | 3      | 6         | 6         | 5    | 10           |
+| 150     | 30     | 60        | 60        | 5    | 10           |
+
+Add sizes in multiples of 15 to the `device_count` parameters in
+`test_large_fabric_scaling.py`; role counts are derived from that size. Compare
+the resulting CPU and memory costs to assess scaling rather than assuming
+runtime grows linearly. Inventory generation stays outside the measured region;
+validation, facts, structured configuration, and EOS CLI generation are measured.
 
 The benchmark suite does not invoke Molecule CLI, Docker, CloudVision, ANTA
 runner, network services, or multiprocessing. Normal end-to-end runs continue
@@ -36,6 +51,9 @@ CodSpeed upload and no write-capable checkout token. It runs on:
 - Pushes to `devel` affecting PyAVD, benchmark, molecule fixture, dependency, or
   benchmark workflow files.
 - Pull requests with the `benchmark` label.
+
+There is no scheduled or manually dispatched GitHub Actions run. The 150-device
+case is available through the local commands below.
 
 Default CI runs:
 
