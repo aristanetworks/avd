@@ -229,8 +229,6 @@ nav:
       - Network Services: docs/howto/network_services/README.md
       - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
       - Configuring WAN: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/wan.md
-      - Custom Descriptions and Names: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md
-      - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md
       - Generate CloudVision Tags: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags.md
       - Migrate to cv_deploy: docs/howto/migrate-to-cv-deploy.md
       - Migrate to anta_runner: docs/howto/migrate-to-anta-runner.md
@@ -238,7 +236,23 @@ nav:
   - User Manual:
       - Data Models:
           - Overview: docs/data-models/README.md
-          - AVD Design: ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md
+          - AVD Design:
+              - Topology: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/topology.md
+              - Node Type: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/node-type.md
+              - Network Services: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/network-services.md
+              - Endpoint Connectivity: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/endpoint-connectivity.md
+              - L3 and Core: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/l3-and-core.md
+              - WAN: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/wan.md
+              - CloudVision: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/cloudvision.md
+              - Digital Twin: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/digital-twin.md
+              - Management Settings: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/management-settings.md
+              - Monitoring: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/monitoring.md
+              - Platform and System: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/platform-and-system.md
+              - Catalogs: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/catalog.md
+              - ANTA Runner: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/anta-runner.md
+              - Custom Descriptions and Names: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/custom-descriptions-names.md
+              - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/custom-structured-configuration.md
+              - Future Behaviors: ansible_collections/arista/avd/roles/eos_designs/docs/user-manual/future-behaviors.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
           - Schema Explorer: docs/schema-explorer.md
       - Ansible and AVD: docs/user-manual/intro-to-ansible-and-avd.md

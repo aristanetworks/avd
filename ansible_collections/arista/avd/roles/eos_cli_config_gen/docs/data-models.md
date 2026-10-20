@@ -11,7 +11,7 @@ template: custom-banner.html
 
 # EOS Config data models (eos_cli_config_gen)
 
-The EOS Config provides device-centric data models for expressing the Arista EOS device configurations syntax. These data models are also referred to as "structured config" within the AVD Design data models and can be leveraged with [custom structured configuration](../../eos_designs/docs/how-to/custom-structured-configuration.md) to extend or override the behaviour of Arista AVD.
+The EOS Config provides device-centric data models for expressing the Arista EOS device configurations syntax. These data models are also referred to as "structured config" within the AVD Design data models and can be leveraged with [custom structured configuration](../../eos_designs/docs/user-manual/custom-structured-configuration.md) to extend or override the behaviour of Arista AVD.
 
 For Ansible users this document describes the supported input variables for the role `arista.avd.eos_cli_config_gen`.
 
