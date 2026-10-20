@@ -7,6 +7,7 @@ import importlib
 import importlib.util
 import sys
 import warnings
+from types import ModuleType
 from unittest.mock import patch
 
 import pytest
@@ -15,8 +16,9 @@ import pyavd
 
 
 @pytest.mark.parametrize("python_minor", [10, 11, 12, 13, 14])
-def test_python_version_deprecation_on_import(python_minor: int) -> None:
-    """Importing PyAVD warns only on Python 3.10, including when other tests already imported it."""
+@pytest.mark.parametrize("import_context", ["standalone", "ansible", "avd_collection"])
+def test_python_version_deprecation_on_import(python_minor: int, import_context: str) -> None:
+    """Warn on Python 3.10 imports unless the AVD collection handles the deprecation."""
     spec = importlib.util.spec_from_file_location("pyavd", pyavd.__file__)
     assert spec is not None
     assert spec.loader is not None
@@ -28,12 +30,20 @@ def test_python_version_deprecation_on_import(python_minor: int) -> None:
         patch.object(sys, "version_info", (3, python_minor, 42, "final", 0)),
         warnings.catch_warnings(record=True) as recorded_warnings,
     ):
-        warnings.simplefilter("always", DeprecationWarning)
+        # Keep the standalone cases independent of collection imports by other tests.
+        collection_package = "ansible_collections.arista.avd.plugins"
+        sys.modules.pop(collection_package, None)
+        if import_context == "avd_collection":
+            sys.modules[collection_package] = ModuleType(collection_package)
+        elif import_context == "ansible":
+            sys.modules["ansible"] = ModuleType("ansible")
+
+        warnings.simplefilter("error" if import_context == "avd_collection" else "always", DeprecationWarning)
         spec.loader.exec_module(package)
         # A subsequent normal import uses the cached package and must not warn again.
         assert importlib.import_module("pyavd") is package
 
-    if python_minor != 10:
+    if python_minor != 10 or import_context == "avd_collection":
         assert not recorded_warnings
         return
 

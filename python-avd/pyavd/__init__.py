@@ -7,7 +7,8 @@ from typing import TYPE_CHECKING
 
 from ._lazy_import import LazyImports, install_lazy_imports
 
-if sys.version_info[:2] == (3, 10):
+# The Ansible collection reports this deprecation at runtime through verify_requirements.
+if sys.version_info[:2] == (3, 10) and "ansible_collections.arista.avd.plugins" not in sys.modules:
     warnings.warn(
         "Python 3.10 has reached end of life and no longer receives security updates. "
         "AVD will drop support for Python version 3.10 in a future major release. "
