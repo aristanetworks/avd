@@ -1,0 +1,19 @@
+---
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: cv-settings-onprem-ip-only-no-dns
+
+# IP-only CloudVision and NTP servers do not require DNS settings or a DNS profile.
+cv_settings:
+  set_source_interfaces: false
+  onprem_clusters:
+    - name: onprem
+      vrf: default
+      servers:
+        - name: 192.0.2.10
+
+ntp_settings:
+  server_vrf: default
+  servers:
+    - name: 192.0.2.123
