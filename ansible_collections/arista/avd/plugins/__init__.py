@@ -3,7 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import warnings
 from contextlib import suppress
+from importlib import import_module
 from os import environ
 from pathlib import Path
 
@@ -28,3 +30,13 @@ if RUNNING_FROM_SOURCE:
         display.v(f"AVD detected it is running from source, prepending the path to the source of pyavd '{PYTHON_AVD_PATH}' to PATH to use it.")
 
     sys.path = [str(PYTHON_AVD_PATH), *sys.path]
+
+# Ansible reports this deprecation at runtime through verify_requirements.
+# Load PyAVD without its standalone import warning, which ansible-test treats as an error.
+with suppress(ImportError), warnings.catch_warnings():
+    warnings.filterwarnings(
+        "ignore",
+        message=r"Python 3\.10 has reached end of life and no longer receives security updates\.",
+        category=DeprecationWarning,
+    )
+    import_module("pyavd")
