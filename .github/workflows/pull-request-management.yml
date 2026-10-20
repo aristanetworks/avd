@@ -188,7 +188,7 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -232,7 +232,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -318,7 +318,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -359,7 +359,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -427,7 +427,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -493,7 +493,7 @@ jobs:
           python-version: |
             ${{ matrix.python_version }}
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -578,13 +578,13 @@ jobs:
           fi
       - name: Upload coverage from ansible-test units
         if: ${{ !cancelled() && steps.coverage.outcome == 'success' && matrix.python_version == '3.12' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ansible-test-units-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}
           path: ansible_collections/arista/avd/units-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}.xml
       - name: Upload coverage from ansible-test integration
         if: ${{ !cancelled() && steps.coverage.outcome == 'success' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ansible-test-integration-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}
           path: ansible_collections/arista/avd/integration-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}.xml
@@ -634,7 +634,7 @@ jobs:
         run: |
           ansible-galaxy collection build -vvv --force ansible_collections/arista/avd
       - name: Upload collection
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: avd-collection
           path: ./arista-avd-*.tar.gz
@@ -658,7 +658,7 @@ jobs:
         run: |
           pip install "ansible-core==2.16.0"
       - name: Download collection
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: avd-collection
       - name: Install galaxy-importer
@@ -669,7 +669,7 @@ jobs:
           pip install "galaxy-importer==0.4.31"
       - name: Run galaxy-importer checks
         run: python -m galaxy_importer.main *.tar.gz
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: importer-logs
           path: ./importer_result.json
@@ -698,7 +698,7 @@ jobs:
             3.13
             3.14
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -708,7 +708,7 @@ jobs:
         run: |
           pip install "$WHEEL_FILE[ansible-collection]" --group dev --upgrade
       - name: Download collection
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: avd-collection
       - name: Extract collection
@@ -754,7 +754,7 @@ jobs:
       - name: Install uv
         run: python -m pip install uv
       - name: Download AVD collection
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: avd-collection
           path: /tmp/avd-collection/
@@ -815,7 +815,7 @@ jobs:
             -e development/coverage_plugins \
             "gitpython>=3.1.57"
       - name: Download AVD collection
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: avd-collection
           path: /tmp/avd-collection/
@@ -846,7 +846,7 @@ jobs:
       - name: Prepare end-to-end coverage data
         run: mv .coverage coverage-End-to-End-$JOB_INDEX.dat
       - name: Upload end-to-end coverage data
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-data-End-to-End-${{ strategy.job-index }}
           path: coverage-End-to-End-${{ strategy.job-index }}.dat
@@ -890,7 +890,7 @@ jobs:
           mv .coverage coverage-PyAVD.dat
       - name: Upload pytest coverage data
         if: matrix.python == '3.12'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-data-PyAVD
           path: coverage-PyAVD.dat
@@ -916,7 +916,7 @@ jobs:
       - name: Install PyAVD for coverage source discovery
         run: pip install --no-deps -e python-avd
       - name: Download coverage artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: coverage-data-*
           merge-multiple: true
@@ -927,7 +927,7 @@ jobs:
           coverage report
           coverage xml
       - name: Upload pytest coverage report
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pytest-coverage
           path: coverage.xml
