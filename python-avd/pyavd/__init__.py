@@ -11,8 +11,8 @@ if sys.version_info[:2] == (3, 10):
     warnings.warn(
         "Python 3.10 has reached end of life and no longer receives security updates. "
         "AVD will drop support for Python version 3.10 in a future major release. "
-        "Please upgrade to a supported Python version. "
-        "See https://devguide.python.org/versions/ for the Python version support status.",
+        "Please upgrade to a newer Python version supported by AVD. "
+        "See the https://avd.arista.com/stable/docs/installation/collection-installation.html#ansible-collection-installation guide for supported versions.",
         DeprecationWarning,
         stacklevel=2,
     )

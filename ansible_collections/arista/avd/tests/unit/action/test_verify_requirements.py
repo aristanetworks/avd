@@ -103,7 +103,8 @@ def test__validate_python_version_deprecation_message() -> None:
     message = str(recorded_warnings[0].message)
     assert "Python 3.10 has reached end of life and no longer receives security updates." in message
     assert "AVD will drop support for Python version 3.10 in a future major release." in message
-    assert "Please upgrade to a supported Python version." in message
+    assert "Please upgrade to a newer Python version supported by AVD." in message
+    assert "https://avd.arista.com/stable/docs/installation/collection-installation.html#ansible-collection-installation" in message
 
 
 @pytest.mark.parametrize(
