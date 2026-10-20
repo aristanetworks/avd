@@ -60,33 +60,13 @@ uv run --no-project tools/e2e-test-avd.py \
 
 Each path must be inside a Git repository. A directory argument must contain `e2e-test.toml`, and a file argument must be named `e2e-test.toml`.
 
-### EOS designs negative tests
+Some projects under `ansible_collections/arista/avd/extensions/molecule` run only through the PyAVD E2E tool while retaining their directory location during the transition. They use the same command above. See the [E2E-only project list](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/extensions/molecule/README.md#e2e-only-projects).
 
-The `ansible_collections/arista/avd/extensions/molecule/eos_designs_negative_unit_tests` directory contains negative design fixtures executed only by the PyAVD E2E tool. Its location is retained for now; it is no longer a Molecule scenario.
+### Negative cases
 
-Run the cases from the repository root:
-
-```shell
-uv run --no-project tools/e2e-test-avd.py \
-  ansible_collections/arista/avd/extensions/molecule/eos_designs_negative_unit_tests/e2e-test.toml
-```
-
-When adding a case, update the inventory and host or group variables, run the tool, and review the expected diagnostics under `errors/` and any successful helper outputs under `intended/`. Confirm that the diagnostic comes from the intended phase and describes the expected failure before committing it. An unexpected success may delete an expected error file and produce a structured configuration, so review additions and deletions as well as modified files.
+When adding a negative case, update the project's inventory and host or group variables, run the tool, and review the generated diagnostics under `errors/` and any successful helper outputs under `intended/`. Confirm that the case fails at the intended stage with the expected diagnostic before committing the artifacts. Review additions, modifications, and deletions: deleted error files and newly generated configurations may indicate an unexpected success.
 
 Facts generation runs per fabric. Give independent cases that fail during facts generation separate `fabric_name` groups so one failure does not prevent another case from running. Keep hosts together when their test depends on peer relationships. Structured configuration generation runs per host, so independent structured configuration failures can share a fabric.
-
-CI discovers this project's `e2e-test.toml`, runs it in the regular and coverage E2E jobs, and checks for changed artifacts. Ansible action-plugin unit and integration tests separately cover error handling at the collection boundary.
-
-### EOS CLI configuration negative tests
-
-The `ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen_negative_unit_tests` directory also runs only through the PyAVD E2E tool:
-
-```shell
-uv run --no-project tools/e2e-test-avd.py \
-  ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen_negative_unit_tests/e2e-test.toml
-```
-
-Its `avd_design = false` setting validates inventory variables as EOS structured configuration and renders EOS CLI directly. Expected diagnostics cover conflicts between still-supported deprecated keys and their replacements, the maximum number of ACL entries, and unsafe BFD session snapshot intervals. Key conflicts are captured as validation violations; rendering failures are captured in `eos_cli_error.txt`. As with the design cases, regenerate and review these diagnostics when changing a fixture.
 
 ## Creating `e2e-test.toml`
 

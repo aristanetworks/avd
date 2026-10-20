@@ -201,7 +201,7 @@ jobs:
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
   # ----------------------------------- #
-  # TODO: Remove this once we have support in e2e for eos_cli_config_gen
+  # These scenarios exercise the Ansible role; negative fixtures run through PyAVD E2E.
   molecule_eos_cli_config_gen:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
