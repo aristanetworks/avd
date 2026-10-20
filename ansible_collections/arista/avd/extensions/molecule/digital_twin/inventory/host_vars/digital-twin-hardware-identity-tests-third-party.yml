@@ -1,6 +1,8 @@
 ---
 type: l2leaf
 
+# Verify ACT omits serial_number, system_mac_address, and ztp for third-party nodes even when configured.
+# The production system MAC must remain available for EOS calculations such as the SNMPv3 EngineID.
 l2leaf:
   nodes:
     - name: digital-twin-hardware-identity-tests-third-party
@@ -10,7 +12,7 @@ l2leaf:
       serial_number: PROD-THIRD-PARTY-SERIAL
       system_mac_address: 02:1c:73:00:00:13
       digital_twin:
-        serial_number: DT-THIRD-PARTY-SERIAL
+        serial_number: DTTHIRDPARTYSERIAL
         system_mac_address: 02:1c:73:00:10:13
 
 custom_platform_settings:
@@ -21,7 +23,10 @@ custom_platform_settings:
 
 digital_twin:
   fabric:
-    hardware_identity:
-      serial_number: true
-      system_mac_address: true
+    serial_number: "{serial_number}"
+    system_mac_address: "{system_mac_address}"
     ztp: true
+
+snmp_settings:
+  compute_local_engineid: true
+  compute_local_engineid_source: system_mac

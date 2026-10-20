@@ -20,9 +20,7 @@ management_interfaces:
 metadata:
   is_deployed: true
   platform: hardware-identity-third-party
-  system_mac_address: 02:1c:73:00:00:13
   fabric_name: DIGITAL_TWIN
-  serial_number: PROD-THIRD-PARTY-SERIAL
   digital_twin:
     environment: act
     node_type: third-party
@@ -31,6 +29,9 @@ metadata:
     username: cvpadmin
     password: cvp123!
 service_routing_protocols_model: multi-agent
+snmp_server:
+  engine_ids:
+    local: f5717f021c7300001300
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

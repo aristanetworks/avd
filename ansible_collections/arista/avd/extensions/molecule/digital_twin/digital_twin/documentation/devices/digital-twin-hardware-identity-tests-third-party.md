@@ -1,15 +1,14 @@
 # digital-twin-hardware-identity-tests-third-party
 
-Serial Number: PROD-THIRD-PARTY-SERIAL
-
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Enable Password](#enable-password)
+- [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
@@ -83,6 +82,29 @@ management api http-commands
 ### Enable Password
 
 Enable password has been disabled
+
+## Monitoring
+
+### SNMP
+
+#### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | - | All | Disabled |
+
+#### SNMP EngineID Configuration
+
+| Type | EngineID (Hex) | IP | Port |
+| ---- | -------------- | -- | ---- |
+| local | f5717f021c7300001300 | - | - |
+
+#### SNMP Device Configuration
+
+```eos
+!
+snmp-server engineID local f5717f021c7300001300
+```
 
 ## Internal VLAN Allocation Policy
 

@@ -350,34 +350,41 @@ If it is not set, AVD falls back to the regular management gateway configuration
 #### ACT Hardware Identity and ZTP Configuration
 
 ACT supports the `serial_number`, `system_mac_address`, and `ztp` topology keys only for `veos` and `cloudeos` node types.
-AVD omits these keys for all other ACT node types, even when they are enabled in the Digital Twin settings.
+AVD omits these keys for all other ACT node types, even when they are configured in the Digital Twin settings.
+The Digital Twin `serial_number` and `system_mac_address` settings described in this section are ignored when `digital_twin.environment` is `containerlab`.
 
-Enable hardware identity passthrough and Zero Touch Provisioning for all Digital Twin devices with the fabric-level settings:
+When running in ACT Digital Twin mode, production `serial_number` and `system_mac_address` values are excluded from AVD metadata to prevent CloudVision matching failures — ACT virtual nodes do not possess the production hardware identity values.
+If no Digital Twin system MAC address is configured, the production `system_mac_address` is still used for EOS configuration such as SNMPv3 engine ID generation.
+If a Digital Twin system MAC address is configured, the rendered Digital Twin value is used instead.
+
+Use AVD string formatter templates to generate the serial number and system MAC address for ACT Digital Twin devices.
+The templates are evaluated once per device and the rendered values are written into the device metadata and ACT topology.
+Supported template variables: `serial_number` (production serial number), `system_mac_address` (resolved production system MAC address), `hostname`, `device_id`, `fabric_name`.
+The rendered system MAC address can use `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`, or `hhhhhhhhhhhh` format and is normalized to `hh:hh:hh:hh:hh:hh`.
+
+To pass the production values through unchanged, use the identity templates:
 
 ```yaml
 digital_twin:
   fabric:
-    hardware_identity:
-      serial_number: true
-      system_mac_address: true
+    serial_number: "{serial_number}"
+    system_mac_address: "{system_mac_address}"
     ztp: true
 ```
 
-When enabled, AVD provides the device's resolved `serial_number` and `system_mac_address` as input values to the Digital Twin environment.
-The feature settings can be overridden in node-type defaults, node groups, or individual nodes.
-For example, the node below overrides fabric-level settings, disables `system_mac_address` passthrough and Zero Touch Provisioning, and retains serial number passthrough:
+To generate stable, reproducible Digital Twin identities that do not conflict with the production devices:
 
 ```yaml
-l3leaf:
-  nodes:
-    - name: leaf1
-      digital_twin:
-        hardware_identity:
-          system_mac_address: false
-        ztp: false
+digital_twin:
+  fabric:
+    serial_number: "DT{device_id:010d}"
+    system_mac_address: "021c.7301.{device_id:04x}"
+    ztp: true
 ```
 
-Individual nodes can use identity values that differ from the production device:
+If neither fabric-level `serial_number` nor a node-level `digital_twin.serial_number` override is set, no serial number is written to the ACT topology for that device. The same applies to `system_mac_address`.
+
+Individual nodes can override the fabric-level template with a fixed value or their own template:
 
 ```yaml
 l3leaf:
@@ -390,9 +397,17 @@ l3leaf:
         system_mac_address: 02:1c:73:11:11:10
 ```
 
-The Digital Twin identity overrides are used only when the corresponding `hardware_identity` setting resolves to `true`.
-If no override is set, AVD falls back to the resolved production identity.
-If the selected value is unset, AVD omits that key from the ACT topology.
+Node-level `digital_twin.serial_number` and `digital_twin.system_mac_address` support the same AVD string formatter template syntax and variables as the fabric-level templates.
+
+ZTP can be overridden per node:
+
+```yaml
+l3leaf:
+  nodes:
+    - name: leaf1
+      digital_twin:
+        ztp: false
+```
 
 #### ACT OS Version Configuration
 

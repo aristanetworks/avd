@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'digital_twin.fabric.serial_number' rendered an empty serial number for device 'digital-twin-act-empty-rerial-number'.

@@ -20,9 +20,9 @@ management_interfaces:
 metadata:
   is_deployed: true
   platform: vEOS-lab
-  system_mac_address: 02:1c:73:00:00:11
+  system_mac_address: 02:1c:73:00:01:11
   fabric_name: DIGITAL_TWIN
-  serial_number: PROD-VEOS-SERIAL
+  serial_number: DT0000000001
   validate_hardware:
     enabled: false
   digital_twin:
@@ -32,8 +32,6 @@ metadata:
     version: 4.33.1.1F
     username: cvpadmin
     password: cvp123!
-    serial_number: PROD-VEOS-SERIAL
-    system_mac_address: 02:1c:73:00:00:11
     ztp: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true

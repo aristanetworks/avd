@@ -7,6 +7,7 @@ from ipaddress import ip_network
 from re import findall as re_findall
 from typing import TYPE_CHECKING, cast
 
+from pyavd._eos_designs.digital_twin import act_node_type_supports_feature
 from pyavd._utils.get import get
 from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from pyavd.api.fabric_documentation import (
@@ -319,12 +320,18 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                     node_type=digital_twin_node_type,
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
-                    serial_number=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..serial_number", separator=".."),
-                    system_mac_address=get(
-                        fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..system_mac_address", separator=".."
-                    ),
-                    ztp=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ztp", separator=".."),
-                    internet_access=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator=".."),
+                    serial_number=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..serial_number", separator="..")
+                    if act_node_type_supports_feature(digital_twin_node_type, "serial_number")
+                    else None,
+                    system_mac_address=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..system_mac_address", separator="..")
+                    if act_node_type_supports_feature(digital_twin_node_type, "system_mac_address")
+                    else None,
+                    ztp=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ztp", separator="..")
+                    if act_node_type_supports_feature(digital_twin_node_type, "ztp")
+                    else None,
+                    internet_access=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator="..")
+                    if act_node_type_supports_feature(digital_twin_node_type, "internet_access")
+                    else None,
                     # Render Ethernet ports for veos node type devices (excluding subinterfaces).
                     # ports are not derived from gated metadata therefore node type check is enforced here
                     ports=tuple(
@@ -343,7 +350,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                         )
                     )
                     or None
-                    if digital_twin_node_type == "veos"
+                    if act_node_type_supports_feature(digital_twin_node_type, "ports")
                     else None,
                 )
             }

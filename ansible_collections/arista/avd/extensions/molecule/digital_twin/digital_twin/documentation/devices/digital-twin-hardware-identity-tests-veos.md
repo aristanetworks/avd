@@ -1,6 +1,6 @@
 # digital-twin-hardware-identity-tests-veos
 
-Serial Number: PROD-VEOS-SERIAL
+Serial Number: DT0000000001
 
 ## Table of Contents
 

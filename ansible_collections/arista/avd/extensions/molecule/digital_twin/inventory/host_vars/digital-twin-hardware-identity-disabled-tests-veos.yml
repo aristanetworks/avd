@@ -1,6 +1,8 @@
 ---
 type: l2leaf
 
+# Verify production identity values remain omitted when no Digital Twin identity templates are configured.
+# The production MAC must still drive the SNMPv3 EngineID, and node-level ztp false must override fabric ztp true.
 l2leaf:
   nodes:
     - name: digital-twin-hardware-identity-disabled-tests-veos
@@ -9,14 +11,12 @@ l2leaf:
       serial_number: PROD-DISABLED-VEOS-SERIAL
       system_mac_address: 02:1c:73:00:00:10
       digital_twin:
-        hardware_identity:
-          serial_number: false
-          system_mac_address: false
         ztp: false
 
 digital_twin:
   fabric:
-    hardware_identity:
-      serial_number: true
-      system_mac_address: true
     ztp: true
+
+snmp_settings:
+  compute_local_engineid: true
+  compute_local_engineid_source: system_mac

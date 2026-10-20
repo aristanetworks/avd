@@ -6,7 +6,7 @@ import pytest
 
 from pyavd import get_fabric_documentation
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-from pyavd.api.fabric_documentation import ContainerlabDigitalTwin, FabricDocumentation
+from pyavd.api.fabric_documentation import ACTDigitalTwin, ContainerlabDigitalTwin, FabricDocumentation
 
 
 def test_get_fabric_documentation_with_no_connected_endpoints(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -48,7 +48,7 @@ def test_get_fabric_documentation_with_no_connected_endpoints(monkeypatch: pytes
 def test_get_fabric_documentation_containerlab(digital_twin_enabled: bool) -> None:
     """Test Containerlab environment selection and the Digital Twin enable flag."""
     fabric_documentation_obj = get_fabric_documentation(
-        avd_facts={"leaf1": EosDesignsFacts(mgmt_ip="192.0.2.1/24")},
+        avd_facts={"leaf1": EosDesignsFacts._from_dict({"mgmt_ip": "192.0.2.1/24"})},
         structured_configs={"leaf1": {"metadata": {"digital_twin": {"environment": "containerlab"}}}},
         fabric_name="CONTAINERLAB_FABRIC",
         fabric_documentation=False,
@@ -76,3 +76,52 @@ def test_get_digital_twin_returns_none_for_unsupported_environment() -> None:
     )
 
     assert output.digital_twin is None
+
+
+def test_get_fabric_documentation_act_gates_optional_node_settings() -> None:
+    """Test defensive ACT node-type capability gating through the public documentation API."""
+    digital_twin_metadata = {
+        "environment": "act",
+        "ip_addr": "192.0.2.1/24",
+        "version": "4.33.1.1F",
+        "username": "cvpadmin",
+        "password": "cvp123!",
+        "ztp": True,
+        "internet_access": True,
+    }
+    structured_configs = {
+        "third-party-tests": {
+            "metadata": {
+                "serial_number": "THIRD-PARTY-SERIAL",
+                "system_mac_address": "02:1c:73:00:00:01",
+                "digital_twin": {**digital_twin_metadata, "node_type": "third-party"},
+            }
+        },
+        "veos-tests": {
+            "metadata": {
+                "serial_number": "VEOS-SERIAL",
+                "system_mac_address": "02:1c:73:00:00:02",
+                "digital_twin": {**digital_twin_metadata, "node_type": "veos"},
+            }
+        },
+    }
+    output = get_fabric_documentation(
+        avd_facts={hostname: EosDesignsFacts._from_dict({"mgmt_ip": "192.0.2.1/24"}) for hostname in structured_configs},
+        structured_configs=structured_configs,
+        fabric_name="ACT_FABRIC",
+        fabric_documentation=False,
+        digital_twin=True,
+    )
+
+    assert isinstance(output.digital_twin, ACTDigitalTwin)
+    third_party_node = output.digital_twin.nodes[0]["third-party-tests"]
+    assert third_party_node.serial_number is None
+    assert third_party_node.system_mac_address is None
+    assert third_party_node.ztp is None
+    assert third_party_node.internet_access is None
+
+    veos_node = output.digital_twin.nodes[1]["veos-tests"]
+    assert veos_node.serial_number == "VEOS-SERIAL"
+    assert veos_node.system_mac_address == "02:1c:73:00:00:02"
+    assert veos_node.ztp is True
+    assert veos_node.internet_access is True

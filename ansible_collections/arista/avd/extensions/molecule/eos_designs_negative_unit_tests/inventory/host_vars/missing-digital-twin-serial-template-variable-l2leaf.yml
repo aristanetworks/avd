@@ -1,0 +1,21 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: missing-digital-twin-serial-template-variable-l2leaf
+      platform: vEOS-lab
+
+platform_settings:
+  - platforms: [vEOS-lab]
+    digital_twin:
+      platform: vEOS-lab
+      act_node_type: veos
+
+digital_twin:
+  fabric:
+    serial_number: "{serial_number}"
+
+expected_error_message: >-
+  'digital_twin.fabric.serial_number' uses template variable 'serial_number' which is not configured for device
+  'missing-digital-twin-serial-template-variable-l2leaf'. Ensure the device has this value set.

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'digital_twin.fabric.system_mac_address' uses unsupported template variable 'unsupported'. Supported template variables are: 'serial_number', 'system_mac_address', 'hostname', 'device_id', 'fabric_name'.

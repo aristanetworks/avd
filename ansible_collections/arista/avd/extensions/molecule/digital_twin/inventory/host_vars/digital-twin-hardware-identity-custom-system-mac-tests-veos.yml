@@ -1,0 +1,29 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-hardware-identity-custom-system-mac-tests-veos
+      id: 20
+      mgmt_ip: 192.168.10.20/32
+      serial_number: PROD-CUSTOM-SYSTEM-MAC-VEOS-SERIAL
+      # Expected production system_mac_address: "02:1c:73:00:00:14"
+      custom_system_mac_address: "021c.7300.{device_id:04x}"
+      digital_twin:
+        # Expected ACT Digital Twin system_mac_address: "02:1c:73:01:00:14"
+        system_mac_address: "021c.7301.{device_id:04x}"
+
+digital_twin:
+  fabric:
+    # Expected ACT Digital Twin serial_number: DT021C73000014 (based on the production system_mac_address)
+    serial_number: >-
+      DT{system_mac_address[0]!u}{system_mac_address[1]!u}{system_mac_address[3]!u}{system_mac_address[4]!u}{system_mac_address[6]!u}{system_mac_address[7]!u}{system_mac_address[9]!u}{system_mac_address[10]!u}{system_mac_address[12]!u}{system_mac_address[13]!u}{system_mac_address[15]!u}{system_mac_address[16]!u}
+
+snmp_settings:
+  compute_local_engineid: true
+  # Expected production SNMPv3 local EngineID: f5717f021c7300001400
+  # Expected ACT Digital Twin SNMPv3 local EngineID: f5717f021c7301001400
+  compute_local_engineid_source: system_mac
+
+eos_cli_config_gen_documentation:
+  enable: false

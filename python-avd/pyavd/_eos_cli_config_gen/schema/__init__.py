@@ -29611,8 +29611,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "username": {"type": str},
                 "password": {"type": str},
                 "internet_access": {"type": bool},
-                "serial_number": {"type": str},
-                "system_mac_address": {"type": str},
                 "ztp": {"type": bool},
             }
             environment: Environment | None
@@ -29642,10 +29640,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             types.
             ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
             """
-            serial_number: str | None
-            """Resolved serial number for the Digital Twin device."""
-            system_mac_address: str | None
-            """Resolved system MAC address for the Digital Twin device."""
             ztp: bool | None
             """
             Enable ZTP (Zero Touch Provisioning) mode for the Digital Twin device when supported by the Digital
@@ -29667,8 +29661,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     username: str | UndefinedType | None = Undefined,
                     password: str | UndefinedType | None = Undefined,
                     internet_access: bool | UndefinedType | None = Undefined,
-                    serial_number: str | UndefinedType | None = Undefined,
-                    system_mac_address: str | UndefinedType | None = Undefined,
                     ztp: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -29695,8 +29687,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
                            types.
                            ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
-                        serial_number: Resolved serial number for the Digital Twin device.
-                        system_mac_address: Resolved system MAC address for the Digital Twin device.
                         ztp:
                            Enable ZTP (Zero Touch Provisioning) mode for the Digital Twin device when supported by the Digital
                            Twin environment.

@@ -11,7 +11,6 @@ l2leaf:
 
 digital_twin:
   fabric:
-    hardware_identity:
-      serial_number: true
-      system_mac_address: true
+    serial_number: "DT{device_id:010d}"
+    system_mac_address: "02:1c:73:00:{device_id:02x}:11"
     ztp: true

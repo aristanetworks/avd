@@ -10,6 +10,8 @@ Serial Number: PROD-CLOUDEOS-SERIAL
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Enable Password](#enable-password)
+- [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
@@ -83,6 +85,29 @@ management api http-commands
 ### Enable Password
 
 Enable password has been disabled
+
+## Monitoring
+
+### SNMP
+
+#### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | - | All | Disabled |
+
+#### SNMP EngineID Configuration
+
+| Type | EngineID (Hex) | IP | Port |
+| ---- | -------------- | -- | ---- |
+| local | f5717f021c7300001200 | - | - |
+
+#### SNMP Device Configuration
+
+```eos
+!
+snmp-server engineID local f5717f021c7300001200
+```
 
 ## Internal VLAN Allocation Policy
 

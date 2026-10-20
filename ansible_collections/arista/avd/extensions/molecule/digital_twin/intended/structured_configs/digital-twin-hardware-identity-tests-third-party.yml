@@ -24,6 +24,9 @@ metadata:
   fabric_name: DIGITAL_TWIN
   serial_number: PROD-THIRD-PARTY-SERIAL
 service_routing_protocols_model: multi-agent
+snmp_server:
+  engine_ids:
+    local: f5717f021c7300001300
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

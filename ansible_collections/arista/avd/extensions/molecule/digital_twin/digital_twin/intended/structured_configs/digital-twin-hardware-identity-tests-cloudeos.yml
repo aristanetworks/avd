@@ -20,9 +20,9 @@ management_interfaces:
 metadata:
   is_deployed: true
   platform: CloudEOS
-  system_mac_address: 02:1c:73:00:00:12
+  system_mac_address: 02:1c:73:00:10:12
   fabric_name: DIGITAL_TWIN
-  serial_number: PROD-CLOUDEOS-SERIAL
+  serial_number: DTCLOUDEOSSERIAL
   validate_hardware:
     enabled: false
   digital_twin:
@@ -32,10 +32,11 @@ metadata:
     version: 4.33.2F
     username: cvpadmin
     password: cvp123!
-    serial_number: DT-CLOUDEOS-SERIAL
-    system_mac_address: 02:1c:73:00:10:12
     ztp: true
 service_routing_protocols_model: multi-agent
+snmp_server:
+  engine_ids:
+    local: f5717f021c7300101200
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
