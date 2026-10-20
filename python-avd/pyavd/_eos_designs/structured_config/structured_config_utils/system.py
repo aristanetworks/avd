@@ -69,6 +69,7 @@ class SystemMixin(Protocol):
                 msg = f"'custom_system_mac_address' uses unsupported formatter field '{field_name}'. Supported formatter fields are 'device_id' and 'hostname'."
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname) from error
 
+        # Validate the rendered value while preserving its original format for existing consumers
         _normalize_system_mac_address(mac_address, "custom_system_mac_address", self.shared_utils.hostname)
 
         return mac_address

@@ -87,6 +87,7 @@ class DigitalTwinMixin(Protocol):
                 ):
                     self.structured_config.metadata.digital_twin._update(internet_access=act_internet_access)
 
+                # ACT treats an omitted ztp key as disabled, so only write the key when ZTP is enabled
                 if self.structured_config_utils.current_act_node_supports_feature("ztp") and (
                     ztp := default(node_config_digital_twin.ztp, self.inputs.digital_twin.fabric.ztp)
                 ):
