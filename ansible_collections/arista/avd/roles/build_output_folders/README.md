@@ -87,15 +87,12 @@ Remove the `arista.avd.build_output_folders` invocation from your playbooks:
        name: arista.avd.eos_designs
 ```
 
-The `eos_designs`, `eos_cli_config_gen`, `anta_runner`, `eos_config_deploy_eapi`, and `eos_snapshot` roles create their required output directories.
+The `eos_designs`, `eos_cli_config_gen`, `anta_runner`, `eos_config_deploy_eapi`, and `eos_snapshot` roles create their required output directories
+using the same default paths and existing shared path overrides. No additional path configuration is required.
 If you set `avd_create_directories: false`, enable directory creation or create the required directories in your own playbook.
-Custom tasks that require additional directories, including `structured_cvp_dir`, must create those directories explicitly.
 
-### Variables and custom paths
-
-Review any variables previously supplied by this role's defaults. Set variables needed by custom tasks explicitly in your inventory or playbook.
-Keep shared path overrides such as `root_dir`, `output_dir`, `structured_dir`, and `documentation_dir` in inventory or playbook variables so that
-all consuming roles use the same paths. Move overrides passed only to the removed role invocation to the appropriate shared scope.
+If you rely on this role to clean previous outputs or create directories for custom tasks, replace those steps explicitly.
+Custom tasks that require additional directories, including `structured_cvp_dir`, must define any required path variables and create those directories.
 
 ### Cleanup of existing outputs
 
