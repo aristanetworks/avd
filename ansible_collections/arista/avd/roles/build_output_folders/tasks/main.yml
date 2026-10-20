@@ -10,6 +10,7 @@
       - "Deprecation Warning: arista.avd.build_output_folders is deprecated in AVD 6.5.0 and will be removed in AVD 7.0.0."
       - "AVD roles create their required output directories. Remove this role from your playbooks and configure any required cleanup explicitly."
       - "Migration guide: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/build_output_folders/index.html#migration"
+  delegate_to: localhost
   run_once: true
 
 - name: "Cleanup existing folders in {{ output_dir }}"
