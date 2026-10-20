@@ -1099,4 +1099,3 @@ jobs:
           disable_search: true
           files: reports/pyavd/e2e-tests.xml
           flags: e2e_tests
-
