@@ -102,7 +102,7 @@ def test__validate_python_version_deprecation_message() -> None:
     assert len(recorded_warnings) == 1
     message = str(recorded_warnings[0].message)
     assert "Python 3.10 has reached end of life and no longer receives security updates." in message
-    assert "AVD will drop support for Python version 3.10 in a future major release." in message
+    assert "AVD will drop support for Python version 3.10 in a future release." in message
     assert "Please upgrade to a newer Python version supported by AVD." in message
     assert "https://avd.arista.com/stable/docs/installation/collection-installation.html#ansible-collection-installation" in message
 
@@ -724,6 +724,6 @@ def test_action_module_main_success(action_module: "Callable[..., ActionBase]", 
         message = result["deprecations"][0]["msg"]
         assert "You are currently running Python version 3.10.42." in message
         assert "Python 3.10 has reached end of life and no longer receives security updates." in message
-        assert "AVD will drop support for Python version 3.10 in a future major release." in message
+        assert "AVD will drop support for Python version 3.10 in a future release." in message
     else:
         assert not result.get("deprecations")

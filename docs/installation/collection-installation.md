@@ -17,7 +17,7 @@
 !!! warning "Python 3.10 end of life"
 
     Python 3.10 has reached [end of life](https://devguide.python.org/versions/) and no longer receives security updates.
-    AVD support for Python 3.10 is deprecated and will be removed in a future major release. Please upgrade to a supported Python version.
+    AVD support for Python 3.10 is deprecated and will be removed in a future release. Please upgrade to a supported Python version.
 
 ## Python dependencies
 

@@ -76,7 +76,7 @@ def _validate_python_version(info: dict[str, Any]) -> bool:
         msg = (
             f"You are currently running Python version {running_version}. "
             "Python 3.10 has reached end of life and no longer receives security updates. "
-            f"AVD will drop support for Python version {min_version} in a future major release. "
+            f"AVD will drop support for Python version {min_version} in a future release. "
             "Please upgrade to a newer Python version supported by AVD. "
             "See the https://avd.arista.com/stable/docs/installation/collection-installation.html#ansible-collection-installation guide for supported versions."
         )
