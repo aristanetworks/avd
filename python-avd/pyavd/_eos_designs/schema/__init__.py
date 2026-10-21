@@ -489,15 +489,26 @@ class EosDesigns(EosDesignsRootModel):
 
             Vrfs._item_type = VrfsItem
 
-            _fields: ClassVar[dict] = {"servers": {"type": Servers}, "vrfs": {"type": Vrfs}}
+            _fields: ClassVar[dict] = {
+                "servers": {"type": Servers},
+                "vrfs": {"type": Vrfs},
+                "dynamic_authorization": {"type": EosCliConfigGen.RadiusServer.DynamicAuthorization},
+            }
             servers: Servers
             """Subclass of AvdList with `ServersItem` items."""
             vrfs: Vrfs
             """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+            dynamic_authorization: EosCliConfigGen.RadiusServer.DynamicAuthorization
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, servers: Servers | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    servers: Servers | UndefinedType = Undefined,
+                    vrfs: Vrfs | UndefinedType = Undefined,
+                    dynamic_authorization: EosCliConfigGen.RadiusServer.DynamicAuthorization | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Radius.
 
@@ -507,6 +518,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         servers: Subclass of AvdList with `ServersItem` items.
                         vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                        dynamic_authorization: dynamic_authorization
 
                     """
 

@@ -65,6 +65,8 @@ aaa_settings:
         source_interface: Vlan125
 
   radius:
+    dynamic_authorization:
+      tls_ssl_profile: SSL_PROFILE
     servers:
       - host: 11.10.10.11
         vrf: default

@@ -204,6 +204,9 @@ keys:
 
                     If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
                     this setting will take precedence.'
+          dynamic_authorization:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/radius_server/keys/dynamic_authorization
       authentication:
         type: dict
         keys:

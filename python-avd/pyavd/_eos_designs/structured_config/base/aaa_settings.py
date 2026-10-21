@@ -128,6 +128,9 @@ class AaaSettingsMixin(Protocol):
                     group_server.tls._update(enabled=server.tls.enabled, port=server.tls.port)
                 radius_group.servers.append(group_server)
 
+        if dynamic_authorization := self.inputs.aaa_settings.radius.dynamic_authorization:
+            self.structured_config.radius_server.dynamic_authorization = dynamic_authorization
+
     @structured_config_contributor
     def tacacs_servers(self: AvdStructuredConfigBaseProtocol) -> None:
         """Parse AAA tacacs server configurations and update structured config with server and source interface details."""
