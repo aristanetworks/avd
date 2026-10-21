@@ -20,16 +20,12 @@ $defs:
               table: node-type-common-configuration
             description: Unique identifier used for IP addressing and other algorithms.
             type: int
-            convert_types:
-              - str
             # required: true # This cannot be required in defaults, since it could be set on any level.
           platform:
             documentation_options:
               table: node-type-common-configuration
             description: Arista platform family.
             type: str
-            convert_types:
-              - int
           mac_address:
             documentation_options:
               table: node-type-common-configuration
@@ -158,15 +154,11 @@ $defs:
                       description: Tracking group name.
                     recovery_delay:
                       type: int
-                      convert_types:
-                        - str
                       min: 0
                       max: 3600
                       description: default -> platform_settings_mlag_reload_delay -> 300.
                     links_minimum:
                       type: int
-                      convert_types:
-                        - str
                       min: 1
                       max: 100000
           lacp_port_id_range:
@@ -183,16 +175,12 @@ $defs:
               size:
                 description: Recommended size > = number of ports in the switch.
                 type: int
-                convert_types:
-                  - str
                 default: 128
               offset:
                 description: |
                   Offset is used to avoid overlapping port-id ranges of different switches.
                   Useful when a "connected-endpoint" is connected to switches in different "node_groups".
                 type: int
-                convert_types:
-                  - str
                 default: 0
           always_configure_ip_routing:
             documentation_options:
@@ -298,16 +286,12 @@ $defs:
               table: node-type-uplink-configuration
             description: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
             type: int
-            convert_types:
-              - str
             min: 68
             max: 65535
           max_uplink_switches:
             documentation_options:
               table: node-type-uplink-configuration
             type: int
-            convert_types:
-              - str
             description: |
               Maximum number of uplink switches.
               Changing this value may change IP Addressing on uplinks.
@@ -317,8 +301,6 @@ $defs:
               table: node-type-uplink-configuration
             type: int
             default: 1
-            convert_types:
-              - str
             description: |
               Number of parallel links towards uplink switches.
               Changing this value may change interface naming on uplinks (and corresponding downlinks).
@@ -333,8 +315,6 @@ $defs:
             documentation_options:
               table: node-type-uplink-configuration
             type: int
-            convert_types:
-              - str
             min: 1
             max: 4094
             description: |
@@ -362,8 +342,6 @@ $defs:
             documentation_options:
               table: node-type-uplink-configuration
             type: int
-            convert_types:
-              - str
             min: 1
             # the max number is platform and mlag dependent, this only checks that it's not above max possible limit
             # the code will raise an error if switch is MLAG and id is not in 1-2000 range
@@ -382,8 +360,6 @@ $defs:
             documentation_options:
               table: node-type-uplink-configuration
             type: int
-            convert_types:
-              - str
             min: 1
             # the max number is platform and mlag dependent, this only checks that it's not above max possible limit
             # the code will raise an error if switch is MLAG and id is not in 1-2000 range
@@ -489,8 +465,6 @@ $defs:
               table: node-type-isis-configuration
             description: Number of path to configure in ECMP for ISIS.
             type: int
-            convert_types:
-              - str
           is_type:
             documentation_options:
               table: node-type-isis-configuration
@@ -505,8 +479,6 @@ $defs:
               table: node-type-isis-configuration
             description: IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR Node-SID index.
             type: int
-            convert_types:
-              - str
             default: 0
             deprecation:
               warning: true
@@ -526,8 +498,6 @@ $defs:
               ipv4_node_sid_index_base:
                 description: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                 type: int
-                convert_types:
-                  - str
                 default: 0
               ipv6_node_sid_index:
                 type: int
@@ -537,8 +507,6 @@ $defs:
               ipv6_node_sid_index_base:
                 description: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                 type: int
-                convert_types:
-                  - str
                 default: 1000
           loopback_ipv4_pool:
             documentation_options:
@@ -600,8 +568,6 @@ $defs:
               Required when the 'loopback_ipv4_pool' is the same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.
               For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
             type: int
-            convert_types:
-              - str
             default: 0
           router_id_pool:
             documentation_options:
@@ -628,8 +594,6 @@ $defs:
               Required when the 'loopback_ipv6_pool' is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.
               For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.
             type: int
-            convert_types:
-              - str
             default: 0
           vtep:
             type: bool
@@ -652,8 +616,6 @@ $defs:
               For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
               Required with eBGP.
             type: str
-            convert_types:
-              - int
           bgp_defaults:
             documentation_options:
               table: node-type-bgp-configuration
@@ -720,8 +682,6 @@ $defs:
                   This list also limits VRFs included by `always_include_vrfs_in_tenants`.
                 items:
                   type: str
-                  convert_types:
-                    - int
                 default:
                   - all
               deny_vrfs:
@@ -731,8 +691,6 @@ $defs:
                   This list prevents the given VRFs to be included by any other filtering mechanism.
                 items:
                   type: str
-                  convert_types:
-                    - int
                 default:
                   - all
               always_include_vrfs_in_tenants:
@@ -790,8 +748,6 @@ $defs:
                         Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                         For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                       type: str
-                      convert_types:
-                        - int
               evpn_l2:
                 description: Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
                 type: dict
@@ -925,8 +881,6 @@ $defs:
               maximum_routes:
                 description: Maximum routes to accept from IPVPN remote peers.
                 type: int
-                convert_types:
-                  - str
                 default: 0
               local_as:
                 description: |-
@@ -934,8 +888,6 @@ $defs:
                   BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                   For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                 type: str
-                convert_types:
-                  - int
               address_families:
                 description: IPVPN address families to enable for remote peers.
                 type: list
@@ -962,8 +914,6 @@ $defs:
                         For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                       type: str
                       required: true
-                      convert_types:
-                        - int
           mlag:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -1009,9 +959,6 @@ $defs:
               If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.
               See `mlag_peer_address_family` for the supported address families in that case.
             type: int
-            convert_types:
-              - str
-              - bool
             min: 0
             max: 4094
             default: 4093
@@ -1039,8 +986,6 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: MLAG Peer Link (control link) SVI interface id.
             type: int
-            convert_types:
-              - str
             min: 1
             max: 4094
             default: 4094
@@ -1090,8 +1035,6 @@ $defs:
               If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.
               Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.
             type: int
-            convert_types:
-              - str
           mlag_domain_id:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -1110,8 +1053,6 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: int
-            convert_types:
-              - str
             default: 32768
             description: |-
               Spanning-tree priority configured for the selected mode.
@@ -1158,8 +1099,6 @@ $defs:
               When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as all 'uplink_switches'.
               When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using network services data models.
             type: int
-            convert_types:
-              - str
             default: 4092
           inband_mgmt_subnet:
             documentation_options:
@@ -1185,8 +1124,6 @@ $defs:
             documentation_options:
               table: node-type-inband-management-configuration
             type: int
-            convert_types:
-              - str
             default: 0
             description: |-
               Offset value to adjust the calculated inband management IP address within the subnet.
@@ -1286,8 +1223,6 @@ $defs:
               This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
             type: str
             default: "default"
-            convert_types:
-              - int
           inband_mgmt_mtu:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -1351,8 +1286,6 @@ $defs:
             documentation_options:
               table: node-type-mpls-configuration
             type: str
-            convert_types:
-              - "int"
             description: Set BGP cluster id.
           kernel_ecmp_cli:
             documentation_options:
@@ -1391,22 +1324,16 @@ $defs:
                 default: false
               domain:
                 type: int
-                convert_types:
-                  - str
                 min: 0
                 max: 255
               priority1:
                 type: int
-                convert_types:
-                  - str
                 min: 0
                 max: 255
                 description: |
                   default -> automatically set based on node_type.
               priority2:
                 type: int
-                convert_types:
-                  - str
                 min: 0
                 max: 255
                 description: |
@@ -1444,8 +1371,6 @@ $defs:
                 default: false
               ttl:
                 type: int
-                convert_types:
-                  - str
               forward_unicast:
                 type: bool
                 default: false
@@ -1462,12 +1387,8 @@ $defs:
                 keys:
                   general_messages:
                     type: int
-                    convert_types:
-                      - str
                   event_messages:
                     type: int
-                    convert_types:
-                      - str
               monitor:
                 type: dict
                 keys:
@@ -1479,15 +1400,11 @@ $defs:
                     keys:
                       offset_from_master:
                         type: int
-                        convert_types:
-                          - str
                         min: 0
                         max: 1000000000
                         default: 250
                       mean_path_delay:
                         type: int
-                        convert_types:
-                          - str
                         min: 0
                         max: 1000000000
                         default: 1500
@@ -1496,14 +1413,10 @@ $defs:
                         keys:
                           offset_from_master:
                             type: int
-                            convert_types:
-                              - str
                             min: 0
                             max: 1000000000
                           mean_path_delay:
                             type: int
-                            convert_types:
-                              - str
                             min: 0
                             max: 1000000000
                   missing_message:
@@ -1514,20 +1427,14 @@ $defs:
                         keys:
                           announce:
                             type: int
-                            convert_types:
-                              - str
                             min: 2
                             max: 255
                           follow_up:
                             type: int
-                            convert_types:
-                              - str
                             min: 2
                             max: 255
                           sync:
                             type: int
-                            convert_types:
-                              - str
                             min: 2
                             max: 255
                       sequence_ids:
@@ -1538,29 +1445,21 @@ $defs:
                             default: true
                           announce:
                             type: int
-                            convert_types:
-                              - str
                             min: 2
                             max: 255
                             default: 3
                           delay_resp:
                             type: int
-                            convert_types:
-                              - str
                             min: 2
                             max: 255
                             default: 3
                           follow_up:
                             type: int
-                            convert_types:
-                              - str
                             min: 2
                             max: 255
                             default: 3
                           sync:
                             type: int
-                            convert_types:
-                              - str
                             min: 2
                             max: 255
                             default: 3
@@ -1624,8 +1523,6 @@ $defs:
                 description: Enable / Disable IPsec over HA path-group when HA is enabled.
               mtu:
                 type: int
-                convert_types:
-                  - str
                 description: Set MTU on WAN HA interfaces.
                 min: 68
                 max: 65535
@@ -1651,8 +1548,6 @@ $defs:
                 format: ipv4_pool
               port_channel_id:
                 type: int
-                convert_types:
-                  - str
                 description: |-
                   Port-channel ID to use for direct HA.
               use_port_channel_for_direct_ha:
@@ -1855,6 +1750,14 @@ $defs:
               Name of the validation profile to apply to this device.
               The profile must be defined under `validation_profiles`.
               Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation.
+          dns_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: |-
+              Name of the DNS settings profile to apply to this device.
+              The profile must be defined under `dns_settings_profiles`.
+              The selected profile settings will be merged over the general `dns_settings`.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
