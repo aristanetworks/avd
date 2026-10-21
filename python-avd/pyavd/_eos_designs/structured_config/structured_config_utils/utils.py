@@ -67,7 +67,7 @@ class UtilsMixin(Protocol):
         direction_label = "ingress" if direction == "in" else "egress"
         msg = (
             f"'ipv4_acl_{direction}' and 'ipv4_standard_acl_{direction}' are mutually exclusive on interface '{name}'. "
-            f"Only one {direction_label} IPv4 ACL may be configured."
+            f"Only one {direction_label} IPv4 ACL can be configured."
         )
         raise AristaAvdInvalidInputsError(msg)
 
