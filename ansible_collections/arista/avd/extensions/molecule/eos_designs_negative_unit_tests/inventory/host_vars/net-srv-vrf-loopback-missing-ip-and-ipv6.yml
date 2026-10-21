@@ -1,0 +1,25 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: net-srv-vrf-loopback-missing-ip-and-ipv6
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: LOOPBACKS
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TESTING
+        vrf_id: 2
+        loopbacks:
+          - node: net-srv-vrf-loopback-missing-ip-and-ipv6
+            loopback: 100
+
+expected_error_message: >-
+  Network services VRF Loopback100 must have at least one of 'ip_address' or 'ipv6_addresses' configured.

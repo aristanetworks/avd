@@ -531,6 +531,13 @@ loopback_interfaces:
   - 8:8:8:8:8:8:8:8/124
   ospf_area: '1'
   hardware_forwarding_id: true
+- name: Loopback125
+  description: Test-Only-IPv6
+  shutdown: false
+  vrf: Tenant_A_OSPF
+  ipv6_addresses:
+  - fd5a:fe45:8831:06c5::a/64
+  - 8:8:8:8:8:8:8:8/124
 management_api_http:
   enable_https: true
   default_services: false

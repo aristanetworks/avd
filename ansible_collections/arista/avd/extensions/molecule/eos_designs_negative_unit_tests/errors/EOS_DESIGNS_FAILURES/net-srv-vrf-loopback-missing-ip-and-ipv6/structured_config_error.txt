@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Network services VRF Loopback100 must have at least one of 'ip_address' or 'ipv6_addresses' configured.

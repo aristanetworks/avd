@@ -412,6 +412,13 @@ tenant_a:
               enabled: true
             raw_eos_cli: |
               ip ospf cost 100
+          - loopback: 125
+            node: dc1-leaf2a
+            description: Test-Only-IPv6
+            enabled: true
+            ipv6_addresses:
+              - fd5a:fe45:8831:06c5::a/64
+              - 8:8:8:8:8:8:8:8/124
         vtep_diagnostic:
           loopback: 101
           loopback_ip_range: 10.255.11.0/24

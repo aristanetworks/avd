@@ -37667,14 +37667,25 @@ class EosDesigns(EosDesignsRootModel):
                 node: str
                 loopback: int
                 ip_address: str | None
+                """IPv4 address/Mask."""
                 ipv6_addresses: Ipv6Addresses
-                """Subclass of AvdList with `str` items."""
+                """
+                IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                Can be used instead of or together with
+                `ip_address`.
+                At least one of `ip_address` or `ipv6_addresses` must be set.
+
+                Subclass of AvdList
+                with `str` items.
+                """
                 description: str | None
                 enabled: bool
                 """Default value: `True`"""
                 ospf: Ospf
                 """
-                OSPF interface configuration.
+                OSPFv2 interface configuration.
+                Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                and this loopback.
 
                 Subclass of AvdModel.
                 """
@@ -37710,12 +37721,21 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             node: node
                             loopback: loopback
-                            ip_address: ip_address
-                            ipv6_addresses: Subclass of AvdList with `str` items.
+                            ip_address: IPv4 address/Mask.
+                            ipv6_addresses:
+                               IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                               Can be used instead of or together with
+                               `ip_address`.
+                               At least one of `ip_address` or `ipv6_addresses` must be set.
+
+                               Subclass of AvdList
+                               with `str` items.
                             description: description
                             enabled: enabled
                             ospf:
-                               OSPF interface configuration.
+                               OSPFv2 interface configuration.
+                               Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                               and this loopback.
 
                                Subclass of AvdModel.
                             hardware_forwarding:
@@ -90699,14 +90719,25 @@ class EosDesigns(EosDesignsRootModel):
                         node: str
                         loopback: int
                         ip_address: str | None
+                        """IPv4 address/Mask."""
                         ipv6_addresses: Ipv6Addresses
-                        """Subclass of AvdList with `str` items."""
+                        """
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        Can be used instead of or together with
+                        `ip_address`.
+                        At least one of `ip_address` or `ipv6_addresses` must be set.
+
+                        Subclass of AvdList
+                        with `str` items.
+                        """
                         description: str | None
                         enabled: bool
                         """Default value: `True`"""
                         ospf: Ospf
                         """
-                        OSPF interface configuration.
+                        OSPFv2 interface configuration.
+                        Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                        and this loopback.
 
                         Subclass of AvdModel.
                         """
@@ -90742,12 +90773,21 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     node: node
                                     loopback: loopback
-                                    ip_address: ip_address
-                                    ipv6_addresses: Subclass of AvdList with `str` items.
+                                    ip_address: IPv4 address/Mask.
+                                    ipv6_addresses:
+                                       IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                                       Can be used instead of or together with
+                                       `ip_address`.
+                                       At least one of `ip_address` or `ipv6_addresses` must be set.
+
+                                       Subclass of AvdList
+                                       with `str` items.
                                     description: description
                                     enabled: enabled
                                     ospf:
-                                       OSPF interface configuration.
+                                       OSPFv2 interface configuration.
+                                       Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                                       and this loopback.
 
                                        Subclass of AvdModel.
                                     hardware_forwarding:
