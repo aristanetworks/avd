@@ -6833,6 +6833,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         When `true`, renders BGP peer groups globally and under address families
         in case-sensitive natural order, with uppercase names before lowercase names, matching EOS CLI
         ordering.
+        When `false` (default), preserves the legacy case-insensitive natural order for BGP peer
+        groups globally and under address families.
 
         Default value: `False`
         """
@@ -6920,6 +6922,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        When `true`, renders BGP peer groups globally and under address families
                        in case-sensitive natural order, with uppercase names before lowercase names, matching EOS CLI
                        ordering.
+                       When `false` (default), preserves the legacy case-insensitive natural order for BGP peer
+                       groups globally and under address families.
 
                 """
 
