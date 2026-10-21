@@ -72,15 +72,11 @@ keys:
                     type: int
                     required: true
                     min: 1
-                    convert_types:
-                      - str
                     description: Random-detect ECN minimum-threshold.
                   max:
                     type: int
                     required: true
                     min: 1
-                    convert_types:
-                      - str
                     description: Random-detect ECN maximum-threshold.
       tx_queue:
         type: dict
@@ -97,8 +93,6 @@ keys:
               keys:
                 id:
                   type: int
-                  convert_types:
-                    - str
                   min: 0
                   max: 7
                   description: Queue ID.
