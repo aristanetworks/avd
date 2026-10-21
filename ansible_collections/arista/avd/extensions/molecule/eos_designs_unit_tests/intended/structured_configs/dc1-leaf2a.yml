@@ -1611,6 +1611,7 @@ vrfs:
     - Tenant_A
 - name: Tenant_A_OSPF
   ip_routing: true
+  ipv6_routing: true
   metadata:
     tenants:
     - Tenant_A
