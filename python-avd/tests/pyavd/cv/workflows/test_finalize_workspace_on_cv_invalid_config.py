@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import re
-from logging import INFO
+from logging import WARNING
 from typing import TYPE_CHECKING, ClassVar
 from unittest.mock import patch
 
@@ -740,7 +740,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         workflow_warnings = ["Existing workflow warning"]
         workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=self.workspace_id, requested_state="built"))
         workspace.build_id = self.workspace_build_id
-        with caplog.at_level(INFO):
+        with caplog.at_level(WARNING):
             response = await _process_workspace_build_details(
                 workspace=workspace,
                 cv_client=cv_client,
@@ -774,4 +774,4 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device "
             "'13C20F1EDCCED2D85F6DB2FB9E3AC5B6' not targeted by our deployment: "
         )
-        assert any(record.levelno == INFO and record.message == workflow_warnings[1] for record in caplog.records)
+        assert any(record.levelno == WARNING and record.message == workflow_warnings[1] for record in caplog.records)

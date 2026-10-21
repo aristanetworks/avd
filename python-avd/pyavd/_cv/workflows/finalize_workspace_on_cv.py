@@ -333,8 +333,7 @@ def _produce_cvworkspace_build_result(
                 "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device "
                 f"'{workspace_build_details_item.key.device_id}' not targeted by our deployment: '{workspace_build_details_item}'"
             )
-            # Avoid duplicating the returned warning in callers that also capture warning logs.
-            LOGGER.info(warning)
+            LOGGER.warning(warning)
             workflow_warnings.append(warning)
             continue
 
