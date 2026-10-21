@@ -10,13 +10,7 @@ title: Ansible Collection Role build_output_folders
 
 # build_output_folders
 
-!!! warning "Deprecated in AVD 6.5.0"
-
-    The `arista.avd.build_output_folders` role is deprecated and will be removed in AVD 7.0.0.
-    AVD roles create their required output directories. See [Migration](#migration) before removing the role from your playbooks.
-    The role retains its existing behavior throughout AVD 6.x.
-
-Role to clean up and create local folder structure to save roles' outputs
+Create and clean up the local directory structure used to store AVD role outputs.
 
 ## Requirements
 
@@ -35,6 +29,8 @@ root_dir: '{{ inventory_dir }}'
 output_dir_name: 'intended'
 # Output for structured YAML files:
 structured_dir_name: 'structured_configs'
+# Output for CloudVision structured YAML files:
+structured_cvp_dir_name: 'cvp'
 # EOS configuration directory name
 eos_config_dir_name: 'configs'
 # Main documentation folder
@@ -46,6 +42,13 @@ devices_dir_name: 'devices'
 # EOS config deploy eapi running config backup directory
 post_running_config_backup_dir_name: 'config_backup'
 pre_running_config_backup_dir_name: 'config_backup'
+# EOS snapshots
+snapshots_backup_dir_name: 'snapshots'
+# ANTA catalogs and reports
+anta_dir_name: 'anta'
+user_catalogs_dir_name: 'user_catalogs'
+avd_catalogs_dir_name: 'avd_catalogs'
+anta_reports_dir_name: 'reports'
 ```
 
 With the default paths, the role creates the following structure:
@@ -68,53 +71,28 @@ With the default paths, the role creates the following structure:
 
 The role deletes and recreates `output_dir`. It also deletes subdirectories of `anta_dir`, except for the directory named
 `user_catalogs_dir_name`. It creates the other directories if missing and preserves their existing contents.
+With the default paths, documentation, configuration backups, snapshots, and ANTA user catalogs are preserved.
+When overriding paths, keep files you want to preserve outside the directories that the role cleans.
+
+The role delegates filesystem operations to `localhost` and uses `run_once` to execute each task once per inventory batch.
+Use the same output paths for all hosts in a batch.
 
 ## Dependencies
 
 None
 
-## Migration
-
-Remove the `arista.avd.build_output_folders` invocation from your playbooks:
-
-```diff
- tasks:
--  - name: Build local folders for output
--    ansible.builtin.import_role:
--      name: arista.avd.build_output_folders
-   - name: Generate structured configuration
-     ansible.builtin.import_role:
-       name: arista.avd.eos_designs
-```
-
-The `eos_designs`, `eos_cli_config_gen`, `anta_runner`, `eos_config_deploy_eapi`, and `eos_snapshot` roles create their required output directories
-using the same default paths and existing shared path overrides. No additional path configuration is required.
-If you set `avd_create_directories: false`, enable directory creation or create the required directories in your own playbook.
-
-If you rely on this role to clean previous outputs or create directories for custom tasks, replace those steps explicitly.
-Custom tasks that require additional directories, including `structured_cvp_dir`, must define any required path variables and create those directories.
-
-### Cleanup of existing outputs
-
-Removing the role also removes its cleanup steps. Existing files, including outputs for devices removed from inventory, may remain on disk.
-If your workflow requires a clean build, add explicit cleanup before generating outputs. Limit cleanup to the generated output paths used by your workflow.
-For example, with the default output path:
+## Example Playbook
 
 ```yaml
-- name: Remove previous intended outputs
-  ansible.builtin.file:
-    path: "{{ inventory_dir }}/intended"
-    state: absent
-  delegate_to: localhost
-  run_once: true
+- name: Build Switch configuration
+  hosts: DC1_FABRIC
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Build local folders for output
+      ansible.builtin.import_role:
+        name: arista.avd.build_output_folders
 ```
-
-Use your configured `output_dir` instead if you override the default path. Keep directory creation enabled in consuming roles after cleanup.
-
-For ANTA, explicitly remove generated catalogs and reports when a clean run is required. Use your configured `avd_catalogs_dir` and
-`anta_reports_dir` paths, and preserve `user_catalogs_dir` and any user-provided catalog files. The old role also deleted other subdirectories
-of `anta_dir` apart from the directory named `user_catalogs_dir_name`; decide which of those require cleanup in your workflow.
-If user catalogs are stored inside `output_dir`, preserve them before cleaning that directory.
 
 ## License
 

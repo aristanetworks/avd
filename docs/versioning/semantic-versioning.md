@@ -27,7 +27,7 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 | `cv_deploy` | ✅ | ✅ | The resulting CloudVision configuration will be maintained, unless in rare cases, when addressing a bug. |
 | `eos_config_deploy_eapi` | ✅ | ✅ | |
 | `anta_runner` | ✅ | ✘ | The generated reports and other artifacts may change between minor releases.<br>Breaking changes to JSON & CSV outputs will be communicated in the release notes. |
-| `build_output_folders` | ✅ | ✅ | Deprecated in AVD 6.5.0; scheduled for removal in AVD 7.0.0. See the [migration guide](../../ansible_collections/arista/avd/roles/build_output_folders/README.md#migration). |
+| `build_output_folders` | ✅ | ✅ | |
 
 ### Plugins
 

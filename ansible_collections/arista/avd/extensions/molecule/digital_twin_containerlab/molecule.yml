@@ -17,6 +17,7 @@ scenario:
     - verify
   test_sequence:
     - syntax
+    - create
     - converge
     - idempotence
     - verify
