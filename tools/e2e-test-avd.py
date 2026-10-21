@@ -794,7 +794,7 @@ class AvdV6Build:
                     sort_keys=False,
                     indent=2,
                     width=130,
-                    explicit_start=isinstance(output.digital_twin, ContainerlabDigitalTwin),
+                    explicit_start=True,
                 )
 
         return True
