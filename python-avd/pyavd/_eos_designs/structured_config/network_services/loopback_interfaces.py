@@ -44,10 +44,7 @@ class LoopbackInterfacesMixin(Protocol):
                 # to only contain entries with our hostname
                 for loopback in vrf.loopbacks:
                     if not loopback.ip_address and not loopback.ipv6_addresses:
-                        msg = (
-                            f"Network services VRF Loopback{loopback.loopback} must have at least one of "
-                            "'ip_address' or 'ipv6_addresses' configured."
-                        )
+                        msg = f"Network services VRF Loopback{loopback.loopback} must have at least one of 'ip_address' or 'ipv6_addresses' configured."
                         raise AristaAvdInvalidInputsError(msg)
                     loopback_interface_item = EosCliConfigGen.LoopbackInterfacesItem(
                         name=f"Loopback{loopback.loopback}",
@@ -62,8 +59,7 @@ class LoopbackInterfacesMixin(Protocol):
                     if loopback.ospf.enabled and vrf.ospf.enabled:
                         if not loopback.ip_address:
                             msg = (
-                                f"Network services VRF Loopback{loopback.loopback} cannot enable OSPF without "
-                                "an 'ip_address'. OSPFv2 requires an IPv4 address."
+                                f"Network services VRF Loopback{loopback.loopback} cannot enable OSPF without an 'ip_address'. OSPFv2 requires an IPv4 address."
                             )
                             raise AristaAvdInvalidInputsError(msg)
                         loopback_interface_item.ospf_area = loopback.ospf.area
