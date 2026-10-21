@@ -11,7 +11,7 @@ from ._lazy_import import LazyImports, install_lazy_imports
 if sys.version_info[:2] == (3, 10) and "ansible_collections.arista.avd.plugins" not in sys.modules:
     warnings.warn(
         "Python 3.10 has reached end of life and no longer receives security updates. "
-        "AVD will drop support for Python version 3.10 in a future release. "
+        "AVD will drop support for Python 3.10 in a future release. "
         "Please upgrade to a newer Python version supported by AVD. "
         "See the https://avd.arista.com/stable/docs/installation/collection-installation.html#ansible-collection-installation guide for supported versions.",
         DeprecationWarning,

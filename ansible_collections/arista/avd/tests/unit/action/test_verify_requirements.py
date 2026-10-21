@@ -87,7 +87,7 @@ def test__validate_python_version_deprecation_message() -> None:
     info: dict[str, str | int] = {}
     with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys:
         mocked_sys.version_info = VersionInfo(*MIN_PYTHON_SUPPORTED_VERSION, 42, "final", 0)
-        with pytest.warns(DeprecationWarning, match="will drop support for Python version") as recorded_warnings:
+        with pytest.warns(DeprecationWarning, match="will drop support for Python") as recorded_warnings:
             ret = _validate_python_version(info)
     assert ret is True
     assert info["python_version_info"] == {
@@ -102,7 +102,7 @@ def test__validate_python_version_deprecation_message() -> None:
     assert len(recorded_warnings) == 1
     message = str(recorded_warnings[0].message)
     assert "Python 3.10 has reached end of life and no longer receives security updates." in message
-    assert "AVD will drop support for Python version 3.10 in a future release." in message
+    assert "AVD will drop support for Python 3.10 in a future release." in message
     assert "Please upgrade to a newer Python version supported by AVD." in message
     assert "https://avd.arista.com/stable/docs/installation/collection-installation.html#ansible-collection-installation" in message
 
@@ -722,8 +722,8 @@ def test_action_module_main_success(action_module: "Callable[..., ActionBase]", 
     if python_minor == 10:
         assert len(result["deprecations"]) == 1
         message = result["deprecations"][0]["msg"]
-        assert "You are currently running Python version 3.10.42." in message
+        assert "You are currently running Python 3.10.42." in message
         assert "Python 3.10 has reached end of life and no longer receives security updates." in message
-        assert "AVD will drop support for Python version 3.10 in a future release." in message
+        assert "AVD will drop support for Python 3.10 in a future release." in message
     else:
         assert not result.get("deprecations")
