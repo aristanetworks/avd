@@ -51,6 +51,7 @@ comment:
   layout: "reach,diff,components,flags,files"
   behavior: default
   require_changes: true
+  show_carryforward_flags: true
 
 component_management:
   individual_components:
