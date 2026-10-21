@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdDuplicateDataError: Found duplicate objects with conflicting data while generating configuration for snmp_settings.hosts. {'vrf': 'MGMT', 'source_interface': 'Vlan4092'} conflicts with {'vrf': 'MGMT', 'source_interface': 'Management1'}.
