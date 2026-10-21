@@ -1182,6 +1182,7 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.1.10
 - name: Tenant_A_OSPF
   ip_address: 10.255.11.10
+  ipv6_address: fd5a:fe45:8831:06c5::a
 vlan_interfaces:
 - name: Vlan130
   description: Tenant_A_APP_Zone_1
