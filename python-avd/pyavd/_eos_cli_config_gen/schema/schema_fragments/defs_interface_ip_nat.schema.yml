@@ -27,8 +27,6 @@ $defs:
                   required: true
                 priority:
                   type: int
-                  convert_types:
-                    - str
                   min: 0
                   max: 4294967295
           static:
@@ -62,8 +60,6 @@ $defs:
                     ignored if 'nat_type' is overload.
                 priority:
                   type: int
-                  convert_types:
-                    - str
                   min: 0
                   max: 4294967295
           static:

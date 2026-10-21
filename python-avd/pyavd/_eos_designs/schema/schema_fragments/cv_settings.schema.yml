@@ -63,8 +63,6 @@ keys:
                 vrf:
                   type: str
                   default: use_default_mgmt_method_vrf
-                  convert_types:
-                    - int
                   description: |-
                     The VRF used to connect to CloudVision.
                     The value will be interpreted according to these rules:
@@ -116,14 +114,10 @@ keys:
                       Note: It is currently recommended to use IP address because of limitations with Image transfers from CloudVision.
                   port:
                     type: int
-                    convert_types:
-                      - str
                     default: 9910
             vrf:
               type: str
               default: use_default_mgmt_method_vrf
-              convert_types:
-                - int
               description: |-
                 The VRF used to connect to CloudVision.
                 The value will be interpreted according to these rules:

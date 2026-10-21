@@ -562,6 +562,11 @@ class AvdStructuredConfigBaseProtocol(
         """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
         return self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
+    @cached_property
+    def _act_ensure_ssh_access(self) -> bool:
+        """Flag indicating if we are in ACT Digital Twin mode and if SSH access in default VRF is enforced."""
+        return self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.act_ensure_ssh_access
+
     @structured_config_contributor
     def management_settings(self) -> None:
         """Configures management settings based on the input data model."""
@@ -590,6 +595,9 @@ class AvdStructuredConfigBaseProtocol(
         """Set general relay agent configuration."""
         if not (relay_settings := self.inputs.general_settings.dhcp_relay):
             return
+
+        if relay_settings.reply_source_address_validation:
+            self.structured_config.dhcp_relay.reply_source_address_validation = relay_settings.reply_source_address_validation
 
         if self.shared_utils.vtep:
             if relay_settings.tunnel_requests_disabled:
