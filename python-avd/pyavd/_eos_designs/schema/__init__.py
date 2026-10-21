@@ -1228,7 +1228,7 @@ class EosDesigns(EosDesignsRootModel):
         - Setting only
         `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
         VRF.
-        - AVD renders OOB IPv4 static routes only when `oob_mgmt_ip` is configured (and other existing
+        - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
         route prerequisites are met).
 
         Default value: `False`
@@ -1356,7 +1356,7 @@ class EosDesigns(EosDesignsRootModel):
                        - Setting only
                        `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
                        VRF.
-                       - AVD renders OOB IPv4 static routes only when `oob_mgmt_ip` is configured (and other existing
+                       - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
                        route prerequisites are met).
 
                 """
