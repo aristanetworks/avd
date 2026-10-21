@@ -16,7 +16,6 @@
       - cv_probe_result.changed
       - cv_probe_result.failed == probe_case.startswith('failure')
       - cv_probe_result.warnings | length == 3
-      - cv_probe_result.warnings | unique | length == 3
       - "('CV_LOGGING_PROBE_pyavd_' ~ probe_case) in cv_probe_result.warnings"
       - "('CV_LOGGING_PROBE_urllib3_' ~ probe_case) in cv_probe_result.warnings"
       - "('CV_WORKFLOW_WARNING_' ~ probe_case) in cv_probe_result.warnings"
