@@ -5,6 +5,7 @@
 import json
 import logging
 import sys
+import warnings
 from importlib.metadata import PackageNotFoundError
 from itertools import repeat
 from pathlib import Path
@@ -58,9 +59,18 @@ class VersionInfo(NamedTuple):
 def test__validate_python_version(mocked_version: tuple[int, int, int, str, int], expected_return: bool) -> None:
     """TODO: - could add the expected stderr."""
     info = {}
-    with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys:
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys,
+        warnings.catch_warnings(record=True) as recorded_warnings,
+    ):
+        warnings.simplefilter("always")
         mocked_sys.version_info = VersionInfo(*mocked_version)
         ret = _validate_python_version(info)
+    if mocked_version[:2] == MIN_PYTHON_SUPPORTED_VERSION:
+        assert len(recorded_warnings) == 1
+        assert recorded_warnings[0].category is DeprecationWarning
+    else:
+        assert not recorded_warnings
     assert ret == expected_return
     assert info["python_version_info"] == {
         "major": mocked_version[0],
@@ -75,12 +85,9 @@ def test__validate_python_version(mocked_version: tuple[int, int, int, str, int]
 def test__validate_python_version_deprecation_message() -> None:
     """Test to verify the deprecation message."""
     info: dict[str, str | int] = {}
-    with (
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION", new=True),
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys,
-    ):
+    with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys:
         mocked_sys.version_info = VersionInfo(*MIN_PYTHON_SUPPORTED_VERSION, 42, "final", 0)
-        with pytest.warns(DeprecationWarning, match="will drop support for Python version") as recorded_warnings:
+        with pytest.warns(DeprecationWarning, match="will drop support for Python") as recorded_warnings:
             ret = _validate_python_version(info)
     assert ret is True
     assert info["python_version_info"] == {
@@ -93,6 +100,11 @@ def test__validate_python_version_deprecation_message() -> None:
     assert bool(info["python_path"])
     # Check for deprecation of PYTHON min version
     assert len(recorded_warnings) == 1
+    message = str(recorded_warnings[0].message)
+    assert "Python 3.10 has reached end of life and no longer receives security updates." in message
+    assert "AVD will drop support for Python 3.10 in a future release." in message
+    assert "Please upgrade to a newer Python version supported by AVD." in message
+    assert "https://avd.arista.com/stable/docs/installation/collection-installation.html#ansible-collection-installation" in message
 
 
 @pytest.mark.parametrize(
@@ -680,21 +692,38 @@ def test_action_module_main_source_changes(action_module: "Callable[..., ActionB
     assert module.result["failed"] is False
 
 
-def test_action_module_main_success(action_module: "Callable[..., ActionBase]") -> None:
-    """When all validators pass and avd_ignore_requirements is False, result['failed'] is False."""
+@pytest.mark.parametrize("python_minor", [10, 11])
+@pytest.mark.parametrize("running_from_source", [False, True])
+def test_action_module_main_success(action_module: "Callable[..., ActionBase]", python_minor: int, running_from_source: bool) -> None:
+    """Successful execution captures the Python deprecation once for installed and source collections."""
     module = action_module(ActionModule, task_args={"requirements": ["test-dep>=1.0"]})
 
     with (
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
         patch(f"{MODULE_PATH}._get_running_collection_version", side_effect=_mock_get_running_collection_version),
-        patch(f"{MODULE_PATH}.check_running_from_source", return_value=False),
-        patch(f"{MODULE_PATH}._validate_python_version", return_value=True),
+        patch(f"{MODULE_PATH}.check_running_from_source", return_value=running_from_source),
+        patch(f"{MODULE_PATH}.sys") as mocked_sys,
         patch(f"{MODULE_PATH}._validate_python_requirements", return_value=True),
         patch(f"{MODULE_PATH}._validate_ansible_version", return_value=True),
         patch(f"{MODULE_PATH}._validate_ansible_collections", return_value=True),
         patch(f"{MODULE_PATH}.DISPLAY"),
-        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=False),
+        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=running_from_source),
     ):
-        module.main(task_vars=DEFAULT_TASK_VARS)
+        mocked_sys.version_info = VersionInfo(3, python_minor, 42, "final", 0)
+        mocked_sys.path = sys.path
+        # The action must capture the warning even when the caller ignores deprecations.
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            result = module.run(task_vars=DEFAULT_TASK_VARS)
 
-    assert module.result["failed"] is False
-    assert "msg" not in module.result
+    assert result["failed"] is False
+    assert "msg" not in result
+    assert not result.get("warnings")
+    if python_minor == 10:
+        assert len(result["deprecations"]) == 1
+        message = result["deprecations"][0]["msg"]
+        assert "You are currently running Python 3.10.42." in message
+        assert "Python 3.10 has reached end of life and no longer receives security updates." in message
+        assert "AVD will drop support for Python 3.10 in a future release." in message
+    else:
+        assert not result.get("deprecations")
