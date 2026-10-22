@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
@@ -33,8 +34,14 @@ class VirtualSourceNatVrfsMixin(Protocol):
         if vrf is None:
             return
 
-        virtual_source_nat_vrf = self.structured_config.virtual_source_nat_vrfs.obtain(vrf)
-        if ipv4_address and virtual_source_nat_vrf._get("ip_address") is None:
-            virtual_source_nat_vrf.ip_address = get_ip_from_ip_prefix(ipv4_address)
-        if ipv6_address and virtual_source_nat_vrf._get("ipv6_address") is None:
-            virtual_source_nat_vrf.ipv6_address = get_ip_from_ip_prefix(ipv6_address)
+        # Using append with ignore_fields.
+        # It will append the VirtualSourceNatVrfsItem unless the same "name" is already in the list.
+        # It will never raise since we only have these two keys.
+        self.structured_config.virtual_source_nat_vrfs.append(
+            EosCliConfigGen.VirtualSourceNatVrfsItem(
+                name=vrf,
+                ip_address=get_ip_from_ip_prefix(ipv4_address) if ipv4_address else None,
+                ipv6_address=get_ip_from_ip_prefix(ipv6_address) if ipv6_address else None,
+            ),
+            ignore_fields=("ip_address", "ipv6_address"),
+        )

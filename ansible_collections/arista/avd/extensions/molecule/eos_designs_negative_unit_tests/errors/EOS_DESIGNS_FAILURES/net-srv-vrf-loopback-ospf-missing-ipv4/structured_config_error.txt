@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: Network services VRF Loopback101 cannot enable OSPF without an 'ip_address'. OSPFv2 requires an IPv4 address.
+pyavd._errors.AristaAvdInvalidInputsError: 'tenants[name=LOOPBACKS].vrfs[name=TESTING].loopbacks[node=net-srv-vrf-loopback-ospf-missing-ipv4, loopback=101] cannot enable OSPF without an 'ip_address'. OSPFv2 requires an IPv4 address.

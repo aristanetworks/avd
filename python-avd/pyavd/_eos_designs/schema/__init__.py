@@ -38016,9 +38016,11 @@ class EosDesigns(EosDesignsRootModel):
                 Can be used instead of or together with
                 `ip_address`.
                 At least one of `ip_address` or `ipv6_addresses` must be set.
+                For IPv6 virtual source
+                NAT, AVD uses the first value from this input list when this loopback is selected.
 
-                Subclass of AvdList
-                with `str` items.
+                Subclass of
+                AvdList with `str` items.
                 """
                 description: str | None
                 enabled: bool
@@ -38069,9 +38071,11 @@ class EosDesigns(EosDesignsRootModel):
                                Can be used instead of or together with
                                `ip_address`.
                                At least one of `ip_address` or `ipv6_addresses` must be set.
+                               For IPv6 virtual source
+                               NAT, AVD uses the first value from this input list when this loopback is selected.
 
-                               Subclass of AvdList
-                               with `str` items.
+                               Subclass of
+                               AvdList with `str` items.
                             description: description
                             enabled: enabled
                             ospf:
@@ -91132,9 +91136,11 @@ class EosDesigns(EosDesignsRootModel):
                         Can be used instead of or together with
                         `ip_address`.
                         At least one of `ip_address` or `ipv6_addresses` must be set.
+                        For IPv6 virtual source
+                        NAT, AVD uses the first value from this input list when this loopback is selected.
 
-                        Subclass of AvdList
-                        with `str` items.
+                        Subclass of
+                        AvdList with `str` items.
                         """
                         description: str | None
                         enabled: bool
@@ -91185,9 +91191,11 @@ class EosDesigns(EosDesignsRootModel):
                                        Can be used instead of or together with
                                        `ip_address`.
                                        At least one of `ip_address` or `ipv6_addresses` must be set.
+                                       For IPv6 virtual source
+                                       NAT, AVD uses the first value from this input list when this loopback is selected.
 
-                                       Subclass of AvdList
-                                       with `str` items.
+                                       Subclass of
+                                       AvdList with `str` items.
                                     description: description
                                     enabled: enabled
                                     ospf:

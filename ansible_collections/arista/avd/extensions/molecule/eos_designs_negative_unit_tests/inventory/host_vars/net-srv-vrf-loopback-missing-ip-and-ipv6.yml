@@ -22,4 +22,5 @@ tenants:
             loopback: 100
 
 expected_error_message: >-
-  Network services VRF Loopback100 must have at least one of 'ip_address' or 'ipv6_addresses' configured.
+  'tenants[name=LOOPBACKS].vrfs[name=TESTING].loopbacks[node=net-srv-vrf-loopback-missing-ip-and-ipv6, loopback=100]
+  must have at least one of 'ip_address' or 'ipv6_addresses' configured.

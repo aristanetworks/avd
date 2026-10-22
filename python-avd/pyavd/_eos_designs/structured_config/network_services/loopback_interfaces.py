@@ -44,8 +44,11 @@ class LoopbackInterfacesMixin(Protocol):
                 # to only contain entries with our hostname
                 for loopback in vrf.loopbacks:
                     if not loopback.ip_address and not loopback.ipv6_addresses:
-                        msg = f"Network services VRF Loopback{loopback.loopback} must have at least one of 'ip_address' or 'ipv6_addresses' configured."
-                        raise AristaAvdInvalidInputsError(msg)
+                        msg = (
+                            f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].loopbacks[node={self.shared_utils.hostname}, loopback={loopback.loopback}] "
+                            "must have at least one of 'ip_address' or 'ipv6_addresses' configured."
+                        )
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     loopback_interface_item = EosCliConfigGen.LoopbackInterfacesItem(
                         name=f"Loopback{loopback.loopback}",
                         ip_address=loopback.ip_address,
@@ -59,16 +62,17 @@ class LoopbackInterfacesMixin(Protocol):
                     if loopback.ospf.enabled and vrf.ospf.enabled:
                         if not loopback.ip_address:
                             msg = (
-                                f"Network services VRF Loopback{loopback.loopback} cannot enable OSPF without an 'ip_address'. OSPFv2 requires an IPv4 address."
+                                f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].loopbacks[node={self.shared_utils.hostname}, loopback={loopback.loopback}]"
+                                " cannot enable OSPF without an 'ip_address'. OSPFv2 requires an IPv4 address."
                             )
-                            raise AristaAvdInvalidInputsError(msg)
+                            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                         loopback_interface_item.ospf_area = loopback.ospf.area
                     if loopback.hardware_forwarding:
                         loopback_interface_item.hardware_forwarding_id = True
                     self._set_virtual_source_nat_for_vrf_loopback(
                         loopback_interface_item.vrf,
                         loopback_interface_item.ip_address,
-                        ipv6_address=loopback.ipv6_addresses[0] if loopback.ipv6_addresses else None,
+                        ipv6_address=next(iter(loopback.ipv6_addresses), None),
                     )
                     self.structured_config.loopback_interfaces.append(loopback_interface_item)
 
