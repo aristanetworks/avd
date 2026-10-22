@@ -15,30 +15,6 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
 
-class AristaAvdWarning(UserWarning):
-    """Inherit Python Warning class for AVD."""
-
-    def __init__(self, message: str, host: str | None = None) -> None:
-        self.message = message
-        self.host = host
-        # Initialize the parent UserWarning class
-        super().__init__(self.message)
-
-    def __str__(self) -> str:
-        """Return the formatted string representation for the warning."""
-        if self.host:
-            return f"{self.message} for host '{self.host}'"
-        return self.message
-
-    @classmethod
-    def emit(cls, message: str, host: str | None = None, stacklevel: int = 2) -> None:
-        """Helper class method to raise/emit the warning directly."""
-        # Creating an instance triggers __init__
-        warning_instance = cls(message, host)
-        # Raising it via warnings.warn triggers __str__ under the hood
-        warnings.warn(warning_instance, category=cls, stacklevel=stacklevel)
-
-
 class AristaAvdError(Exception):
     host: str | None
 
@@ -66,6 +42,31 @@ class AristaAvdMissingVariableError(AristaAvdError):
         host_msg = f" for host '{host}'" if host else ""
         message = f"'{variable}' is required but was not found{host_msg}."
         super().__init__(message, host=host)
+
+
+class AristaAvdWarning(UserWarning):
+    """Inherit Python Warning class for AVD."""
+
+    def __init__(self, message: str, host: str | None = None) -> None:
+        self.message = message
+        self.host = host
+        # Initialize the parent UserWarning class
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        """Return the formatted string representation for the warning."""
+        if self.host:
+            return f"{self.message} for host '{self.host}'"
+        return self.message
+
+    @classmethod
+    def emit(cls, message: str, host: str | None = None, stacklevel: int = 2) -> None:
+        """Helper class method to raise/emit the warning directly."""
+        # Creating an instance triggers __init__
+        warning_instance = cls(message, host)
+        # Raising it via warnings.warn triggers __str__ under the hood
+        warnings.warn(warning_instance, category=cls, stacklevel=stacklevel)
+
 
 
 class AvdSchemaError(AristaAvdError):
