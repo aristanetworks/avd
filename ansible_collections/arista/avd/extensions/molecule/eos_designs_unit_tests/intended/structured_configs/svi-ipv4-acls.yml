@@ -97,6 +97,36 @@ router_bgp:
       - 10613:10613
     redistribute_routes:
     - learned
+  - id: 614
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10614
+    route_targets:
+      both:
+      - 10614:10614
+    redistribute_routes:
+    - learned
+  - id: 615
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10615
+    route_targets:
+      both:
+      - 10615:10615
+    redistribute_routes:
+    - learned
+  - id: 616
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10616
+    route_targets:
+      both:
+      - 10616:10616
+    redistribute_routes:
+    - learned
   - id: 617
     metadata:
       tenants:
@@ -115,6 +145,36 @@ router_bgp:
     route_targets:
       both:
       - 10618:10618
+    redistribute_routes:
+    - learned
+  - id: 619
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10619
+    route_targets:
+      both:
+      - 10619:10619
+    redistribute_routes:
+    - learned
+  - id: 620
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10620
+    route_targets:
+      both:
+      - 10620:10620
+    redistribute_routes:
+    - learned
+  - id: 621
+    metadata:
+      tenants:
+      - SVI_ACL_TESTS
+    rd: 192.168.255.1:10621
+    route_targets:
+      both:
+      - 10621:10621
     redistribute_routes:
     - learned
   vrfs:
@@ -175,6 +235,36 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
+- name: Vlan614
+  description: standard_acl_profile
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.14.1/24
+  access_group_in: SVI-STANDARD-IN
+  access_group_out: SVI-STANDARD-OUT
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- name: Vlan615
+  description: standard_acl_parent_profile
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.15.1/24
+  access_group_in: SVI-STANDARD-IN
+  access_group_out: SVI-STANDARD-OUT
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- name: Vlan616
+  description: standard_acl_child_override
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.16.1/24
+  access_group_in: SVI-STANDARD-OUT
+  access_group_out: SVI-STANDARD-IN
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
 - name: Vlan617
   description: standard_in_extended_out
   shutdown: false
@@ -191,6 +281,36 @@ vlan_interfaces:
   vrf: SVI_ACL_TESTS
   ip_address_virtual: 10.6.18.1/24
   access_group_in: SVI-EXTENDED_Vlan618
+  access_group_out: SVI-STANDARD-OUT
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- name: Vlan619
+  description: standard_acl_svi_override
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.19.1/24
+  access_group_in: SVI-STANDARD-OUT
+  access_group_out: SVI-STANDARD-IN
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- name: Vlan620
+  description: standard_acl_profile_node_override
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.20.1/24
+  access_group_in: SVI-STANDARD-OUT
+  access_group_out: SVI-STANDARD-IN
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- name: Vlan621
+  description: standard_acl_svi_node_override
+  shutdown: false
+  vrf: SVI_ACL_TESTS
+  ip_address_virtual: 10.6.21.1/24
+  access_group_in: SVI-STANDARD-IN
   access_group_out: SVI-STANDARD-OUT
   metadata:
     tenants:
@@ -216,6 +336,21 @@ vlans:
   metadata:
     tenants:
     - SVI_ACL_TESTS
+- id: 614
+  name: standard_acl_profile
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- id: 615
+  name: standard_acl_parent_profile
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- id: 616
+  name: standard_acl_child_override
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
 - id: 617
   name: standard_in_extended_out
   metadata:
@@ -223,6 +358,21 @@ vlans:
     - SVI_ACL_TESTS
 - id: 618
   name: extended_in_standard_out
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- id: 619
+  name: standard_acl_svi_override
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- id: 620
+  name: standard_acl_profile_node_override
+  metadata:
+    tenants:
+    - SVI_ACL_TESTS
+- id: 621
+  name: standard_acl_svi_node_override
   metadata:
     tenants:
     - SVI_ACL_TESTS
@@ -247,10 +397,22 @@ vxlan_interface:
         vni: 10612
       - id: 613
         vni: 10613
+      - id: 614
+        vni: 10614
+      - id: 615
+        vni: 10615
+      - id: 616
+        vni: 10616
       - id: 617
         vni: 10617
       - id: 618
         vni: 10618
+      - id: 619
+        vni: 10619
+      - id: 620
+        vni: 10620
+      - id: 621
+        vni: 10621
       vrfs:
       - name: SVI_ACL_TESTS
         vni: 1

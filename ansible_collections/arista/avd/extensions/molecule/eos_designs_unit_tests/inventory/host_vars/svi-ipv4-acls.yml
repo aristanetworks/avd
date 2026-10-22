@@ -1,5 +1,5 @@
 ---
-# Test standard IPv4 SVI ACL directions, reuse, and coexistence with extended ACLs.
+# Test standard IPv4 SVI ACL directions, reuse, coexistence with extended ACLs, and profile inheritance.
 type: l3leaf
 l3leaf:
   defaults:
@@ -10,6 +10,22 @@ l3leaf:
     - name: svi-ipv4-acls
       id: 1
       bgp_as: 65001
+svi_profiles:
+  - profile: standard_acl_parent
+    ipv4_standard_acl_in: SVI-STANDARD-IN
+    ipv4_standard_acl_out: SVI-STANDARD-OUT
+  - profile: standard_acl_inherited
+    parent_profile: standard_acl_parent
+  - profile: standard_acl_child_override
+    parent_profile: standard_acl_parent
+    ipv4_standard_acl_in: SVI-STANDARD-OUT
+    ipv4_standard_acl_out: SVI-STANDARD-IN
+  - profile: standard_acl_node_override
+    parent_profile: standard_acl_parent
+    nodes:
+      - node: svi-ipv4-acls
+        ipv4_standard_acl_in: SVI-STANDARD-OUT
+        ipv4_standard_acl_out: SVI-STANDARD-IN
 ipv4_acls:
   - name: SVI-EXTENDED
     entries:
@@ -51,6 +67,24 @@ tenants:
             ip_address_virtual: 10.6.13.1/24
             ipv4_standard_acl_in: SVI-STANDARD-IN
             ipv4_standard_acl_out: SVI-STANDARD-OUT
+          # Inherit both directions directly from a profile.
+          - id: 614
+            name: standard_acl_profile
+            enabled: true
+            ip_address_virtual: 10.6.14.1/24
+            profile: standard_acl_parent
+          # Inherit both directions through a child profile.
+          - id: 615
+            name: standard_acl_parent_profile
+            enabled: true
+            ip_address_virtual: 10.6.15.1/24
+            profile: standard_acl_inherited
+          # Child profile overrides both parent ACLs.
+          - id: 616
+            name: standard_acl_child_override
+            enabled: true
+            ip_address_virtual: 10.6.16.1/24
+            profile: standard_acl_child_override
           - id: 617
             name: standard_in_extended_out
             enabled: true
@@ -63,3 +97,27 @@ tenants:
             ip_address_virtual: 10.6.18.1/24
             ipv4_acl_in: SVI-EXTENDED
             ipv4_standard_acl_out: SVI-STANDARD-OUT
+          # SVI settings override both profile ACLs.
+          - id: 619
+            name: standard_acl_svi_override
+            enabled: true
+            ip_address_virtual: 10.6.19.1/24
+            profile: standard_acl_parent
+            ipv4_standard_acl_in: SVI-STANDARD-OUT
+            ipv4_standard_acl_out: SVI-STANDARD-IN
+          # Profile node settings override both parent ACLs.
+          - id: 620
+            name: standard_acl_profile_node_override
+            enabled: true
+            ip_address_virtual: 10.6.20.1/24
+            profile: standard_acl_node_override
+          # SVI node settings override both profile node ACLs.
+          - id: 621
+            name: standard_acl_svi_node_override
+            enabled: true
+            ip_address_virtual: 10.6.21.1/24
+            profile: standard_acl_node_override
+            nodes:
+              - node: svi-ipv4-acls
+                ipv4_standard_acl_in: SVI-STANDARD-IN
+                ipv4_standard_acl_out: SVI-STANDARD-OUT
