@@ -52,13 +52,13 @@ keys:
                 IPv4 extended access list name.
                 When `avd_design_future.raise_for_missing_management_eapi_acls` is enabled, the access-list must be defined under `ipv4_acls`.
                 Otherwise, no catalog entry is required.
-                Mutually exclusive with `ipv4_standard_acl`.
+                An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
                 Field substitution is not supported for eAPI references.
             ipv4_standard_acl:
               type: str
               description: |-
                 IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
-                Mutually exclusive with `ipv4_acl`.
+                An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
             ipv6_acl:
               type: str
               description: IPv6 access-list name.

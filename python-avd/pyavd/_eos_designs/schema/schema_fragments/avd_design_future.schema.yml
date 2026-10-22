@@ -135,6 +135,7 @@ keys:
       raise_for_missing_management_eapi_acls:
         type: bool
         description: |-
+          Available from AVD 6.5.0.
           Raise an error if an ACL referenced by `management_eapi.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.
           When enabled, configure the referenced extended ACL on devices where the eAPI VRF is enabled.
           When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog.

@@ -450,13 +450,7 @@ class AvdStructuredConfigBaseProtocol(
             vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"self.inputs.{context}")
             ipv4_acl = vrf.ipv4_acl
             ipv4_standard_acl = vrf.ipv4_standard_acl
-            if ipv4_acl is not None and ipv4_standard_acl is not None:
-                msg = (
-                    f"'{context}.ipv4_acl' (ACL '{ipv4_acl}') and '{context}.ipv4_standard_acl' "
-                    f"(ACL '{ipv4_standard_acl}') are mutually exclusive. "
-                    "Expected catalogs are 'ipv4_acls' for extended ACLs and 'ipv4_standard_acls' for standard ACLs."
-                )
-                raise AristaAvdInvalidInputsError(msg)
+            self.structured_config_utils._validate_ipv4_acl_exclusion(ipv4_acl, ipv4_standard_acl, context)
 
             if ipv4_standard_acl is not None:
                 self.structured_config_utils.set_ipv4_standard_acl(ipv4_standard_acl)

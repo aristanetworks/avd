@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'management_eapi.vrfs[name=management].ipv4_acl' (ACL 'EXTENDED') and 'management_eapi.vrfs[name=management].ipv4_standard_acl' (ACL 'STANDARD') are mutually exclusive. Expected catalogs are 'ipv4_acls' for extended ACLs and 'ipv4_standard_acls' for standard ACLs.
+pyavd._errors.AristaAvdInvalidInputsError: 'ipv4_acl' and 'ipv4_standard_acl' are mutually exclusive on VRF 'management_eapi.vrfs[name=management]'. Only one IPv4 ACL can be configured.

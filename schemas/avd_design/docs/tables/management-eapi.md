@@ -15,8 +15,8 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "management_eapi.vrfs") | List, items: Dictionary |  | See (+) on YAML tab |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_eapi.vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the eAPI under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the eAPI under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the eAPI under VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "management_eapi.vrfs.[].enabled") | Boolean | Required |  |  | Enable/disable Management eAPI for this VRF. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "management_eapi.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 extended access list name.<br>When `avd_design_future.raise_for_missing_management_eapi_acls` is enabled, the access-list must be defined under `ipv4_acls`.<br>Otherwise, no catalog entry is required.<br>Mutually exclusive with `ipv4_standard_acl`.<br>Field substitution is not supported for eAPI references. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "management_eapi.vrfs.[].ipv4_standard_acl") | String |  |  |  | IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.<br>Mutually exclusive with `ipv4_acl`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "management_eapi.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 extended access list name.<br>When `avd_design_future.raise_for_missing_management_eapi_acls` is enabled, the access-list must be defined under `ipv4_acls`.<br>Otherwise, no catalog entry is required.<br>An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.<br>Field substitution is not supported for eAPI references. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "management_eapi.vrfs.[].ipv4_standard_acl") | String |  |  |  | IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.<br>An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "management_eapi.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access-list name. |
 
 === "YAML"
@@ -48,12 +48,12 @@
           # IPv4 extended access list name.
           # When `avd_design_future.raise_for_missing_management_eapi_acls` is enabled, the access-list must be defined under `ipv4_acls`.
           # Otherwise, no catalog entry is required.
-          # Mutually exclusive with `ipv4_standard_acl`.
+          # An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
           # Field substitution is not supported for eAPI references.
           ipv4_acl: <str>
 
           # IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
-          # Mutually exclusive with `ipv4_acl`.
+          # An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
           ipv4_standard_acl: <str>
 
           # IPv6 access-list name.

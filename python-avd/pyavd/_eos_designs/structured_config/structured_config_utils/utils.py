@@ -70,18 +70,23 @@ class UtilsMixin(Protocol):
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
         self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))
 
-    def validate_ipv4_acl_names(self: StructuredConfigUtilsProtocol) -> None:
-        """Reject extended and standard IPv4 ACLs sharing a name on the rendered device."""
-        if not (extended_acls := self.structured_config._get("ip_access_lists")):
+    def _validate_ipv4_acl_exclusion(
+        self: StructuredConfigUtilsProtocol,
+        ipv4_acl: str | None,
+        ipv4_standard_acl: str | None,
+        context: str,
+        direction: str | None = None,
+    ) -> None:
+        """Raise if both IPv4 ACL types are set for the same target and direction."""
+        if not (ipv4_acl and ipv4_standard_acl):
             return
-        if not (standard_acls := self.structured_config._get("standard_access_lists")):
-            return
-
-        for acl in standard_acls:
-            if acl.name in extended_acls:
-                msg = (
-                    f"'standard_access_lists[name={acl.name}]': ACL '{acl.name}' expected from 'ipv4_standard_acls' "
-                    "is also rendered under 'ip_access_lists' (extended ACL catalog 'ipv4_acls'). "
-                    "Extended and standard ACL names must be distinct on each device."
-                )
-                raise AristaAvdInvalidInputsError(msg)
+        suffix = f"_{direction}" if direction is not None else ""
+        target = "interface" if direction is not None else "VRF"
+        direction_label = ""
+        if direction is not None:
+            direction_label = "ingress " if direction == "in" else "egress "
+        msg = (
+            f"'ipv4_acl{suffix}' and 'ipv4_standard_acl{suffix}' are mutually exclusive on {target} '{context}'. "
+            f"Only one {direction_label}IPv4 ACL can be configured."
+        )
+        raise AristaAvdInvalidInputsError(msg)
