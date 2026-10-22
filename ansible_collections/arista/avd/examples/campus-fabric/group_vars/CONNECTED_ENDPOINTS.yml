@@ -42,7 +42,6 @@ network_ports:
     description: 'IDF1 Standard Port'
     profile: PP-DOT1X
     native_vlan: 110
-    mode: "trunk phone"
     phone_vlan: 120
     phone_trunk_mode: untagged
     dot1x:
@@ -59,7 +58,6 @@ network_ports:
     description: 'IDF2 Standard Port'
     profile: PP-DOT1X
     native_vlan: 210
-    mode: "trunk phone"
     phone_vlan: 220
     phone_trunk_mode: untagged
     dot1x:
@@ -76,7 +74,6 @@ network_ports:
     description: 'IDF3 Standard Port'
     profile: PP-DOT1X
     native_vlan: 310
-    mode: "trunk phone"
     phone_vlan: 320
     phone_trunk_mode: untagged
     dot1x:
