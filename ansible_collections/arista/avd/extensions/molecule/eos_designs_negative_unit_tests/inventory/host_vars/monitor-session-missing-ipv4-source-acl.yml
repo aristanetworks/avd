@@ -1,6 +1,8 @@
 ---
 # The ACL exists only in the other IPv4 catalog; the selected catalog must be used.
 type: l2leaf
+avd_design_future:
+  validate_monitor_session_acls: true
 l2leaf:
   nodes:
     - name: monitor-session-missing-ipv4-source-acl
@@ -19,7 +21,7 @@ network_ports:
         role: source
         source_settings:
           access_group:
-            type: ipv4
+            type: ip
             name: MONITOR-ACL
 expected_error_message: >-
   'ipv4_acls[name=MONITOR-ACL]' is required but was not found for host 'monitor-session-missing-ipv4-source-acl'.

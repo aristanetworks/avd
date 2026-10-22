@@ -192,12 +192,6 @@ hardware:
     serdes: 25G
 hostname: dc1-bl1a
 ip_access_lists:
-- name: myIpAVL
-  entries:
-  - action: permit
-    protocol: ip
-    source: any
-    destination: any
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet12
   entries:
   - sequence: 15

@@ -90,9 +90,11 @@ class MonitorSessionsMixin(Protocol):
 
     def _set_monitor_session_access_group(self: AvdStructuredConfigBaseProtocol, acl_type: str, acl_name: str) -> None:
         """Validate and configure ACLs referenced by monitor sessions."""
+        if acl_type in ("ip", "ipv6", "mac") and not self.inputs.avd_design_future.validate_monitor_session_acls:
+            return
         self._validate_monitor_session_access_group(acl_type, acl_name)
         match acl_type:
-            case "ip" | "ipv4":
+            case "ip":
                 self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[acl_name])
             case "ipv4_standard":
                 self.structured_config_utils._set_ipv4_standard_acl(acl_name)
@@ -105,7 +107,6 @@ class MonitorSessionsMixin(Protocol):
         """Validate that the referenced ACL exists in the corresponding catalog without generating its definition."""
         catalog_name = {
             "ip": "ipv4_acls",
-            "ipv4": "ipv4_acls",
             "ipv4_standard": "ipv4_standard_acls",
             "ipv6": "ipv6_acls",
             "mac": "mac_acls",
@@ -120,7 +121,9 @@ class MonitorSessionsMixin(Protocol):
         | None,
     ) -> EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup.Type | None:
         """Return the EOS ACL type for a monitor-session access group."""
-        return "ip" if acl_type in ("ipv4", "ipv4_standard") else acl_type
+        if acl_type == "ipv4_standard":
+            return "ip"
+        return acl_type
 
     @staticmethod
     def _validate_monitor_session_on_subinterface(

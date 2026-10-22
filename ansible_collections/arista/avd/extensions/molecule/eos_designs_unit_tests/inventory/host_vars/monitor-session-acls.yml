@@ -1,6 +1,8 @@
 ---
 # Test IPv4 extended, IPv4 standard and IPv6 ACLs at monitor-session source and session scope.
 type: l2leaf
+avd_design_future:
+  validate_monitor_session_acls: true
 l2leaf:
   nodes:
     - name: monitor-session-acls
@@ -57,7 +59,7 @@ network_ports:
         source_settings:
           direction: rx
           access_group:
-            type: ipv4
+            type: ip
             name: MONITOR-IPV4
             priority: 5
   - switches: [monitor-session-acls]
@@ -78,7 +80,7 @@ network_ports:
         role: source
         session_settings:
           access_group:
-            type: ipv4
+            type: ip
             name: MONITOR-IPV4
   - switches: [monitor-session-acls]
     switch_ports: [Ethernet5]

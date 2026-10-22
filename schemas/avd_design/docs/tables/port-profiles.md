@@ -164,14 +164,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_settings</samp>](## "port_profiles.[].monitor_sessions.[].source_settings") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "port_profiles.[].monitor_sessions.[].source_settings.direction") | String |  |  | Valid Values:<br>- <code>rx</code><br>- <code>tx</code><br>- <code>both</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "port_profiles.[].monitor_sessions.[].source_settings.access_group") | Dictionary |  |  |  | This can only be set when `session_settings.access_group` is not set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "port_profiles.[].monitor_sessions.[].source_settings.access_group.type") | String | Required |  | Valid Values:<br>- <code>ip</code><br>- <code>ipv4</code><br>- <code>ipv4_standard</code><br>- <code>ipv6</code><br>- <code>mac</code> | ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,<br>`ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.<br>The named ACL must exist in the corresponding catalog and its definition is configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "port_profiles.[].monitor_sessions.[].source_settings.access_group.type") | String | Required |  | Valid Values:<br>- <code>ip</code><br>- <code>ipv4_standard</code><br>- <code>ipv6</code><br>- <code>mac</code> | ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,<br>`ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.<br>IPv4 standard ACLs must exist in `ipv4_standard_acls` and their definitions are configured.<br>For `ip`, `ipv6`, and `mac`, catalog validation and configuration require `avd_design_future.validate_monitor_session_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "port_profiles.[].monitor_sessions.[].source_settings.access_group.name") | String | Required |  |  | ACL name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "port_profiles.[].monitor_sessions.[].source_settings.access_group.priority") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_settings</samp>](## "port_profiles.[].monitor_sessions.[].session_settings") | Dictionary |  |  |  | Session settings are defined per session name.<br>Different session_settings for the same session name will be combined/merged.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_gre_metadata_tx</samp>](## "port_profiles.[].monitor_sessions.[].session_settings.encapsulation_gre_metadata_tx") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header_remove_size</samp>](## "port_profiles.[].monitor_sessions.[].session_settings.header_remove_size") | Integer |  |  |  | Number of bytes to remove from header. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "port_profiles.[].monitor_sessions.[].session_settings.access_group") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "port_profiles.[].monitor_sessions.[].session_settings.access_group.type") | String | Required |  | Valid Values:<br>- <code>ip</code><br>- <code>ipv4</code><br>- <code>ipv4_standard</code><br>- <code>ipv6</code><br>- <code>mac</code> | ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,<br>`ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.<br>The named ACL must exist in the corresponding catalog and its definition is configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "port_profiles.[].monitor_sessions.[].session_settings.access_group.type") | String | Required |  | Valid Values:<br>- <code>ip</code><br>- <code>ipv4_standard</code><br>- <code>ipv6</code><br>- <code>mac</code> | ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,<br>`ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.<br>IPv4 standard ACLs must exist in `ipv4_standard_acls` and their definitions are configured.<br>For `ip`, `ipv6`, and `mac`, catalog validation and configuration require `avd_design_future.validate_monitor_session_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "port_profiles.[].monitor_sessions.[].session_settings.access_group.name") | String | Required |  |  | ACL name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_limit_per_ingress_chip</samp>](## "port_profiles.[].monitor_sessions.[].session_settings.rate_limit_per_ingress_chip") | String |  |  |  | Ratelimit and unit as string.<br>Examples:<br>  "100000 bps"<br>  "100 kbps"<br>  "10 mbps"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_limit_per_egress_chip</samp>](## "port_profiles.[].monitor_sessions.[].session_settings.rate_limit_per_egress_chip") | String |  |  |  | Ratelimit and unit as string.<br>Examples:<br>  "100000 bps"<br>  "100 kbps"<br>  "10 mbps"<br> |
@@ -636,10 +636,11 @@
               # This can only be set when `session_settings.access_group` is not set.
               access_group:
 
-                # ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                # ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
                 # `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
-                # The named ACL must exist in the corresponding catalog and its definition is configured.
-                type: <str; "ip" | "ipv4" | "ipv4_standard" | "ipv6" | "mac"; required>
+                # IPv4 standard ACLs must exist in `ipv4_standard_acls` and their definitions are configured.
+                # For `ip`, `ipv6`, and `mac`, catalog validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                type: <str; "ip" | "ipv4_standard" | "ipv6" | "mac"; required>
 
                 # ACL name.
                 name: <str; required>
@@ -654,10 +655,11 @@
               header_remove_size: <int>
               access_group:
 
-                # ACL catalog type. `ip` and `ipv4` reference `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                # ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
                 # `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
-                # The named ACL must exist in the corresponding catalog and its definition is configured.
-                type: <str; "ip" | "ipv4" | "ipv4_standard" | "ipv6" | "mac"; required>
+                # IPv4 standard ACLs must exist in `ipv4_standard_acls` and their definitions are configured.
+                # For `ip`, `ipv6`, and `mac`, catalog validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                type: <str; "ip" | "ipv4_standard" | "ipv6" | "mac"; required>
 
                 # ACL name.
                 name: <str; required>
