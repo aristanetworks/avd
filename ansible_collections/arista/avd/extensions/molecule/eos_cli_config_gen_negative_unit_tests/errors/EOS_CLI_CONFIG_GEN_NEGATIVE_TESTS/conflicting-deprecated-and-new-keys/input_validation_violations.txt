@@ -1,0 +1,2 @@
+[['ethernet_interfaces', '0', 'ipv6_address']]: 'The input data model is deprecated and cannot be used in conjunction with the new data model 'ipv6_addresses'.'
+[['ethernet_interfaces', '1', 'ipv6_nd_ra_disabled']]: 'The input data model is deprecated and cannot be used in conjunction with the new data model 'ipv6_nd.ra.disabled'.'

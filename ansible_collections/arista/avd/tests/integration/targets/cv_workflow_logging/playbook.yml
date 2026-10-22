@@ -1,0 +1,16 @@
+---
+- name: Verify CV diagnostic results with real Ansible logging and callbacks
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    # Keep deployments in separate tasks, matching the cv_deploy role. A task loop
+    # would retain legacy root handlers between iterations in the same worker.
+    - name: Verify successful and failed deployments with summary and detailed results
+      ansible.builtin.include_tasks: verify_case.yml
+      loop:
+        - success-summary
+        - success-details
+        - failure-summary
+        - failure-details
+      loop_control:
+        loop_var: probe_case
