@@ -68,7 +68,6 @@ class AristaAvdWarning(UserWarning):
         warnings.warn(warning_instance, category=cls, stacklevel=stacklevel)
 
 
-
 class AvdSchemaError(AristaAvdError):
     def __init__(self, message: str = "Schema Error", path: Sequence[str | int] | None = None) -> None:
         if path is not None:
