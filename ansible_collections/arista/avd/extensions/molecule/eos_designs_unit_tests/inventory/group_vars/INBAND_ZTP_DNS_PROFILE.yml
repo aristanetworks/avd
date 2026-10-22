@@ -1,0 +1,24 @@
+---
+fabric_name: INBAND_ZTP_DNS_PROFILE
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.0.254.0/24
+    bgp_as: 64999
+  nodes:
+    - name: inband-ztp-dns-profile-spine
+      id: 1
+      dns_settings_profile: ztp_dns_profile
+
+l3leaf:
+  defaults:
+    bgp_as: 65000
+    loopback_ipv4_pool: 10.0.255.0/24
+    vtep_loopback_ipv4_pool: 10.0.254.0/24
+  nodes:
+    - name: inband-ztp-dns-profile-leaf
+      id: 7
+      inband_ztp: true
+      uplink_switches: [inband-ztp-dns-profile-spine]
+      uplink_interfaces: [Ethernet1]
+      uplink_switch_interfaces: [Ethernet1]
+      uplink_ipv4_pool: 172.16.255.0/24
