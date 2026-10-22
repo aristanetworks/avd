@@ -1,9 +1,22 @@
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import sys
+import warnings
 from typing import TYPE_CHECKING
 
 from ._lazy_import import LazyImports, install_lazy_imports
+
+# The Ansible collection reports this deprecation at runtime through verify_requirements.
+if sys.version_info[:2] == (3, 10) and "ansible_collections.arista.avd.plugins" not in sys.modules:
+    warnings.warn(
+        "Python 3.10 has reached end of life and no longer receives security updates. "
+        "AVD will drop support for Python 3.10 in a future release. "
+        "Please upgrade to a newer Python version supported by AVD. "
+        "See the https://avd.arista.com/stable/docs/installation/collection-installation.html#ansible-collection-installation guide for supported versions.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
 
 if TYPE_CHECKING:
     from .api.eos_cli_config_gen import ConfigRenderConfiguration as ConfigRenderConfiguration
