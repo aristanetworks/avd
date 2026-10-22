@@ -16,10 +16,6 @@ from yaml import dump as yaml_dump
 from yaml import load as yaml_load
 
 from .constants import LICENSE_HEADER, METASCHEMA_DIR, SCHEMA_STORE_ARCHIVE_FILE, SCHEMA_STORE_GZ_FILE, SCHEMAS
-from .generate_classes.src_generators import FileSrc
-from .generate_classes.utils import generate_class_name
-from .generate_docs.mdtabsgen import get_md_tabs
-from .metaschema.meta_schema_model import AristaAvdSchema
 from .store import create_store
 
 try:
@@ -99,44 +95,37 @@ def validate_schemas(schema_store: dict) -> None:
         schema_validator.validate(schema)
 
 
-def build_schema_tables(schema_store: dict) -> None:
+def build_schema_tables() -> None:
     """Build schema tables."""
+    from pyavd_utils_gen.schema_generation import generate_schema_documentation_from_paths  # noqa: PLC0415
+
     LOGGER.info("Rebuilding schema documentation tables...")
+    raw_yaml_schema_paths = {schema_name: schema_paths.yaml_file for schema_name, schema_paths in SCHEMAS.items() if schema_name != "avd_meta_schema"}
     for schema_name, schema_paths in SCHEMAS.items():
         if not schema_paths.docs_path:
             continue
 
-        schema = AristaAvdSchema(**schema_store[schema_name])
-        table_names = sorted(schema._descendant_tables)
-        output_dir = schema_paths.docs_path.joinpath("tables")
-        for table_name in table_names:
-            LOGGER.debug("Building table: %s from schema %s", table_name, schema_name)
-            table_file = output_dir.joinpath(f"{table_name}.md")
-            with Path(table_file).open(mode="w", encoding="UTF-8") as file:
-                file.write(get_md_tabs(schema, table_name))
-
-        # Clean up other markdown files not covered by the tables.
-        remove_files = [file for file in output_dir.glob("*.md") if file.is_file() and file.name.removesuffix(".md") not in table_names]
-        for file in remove_files:
-            LOGGER.info("Deleting file %s", file.absolute())
-            file.unlink()
+        LOGGER.info("Building schema documentation: %s", schema_name)
+        generate_schema_documentation_from_paths(raw_yaml_schema_paths, schema_name, schema_paths.docs_path.joinpath("tables"))
 
 
 def build_schema_classes() -> None:
     """Build Python Classes from schema."""
+    from pyavd_utils_gen.schema_generation import generate_python_schema_models_from_paths  # noqa: PLC0415
+
     LOGGER.info("Rebuilding schema Python Classes...")
-    # We use a special schema store since we only wish to resolve a subset of the $defs. This is to have more reuse of the generated classes
-    raw_yaml_schema_store = create_store(load_from_yaml=True)
+    # Load unresolved source schemas so generation can preserve references and reuse eligible model types.
+    raw_yaml_schema_paths = {schema_name: schema_paths.yaml_file for schema_name, schema_paths in SCHEMAS.items() if schema_paths.python_class}
     for schema_name, schema_paths in SCHEMAS.items():
         if not schema_paths.python_class:
             continue
 
-        schema = AristaAvdSchema(_resolve_schema=schema_name, **raw_yaml_schema_store[schema_name])
         LOGGER.info("Building Python Classes from schema: %s", schema_name)
-        schemasrc = schema._generate_class_src(class_name=generate_class_name(schema_name))
-        src_file_contents = FileSrc(classes=[schemasrc.cls])
-        with schema_paths.python_class.open(mode="w", encoding="UTF-8") as file:
-            file.write(str(src_file_contents))
+        generate_python_schema_models_from_paths(
+            raw_yaml_schema_paths,
+            schema_name,
+            schema_paths.python_class,
+        )
 
         LOGGER.info("Running 'ruff' for Python class file: %s", schema_paths.python_class)
         subprocess.run(["ruff", "check", "--fix", str(schema_paths.python_class)], check=False)  # noqa: S603, S607
@@ -153,5 +142,5 @@ def build_schemas() -> None:
     LOGGER.info("Rebuilding pickled schemas")
     schema_store = create_store(force_rebuild=True)
     validate_schemas(schema_store)
-    build_schema_tables(schema_store)
+    build_schema_tables()
     build_schema_classes()

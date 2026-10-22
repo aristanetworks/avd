@@ -18,8 +18,6 @@ keys:
         default: OOB_MANAGEMENT
       vrf:
         type: str
-        convert_types:
-          - int
         description: |-
           VRF name used for the management interface.
         default: MGMT
@@ -45,6 +43,4 @@ keys:
             description: Enable LLDP reception on the management interface.
           ztp_vlan:
             type: int
-            convert_types:
-              - str
             description: VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP).

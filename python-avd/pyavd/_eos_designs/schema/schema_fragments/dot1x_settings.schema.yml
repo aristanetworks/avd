@@ -67,6 +67,9 @@ keys:
       bypass_bpdu:
         type: bool
         default: true
+        description: |-
+          Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+          Ignored when `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
         $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_bpdu_bypass
       bypass_lldp:
         type: bool

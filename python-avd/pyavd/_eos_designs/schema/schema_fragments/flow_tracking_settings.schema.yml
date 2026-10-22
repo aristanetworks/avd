@@ -27,8 +27,6 @@ keys:
                 type: bool
           sample:
             type: int
-            convert_types:
-              - str
             min: 1
             max: 4294967295
             default: 10000
@@ -43,8 +41,6 @@ keys:
                 description: Configure hardware offload for IPv6 traffic.
               threshold_minimum:
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 4294967295
                 description: Minimum number of samples.
@@ -99,8 +95,6 @@ keys:
               keys:
                 table_size:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 614400
                   description: |
@@ -116,15 +110,11 @@ keys:
               keys:
                 on_inactive_timeout:
                   type: int
-                  convert_types:
-                    - str
                   min: 3000
                   max: 900000
                   description: Flow record inactive export timeout in milliseconds
                 on_interval:
                   type: int
-                  convert_types:
-                    - str
                   min: 1000
                   max: 36000000
                   description: Flow record export interval in milliseconds
@@ -152,8 +142,6 @@ keys:
                     keys:
                       ipfix_version:
                         type: int
-                        convert_types:
-                          - str
                   local_interface:
                     type: str
                     default: use_default_mgmt_method_interface
@@ -166,8 +154,6 @@ keys:
                         - Any other string will be used directly as the local interface.
                   template_interval:
                     type: int
-                    convert_types:
-                      - str
                     min: 5000
                     max: 3600000
                     description: Template interval in milliseconds

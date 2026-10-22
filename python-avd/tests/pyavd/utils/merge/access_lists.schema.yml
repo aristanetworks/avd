@@ -33,8 +33,6 @@ keys:
               sequence:
                 type: int
                 display_name: sequence_id
-                convert_types:
-                  - str
               action:
                 type: str
                 required: true

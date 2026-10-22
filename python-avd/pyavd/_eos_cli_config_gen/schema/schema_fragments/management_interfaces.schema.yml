@@ -27,8 +27,6 @@ keys:
         vrf:
           type: str
           description: VRF Name.
-          convert_types:
-            - int
         ip_address:
           type: str
           description: IPv4_address/Mask.
@@ -84,8 +82,6 @@ keys:
               type: bool
             ztp_vlan:
               type: int
-              convert_types:
-                - str
               description: ZTP vlan number.
         redundancy:
           type: dict
@@ -95,8 +91,6 @@ keys:
               description: |-
                 The duration to wait before falling back to the higher-priority interface.
                 Accepts a value between 0 and 3600 seconds, or the string `infinity` to disable fallback.
-              convert_types:
-                - int
             monitor:
               type: dict
               keys:
@@ -119,15 +113,11 @@ keys:
                       description: Interval between neighbor probes in milliseconds.
                       min: 1
                       max: 300000
-                      convert_types:
-                        - str
                     multiplier:
                       type: int
                       description: Number of missed neighbor replies after which it is timed out.
                       min: 1
                       max: 100
-                      convert_types:
-                        - str
             supervisor_1:
               type: dict
               description: Configuration for supervisor 1, including its primary and backup management interfaces.
