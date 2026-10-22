@@ -24,5 +24,3 @@ keys:
         vrf:
           type: str
           display_name: VRF
-          convert_types:
-            - int
