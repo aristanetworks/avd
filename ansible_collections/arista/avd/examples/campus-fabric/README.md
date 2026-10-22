@@ -53,6 +53,15 @@ The drawing below shows the physical topology used in this example. The interfac
 ![Figure: 1](images/campus_topo.svg#only-light)
 ![Figure: 1](images/campus_topo_dark.svg#only-dark)
 
+!!! note "Platform-specific configuration"
+
+    This example uses `platform: cEOS` for all switches. AVD omits configuration
+    for features that cEOS does not support, such as Power over Ethernet (PoE),
+    even when those settings are defined in the inputs. When adapting this example
+    for physical switches, select the appropriate AVD platform to render the
+    configuration supported by that hardware. Also review the interface assignments
+    and management interface name for the selected hardware.
+
 ## Basic EOS Switch Configuration
 
 Basic connectivity between the Ansible controller host and the switches must be established before Ansible can be used to deploy configurations. The following should be configured on all switches:
