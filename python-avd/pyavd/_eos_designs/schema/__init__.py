@@ -34475,8 +34475,7 @@ class EosDesigns(EosDesignsRootModel):
                     The access-list must be
                     defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                     Mutually exclusive
-                    with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-                    needed, setting both raises an error.
+                    with `ipv4_standard_acl_in`. Setting both raises an error.
                     """
                     ipv4_acl_out: str | None
                     """
@@ -34484,8 +34483,7 @@ class EosDesigns(EosDesignsRootModel):
                     The access-list must be defined
                     under `ipv4_acls` and supports substitution of the field "interface_ip".
                     Mutually exclusive with
-                    `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-                    needed, setting both raises an error.
+                    `ipv4_standard_acl_out`. Setting both raises an error.
                     """
                     ipv6_acl_in: str | None
                     """
@@ -34774,15 +34772,13 @@ class EosDesigns(EosDesignsRootModel):
                                    The access-list must be
                                    defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                                    Mutually exclusive
-                                   with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-                                   needed, setting both raises an error.
+                                   with `ipv4_standard_acl_in`. Setting both raises an error.
                                 ipv4_acl_out:
                                    Name of the IPv4 Access-list to be assigned in the egress direction.
                                    The access-list must be defined
                                    under `ipv4_acls` and supports substitution of the field "interface_ip".
                                    Mutually exclusive with
-                                   `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-                                   needed, setting both raises an error.
+                                   `ipv4_standard_acl_out`. Setting both raises an error.
                                 ipv6_acl_in:
                                    Name of the IPv6 access-list to be assigned in the ingress direction.
                                    The access-list must be
@@ -35987,8 +35983,7 @@ class EosDesigns(EosDesignsRootModel):
                 The access-list must be
                 defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                 Mutually exclusive
-                with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-                needed, setting both raises an error.
+                with `ipv4_standard_acl_in`. Setting both raises an error.
                 """
                 ipv4_acl_out: str | None
                 """
@@ -35996,8 +35991,7 @@ class EosDesigns(EosDesignsRootModel):
                 The access-list must be defined
                 under `ipv4_acls` and supports substitution of the field "interface_ip".
                 Mutually exclusive with
-                `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-                needed, setting both raises an error.
+                `ipv4_standard_acl_out`. Setting both raises an error.
                 """
                 ipv6_acl_in: str | None
                 """
@@ -36316,15 +36310,13 @@ class EosDesigns(EosDesignsRootModel):
                                The access-list must be
                                defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                                Mutually exclusive
-                               with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-                               needed, setting both raises an error.
+                               with `ipv4_standard_acl_in`. Setting both raises an error.
                             ipv4_acl_out:
                                Name of the IPv4 Access-list to be assigned in the egress direction.
                                The access-list must be defined
                                under `ipv4_acls` and supports substitution of the field "interface_ip".
                                Mutually exclusive with
-                               `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-                               needed, setting both raises an error.
+                               `ipv4_standard_acl_out`. Setting both raises an error.
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
@@ -52611,8 +52603,7 @@ class EosDesigns(EosDesignsRootModel):
             The access-list must be
             defined under `ipv4_acls` and supports substitution of the field "interface_ip".
             Mutually exclusive
-            with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-            needed, setting both raises an error.
+            with `ipv4_standard_acl_in`. Setting both raises an error.
             """
             ipv4_acl_out: str | None
             """
@@ -52620,8 +52611,7 @@ class EosDesigns(EosDesignsRootModel):
             The access-list must be defined
             under `ipv4_acls` and supports substitution of the field "interface_ip".
             Mutually exclusive with
-            `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-            needed, setting both raises an error.
+            `ipv4_standard_acl_out`. Setting both raises an error.
             """
             ipv6_acl_in: str | None
             """
@@ -52903,15 +52893,13 @@ class EosDesigns(EosDesignsRootModel):
                            The access-list must be
                            defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                            Mutually exclusive
-                           with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-                           needed, setting both raises an error.
+                           with `ipv4_standard_acl_in`. Setting both raises an error.
                         ipv4_acl_out:
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports substitution of the field "interface_ip".
                            Mutually exclusive with
-                           `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-                           needed, setting both raises an error.
+                           `ipv4_standard_acl_out`. Setting both raises an error.
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
@@ -54082,8 +54070,7 @@ class EosDesigns(EosDesignsRootModel):
         The access-list must be
         defined under `ipv4_acls` and supports substitution of the field "interface_ip".
         Mutually exclusive
-        with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-        needed, setting both raises an error.
+        with `ipv4_standard_acl_in`. Setting both raises an error.
         """
         ipv4_acl_out: str | None
         """
@@ -54091,8 +54078,7 @@ class EosDesigns(EosDesignsRootModel):
         The access-list must be defined
         under `ipv4_acls` and supports substitution of the field "interface_ip".
         Mutually exclusive with
-        `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-        needed, setting both raises an error.
+        `ipv4_standard_acl_out`. Setting both raises an error.
         """
         ipv6_acl_in: str | None
         """
@@ -54392,15 +54378,13 @@ class EosDesigns(EosDesignsRootModel):
                        The access-list must be
                        defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                        Mutually exclusive
-                       with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-                       needed, setting both raises an error.
+                       with `ipv4_standard_acl_in`. Setting both raises an error.
                     ipv4_acl_out:
                        Name of the IPv4 Access-list to be assigned in the egress direction.
                        The access-list must be defined
                        under `ipv4_acls` and supports substitution of the field "interface_ip".
                        Mutually exclusive with
-                       `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-                       needed, setting both raises an error.
+                       `ipv4_standard_acl_out`. Setting both raises an error.
                     ipv6_acl_in:
                        Name of the IPv6 access-list to be assigned in the ingress direction.
                        The access-list must be
@@ -87731,8 +87715,7 @@ class EosDesigns(EosDesignsRootModel):
                             The access-list must be
                             defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                             Mutually exclusive
-                            with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-                            needed, setting both raises an error.
+                            with `ipv4_standard_acl_in`. Setting both raises an error.
                             """
                             ipv4_acl_out: str | None
                             """
@@ -87740,8 +87723,7 @@ class EosDesigns(EosDesignsRootModel):
                             The access-list must be defined
                             under `ipv4_acls` and supports substitution of the field "interface_ip".
                             Mutually exclusive with
-                            `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-                            needed, setting both raises an error.
+                            `ipv4_standard_acl_out`. Setting both raises an error.
                             """
                             ipv6_acl_in: str | None
                             """
@@ -88030,15 +88012,13 @@ class EosDesigns(EosDesignsRootModel):
                                            The access-list must be
                                            defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                                            Mutually exclusive
-                                           with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-                                           needed, setting both raises an error.
+                                           with `ipv4_standard_acl_in`. Setting both raises an error.
                                         ipv4_acl_out:
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports substitution of the field "interface_ip".
                                            Mutually exclusive with
-                                           `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-                                           needed, setting both raises an error.
+                                           `ipv4_standard_acl_out`. Setting both raises an error.
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
@@ -89245,8 +89225,7 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be
                         defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                         Mutually exclusive
-                        with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-                        needed, setting both raises an error.
+                        with `ipv4_standard_acl_in`. Setting both raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
@@ -89254,8 +89233,7 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports substitution of the field "interface_ip".
                         Mutually exclusive with
-                        `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-                        needed, setting both raises an error.
+                        `ipv4_standard_acl_out`. Setting both raises an error.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -89574,15 +89552,13 @@ class EosDesigns(EosDesignsRootModel):
                                        The access-list must be
                                        defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                                        Mutually exclusive
-                                       with `ipv4_standard_acl_in`. Takes precedence over `ipv4_standard_acl_in` when field substitution is
-                                       needed, setting both raises an error.
+                                       with `ipv4_standard_acl_in`. Setting both raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports substitution of the field "interface_ip".
                                        Mutually exclusive with
-                                       `ipv4_standard_acl_out`. Takes precedence over `ipv4_standard_acl_out` when field substitution is
-                                       needed, setting both raises an error.
+                                       `ipv4_standard_acl_out`. Setting both raises an error.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
