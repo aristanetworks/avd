@@ -437,6 +437,8 @@ tenant_a:
 
 ipv4_acls:
   # ACLs referenced by monitor sessions in tenant interfaces and DC1_SERVERS.
+  # avd_design_future.validate_monitor_session_acls is intentionally unset to test the default behavior:
+  # monitor sessions render ACL references without validating or configuring their catalog definitions.
   - name: ip_acl
     entries:
       - action: permit
@@ -509,6 +511,7 @@ ipv6_acls:
         destination: any
 
 # ACL referenced by the MAC monitor session in DC1_SERVERS.
+# With avd_design_future.validate_monitor_session_acls unset, this catalog entry is not validated or configured by the monitor session.
 mac_acls:
   - name: mac_acl
     entries:
