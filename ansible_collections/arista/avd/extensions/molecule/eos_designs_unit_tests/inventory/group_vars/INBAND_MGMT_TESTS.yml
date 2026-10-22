@@ -139,6 +139,7 @@ l2leaf:
       uplink_switches: [inband-mgmt-parent-dualstack1, inband-mgmt-parent-dualstack2]
       inband_mgmt_subnet: 192.168.104.0/24
       inband_mgmt_ipv6_subnet: 2a00:104::/64
+      inband_mgmt_ipv6_subnet_offset: 3
       id: 4
     - name: inband-mgmt-dualstack-ips
       inband_mgmt_vlan: 105
