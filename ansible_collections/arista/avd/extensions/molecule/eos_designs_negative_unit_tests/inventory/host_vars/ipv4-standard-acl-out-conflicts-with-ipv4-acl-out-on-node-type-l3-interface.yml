@@ -16,4 +16,6 @@ spine:
           ipv4_standard_acl_out: STD-ACL-OUT
 
 expected_error_message: >-
-  'ipv4_acl_out' and 'ipv4_standard_acl_out' are mutually exclusive on interface 'spine.nodes[name=ipv4-standard-acl-out-conflicts-with-ipv4-acl-out-on-node-type-l3-interface].l3_interfaces[name=Ethernet1]'. Only one egress IPv4 ACL can be configured.
+  'ipv4_acl_out' and 'ipv4_standard_acl_out' are mutually exclusive on interface
+  'spine.nodes[name=ipv4-standard-acl-out-conflicts-with-ipv4-acl-out-on-node-type-l3-interface].l3_interfaces[name=Ethernet1]'.
+  Only one egress IPv4 ACL can be configured.
