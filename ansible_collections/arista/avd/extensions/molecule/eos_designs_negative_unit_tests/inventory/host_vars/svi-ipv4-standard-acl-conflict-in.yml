@@ -22,4 +22,5 @@ tenants:
             ipv4_standard_acl_in: SVI-STANDARD
             ipv4_acl_in: SVI-EXTENDED
 expected_error_message: >-
-  'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on interface 'tenants[name=ACL_TEST].vrfs[name=ACL_TEST].svis[id=10]'. Only one ingress IPv4 ACL can be configured.
+  'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on interface 'tenants[name=ACL_TEST].vrfs[name=ACL_TEST].svis[id=10]'.
+  Only one ingress IPv4 ACL can be configured.
