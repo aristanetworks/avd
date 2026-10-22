@@ -77,7 +77,8 @@ def get_facts(
         try:
             all_facts[hostname] = generator.render()
         except AristaAvdError as e:  # noqa: PERF203
-            raise e.with_host(e.host or hostname) from e
+            e.add_host_context(hostname)
+            raise
 
     return all_facts
 

@@ -58,11 +58,16 @@ class MacAccessListsMixin(Protocol):
                     raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
                 if acl_entry.source == "any" and acl_entry.source_wildcard:
-                    msg = f"Can not set 'mac_acls[name={acl_name}].entries[{index}].source_wildcard' when source is 'any'."
+                    msg = (
+                        f"Can not set 'mac_acls[name={acl_name}].entries[{index}].source_wildcard' when source is 'any' for host {self.shared_utils.hostname}."
+                    )
                     raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 if acl_entry.destination == "any" and acl_entry.destination_wildcard:
-                    msg = f"Can not set 'mac_acls[name={acl_name}].entries[{index}].destination_wildcard' when destination is 'any'."
+                    msg = (
+                        f"Can not set 'mac_acls[name={acl_name}].entries[{index}].destination_wildcard' when destination is 'any'"
+                        f" for host {self.shared_utils.hostname}."
+                    )
                     raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 action += acl_entry.action

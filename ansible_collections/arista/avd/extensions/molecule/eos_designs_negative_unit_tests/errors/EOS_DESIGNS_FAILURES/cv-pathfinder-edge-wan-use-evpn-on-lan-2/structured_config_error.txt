@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: WAN gateway is supported only on sites with a single WAN router, configured: 2
+pyavd._errors.AristaAvdError: WAN gateway is supported only on sites with a single WAN router, configured: 2

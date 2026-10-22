@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: The per-VRF setting 'tenants[name=TEST].vrfs[name=default].bgp.graceful_restart' is not supported for VRF 'default'. Use the global 'bgp_graceful_restart' setting instead for host 'failure-graceful-restart-in-vrf-default'.
+pyavd._errors.AristaAvdInvalidInputsError: The per-VRF setting 'tenants[name=TEST].vrfs[name=default].bgp.graceful_restart' is not supported for VRF 'default'. Use the global 'bgp_graceful_restart' setting instead.

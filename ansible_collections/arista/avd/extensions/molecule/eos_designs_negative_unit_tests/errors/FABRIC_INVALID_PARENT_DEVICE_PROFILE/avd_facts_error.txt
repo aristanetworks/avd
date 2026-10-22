@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: Parent profile 'invalid-profile' applied under profile 'L3LEAF_PARENT_PROFILE' does not exist in 'device_profiles' for host 'fabric-invalid-parent-device-profile'.
+pyavd._errors.AristaAvdInvalidInputsError: Parent profile 'invalid-profile' applied under profile 'L3LEAF_PARENT_PROFILE' does not exist in 'device_profiles'.

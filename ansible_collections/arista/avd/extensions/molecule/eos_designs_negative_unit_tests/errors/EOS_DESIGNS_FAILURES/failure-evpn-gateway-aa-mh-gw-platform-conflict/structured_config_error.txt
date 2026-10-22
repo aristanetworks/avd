@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings.feature_support.
+pyavd._errors.AristaAvdError: The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings.feature_support.
