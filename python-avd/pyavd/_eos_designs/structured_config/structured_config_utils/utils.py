@@ -58,15 +58,15 @@ class UtilsMixin(Protocol):
         self: StructuredConfigUtilsProtocol,
         ipv4_acl: str | None,
         ipv4_standard_acl: str | None,
-        name: str,
+        context: str,
         direction: str,
     ) -> None:
-        """Raise AristaAvdInvalidInputsError if both an extended and a standard IPv4 ACL are set for the same direction."""
+        """Raise if both IPv4 ACL types are set for the same direction, identifying the full input path in context."""
         if not (ipv4_acl and ipv4_standard_acl):
             return
         direction_label = "ingress" if direction == "in" else "egress"
         msg = (
-            f"'ipv4_acl_{direction}' and 'ipv4_standard_acl_{direction}' are mutually exclusive on interface '{name}'. "
+            f"'ipv4_acl_{direction}' and 'ipv4_standard_acl_{direction}' are mutually exclusive on interface '{context}'. "
             f"Only one {direction_label} IPv4 ACL can be configured."
         )
         raise AristaAvdInvalidInputsError(msg)

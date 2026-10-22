@@ -28,4 +28,4 @@ tenants:
             ipv4_standard_acl_in: STD-ACL-IN
 
 expected_error_message: >-
-  'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on interface 'Ethernet1'. Only one ingress IPv4 ACL can be configured.
+  'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on interface 'tenants[name=L3INTF].vrfs[name=TESTING].l3_interfaces[interfaces=Ethernet1]'. Only one ingress IPv4 ACL can be configured.
