@@ -57,8 +57,6 @@ keys:
                 level:
                   type: str
                   description: Privilege level(s) 0-15.
-                  convert_types:
-                    - int
                   required: true
                 default:
                   type: str

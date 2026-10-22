@@ -30,8 +30,6 @@ keys:
             min: 1
             max: 1000
             description: Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server.
-            convert_types:
-              - str
           search:
             type: dict
             description: Credentials used by the switch to perform LDAP search bind operations.
@@ -44,8 +42,6 @@ keys:
                 type: str
                 required: true
                 description: Password for the search bind user.
-                convert_types:
-                  - int
               password_type:
                 type: str
                 valid_values:
@@ -58,8 +54,6 @@ keys:
                   - 7 = obfuscated
                   - 8a = AES-256-GCM encrypted.
                   Omit to provide an unobfuscated string (EOS will store it obfuscated).
-                convert_types:
-                  - int
       server_hosts:
         type: list
         description: |-
@@ -78,12 +72,8 @@ keys:
               description: Port of LDAP server (EOS default 389).
               min: 0
               max: 65535
-              convert_types:
-                - str
             vrf:
               type: str
-              convert_types:
-                - int
       group_policies:
         type: list
         primary_key: policy
@@ -125,5 +115,3 @@ keys:
                     min: 0
                     max: 15
                     description: Optional privilege level (0-15) assigned alongside the role.
-                    convert_types:
-                      - str

@@ -140,7 +140,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: 44b5042edab9382aba712eed4f9c7bab7a3d6a3e  # frozen: v0.17.0
+    rev: 38bfb07c0c64c304f47eb52090f8288150c77730  # frozen: v0.17.1
     hooks:
       # Run the linter.
       - id: ruff
@@ -166,9 +166,8 @@ repos:
           - 'gitpython>=3.1.57'
           - 'jinja2>=3.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.12'
-          - 'pyavd-utils-gen==0.0.12'
-          - 'pydantic>=2.3.0'
+          - 'pyavd-utils==0.0.13'
+          - 'pyavd-utils-gen==0.0.13'
           - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.35.0'
@@ -217,7 +216,7 @@ repos:
         exclude: (^|/)uv\.lock$
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: fa412071e4f5d44d44f9e365f4676f9df92456a2  # frozen: v1.30.1
+    rev: c92afdf2c6ca336aaa8f39e2bd8d48f62dbd8e1f  # frozen: v1.31.1
     hooks:
       - id: zizmor
         name: Check GitHub Actions with zizmor
@@ -226,7 +225,7 @@ repos:
         args: [".github"]
 
   - repo: https://github.com/pdm-project/pdm
-    rev: "5c0dbc466ebc62637ced3863ece094349699ef2f"  # frozen: 2.29.2
+    rev: "31d2b5ecbc143eaddfb31edd0e3dae2530bd936a"  # frozen: 2.29.3
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
@@ -313,8 +312,7 @@ repos:
         additional_dependencies:
           - deepmerge>=1.1.0
           - PyYAML>=6.0.0
-          - pyavd-utils-gen==0.0.12
-          - pydantic>=2.3.0
+          - pyavd-utils-gen==0.0.13
           - jsonschema-rs>=0.24
           - referencing>=0.35.0
           - ruff==0.16.8
@@ -340,7 +338,7 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.12', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.13', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -348,7 +346,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.12', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.13', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: 916ad0aaa108c64d294101002066f530ea170b10  # frozen: v0.23.3

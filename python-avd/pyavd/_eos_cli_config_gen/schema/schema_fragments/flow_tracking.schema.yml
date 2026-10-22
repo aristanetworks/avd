@@ -22,8 +22,6 @@ keys:
                 type: bool
           sample:
             type: int
-            convert_types:
-              - str
             min: 1
             max: 4294967295
           hardware_offload:
@@ -37,8 +35,6 @@ keys:
                 description: Configure hardware offload for IPv6 traffic.
               threshold_minimum:
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 4294967295
                 description: Minimum number of samples.
@@ -50,8 +46,6 @@ keys:
               keys:
                 table_size:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 614400
                   description: |
@@ -88,8 +82,6 @@ keys:
           sample_limit:
             description: Limit the number of packets sampled.
             type: int
-            convert_types:
-              - str
             min: 1
             max: 4294967295
           trackers:
@@ -142,7 +134,5 @@ keys:
                         type: int
                         min: 0
                         max: 63
-                        convert_types:
-                          - str
           shutdown:
             type: bool
