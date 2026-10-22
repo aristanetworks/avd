@@ -27,6 +27,9 @@ default_interfaces:
     mlag_interfaces_speed: forced 100gfull
 default_mgmt_method: inband
 
+avd_design_future:
+  only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: true
+
 cv_settings:
   cvaas:
     enabled: true
