@@ -417,26 +417,33 @@ def test_deploy_skips_deploy_to_cv_when_no_work_to_do(
 
 
 @pytest.mark.parametrize("live_display", [False, True])
-@pytest.mark.parametrize("save_logs", [False, True])
+@pytest.mark.parametrize("save_logs", [None, False, True])
 @pytest.mark.parametrize("return_details", [False, True])
 @pytest.mark.parametrize("work_to_do", [False, True])
-def test_deploy_preserves_logged_warnings_in_result(
+@pytest.mark.parametrize("logger_name", ["pyavd._cv", "requests", "urllib3.connectionpool", "grpclib.client", "asyncio"])
+def test_deploy_displays_logs_without_changing_workflow_results(
     action_module: Callable[..., ActionModule],
-    save_logs: bool,
+    save_logs: bool | None,
     return_details: bool,
     work_to_do: bool,
     live_display: bool,
+    logger_name: str,
 ) -> None:
-    """Actual pyavd warnings are returned and displayed independently of save_logs."""
-    module = action_module(ActionModule, task_args={"save_logs": save_logs, "live_display": live_display})
+    """Logging display and optional saving do not change workflow warnings or failure policy."""
+    task_args = {"live_display": live_display}
+    if save_logs is not None:
+        task_args["save_logs"] = save_logs
+    module = action_module(ActionModule, task_args=task_args)
     module.ansible_name = "arista.avd.cv_workflow"
     validated_args = _make_validated_args(return_details=return_details)
     deploy_result = _make_deploy_result_mock(warnings=["Deployment warning"] if work_to_do else [])
-    deploy_result.get_result.side_effect = lambda: {"warnings": deploy_result.warnings}
+    deploy_result.get_result.side_effect = lambda: {"warnings": deploy_result.warnings, "errors": deploy_result.errors, "failed": deploy_result.failed}
     shared_display = MagicMock(verbosity=0)
 
     async def build_device_deployments(**_kwargs: object) -> list:
-        logging.getLogger("pyavd._cv").warning("Device offline")
+        logging.getLogger(logger_name).warning("Device offline")
+        logging.getLogger(logger_name).error("API error")
+        logging.getLogger(logger_name).critical("Critical error")
         module.result["warnings"] = ["Existing warning"]
         return []
 
@@ -462,15 +469,26 @@ def test_deploy_preserves_logged_warnings_in_result(
     ):
         result = module.run(task_vars={})
 
-    assert result["warnings"] == (["Deployment warning"] if work_to_do else []) + ["Device offline", "Existing warning"]
+    assert result["warnings"] == (["Deployment warning"] if work_to_do else []) + ["Existing warning"]
     if live_display:
         shared_display.warning.assert_called_once_with("Device offline")
     else:
         shared_display.warning.assert_not_called()
+    if live_display:
+        assert shared_display.error.call_args_list == [
+            (("API error",), {"wrap_text": False}),
+            (("Critical error",), {"wrap_text": False}),
+        ]
+    else:
+        shared_display.error.assert_not_called()
     if save_logs:
-        assert result["logs"]["warnings"] == ["Device offline"]
+        assert result["logs"] == {"warnings": ["Device offline"], "errors": ["API error", "Critical error"]}
     else:
         assert "logs" not in result
+    assert "stderr_lines" not in result
+    assert "stderr" not in result
+    assert result["errors"] == []
+    assert result["failed"] is False
 
 
 # ---------------------------------------------------------------------------

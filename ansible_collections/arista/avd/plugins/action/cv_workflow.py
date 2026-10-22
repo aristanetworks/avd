@@ -5,10 +5,9 @@ from __future__ import annotations
 
 import json
 from asyncio import gather, run
-from contextlib import contextmanager
 from pathlib import Path
 from string import Template
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from yaml import load
 
@@ -19,11 +18,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     get_tmp_paths,
 )
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import SaveToResultHandler
-
-if TYPE_CHECKING:
-    from collections.abc import Generator
-    from logging import Filter, Handler
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_config import EXTERNAL_LIB_LOGGERS
 
 try:
     from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
@@ -56,6 +51,15 @@ try:
     HAS_PYAVD = True
 except ImportError:
     HAS_PYAVD = False
+
+
+TARGET_LOGGERS = (
+    "ansible_collections.arista.avd",
+    "pyavd",
+    "schema_tools",
+    "grpclib",
+    *EXTERNAL_LIB_LOGGERS,
+)
 
 
 ARGUMENT_SPEC = {
@@ -148,17 +152,8 @@ ARGUMENT_SPEC = {
 
 class ActionModule(AVDActionPlugin):
     _supports_check_mode = False
-    _logging_config = AVDLoggingConfig()
+    _logging_config = AVDLoggingConfig(target_loggers=TARGET_LOGGERS)
     _REDACTED_VALUE = "<removed>"
-
-    @contextmanager
-    def _logging_context(self, temp_handlers: list[Handler], temp_filters: list[Filter], log_format: str) -> Generator[None, None, None]:
-        """Capture deployment warnings while retaining the configured logging behavior."""
-        captured_logs: dict[str, Any] = {}
-        warning_handler = SaveToResultHandler(captured_logs)
-        self._logged_warnings = captured_logs["logs"]["warnings"]
-        with super()._logging_context([*temp_handlers, warning_handler], temp_filters, log_format):
-            yield
 
     def main(self, _task_vars: dict[str, Any]) -> None:
         if not HAS_PYAVD:
@@ -223,6 +218,22 @@ class ActionModule(AVDActionPlugin):
         # Build Static Config Studio manifest if necessary.
         static_config_manifest = AvdManifest.from_dict(validated_args["static_config_manifest"]) if "static_config_manifest" in validated_args else None
 
+        # Snapshot input details before deployment can mutate the workflow objects.
+        if validated_args["return_details"]:
+            self.result.update(
+                cloudvision={
+                    **get_result(cloudvision),
+                    "token": self._REDACTED_VALUE,
+                    **({"password": self._REDACTED_VALUE} if cloudvision.password is not None else {}),  # NOSONAR
+                    **({"proxy_password": self._REDACTED_VALUE} if cloudvision.proxy_password is not None else {}),  # NOSONAR
+                },
+                configs=[get_result(config) for config in eos_config_objects],
+                device_tags=[get_result(device_tag) for device_tag in device_tag_objects],
+                interface_tags=[get_result(interface_tag) for interface_tag in interface_tag_objects],
+                cv_pathfinder_metadata=[get_result(metadata) for metadata in cv_pathfinder_metadata_objects],
+                static_config_manifest=get_result(static_config_manifest) if static_config_manifest else None,
+            )
+
         # Check if there is anything to deploy.
         work_to_do = any([eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects, static_config_manifest])
 
@@ -249,26 +260,11 @@ class ActionModule(AVDActionPlugin):
             result_object.errors = [str(error) for error in result_object.errors]
             result_object.warnings = [str(warning) for warning in result_object.warnings]
 
-        # Preserve logged and existing warnings, independently of save_logs setting.
-        result_object.warnings.extend(getattr(self, "_logged_warnings", []))
+        # Return workflow warnings independently of the shared logging handlers.
         result_object.warnings.extend(self.result.get("warnings", []))
 
         # Build result with detailed data or summary based on return_details flag.
         if validated_args["return_details"]:
-            # Objects are converted to JSON compatible dicts.
-            self.result.update(
-                cloudvision={
-                    **get_result(cloudvision),
-                    "token": self._REDACTED_VALUE,
-                    **({"password": self._REDACTED_VALUE} if cloudvision.password is not None else {}),  # NOSONAR
-                    **({"proxy_password": self._REDACTED_VALUE} if cloudvision.proxy_password is not None else {}),  # NOSONAR
-                },
-                configs=[get_result(config) for config in eos_config_objects],
-                device_tags=[get_result(device_tag) for device_tag in device_tag_objects],
-                interface_tags=[get_result(interface_tag) for interface_tag in interface_tag_objects],
-                cv_pathfinder_metadata=[get_result(metadata) for metadata in cv_pathfinder_metadata_objects],
-                static_config_manifest=get_result(static_config_manifest) if static_config_manifest else None,
-            )
             # Result object is converted to JSON compatible dict.
             self.result.update(result_object.get_result())
         else:
