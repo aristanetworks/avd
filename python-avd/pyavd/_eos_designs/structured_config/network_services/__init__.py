@@ -29,6 +29,7 @@ from .router_internet_exit import RouterInternetExitMixin
 from .router_isis import RouterIsisMixin
 from .router_multicast import RouterMulticastMixin
 from .router_ospf import RouterOspfMixin
+from .router_ospfv3 import RouterOspfv3Mixin
 from .router_path_selection import RouterPathSelectionMixin
 from .router_pim_sparse_mode import RouterPimSparseModeMixin
 from .router_service_insertion import RouterServiceInsertionMixin
@@ -67,6 +68,7 @@ class AvdStructuredConfigNetworkServicesProtocol(
     StaticRoutesMixin,
     RouterAdaptiveVirtualTopologyMixin,
     RouterOspfMixin,
+    RouterOspfv3Mixin,
     RouterPathSelectionMixin,
     RouterServiceInsertionMixin,
     RouterInternetExitMixin,
