@@ -2857,19 +2857,25 @@ mcs client
 
 | IP | ACL | VRF |
 | -- | --- | --- |
-| IPv4 | SNMP-MGMT | MGMT |
 | IPv4 | onur | default |
-| IPv6 | SNMP-MGMT | MGMT |
+| IPv4 | SNMP-MGMT2 | AAA |
+| IPv4 | SNMP-MGMT | MGMT |
+| IPv4 | SNMP-MGMT1 | aaa |
+| IPv4 | SNMP-MGMT3 | foo |
 | IPv6 | onur_v6 | default |
+| IPv6 | SNMP-MGMT2 | AAA |
+| IPv6 | SNMP-MGMT | MGMT |
+| IPv6 | SNMP-MGMT1 | aaa |
+| IPv6 | SNMP-MGMT3 | foo |
 
 #### SNMP Local Interfaces
 
 | Local Interface | VRF |
 | --------------- | --- |
-| Management1 | MGMT |
 | Loopback0 | default |
-| Loopback12 | Tenant_A_APP_Zone |
 | Ethernet1 | AAA |
+| Management1 | MGMT |
+| Loopback12 | Tenant_A_APP_Zone |
 | Ethernet2 | abc |
 
 #### SNMP VRF Status
@@ -2879,6 +2885,11 @@ mcs client
 | default | Disabled |
 | MGMT | Enabled |
 | lower_case | Enabled |
+| Tenant_A_APP_Zone | Enabled |
+| AAA | Enabled |
+| aaa | Enabled |
+| abc | Enabled |
+| foo | Enabled |
 
 #### SNMP Hosts Configuration
 
@@ -2947,10 +2958,16 @@ mcs client
 
 ```eos
 !
+snmp-server ipv4 access-list SNMP-MGMT2 vrf AAA
 snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv4 access-list SNMP-MGMT1 vrf aaa
 snmp-server ipv4 access-list onur
+snmp-server ipv4 access-list SNMP-MGMT3 vrf foo
+snmp-server ipv6 access-list SNMP-MGMT2 vrf AAA
 snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv6 access-list SNMP-MGMT1 vrf aaa
 snmp-server ipv6 access-list onur_v6
+snmp-server ipv6 access-list SNMP-MGMT3 vrf foo
 snmp-server engineID local 424242424242424242
 snmp-server contact DC1_OPS
 snmp-server location DC1
@@ -3008,7 +3025,12 @@ snmp-server extension .1.3.6.1.4.1.30065.4.101.100.2.33 flash:/test.py
 snmp-server extension .111.3.6.1.4.1.99999.2.1.0 flash:/test1.py one-shot
 snmp-server extension .2.3.6.1.4.1.99999.2.1.0 flash:/test2.py
 no snmp-server vrf default
+snmp-server vrf AAA
 snmp-server vrf MGMT
+snmp-server vrf Tenant_A_APP_Zone
+snmp-server vrf aaa
+snmp-server vrf abc
+snmp-server vrf foo
 snmp-server vrf lower_case
 snmp-server ifmib ifspeed shape-rate
 ```
