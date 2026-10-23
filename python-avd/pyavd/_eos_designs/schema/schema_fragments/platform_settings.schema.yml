@@ -95,6 +95,7 @@ keys:
             transceiver_adapter:
               detection: false
               recovery: false
+          vxlan_decap_vrf_filter: true
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -151,6 +152,7 @@ keys:
             transceiver_adapter:
               detection: false
               recovery: false
+          vxlan_decap_vrf_filter: true
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -192,6 +194,7 @@ keys:
             tpid:
               detection: false
               recovery: false
+          vxlan_decap_vrf_filter: true
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -1161,6 +1164,7 @@ keys:
               recovery: false
             xcvr_unsupported:
               recovery: false
+          vxlan_decap_vrf_filter: true
         trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
         digital_twin:
           platform: vEOS-lab

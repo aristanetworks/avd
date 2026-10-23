@@ -1,0 +1,51 @@
+---
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    multi_vtep_mlag: true
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+  node_groups:
+    - group: MULTI_VTEP_MLAG_L3LEAF1
+      bgp_as: 65161
+      nodes:
+        - name: multi-vtep-mlag-l3leaf1a
+          id: 6
+          mgmt_ip: 192.168.201.118/24
+          mlag_interfaces: [Ethernet5, Ethernet6]
+        - name: multi-vtep-mlag-l3leaf1b
+          id: 7
+          mgmt_ip: 192.168.201.119/24
+          mlag_interfaces: [Ethernet5, Ethernet6]
+    - group: MULTI_VTEP_MLAG_L3LEAF2
+      bgp_as: 65162
+      platform: 7050X3
+      nodes:
+        - name: multi-vtep-mlag-l3leaf2a
+          id: 8
+          mgmt_ip: 192.168.201.120/24
+          mlag_interfaces: [Ethernet5, Ethernet6]
+        - name: multi-vtep-mlag-l3leaf2b
+          id: 9
+          mgmt_ip: 192.168.201.121/24
+          mlag_interfaces: [Ethernet5, Ethernet6]
+    - group: MULTI_VTEP_MLAG_L3LEAF3
+      bgp_as: 65163
+      multi_vtep_mlag: true
+      nodes:
+        - name: multi-vtep-mlag-l3leaf3a
+          id: 10
+          mgmt_ip: 192.168.201.122/24
+          mlag_interfaces: [Ethernet5, Ethernet6]
+        - name: multi-vtep-mlag-l3leaf3b
+          id: 11
+          mgmt_ip: 192.168.201.123/24
+          mlag_interfaces: [Ethernet5, Ethernet6]
