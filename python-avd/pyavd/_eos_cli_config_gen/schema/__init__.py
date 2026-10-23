@@ -24728,7 +24728,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             name: str
             """VRF Name."""
             access_group: str | None
-            """Standard IPv4 ACL name."""
+            """IPv4 standard or extended ACL name."""
             ipv6_access_group: str | None
             """Standard IPv6 ACL name."""
 
@@ -24749,7 +24749,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: VRF Name.
-                        access_group: Standard IPv4 ACL name.
+                        access_group: IPv4 standard or extended ACL name.
                         ipv6_access_group: Standard IPv6 ACL name.
 
                     """

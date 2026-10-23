@@ -48,7 +48,17 @@ keys:
                 Enable/disable Management eAPI for this VRF.
             ipv4_acl:
               type: str
-              description: IPv4 access-list name.
+              description: |-
+                IPv4 extended access list name.
+                When `avd_design_future.raise_for_missing_management_eapi_acls` is enabled, the access-list must be defined under `ipv4_acls`.
+                Otherwise, no catalog entry is required.
+                An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
+                Field substitution is not supported for eAPI references.
+            ipv4_standard_acl:
+              type: str
+              description: |-
+                IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
+                An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
             ipv6_acl:
               type: str
               description: IPv6 access-list name.

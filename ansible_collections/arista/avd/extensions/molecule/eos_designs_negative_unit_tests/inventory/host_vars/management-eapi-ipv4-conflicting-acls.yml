@@ -1,0 +1,19 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: management-eapi-ipv4-conflicting-acls
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+management_eapi:
+  enabled: true
+  vrfs:
+    - name: management
+      enabled: true
+      ipv4_acl: EXTENDED
+      ipv4_standard_acl: STANDARD
+
+expected_error_message: >-
+  'ipv4_acl' and 'ipv4_standard_acl' are mutually exclusive on VRF 'management_eapi.vrfs[name=management]'. Only one IPv4 ACL can be configured.

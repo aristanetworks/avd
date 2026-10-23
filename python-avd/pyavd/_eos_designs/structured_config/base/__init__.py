@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import (
@@ -41,6 +41,9 @@ from .router_general import RouterGeneralMixin
 from .snmp_server import SnmpServerMixin
 from .system import SystemMixin
 from .utils import UtilsMixin
+
+if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
 
 
 class AvdStructuredConfigBaseProtocol(
@@ -429,16 +432,55 @@ class AvdStructuredConfigBaseProtocol(
                 default_services=self.inputs.management_eapi.default_services,
             )
 
-            for vrf in self.inputs.management_eapi.vrfs:
-                if vrf.enabled:
-                    vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
-                    self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
+            self._set_management_eapi_vrfs(self.inputs.management_eapi.vrfs)
 
         # Enforce eAPI management access in default VRF for ACT Digital Twin if required
         if self._act_ensure_eapi_access:
             self.structured_config.management_api_http.enable_https = True
             # Create item for default VRF if not present. If present, remove IPv4 ACL.
             self.structured_config.management_api_http.enable_vrfs.obtain("default").access_group = None
+
+    def _set_management_eapi_vrfs(self, vrfs: EosDesigns.ManagementEapi.Vrfs) -> None:
+        """Configure enabled eAPI VRFs and their ACL references."""
+        self._validate_management_eapi_ipv4_acls(vrfs)
+        for vrf in vrfs:
+            if not vrf.enabled:
+                continue
+
+            context = f"management_eapi.vrfs[name={vrf.name}]"
+            vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"self.inputs.{context}")
+            ipv4_acl = vrf.ipv4_acl
+            ipv4_standard_acl = vrf.ipv4_standard_acl
+            if ipv4_standard_acl is not None:
+                self.structured_config_utils.set_ipv4_standard_acl(ipv4_standard_acl)
+            elif ipv4_acl is not None and self.inputs.avd_design_future.raise_for_missing_management_eapi_acls:
+                acl = self.shared_utils.get_ipv4_acl(name=ipv4_acl, interface_name=vrf_name)
+                self.structured_config_utils._set_ipv4_acl(acl)
+
+            self.structured_config.management_api_http.enable_vrfs.append_new(
+                name=vrf_name,
+                access_group=default(ipv4_standard_acl, ipv4_acl),
+                ipv6_access_group=vrf.ipv6_acl,
+            )
+
+    def _validate_management_eapi_ipv4_acls(self, vrfs: EosDesigns.ManagementEapi.Vrfs) -> None:
+        """Raise if conflicting IPv4 ACL types are configured on enabled eAPI VRFs."""
+        standard_acl_vrfs: dict[str, str] = {}
+        if self.inputs.avd_design_future.raise_for_missing_management_eapi_acls:
+            standard_acl_vrfs = {vrf.ipv4_standard_acl: vrf.name for vrf in vrfs if vrf.enabled and vrf.ipv4_standard_acl is not None}
+        for vrf in vrfs:
+            if not vrf.enabled:
+                continue
+            context = f"management_eapi.vrfs[name={vrf.name}]"
+            self.structured_config_utils._validate_ipv4_acl_exclusion(vrf.ipv4_acl, vrf.ipv4_standard_acl, context)
+            if vrf.ipv4_acl in standard_acl_vrfs:
+                msg = (
+                    f"'{context}.ipv4_acl' and "
+                    f"'management_eapi.vrfs[name={standard_acl_vrfs[vrf.ipv4_acl]}].ipv4_standard_acl' "
+                    f"are mutually exclusive for ACL '{vrf.ipv4_acl}'. "
+                    "Only one IPv4 ACL type can be configured with the same name."
+                )
+                raise AristaAvdInvalidInputsError(msg)
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:
