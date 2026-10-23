@@ -7714,15 +7714,20 @@ interface Loopback100
 
 #### Tunnel Interfaces Summary
 
-| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source | Destination | PMTU-Discovery | IPsec Profile |
-| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ------ | ----------- | -------------- | ------------- |
-| Tunnel1 | test ipv4 only | Tunnel-VRF | Underlay-VRF | 1500 | False | - | ipsec | Ethernet42 | 6.6.6.6 | True | - |
-| Tunnel2 | test ipv6 only | default | default | - | True | NAT-PROFILE-NO-VRF-2 | gre | Ethernet42 | dead:beef::1 | False | Profile-2 |
-| Tunnel3 | test dual stack | default | default | 1500 | - | - | ipsec | Ethernet42 | 1.1.1.1 | - | Profile-3 |
-| Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | 10.10.10.10 | 1.1.1.1 | - | - |
-| Tunnel5 | IPv6 ND new structure test | default | default | 1500 | False | - | - | 20.20.20.20 | 2.2.2.2 | - | - |
-| Tunnel6 | TEST-IPV6-ND-WITHOUT-ADDR | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.2 | - | - |
-| Tunnel7 | TEST-IPV4-ONLY-WITHOUT-IPV6-FIELDS | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.6 | - | - |
+| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source | Destination | PMTU-Discovery | IPsec Profile | MPLS IP | ISIS | OSPF |
+| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ------ | ----------- | -------------- | ------------- | ------- | ---- | ---- |
+| Tunnel1 | test ipv4 only | Tunnel-VRF | Underlay-VRF | 1500 | False | - | ipsec | Ethernet42 | 6.6.6.6 | True | - | - | - | - |
+| Tunnel2 | test ipv6 only | default | default | - | True | NAT-PROFILE-NO-VRF-2 | gre | Ethernet42 | dead:beef::1 | False | Profile-2 | - | - | - |
+| Tunnel3 | test dual stack | default | default | 1500 | - | - | ipsec | Ethernet42 | 1.1.1.1 | - | Profile-3 | - | - | - |
+| Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | 10.10.10.10 | 1.1.1.1 | - | - | - | - | - |
+| Tunnel5 | IPv6 ND new structure test | default | default | 1500 | False | - | - | 20.20.20.20 | 2.2.2.2 | - | - | - | - | - |
+| Tunnel6 | TEST-IPV6-ND-WITHOUT-ADDR | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.2 | - | - | - | - | - |
+| Tunnel7 | TEST-IPV4-ONLY-WITHOUT-IPV6-FIELDS | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.6 | - | - | - | - | - |
+| Tunnel8 | MPLS-over-GRE with ISIS | default | default | - | - | - | gre | Ethernet45 | 172.16.0.1 | - | - | True | CORE | - |
+| Tunnel9 | MPLS-over-GRE with OSPF | default | default | - | - | - | gre | Ethernet46 | 172.16.0.2 | - | - | True | - | 0 |
+| Tunnel10 | GRE with ISIS per-level auth | default | default | - | - | - | gre | Ethernet47 | 172.16.0.3 | - | - | - | CORE | - |
+| Tunnel11 | GRE with ISIS key-ids | default | default | - | - | - | gre | Ethernet48 | 172.16.0.4 | - | - | - | CORE | - |
+| Tunnel12 | GRE with OSPF simple auth | default | default | - | - | - | gre | 3.3.3.3 | 172.16.0.5 | - | - | False | - | 1 |
 
 ##### IPv4
 
@@ -7733,6 +7738,11 @@ interface Loopback100
 | Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
 | Tunnel6 | default | 10.99.99.1/30 | - | - | - | - |
 | Tunnel7 | default | 10.99.99.5/30 | - | - | - | - |
+| Tunnel8 | default | 10.10.10.0/31 | - | - | - | - |
+| Tunnel9 | default | 10.10.10.2/31 | - | - | - | - |
+| Tunnel10 | default | 10.10.10.4/31 | - | - | - | - |
+| Tunnel11 | default | 10.10.10.6/31 | - | - | - | - |
+| Tunnel12 | default | 10.10.10.8/31 | - | - | - | - |
 
 ##### IPv6
 
@@ -7851,6 +7861,79 @@ interface Tunnel7
    tunnel mode gre
    tunnel source 1.1.1.1
    tunnel destination 2.2.2.6
+!
+interface Tunnel8
+   description MPLS-over-GRE with ISIS
+   ip address 10.10.10.0/31
+   tunnel mode gre
+   tunnel source interface Ethernet45
+   tunnel destination 172.16.0.1
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   isis enable CORE
+   isis bfd
+   isis circuit-type level-2
+   isis metric 50
+   no isis hello padding
+   isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 <removed>
+!
+interface Tunnel9
+   description MPLS-over-GRE with OSPF
+   ip address 10.10.10.2/31
+   tunnel mode gre
+   tunnel source interface Ethernet46
+   tunnel destination 172.16.0.2
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   ip ospf cost 100
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf area 0
+   ip ospf message-digest-key 1 sha512 7 <removed>
+!
+interface Tunnel10
+   description GRE with ISIS per-level auth
+   ip address 10.10.10.4/31
+   tunnel mode gre
+   tunnel source interface Ethernet47
+   tunnel destination 172.16.0.3
+   isis enable CORE
+   isis circuit-type level-1-2
+   isis metric 100
+   isis network point-to-point
+   isis authentication mode md5 level-1
+   isis authentication mode text level-2
+   isis authentication key 7 <removed> level-1
+   isis authentication key 7 <removed> level-2
+!
+interface Tunnel11
+   description GRE with ISIS key-ids
+   ip address 10.10.10.6/31
+   tunnel mode gre
+   tunnel source interface Ethernet48
+   tunnel destination 172.16.0.4
+   isis enable CORE
+   isis passive
+   isis authentication mode sha key-id 5
+   isis authentication key-id 1 algorithm sha-256 key 7 <removed>
+   isis authentication key-id 2 algorithm sha-256 rfc-5310 key 7 <removed>
+!
+interface Tunnel12
+   description GRE with OSPF simple auth
+   ip address 10.10.10.8/31
+   tunnel mode gre
+   tunnel source 3.3.3.3
+   tunnel destination 172.16.0.5
+   no mpls ldp interface
+   no mpls ip
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 <removed>
+   ip ospf area 1
 ```
 
 ### VLAN Interfaces

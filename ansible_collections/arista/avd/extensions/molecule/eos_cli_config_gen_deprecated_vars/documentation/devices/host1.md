@@ -216,9 +216,9 @@ interface Loopback2
 
 #### Tunnel Interfaces Summary
 
-| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source | Destination | PMTU-Discovery | IPsec Profile |
-| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ------ | ----------- | -------------- | ------------- |
-| Tunnel1 | test ipv4 only | default | default | - | - | - | - | - | - | - | - |
+| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source | Destination | PMTU-Discovery | IPsec Profile | MPLS IP | ISIS | OSPF |
+| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ------ | ----------- | -------------- | ------------- | ------- | ---- | ---- |
+| Tunnel1 | test ipv4 only | default | default | - | - | - | - | - | - | - | - | - | - | - |
 
 ##### IPv4
 
