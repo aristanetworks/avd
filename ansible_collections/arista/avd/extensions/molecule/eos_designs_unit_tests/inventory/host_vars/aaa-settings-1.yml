@@ -95,9 +95,6 @@ aaa_settings:
       ignore_unknown_mandatory_attribute: true
 
   radius:
-    dynamic_authorization:
-      port: 100
-      tls_ssl_profile: SSL_PROFILE
     servers:
       - host: 11.10.10.11
         vrf: default

@@ -489,26 +489,15 @@ class EosDesigns(EosDesignsRootModel):
 
             Vrfs._item_type = VrfsItem
 
-            _fields: ClassVar[dict] = {
-                "servers": {"type": Servers},
-                "vrfs": {"type": Vrfs},
-                "dynamic_authorization": {"type": EosCliConfigGen.RadiusServer.DynamicAuthorization},
-            }
+            _fields: ClassVar[dict] = {"servers": {"type": Servers}, "vrfs": {"type": Vrfs}}
             servers: Servers
             """Subclass of AvdList with `ServersItem` items."""
             vrfs: Vrfs
             """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
-            dynamic_authorization: EosCliConfigGen.RadiusServer.DynamicAuthorization
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    servers: Servers | UndefinedType = Undefined,
-                    vrfs: Vrfs | UndefinedType = Undefined,
-                    dynamic_authorization: EosCliConfigGen.RadiusServer.DynamicAuthorization | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, servers: Servers | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                     """
                     Radius.
 
@@ -518,7 +507,6 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         servers: Subclass of AvdList with `ServersItem` items.
                         vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
-                        dynamic_authorization: dynamic_authorization
 
                     """
 
@@ -20056,7 +20044,12 @@ class EosDesigns(EosDesignsRootModel):
 
             AdditionalGroups._item_type = str
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "additional_groups": {"type": AdditionalGroups}}
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": True},
+                "port": {"type": int},
+                "tls_ssl_profile": {"type": str},
+                "additional_groups": {"type": AdditionalGroups},
+            }
             enabled: bool
             """
             Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
@@ -20064,6 +20057,10 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            port: int | None
+            """TCP Port."""
+            tls_ssl_profile: str | None
+            """Name of TLS profile."""
             additional_groups: AdditionalGroups
             """
             List of additional RADIUS server groups for dynamic authorization purposes only.
@@ -20077,7 +20074,14 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, additional_groups: AdditionalGroups | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    port: int | UndefinedType | None = Undefined,
+                    tls_ssl_profile: str | UndefinedType | None = Undefined,
+                    additional_groups: AdditionalGroups | UndefinedType = Undefined,
+                ) -> None:
                     """
                     DynamicAuthorization.
 
@@ -20088,6 +20092,8 @@ class EosDesigns(EosDesignsRootModel):
                         enabled:
                            Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
                            adjust an active client session.
+                        port: TCP Port.
+                        tls_ssl_profile: Name of TLS profile.
                         additional_groups:
                            List of additional RADIUS server groups for dynamic authorization purposes only.
                            The order of the

@@ -82,6 +82,12 @@ keys:
             type: bool
             default: true
             $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+          port:
+            type: int
+            $ref: eos_cli_config_gen#/keys/radius_server/keys/dynamic_authorization/keys/port
+          tls_ssl_profile:
+            type: str
+            $ref: eos_cli_config_gen#/keys/radius_server/keys/dynamic_authorization/keys/tls_ssl_profile
           additional_groups:
             type: list
             description: |-

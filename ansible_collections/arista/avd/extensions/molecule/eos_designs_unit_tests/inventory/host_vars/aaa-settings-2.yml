@@ -63,8 +63,6 @@ aaa_settings:
       ignore_unknown_mandatory_attribute: false
 
   radius:
-    dynamic_authorization:
-      port: 200
     servers:
       - host: 11.10.10.11
         vrf: default

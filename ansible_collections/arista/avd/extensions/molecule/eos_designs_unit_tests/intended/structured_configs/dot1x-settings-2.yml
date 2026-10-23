@@ -88,6 +88,9 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 radius_server:
+  dynamic_authorization:
+    port: 100
+    tls_ssl_profile: SSL_PROFILE
   vrfs:
   - name: MGMT
     servers:
