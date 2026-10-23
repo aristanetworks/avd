@@ -34,4 +34,5 @@ connected_endpoints:
                 traffic_allow_access_list: AAA-EXTENDED
 
 expected_error_message: >-
-  'traffic_allow_access_list' and 'traffic_allow_standard_access_list' are mutually exclusive under 'connected_endpoints[name=server1].adapters[0].dot1x.aaa.unresponsive.action'.
+  'traffic_allow_access_list' and 'traffic_allow_standard_access_list' are mutually exclusive
+  under 'connected_endpoints[name=server1].adapters[0].dot1x.aaa.unresponsive.action'.
