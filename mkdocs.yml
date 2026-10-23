@@ -7,6 +7,7 @@ copyright: Copyright &copy; 2019 - 2025 Arista Networks
 strict: true
 exclude_docs: |
   /README.md
+  /AGENTS.md
   /tools/
   /site/
   /.venv/
@@ -83,10 +84,14 @@ plugins:
         # both live under tools/. mkdocs_hook.py copies the built tree into
         # site/_assets/schema-explorer/ on `mkdocs build`.
         - tools/*
+        # ADRs are repository engineering records with links into source areas
+        # that are intentionally excluded from the versioned documentation site.
+        - adr/*
         # Local mkdocs build output. With `docs_dir: .`, serving after a build
         # would otherwise ingest generated `site/` files as source media.
         - site/*
         - README.md
+        - AGENTS.md
         - contributing.md
         - pylintrc-ansible
         - ansible_collections/arista/avd/bindep.txt
