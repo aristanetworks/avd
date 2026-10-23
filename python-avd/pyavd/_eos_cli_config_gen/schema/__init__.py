@@ -30066,6 +30066,204 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class MonitorSecurity(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Awake(AvdModel):
+            """Subclass of AvdModel."""
+
+            class NdrApplication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"unknown_udp": {"type": bool}}
+                unknown_udp: bool | None
+                """Enable handling of unknown UDP applications."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, unknown_udp: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NdrApplication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            unknown_udp: Enable handling of unknown UDP applications.
+
+                        """
+
+            class NucleusItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "destination": {"type": str},
+                    "port": {"type": int, "default": 9094},
+                    "local_interface": {"type": str},
+                    "ssl_profile": {"type": str},
+                }
+                name: str
+                """Hostname of the Nucleus."""
+                destination: str | None
+                """IPv4 or IPv6 address or FQDN of the Nucleus."""
+                port: int
+                """
+                TCP port of the Nucleus.
+
+                Default value: `9094`
+                """
+                local_interface: str | None
+                """Source interface for the connection to the Nucleus, e.g. `Loopback0`."""
+                ssl_profile: str | None
+                """Name of the SSL profile used for the connection to the Nucleus."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        destination: str | UndefinedType | None = Undefined,
+                        port: int | UndefinedType = Undefined,
+                        local_interface: str | UndefinedType | None = Undefined,
+                        ssl_profile: str | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        NucleusItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Hostname of the Nucleus.
+                            destination: IPv4 or IPv6 address or FQDN of the Nucleus.
+                            port: TCP port of the Nucleus.
+                            local_interface: Source interface for the connection to the Nucleus, e.g. `Loopback0`.
+                            ssl_profile: Name of the SSL profile used for the connection to the Nucleus.
+
+                        """
+
+            class Nucleus(AvdIndexedList[str, NucleusItem]):
+                """Subclass of AvdIndexedList with `NucleusItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Nucleus._item_type = NucleusItem
+
+            _fields: ClassVar[dict] = {
+                "disabled": {"type": bool},
+                "flow_table_size_entries": {"type": int, "default": 16000},
+                "ipfix_listener_port": {"type": int, "default": 4739},
+                "monitor_point_identifier": {"type": int, "default": 0},
+                "ndr_application": {"type": NdrApplication},
+                "nucleus": {"type": Nucleus},
+                "topic": {"type": str, "default": "packet-analysis-sessions"},
+            }
+            disabled: bool | None
+            """
+            Disable the NDR sensor.
+            `true` renders `disabled`, `false` renders `no disabled`.
+            """
+            flow_table_size_entries: int
+            """
+            Maximum number of entries in the flow table.
+
+            Default value: `16000`
+            """
+            ipfix_listener_port: int
+            """
+            UDP port on which the sensor listens for IPFIX records.
+
+            Default value: `4739`
+            """
+            monitor_point_identifier: int
+            """
+            Identifier of this monitor point.
+
+            Default value: `0`
+            """
+            ndr_application: NdrApplication
+            """Subclass of AvdModel."""
+            nucleus: Nucleus
+            """
+            NDR Nucleus servers (minimum 1, maximum 2).
+
+            Subclass of AvdIndexedList with `NucleusItem` items.
+            Primary key is `name` (`str`).
+            """
+            topic: str
+            """
+            Topic identifier.
+
+            Default value: `"packet-analysis-sessions"`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    disabled: bool | UndefinedType | None = Undefined,
+                    flow_table_size_entries: int | UndefinedType = Undefined,
+                    ipfix_listener_port: int | UndefinedType = Undefined,
+                    monitor_point_identifier: int | UndefinedType = Undefined,
+                    ndr_application: NdrApplication | UndefinedType = Undefined,
+                    nucleus: Nucleus | UndefinedType = Undefined,
+                    topic: str | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Awake.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        disabled:
+                           Disable the NDR sensor.
+                           `true` renders `disabled`, `false` renders `no disabled`.
+                        flow_table_size_entries: Maximum number of entries in the flow table.
+                        ipfix_listener_port: UDP port on which the sensor listens for IPFIX records.
+                        monitor_point_identifier: Identifier of this monitor point.
+                        ndr_application: Subclass of AvdModel.
+                        nucleus:
+                           NDR Nucleus servers (minimum 1, maximum 2).
+
+                           Subclass of AvdIndexedList with `NucleusItem` items.
+                           Primary key is `name` (`str`).
+                        topic: Topic identifier.
+
+                    """
+
+        _fields: ClassVar[dict] = {"awake": {"type": Awake}}
+        awake: Awake
+        """
+        Configuration of the Arista NDR (Awake) sensor.
+        Renders `monitor security awake`.
+
+        Subclass of
+        AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, awake: Awake | UndefinedType = Undefined) -> None:
+                """
+                MonitorSecurity.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    awake:
+                       Configuration of the Arista NDR (Awake) sensor.
+                       Renders `monitor security awake`.
+
+                       Subclass of
+                       AvdModel.
+
+                """
+
     class MonitorConnectivity(AvdModel):
         """Subclass of AvdModel."""
 
@@ -79817,6 +80015,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "mcs_client": {"type": McsClient},
         "metadata": {"type": Metadata},
         "mlag_configuration": {"type": MlagConfiguration},
+        "monitor_security": {"type": MonitorSecurity},
         "monitor_connectivity": {"type": MonitorConnectivity},
         "monitor_layer1": {"type": MonitorLayer1},
         "monitor_link_flap_policy": {"type": MonitorLinkFlapPolicy},
@@ -80327,6 +80526,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     mlag_configuration: MlagConfiguration
     """Subclass of AvdModel."""
+    monitor_security: MonitorSecurity
+    """Subclass of AvdModel."""
     monitor_connectivity: MonitorConnectivity
     """Subclass of AvdModel."""
     monitor_layer1: MonitorLayer1
@@ -80702,6 +80903,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             mcs_client: McsClient | UndefinedType = Undefined,
             metadata: Metadata | UndefinedType = Undefined,
             mlag_configuration: MlagConfiguration | UndefinedType = Undefined,
+            monitor_security: MonitorSecurity | UndefinedType = Undefined,
             monitor_connectivity: MonitorConnectivity | UndefinedType = Undefined,
             monitor_layer1: MonitorLayer1 | UndefinedType = Undefined,
             monitor_link_flap_policy: MonitorLinkFlapPolicy | UndefinedType = Undefined,
@@ -81062,6 +81264,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 mlag_configuration: Subclass of AvdModel.
+                monitor_security: Subclass of AvdModel.
                 monitor_connectivity: Subclass of AvdModel.
                 monitor_layer1:
                    Enable SYSLOG messages on transceiver SMBus communication failures.
