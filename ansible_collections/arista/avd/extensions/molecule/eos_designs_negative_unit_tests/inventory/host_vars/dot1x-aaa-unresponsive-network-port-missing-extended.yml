@@ -1,0 +1,34 @@
+---
+# Extended ACL validation is enabled; an entry in the standard catalog must not satisfy the reference.
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: dot1x-aaa-unresponsive-network-port-missing-extended
+      mgmt_ip: 192.0.2.2/24
+dot1x_settings:
+  enabled: true
+aaa_settings:
+  radius:
+    servers:
+      - host: 192.0.2.10
+        cleartext_key: test-key
+avd_design_future:
+  validate_dot1x_aaa_unresponsive_acl: true
+ipv4_standard_acls:
+  - name: AAA-TIMEOUT
+    entries:
+      - action: permit
+        source: any
+network_ports:
+  - switches:
+      - dot1x-aaa-unresponsive-network-port-missing-extended
+    switch_ports:
+      - Ethernet1
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_access_list: AAA-TIMEOUT
+
+expected_error_message: >-
+  'ipv4_acls[name=AAA-TIMEOUT]' is required but was not found for host 'dot1x-aaa-unresponsive-network-port-missing-extended'.
