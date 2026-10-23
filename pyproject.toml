@@ -63,7 +63,6 @@ pytest = [
 schema-tools = [
     "pyavd-utils-gen==0.0.13",
     "deepmerge>=1.1.0",
-    "jsonschema-rs>=0.46.0",
     "pyyaml>=6.0.0",
     "referencing>=0.37.0",
 ]
