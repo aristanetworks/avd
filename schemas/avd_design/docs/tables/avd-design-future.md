@@ -15,6 +15,7 @@
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `inband_mgmt_vrf` for IPv6 inband management. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
     | [<samp>&nbsp;&nbsp;fix_address_locking_dhcp_server_interfaces</samp>](## "avd_design_future.fix_address_locking_dhcp_server_interfaces") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix support for `address_locking_settings.dhcp_server_interfaces`.<br>When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive. |
+    | [<samp>&nbsp;&nbsp;raise_for_missing_queue_monitor_streaming_acls</samp>](## "avd_design_future.raise_for_missing_queue_monitor_streaming_acls") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Raise an error if `queue_monitor_streaming.ip_access_group` is not defined under `ipv4_acls`.<br>When enabled, configure the referenced extended access-list on devices where queue-monitor streaming is enabled.<br>When disabled, only configure the access-group reference without requiring or configuring an access-list definition from the catalog.<br>`queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`, regardless of this setting. |
     | [<samp>&nbsp;&nbsp;fix_match_ipv6_prefix_list_on_mlag_route_map</samp>](## "avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`<br>instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`. |
     | [<samp>&nbsp;&nbsp;fix_mlag_ibgp_peering_ipv6_pool</samp>](## "avd_design_future.fix_mlag_ibgp_peering_ipv6_pool") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Fix the MLAG iBGP peering BGP neighbor in VRFs when using `underlay_ipv6_numbered`.<br>When enabled, the BGP neighbor is derived from the same IPv6 pool as the MLAG iBGP peering SVI,<br>using `mlag_ibgp_peering_ipv6_pool` when set, and `mlag_ibgp_peering_ipv4_pool` is ignored. |
     | [<samp>&nbsp;&nbsp;fix_radius_server_group_tls</samp>](## "avd_design_future.fix_radius_server_group_tls") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations. |
@@ -62,6 +63,13 @@
       # Fix support for `address_locking_settings.dhcp_server_interfaces`.
       # When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive.
       fix_address_locking_dhcp_server_interfaces: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # Raise an error if `queue_monitor_streaming.ip_access_group` is not defined under `ipv4_acls`.
+      # When enabled, configure the referenced extended access-list on devices where queue-monitor streaming is enabled.
+      # When disabled, only configure the access-group reference without requiring or configuring an access-list definition from the catalog.
+      # `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`, regardless of this setting.
+      raise_for_missing_queue_monitor_streaming_acls: <bool; default=False>
 
       # Available from AVD 6.4.0.
       # Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`
