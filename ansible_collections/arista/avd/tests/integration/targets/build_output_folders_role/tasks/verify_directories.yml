@@ -1,0 +1,29 @@
+---
+- name: Inspect expected directories
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop:
+    - "{{ expected_output }}"
+    - "{{ expected_structured }}"
+    - "{{ expected_cvp }}"
+    - "{{ expected_configs }}"
+    - "{{ expected_documentation }}"
+    - "{{ expected_fabric }}"
+    - "{{ expected_devices }}"
+    - "{{ expected_pre_backup }}"
+    - "{{ expected_post_backup }}"
+    - "{{ expected_snapshots }}"
+    - "{{ expected_anta }}"
+    - "{{ expected_user_catalogs }}"
+    - "{{ expected_avd_catalogs }}"
+    - "{{ expected_reports }}"
+  register: output_directories
+
+- name: Verify directory type and permissions
+  ansible.builtin.assert:
+    that:
+      - item.stat.isdir
+      - item.stat.mode == '0775'
+  loop: "{{ output_directories.results }}"
+  loop_control:
+    label: "{{ item.item }}"
