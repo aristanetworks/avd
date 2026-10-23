@@ -25840,7 +25840,6 @@ keys:
               keys:
                 input:
                   type: str
-                  required: true
                   description: Quality of Service Policy-map name.
         tcp_mss_ceiling:
           type: dict

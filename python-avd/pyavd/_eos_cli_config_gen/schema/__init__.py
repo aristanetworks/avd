@@ -77948,12 +77948,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"input": {"type": str}}
-                input: str
+                input: str | None
                 """Quality of Service Policy-map name."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, input: str | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, input: str | UndefinedType | None = Undefined) -> None:
                         """
                         Qos.
 
