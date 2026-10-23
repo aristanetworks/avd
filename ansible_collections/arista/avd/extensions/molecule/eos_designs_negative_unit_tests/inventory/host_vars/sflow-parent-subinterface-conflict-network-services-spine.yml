@@ -1,0 +1,48 @@
+---
+fabric_name: SFLOW_PARENT_SUBINTERFACE_CONFLICT_NETWORK_SERVICES
+type: spine
+underlay_routing_protocol: none
+overlay_routing_protocol: none
+bgp_as: 65000
+
+node_type_keys:
+  - key: spine
+    type: spine
+    network_services:
+      l3: true
+
+avd_design_future:
+  fix_sflow_parent_subinterface_conflicts: true
+
+sflow_settings:
+  destinations:
+    - destination: 10.10.10.10
+      vrf: default
+
+fabric_sflow:
+  l3_interfaces: true
+
+spine:
+  defaults:
+    platform: 7280R
+    loopback_ipv4_pool: 192.168.255.0/24
+  nodes:
+    - name: sflow-parent-subinterface-conflict-network-services-spine
+      id: 1
+
+tenants:
+  - name: SFLOW
+    vrfs:
+      - name: default
+        vrf_id: 1
+        l3_interfaces:
+          - nodes: [sflow-parent-subinterface-conflict-network-services-spine]
+            interfaces: [Ethernet1.100]
+            ip_addresses: [10.1.100.1/24]
+          - nodes: [sflow-parent-subinterface-conflict-network-services-spine]
+            interfaces: [Ethernet1]
+            ip_addresses: [10.1.1.1/24]
+
+expected_error_message: >-
+  sFlow cannot be enabled on both physical interface 'Ethernet1' and subinterface 'Ethernet1.100'
+  when 'avd_design_future.fix_sflow_parent_subinterface_conflicts' is enabled.
