@@ -34,14 +34,23 @@ class VirtualSourceNatVrfsMixin(Protocol):
         if vrf is None:
             return
 
+        ipv4 = get_ip_from_ip_prefix(ipv4_address) if ipv4_address else None
+        ipv6 = get_ip_from_ip_prefix(ipv6_address) if ipv6_address else None
+
         # Using append with ignore_fields.
         # It will append the VirtualSourceNatVrfsItem unless the same "name" is already in the list.
         # It will never raise since we only have these two keys.
         self.structured_config.virtual_source_nat_vrfs.append(
             EosCliConfigGen.VirtualSourceNatVrfsItem(
                 name=vrf,
-                ip_address=get_ip_from_ip_prefix(ipv4_address) if ipv4_address else None,
-                ipv6_address=get_ip_from_ip_prefix(ipv6_address) if ipv6_address else None,
+                ip_address=ipv4,
+                ipv6_address=ipv6,
             ),
             ignore_fields=("ip_address", "ipv6_address"),
         )
+
+        # Backfill IPv6 source NAT when later loopbacks introduce IPv6 for an existing VRF.
+        if ipv6:
+            virtual_source_nat_vrf = self.structured_config.virtual_source_nat_vrfs.obtain(vrf)
+            if virtual_source_nat_vrf._get("ipv6_address") is None:
+                virtual_source_nat_vrf.ipv6_address = ipv6

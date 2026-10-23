@@ -1207,6 +1207,7 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.1.10
 - name: Tenant_A_OSPF
   ip_address: 10.255.11.10
+  ipv6_address: fd5a:fe45:8831:06c5::a
 - name: VRF_DIAG_V6_TENANT_LO_V4
   ipv6_address: 2001:db8:142::2
 vlan_interfaces:

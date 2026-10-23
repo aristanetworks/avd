@@ -28,6 +28,6 @@ tenants:
             ospf:
               enabled: true
 
-expected_error_message: >-
-  'tenants[name=LOOPBACKS].vrfs[name=TESTING].loopbacks[node=net-srv-vrf-loopback-ospf-missing-ipv4, loopback=101]
+expected_error_message: |-
+  'Loopback101' defined under 'tenants[name=LOOPBACKS].vrfs[name=TESTING].loopbacks' for node 'net-srv-vrf-loopback-ospf-missing-ipv4'
   cannot enable OSPF without an 'ip_address'. OSPFv2 requires an IPv4 address.

@@ -45,8 +45,9 @@ class LoopbackInterfacesMixin(Protocol):
                 for loopback in vrf.loopbacks:
                     if not loopback.ip_address and not loopback.ipv6_addresses:
                         msg = (
-                            f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].loopbacks[node={self.shared_utils.hostname}, loopback={loopback.loopback}] "
-                            "must have at least one of 'ip_address' or 'ipv6_addresses' configured."
+                            f"'Loopback{loopback.loopback}' defined under "
+                            f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].loopbacks' "
+                            f"for node '{self.shared_utils.hostname}' must have at least one of 'ip_address' or 'ipv6_addresses' configured."
                         )
                         raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     loopback_interface_item = EosCliConfigGen.LoopbackInterfacesItem(
@@ -62,8 +63,9 @@ class LoopbackInterfacesMixin(Protocol):
                     if loopback.ospf.enabled and vrf.ospf.enabled:
                         if not loopback.ip_address:
                             msg = (
-                                f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].loopbacks[node={self.shared_utils.hostname}, loopback={loopback.loopback}]"
-                                " cannot enable OSPF without an 'ip_address'. OSPFv2 requires an IPv4 address."
+                                f"'Loopback{loopback.loopback}' defined under "
+                                f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].loopbacks' "
+                                f"for node '{self.shared_utils.hostname}' cannot enable OSPF without an 'ip_address'. OSPFv2 requires an IPv4 address."
                             )
                             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                         loopback_interface_item.ospf_area = loopback.ospf.area

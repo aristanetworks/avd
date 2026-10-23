@@ -1339,6 +1339,7 @@ keys:
                       items:
                         type: str
                         description: IPv6 address/Mask.
+                        min_length: 1
                     description:
                       type: str
                     enabled:
