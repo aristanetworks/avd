@@ -394,6 +394,9 @@ tenant_a:
         loopbacks:
           - loopback: 123
             ip_address: 10.1.53.0/32
+            ipv6_addresses:
+              - fd5a:fe45:8831:06c5::a/64
+              - 8:8:8:8:8:8:8:8/124
             node: dc1-leaf2a
             description: Test-Loopback
             enabled: true
@@ -409,10 +412,26 @@ tenant_a:
               enabled: true
             raw_eos_cli: |
               ip ospf cost 100
+          - loopback: 125
+            node: dc1-leaf2a
+            description: Test-Only-IPv6
+            enabled: true
+            ipv6_addresses:
+              - 2001:DB8:21::1/48
+              - 5:5:5:5:5:5:5:5/124
         vtep_diagnostic:
           loopback: 101
           loopback_ip_range: 10.255.11.0/24
           hardware_forwarding: true
+      - name: VRF_DIAG_V6_TENANT_LO_V4
+        vrf_id: 4242
+        vtep_diagnostic:
+          loopback: 142
+          loopback_ipv6_range: 2001:db8:142::/64
+        loopbacks:
+          - node: dc1-leaf2a
+            loopback: 143
+            ip_address: 10.142.0.1/32
     l2vlans:
       # L2 vlan as string
       - id: '160'

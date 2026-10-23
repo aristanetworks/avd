@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 
@@ -42,9 +43,17 @@ class LoopbackInterfacesMixin(Protocol):
                 # The loopbacks have already been filtered in _filtered_tenants
                 # to only contain entries with our hostname
                 for loopback in vrf.loopbacks:
+                    if not loopback.ip_address and not loopback.ipv6_addresses:
+                        msg = (
+                            f"'Loopback{loopback.loopback}' defined under "
+                            f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].loopbacks' "
+                            f"for node '{self.shared_utils.hostname}' must have at least one of 'ip_address' or 'ipv6_addresses' configured."
+                        )
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     loopback_interface_item = EosCliConfigGen.LoopbackInterfacesItem(
                         name=f"Loopback{loopback.loopback}",
                         ip_address=loopback.ip_address,
+                        ipv6_addresses=loopback.ipv6_addresses._cast_as(EosCliConfigGen.LoopbackInterfacesItem.Ipv6Addresses),
                         shutdown=not loopback.enabled,
                         description=loopback.description,
                         eos_cli=loopback.raw_eos_cli,
@@ -52,10 +61,21 @@ class LoopbackInterfacesMixin(Protocol):
                     if vrf.name != "default":
                         loopback_interface_item.vrf = vrf.name
                     if loopback.ospf.enabled and vrf.ospf.enabled:
+                        if not loopback.ip_address:
+                            msg = (
+                                f"'Loopback{loopback.loopback}' defined under "
+                                f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].loopbacks' "
+                                f"for node '{self.shared_utils.hostname}' cannot enable OSPF without an 'ip_address'. OSPFv2 requires an IPv4 address."
+                            )
+                            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                         loopback_interface_item.ospf_area = loopback.ospf.area
                     if loopback.hardware_forwarding:
                         loopback_interface_item.hardware_forwarding_id = True
-                    self._set_virtual_source_nat_for_vrf_loopback(loopback_interface_item.vrf, loopback_interface_item.ip_address)
+                    self._set_virtual_source_nat_for_vrf_loopback(
+                        loopback_interface_item.vrf,
+                        loopback_interface_item.ip_address,
+                        ipv6_address=next(iter(loopback.ipv6_addresses), None),
+                    )
                     self.structured_config.loopback_interfaces.append(loopback_interface_item)
 
     def _get_vtep_diagnostic_loopback_for_vrf(
