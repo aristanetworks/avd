@@ -2520,6 +2520,9 @@ keys:
               `system_mac_address` (resolved production system MAC address), `hostname`,
               `device_id`, `fabric_name`.
 
+              The rendered value should be unique across all devices in the fabric.
+              AVD does not enforce uniqueness automatically.
+
               If unset, no serial number is included in the metadata or the ACT topology.
 
               Applies only to `veos` and `cloudeos` node types. Ignored for all other
@@ -2549,6 +2552,9 @@ keys:
 
               Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh`
               format.
+
+              The rendered value should be unique across all devices in the fabric.
+              AVD does not enforce uniqueness automatically.
 
               If unset, no system MAC address is included in the metadata or the ACT
               topology, and the production `system_mac_address` is used for EOS configuration.
@@ -15207,6 +15213,9 @@ $defs:
                   Supports the same AVD string formatter template syntax and variables
                   as `digital_twin.fabric.serial_number`.
 
+                  The rendered value should be unique across all devices in the fabric.
+                  AVD does not enforce uniqueness automatically.
+
                   Applies only to `veos` and `cloudeos` node types. Ignored for all
                   other ACT node types.
 
@@ -15225,6 +15234,9 @@ $defs:
 
                   Supports the same AVD string formatter template syntax, variables,
                   MAC address formats, and normalization as `digital_twin.fabric.system_mac_address`.
+
+                  The rendered value should be unique across all devices in the fabric.
+                  AVD does not enforce uniqueness automatically.
 
                   Applies only to `veos` and `cloudeos` node types. Ignored for all
                   other ACT node types.

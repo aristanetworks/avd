@@ -347,9 +347,9 @@ spine:
 When `digital_twin.mgmt_gateway` is set, AVD uses it as the next hop for either the default route or the routes listed under `mgmt_destination_networks`.
 If it is not set, AVD falls back to the regular management gateway configuration.
 
-#### ACT Hardware Identity and ZTP Configuration
+#### ACT Hardware Identity Configuration
 
-ACT supports the `serial_number`, `system_mac_address`, and `ztp` topology keys only for `veos` and `cloudeos` node types.
+ACT supports the `serial_number` and `system_mac_address` topology keys only for `veos` and `cloudeos` node types.
 AVD omits these keys for all other ACT node types, even when they are configured in the Digital Twin settings.
 The Digital Twin `serial_number` and `system_mac_address` settings described in this section are ignored when `digital_twin.environment` is `containerlab`.
 
@@ -369,7 +369,6 @@ digital_twin:
   fabric:
     serial_number: "{serial_number}"
     system_mac_address: "{system_mac_address}"
-    ztp: true
 ```
 
 To generate stable, reproducible Digital Twin identities that do not conflict with the production devices:
@@ -377,9 +376,7 @@ To generate stable, reproducible Digital Twin identities that do not conflict wi
 ```yaml
 digital_twin:
   fabric:
-    serial_number: "DT{device_id:010d}"
-    system_mac_address: "021c.7301.{device_id:04x}"
-    ztp: true
+    serial_number: "DT-{hostname!u}"
 ```
 
 If neither fabric-level `serial_number` nor a node-level `digital_twin.serial_number` override is set, no serial number is written to the ACT topology for that device. The same applies to `system_mac_address`.
@@ -399,9 +396,18 @@ l3leaf:
 
 Node-level `digital_twin.serial_number` and `digital_twin.system_mac_address` support the same AVD string formatter template syntax and variables as the fabric-level templates.
 
-ZTP can be overridden per node:
+#### ACT ZTP Configuration
+
+ACT supports the `ztp` topology key only for `veos` and `cloudeos` node types.
+AVD omits this key for all other ACT node types, even when it is configured in the Digital Twin settings.
+
+ZTP can be configured at the fabric level and overridden per node:
 
 ```yaml
+digital_twin:
+  fabric:
+    ztp: true
+
 l3leaf:
   nodes:
     - name: leaf1

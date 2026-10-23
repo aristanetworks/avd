@@ -73,6 +73,7 @@ keys:
               When set, the rendered value is written into the device metadata and provided as the serial number in the ACT topology.
               Can be overridden per device with `digital_twin.serial_number` at node level.
               Supported template variables: `serial_number` (production serial number), `system_mac_address` (resolved production system MAC address), `hostname`, `device_id`, `fabric_name`.
+              The rendered value should be unique across all devices in the fabric. AVD does not enforce uniqueness automatically.
               If unset, no serial number is included in the metadata or the ACT topology.
               Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
               Ignored when `digital_twin.environment` is `containerlab`.
@@ -86,6 +87,7 @@ keys:
               Supported template variables: `serial_number` (production serial number), `system_mac_address` (production system MAC address), `hostname`, `device_id`, `fabric_name`.
               The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
               Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+              The rendered value should be unique across all devices in the fabric. AVD does not enforce uniqueness automatically.
               If unset, no system MAC address is included in the metadata or the ACT topology, and the production `system_mac_address` is used for EOS configuration.
               Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
               Ignored when `digital_twin.environment` is `containerlab`.

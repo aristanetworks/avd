@@ -1740,6 +1740,7 @@ $defs:
                   Overrides the global `digital_twin.fabric.serial_number` for this device.
                   When set, the rendered value is written into the device metadata and provided as the serial number in the ACT topology.
                   Supports the same AVD string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
+                  The rendered value should be unique across all devices in the fabric. AVD does not enforce uniqueness automatically.
                   Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
                   Ignored when `digital_twin.environment` is `containerlab`.
               system_mac_address:
@@ -1750,6 +1751,7 @@ $defs:
                   Overrides the global `digital_twin.fabric.system_mac_address` for this device.
                   When set, the rendered value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device metadata, and provided as the system MAC address in the ACT topology.
                   Supports the same AVD string formatter template syntax, variables, MAC address formats, and normalization as `digital_twin.fabric.system_mac_address`.
+                  The rendered value should be unique across all devices in the fabric. AVD does not enforce uniqueness automatically.
                   Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
                   Ignored when `digital_twin.environment` is `containerlab`.
               ztp:

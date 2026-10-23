@@ -11608,10 +11608,12 @@ class EosDesigns(EosDesignsRootModel):
             the device metadata and provided as the serial number in the ACT topology.
             Supports the same AVD
             string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-            Applies only
-            to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-            Ignored when
-            `digital_twin.environment` is `containerlab`.
+            The rendered
+            value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+            automatically.
+            Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+            types.
+            Ignored when `digital_twin.environment` is `containerlab`.
             """
             system_mac_address: str | None
             """
@@ -11624,9 +11626,12 @@ class EosDesigns(EosDesignsRootModel):
             Supports the same AVD string
             formatter template syntax, variables, MAC address formats, and normalization as
             `digital_twin.fabric.system_mac_address`.
-            Applies only to `veos` and `cloudeos` node types. Ignored
-            for all other ACT node types.
-            Ignored when `digital_twin.environment` is `containerlab`.
+            The rendered value should be unique across all devices in
+            the fabric. AVD does not enforce uniqueness automatically.
+            Applies only to `veos` and `cloudeos`
+            node types. Ignored for all other ACT node types.
+            Ignored when `digital_twin.environment` is
+            `containerlab`.
             """
             ztp: bool | None
             """
@@ -11688,10 +11693,12 @@ class EosDesigns(EosDesignsRootModel):
                            the device metadata and provided as the serial number in the ACT topology.
                            Supports the same AVD
                            string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                           Applies only
-                           to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                           Ignored when
-                           `digital_twin.environment` is `containerlab`.
+                           The rendered
+                           value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                           automatically.
+                           Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                           types.
+                           Ignored when `digital_twin.environment` is `containerlab`.
                         system_mac_address:
                            System MAC address for this ACT Digital Twin device.
                            Overrides the global
@@ -11702,9 +11709,12 @@ class EosDesigns(EosDesignsRootModel):
                            Supports the same AVD string
                            formatter template syntax, variables, MAC address formats, and normalization as
                            `digital_twin.fabric.system_mac_address`.
-                           Applies only to `veos` and `cloudeos` node types. Ignored
-                           for all other ACT node types.
-                           Ignored when `digital_twin.environment` is `containerlab`.
+                           The rendered value should be unique across all devices in
+                           the fabric. AVD does not enforce uniqueness automatically.
+                           Applies only to `veos` and `cloudeos`
+                           node types. Ignored for all other ACT node types.
+                           Ignored when `digital_twin.environment` is
+                           `containerlab`.
                         ztp:
                            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                            Supported Digital Twin
@@ -17318,10 +17328,12 @@ class EosDesigns(EosDesignsRootModel):
             the device metadata and provided as the serial number in the ACT topology.
             Supports the same AVD
             string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-            Applies only
-            to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-            Ignored when
-            `digital_twin.environment` is `containerlab`.
+            The rendered
+            value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+            automatically.
+            Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+            types.
+            Ignored when `digital_twin.environment` is `containerlab`.
             """
             system_mac_address: str | None
             """
@@ -17334,9 +17346,12 @@ class EosDesigns(EosDesignsRootModel):
             Supports the same AVD string
             formatter template syntax, variables, MAC address formats, and normalization as
             `digital_twin.fabric.system_mac_address`.
-            Applies only to `veos` and `cloudeos` node types. Ignored
-            for all other ACT node types.
-            Ignored when `digital_twin.environment` is `containerlab`.
+            The rendered value should be unique across all devices in
+            the fabric. AVD does not enforce uniqueness automatically.
+            Applies only to `veos` and `cloudeos`
+            node types. Ignored for all other ACT node types.
+            Ignored when `digital_twin.environment` is
+            `containerlab`.
             """
             ztp: bool | None
             """
@@ -17398,10 +17413,12 @@ class EosDesigns(EosDesignsRootModel):
                            the device metadata and provided as the serial number in the ACT topology.
                            Supports the same AVD
                            string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                           Applies only
-                           to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                           Ignored when
-                           `digital_twin.environment` is `containerlab`.
+                           The rendered
+                           value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                           automatically.
+                           Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                           types.
+                           Ignored when `digital_twin.environment` is `containerlab`.
                         system_mac_address:
                            System MAC address for this ACT Digital Twin device.
                            Overrides the global
@@ -17412,9 +17429,12 @@ class EosDesigns(EosDesignsRootModel):
                            Supports the same AVD string
                            formatter template syntax, variables, MAC address formats, and normalization as
                            `digital_twin.fabric.system_mac_address`.
-                           Applies only to `veos` and `cloudeos` node types. Ignored
-                           for all other ACT node types.
-                           Ignored when `digital_twin.environment` is `containerlab`.
+                           The rendered value should be unique across all devices in
+                           the fabric. AVD does not enforce uniqueness automatically.
+                           Applies only to `veos` and `cloudeos`
+                           node types. Ignored for all other ACT node types.
+                           Ignored when `digital_twin.environment` is
+                           `containerlab`.
                         ztp:
                            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                            Supported Digital Twin
@@ -19531,12 +19551,14 @@ class EosDesigns(EosDesignsRootModel):
             Can be overridden per device with `digital_twin.serial_number` at node level.
             Supported template variables: `serial_number` (production serial number), `system_mac_address`
             (resolved production system MAC address), `hostname`, `device_id`, `fabric_name`.
-            If unset, no
-            serial number is included in the metadata or the ACT topology.
-            Applies only to `veos` and `cloudeos`
-            node types. Ignored for all other ACT node types.
-            Ignored when `digital_twin.environment` is
-            `containerlab`.
+            The rendered value
+            should be unique across all devices in the fabric. AVD does not enforce uniqueness automatically.
+            If
+            unset, no serial number is included in the metadata or the ACT topology.
+            Applies only to `veos` and
+            `cloudeos` node types. Ignored for all other ACT node types.
+            Ignored when `digital_twin.environment`
+            is `containerlab`.
             """
             system_mac_address: str | None
             """
@@ -19552,12 +19574,15 @@ class EosDesigns(EosDesignsRootModel):
             hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
             Regardless of the
             input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
-            If unset, no system MAC
-            address is included in the metadata or the ACT topology, and the production `system_mac_address` is
-            used for EOS configuration.
-            Applies only to `veos` and `cloudeos` node types. Ignored for all other
-            ACT node types.
-            Ignored when `digital_twin.environment` is `containerlab`.
+            The rendered value should
+            be unique across all devices in the fabric. AVD does not enforce uniqueness automatically.
+            If unset,
+            no system MAC address is included in the metadata or the ACT topology, and the production
+            `system_mac_address` is used for EOS configuration.
+            Applies only to `veos` and `cloudeos` node
+            types. Ignored for all other ACT node types.
+            Ignored when `digital_twin.environment` is
+            `containerlab`.
             """
             ztp: bool
             """
@@ -19629,12 +19654,14 @@ class EosDesigns(EosDesignsRootModel):
                            Can be overridden per device with `digital_twin.serial_number` at node level.
                            Supported template variables: `serial_number` (production serial number), `system_mac_address`
                            (resolved production system MAC address), `hostname`, `device_id`, `fabric_name`.
-                           If unset, no
-                           serial number is included in the metadata or the ACT topology.
-                           Applies only to `veos` and `cloudeos`
-                           node types. Ignored for all other ACT node types.
-                           Ignored when `digital_twin.environment` is
-                           `containerlab`.
+                           The rendered value
+                           should be unique across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                           If
+                           unset, no serial number is included in the metadata or the ACT topology.
+                           Applies only to `veos` and
+                           `cloudeos` node types. Ignored for all other ACT node types.
+                           Ignored when `digital_twin.environment`
+                           is `containerlab`.
                         system_mac_address:
                            AVD string formatter template for generating the system MAC address of ACT Digital Twin devices.
                            When set, the rendered value is used throughout the device's EOS configuration (e.g., SNMPv3 engine
@@ -19648,12 +19675,15 @@ class EosDesigns(EosDesignsRootModel):
                            hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
                            Regardless of the
                            input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
-                           If unset, no system MAC
-                           address is included in the metadata or the ACT topology, and the production `system_mac_address` is
-                           used for EOS configuration.
-                           Applies only to `veos` and `cloudeos` node types. Ignored for all other
-                           ACT node types.
-                           Ignored when `digital_twin.environment` is `containerlab`.
+                           The rendered value should
+                           be unique across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                           If unset,
+                           no system MAC address is included in the metadata or the ACT topology, and the production
+                           `system_mac_address` is used for EOS configuration.
+                           Applies only to `veos` and `cloudeos` node
+                           types. Ignored for all other ACT node types.
+                           Ignored when `digital_twin.environment` is
+                           `containerlab`.
                         ztp:
                            Enable ZTP (Zero Touch Provisioning) mode for all Digital Twin devices.
                            Can be overridden by
@@ -60513,10 +60543,12 @@ class EosDesigns(EosDesignsRootModel):
                         the device metadata and provided as the serial number in the ACT topology.
                         Supports the same AVD
                         string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                        Applies only
-                        to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when
-                        `digital_twin.environment` is `containerlab`.
+                        The rendered
+                        value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                        automatically.
+                        Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                        types.
+                        Ignored when `digital_twin.environment` is `containerlab`.
                         """
                         system_mac_address: str | None
                         """
@@ -60529,9 +60561,12 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD string
                         formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address`.
-                        Applies only to `veos` and `cloudeos` node types. Ignored
-                        for all other ACT node types.
-                        Ignored when `digital_twin.environment` is `containerlab`.
+                        The rendered value should be unique across all devices in
+                        the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to `veos` and `cloudeos`
+                        node types. Ignored for all other ACT node types.
+                        Ignored when `digital_twin.environment` is
+                        `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -60593,10 +60628,12 @@ class EosDesigns(EosDesignsRootModel):
                                        the device metadata and provided as the serial number in the ACT topology.
                                        Supports the same AVD
                                        string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                                       Applies only
-                                       to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when
-                                       `digital_twin.environment` is `containerlab`.
+                                       The rendered
+                                       value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                                       automatically.
+                                       Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                                       types.
+                                       Ignored when `digital_twin.environment` is `containerlab`.
                                     system_mac_address:
                                        System MAC address for this ACT Digital Twin device.
                                        Overrides the global
@@ -60607,9 +60644,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD string
                                        formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address`.
-                                       Applies only to `veos` and `cloudeos` node types. Ignored
-                                       for all other ACT node types.
-                                       Ignored when `digital_twin.environment` is `containerlab`.
+                                       The rendered value should be unique across all devices in
+                                       the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to `veos` and `cloudeos`
+                                       node types. Ignored for all other ACT node types.
+                                       Ignored when `digital_twin.environment` is
+                                       `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
@@ -66201,10 +66241,12 @@ class EosDesigns(EosDesignsRootModel):
                             the device metadata and provided as the serial number in the ACT topology.
                             Supports the same AVD
                             string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                            Applies only
-                            to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                            Ignored when
-                            `digital_twin.environment` is `containerlab`.
+                            The rendered
+                            value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                            automatically.
+                            Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                            types.
+                            Ignored when `digital_twin.environment` is `containerlab`.
                             """
                             system_mac_address: str | None
                             """
@@ -66217,9 +66259,12 @@ class EosDesigns(EosDesignsRootModel):
                             Supports the same AVD string
                             formatter template syntax, variables, MAC address formats, and normalization as
                             `digital_twin.fabric.system_mac_address`.
-                            Applies only to `veos` and `cloudeos` node types. Ignored
-                            for all other ACT node types.
-                            Ignored when `digital_twin.environment` is `containerlab`.
+                            The rendered value should be unique across all devices in
+                            the fabric. AVD does not enforce uniqueness automatically.
+                            Applies only to `veos` and `cloudeos`
+                            node types. Ignored for all other ACT node types.
+                            Ignored when `digital_twin.environment` is
+                            `containerlab`.
                             """
                             ztp: bool | None
                             """
@@ -66281,10 +66326,12 @@ class EosDesigns(EosDesignsRootModel):
                                            the device metadata and provided as the serial number in the ACT topology.
                                            Supports the same AVD
                                            string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                                           Applies only
-                                           to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                                           Ignored when
-                                           `digital_twin.environment` is `containerlab`.
+                                           The rendered
+                                           value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                                           automatically.
+                                           Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                                           types.
+                                           Ignored when `digital_twin.environment` is `containerlab`.
                                         system_mac_address:
                                            System MAC address for this ACT Digital Twin device.
                                            Overrides the global
@@ -66295,9 +66342,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Supports the same AVD string
                                            formatter template syntax, variables, MAC address formats, and normalization as
                                            `digital_twin.fabric.system_mac_address`.
-                                           Applies only to `veos` and `cloudeos` node types. Ignored
-                                           for all other ACT node types.
-                                           Ignored when `digital_twin.environment` is `containerlab`.
+                                           The rendered value should be unique across all devices in
+                                           the fabric. AVD does not enforce uniqueness automatically.
+                                           Applies only to `veos` and `cloudeos`
+                                           node types. Ignored for all other ACT node types.
+                                           Ignored when `digital_twin.environment` is
+                                           `containerlab`.
                                         ztp:
                                            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                            Supported Digital Twin
@@ -71826,10 +71876,12 @@ class EosDesigns(EosDesignsRootModel):
                         the device metadata and provided as the serial number in the ACT topology.
                         Supports the same AVD
                         string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                        Applies only
-                        to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when
-                        `digital_twin.environment` is `containerlab`.
+                        The rendered
+                        value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                        automatically.
+                        Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                        types.
+                        Ignored when `digital_twin.environment` is `containerlab`.
                         """
                         system_mac_address: str | None
                         """
@@ -71842,9 +71894,12 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD string
                         formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address`.
-                        Applies only to `veos` and `cloudeos` node types. Ignored
-                        for all other ACT node types.
-                        Ignored when `digital_twin.environment` is `containerlab`.
+                        The rendered value should be unique across all devices in
+                        the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to `veos` and `cloudeos`
+                        node types. Ignored for all other ACT node types.
+                        Ignored when `digital_twin.environment` is
+                        `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -71906,10 +71961,12 @@ class EosDesigns(EosDesignsRootModel):
                                        the device metadata and provided as the serial number in the ACT topology.
                                        Supports the same AVD
                                        string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                                       Applies only
-                                       to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when
-                                       `digital_twin.environment` is `containerlab`.
+                                       The rendered
+                                       value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                                       automatically.
+                                       Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                                       types.
+                                       Ignored when `digital_twin.environment` is `containerlab`.
                                     system_mac_address:
                                        System MAC address for this ACT Digital Twin device.
                                        Overrides the global
@@ -71920,9 +71977,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD string
                                        formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address`.
-                                       Applies only to `veos` and `cloudeos` node types. Ignored
-                                       for all other ACT node types.
-                                       Ignored when `digital_twin.environment` is `containerlab`.
+                                       The rendered value should be unique across all devices in
+                                       the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to `veos` and `cloudeos`
+                                       node types. Ignored for all other ACT node types.
+                                       Ignored when `digital_twin.environment` is
+                                       `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
@@ -77531,10 +77591,12 @@ class EosDesigns(EosDesignsRootModel):
                         the device metadata and provided as the serial number in the ACT topology.
                         Supports the same AVD
                         string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                        Applies only
-                        to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when
-                        `digital_twin.environment` is `containerlab`.
+                        The rendered
+                        value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                        automatically.
+                        Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                        types.
+                        Ignored when `digital_twin.environment` is `containerlab`.
                         """
                         system_mac_address: str | None
                         """
@@ -77547,9 +77609,12 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD string
                         formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address`.
-                        Applies only to `veos` and `cloudeos` node types. Ignored
-                        for all other ACT node types.
-                        Ignored when `digital_twin.environment` is `containerlab`.
+                        The rendered value should be unique across all devices in
+                        the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to `veos` and `cloudeos`
+                        node types. Ignored for all other ACT node types.
+                        Ignored when `digital_twin.environment` is
+                        `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -77611,10 +77676,12 @@ class EosDesigns(EosDesignsRootModel):
                                        the device metadata and provided as the serial number in the ACT topology.
                                        Supports the same AVD
                                        string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                                       Applies only
-                                       to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when
-                                       `digital_twin.environment` is `containerlab`.
+                                       The rendered
+                                       value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                                       automatically.
+                                       Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                                       types.
+                                       Ignored when `digital_twin.environment` is `containerlab`.
                                     system_mac_address:
                                        System MAC address for this ACT Digital Twin device.
                                        Overrides the global
@@ -77625,9 +77692,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD string
                                        formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address`.
-                                       Applies only to `veos` and `cloudeos` node types. Ignored
-                                       for all other ACT node types.
-                                       Ignored when `digital_twin.environment` is `containerlab`.
+                                       The rendered value should be unique across all devices in
+                                       the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to `veos` and `cloudeos`
+                                       node types. Ignored for all other ACT node types.
+                                       Ignored when `digital_twin.environment` is
+                                       `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
@@ -99042,10 +99112,12 @@ class EosDesigns(EosDesignsRootModel):
                         the device metadata and provided as the serial number in the ACT topology.
                         Supports the same AVD
                         string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                        Applies only
-                        to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when
-                        `digital_twin.environment` is `containerlab`.
+                        The rendered
+                        value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                        automatically.
+                        Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                        types.
+                        Ignored when `digital_twin.environment` is `containerlab`.
                         """
                         system_mac_address: str | None
                         """
@@ -99058,9 +99130,12 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD string
                         formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address`.
-                        Applies only to `veos` and `cloudeos` node types. Ignored
-                        for all other ACT node types.
-                        Ignored when `digital_twin.environment` is `containerlab`.
+                        The rendered value should be unique across all devices in
+                        the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to `veos` and `cloudeos`
+                        node types. Ignored for all other ACT node types.
+                        Ignored when `digital_twin.environment` is
+                        `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -99122,10 +99197,12 @@ class EosDesigns(EosDesignsRootModel):
                                        the device metadata and provided as the serial number in the ACT topology.
                                        Supports the same AVD
                                        string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                                       Applies only
-                                       to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when
-                                       `digital_twin.environment` is `containerlab`.
+                                       The rendered
+                                       value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                                       automatically.
+                                       Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                                       types.
+                                       Ignored when `digital_twin.environment` is `containerlab`.
                                     system_mac_address:
                                        System MAC address for this ACT Digital Twin device.
                                        Overrides the global
@@ -99136,9 +99213,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD string
                                        formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address`.
-                                       Applies only to `veos` and `cloudeos` node types. Ignored
-                                       for all other ACT node types.
-                                       Ignored when `digital_twin.environment` is `containerlab`.
+                                       The rendered value should be unique across all devices in
+                                       the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to `veos` and `cloudeos`
+                                       node types. Ignored for all other ACT node types.
+                                       Ignored when `digital_twin.environment` is
+                                       `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
@@ -104730,10 +104810,12 @@ class EosDesigns(EosDesignsRootModel):
                             the device metadata and provided as the serial number in the ACT topology.
                             Supports the same AVD
                             string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                            Applies only
-                            to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                            Ignored when
-                            `digital_twin.environment` is `containerlab`.
+                            The rendered
+                            value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                            automatically.
+                            Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                            types.
+                            Ignored when `digital_twin.environment` is `containerlab`.
                             """
                             system_mac_address: str | None
                             """
@@ -104746,9 +104828,12 @@ class EosDesigns(EosDesignsRootModel):
                             Supports the same AVD string
                             formatter template syntax, variables, MAC address formats, and normalization as
                             `digital_twin.fabric.system_mac_address`.
-                            Applies only to `veos` and `cloudeos` node types. Ignored
-                            for all other ACT node types.
-                            Ignored when `digital_twin.environment` is `containerlab`.
+                            The rendered value should be unique across all devices in
+                            the fabric. AVD does not enforce uniqueness automatically.
+                            Applies only to `veos` and `cloudeos`
+                            node types. Ignored for all other ACT node types.
+                            Ignored when `digital_twin.environment` is
+                            `containerlab`.
                             """
                             ztp: bool | None
                             """
@@ -104810,10 +104895,12 @@ class EosDesigns(EosDesignsRootModel):
                                            the device metadata and provided as the serial number in the ACT topology.
                                            Supports the same AVD
                                            string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                                           Applies only
-                                           to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                                           Ignored when
-                                           `digital_twin.environment` is `containerlab`.
+                                           The rendered
+                                           value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                                           automatically.
+                                           Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                                           types.
+                                           Ignored when `digital_twin.environment` is `containerlab`.
                                         system_mac_address:
                                            System MAC address for this ACT Digital Twin device.
                                            Overrides the global
@@ -104824,9 +104911,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Supports the same AVD string
                                            formatter template syntax, variables, MAC address formats, and normalization as
                                            `digital_twin.fabric.system_mac_address`.
-                                           Applies only to `veos` and `cloudeos` node types. Ignored
-                                           for all other ACT node types.
-                                           Ignored when `digital_twin.environment` is `containerlab`.
+                                           The rendered value should be unique across all devices in
+                                           the fabric. AVD does not enforce uniqueness automatically.
+                                           Applies only to `veos` and `cloudeos`
+                                           node types. Ignored for all other ACT node types.
+                                           Ignored when `digital_twin.environment` is
+                                           `containerlab`.
                                         ztp:
                                            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                            Supported Digital Twin
@@ -110355,10 +110445,12 @@ class EosDesigns(EosDesignsRootModel):
                         the device metadata and provided as the serial number in the ACT topology.
                         Supports the same AVD
                         string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                        Applies only
-                        to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when
-                        `digital_twin.environment` is `containerlab`.
+                        The rendered
+                        value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                        automatically.
+                        Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                        types.
+                        Ignored when `digital_twin.environment` is `containerlab`.
                         """
                         system_mac_address: str | None
                         """
@@ -110371,9 +110463,12 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD string
                         formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address`.
-                        Applies only to `veos` and `cloudeos` node types. Ignored
-                        for all other ACT node types.
-                        Ignored when `digital_twin.environment` is `containerlab`.
+                        The rendered value should be unique across all devices in
+                        the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to `veos` and `cloudeos`
+                        node types. Ignored for all other ACT node types.
+                        Ignored when `digital_twin.environment` is
+                        `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -110435,10 +110530,12 @@ class EosDesigns(EosDesignsRootModel):
                                        the device metadata and provided as the serial number in the ACT topology.
                                        Supports the same AVD
                                        string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                                       Applies only
-                                       to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when
-                                       `digital_twin.environment` is `containerlab`.
+                                       The rendered
+                                       value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                                       automatically.
+                                       Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                                       types.
+                                       Ignored when `digital_twin.environment` is `containerlab`.
                                     system_mac_address:
                                        System MAC address for this ACT Digital Twin device.
                                        Overrides the global
@@ -110449,9 +110546,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD string
                                        formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address`.
-                                       Applies only to `veos` and `cloudeos` node types. Ignored
-                                       for all other ACT node types.
-                                       Ignored when `digital_twin.environment` is `containerlab`.
+                                       The rendered value should be unique across all devices in
+                                       the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to `veos` and `cloudeos`
+                                       node types. Ignored for all other ACT node types.
+                                       Ignored when `digital_twin.environment` is
+                                       `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
@@ -116060,10 +116160,12 @@ class EosDesigns(EosDesignsRootModel):
                         the device metadata and provided as the serial number in the ACT topology.
                         Supports the same AVD
                         string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                        Applies only
-                        to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when
-                        `digital_twin.environment` is `containerlab`.
+                        The rendered
+                        value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                        automatically.
+                        Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                        types.
+                        Ignored when `digital_twin.environment` is `containerlab`.
                         """
                         system_mac_address: str | None
                         """
@@ -116076,9 +116178,12 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD string
                         formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address`.
-                        Applies only to `veos` and `cloudeos` node types. Ignored
-                        for all other ACT node types.
-                        Ignored when `digital_twin.environment` is `containerlab`.
+                        The rendered value should be unique across all devices in
+                        the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to `veos` and `cloudeos`
+                        node types. Ignored for all other ACT node types.
+                        Ignored when `digital_twin.environment` is
+                        `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -116140,10 +116245,12 @@ class EosDesigns(EosDesignsRootModel):
                                        the device metadata and provided as the serial number in the ACT topology.
                                        Supports the same AVD
                                        string formatter template syntax and variables as `digital_twin.fabric.serial_number`.
-                                       Applies only
-                                       to `veos` and `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when
-                                       `digital_twin.environment` is `containerlab`.
+                                       The rendered
+                                       value should be unique across all devices in the fabric. AVD does not enforce uniqueness
+                                       automatically.
+                                       Applies only to `veos` and `cloudeos` node types. Ignored for all other ACT node
+                                       types.
+                                       Ignored when `digital_twin.environment` is `containerlab`.
                                     system_mac_address:
                                        System MAC address for this ACT Digital Twin device.
                                        Overrides the global
@@ -116154,9 +116261,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD string
                                        formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address`.
-                                       Applies only to `veos` and `cloudeos` node types. Ignored
-                                       for all other ACT node types.
-                                       Ignored when `digital_twin.environment` is `containerlab`.
+                                       The rendered value should be unique across all devices in
+                                       the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to `veos` and `cloudeos`
+                                       node types. Ignored for all other ACT node types.
+                                       Ignored when `digital_twin.environment` is
+                                       `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
