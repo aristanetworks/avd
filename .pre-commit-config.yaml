@@ -11,7 +11,7 @@ ci:
     - check-added-large-files
     - check-merge-conflict
     - insert-license
-    - ruff
+    - ruff-check
     - ruff-format
     - pyright
     - pylint
@@ -142,7 +142,7 @@ repos:
     rev: 38bfb07c0c64c304f47eb52090f8288150c77730  # frozen: v0.17.1
     hooks:
       # Run the linter.
-      - id: ruff
+      - id: ruff-check
         args:
           - --fix
       # Run the formatter.
@@ -168,6 +168,7 @@ repos:
           - 'pyavd-utils==0.0.13'
           - 'pyavd-utils-gen==0.0.13'
           - 'pytest>=9.1.0'
+          - 'pytest-codspeed>=4.3.0'
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.35.0'
           - 'ruff==0.16.8'
