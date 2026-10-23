@@ -1,0 +1,26 @@
+---
+type: l2leaf
+
+# Verify CloudEOS prefers node-level Digital Twin identity values over fabric templates and inherits fabric ZTP.
+# The Digital Twin system MAC must also drive EOS calculations such as the SNMPv3 EngineID.
+l2leaf:
+  nodes:
+    - name: digital-twin-hardware-identity-tests-cloudeos
+      id: 1
+      platform: CloudEOS
+      mgmt_ip: 192.168.10.12/32
+      serial_number: PROD-CLOUDEOS-SERIAL
+      system_mac_address: 02:1c:73:00:00:12
+      digital_twin:
+        serial_number_template: DTCLOUDEOSSERIAL
+        system_mac_address_template: 02:1c:73:00:10:12
+
+digital_twin:
+  fabric:
+    serial_number_template: "{serial_number}"
+    system_mac_address_template: "{system_mac_address}"
+    ztp: true
+
+snmp_settings:
+  compute_local_engineid: true
+  compute_local_engineid_source: system_mac

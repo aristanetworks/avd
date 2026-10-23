@@ -1,0 +1,17 @@
+---
+type: l2leaf
+
+# Verify a node-level Digital Twin serial number can be set without a Digital Twin system MAC.
+# The serial number must be used in metadata and the ACT topology while the production system MAC remains omitted.
+l2leaf:
+  nodes:
+    - name: digital-twin-hardware-identity-serial-only-tests-veos
+      id: 21
+      mgmt_ip: 192.168.10.21/32
+      serial_number: PROD-SERIAL-ONLY-VEOS-SERIAL
+      system_mac_address: 02:1c:73:00:00:21
+      digital_twin:
+        serial_number_template: "DT{device_id:010d}"
+
+eos_cli_config_gen_documentation:
+  enable: false
