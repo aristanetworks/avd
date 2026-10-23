@@ -12,7 +12,7 @@ import pytest
 
 from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed
 from pyavd._cv.workflows.constants import EOS_CLI_WARNINGS
-from pyavd._cv.workflows.finalize_workspace_on_cv import _produce_cvworkspace_build_result, finalize_workspace_on_cv
+from pyavd._cv.workflows.finalize_workspace_on_cv import _process_workspace_build_details, finalize_workspace_on_cv
 from pyavd._cv.workflows.models import (
     AvdDevice,
     AvdWorkspace,
@@ -736,16 +736,16 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             ),
         )
 
-        # Fetch mocked/recorded API response which includes config validation warnings for avd-ci-leaf1 (13C20F1EDCCED2D85F6DB2FB9E3AC5B6)
-        workspace_build_details = await cv_client.get_workspace_build_details(workspace_id=self.workspace_id, build_id=self.workspace_build_id)
-
-        # Attempt to process CloudVision build details
+        # Process the recorded build details through the workflow's warning collection path.
+        workflow_warnings = ["Existing workflow warning"]
+        workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=self.workspace_id, requested_state="built"))
+        workspace.build_id = self.workspace_build_id
         with caplog.at_level(WARNING):
-            response = _produce_cvworkspace_build_result(
-                workspace=CVWorkspace(avd_workspace=AvdWorkspace(id=self.workspace_id, requested_state="built")),
-                workspace_build_details=workspace_build_details,
-                compiled_workspace_build_warnings_suppress_list=[],
+            response = await _process_workspace_build_details(
+                workspace=workspace,
+                cv_client=cv_client,
                 devices=cv_devices_short,
+                warnings=workflow_warnings,
             )
 
         # Assert that CVWorkspaceDeviceBuildResult objects are generated for avd-ci-spine1 and avd-ci-spine2
@@ -766,3 +766,12 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             )
             for record in caplog.records
         )
+
+        # Preserve prior warnings and return the untargeted-device diagnostic once, without log capture.
+        assert len(workflow_warnings) == 2
+        assert workflow_warnings[0] == "Existing workflow warning"
+        assert workflow_warnings[1].startswith(
+            "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device "
+            "'13C20F1EDCCED2D85F6DB2FB9E3AC5B6' not targeted by our deployment: "
+        )
+        assert any(record.levelno == WARNING and record.message == workflow_warnings[1] for record in caplog.records)
