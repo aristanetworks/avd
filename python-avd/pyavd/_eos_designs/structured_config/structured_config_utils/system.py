@@ -95,13 +95,15 @@ class SystemMixin(Protocol):
     @cached_property
     def digital_twin_system_mac_address(self: StructuredConfigUtilsProtocol) -> str | None:
         """Return the rendered and normalized Digital Twin system MAC, or None if not configured."""
-        node_system_mac = self.shared_utils.node_config.digital_twin.system_mac_address
-        fabric_system_mac = self.inputs.digital_twin.fabric.system_mac_address
+        node_system_mac = self.shared_utils.node_config.digital_twin.system_mac_address_template
+        fabric_system_mac = self.inputs.digital_twin.fabric.system_mac_address_template
 
         system_mac_template = default(node_system_mac, fabric_system_mac)
         if system_mac_template is None:
             return None
-        setting_path = "node_config.digital_twin.system_mac_address" if node_system_mac is not None else "digital_twin.fabric.system_mac_address"
+        setting_path = (
+            "node_config.digital_twin.system_mac_address_template" if node_system_mac is not None else "digital_twin.fabric.system_mac_address_template"
+        )
         mac_address = self.render_digital_twin_hardware_identity_template(system_mac_template, setting_path)
         return _normalize_system_mac_address(mac_address, setting_path, self.shared_utils.hostname)
 

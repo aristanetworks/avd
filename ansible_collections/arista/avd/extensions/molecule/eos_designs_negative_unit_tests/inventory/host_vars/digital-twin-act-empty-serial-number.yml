@@ -14,7 +14,7 @@ platform_settings:
 
 digital_twin:
   fabric:
-    serial_number: "{serial_number?}"
+    serial_number_template: "{serial_number?}"
 
 expected_error_message: >-
-  'digital_twin.fabric.serial_number' rendered an empty serial number for device 'digital-twin-act-empty-serial-number'.
+  'digital_twin.fabric.serial_number_template' rendered an empty serial number for device 'digital-twin-act-empty-serial-number'.

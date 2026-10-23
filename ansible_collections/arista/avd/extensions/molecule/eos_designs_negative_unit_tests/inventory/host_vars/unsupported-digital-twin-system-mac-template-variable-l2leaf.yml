@@ -14,8 +14,8 @@ platform_settings:
 
 digital_twin:
   fabric:
-    system_mac_address: "{unsupported}"
+    system_mac_address_template: "{unsupported}"
 
 expected_error_message: >-
-  'digital_twin.fabric.system_mac_address' uses unsupported template variable 'unsupported'. Supported template variables are:
+  'digital_twin.fabric.system_mac_address_template' uses unsupported template variable 'unsupported'. Supported template variables are:
   'serial_number', 'system_mac_address', 'hostname', 'device_id', 'fabric_name'.

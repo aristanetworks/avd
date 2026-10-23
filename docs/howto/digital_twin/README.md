@@ -351,7 +351,7 @@ If it is not set, AVD falls back to the regular management gateway configuration
 
 ACT supports the `serial_number` and `system_mac_address` topology keys only for `veos` and `cloudeos` node types.
 AVD omits these keys for all other ACT node types, even when they are configured in the Digital Twin settings.
-The Digital Twin `serial_number` and `system_mac_address` settings described in this section are ignored when `digital_twin.environment` is `containerlab`.
+The Digital Twin `serial_number_template` and `system_mac_address_template` settings described in this section are ignored when `digital_twin.environment` is `containerlab`.
 
 When running in ACT Digital Twin mode, production `serial_number` and `system_mac_address` values are excluded from AVD metadata to prevent CloudVision matching failures — ACT virtual nodes do not possess the production hardware identity values.
 If no Digital Twin system MAC address is configured, the production `system_mac_address` is still used for EOS configuration such as SNMPv3 engine ID generation.
@@ -367,8 +367,8 @@ To pass the production values through unchanged, use the identity templates:
 ```yaml
 digital_twin:
   fabric:
-    serial_number: "{serial_number}"
-    system_mac_address: "{system_mac_address}"
+    serial_number_template: "{serial_number}"
+    system_mac_address_template: "{system_mac_address}"
 ```
 
 To generate stable, reproducible Digital Twin identities that do not conflict with the production devices:
@@ -376,10 +376,10 @@ To generate stable, reproducible Digital Twin identities that do not conflict wi
 ```yaml
 digital_twin:
   fabric:
-    serial_number: "DT-{hostname!u}"
+    serial_number_template: "DT-{hostname!u}"
 ```
 
-If neither fabric-level `serial_number` nor a node-level `digital_twin.serial_number` override is set, no serial number is written to the ACT topology for that device. The same applies to `system_mac_address`.
+If neither fabric-level `serial_number_template` nor a node-level `digital_twin.serial_number_template` override is set, no serial number is written to the ACT topology for that device. The same applies to `system_mac_address_template`.
 
 Individual nodes can override the fabric-level template with a fixed value or their own template:
 
@@ -390,11 +390,11 @@ l3leaf:
       serial_number: PRODLEAF1
       system_mac_address: 02:1c:73:00:00:01
       digital_twin:
-        serial_number: DTLEAF1
-        system_mac_address: 02:1c:73:11:11:10
+        serial_number_template: DTLEAF1
+        system_mac_address_template: 02:1c:73:11:11:10
 ```
 
-Node-level `digital_twin.serial_number` and `digital_twin.system_mac_address` support the same AVD string formatter template syntax and variables as the fabric-level templates.
+Node-level `digital_twin.serial_number_template` and `digital_twin.system_mac_address_template` support the same AVD string formatter template syntax and variables as the fabric-level templates.
 
 #### ACT ZTP Configuration
 

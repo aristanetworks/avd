@@ -11,7 +11,7 @@ l2leaf:
       serial_number: PROD-SYSTEM-MAC-ONLY-VEOS-SERIAL
       system_mac_address: 02:1c:73:00:00:22
       digital_twin:
-        system_mac_address: "021c7310{device_id:02x}22"
+        system_mac_address_template: "021c7310{device_id:02x}22"
 
 snmp_settings:
   compute_local_engineid: true

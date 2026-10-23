@@ -59,13 +59,13 @@ class DigitalTwinMixin(Protocol):
     @cached_property
     def digital_twin_serial_number(self: StructuredConfigUtilsProtocol) -> str | None:
         """Return the rendered Digital Twin serial number, or None if not configured."""
-        node_serial_number = self.shared_utils.node_config.digital_twin.serial_number
-        fabric_serial_number = self.inputs.digital_twin.fabric.serial_number
+        node_serial_number = self.shared_utils.node_config.digital_twin.serial_number_template
+        fabric_serial_number = self.inputs.digital_twin.fabric.serial_number_template
         serial_number_template = default(node_serial_number, fabric_serial_number)
         if serial_number_template is None:
             return None
 
-        setting_path = "node_config.digital_twin.serial_number" if node_serial_number is not None else "digital_twin.fabric.serial_number"
+        setting_path = "node_config.digital_twin.serial_number_template" if node_serial_number is not None else "digital_twin.fabric.serial_number_template"
         serial_number = self.render_digital_twin_hardware_identity_template(serial_number_template, setting_path)
         if not serial_number:
             msg = f"'{setting_path}' rendered an empty serial number for device '{self.shared_utils.hostname}'."

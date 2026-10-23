@@ -12,8 +12,8 @@ l2leaf:
       serial_number: PROD-THIRD-PARTY-SERIAL
       system_mac_address: 02:1c:73:00:00:13
       digital_twin:
-        serial_number: DTTHIRDPARTYSERIAL
-        system_mac_address: 02:1c:73:00:10:13
+        serial_number_template: DTTHIRDPARTYSERIAL
+        system_mac_address_template: 02:1c:73:00:10:13
 
 custom_platform_settings:
   - platforms:
@@ -23,8 +23,8 @@ custom_platform_settings:
 
 digital_twin:
   fabric:
-    serial_number: "{serial_number}"
-    system_mac_address: "{system_mac_address}"
+    serial_number_template: "{serial_number}"
+    system_mac_address_template: "{system_mac_address}"
     ztp: true
 
 snmp_settings:

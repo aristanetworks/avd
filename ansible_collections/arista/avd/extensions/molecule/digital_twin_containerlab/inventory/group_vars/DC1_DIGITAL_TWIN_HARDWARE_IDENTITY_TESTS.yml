@@ -10,5 +10,5 @@ l2leaf:
       serial_number: PRODCONTAINERLAB03
       system_mac_address: 02:1c:73:00:00:03
       digital_twin:
-        serial_number: DTCONTAINERLAB03
-        system_mac_address: 021c.7301.0003
+        serial_number_template: DTCONTAINERLAB03
+        system_mac_address_template: 021c.7301.0003

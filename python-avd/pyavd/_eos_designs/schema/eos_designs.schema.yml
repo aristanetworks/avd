@@ -2523,7 +2523,7 @@ keys:
               Any IPv4 ACL applied to SSH in the default VRF is removed. IPv6 ACLs
               and SSH configuration for non-default VRFs are preserved.'
             default: false
-          serial_number:
+          serial_number_template:
             type: str
             min_length: 1
             description: 'AVD string formatter template for generating the serial
@@ -2532,8 +2532,8 @@ keys:
               When set, the rendered value is written into the device metadata and
               provided as the serial number in the ACT topology.
 
-              Can be overridden per device with `digital_twin.serial_number` at node
-              level.
+              Can be overridden per device with `digital_twin.serial_number_template`
+              at node level.
 
               Supported template variables: `serial_number` (production serial number),
               `system_mac_address` (resolved production system MAC address), `hostname`,
@@ -2548,7 +2548,7 @@ keys:
               ACT node types.
 
               Ignored when `digital_twin.environment` is `containerlab`.'
-          system_mac_address:
+          system_mac_address_template:
             type: str
             min_length: 1
             description: 'AVD string formatter template for generating the system
@@ -2558,7 +2558,7 @@ keys:
               (e.g., SNMPv3 engine ID), written into the device metadata, and provided
               as the system MAC address in the ACT topology.
 
-              Can be overridden per device with `digital_twin.system_mac_address`
+              Can be overridden per device with `digital_twin.system_mac_address_template`
               at node level.
 
               Supported template variables: `serial_number` (production serial number),
@@ -15219,19 +15219,19 @@ $defs:
                   devices by default.
 
                   Overrides global `digital_twin.fabric.act_internet_access` flag.'
-              serial_number:
+              serial_number_template:
                 type: str
                 min_length: 1
                 description: 'Serial number for this ACT Digital Twin device.
 
-                  Overrides the global `digital_twin.fabric.serial_number` for this
-                  device.
+                  Overrides the global `digital_twin.fabric.serial_number_template`
+                  for this device.
 
                   When set, the rendered value is written into the device metadata
                   and provided as the serial number in the ACT topology.
 
                   Supports the same AVD string formatter template syntax and variables
-                  as `digital_twin.fabric.serial_number`.
+                  as `digital_twin.fabric.serial_number_template`.
 
                   The rendered value should be unique across all devices in the fabric.
                   AVD does not enforce uniqueness automatically.
@@ -15240,20 +15240,20 @@ $defs:
                   other ACT node types.
 
                   Ignored when `digital_twin.environment` is `containerlab`.'
-              system_mac_address:
+              system_mac_address_template:
                 type: str
                 min_length: 1
                 description: 'System MAC address for this ACT Digital Twin device.
 
-                  Overrides the global `digital_twin.fabric.system_mac_address` for
-                  this device.
+                  Overrides the global `digital_twin.fabric.system_mac_address_template`
+                  for this device.
 
                   When set, the rendered value is used throughout the device''s EOS
                   configuration (e.g., SNMPv3 engine ID), written into the device
                   metadata, and provided as the system MAC address in the ACT topology.
 
                   Supports the same AVD string formatter template syntax, variables,
-                  MAC address formats, and normalization as `digital_twin.fabric.system_mac_address`.
+                  MAC address formats, and normalization as `digital_twin.fabric.system_mac_address_template`.
 
                   The rendered value should be unique across all devices in the fabric.
                   AVD does not enforce uniqueness automatically.

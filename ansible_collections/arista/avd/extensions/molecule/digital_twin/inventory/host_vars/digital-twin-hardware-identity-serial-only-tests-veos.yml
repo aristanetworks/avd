@@ -11,7 +11,7 @@ l2leaf:
       serial_number: PROD-SERIAL-ONLY-VEOS-SERIAL
       system_mac_address: 02:1c:73:00:00:21
       digital_twin:
-        serial_number: "DT{device_id:010d}"
+        serial_number_template: "DT{device_id:010d}"
 
 eos_cli_config_gen_documentation:
   enable: false
