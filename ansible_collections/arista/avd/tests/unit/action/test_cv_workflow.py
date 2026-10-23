@@ -5,17 +5,20 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from ansible.errors import AnsibleActionFail
 
 from ansible_collections.arista.avd.plugins.action.cv_workflow import ActionModule
+from pyavd._cv.workflows.models import CloudVision, DeployToCvResult
 
 if TYPE_CHECKING:
     from collections.abc import Callable
     from pathlib import Path
+
+    from pyavd._cv.workflows.models import CVDeviceDeployment
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.cv_workflow"
 AVD_LOGGER_NAME = "ansible_collections.arista.avd"
@@ -174,6 +177,71 @@ def test_deploy_converts_successful_deployment_to_ansible_result(
     assert result["changed"] is True
     assert result_object.errors == ["cv-error"]
     assert result_object.warnings == ["cv-warning", "logger-warning"]
+
+
+@pytest.mark.parametrize("cv_password", [None, "fake-cv-password"])
+def test_deploy_redacts_credentials_in_detailed_result(
+    action_module: Callable[..., ActionModule],
+    cv_password: str | None,
+) -> None:
+    """Detailed results mask supplied credentials without changing the credentials used for deployment."""
+    module = action_module(ActionModule)
+    fake_token = "fake-cv-token"  # noqa: S105 - deliberate redaction test value
+    fake_proxy_password = "fake-proxy-password"  # noqa: S105 - deliberate redaction test value
+    validated_args = _make_validated_args(
+        return_details=True,
+        cv_token=fake_token,
+        cv_password=cv_password,
+        proxy_password=fake_proxy_password,
+    )
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.CloudVision", wraps=CloudVision) as cloudvision_class,
+    ):
+        result = asyncio.run(module.deploy(validated_args, {}))
+
+    assert cloudvision_class.call_args.kwargs["password"] == cv_password
+    assert result["cloudvision"]["password"] == ("<removed>" if cv_password is not None else None)
+    assert result["cloudvision"]["token"] == "<removed>"  # noqa: S105 - deliberate redaction test
+    assert result["cloudvision"]["proxy_password"] == "<removed>"  # noqa: S105 - deliberate redaction test
+    for credential in (fake_token, cv_password, fake_proxy_password):
+        if credential is not None:
+            assert credential not in str(result)
+
+
+def test_run_snapshots_detailed_inputs_before_deployment(
+    action_module: Callable[..., ActionModule],
+    tmp_path: Path,
+) -> None:
+    """Device discovery changes deployment results without rewriting the input snapshot."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(configuration_dir=str(tmp_path), device_list=["leaf1"], return_details=True)
+
+    async def discover_device(device_deployments: list[CVDeviceDeployment], **_kwargs: Any) -> DeployToCvResult:
+        deployment = device_deployments[0]
+        assert deployment.eos_config is not None
+        deployment.device.serial_number = "DISCOVERED-SERIAL"
+        deployment.device.exists_on_cv = True
+        return DeployToCvResult(deployed_configs=[deployment.eos_config])
+
+    # The legacy root handler is not cleaned up by the plugin. Isolate it from other tests.
+    root_logger = logging.getLogger()
+    with (
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
+        patch(f"{MODULE_PATH}.deploy_to_cv", side_effect=discover_device),
+        patch.object(root_logger, "handlers", []),
+        patch.object(root_logger, "level", logging.WARNING),
+    ):
+        result = module.run(task_vars={})
+
+    assert result["configs"][0]["device"]["serial_number"] is None
+    assert result["configs"][0]["device"]["exists_on_cv"] is None
+    assert result["deployed_configs"][0]["device"]["serial_number"] == "DISCOVERED-SERIAL"
+    assert result["deployed_configs"][0]["device"]["exists_on_cv"] is True
+    assert result["changed"] is True
+    assert result["failed"] is False
 
 
 def test_deploy_reads_validated_inputs_from_tmp_dir(
