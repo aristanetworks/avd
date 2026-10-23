@@ -1,0 +1,2 @@
+[['ethernet_interfaces', '0', 'ipv6_address']]: 'The input data model 'ethernet_interfaces[0].ipv6_address' is deprecated and will be removed in AVD version 7.0.0. Use 'ipv6_addresses' instead.'
+[['ethernet_interfaces', '1', 'ipv6_nd_ra_disabled']]: 'The input data model 'ethernet_interfaces[1].ipv6_nd_ra_disabled' is deprecated and will be removed in AVD version 7.0.0. Use 'ipv6_nd.ra.disabled' instead.'
