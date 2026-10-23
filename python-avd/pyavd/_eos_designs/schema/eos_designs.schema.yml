@@ -2699,10 +2699,19 @@ keys:
             $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
           port:
             type: int
-            $ref: eos_cli_config_gen#/keys/radius_server/keys/dynamic_authorization/keys/port
+            min: 0
+            max: 65535
+            description: 'TCP port used for RADIUS dynamic authorization requests.
+
+              Applied only when `dot1x_settings.dynamic_authorization.enabled` is
+              `true`.'
           tls_ssl_profile:
             type: str
-            $ref: eos_cli_config_gen#/keys/radius_server/keys/dynamic_authorization/keys/tls_ssl_profile
+            description: 'SSL profile used for TLS-secured RADIUS dynamic authorization
+              requests.
+
+              Applied only when `dot1x_settings.dynamic_authorization.enabled` is
+              `true`.'
           additional_groups:
             type: list
             description: 'List of additional RADIUS server groups for dynamic authorization

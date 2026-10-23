@@ -20058,9 +20058,17 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `True`
             """
             port: int | None
-            """TCP Port."""
+            """
+            TCP port used for RADIUS dynamic authorization requests.
+            Applied only when
+            `dot1x_settings.dynamic_authorization.enabled` is `true`.
+            """
             tls_ssl_profile: str | None
-            """Name of TLS profile."""
+            """
+            SSL profile used for TLS-secured RADIUS dynamic authorization requests.
+            Applied only when
+            `dot1x_settings.dynamic_authorization.enabled` is `true`.
+            """
             additional_groups: AdditionalGroups
             """
             List of additional RADIUS server groups for dynamic authorization purposes only.
@@ -20092,8 +20100,14 @@ class EosDesigns(EosDesignsRootModel):
                         enabled:
                            Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
                            adjust an active client session.
-                        port: TCP Port.
-                        tls_ssl_profile: Name of TLS profile.
+                        port:
+                           TCP port used for RADIUS dynamic authorization requests.
+                           Applied only when
+                           `dot1x_settings.dynamic_authorization.enabled` is `true`.
+                        tls_ssl_profile:
+                           SSL profile used for TLS-secured RADIUS dynamic authorization requests.
+                           Applied only when
+                           `dot1x_settings.dynamic_authorization.enabled` is `true`.
                         additional_groups:
                            List of additional RADIUS server groups for dynamic authorization purposes only.
                            The order of the
