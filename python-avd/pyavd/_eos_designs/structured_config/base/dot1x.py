@@ -49,7 +49,15 @@ class Dot1xMixin(Protocol):
         self: AvdStructuredConfigBaseProtocol, dyn_authorization_settings: EosDesigns.Dot1xSettings.DynamicAuthorization
     ) -> None:
         """Configure 802.1X AAA dynamic authorization settings."""
-        if not (dyn_authorization_settings.enabled and dyn_authorization_settings.additional_groups):
+        if not dyn_authorization_settings.enabled:
+            return
+
+        self.structured_config.radius_server.dynamic_authorization._update(
+            port=dyn_authorization_settings.port,
+            tls_ssl_profile=dyn_authorization_settings.tls_ssl_profile,
+        )
+
+        if not dyn_authorization_settings.additional_groups:
             return
 
         self._validate_radius_groups(dyn_authorization_settings.additional_groups, "additional dynamic authorization server")
