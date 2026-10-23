@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -112,7 +112,6 @@ class VlansMixin(Protocol):
                     vlan.id,
                     tenant.name,
                     "ipv4",
-                    self.inputs.address_locking_settings.locked_address.ipv4_enforcement_disabled,
                 )
             if vlan.address_locking.ipv6 and feature_support.address_locking.ipv6_vlan:
                 self._apply_vlan_af_address_locking(
@@ -120,7 +119,6 @@ class VlansMixin(Protocol):
                     vlan.id,
                     tenant.name,
                     "ipv6",
-                    self.inputs.address_locking_settings.locked_address.ipv6_enforcement_disabled,
                 )
         if self.inputs.enable_trunk_groups:
             trunk_groups = set(vlan.trunk_groups)
@@ -142,15 +140,35 @@ class VlansMixin(Protocol):
         vlans_vlan: EosCliConfigGen.VlansItem,
         vlan_id: int,
         tenant_name: str,
-        ip_version: str,
-        enforcement_disabled: bool | None,
+        ip_version: Literal["ipv4", "ipv6"],
     ) -> None:
         """Helper to apply IPv4/IPv6 address locking per VLAN."""
-        if self.inputs.address_locking_settings.dhcp_servers_ipv4 or enforcement_disabled:
+        # In lazy mode, validate the operating mode and configure global Address Locking once.
+        if self.inputs.avd_design_future.only_configure_address_locking_when_used:
+            context = f"vlan {vlan_id} in Tenant '{tenant_name}'"
+            if ip_version == "ipv4":
+                self.structured_config_utils.set_once_address_locking_ipv4(context)
+            else:
+                self.structured_config_utils.set_once_address_locking_ipv6(context)
             setattr(vlans_vlan.address_locking.address_family, ip_version, True)
-        else:
-            msg = (
-                f"To configure address locking {ip_version} for vlan {vlan_id} in Tenant '{tenant_name}' either `address_locking_settings.dhcp_servers_ipv4` "
-                f"or `address_locking_settings.locked_address.{ip_version}_enforcement_disabled` is required."
-            )
-            raise AristaAvdInvalidInputsError(msg)
+            return
+
+        address_locking_settings = self.inputs.address_locking_settings
+        # Select the enforcement setting for the requested address family.
+        enforcement_disabled = (
+            address_locking_settings.locked_address.ipv4_enforcement_disabled
+            if ip_version == "ipv4"
+            else address_locking_settings.locked_address.ipv6_enforcement_disabled
+        )
+
+        # Legacy mode retains the existing requirement for DHCP server IPv4 addresses or disabled enforcement.
+        if address_locking_settings.dhcp_servers_ipv4 or enforcement_disabled:
+            setattr(vlans_vlan.address_locking.address_family, ip_version, True)
+            return
+
+        # Legacy mode cannot render this address family without a supported operating mode.
+        msg = (
+            f"To configure address locking {ip_version} for vlan {vlan_id} in Tenant '{tenant_name}' either `address_locking_settings.dhcp_servers_ipv4` "
+            f"or `address_locking_settings.locked_address.{ip_version}_enforcement_disabled` is required."
+        )
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
