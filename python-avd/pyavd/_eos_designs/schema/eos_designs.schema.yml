@@ -6453,8 +6453,46 @@ keys:
                     mtu:
                       type: int
                     ipv4_acl_in:
+                      description: 'Name of the IPv4 access-list to be assigned in
+                        the ingress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip" and "peer_ip".
+
+                        Mutually exclusive with `ipv4_standard_acl_in`, setting both
+                        `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.'
                       type: str
                     ipv4_acl_out:
+                      description: 'Name of the IPv4 access-list to be assigned in
+                        the egress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip" and "peer_ip".
+
+                        Mutually exclusive with `ipv4_standard_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.'
+                      type: str
+                    ipv4_standard_acl_in:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the ingress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in`
+                        and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in`
+                        instead when field substitution for "interface_ip" or "peer_ip"
+                        is required.'
+                      type: str
+                    ipv4_standard_acl_out:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the egress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out`
+                        and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out`
+                        instead when field substitution for "interface_ip" or "peer_ip"
+                        is required.'
                       type: str
                     ipv6_acl_in:
                       description: 'Name of the IPv6 access-list to be assigned in
@@ -6735,12 +6773,40 @@ keys:
                       type: int
                       description: MTU can only be set on the parent Port-Channel.
                     ipv4_acl_in:
-                      description: Name of the IPv4 access-list to be assigned in
+                      description: 'Name of the IPv4 access-list to be assigned in
                         the ingress direction.
+
+                        Mutually exclusive with `ipv4_standard_acl_in`, setting both
+                        `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.'
                       type: str
                     ipv4_acl_out:
-                      description: Name of the IPv4 Access-list to be assigned in
+                      description: 'Name of the IPv4 Access-list to be assigned in
                         the egress direction.
+
+                        Mutually exclusive with `ipv4_standard_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.'
+                      type: str
+                    ipv4_standard_acl_in:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the ingress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in`
+                        and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in`
+                        instead when field substitution for "interface_ip" or "peer_ip"
+                        is required.'
+                      type: str
+                    ipv4_standard_acl_out:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the egress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out`
+                        and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out`
+                        instead when field substitution for "interface_ip" or "peer_ip"
+                        is required.'
                       type: str
                     ipv6_acl_in:
                       description: 'Name of the IPv6 access-list to be assigned in
@@ -15677,14 +15743,40 @@ $defs:
             for "interface_ip" and "peer_ip".
 
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
-            is marked as ''trusted'' under `wan_carriers`.'
+            is marked as ''trusted'' under `wan_carriers`.
+
+            Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in`
+            and `ipv4_standard_acl_in` raises an error.'
           type: str
         ipv4_acl_out:
           description: 'Name of the IPv4 Access-list to be assigned in the egress
             direction.
 
             The access-list must be defined under `ipv4_acls` and supports field substitution
-            for "interface_ip" and "peer_ip".'
+            for "interface_ip" and "peer_ip".
+
+            Mutually exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out`
+            and `ipv4_standard_acl_out` raises an error.'
+          type: str
+        ipv4_standard_acl_in:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            ingress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and
+            `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
+          type: str
+        ipv4_standard_acl_out:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            egress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out` and
+            `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
           type: str
         ipv6_acl_in:
           description: 'Name of the IPv6 access-list to be assigned in the ingress
@@ -15967,14 +16059,40 @@ $defs:
             for "interface_ip" and "peer_ip".
 
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
-            is marked as ''trusted'' under `wan_carriers`.'
+            is marked as ''trusted'' under `wan_carriers`.
+
+            Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in`
+            and `ipv4_standard_acl_in` raises an error.'
           type: str
         ipv4_acl_out:
           description: 'Name of the IPv4 Access-list to be assigned in the egress
             direction.
 
             The access-list must be defined under `ipv4_acls` and supports field substitution
-            for "interface_ip" and "peer_ip".'
+            for "interface_ip" and "peer_ip".
+
+            Mutually exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out`
+            and `ipv4_standard_acl_out` raises an error.'
+          type: str
+        ipv4_standard_acl_in:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            ingress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and
+            `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
+          type: str
+        ipv4_standard_acl_out:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            egress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out` and
+            `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
           type: str
         ipv6_acl_in:
           description: 'Name of the IPv6 access-list to be assigned in the ingress

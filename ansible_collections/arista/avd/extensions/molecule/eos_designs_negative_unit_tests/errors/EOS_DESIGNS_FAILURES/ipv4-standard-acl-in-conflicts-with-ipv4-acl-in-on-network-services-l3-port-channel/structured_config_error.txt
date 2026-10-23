@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'ipv4_acl_in' and 'ipv4_standard_acl_in' are mutually exclusive on interface 'tenants[name=L3PO].vrfs[name=TESTING].l3_port_channels[name=Port-Channel1]'. Only one ingress IPv4 ACL can be configured.
