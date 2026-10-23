@@ -34,7 +34,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.vrf") | String |  |  |  | VRF name of the GRE tunnel. EOS default is "default". |
     | [<samp>queue_monitor_streaming</samp>](## "queue_monitor_streaming") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "queue_monitor_streaming.enable") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;ip_access_group</samp>](## "queue_monitor_streaming.ip_access_group") | String |  |  |  | Name of IP ACL. |
+    | [<samp>&nbsp;&nbsp;ip_access_group</samp>](## "queue_monitor_streaming.ip_access_group") | String |  |  |  | IPv4 extended access-list name.<br>When `avd_design_future.raise_for_missing_queue_monitor_streaming_acls` is enabled, the access-list must be defined under `ipv4_acls`.<br>Otherwise, no catalog entry is required.<br>`ip_access_group` and `ip_standard_access_group` must not be defined together.<br>Field substitution is not supported for queue-monitor streaming references. |
+    | [<samp>&nbsp;&nbsp;ip_standard_access_group</samp>](## "queue_monitor_streaming.ip_standard_access_group") | String |  |  |  | IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.<br>`ip_access_group` and `ip_standard_access_group` must not be defined together. |
     | [<samp>&nbsp;&nbsp;ipv6_access_group</samp>](## "queue_monitor_streaming.ipv6_access_group") | String |  |  |  | Name of IPv6 ACL. |
     | [<samp>&nbsp;&nbsp;max_connections</samp>](## "queue_monitor_streaming.max_connections") | Integer |  |  | Min: 1<br>Max: 100 |  |
     | [<samp>&nbsp;&nbsp;vrf</samp>](## "queue_monitor_streaming.vrf") | String |  |  |  |  |
@@ -103,8 +104,16 @@
     queue_monitor_streaming:
       enable: <bool>
 
-      # Name of IP ACL.
+      # IPv4 extended access-list name.
+      # When `avd_design_future.raise_for_missing_queue_monitor_streaming_acls` is enabled, the access-list must be defined under `ipv4_acls`.
+      # Otherwise, no catalog entry is required.
+      # `ip_access_group` and `ip_standard_access_group` must not be defined together.
+      # Field substitution is not supported for queue-monitor streaming references.
       ip_access_group: <str>
+
+      # IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+      # `ip_access_group` and `ip_standard_access_group` must not be defined together.
+      ip_standard_access_group: <str>
 
       # Name of IPv6 ACL.
       ipv6_access_group: <str>
