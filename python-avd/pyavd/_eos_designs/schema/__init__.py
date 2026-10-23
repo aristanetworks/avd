@@ -12551,6 +12551,14 @@ class EosDesigns(EosDesignsRootModel):
         Offset value to adjust the calculated inband management IPv6 address within the subnet.
         The assigned
         IPv6 address will be computed by adding this offset to the device ID.
+        Choose an IPv6 subnet large
+        enough to contain all calculated addresses.
+        The highest L2 leaf address is:
+        <subnet> + 3 + <highest
+        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+        If the calculated address falls outside the subnet,
+        address allocation
+        fails with "address out of range".
 
         Default value: `0`
         """
@@ -13498,6 +13506,14 @@ class EosDesigns(EosDesignsRootModel):
                        Offset value to adjust the calculated inband management IPv6 address within the subnet.
                        The assigned
                        IPv6 address will be computed by adding this offset to the device ID.
+                       Choose an IPv6 subnet large
+                       enough to contain all calculated addresses.
+                       The highest L2 leaf address is:
+                       <subnet> + 3 + <highest
+                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                       If the calculated address falls outside the subnet,
+                       address allocation
+                       fails with "address out of range".
                     inband_mgmt_ipv6_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf'.
                        Used when `inband_mgmt_ipv6_address` is set.
@@ -18211,6 +18227,14 @@ class EosDesigns(EosDesignsRootModel):
         Offset value to adjust the calculated inband management IPv6 address within the subnet.
         The assigned
         IPv6 address will be computed by adding this offset to the device ID.
+        Choose an IPv6 subnet large
+        enough to contain all calculated addresses.
+        The highest L2 leaf address is:
+        <subnet> + 3 + <highest
+        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+        If the calculated address falls outside the subnet,
+        address allocation
+        fails with "address out of range".
 
         Default value: `0`
         """
@@ -19166,6 +19190,14 @@ class EosDesigns(EosDesignsRootModel):
                        Offset value to adjust the calculated inband management IPv6 address within the subnet.
                        The assigned
                        IPv6 address will be computed by adding this offset to the device ID.
+                       Choose an IPv6 subnet large
+                       enough to contain all calculated addresses.
+                       The highest L2 leaf address is:
+                       <subnet> + 3 + <highest
+                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                       If the calculated address falls outside the subnet,
+                       address allocation
+                       fails with "address out of range".
                     inband_mgmt_ipv6_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf'.
                        Used when `inband_mgmt_ipv6_address` is set.
@@ -61213,6 +61245,14 @@ class EosDesigns(EosDesignsRootModel):
                     Offset value to adjust the calculated inband management IPv6 address within the subnet.
                     The assigned
                     IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
 
                     Default value: `0`
                     """
@@ -62139,6 +62179,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
                                    The assigned
                                    IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -66853,6 +66901,14 @@ class EosDesigns(EosDesignsRootModel):
                         Offset value to adjust the calculated inband management IPv6 address within the subnet.
                         The assigned
                         IPv6 address will be computed by adding this offset to the device ID.
+                        Choose an IPv6 subnet large
+                        enough to contain all calculated addresses.
+                        The highest L2 leaf address is:
+                        <subnet> + 3 + <highest
+                        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                        If the calculated address falls outside the subnet,
+                        address allocation
+                        fails with "address out of range".
 
                         Default value: `0`
                         """
@@ -67788,6 +67844,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Offset value to adjust the calculated inband management IPv6 address within the subnet.
                                        The assigned
                                        IPv6 address will be computed by adding this offset to the device ID.
+                                       Choose an IPv6 subnet large
+                                       enough to contain all calculated addresses.
+                                       The highest L2 leaf address is:
+                                       <subnet> + 3 + <highest
+                                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                       If the calculated address falls outside the subnet,
+                                       address allocation
+                                       fails with "address out of range".
                                     inband_mgmt_ipv6_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf'.
                                        Used when `inband_mgmt_ipv6_address` is set.
@@ -72421,6 +72485,14 @@ class EosDesigns(EosDesignsRootModel):
                     Offset value to adjust the calculated inband management IPv6 address within the subnet.
                     The assigned
                     IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
 
                     Default value: `0`
                     """
@@ -73358,6 +73430,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
                                    The assigned
                                    IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -78063,6 +78143,14 @@ class EosDesigns(EosDesignsRootModel):
                     Offset value to adjust the calculated inband management IPv6 address within the subnet.
                     The assigned
                     IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
 
                     Default value: `0`
                     """
@@ -78998,6 +79086,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
                                    The assigned
                                    IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -99502,6 +99598,14 @@ class EosDesigns(EosDesignsRootModel):
                     Offset value to adjust the calculated inband management IPv6 address within the subnet.
                     The assigned
                     IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
 
                     Default value: `0`
                     """
@@ -100428,6 +100532,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
                                    The assigned
                                    IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -105142,6 +105254,14 @@ class EosDesigns(EosDesignsRootModel):
                         Offset value to adjust the calculated inband management IPv6 address within the subnet.
                         The assigned
                         IPv6 address will be computed by adding this offset to the device ID.
+                        Choose an IPv6 subnet large
+                        enough to contain all calculated addresses.
+                        The highest L2 leaf address is:
+                        <subnet> + 3 + <highest
+                        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                        If the calculated address falls outside the subnet,
+                        address allocation
+                        fails with "address out of range".
 
                         Default value: `0`
                         """
@@ -106077,6 +106197,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Offset value to adjust the calculated inband management IPv6 address within the subnet.
                                        The assigned
                                        IPv6 address will be computed by adding this offset to the device ID.
+                                       Choose an IPv6 subnet large
+                                       enough to contain all calculated addresses.
+                                       The highest L2 leaf address is:
+                                       <subnet> + 3 + <highest
+                                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                       If the calculated address falls outside the subnet,
+                                       address allocation
+                                       fails with "address out of range".
                                     inband_mgmt_ipv6_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf'.
                                        Used when `inband_mgmt_ipv6_address` is set.
@@ -110710,6 +110838,14 @@ class EosDesigns(EosDesignsRootModel):
                     Offset value to adjust the calculated inband management IPv6 address within the subnet.
                     The assigned
                     IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
 
                     Default value: `0`
                     """
@@ -111647,6 +111783,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
                                    The assigned
                                    IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -116352,6 +116496,14 @@ class EosDesigns(EosDesignsRootModel):
                     Offset value to adjust the calculated inband management IPv6 address within the subnet.
                     The assigned
                     IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
 
                     Default value: `0`
                     """
@@ -117287,6 +117439,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
                                    The assigned
                                    IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
