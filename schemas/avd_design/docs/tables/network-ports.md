@@ -51,6 +51,26 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].link_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_ports.[].link_tracking.name") | String |  |  |  | Tracking group name.<br>The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".<br>Optional if default link_tracking settings are configured on the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "network_ports.[].dot1x") | Dictionary |  |  |  | 802.1x |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aaa</samp>](## "network_ports.[].dot1x.aaa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unresponsive</samp>](## "network_ports.[].dot1x.aaa.unresponsive") | Dictionary |  |  |  | Configure AAA timeout options. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") | String |  |  |  | Name of the IPv4 extended access-list to apply when AAA times out.<br>When `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined under<br>`ipv4_acls` and its definition is configured on devices where it is referenced.<br>Otherwise, only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.<br>Mutually exclusive with `traffic_allow_standard_access_list`. Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_standard_access_list</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.traffic_allow_standard_access_list") | String |  |  |  | Name of the IPv4 standard access-list to apply when AAA times out.<br>The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.<br>Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive action apply cached-results else traffic allow |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cached_results_timeout</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.cached_results_timeout") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration") | Integer | Required |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eap_response</samp>](## "network_ports.[].dot1x.aaa.unresponsive.eap_response") | String |  |  | Valid Values:<br>- <code>success</code><br>- <code>disabled</code> | EAP response to send. EOS default is `success`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone_action</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cached_results_timeout</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration") | Integer | Required |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure</samp>](## "network_ports.[].dot1x.authentication_failure") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_access_list</samp>](## "network_ports.[].dot1x.authentication_failure.allow_access_list") | String |  |  |  | Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.<br>The access list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.<br>On EOS, the access list is only applied when `dot1x.mac_based_access_list` is enabled on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_ports.[].dot1x.authentication_failure.action") | String |  |  | Valid Values:<br>- <code>allow</code><br>- <code>drop</code> |  |
@@ -84,25 +104,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure_fallback_mba</samp>](## "network_ports.[].dot1x.eapol.authentication_failure_fallback_mba") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].dot1x.eapol.authentication_failure_fallback_mba.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "network_ports.[].dot1x.eapol.authentication_failure_fallback_mba.timeout") | Integer |  |  | Min: 0<br>Max: 65535 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aaa</samp>](## "network_ports.[].dot1x.aaa") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unresponsive</samp>](## "network_ports.[].dot1x.aaa.unresponsive") | Dictionary |  |  |  | Configure AAA timeout options. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eap_response</samp>](## "network_ports.[].dot1x.aaa.unresponsive.eap_response") | String |  |  | Valid Values:<br>- <code>success</code><br>- <code>disabled</code> | EAP response to send. EOS default is `success`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") | String |  |  |  | Name of standard access-list to apply when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive action apply cached-results else traffic allow |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cached_results_timeout</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.cached_results_timeout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration") | Integer | Required |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "network_ports.[].dot1x.aaa.unresponsive.action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone_action</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cached_results_timeout</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration") | Integer | Required |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_ports.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "network_ports.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>For Port-Channels, only `ipv4: false` is supported.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "network_ports.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For Port-Channels, only `ipv6: false` is supported.<br>For EOS version 4.31 and higher. |
@@ -342,6 +343,70 @@
 
         # 802.1x
         dot1x:
+          aaa:
+
+            # Configure AAA timeout options.
+            unresponsive:
+
+              # Set action for supplicant when AAA times out.
+              action:
+
+                # Name of the IPv4 extended access-list to apply when AAA times out.
+                # When `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined under
+                # `ipv4_acls` and its definition is configured on devices where it is referenced.
+                # Otherwise, only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                # Mutually exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                traffic_allow_access_list: <str>
+
+                # Name of the IPv4 standard access-list to apply when AAA times out.
+                # The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                # Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                traffic_allow_standard_access_list: <str>
+
+                # Apply alternate action if primary action fails.
+                # e.g. aaa unresponsive action apply cached-results else traffic allow
+                apply_alternate: <bool>
+                traffic_allow_vlan: <int; 1-4094>
+
+                # Use results from a previous AAA response.
+                apply_cached_results: <bool>
+                cached_results_timeout:
+
+                  # Enable caching for a specific duration -
+                  # <1-10000>      duration in days
+                  # <1-14400000>   duration in minutes
+                  # <1-240000>     duration in hours
+                  # <1-864000000>  duration in seconds
+                  time_duration: <int; >=1; required>
+                  time_duration_unit: <str; "days" | "hours" | "minutes" | "seconds"; required>
+
+                # Set action for supplicant traffic when AAA times out.
+                traffic_allow: <bool>
+
+              # EAP response to send. EOS default is `success`.
+              eap_response: <str; "success" | "disabled">
+
+              # Set action for supplicant when AAA times out.
+              phone_action:
+
+                # Use results from a previous AAA response.
+                apply_cached_results: <bool>
+                cached_results_timeout:
+
+                  # Enable caching for a specific duration -
+                  # <1-10000>      duration in days
+                  # <1-14400000>   duration in minutes
+                  # <1-240000>     duration in hours
+                  # <1-864000000>  duration in seconds
+                  time_duration: <int; >=1; required>
+                  time_duration_unit: <str; "days" | "hours" | "minutes" | "seconds"; required>
+
+                # Apply alternate action if primary action fails.
+                # e.g. aaa unresponsive phone action apply cached-results else traffic allow
+                apply_alternate: <bool>
+
+                # Set action for supplicant traffic when AAA times out.
+                traffic_allow: <bool>
           authentication_failure:
 
             # Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
@@ -385,61 +450,6 @@
             authentication_failure_fallback_mba:
               enabled: <bool>
               timeout: <int; 0-65535>
-          aaa:
-
-            # Configure AAA timeout options.
-            unresponsive:
-
-              # EAP response to send. EOS default is `success`.
-              eap_response: <str; "success" | "disabled">
-
-              # Set action for supplicant when AAA times out.
-              action:
-
-                # Name of standard access-list to apply when AAA times out.
-                traffic_allow_access_list: <str>
-
-                # Apply alternate action if primary action fails.
-                # e.g. aaa unresponsive action apply cached-results else traffic allow
-                apply_alternate: <bool>
-                traffic_allow_vlan: <int; 1-4094>
-
-                # Use results from a previous AAA response.
-                apply_cached_results: <bool>
-                cached_results_timeout:
-
-                  # Enable caching for a specific duration -
-                  # <1-10000>      duration in days
-                  # <1-14400000>   duration in minutes
-                  # <1-240000>     duration in hours
-                  # <1-864000000>  duration in seconds
-                  time_duration: <int; >=1; required>
-                  time_duration_unit: <str; "days" | "hours" | "minutes" | "seconds"; required>
-
-                # Set action for supplicant traffic when AAA times out.
-                traffic_allow: <bool>
-
-              # Set action for supplicant when AAA times out.
-              phone_action:
-
-                # Use results from a previous AAA response.
-                apply_cached_results: <bool>
-                cached_results_timeout:
-
-                  # Enable caching for a specific duration -
-                  # <1-10000>      duration in days
-                  # <1-14400000>   duration in minutes
-                  # <1-240000>     duration in hours
-                  # <1-864000000>  duration in seconds
-                  time_duration: <int; >=1; required>
-                  time_duration_unit: <str; "days" | "hours" | "minutes" | "seconds"; required>
-
-                # Apply alternate action if primary action fails.
-                # e.g. aaa unresponsive phone action apply cached-results else traffic allow
-                apply_alternate: <bool>
-
-                # Set action for supplicant traffic when AAA times out.
-                traffic_allow: <bool>
 
         # Address locking settings applied on the port.
         address_locking:

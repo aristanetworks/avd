@@ -11,6 +11,15 @@ keys:
     description: |-
       Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
     keys:
+      validate_dot1x_aaa_unresponsive_acl:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.5.0.
+          Validate `dot1x.aaa.unresponsive.action.traffic_allow_access_list` under connected endpoint adapters, network ports, and port profiles
+          against `ipv4_acls`, and configure the referenced IPv4 extended access-list definitions.
+          When disabled, only the interface ACL reference is configured, allowing ACL definitions outside the catalog.
+          `traffic_allow_standard_access_list` is always validated against `ipv4_standard_acls` and configured.
       accept_dhcp_default_route_for_mgmt_ip_dhcp:
         type: bool
         default: false

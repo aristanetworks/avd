@@ -180,6 +180,29 @@ $defs:
         type: dict
         $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x"
         keys:
+          aaa:
+            type: dict
+            keys:
+              unresponsive:
+                type: dict
+                keys:
+                  action:
+                    type: dict
+                    keys:
+                      traffic_allow_access_list:
+                        type: str
+                        description: |-
+                          Name of the IPv4 extended access-list to apply when AAA times out.
+                          When `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined under
+                          `ipv4_acls` and its definition is configured on devices where it is referenced.
+                          Otherwise, only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                          Mutually exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                      traffic_allow_standard_access_list:
+                        type: str
+                        description: |-
+                          Name of the IPv4 standard access-list to apply when AAA times out.
+                          The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                          Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
           authentication_failure:
             type: dict
             $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/authentication_failure"
