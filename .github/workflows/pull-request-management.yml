@@ -218,7 +218,7 @@ jobs:
           - "eos_cli_config_gen"
           - "eos_cli_config_gen_deprecated_vars"
         ansible_version:
-          - "ansible-core<2.22.0"
+          - "ansible-core<2.23.0"
         python_version:
           - "3.12"
         # Also test minimum ansible version for one scenario.
@@ -281,7 +281,7 @@ jobs:
           - "example-cv-pathfinder"
           - "howto"
         ansible_version:
-          - "ansible-core>=2.16.0,<2.22.0"
+          - "ansible-core>=2.16.0,<2.23.0"
         python_version:
           - "3.12"
         include:
@@ -302,9 +302,13 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.21.0"
             python_version: "3.12"
-          # Test latest ansible-core with latest Python
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.22.0"
+            python_version: "3.14"
+          # Test latest ansible-core with latest Python
+          # TODO: Once ansible-core 2.22 is released, remove ">=2.22.0b1," from the constraint below.
+          - avd_scenario: "eos_designs_unit_tests"
+            ansible_version: "ansible-core>=2.22.0b1,<2.23.0"
             python_version: "3.14"
           # Test ansible-core milestone release
           # We need to ignore requirements checks to avoid raising an error with new ansible versions not officially supported
@@ -414,7 +418,7 @@ jobs:
         avd_scenario:
           - "anta_runner"
         ansible_version:
-          - "ansible-core<2.22.0"
+          - "ansible-core<2.23.0"
         python_version:
           - "3.12"
         include:
@@ -471,7 +475,7 @@ jobs:
               3.11
               3.12
           - ansible_version: latest_stable
-            pip_installation: "ansible-core<2.22.0"
+            pip_installation: "ansible-core<2.23.0"
             python_version: |
               3.12
               3.13
@@ -517,7 +521,7 @@ jobs:
         python_version: ["3.12", "3.13", "3.14"]
         include:
           - ansible_version: latest_stable
-            pip_installation: "ansible-core<2.22.0"
+            pip_installation: "ansible-core<2.23.0"
             integration_args: ""
           # Exercise the minimum supported Python and Ansible controller versions.
           - ansible_version: first_stable
@@ -606,7 +610,8 @@ jobs:
           persist-credentials: false
       - name: Install Python & Ansible requirements
         run: |
-          pip install "ansible-core<2.22.0" --upgrade
+          # distlib is required when using manifest
+          pip install "ansible-core<2.23.0" distlib --upgrade
       - name: Set Ansible collection cache key
         id: collection_cache_key
         env:
