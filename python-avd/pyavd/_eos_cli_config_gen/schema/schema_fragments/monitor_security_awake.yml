@@ -29,8 +29,6 @@ keys:
             type: int
             min: 0
             max: 2147483647
-            convert_types:
-              - str
             description: Identifier of this monitor point.
           flow_table_size_entries:
             type: int
