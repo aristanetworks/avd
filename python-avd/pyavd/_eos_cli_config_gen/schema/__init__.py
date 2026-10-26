@@ -30952,9 +30952,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "disabled": {"type": bool},
-                "flow_table_size_entries": {"type": int, "default": 16000},
+                "flow_table_size_entries": {"type": int},
                 "ipfix_listener_port": {"type": int, "default": 4739},
-                "monitor_point_identifier": {"type": int, "default": 0},
+                "monitor_point_identifier": {"type": int},
                 "ndr_application": {"type": NdrApplication},
                 "nucleus": {"type": Nucleus},
                 "topic": {"type": str, "default": "packet-analysis-sessions"},
@@ -30964,24 +30964,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Disable the NDR sensor.
             `true` renders `disabled`, `false` renders `no disabled`.
             """
-            flow_table_size_entries: int
-            """
-            Maximum number of entries in the flow table.
-
-            Default value: `16000`
-            """
+            flow_table_size_entries: int | None
+            """Maximum number of entries in the flow table."""
             ipfix_listener_port: int
             """
             UDP port on which the sensor listens for IPFIX records.
 
             Default value: `4739`
             """
-            monitor_point_identifier: int
-            """
-            Identifier of this monitor point.
-
-            Default value: `0`
-            """
+            monitor_point_identifier: int | None
+            """Identifier of this monitor point."""
             ndr_application: NdrApplication
             """Subclass of AvdModel."""
             nucleus: Nucleus
@@ -31004,9 +30996,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     disabled: bool | UndefinedType | None = Undefined,
-                    flow_table_size_entries: int | UndefinedType = Undefined,
+                    flow_table_size_entries: int | UndefinedType | None = Undefined,
                     ipfix_listener_port: int | UndefinedType = Undefined,
-                    monitor_point_identifier: int | UndefinedType = Undefined,
+                    monitor_point_identifier: int | UndefinedType | None = Undefined,
                     ndr_application: NdrApplication | UndefinedType = Undefined,
                     nucleus: Nucleus | UndefinedType = Undefined,
                     topic: str | UndefinedType = Undefined,
