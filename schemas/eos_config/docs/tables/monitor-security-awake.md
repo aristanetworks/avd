@@ -10,7 +10,7 @@
     | [<samp>monitor_security</samp>](## "monitor_security") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;awake</samp>](## "monitor_security.awake") | Dictionary |  |  |  | Configuration of the Arista NDR (Awake) sensor.<br>Renders `monitor security awake`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "monitor_security.awake.disabled") | Boolean |  |  |  | Disable the NDR sensor.<br>`true` renders `disabled`, `false` renders `no disabled`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;topic</samp>](## "monitor_security.awake.topic") | String |  | `packet-analysis-sessions` |  | Topic identifier. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;topic</samp>](## "monitor_security.awake.topic") | String |  |  |  | Topic identifier. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;monitor_point_identifier</samp>](## "monitor_security.awake.monitor_point_identifier") | Integer |  |  | Min: 0<br>Max: 2147483647 | Identifier of this monitor point. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_table_size_entries</samp>](## "monitor_security.awake.flow_table_size_entries") | Integer |  |  | Min: 1<br>Max: 614400 | Maximum number of entries in the flow table. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipfix_listener_port</samp>](## "monitor_security.awake.ipfix_listener_port") | Integer |  |  | Min: 1<br>Max: 65535 | UDP port on which the sensor listens for IPFIX records. |
@@ -37,7 +37,7 @@
         disabled: <bool>
 
         # Topic identifier.
-        topic: <str; default="packet-analysis-sessions">
+        topic: <str>
 
         # Identifier of this monitor point.
         monitor_point_identifier: <int; 0-2147483647>

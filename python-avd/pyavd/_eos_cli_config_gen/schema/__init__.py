@@ -30948,7 +30948,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "disabled": {"type": bool},
-                "topic": {"type": str, "default": "packet-analysis-sessions"},
+                "topic": {"type": str},
                 "monitor_point_identifier": {"type": int},
                 "flow_table_size_entries": {"type": int},
                 "ipfix_listener_port": {"type": int},
@@ -30960,12 +30960,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Disable the NDR sensor.
             `true` renders `disabled`, `false` renders `no disabled`.
             """
-            topic: str
-            """
-            Topic identifier.
-
-            Default value: `"packet-analysis-sessions"`
-            """
+            topic: str | None
+            """Topic identifier."""
             monitor_point_identifier: int | None
             """Identifier of this monitor point."""
             flow_table_size_entries: int | None
@@ -30988,7 +30984,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     disabled: bool | UndefinedType | None = Undefined,
-                    topic: str | UndefinedType = Undefined,
+                    topic: str | UndefinedType | None = Undefined,
                     monitor_point_identifier: int | UndefinedType | None = Undefined,
                     flow_table_size_entries: int | UndefinedType | None = Undefined,
                     ipfix_listener_port: int | UndefinedType | None = Undefined,

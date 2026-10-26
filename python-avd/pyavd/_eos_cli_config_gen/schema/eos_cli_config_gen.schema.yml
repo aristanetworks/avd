@@ -10958,7 +10958,6 @@ keys:
               `true` renders `disabled`, `false` renders `no disabled`.'
           topic:
             type: str
-            default: packet-analysis-sessions
             description: Topic identifier.
           monitor_point_identifier:
             type: int
@@ -11004,8 +11003,6 @@ keys:
                   type: int
                   min: 1
                   max: 65535
-                  convert_types:
-                  - str
                   description: TCP port of the Nucleus.
                 local_interface:
                   type: str
