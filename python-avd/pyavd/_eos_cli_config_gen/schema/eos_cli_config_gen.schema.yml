@@ -10956,6 +10956,17 @@ keys:
             description: 'Disable the NDR sensor.
 
               `true` renders `disabled`, `false` renders `no disabled`.'
+          topic:
+            type: str
+            default: packet-analysis-sessions
+            description: Topic identifier.
+          monitor_point_identifier:
+            type: int
+            min: 0
+            max: 2147483647
+            convert_types:
+            - str
+            description: Identifier of this monitor point.
           flow_table_size_entries:
             type: int
             min: 1
@@ -10965,15 +10976,7 @@ keys:
             type: int
             min: 1
             max: 65535
-            default: 4739
             description: UDP port on which the sensor listens for IPFIX records.
-          monitor_point_identifier:
-            type: int
-            min: 0
-            max: 2147483647
-            convert_types:
-            - str
-            description: Identifier of this monitor point.
           ndr_application:
             type: dict
             keys:
@@ -11001,7 +11004,6 @@ keys:
                   type: int
                   min: 1
                   max: 65535
-                  default: 9094
                   convert_types:
                   - str
                   description: TCP port of the Nucleus.
@@ -11013,10 +11015,6 @@ keys:
                   type: str
                   description: Name of the SSL profile used for the connection to
                     the Nucleus.
-          topic:
-            type: str
-            default: packet-analysis-sessions
-            description: Topic identifier.
   monitor_server_radius:
     type: dict
     description: Settings to monitor radius servers.

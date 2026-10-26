@@ -30898,7 +30898,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "destination": {"type": str},
-                    "port": {"type": int, "default": 9094},
+                    "port": {"type": int},
                     "local_interface": {"type": str},
                     "ssl_profile": {"type": str},
                 }
@@ -30906,12 +30906,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Hostname of the Nucleus."""
                 destination: str
                 """IPv4 or IPv6 address or FQDN of the Nucleus."""
-                port: int
-                """
-                TCP port of the Nucleus.
-
-                Default value: `9094`
-                """
+                port: int | None
+                """TCP port of the Nucleus."""
                 local_interface: str | None
                 """Source interface for the connection to the Nucleus, e.g. `Loopback0`."""
                 ssl_profile: str | None
@@ -30924,7 +30920,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         destination: str | UndefinedType = Undefined,
-                        port: int | UndefinedType = Undefined,
+                        port: int | UndefinedType | None = Undefined,
                         local_interface: str | UndefinedType | None = Undefined,
                         ssl_profile: str | UndefinedType | None = Undefined,
                     ) -> None:
@@ -30952,28 +30948,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "disabled": {"type": bool},
-                "flow_table_size_entries": {"type": int},
-                "ipfix_listener_port": {"type": int, "default": 4739},
+                "topic": {"type": str, "default": "packet-analysis-sessions"},
                 "monitor_point_identifier": {"type": int},
+                "flow_table_size_entries": {"type": int},
+                "ipfix_listener_port": {"type": int},
                 "ndr_application": {"type": NdrApplication},
                 "nucleus": {"type": Nucleus},
-                "topic": {"type": str, "default": "packet-analysis-sessions"},
             }
             disabled: bool | None
             """
             Disable the NDR sensor.
             `true` renders `disabled`, `false` renders `no disabled`.
             """
-            flow_table_size_entries: int | None
-            """Maximum number of entries in the flow table."""
-            ipfix_listener_port: int
+            topic: str
             """
-            UDP port on which the sensor listens for IPFIX records.
+            Topic identifier.
 
-            Default value: `4739`
+            Default value: `"packet-analysis-sessions"`
             """
             monitor_point_identifier: int | None
             """Identifier of this monitor point."""
+            flow_table_size_entries: int | None
+            """Maximum number of entries in the flow table."""
+            ipfix_listener_port: int | None
+            """UDP port on which the sensor listens for IPFIX records."""
             ndr_application: NdrApplication
             """Subclass of AvdModel."""
             nucleus: Nucleus
@@ -30983,12 +30981,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `NucleusItem` items.
             Primary key is `name` (`str`).
             """
-            topic: str
-            """
-            Topic identifier.
-
-            Default value: `"packet-analysis-sessions"`
-            """
 
             if TYPE_CHECKING:
 
@@ -30996,12 +30988,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     disabled: bool | UndefinedType | None = Undefined,
-                    flow_table_size_entries: int | UndefinedType | None = Undefined,
-                    ipfix_listener_port: int | UndefinedType = Undefined,
+                    topic: str | UndefinedType = Undefined,
                     monitor_point_identifier: int | UndefinedType | None = Undefined,
+                    flow_table_size_entries: int | UndefinedType | None = Undefined,
+                    ipfix_listener_port: int | UndefinedType | None = Undefined,
                     ndr_application: NdrApplication | UndefinedType = Undefined,
                     nucleus: Nucleus | UndefinedType = Undefined,
-                    topic: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Awake.
@@ -31013,16 +31005,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         disabled:
                            Disable the NDR sensor.
                            `true` renders `disabled`, `false` renders `no disabled`.
+                        topic: Topic identifier.
+                        monitor_point_identifier: Identifier of this monitor point.
                         flow_table_size_entries: Maximum number of entries in the flow table.
                         ipfix_listener_port: UDP port on which the sensor listens for IPFIX records.
-                        monitor_point_identifier: Identifier of this monitor point.
                         ndr_application: Subclass of AvdModel.
                         nucleus:
                            NDR Nucleus servers (minimum 1, maximum 2).
 
                            Subclass of AvdIndexedList with `NucleusItem` items.
                            Primary key is `name` (`str`).
-                        topic: Topic identifier.
 
                     """
 

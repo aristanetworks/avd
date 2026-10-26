@@ -16,14 +16,14 @@ monitor security awake
 {%     if monitor_security.awake.topic is arista.avd.defined %}
    topic {{ monitor_security.awake.topic }}
 {%     endif %}
-{%     if monitor_security.awake.ipfix_listener_port is arista.avd.defined %}
-   ipfix listener port {{ monitor_security.awake.ipfix_listener_port }}
-{%     endif %}
 {%     if monitor_security.awake.monitor_point_identifier is arista.avd.defined %}
    monitor-point identifier {{ monitor_security.awake.monitor_point_identifier }}
 {%     endif %}
 {%     if monitor_security.awake.flow_table_size_entries is arista.avd.defined %}
    flow table size {{ monitor_security.awake.flow_table_size_entries }} entries
+{%     endif %}
+{%     if monitor_security.awake.ipfix_listener_port is arista.avd.defined %}
+   ipfix listener port {{ monitor_security.awake.ipfix_listener_port }}
 {%     endif %}
 {%     if monitor_security.awake.ndr_application.unknown_udp is arista.avd.defined(true) %}
    ndr application unknown udp
