@@ -35,13 +35,10 @@ monitor security awake
       local interface {{ nucleus.local_interface }}
 {%         endif %}
 {%         if nucleus.destination is arista.avd.defined %}
-      destination {{ nucleus.destination }} port {{ nucleus.port }}
+      destination {{ nucleus.destination }}{{ (' port ' ~ nucleus.port ) if nucleus.port is arista.avd.defined else '' }}
 {%         endif %}
 {%         if nucleus.ssl_profile is arista.avd.defined %}
       ssl profile {{ nucleus.ssl_profile }}
 {%         endif %}
 {%     endfor %}
-{%     if monitor_security.awake.topic is arista.avd.defined %}
-   topic {{ monitor_security.awake.topic }}
-{%     endif %}
 {% endif %}

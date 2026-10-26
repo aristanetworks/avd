@@ -27,7 +27,7 @@
 {%             set destination = nucleus.destination | arista.avd.default('-') %}
 {%             set port = nucleus.port | arista.avd.default('9094') %}
 {%             set ssl_profile = nucleus.ssl_profile | arista.avd.default('-') %}
-| {{ name }} | {{ local_interface }} | {{ destination }} | {{ nucleus.port }} | {{ ssl_profile }} |
+| {{ name }} | {{ local_interface }} | {{ destination }} | {{ port }} | {{ ssl_profile }} |
 {%         endfor %}
 {%     endif %}
 {% endif %}

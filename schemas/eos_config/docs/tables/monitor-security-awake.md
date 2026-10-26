@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unknown_udp</samp>](## "monitor_security.awake.ndr_application.unknown_udp") | Boolean |  |  |  | Enable handling of unknown UDP applications. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nucleus</samp>](## "monitor_security.awake.nucleus") | List, items: Dictionary | Required |  | Min Length: 1<br>Max Length: 2 | NDR Nucleus servers (minimum 1, maximum 2). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_security.awake.nucleus.[].name") | String | Required, Unique |  |  | Hostname of the Nucleus. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "monitor_security.awake.nucleus.[].destination") | String |  |  |  | IPv4 or IPv6 address or FQDN of the Nucleus. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "monitor_security.awake.nucleus.[].destination") | String | Required |  |  | IPv4 or IPv6 address or FQDN of the Nucleus. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "monitor_security.awake.nucleus.[].port") | Integer |  | `9094` | Min: 1<br>Max: 65535 | TCP port of the Nucleus. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "monitor_security.awake.nucleus.[].local_interface") | String |  |  |  | Source interface for the connection to the Nucleus, e.g. `Loopback0`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "monitor_security.awake.nucleus.[].ssl_profile") | String |  |  |  | Name of the SSL profile used for the connection to the Nucleus. |
@@ -56,7 +56,7 @@
           - name: <str; required; unique>
 
             # IPv4 or IPv6 address or FQDN of the Nucleus.
-            destination: <str>
+            destination: <str; required>
 
             # TCP port of the Nucleus.
             port: <int; 1-65535; default=9094>
