@@ -66,19 +66,7 @@ class LoopbackInterfacesMixin(Protocol):
         if (loopback := vrf.vtep_diagnostic.loopback) is None:
             return None
 
-        pod_name = self.inputs.pod_name
-        loopback_ip_pools = vrf.vtep_diagnostic.loopback_ip_pools
-
-        loopback_ipv4_pool = vrf.vtep_diagnostic.loopback_ip_range
-        loopback_ipv6_pool = vrf.vtep_diagnostic.loopback_ipv6_range
-
-        # Override defaults if pod-specific pools exist
-        if pod_name and loopback_ip_pools and (pod_pools := loopback_ip_pools.get(pod_name)):
-            if ipv4_pool := pod_pools.ipv4_pool:
-                loopback_ipv4_pool = ipv4_pool
-            if ipv6_pool := pod_pools.ipv6_pool:
-                loopback_ipv6_pool = ipv6_pool
-
+        loopback_ipv4_pool, loopback_ipv6_pool = self._get_vtep_diagnostic_loopback_pools(vrf)
         if not loopback_ipv4_pool and not loopback_ipv6_pool:
             return None
 
@@ -101,3 +89,21 @@ class LoopbackInterfacesMixin(Protocol):
         self._set_virtual_source_nat_for_vrf_loopback(vrf.name, ipv4_address, ipv6_address)
 
         return loopback_interface
+
+    def _get_vtep_diagnostic_loopback_pools(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> tuple[str | None, str | None]:
+        """Return the IPv4 and IPv6 pools of the VTEP diagnostic loopback for the given VRF, using the pod-specific pools when defined."""
+        loopback_ipv4_pool = vrf.vtep_diagnostic.loopback_ip_range
+        loopback_ipv6_pool = vrf.vtep_diagnostic.loopback_ipv6_range
+
+        pod_name = self.inputs.pod_name
+        loopback_ip_pools = vrf.vtep_diagnostic.loopback_ip_pools
+        if pod_name and loopback_ip_pools and (pod_pools := loopback_ip_pools.get(pod_name)):
+            if ipv4_pool := pod_pools.ipv4_pool:
+                loopback_ipv4_pool = ipv4_pool
+            if ipv6_pool := pod_pools.ipv6_pool:
+                loopback_ipv6_pool = ipv6_pool
+
+        return loopback_ipv4_pool, loopback_ipv6_pool
