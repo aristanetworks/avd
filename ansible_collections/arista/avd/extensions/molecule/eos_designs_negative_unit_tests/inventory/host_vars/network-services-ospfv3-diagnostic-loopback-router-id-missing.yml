@@ -1,0 +1,31 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: network-services-ospfv3-diagnostic-loopback-router-id-missing
+      id: 1
+      bgp_as: 65101
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_A
+        vrf_id: 10
+        ospfv3:
+          router_id: diagnostic_loopback
+        svis:
+          - id: 110
+            name: TRANSIT
+            vxlan: false
+            ipv6_address: 2001:db8:110::1/64
+            ospfv3:
+              enabled: true
+
+expected_error_message: >-
+  Invalid configuration on VRF 'VRF_A' in Tenant 'TENANT_A'.
+  'vtep_diagnostic.loopback' along with either 'vtep_diagnostic.loopback_ip_pools' or 'vtep_diagnostic.loopback_ip_range'
+  must be defined when 'router_id' is set to 'diagnostic_loopback' on the VRF.
