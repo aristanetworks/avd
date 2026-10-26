@@ -423,15 +423,6 @@ tenant_a:
           loopback: 101
           loopback_ip_range: 10.255.11.0/24
           hardware_forwarding: true
-      - name: VRF_DIAG_V6_TENANT_LO_V4
-        vrf_id: 4242
-        vtep_diagnostic:
-          loopback: 142
-          loopback_ipv6_range: 2001:db8:142::/64
-        loopbacks:
-          - node: dc1-leaf2a
-            loopback: 143
-            ip_address: 10.142.0.1/32
     l2vlans:
       # L2 vlan as string
       - id: '160'

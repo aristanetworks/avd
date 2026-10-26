@@ -75,6 +75,7 @@ class LoopbackInterfacesMixin(Protocol):
                         loopback_interface_item.vrf,
                         loopback_interface_item.ip_address,
                         ipv6_address=next(iter(loopback.ipv6_addresses), None),
+                        fill_missing_ipv6=True,
                     )
                     self.structured_config.loopback_interfaces.append(loopback_interface_item)
 

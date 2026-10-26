@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].node") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].loopback") | Integer | Required |  | Min: 0<br>Max: 8191 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].ip_address") | String |  |  |  | IPv4 address/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].ipv6_addresses") | List, items: String |  |  | Min Length: 1 | IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.<br>Can be used instead of or together with `ip_address`.<br>At least one of `ip_address` or `ipv6_addresses` must be set.<br>For IPv6 virtual source NAT, AVD uses the first value from this input list when this loopback is selected. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].ipv6_addresses") | List, items: String |  |  | Min Length: 1 | IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.<br>At least one of `ip_address` or `ipv6_addresses` must be set.<br>The first address in this list is used for the IPv6 virtual source-nat of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].ipv6_addresses.[]") | String |  |  | Min Length: 1 | IPv6 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].enabled") | Boolean |  | `True` |  |  |
@@ -32,7 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "network_services.[].vrfs.[].loopbacks.[].node") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback</samp>](## "network_services.[].vrfs.[].loopbacks.[].loopback") | Integer | Required |  | Min: 0<br>Max: 8191 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "network_services.[].vrfs.[].loopbacks.[].ip_address") | String |  |  |  | IPv4 address/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "network_services.[].vrfs.[].loopbacks.[].ipv6_addresses") | List, items: String |  |  | Min Length: 1 | IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.<br>Can be used instead of or together with `ip_address`.<br>At least one of `ip_address` or `ipv6_addresses` must be set.<br>For IPv6 virtual source NAT, AVD uses the first value from this input list when this loopback is selected. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "network_services.[].vrfs.[].loopbacks.[].ipv6_addresses") | List, items: String |  |  | Min Length: 1 | IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.<br>At least one of `ip_address` or `ipv6_addresses` must be set.<br>The first address in this list is used for the IPv6 virtual source-nat of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].loopbacks.[].ipv6_addresses.[]") | String |  |  | Min Length: 1 | IPv6 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_services.[].vrfs.[].loopbacks.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].loopbacks.[].enabled") | Boolean |  | `True` |  |  |
@@ -73,9 +73,8 @@
                 ip_address: <str>
 
                 # IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
-                # Can be used instead of or together with `ip_address`.
                 # At least one of `ip_address` or `ipv6_addresses` must be set.
-                # For IPv6 virtual source NAT, AVD uses the first value from this input list when this loopback is selected.
+                # The first address in this list is used for the IPv6 virtual source-nat of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
                 ipv6_addresses: # >=1 items
 
                     # IPv6 address/Mask.
@@ -124,9 +123,8 @@
                 ip_address: <str>
 
                 # IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
-                # Can be used instead of or together with `ip_address`.
                 # At least one of `ip_address` or `ipv6_addresses` must be set.
-                # For IPv6 virtual source NAT, AVD uses the first value from this input list when this loopback is selected.
+                # The first address in this list is used for the IPv6 virtual source-nat of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
                 ipv6_addresses: # >=1 items
 
                     # IPv6 address/Mask.

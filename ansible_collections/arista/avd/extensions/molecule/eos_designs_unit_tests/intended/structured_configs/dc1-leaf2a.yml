@@ -538,16 +538,6 @@ loopback_interfaces:
   ipv6_addresses:
   - 2001:db8:21::1/48
   - 5:5:5:5:5:5:5:5/124
-- name: Loopback142
-  description: VRF_DIAG_V6_TENANT_LO_V4_VTEP_DIAGNOSTICS
-  shutdown: false
-  vrf: VRF_DIAG_V6_TENANT_LO_V4
-  ipv6_addresses:
-  - 2001:db8:142::2/128
-- name: Loopback143
-  shutdown: false
-  vrf: VRF_DIAG_V6_TENANT_LO_V4
-  ip_address: 10.142.0.1/32
 management_api_http:
   enable_https: true
   default_services: false
@@ -1084,21 +1074,6 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
-  - name: VRF_DIAG_V6_TENANT_LO_V4
-    rd: 65001:4242
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 100000:4242
-      export:
-      - address_family: evpn
-        route_targets:
-        - 100000:4242
-    router_id: 192.168.255.10
-    redistribute:
-      connected:
-        enabled: true
   - name: Tenant_B_OP_Zone
     rd: '65001:20'
     route_targets:
@@ -1208,8 +1183,6 @@ virtual_source_nat_vrfs:
 - name: Tenant_A_OSPF
   ip_address: 10.255.11.10
   ipv6_address: fd5a:fe45:8831:06c5::a
-- name: VRF_DIAG_V6_TENANT_LO_V4
-  ipv6_address: 2001:db8:142::2
 vlan_interfaces:
 - name: Vlan130
   description: Tenant_A_APP_Zone_1
@@ -1648,11 +1621,6 @@ vrfs:
   metadata:
     tenants:
     - Tenant_A
-- name: VRF_DIAG_V6_TENANT_LO_V4
-  ip_routing: true
-  metadata:
-    tenants:
-    - Tenant_A
 - name: Tenant_B_OP_Zone
   ip_routing: true
   metadata:
@@ -1737,8 +1705,6 @@ vxlan_interface:
         vni: 16
       - name: Tenant_A_WEB_Zone
         vni: 11
-      - name: VRF_DIAG_V6_TENANT_LO_V4
-        vni: 4242
       - name: Tenant_B_OP_Zone
         vni: 20
       - name: Tenant_C_OP_Zone

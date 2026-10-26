@@ -20,7 +20,12 @@ class VirtualSourceNatVrfsMixin(Protocol):
     """
 
     def _set_virtual_source_nat_for_vrf_loopback(
-        self: AvdStructuredConfigNetworkServicesProtocol, vrf: str | None, ipv4_address: str | None = None, ipv6_address: str | None = None
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vrf: str | None,
+        ipv4_address: str | None = None,
+        ipv6_address: str | None = None,
+        *,
+        fill_missing_ipv6: bool = False,
     ) -> None:
         """
         Set the structured config for virtual_source_nat_vrfs.
@@ -49,8 +54,8 @@ class VirtualSourceNatVrfsMixin(Protocol):
             ignore_fields=("ip_address", "ipv6_address"),
         )
 
-        # Backfill IPv6 source NAT when later loopbacks introduce IPv6 for an existing VRF.
-        if ipv6:
-            virtual_source_nat_vrf = self.structured_config.virtual_source_nat_vrfs.obtain(vrf)
-            if virtual_source_nat_vrf._get("ipv6_address") is None:
+        # Only tenant loopbacks may set a missing IPv6 address, to preserve the configuration for existing inputs.
+        if fill_missing_ipv6 and ipv6:
+            virtual_source_nat_vrf = self.structured_config.virtual_source_nat_vrfs[vrf]
+            if not virtual_source_nat_vrf.ipv6_address:
                 virtual_source_nat_vrf.ipv6_address = ipv6
