@@ -114,6 +114,8 @@ def get_structured_config(
         structured_config=structured_config, inputs=inputs, shared_utils=shared_utils, custom_structured_configs=custom_structured_configs
     )
 
+    structured_config_utils._validate_ipv4_acl_catalog_names()
+
     for cls in AVD_STRUCTURED_CONFIG_CLASSES:
         eos_designs_module = cls(
             hostvars=hostvars,
@@ -125,5 +127,7 @@ def get_structured_config(
             structured_config_utils=structured_config_utils,
         )
         eos_designs_module.render()
+
+    structured_config_utils._validate_ipv4_acl_names()
 
     return structured_config

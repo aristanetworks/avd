@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'management_eapi.vrfs[name=extended].ipv4_acl' and 'management_eapi.vrfs[name=management].ipv4_standard_acl' are mutually exclusive for ACL 'FILTER'. Only one IPv4 ACL type can be configured with the same name.
+pyavd._errors.AristaAvdInvalidInputsError: ACL 'FILTER' is configured in both 'ip_access_lists' and 'standard_access_lists'. Only one IPv4 ACL type can be configured with the same name.

@@ -27,6 +27,7 @@
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
     | [<samp>&nbsp;&nbsp;only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used</samp>](## "avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Configure OOB management VRF and OOB IPv4 static routes only when OOB management is actually used.<br>When enabled:<br>- AVD renders the OOB management VRF only if `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.<br>- Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.<br>- AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met). |
     | [<samp>&nbsp;&nbsp;raise_for_missing_management_eapi_acls</samp>](## "avd_design_future.raise_for_missing_management_eapi_acls") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Raise an error if an ACL referenced by `management_eapi.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.<br>When enabled, configure the referenced extended ACL on devices where the eAPI VRF is enabled.<br>When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog.<br>`management_eapi.vrfs[].ipv4_standard_acl` always requires an entry in `ipv4_standard_acls`, regardless of this setting. |
+    | [<samp>&nbsp;&nbsp;raise_for_duplicate_ipv4_acl_names</samp>](## "avd_design_future.raise_for_duplicate_ipv4_acl_names") | Boolean |  | `False` |  | Raise an error if an ACL name is defined in both `ipv4_acls` and `ipv4_standard_acls`, even if the ACLs are not used on the device.<br>When disabled, the same name may be defined in both catalogs, provided both ACL types are not configured on the same device. |
 
 === "YAML"
 
@@ -125,4 +126,8 @@
       # When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog.
       # `management_eapi.vrfs[].ipv4_standard_acl` always requires an entry in `ipv4_standard_acls`, regardless of this setting.
       raise_for_missing_management_eapi_acls: <bool; default=False>
+
+      # Raise an error if an ACL name is defined in both `ipv4_acls` and `ipv4_standard_acls`, even if the ACLs are not used on the device.
+      # When disabled, the same name may be defined in both catalogs, provided both ACL types are not configured on the same device.
+      raise_for_duplicate_ipv4_acl_names: <bool; default=False>
     ```

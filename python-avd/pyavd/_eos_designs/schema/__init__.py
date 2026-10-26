@@ -1068,6 +1068,7 @@ class EosDesigns(EosDesignsRootModel):
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
             "raise_for_missing_management_eapi_acls": {"type": bool, "default": False},
+            "raise_for_duplicate_ipv4_acl_names": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1248,6 +1249,15 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        raise_for_duplicate_ipv4_acl_names: bool
+        """
+        Raise an error if an ACL name is defined in both `ipv4_acls` and `ipv4_standard_acls`, even if the
+        ACLs are not used on the device.
+        When disabled, the same name may be defined in both catalogs,
+        provided both ACL types are not configured on the same device.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -1273,6 +1283,7 @@ class EosDesigns(EosDesignsRootModel):
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
                 raise_for_missing_management_eapi_acls: bool | UndefinedType = Undefined,
+                raise_for_duplicate_ipv4_acl_names: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1384,6 +1395,11 @@ class EosDesigns(EosDesignsRootModel):
                        configuring an ACL definition from the catalog.
                        `management_eapi.vrfs[].ipv4_standard_acl` always
                        requires an entry in `ipv4_standard_acls`, regardless of this setting.
+                    raise_for_duplicate_ipv4_acl_names:
+                       Raise an error if an ACL name is defined in both `ipv4_acls` and `ipv4_standard_acls`, even if the
+                       ACLs are not used on the device.
+                       When disabled, the same name may be defined in both catalogs,
+                       provided both ACL types are not configured on the same device.
 
                 """
 
