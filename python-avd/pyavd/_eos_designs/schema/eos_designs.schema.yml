@@ -6194,6 +6194,58 @@ keys:
                     documentation_options:
                       hide_keys: true
                     $ref: eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items
+              ospfv3:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: dict
+                description: 'Router OSPFv3 settings for the VRF.
+
+                  The OSPFv3 configuration is created automatically on a device when
+                  at least one OSPFv3-enabled SVI in this VRF is configured on that
+                  device.
+
+                  These settings only override the defaults.
+
+                  VRF `default` is not supported yet.'
+                keys:
+                  router_id:
+                    type: str
+                    default: main_router_id
+                    description: "Router ID to use for OSPFv3 in this VRF.\nThis can
+                      be an IPv4 address, \"main_router_id\", \"none\" or \"diagnostic_loopback\".\n-
+                      \"main_router_id\" will use the IP address of Loopback0 or the
+                      common `router general` Router ID if `use_router_general_for_router_id`
+                      is set.\n- \"none\" will not configure an OSPFv3 Router ID for
+                      this VRF.\n  EOS then uses the `router general` Router ID or
+                      an IPv4 address of an interface in the VRF.\n  If neither exists,
+                      for example in an IPv6-only VRF, the OSPFv3 instance does not
+                      start.\n- \"diagnostic_loopback\" will use the IP address of
+                      the VRF Diagnostic Loopback interface."
+                  redistribute_bgp:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: true
+                        description: 'Redistribute BGP into OSPFv3.
+
+                          Ignored on devices where BGP is not configured for this
+                          VRF.'
+                  redistribute_connected:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: false
+                        description: Redistribute connected routes into OSPFv3.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>]
+                      for the EOS Config schema.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/vrfs/items
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -6201,6 +6253,21 @@ keys:
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf
                   inside the VRF.
+              redistribute_ospfv3:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                    description: 'Redistribute OSPFv3 internal routes into BGP for
+                      this VRF.
+
+                      Ignored on devices where BGP is not configured for this VRF
+                      or where the VRF has no OSPFv3 instance.
+
+                      OSPFv3 external routes are not redistributed.'
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -17713,6 +17780,60 @@ $defs:
                     make use of a vault or similar.'
                   min_length: 1
                   max_length: 16
+      ospfv3:
+        documentation_options:
+          table: network-services-vrfs-ospfv3-settings
+        type: dict
+        description: 'OSPFv3 interface configuration.
+
+          Enabling OSPFv3 on an SVI automatically creates the OSPFv3 configuration
+          for the VRF of the SVI on the device.
+
+          Only the IPv6 address family is currently supported.
+
+          SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+
+          OSPFv3 uses the IPv6 link-local address of the SVI, so `ipv6_enable: true`
+          is set automatically on SVIs without `ipv6_address` (`ipv6_enable: false`
+          is not supported).
+
+          Anycast IPv6 (`ipv6_address_virtuals`) is not supported.
+
+          SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+
+          VRF `default` and SVIs deployed as subinterfaces with `uplink_type: lan`
+          are not supported.'
+        keys:
+          enabled:
+            type: bool
+          area:
+            type: str
+            default: 0.0.0.0
+            description: OSPFv3 area ID in IPv4 address or decimal format (range 0
+              to 4294967295).
+          point_to_point:
+            type: bool
+            default: false
+            description: Configure the OSPFv3 network type as point-to-point.
+          passive:
+            type: bool
+            default: false
+            description: 'Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+
+              By default, OSPFv3-enabled SVIs are configured with `no ospfv3 passive-interface`.'
+          ipv4:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                description: 'Set to `false` to exclude the IPv4 address family from
+                  OSPFv3 on an SVI with IPv4 addressing.
+
+                  The IPv4 address family is not supported yet, so `true` raises an
+                  error.
+
+                  An SVI with IPv4 addressing also raises an error unless this is
+                  set to `false`.'
       bgp:
         type: dict
         keys:
