@@ -352,7 +352,7 @@ class FilteredTenantsMixin(Protocol):
                 if parent_profile_item.parent_profile:
                     self.raise_warning_for_grandparent_profile(parent_profile_item.profile, context="svi_profiles")
                 # Inherit from the parent profile
-                resolved_profile._deepinherit(self.inputs.svi_profiles[parent_profile_item.profile])
+                resolved_profile._deepinherit(parent_profile_item)
                 # Inherit from the profile
                 merged_svi = svi._deepinherited(
                     resolved_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
