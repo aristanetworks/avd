@@ -90,6 +90,4 @@ vlans:
     tenants:
     - system
 vrfs:
-- name: MGMT
-  ip_routing: false
 - name: INBANDMGMT

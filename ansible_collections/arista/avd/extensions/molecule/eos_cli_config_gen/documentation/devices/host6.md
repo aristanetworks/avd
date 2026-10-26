@@ -369,12 +369,33 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send limit 6 |
 
+#### Router BGP Peer Groups
+
+##### evpn-overlay-peers
+
+| Settings | Value |
+| -------- | ----- |
+| Remote AS | 65001 |
+
+##### IPV4-UNDERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Remote AS | 65002 |
+
 #### Router BGP IPv4 Labeled Unicast
 
 ##### General Settings
 
 | Settings | Value |
 | -------- | ----- |
+
+##### IPv4 BGP-LU Peer-groups
+
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| evpn-overlay-peers | True | - | - | - | - | - | - |
+| IPV4-UNDERLAY-PEERS | True | - | - | - | - | - | - |
 
 #### Router BGP Path-Selection Address Family
 
@@ -390,16 +411,28 @@ ASN Notation: asplain
 !
 router bgp 65006
    bgp additional-paths send limit 6
+   neighbor evpn-overlay-peers peer group
+   neighbor evpn-overlay-peers remote-as 65001
+   neighbor evpn-overlay-peers description EVPN overlay peer group for legacy ordering
+   neighbor IPV4-UNDERLAY-PEERS peer group
+   neighbor IPV4-UNDERLAY-PEERS remote-as 65002
+   neighbor IPV4-UNDERLAY-PEERS description IPv4 underlay peer group for legacy ordering
    redistribute ospf include leaked route-map RM-BGP-OSPF
    !
    address-family ipv4
       bgp additional-paths send limit 4
+      neighbor evpn-overlay-peers activate
+      neighbor IPV4-UNDERLAY-PEERS activate
    !
    address-family ipv4 labeled-unicast
       no bgp additional-paths send
+      neighbor evpn-overlay-peers activate
+      neighbor IPV4-UNDERLAY-PEERS activate
    !
    address-family ipv6
       no bgp additional-paths send
+      neighbor evpn-overlay-peers activate
+      neighbor IPV4-UNDERLAY-PEERS activate
       redistribute ospfv3 match external route-map RM-BGP-OSPFV3-EXTERNAL
    !
    address-family path-selection

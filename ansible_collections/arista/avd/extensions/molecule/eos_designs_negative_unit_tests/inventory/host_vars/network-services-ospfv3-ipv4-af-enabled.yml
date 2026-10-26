@@ -1,0 +1,30 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: network-services-ospfv3-ipv4-af-enabled
+      id: 1
+      bgp_as: 65101
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_A
+        vrf_id: 10
+        svis:
+          - id: 110
+            name: IPV6_ONLY_IPV4_AF_TRUE
+            vxlan: false
+            ipv6_address: 2001:db8:110::1/64
+            ospfv3:
+              enabled: true
+              ipv4:
+                enabled: true
+
+expected_error_message: >-
+  'tenants[name=TENANT_A].vrfs[name=VRF_A].svis[id=110].ospfv3.ipv4.enabled: true' is not supported yet. OSPFv3 currently only supports the IPv6 address
+  family.
