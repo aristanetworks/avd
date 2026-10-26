@@ -541,6 +541,25 @@ keys:
 
           using `mlag_ibgp_peering_ipv6_pool` when set, and `mlag_ibgp_peering_ipv4_pool`
           is ignored.'
+      fix_mlag_ibgp_peering_vrfs_address_families:
+        type: bool
+        default: false
+        description: "Available from AVD 6.5.0.\nFix the BGP address families of the
+          MLAG iBGP peerings in VRFs when using `underlay_ipv6_numbered`.\nThese iBGP
+          sessions run over IPv6, so when enabled:\n- With `overlay_mlag_rfc5549:
+          false`, the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer` peer group activates
+          the IPv6 address family\n  instead of the IPv4 address family. An error
+          is raised if a VRF with MLAG iBGP peering has IPv4 configured, with either
+          the shared\n  or the dedicated peer group, since IPv4 routes cannot be exchanged
+          over these sessions without `overlay_mlag_rfc5549: true`.\n- With `overlay_mlag_rfc5549:
+          true`, both the IPv4 address family (with `next-hop address-family ipv6
+          originate`) and the IPv6\n  address family are activated on the MLAG peer
+          group used for VRFs, either the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`\n
+          \ or the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6
+          interfaces` is configured globally when using the shared\n  peer group,
+          and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing vrf
+          <vrf>` are configured for VRFs with MLAG iBGP peering.\n  This allows dual-stack
+          VRFs over a numbered IPv6 underlay."
       fix_radius_server_group_tls:
         type: bool
         default: false
@@ -617,6 +636,24 @@ keys:
 
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
           IPv4 is activated by default instead of always deactivating it.'
+        default: false
+      only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
+        type: bool
+        description: 'Available from AVD 6.5.0.
+
+          Configure OOB management VRF and OOB IPv4 static routes only when OOB management
+          is actually used.
+
+          When enabled:
+
+          - AVD renders the OOB management VRF only if `default_mgmt_method` is `oob`,
+          or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+
+          - Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does
+          not by itself render the OOB management VRF.
+
+          - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and
+          other existing route prerequisites are met).'
         default: false
   avd_digital_twin_mode:
     documentation_options:
@@ -2546,8 +2583,14 @@ keys:
         $ref: eos_cli_config_gen#/keys/domain_list
       servers:
         type: list
-        required: true
         min_length: 1
+        description: 'List of DNS servers to configure.
+
+          May be omitted when inherited from a parent DNS settings profile or global
+          `dns_settings`.
+
+          When the resolved DNS settings are non-empty, at least one server must be
+          configured.'
         items:
           type: dict
           keys:
@@ -2579,6 +2622,7 @@ keys:
       vrfs:
         type: list
         primary_key: name
+        description: Per-VRF DNS lookup source-interface settings.
         items:
           type: dict
           keys:
@@ -2602,6 +2646,32 @@ keys:
       ip_hosts:
         type: list
         $ref: eos_cli_config_gen#/keys/ip_hosts
+        description: Static hostname-to-IP address mappings to configure in the local
+          host table.
+  dns_settings_profiles:
+    type: list
+    primary_key: profile
+    description: 'List of DNS settings profiles that can be applied to devices using
+      `dns_settings_profile` under node definitions.
+
+      Profiles support inheritance using `parent_profile`, allowing common DNS settings
+      to be shared and selectively overridden per profile.'
+    items:
+      type: dict
+      $ref: eos_designs#/keys/dns_settings
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: DNS settings profile name.
+        parent_profile:
+          type: str
+          min_length: 1
+          description: 'Inherit settings from a parent profile defined under `dns_settings_profiles`.
+
+            The settings from this profile override settings inherited from the parent
+            profile.'
   dot1x_settings:
     documentation_options:
       table: dot1x-settings
@@ -6167,6 +6237,58 @@ keys:
                     documentation_options:
                       hide_keys: true
                     $ref: eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items
+              ospfv3:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: dict
+                description: 'Router OSPFv3 settings for the VRF.
+
+                  The OSPFv3 configuration is created automatically on a device when
+                  at least one OSPFv3-enabled SVI in this VRF is configured on that
+                  device.
+
+                  These settings only override the defaults.
+
+                  VRF `default` is not supported yet.'
+                keys:
+                  router_id:
+                    type: str
+                    default: main_router_id
+                    description: "Router ID to use for OSPFv3 in this VRF.\nThis can
+                      be an IPv4 address, \"main_router_id\", \"none\" or \"diagnostic_loopback\".\n-
+                      \"main_router_id\" will use the IP address of Loopback0 or the
+                      common `router general` Router ID if `use_router_general_for_router_id`
+                      is set.\n- \"none\" will not configure an OSPFv3 Router ID for
+                      this VRF.\n  EOS then uses the `router general` Router ID or
+                      an IPv4 address of an interface in the VRF.\n  If neither exists,
+                      for example in an IPv6-only VRF, the OSPFv3 instance does not
+                      start.\n- \"diagnostic_loopback\" will use the IP address of
+                      the VRF Diagnostic Loopback interface."
+                  redistribute_bgp:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: true
+                        description: 'Redistribute BGP into OSPFv3.
+
+                          Ignored on devices where BGP is not configured for this
+                          VRF.'
+                  redistribute_connected:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: false
+                        description: Redistribute connected routes into OSPFv3.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>]
+                      for the EOS Config schema.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/vrfs/items
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -6174,6 +6296,21 @@ keys:
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf
                   inside the VRF.
+              redistribute_ospfv3:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                    description: 'Redistribute OSPFv3 internal routes into BGP for
+                      this VRF.
+
+                      Ignored on devices where BGP is not configured for this VRF
+                      or where the VRF has no OSPFv3 instance.
+
+                      OSPFv3 external routes are not redistributed.'
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -8001,11 +8138,12 @@ keys:
   overlay_mlag_rfc5549:
     documentation_options:
       table: overlay-settings
-    description: 'IPv6 Unnumbered for MLAG iBGP connections.
-
-      Requires "underlay_rfc5549: true".
-
-      '
+    description: "Exchange IPv4 routes with an IPv6 next hop (RFC5549) over the MLAG
+      iBGP peerings in VRFs.\nRequires one of:\n- `underlay_rfc5549: true`: The MLAG
+      iBGP peerings in VRFs use IPv6 link-local addresses (unnumbered).\n- `underlay_ipv6_numbered:
+      true` and `avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true`:\n
+      \ The MLAG iBGP peerings in VRFs use numbered IPv6 addresses, allowing dual-stack
+      VRFs over a numbered IPv6 underlay.\n"
     type: bool
     default: false
   overlay_rd_type:
@@ -10447,7 +10585,6 @@ keys:
               type: str
               valid_values:
               - disabled
-              - '0'
               - '7'
               default: disabled
               description: 'Key type for the computed localized SNMPv3 auth and priv
@@ -10457,14 +10594,11 @@ keys:
 
                 Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
 
-                When set to `0` or `7`, AVD renders the computed localized keys using
-                EOS `key <type> <key>` syntax for both auth and priv.
+                When set to `7`, AVD renders the computed localized keys using EOS
+                `key <type> <key>` syntax for both auth and priv.
 
                 - `disabled`: Use legacy syntax without key type (auth_passphrase
                 rendered directly). Default for backward compatibility.
-
-                - `0`: Key string is plaintext. AVD renders the raw computed localized
-                key.
 
                 - `7`: Type-7 encrypted (HIDDEN) key. AVD applies Type-7 obfuscation
                 to the computed localized key before rendering.'
@@ -15168,6 +15302,15 @@ $defs:
 
               Validation profiles define requirements (e.g., hardware and logging)
               used by the `anta_runner` role during post-deployment validation.'
+          dns_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: 'Name of the DNS settings profile to apply to this device.
+
+              The profile must be defined under `dns_settings_profiles`.
+
+              The selected profile settings will be merged over the general `dns_settings`.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -17707,6 +17850,60 @@ $defs:
                     make use of a vault or similar.'
                   min_length: 1
                   max_length: 16
+      ospfv3:
+        documentation_options:
+          table: network-services-vrfs-ospfv3-settings
+        type: dict
+        description: 'OSPFv3 interface configuration.
+
+          Enabling OSPFv3 on an SVI automatically creates the OSPFv3 configuration
+          for the VRF of the SVI on the device.
+
+          Only the IPv6 address family is currently supported.
+
+          SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+
+          OSPFv3 uses the IPv6 link-local address of the SVI, so `ipv6_enable: true`
+          is set automatically on SVIs without `ipv6_address` (`ipv6_enable: false`
+          is not supported).
+
+          Anycast IPv6 (`ipv6_address_virtuals`) is not supported.
+
+          SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+
+          VRF `default` and SVIs deployed as subinterfaces with `uplink_type: lan`
+          are not supported.'
+        keys:
+          enabled:
+            type: bool
+          area:
+            type: str
+            default: 0.0.0.0
+            description: OSPFv3 area ID in IPv4 address or decimal format (range 0
+              to 4294967295).
+          point_to_point:
+            type: bool
+            default: false
+            description: Configure the OSPFv3 network type as point-to-point.
+          passive:
+            type: bool
+            default: false
+            description: 'Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+
+              By default, OSPFv3-enabled SVIs are configured with `no ospfv3 passive-interface`.'
+          ipv4:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                description: 'Set to `false` to exclude the IPv4 address family from
+                  OSPFv3 on an SVI with IPv4 addressing.
+
+                  The IPv4 address family is not supported yet, so `true` raises an
+                  error.
+
+                  An SVI with IPv4 addressing also raises an error unless this is
+                  set to `false`.'
       bgp:
         type: dict
         keys:

@@ -1,0 +1,56 @@
+---
+# IPv4 BGP listen range in an otherwise IPv6-only VRF with MLAG iBGP peering over numbered IPv6 underlay using a dedicated MLAG peer group for VRFs.
+type: l3leaf
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+
+avd_design_future:
+  fix_mlag_ibgp_peering_vrfs_address_families: true
+
+bgp_peer_groups:
+  mlag_ipv4_vrfs_peer:
+    name: MLAG-IPv6-VRFS-PEER
+
+l3leaf:
+  defaults:
+    loopback_ipv6_pool: 2001:db8:14d::/48
+    router_id_pool: 10.149.0.0/24
+    vtep_loopback_ipv6_pool: 2001:db8:14e::/48
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_peer_ipv4_pool: 10.255.245.0/24
+    mlag_peer_l3_ipv6_pool: 2001:db8:14f::/48
+    virtual_router_mac_address: 00:1c:73:00:00:99
+
+  node_groups:
+    - group: mlag-vrfs-ipv6-numbered-dedicated-ipv4-listen-range
+      bgp_as: 65105
+      nodes:
+        - name: mlag-vrfs-ipv6-numbered-dedicated-ipv4-listen-range-1
+          id: 1
+          mgmt_ip: 192.168.0.215/24
+        - name: mlag-vrfs-ipv6-numbered-dedicated-ipv4-listen-range-2
+          id: 2
+          mgmt_ip: 192.168.0.216/24
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF10
+        vrf_vni: 10
+        svis:
+          - id: 11
+            name: VRF10_VLAN11
+            ipv6_address_virtuals: [2001:db8:11::1/64]
+        bgp_peer_groups:
+          - name: VRF10-LISTEN-PEERS
+            nodes: [mlag-vrfs-ipv6-numbered-dedicated-ipv4-listen-range-1, mlag-vrfs-ipv6-numbered-dedicated-ipv4-listen-range-2]
+            listen_ranges:
+              - prefix: 10.100.0.0/24
+                remote_as: 65555
+
+expected_error_message: >-
+  Invalid combination of inputs. IPv4 is configured in VRF 'VRF10' with MLAG iBGP peering, but IPv4 routes cannot be
+  exchanged over the numbered IPv6 MLAG iBGP peering with 'underlay_ipv6_numbered: true'.
+  Set 'overlay_mlag_rfc5549: true' to exchange IPv4 routes with an IPv6 next hop,
+  or disable the MLAG iBGP peering for this VRF with 'enable_mlag_ibgp_peering_vrfs: false'.
