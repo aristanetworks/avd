@@ -1,0 +1,5 @@
+---
+# IP Software Forwarding
+ip_software_forwarding:
+  mtu:
+    exceed_action_drop: true

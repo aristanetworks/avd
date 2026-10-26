@@ -230,6 +230,19 @@ class RouterBgpMixin(Protocol):
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
+                    if (
+                        self.inputs.avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families
+                        and self.shared_utils.underlay_ipv6_numbered
+                        and not self.inputs.overlay_mlag_rfc5549
+                        and self._has_ipv4(vrf)
+                    ):
+                        msg = (
+                            f"Invalid combination of inputs. IPv4 is configured in VRF '{vrf.name}' with MLAG iBGP peering, but IPv4 routes cannot be "
+                            "exchanged over the numbered IPv6 MLAG iBGP peering with 'underlay_ipv6_numbered: true'. "
+                            "Set 'overlay_mlag_rfc5549: true' to exchange IPv4 routes with an IPv6 next hop, "
+                            "or disable the MLAG iBGP peering for this VRF with 'enable_mlag_ibgp_peering_vrfs: false'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
                     if self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
                         self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
@@ -281,6 +294,10 @@ class RouterBgpMixin(Protocol):
 
                 if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
                     bgp_vrf.redistribute.ospf.enabled = True
+
+                # VRF level redistribution covers both OSPFv3 address families.
+                if vrf.redistribute_ospfv3.enabled and self.shared_utils.ospfv3_enabled_for_vrf(vrf):
+                    bgp_vrf.redistribute.ospfv3.enabled = True
 
                 if bgp_vrf.neighbors and self.inputs.bgp_update_wait_install and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install:
                     bgp_vrf.updates.wait_install = True
@@ -426,7 +443,9 @@ class RouterBgpMixin(Protocol):
             elif isinstance(bgp_vrf, EosCliConfigGen.RouterBgp) and vrf._get_defined_attr("validate_bgp_peers") is False:
                 neighbor_interface.metadata.validate_state = False
         else:
-            if not vrf.mlag_ibgp_peering_ipv4_pool:
+            if self.inputs.avd_design_future.fix_mlag_ibgp_peering_ipv6_pool and self.shared_utils.underlay_ipv6_numbered:
+                ip_address = self.get_ipv6_mlag_peer_ibgp_peering_ip(vrf)
+            elif not vrf.mlag_ibgp_peering_ipv4_pool:
                 ip_address = self.shared_utils.mlag_peer_ibgp_ip
             elif self.shared_utils.mlag_role == "primary":
                 ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(vrf.mlag_ibgp_peering_ipv4_pool)

@@ -12,7 +12,12 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGeneratorProtocol,
     structured_config_contributor,
 )
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import (
+    AristaAvdDuplicateDataError,
+    AristaAvdInvalidInputsError,
+    AristaAvdMissingVariableError,
+    AvdDeprecationWarning,
+)
 from pyavd._utils.default import default
 from pyavd._utils.get import get_v2
 from pyavd.j2filters import natural_sort
@@ -34,6 +39,7 @@ from .ptp import PtpMixin
 from .router_bgp import RouterBgpMixin
 from .router_general import RouterGeneralMixin
 from .snmp_server import SnmpServerMixin
+from .system import SystemMixin
 from .utils import UtilsMixin
 
 
@@ -51,6 +57,7 @@ class AvdStructuredConfigBaseProtocol(
     NtpMixin,
     PtpMixin,
     SnmpServerMixin,
+    SystemMixin,
     RouterBgpMixin,
     RouterGeneralMixin,
     PlatformMixin,
@@ -84,8 +91,14 @@ class AvdStructuredConfigBaseProtocol(
         if self.shared_utils.oob_mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
             return
 
+        # Future behavior: skip OOB IPv4 static route rendering when no OOB IPv4 management address is configured.
+        if self.inputs.avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used and self.shared_utils.oob_mgmt_ip is None:
+            return
+
         if self.shared_utils.oob_mgmt_gateway is None:
             return
+
+        self.structured_config_utils.set_once_oob_mgmt_vrf()
 
         if self.inputs.mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.mgmt_destination_networks:
@@ -130,7 +143,16 @@ class AvdStructuredConfigBaseProtocol(
 
         if self.inputs.underlay_rfc5549 or self.shared_utils.underlay_ipv6:
             self.structured_config.ipv6_unicast_routing = True
-        if self.inputs.underlay_rfc5549:
+        # With the shared peer group, IPv4 is also activated on the MLAG underlay neighbor in the default VRF,
+        # so IPv4 routes received with IPv6 next hops require 'ip routing ipv6 interfaces' globally.
+        mlag_ipv4_over_ipv6_numbered = (
+            self.inputs.avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families
+            and self.inputs.overlay_mlag_rfc5549
+            and self.shared_utils.mlag_l3
+            and self.shared_utils.underlay_ipv6_numbered
+            and not self.shared_utils.use_separate_peer_group_for_mlag_vrfs
+        )
+        if self.inputs.underlay_rfc5549 or mlag_ipv4_over_ipv6_numbered:
             self.structured_config.ip_routing_ipv6_interfaces = True
         else:
             self.structured_config.ip_routing = True
@@ -351,11 +373,12 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def vrfs(self) -> None:
         """Vrfs set based on mgmt_interface_vrf variable."""
-        vrf_settings = EosCliConfigGen.VrfsItem(name=self.shared_utils.mgmt_interface_vrf, ip_routing=self.shared_utils.mgmt_vrf_routing)
+        if not self.inputs.avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
+            self.structured_config_utils.set_once_oob_mgmt_vrf()
+            return
 
-        if self.shared_utils.node_config.ipv6_mgmt_ip is not None:
-            vrf_settings.ipv6_routing = self.shared_utils.mgmt_vrf_routing
-        self.structured_config.vrfs.append(vrf_settings)
+        if self.inputs.default_mgmt_method == "oob":
+            self.structured_config_utils.set_once_oob_mgmt_vrf()
 
     @structured_config_contributor
     def management_security(self) -> None:
@@ -366,9 +389,28 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def tcam_profile(self) -> None:
-        """tcam_profile set based on platform_settings.tcam_profile fact."""
-        if tcam_profile := self.shared_utils.platform_settings.tcam_profile:
-            self.structured_config.tcam_profile.system = tcam_profile
+        """Set TCAM profiles based on platform settings."""
+        tcam_profile_name = self.shared_utils.platform_settings.tcam_profile
+        additional_tcam_profile_names = self.shared_utils.platform_settings.additional_tcam_profiles
+
+        tcam_profiles = EosCliConfigGen.TcamProfile.Profiles()
+
+        # Add additional profiles first
+        for additional_tcam_profile_name in additional_tcam_profile_names:
+            if additional_tcam_profile_name not in self.inputs.tcam_profiles:
+                msg = f"TCAM profile '{additional_tcam_profile_name}' referenced under 'additional_tcam_profiles' is not defined under 'tcam_profiles'."
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+            if additional_tcam_profile_name != tcam_profile_name:
+                tcam_profiles.append(self.inputs.tcam_profiles[additional_tcam_profile_name])
+
+        # Set system profile if configured
+        if tcam_profile_name:
+            self.structured_config.tcam_profile.system = tcam_profile_name
+            # Add the system profile if it's in tcam_profiles
+            if tcam_profile_name in self.inputs.tcam_profiles:
+                tcam_profiles.append(self.inputs.tcam_profiles[tcam_profile_name])
+
+        self.structured_config.tcam_profile.profiles = tcam_profiles
 
     @structured_config_contributor
     def mac_address_table(self) -> None:
@@ -440,7 +482,42 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def ip_ssh_client(self) -> None:
-        """Parse source_interfaces.ssh_client and return list of source_interfaces."""
+        """Parse ssh_settings.client_vrfs (or source_interfaces.ssh_client) and set list of source_interfaces."""
+        if self.inputs.ssh_settings.client_vrfs and self.inputs.source_interfaces.ssh_client:
+            raise AvdDeprecationWarning(
+                key=["source_interfaces.ssh_client"],
+                new_key="ssh_settings.client_vrfs",
+                conflict=True,
+            )
+
+        if self.inputs.ssh_settings.client_vrfs:
+            ip_ssh_client = EosCliConfigGen.IpSshClient()
+            for client_vrf in self.inputs.ssh_settings.client_vrfs:
+                vrf_name = self.shared_utils.get_vrf(
+                    vrf_input=client_vrf.name,
+                    context=f"ssh_settings.client_vrfs[name={client_vrf.name}]",
+                )
+                source_interface = self.shared_utils.get_source_interface(client_vrf.name, client_vrf.source_interface)
+                if source_interface is None:
+                    msg = f"ssh_settings.client_vrfs[name={client_vrf.name}].source_interface"
+                    raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+
+                if vrf_name == "default" and ip_ssh_client.source_interface and ip_ssh_client.source_interface != source_interface:
+                    raise AristaAvdDuplicateDataError(
+                        context="ssh_settings.client_vrfs",
+                        context_item_a=str({"name": vrf_name, "source_interface": source_interface}),
+                        context_item_b=str({"name": vrf_name, "source_interface": ip_ssh_client.source_interface}),
+                        host=self.shared_utils.hostname,
+                    )
+
+                if vrf_name == "default":
+                    ip_ssh_client.source_interface = source_interface
+                else:
+                    ip_ssh_client.vrfs.append_new(name=vrf_name, source_interface=source_interface)
+
+            self.structured_config.ip_ssh_client = ip_ssh_client
+            return
+
         if not (inputs := self.inputs.source_interfaces.ssh_client):
             return
 
@@ -501,6 +578,11 @@ class AvdStructuredConfigBaseProtocol(
         """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
         return self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
+    @cached_property
+    def _act_ensure_ssh_access(self) -> bool:
+        """Flag indicating if we are in ACT Digital Twin mode and if SSH access in default VRF is enforced."""
+        return self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.act_ensure_ssh_access
+
     @structured_config_contributor
     def management_settings(self) -> None:
         """Configures management settings based on the input data model."""
@@ -530,11 +612,21 @@ class AvdStructuredConfigBaseProtocol(
         if not (relay_settings := self.inputs.general_settings.dhcp_relay):
             return
 
+        if relay_settings.reply_source_address_validation:
+            self.structured_config.dhcp_relay.reply_source_address_validation = relay_settings.reply_source_address_validation
+
         if self.shared_utils.vtep:
             if relay_settings.tunnel_requests_disabled:
                 self.structured_config.dhcp_relay.tunnel_requests_disabled = relay_settings.tunnel_requests_disabled
             if self.shared_utils.mlag and relay_settings.mlag_peerlink_requests_disabled:
                 self.structured_config.dhcp_relay.mlag_peerlink_requests_disabled = relay_settings.mlag_peerlink_requests_disabled
+
+    @structured_config_contributor
+    def ip_software_forwarding(self: AvdStructuredConfigBaseProtocol) -> None:
+        """Set IP software forwarding configuration."""
+        if software_settings := self.inputs.general_settings.ip_software_forwarding_exceed_action_drop:
+            self.structured_config.ip_software_forwarding.mtu.exceed_action_drop = software_settings.enabled
+            self.structured_config.ip_software_forwarding.mtu.size = software_settings.mtu
 
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):

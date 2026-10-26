@@ -60,6 +60,14 @@ uv run --no-project tools/e2e-test-avd.py \
 
 Each path must be inside a Git repository. A directory argument must contain `e2e-test.toml`, and a file argument must be named `e2e-test.toml`.
 
+Some projects under `ansible_collections/arista/avd/extensions/molecule` run only through the PyAVD E2E tool while retaining their directory location during the transition. They use the same command above. See the [E2E-only project list](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/extensions/molecule/README.md#e2e-only-projects).
+
+### Negative cases
+
+When adding a negative case, update the project's inventory and host or group variables, run the tool, and review the generated diagnostics under `errors/` and any successful helper outputs under `intended/`. Confirm that the case fails at the intended stage with the expected diagnostic before committing the artifacts. Review additions, modifications, and deletions: deleted error files and newly generated configurations may indicate an unexpected success.
+
+Facts generation runs per fabric. Give independent cases that fail during facts generation separate `fabric_name` groups so one failure does not prevent another case from running. Keep hosts together when their test depends on peer relationships. Structured configuration generation runs per host, so independent structured configuration failures can share a fabric.
+
 ## Creating `e2e-test.toml`
 
 Place the file in the project directory. All configured paths are resolved relative to this directory, regardless of the shell's current working directory.

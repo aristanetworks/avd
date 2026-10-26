@@ -22,8 +22,6 @@ keys:
         vrf:
           type: str
           description: VRF name.
-          convert_types:
-            - int
         ip_address:
           type: str
           description: IPv4_address/Mask.
@@ -58,8 +56,6 @@ keys:
           type: bool
         ospf_area:
           type: str
-          convert_types:
-            - int
         mpls:
           type: dict
           keys:
@@ -78,8 +74,6 @@ keys:
           type: bool
         isis_metric:
           type: int
-          convert_types:
-            - str
         isis_network_point_to_point:
           type: bool
         node_segment:
@@ -87,12 +81,8 @@ keys:
           keys:
             ipv4_index:
               type: int
-              convert_types:
-                - str
             ipv6_index:
               type: int
-              convert_types:
-                - str
         hardware_forwarding_id:
           type: bool
           description: Enable hardware forwarding for the VRF where this loopback interface belongs.

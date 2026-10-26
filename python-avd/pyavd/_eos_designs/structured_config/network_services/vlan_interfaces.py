@@ -86,8 +86,13 @@ class VlanInterfacesMixin(Protocol):
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
+        if svi.autostate is False:
+            vlan_interface_config.no_autostate = True
         if svi.ipv6_address:
             vlan_interface_config.ipv6_addresses.append(svi.ipv6_address)
+        # OSPFv3 runs over the IPv6 link-local address. This must be set before the VARPv6 handling below.
+        if svi.ospfv3.enabled and not vlan_interface_config.ipv6_addresses:
+            vlan_interface_config.ipv6_enable = default(vlan_interface_config.ipv6_enable, True)  # noqa: FBT003
         vlan_interface_config.metadata.tenants.append(tenant.name)
         # Historic behavior is to not output the default ["all"]
         vlan_interface_config.metadata.tags = EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))

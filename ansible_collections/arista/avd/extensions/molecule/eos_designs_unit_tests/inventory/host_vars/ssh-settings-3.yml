@@ -2,9 +2,11 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    - name: ssh-settings-1
+    - name: ssh-settings-3
       id: 43
       mgmt_ip: 10.10.10.43/26
+      inband_mgmt_ip: 10.20.30.40/24
+      inband_mgmt_gateway: 10.20.30.1
 
 mgmt_interface_settings:
   vrf: MGMT
@@ -15,3 +17,6 @@ ssh_settings:
     - name: default
       enabled: false
       ipv4_acl: ACL-SSH
+  client_vrfs:
+    - name: use_default_mgmt_method_vrf
+    - name: use_inband_mgmt_vrf

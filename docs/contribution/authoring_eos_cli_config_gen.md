@@ -42,8 +42,8 @@ Please refer to the schema documentation for details on the various keys in the 
    - Ensure all descriptions end with punctuation.
    - Highlight the key names in description, like - `<key_name>`.
 4. **Type Conversion:**
-   - Add `convert_types: [str]` for `type: int` keys.
-   - Add `convert_types: [int]` for `type: str` if it can be numeric.
+   - Specify the target `type` in the schema. `pyavd-utils` automatically handles supported type conversions during input coercion and validation.
+   - Do not add `convert_types` to schema fragments. See [Automatic Type Conversion](input-variable-validation.md#automatic-type-conversion) for supported conversions.
 5. **Defaults:** Avoid using `default` in eos_cli_config_gen.
 6. **Min/Max:** Specify min/max values in the schema if they are defined in the EOS CLI. Make sure to check on different hardware platforms.
 7. **Valid_Values:** Specify valid options in the schema as per the EOS CLI and ensure compatibility across different hardware platforms.
@@ -122,7 +122,7 @@ Run `pre-commit run --all`, this will trigger recompiling the schemas and the te
 ### Update Documentation
 
 1. If the proposed feature requires any changes to the documentation, update the documentation accordingly.
-2. For new top-level feature data models, include a link to the corresponding schema documentation file (e.g., `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/<data-model>.md`) in the `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md` file.
+2. For new top-level feature data models, include a link to the corresponding schema documentation file (e.g., `schemas/eos_config/docs/tables/<data-model>.md`) in the `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md` file.
 
 ### Run Pre-commit Checks
 

@@ -18,6 +18,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Clock Settings](#clock-settings)
   - [NTP](#ntp)
   - [PTP](#ptp)
+  - [System MAC Address](#system-mac-address)
   - [System Control-Plane](#system-control-plane)
   - [Management SSH](#management-ssh)
   - [Management Tech-Support](#management-tech-support)
@@ -176,6 +177,7 @@ Serial Number: DEADBEEFC0FFEW
 - [Routing](#routing)
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
+  - [VRRP](#vrrp)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -283,6 +285,9 @@ Serial Number: DEADBEEFC0FFEW
   - [NAT Synchronization](#nat-synchronization)
   - [NAT Translation Settings](#nat-translation-settings)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
+- [IP Software Forwarding](#ip-software-forwarding)
+  - [IP Software Forwarding Summary](#ip-software-forwarding-summary)
+  - [IP Software Forwarding Configuration](#ip-software-forwarding-configuration)
 - [IP Hardware FIB](#ip-hardware-fib)
   - [IP Hardware FIB Summary](#ip-hardware-fib-summary)
   - [IP Hardware FIB Configuration](#ip-hardware-fib-configuration)
@@ -822,6 +827,10 @@ ptp monitor threshold missing-message follow-up 203 sequence-ids
 ptp monitor threshold missing-message delay-resp 202 sequence-ids
 ptp monitor threshold missing-message announce 201 sequence-ids
 ```
+
+### System MAC Address
+
+**MAC address:** 00:1c:73:00:00:01
 
 ### System Control-Plane
 
@@ -1993,6 +2002,8 @@ aaa accounting commands 3 default start-stop logging
 | Disable deauthorizing locked addresses upon MAC aging out | True |
 | Disable enforcement for locked ipv4 addresses | True |
 | Disable enforcement for locked ipv6 addresses | True |
+| Log events for denied address drops | True |
+| Log events for DHCP server to client packet drops | True |
 
 ### DHCP Servers
 
@@ -2041,6 +2052,8 @@ address locking
    locked-address expiration mac disabled
    locked-address ipv4 enforcement disabled
    locked-address ipv6 enforcement disabled
+   logging event denied-address drop
+   logging event dhcp server drop
 ```
 
 ## Management Security
@@ -2364,6 +2377,7 @@ alias siib show ip interface brief
 
 - DHCP Relay is disabled for tunnelled requests
 - DHCP Relay is disabled for MLAG peer-link requests
+- DHCP Relay reply source-address validation is enabled
 - Client requests flooding suppression for VLANs: 500-510,1000,2000,3000
 
 | DHCP Relay Servers |
@@ -2379,6 +2393,7 @@ dhcp relay
    tunnel requests disabled
    mlag peer-link requests disabled
    client requests flooding suppression vlan 500-510,1000,2000,3000
+   reply source-address validation
    server dhcp-relay-server1
    server dhcp-relay-server2
 ```
@@ -2653,16 +2668,16 @@ environment fan-speed minimum 60
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | mgt | key,<removed> | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | mgt | key,<removed> | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | /Sysdb/mcs/ | True |
 
 #### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy -flowdns=false -somecustomflag -grpcport=9910 -enablefeaturex=true -disablefeaturey=false
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -sysdbexcludes=/Sysdb/mcs/ -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy -flowdns=false -somecustomflag -grpcport=9910 -enablefeaturex=true -disablefeaturey=false
    no shutdown
 ```
 
@@ -2798,9 +2813,9 @@ no logging event link-status global
 
 MCS client is enabled
 
-| Secondary CVX cluster | Server Hosts | Enabled |
-| --------------------- | ------------ | ------- |
-| default | 10.90.224.188, 10.90.224.189, leaf2.atd.lab | True |
+| Secondary CVX cluster | Server Hosts | VRF | Source Interface | Enabled |
+| --------------------- | ------------ | --- | ---------------- | ------- |
+| default | 10.90.224.188, 10.90.224.189, leaf2.atd.lab | mgt | Loopback0 | True |
 
 #### MCS Client Device Configuration
 
@@ -2814,6 +2829,8 @@ mcs client
       server host 10.90.224.188
       server host 10.90.224.189
       server host leaf2.atd.lab
+      source-interface Loopback0
+      vrf mgt
 ```
 
 ### SNMP
@@ -2899,18 +2916,23 @@ mcs client
 
 #### SNMP Users Configuration
 
-| User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
-| ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
-| USER-READ-NO-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | - | - | - | - | - |
-| USER-READ-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | sha | - | - | - | - |
-| USER-READ-AUTH-PRIV | GRP-READ-ONLY | v3 | sha | aes | - | - | - |
-| USER-READ-NO-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | - | - | - | - | 424242424242424242 |
-| USER-READ-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - | - | - | 424242424242424242 |
-| USER-READ-AUTH-PRIV-LOC | GRP-READ-ONLY | v3 | sha | aes | - | - | 424242424242424242 |
-| USER-WRITE | GRP-READ-WRITE | v3 | sha | aes | - | - | - |
-| REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | 42.42.42.42 | - | - |
-| REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
-| REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | aes | 42.42.42.42 | - | DEADBEEFCAFE123456 |
+| User | Group | Version | Authentication | Auth Type | Privacy | Priv Type | Remote Address | Remote Port | Engine ID |
+| ---- | ----- | ------- | -------------- | --------- | ------- | --------- | -------------- | ----------- | --------- |
+| USER-READ-NO-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | - | - | - | - | - | - | - |
+| USER-READ-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | sha | - | - | - | - | - | - |
+| USER-READ-AUTH-PRIV | GRP-READ-ONLY | v3 | sha | - | aes | - | - | - | - |
+| USER-READ-NO-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | - | - | - | - | - | - | 424242424242424242 |
+| USER-READ-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - | - | - | - | - | 424242424242424242 |
+| USER-READ-AUTH-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - | aes | - | - | - | 424242424242424242 |
+| USER-WRITE | GRP-READ-WRITE | v3 | sha | - | aes | - | - | - | - |
+| REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | - | - | 42.42.42.42 | - | - |
+| REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | - | - | 42.42.42.42 | 666 | - |
+| REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | - | aes | - | 42.42.42.42 | - | DEADBEEFCAFE123456 |
+| USER-AUTH-TYPE7 | GRP-READ | v3 | md5 | 7 | - | - | - | - | f5717f500000bb417100 |
+| USER-AUTH-PRIV-TYPE0 | GRP-WRITE | v3 | sha | 0 | aes | 0 | - | - | f5717f500000bb417100 |
+| USER-AUTH-PRIV-WITHOUT-LOCALIZED | GRP-WRITE | v3 | sha | - | aes256 | - | - | - | - |
+| USER-LOCALIZED-TYPE7 | GRP-WRITE | v3 | sha | 7 | aes | 7 | - | - | f5717f500000bb417100 |
+| USER-REMOTE-TYPE7 | GRP-REMOTE | v3 | md5 | 7 | des | 7 | 10.1.1.1 | - | f5717f500000bb417100 |
 
 #### SNMP Extensions
 
@@ -2945,6 +2967,10 @@ snmp-server community <removed> view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
 snmp-server community <removed> ro
 snmp-server group GRP-READ-ONLY v3 priv read v3read
 snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
+snmp-server user USER-AUTH-PRIV-TYPE0 GRP-WRITE v3 localized f5717f500000bb417100 auth sha key 0 <removed> priv aes key 0 <removed>
+snmp-server user USER-AUTH-PRIV-WITHOUT-LOCALIZED GRP-WRITE v3 auth sha <removed> priv aes256 <removed>
+snmp-server user USER-AUTH-TYPE7 GRP-READ v3 localized f5717f500000bb417100 auth md5 key 7 <removed>
+snmp-server user USER-LOCALIZED-TYPE7 GRP-WRITE v3 localized f5717f500000bb417100 auth sha key 7 <removed> priv aes key 7 <removed>
 snmp-server user USER-READ-AUTH-NO-PRIV GRP-READ-ONLY v3 auth sha <removed>
 snmp-server user USER-READ-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha <removed>
 snmp-server user USER-READ-AUTH-PRIV GRP-READ-ONLY v3 auth sha <removed> priv aes <removed>
@@ -2959,6 +2985,7 @@ snmp-server engineID remote 42.42.42.42 udp-port 666 424242424242DEAD6666
 snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed> priv aes <removed>
 snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
 snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
+snmp-server user USER-REMOTE-TYPE7 GRP-REMOTE remote 10.1.1.1 v3 localized f5717f500000bb417100 auth md5 key 7 <removed> priv des key 7 <removed>
 snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ-AUTH-PRIV
 snmp-server host 10.6.75.121 vrf MGMT version 1 <removed>
 snmp-server host 10.6.75.121 vrf MGMT version 2c <removed>
@@ -8704,6 +8731,19 @@ Multi agent routing protocol model enabled
 service routing protocols model multi-agent
 ```
 
+### VRRP
+
+#### VRRP Summary
+
+VRRPv2 IPv4 Authentication Anti-Replay: Enabled
+
+#### VRRP Device Configuration
+
+```eos
+!
+vrrp ipv4 authentication anti-replay
+```
+
 ### Virtual Router MAC Address
 
 #### Virtual Router MAC Address Summary
@@ -10093,13 +10133,15 @@ ASN Notation: asdot
 | 11.11.11.0 | - | NHP-PEER1 | - | - | - | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 0 (no limit) | - | - | - | - | - | - | - |
-| 10.2.3.4 | 1234 | TENANT_A_PROJECT01 | - | all | 0 (no limit) (warning-limit 100, warning-only) | 1000 (warning-limit 80 percent) | - | - | - | - | - | - | - |
+| 10.2.3.4 | 1234 | TENANT_A_PROJECT01 | - | all | 0 (no limit) (warning-limit 100, warning-only) | 1000 (warning-limit 80 percent) | - | - | - | - | - | - | 1 |
 | 11.1.1.1 | - | TENANT_A_PROJECT01 | - | - | - | 0 (no limit) (warning-limit 80 percent) | - | - | - | - | - | - | - |
 | 12.1.1.1 | - | TENANT_A_PROJECT01 | - | - | - | 0 (no limit) (warning-limit 180) | - | - | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | standard | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
 | 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | extended | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
 | 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | large | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - | - | - |
 | 10.255.251.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | True | - | - | - | - |
+| 192.0.2.1 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | Inherited from peer group TEST |
+| 192.0.2.2 | - | TTL-SECURITY | - | - | - | - | - | - | - | - | - | - | 0 |
 | 1.1.1.1 | - | VRF02 | - | - | - | - | - | - | - | - | - | - | - |
 | 192.168.0.10 | - | VRF02 | - | - | - | 10 (never warn) | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
@@ -10202,6 +10244,7 @@ ASN Notation: asdot
 | LFIB entry installation skipped | True |
 | Label local-termination | implicit-null |
 | Neighbor default next-hop-self | True |
+| Next-hop resolution | Disabled |
 
 ##### IPv4 BGP-LU Peer-groups
 
@@ -10304,6 +10347,7 @@ ASN Notation: asdot
 #### Router BGP VPN-IPv6 Address Family
 
 - VPN import pruning is **enabled**
+- Next-hop resolution is **disabled**
 
 ##### VPN-IPv6 Neighbors
 
@@ -10385,6 +10429,7 @@ ASN Notation: asdot
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | - | IPv4: True<br>Transit: True |
 | TENANT_A_PROJECT04 | 192.168.255.3:14 | - | - | IPv4: True<br>Transit: False |
 | Tenant_B | 10.50.64.15:30002 | - | - | IPv4: False<br>Transit: False |
+| TTL-SECURITY | - | - | - | IPv4: False<br>Transit: False |
 | VRF01 | - | user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
 | VRF02 | - | dynamic<br>user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
 | VRF03 | - | dynamic | - | IPv4: False<br>Transit: False |
@@ -10457,13 +10502,6 @@ router bgp 65101
    neighbor EXTENDED-COMMUNITY peer group
    neighbor EXTENDED-COMMUNITY send-community extended
    neighbor EXTENDED-COMMUNITY maximum-advertised-routes 0
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
-   no neighbor IPv4-UNDERLAY-PEERS rib-in pre-policy retain
-   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 0 warning-limit 140
    neighbor IPV6-UNDERLAY peer group
    neighbor IPV6-UNDERLAY remote-as 65000
    neighbor IPV6-UNDERLAY password 7 <removed>
@@ -10478,6 +10516,13 @@ router bgp 65101
    neighbor IPV6-UNDERLAY-MLAG maximum-routes 12000
    neighbor IPV6-UNDERLAY-MLAG missing-policy address-family all include sub-route-map direction in action deny
    no neighbor IPV6-UNDERLAY-MLAG remove-private-as ingress
+   neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
+   no neighbor IPv4-UNDERLAY-PEERS rib-in pre-policy retain
+   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
+   neighbor IPv4-UNDERLAY-PEERS send-community
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 0 warning-limit 140
    neighbor LARGE-COMMUNITY peer group
    neighbor LARGE-COMMUNITY send-community large
    neighbor LOCAL-AS peer group
@@ -10556,6 +10601,13 @@ router bgp 65101
    no neighbor TEST-ENFORCE-FIRST-AS-FALSE enforce-first-as
    neighbor TEST-ENFORCE-FIRST-AS-TRUE peer group
    neighbor TEST-ENFORCE-FIRST-AS-TRUE enforce-first-as
+   neighbor TEST-PASSIVE peer group
+   neighbor TEST-PASSIVE remote-as 65003
+   neighbor TEST-PASSIVE passive
+   neighbor TEST-PASSIVE description BGP Connection in passive mode
+   neighbor WELCOME_ROUTERS peer group
+   neighbor WELCOME_ROUTERS remote-as 65001
+   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    neighbor test-link-bandwidth1 peer group
    neighbor test-link-bandwidth1 ttl maximum-hops 1
    neighbor test-link-bandwidth1 missing-policy address-family all include community-list prefix-list direction in action deny
@@ -10565,15 +10617,8 @@ router bgp 65101
    neighbor test-link-bandwidth2 link-bandwidth
    neighbor test-passive peer group
    neighbor test-passive passive
-   neighbor TEST-PASSIVE peer group
-   neighbor TEST-PASSIVE remote-as 65003
-   neighbor TEST-PASSIVE passive
-   neighbor TEST-PASSIVE description BGP Connection in passive mode
    neighbor test-session-tracker peer group
    neighbor test-session-tracker session tracker ST2
-   neighbor WELCOME_ROUTERS peer group
-   neighbor WELCOME_ROUTERS remote-as 65001
-   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    neighbor 1.1.1.1 remote-as 1
    neighbor 1.1.1.1 next-hop-peer
    neighbor 1.1.1.1 description TEST
@@ -10894,12 +10939,8 @@ router bgp 65101
       bgp additional-paths install
       bgp additional-paths receive
       bgp additional-paths send ecmp limit 20
+      next-hop resolution disabled
       no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor foo additional-paths receive
-      neighbor foo prefix-list PL-BAR-v4-IN in
-      neighbor foo prefix-list PL-BAR-v4-OUT out
-      neighbor foo default-originate route-map RM-FOO-MATCH always
-      neighbor foo additional-paths send ecmp limit 20 prefix-list PL1
       neighbor FOOBAR activate
       neighbor FOOBAR next-hop address-family ipv6 originate
       neighbor IPV4-UNDERLAY activate
@@ -10929,6 +10970,11 @@ router bgp 65101
       neighbor TEST_RCF maximum-advertised-routes 120000 warning-limit 10
       neighbor WELCOME_ROUTERS activate
       neighbor WELCOME_ROUTERS additional-paths send any
+      neighbor foo additional-paths receive
+      neighbor foo prefix-list PL-BAR-v4-IN in
+      neighbor foo prefix-list PL-BAR-v4-OUT out
+      neighbor foo default-originate route-map RM-FOO-MATCH always
+      neighbor foo additional-paths send ecmp limit 20 prefix-list PL1
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
       no neighbor 10.2.3.8 additional-paths send
       no neighbor 10.2.3.8 next-hop address-family ipv6
@@ -10980,6 +11026,7 @@ router bgp 65101
       bgp additional-paths send ecmp limit 20
       bgp next-hop-unchanged
       neighbor default next-hop-self
+      next-hop resolution disabled
       next-hop resolution ribs tunnel-rib colored system-colored-tunnel-rib tunnel-rib test-rib system-connected
       neighbor PG-BGP-LU activate
       neighbor PG-BGP-LU graceful-restart
@@ -11089,11 +11136,7 @@ router bgp 65101
       bgp additional-paths install ecmp-primary
       bgp additional-paths receive
       bgp additional-paths send any
-      neighbor baz additional-paths receive
-      neighbor baz prefix-list PL-BAR-v6-IN in
-      neighbor baz prefix-list PL-BAR-v6-OUT out
-      neighbor baz default-originate route-map RM-FOO always
-      neighbor baz additional-paths send ecmp limit 20 prefix-list PL2
+      next-hop resolution disabled
       no neighbor FOOBAR activate
       neighbor FOOBAR1 activate
       neighbor FOOBAR1 default-originate
@@ -11118,6 +11161,11 @@ router bgp 65101
       neighbor TEST_RCF additional-paths send limit 11
       neighbor TEST_RCF maximum-accepted-routes 1000
       neighbor TEST_RCF maximum-advertised-routes 120000
+      neighbor baz additional-paths receive
+      neighbor baz prefix-list PL-BAR-v6-IN in
+      neighbor baz prefix-list PL-BAR-v6-OUT out
+      neighbor baz default-originate route-map RM-FOO always
+      neighbor baz additional-paths send ecmp limit 20 prefix-list PL2
       neighbor 2001:db8::1 additional-paths receive
       neighbor 2001:db8::1 route-map Address_Family_IPV6_In in
       neighbor 2001:db8::1 route-map Address_Family_IPV6_Out out
@@ -11294,6 +11342,7 @@ router bgp 65101
       neighbor 2001:cafe:192:168::5 default-route rcf Address_Family_VPN_IPV6_In()
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       domain identifier 65000:0
+      next-hop resolution disabled
       route import match-failure action discard
    !
    vrf BLUE-C1
@@ -11393,6 +11442,7 @@ router bgp 65101
       neighbor 10.2.3.4 local-as 123 no-prepend replace-as
       neighbor 10.2.3.4 description Tenant A BGP Peer
       neighbor 10.2.3.4 ebgp-multihop 3
+      neighbor 10.2.3.4 ttl maximum-hops 1
       neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
       neighbor 10.2.3.4 default-originate route-map RM-10.2.3.4-SET-NEXT-HOP-OUT always
       neighbor 10.2.3.4 send-community
@@ -11485,6 +11535,11 @@ router bgp 65101
       route-target import evpn 1:30002
       route-target export evpn 1:30002
       route-target export evpn route-map RM-DEFAULT-EXTRA-COMM
+   !
+   vrf TTL-SECURITY
+      neighbor 192.0.2.1 peer group TEST
+      neighbor 192.0.2.2 peer group TEST
+      neighbor 192.0.2.2 ttl maximum-hops 0
    !
    vrf VRF01
       bgp additional-paths install
@@ -14382,6 +14437,22 @@ ip nat synchronization
    local-interface Ethernet1
    port-range 1024 65535
    port-range split disabled
+```
+
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+| Setting | Value |
+| ------- | ----- |
+| MTU Size | 9000 |
+| MTU Exceed Action | Drop |
+
+### IP Software Forwarding Configuration
+
+```eos
+ip software forwarding mtu 9000
+ip software forwarding mtu exceed action drop
 ```
 
 ## IP Hardware FIB
