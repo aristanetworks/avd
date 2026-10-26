@@ -38474,6 +38474,11 @@ class EosDesigns(EosDesignsRootModel):
             class LoopbacksItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Ipv6Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Ipv6Addresses._item_type = str
+
                 class Ospf(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -38506,6 +38511,7 @@ class EosDesigns(EosDesignsRootModel):
                     "node": {"type": str},
                     "loopback": {"type": int},
                     "ip_address": {"type": str},
+                    "ipv6_addresses": {"type": Ipv6Addresses},
                     "description": {"type": str},
                     "enabled": {"type": bool, "default": True},
                     "ospf": {"type": Ospf},
@@ -38514,13 +38520,25 @@ class EosDesigns(EosDesignsRootModel):
                 }
                 node: str
                 loopback: int
-                ip_address: str
+                ip_address: str | None
+                """IPv4 address/Mask."""
+                ipv6_addresses: Ipv6Addresses
+                """
+                IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                At least one of `ip_address` or
+                `ipv6_addresses` must be set.
+                The first address in this list is used for the IPv6 virtual source-nat
+                of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                Subclass of AvdList with `str` items.
+                """
                 description: str | None
                 enabled: bool
                 """Default value: `True`"""
                 ospf: Ospf
                 """
-                OSPF interface configuration.
+                OSPFv2 interface configuration.
+                Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                and this loopback.
 
                 Subclass of AvdModel.
                 """
@@ -38539,7 +38557,8 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         node: str | UndefinedType = Undefined,
                         loopback: int | UndefinedType = Undefined,
-                        ip_address: str | UndefinedType = Undefined,
+                        ip_address: str | UndefinedType | None = Undefined,
+                        ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                         description: str | UndefinedType | None = Undefined,
                         enabled: bool | UndefinedType = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
@@ -38555,11 +38574,20 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             node: node
                             loopback: loopback
-                            ip_address: ip_address
+                            ip_address: IPv4 address/Mask.
+                            ipv6_addresses:
+                               IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                               At least one of `ip_address` or
+                               `ipv6_addresses` must be set.
+                               The first address in this list is used for the IPv6 virtual source-nat
+                               of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                               Subclass of AvdList with `str` items.
                             description: description
                             enabled: enabled
                             ospf:
-                               OSPF interface configuration.
+                               OSPFv2 interface configuration.
+                               Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                               and this loopback.
 
                                Subclass of AvdModel.
                             hardware_forwarding:
@@ -92281,6 +92309,11 @@ class EosDesigns(EosDesignsRootModel):
                     class LoopbacksItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -92313,6 +92346,7 @@ class EosDesigns(EosDesignsRootModel):
                             "node": {"type": str},
                             "loopback": {"type": int},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "description": {"type": str},
                             "enabled": {"type": bool, "default": True},
                             "ospf": {"type": Ospf},
@@ -92321,13 +92355,25 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         node: str
                         loopback: int
-                        ip_address: str
+                        ip_address: str | None
+                        """IPv4 address/Mask."""
+                        ipv6_addresses: Ipv6Addresses
+                        """
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        At least one of `ip_address` or
+                        `ipv6_addresses` must be set.
+                        The first address in this list is used for the IPv6 virtual source-nat
+                        of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                        Subclass of AvdList with `str` items.
+                        """
                         description: str | None
                         enabled: bool
                         """Default value: `True`"""
                         ospf: Ospf
                         """
-                        OSPF interface configuration.
+                        OSPFv2 interface configuration.
+                        Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                        and this loopback.
 
                         Subclass of AvdModel.
                         """
@@ -92346,7 +92392,8 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 node: str | UndefinedType = Undefined,
                                 loopback: int | UndefinedType = Undefined,
-                                ip_address: str | UndefinedType = Undefined,
+                                ip_address: str | UndefinedType | None = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 description: str | UndefinedType | None = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
@@ -92362,11 +92409,20 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     node: node
                                     loopback: loopback
-                                    ip_address: ip_address
+                                    ip_address: IPv4 address/Mask.
+                                    ipv6_addresses:
+                                       IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                                       At least one of `ip_address` or
+                                       `ipv6_addresses` must be set.
+                                       The first address in this list is used for the IPv6 virtual source-nat
+                                       of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                                       Subclass of AvdList with `str` items.
                                     description: description
                                     enabled: enabled
                                     ospf:
-                                       OSPF interface configuration.
+                                       OSPFv2 interface configuration.
+                                       Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                                       and this loopback.
 
                                        Subclass of AvdModel.
                                     hardware_forwarding:
