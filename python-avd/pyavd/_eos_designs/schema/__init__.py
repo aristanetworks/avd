@@ -20059,7 +20059,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             port: int | None
             """
-            TCP port used for RADIUS dynamic authorization requests.
+            UDP port used for RADIUS dynamic authorization requests.
             Applied only when
             `dot1x_settings.dynamic_authorization.enabled` is `true`.
             """
@@ -20101,7 +20101,7 @@ class EosDesigns(EosDesignsRootModel):
                            Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
                            adjust an active client session.
                         port:
-                           TCP port used for RADIUS dynamic authorization requests.
+                           UDP port used for RADIUS dynamic authorization requests.
                            Applied only when
                            `dot1x_settings.dynamic_authorization.enabled` is `true`.
                         tls_ssl_profile:

@@ -2701,7 +2701,7 @@ keys:
             type: int
             min: 0
             max: 65535
-            description: 'TCP port used for RADIUS dynamic authorization requests.
+            description: 'UDP port used for RADIUS dynamic authorization requests.
 
               Applied only when `dot1x_settings.dynamic_authorization.enabled` is
               `true`.'
