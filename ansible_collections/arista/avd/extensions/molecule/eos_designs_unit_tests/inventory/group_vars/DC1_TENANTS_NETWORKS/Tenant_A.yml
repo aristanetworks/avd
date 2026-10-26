@@ -417,7 +417,7 @@ tenant_a:
             description: Test-Only-IPv6
             enabled: true
             ipv6_addresses:
-              - 2001:DB8:21::1/48
+              - 2001:db8:21::1/48
               - 5:5:5:5:5:5:5:5/124
         vtep_diagnostic:
           loopback: 101

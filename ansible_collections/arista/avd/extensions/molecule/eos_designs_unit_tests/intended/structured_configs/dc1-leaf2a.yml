@@ -536,7 +536,7 @@ loopback_interfaces:
   shutdown: false
   vrf: Tenant_A_OSPF
   ipv6_addresses:
-  - 2001:DB8:21::1/48
+  - 2001:db8:21::1/48
   - 5:5:5:5:5:5:5:5/124
 - name: Loopback142
   description: VRF_DIAG_V6_TENANT_LO_V4_VTEP_DIAGNOSTICS
