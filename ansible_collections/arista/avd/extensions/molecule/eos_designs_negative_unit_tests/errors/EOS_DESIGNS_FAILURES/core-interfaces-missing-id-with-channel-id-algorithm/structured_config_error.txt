@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'id' is not set for p2p link on core-interfaces-missing-id-with-channel-id-algorithm but the selected 'channel_id_algorithm' is 'p2p_link_id'.

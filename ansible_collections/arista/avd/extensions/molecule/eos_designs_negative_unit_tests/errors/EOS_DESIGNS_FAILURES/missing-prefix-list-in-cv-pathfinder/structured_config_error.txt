@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for 'l3_interfaces[Ethernet1]'.

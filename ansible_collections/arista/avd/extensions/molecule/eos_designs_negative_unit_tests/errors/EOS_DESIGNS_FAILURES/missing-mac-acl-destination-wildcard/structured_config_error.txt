@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'mac_acls[name=acl1].entries[0].destination_wildcard' is required but was not found for host 'missing-mac-acl-destination-wildcard'.

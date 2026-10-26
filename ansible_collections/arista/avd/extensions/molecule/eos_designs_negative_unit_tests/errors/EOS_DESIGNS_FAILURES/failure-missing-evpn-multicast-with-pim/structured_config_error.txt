@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: 'pim: enabled' set on l3_interface 'Ethernet1' on 'failure-missing-evpn-multicast-with-pim' requires 'evpn_multicast: true' at the fabric level

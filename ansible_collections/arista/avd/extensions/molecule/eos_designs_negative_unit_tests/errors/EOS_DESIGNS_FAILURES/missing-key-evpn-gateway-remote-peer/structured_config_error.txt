@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: The EVPN Gateway remote peer 'not-in-the-inventory' is missing either `bgp_as` or `ip_address`.

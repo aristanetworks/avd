@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: 'generate_cv_tags.interface_tags[name=myaname].data_path' (switchport) points to a variable of type Switchport. This is not supported for cloudvision tag data_paths.

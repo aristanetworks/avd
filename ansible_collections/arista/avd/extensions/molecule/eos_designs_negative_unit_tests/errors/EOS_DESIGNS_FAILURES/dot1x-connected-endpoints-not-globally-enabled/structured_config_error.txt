@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 802.1X settings are configured under 'servers[name=test-server].adapters[0]' but 802.1X is not enabled globally. 802.1X must be enabled globally by setting 'dot1x_settings.enabled: true' before configuring 802.1X on any interface.

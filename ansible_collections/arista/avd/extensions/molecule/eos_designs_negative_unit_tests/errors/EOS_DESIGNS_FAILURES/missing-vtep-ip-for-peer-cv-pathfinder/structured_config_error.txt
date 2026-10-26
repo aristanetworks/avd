@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'vtep_ip' is missing for peering with core-interfaces-missing-id-with-channel-id-algorithm, either set it under 'wan_route_servers' or something is wrong with the peer facts.

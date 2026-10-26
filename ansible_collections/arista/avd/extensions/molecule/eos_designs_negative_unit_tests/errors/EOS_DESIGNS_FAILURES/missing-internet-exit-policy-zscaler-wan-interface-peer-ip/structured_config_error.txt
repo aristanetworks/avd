@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The configured internet-exit policy requires `peer_ip` configured under the WAN Interface Ethernet1.
