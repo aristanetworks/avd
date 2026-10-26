@@ -27,8 +27,6 @@ keys:
             min: 1
             max: 614400
             default: 16000
-            convert_types:
-              - str
             description: Maximum number of entries in the flow table.
           ipfix_listener_port:
             type: int
